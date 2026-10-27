@@ -6,7 +6,7 @@ items:
     slot: 27
     amount: 1
     material: DIAMOND_BOOTS
-    display_name: '&#_F&8&B&E&F&B&lБотинки PvP'
+    display_name: '&#F8BEFB&lБотинки PvP'
     enchantments:
     - PROTECTION;4
     - FEATHER_FALLING;4
@@ -16,7 +16,7 @@ items:
     slot: 18
     amount: 1
     material: DIAMOND_LEGGINGS
-    display_name: '&#_F&8&B&E&F&B&lПоножи PvP'
+    display_name: '&#F8BEFB&lПоножи PvP'
     enchantments:
     - PROTECTION;4
     - UNBREAKING;3
@@ -24,7 +24,7 @@ items:
     slot: 9
     amount: 1
     material: DIAMOND_CHESTPLATE
-    display_name: '&#_F&8&B&E&F&B&lНагрудник PvP'
+    display_name: '&#F8BEFB&lНагрудник PvP'
     enchantments:
     - PROTECTION;4
     - UNBREAKING;3
@@ -32,7 +32,7 @@ items:
     slot: 0
     amount: 1
     material: DIAMOND_HELMET
-    display_name: '&#_F&8&B&E&F&B&lШлем PvP'
+    display_name: '&#F8BEFB&lШлем PvP'
     enchantments:
     - PROTECTION;4
     - RESPIRATION;3
@@ -58,7 +58,7 @@ items:
     slot: 2
     amount: 1
     material: DIAMOND_SWORD
-    display_name: '&#_F&8&B&E&F&B&lБоевой Меч PvP'
+    display_name: '&#F8BEFB&lБоевой Меч PvP'
     enchantments:
     - SHARPNESS;4
     - SWEEPING_EDGE;3
@@ -67,36 +67,31 @@ items:
     slot: 3
     amount: 1
     material: BOW
-    display_name: '&#_F&8&B&E&F&B&lБоевой Лук PvP'
+    display_name: '&#F8BEFB&lБоевой Лук PvP'
     enchantments:
     - POWER;4
     - PUNCH;1
     - UNBREAKING;3
   loot_2:
     slot: 4
-    amount: 1
-    material: CROSSBOW
-    display_name: '&#_F&8&B&E&F&B&lБоевой Арбалет PvP'
-    enchantments:
-    - QUICK_CHARGE;2
-    - PIERCING;4
-    - UNBREAKING;3
+    amount: 16
+    material: GOLDEN_APPLE
   loot_3:
     slot: 5
     amount: 16
-    material: GOLDEN_APPLE
+    material: ENDER_PEARL
   loot_4:
     slot: 6
     amount: 16
-    material: ENDER_PEARL
+    material: CHORUS_FRUIT
   loot_5:
     slot: 7
-    amount: 16
-    material: CHORUS_FRUIT
-  loot_6:
-    slot: 8
     amount: 32
     material: GOLDEN_CARROT
+  loot_6:
+    slot: 8
+    amount: 1
+    material: TOTEM_OF_UNDYING
   loot_7:
     slot: 11
     amount: 1
@@ -112,7 +107,10 @@ items:
   loot_10:
     slot: 14
     amount: 1
-    material: TOTEM_OF_UNDYING
+    material: POTION
+    display_name: '&cЗелье Силы II &7(1:30)'
+    lore:
+    - '&9Сила II (1:30)'
   loot_11:
     slot: 15
     amount: 1
@@ -124,9 +122,9 @@ items:
     slot: 16
     amount: 1
     material: POTION
-    display_name: '&cЗелье Силы II &7(1:30)'
+    display_name: '&bЗелье Скорости II &7(1:30)'
     lore:
-    - '&9Сила II (1:30)'
+    - '&9Скорость II (1:30)'
   loot_13:
     slot: 17
     amount: 1
@@ -138,9 +136,9 @@ items:
     slot: 20
     amount: 1
     material: POTION
-    display_name: '&bЗелье Скорости II &7(1:30)'
+    display_name: '&6Зелье Огнестойкости &7(8:00)'
     lore:
-    - '&9Скорость II (1:30)'
+    - '&9Огнестойкость (8:00)'
   loot_15:
     slot: 21
     amount: 1
@@ -150,34 +148,6 @@ items:
     - '&9Огнестойкость (8:00)'
   loot_16:
     slot: 22
-    amount: 1
-    material: POTION
-    display_name: '&6Зелье Огнестойкости &7(8:00)'
-    lore:
-    - '&9Огнестойкость (8:00)'
-  loot_17:
-    slot: 23
-    amount: 1
-    material: SPLASH_POTION
-    display_name: '&dВзрывное зелье Исцеления II'
-    lore:
-    - '&9Мгновенное лечение II'
-  loot_18:
-    slot: 24
-    amount: 1
-    material: SPLASH_POTION
-    display_name: '&dВзрывное зелье Исцеления II'
-    lore:
-    - '&9Мгновенное лечение II'
-  loot_19:
-    slot: 25
-    amount: 1
-    material: SPLASH_POTION
-    display_name: '&dВзрывное зелье Исцеления II'
-    lore:
-    - '&9Мгновенное лечение II'
-  loot_20:
-    slot: 26
     amount: 64
     material: ARROW
   btn_back:

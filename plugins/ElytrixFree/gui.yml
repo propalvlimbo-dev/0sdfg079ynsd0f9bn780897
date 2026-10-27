@@ -26,12 +26,9 @@ close:
   enabled: true
   slot: 45
   material: 'arrow'
-  name: '&7« &#F8BEFBЗакрыть меню &7»'
-  lore:
-    - '&#F8BEFB&l┃ '
-    - '&#F8BEFB&l┃ &fВыход в игровой мир.'
-    - '&#F8BEFB&l┃ '
-    - '&7● &fНажмите для закрытия'
+  name: '&#F8BEFBНазад'
+  lore: []
+  command: 'menu'
 
 locked:
   slot: 22

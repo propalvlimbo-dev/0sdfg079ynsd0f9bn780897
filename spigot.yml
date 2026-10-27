@@ -65,7 +65,7 @@ world-settings:
     merge-radius:
       exp: 5.0
       item: 3.5
-    view-distance: 6
+    view-distance: 4
     simulation-distance: 4
     zombie-aggressive-towards-villager: true
     nerf-spawner-mobs: true

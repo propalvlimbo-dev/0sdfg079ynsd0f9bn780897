@@ -41,21 +41,21 @@ schedule:
 # ==================================
 
 zombieBossName: "&#F8BEFB&lКороль Зомби"
-zombieBossMythicMob: "mso_lavastone_golem"
+zombieBossMythicMob: "AirDrop_ZombieKing"
 zombieBossHP: 666
 
 spiderBossName: "&#F8BEFB&lПаукан"
-spiderBossMythicMob: "mso_lavastone_golem"
+spiderBossMythicMob: "AirDrop_SpiderBoss"
 spiderBossHP: 666
 
 catBossName: "&#F8BEFB&lАдский тигр"
-catBossMythicMob: "mso_lavastone_golem"
+catBossMythicMob: "AirDrop_HellTiger"
 catBossHP: 666
 
 glowItems: true
 
 hologram:
-  airdropClosed: "%airType%: &cзакрыт\n&7Для открытия победите босса"
+  airdropClosed: "%airType%: &cзакрыт\n&7Нажмите ПКМ по якорю для призыва босса"
   killBoss: "%airType%: &cзакрыт\n&7Для открытия победите босса"
   killedBoss: "%airType%: &cзакрыт\n&7Открытие через &f%time% &7сек"
   openedAir: "%airType%: &aоткрыт\n&aАирДроп &7доступен"

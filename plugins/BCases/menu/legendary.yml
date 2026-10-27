@@ -14,7 +14,7 @@ items:
     - 32
     material: STRUCTURE_VOID
     model_data: 10000
-    display_name: <#F8BEFB>&lЛегендарный Кейс</#FFFFFF>
+    display_name: '<#F8BEFB>&lЛегендарный Кейс</#FFFFFF>'
     lore:
     - '&7Тип: &#F8BEFB&lСУПЕР КЕЙС С ДОНАТОМ'
     - '&7Количество ключей: &f&l%bcases_keys_count_of_type_legendary%'

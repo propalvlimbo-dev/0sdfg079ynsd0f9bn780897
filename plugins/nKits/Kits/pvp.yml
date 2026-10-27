@@ -30,17 +30,6 @@ Inventory:
         DURABILITY: 3
   - ==: org.bukkit.inventory.ItemStack
     v: 2586
-    type: CROSSBOW
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      display-name: '{"text":"§x§F§8§B§E§F§B§lБоевой Арбалет PvP"}'
-      enchants:
-        QUICK_CHARGE: 2
-        PIERCING: 4
-        DURABILITY: 3
-  - ==: org.bukkit.inventory.ItemStack
-    v: 2586
     type: SHIELD
     meta:
       ==: ItemMeta
@@ -119,29 +108,12 @@ Inventory:
       potion-type: minecraft:long_fire_resistance
   - ==: org.bukkit.inventory.ItemStack
     v: 2586
-    type: SPLASH_POTION
-    meta:
-      ==: ItemMeta
-      meta-type: POTION
-      potion-type: minecraft:strong_healing
-  - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: SPLASH_POTION
-    meta:
-      ==: ItemMeta
-      meta-type: POTION
-      potion-type: minecraft:strong_healing
-  - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: SPLASH_POTION
-    meta:
-      ==: ItemMeta
-      meta-type: POTION
-      potion-type: minecraft:strong_healing
-  - ==: org.bukkit.inventory.ItemStack
-    v: 2586
     type: ARROW
     amount: 64
+  - null
+  - null
+  - null
+  - null
   - null
   - null
   - null

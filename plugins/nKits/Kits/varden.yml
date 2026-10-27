@@ -22,7 +22,6 @@ Inventory:
       minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers"]}'
       minecraft:custom_name: '{extra:[{bold:1b,color:"#00AAAA",italic:0b,text:"Шар
         Вардена"}],italic:0b,text:""}'
-      minecraft:custom_data: '{PublicBukkitValues:{"deluxemenus:dm":1b}}'
     schema_version: 1
   - null
   - null

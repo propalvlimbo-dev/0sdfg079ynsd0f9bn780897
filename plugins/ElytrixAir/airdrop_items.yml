@@ -1866,8 +1866,6 @@ loot:
           uuid: 4eef9f19-e5f6-4a77-b9ac-522d9fb2be1a
           operation: 0
       internal: H4sIAAAAAAAA/02PT06DQBxGfxhNKnqYASymy0ZCO4ShQgGZ2bV0Kn9makPBylzAxAPoQdx4Ce+gZzDuZenufXnf5ukAOlwu606I2+ZhWwqugz7QnjdtyQ/nMGr5U9s1/KADgDaCs3QlOg7vvPcQywq0yTyR99gedrxEYoGr/TXepf36BttYDn4+tf1+8u87bld3Y0Etr2C7sFvLFPlWJPg8MnKZPFJVVIHEiEm3ICpBJKY9q4gKnNxkMauJCo3AqU02G7zJJFW5SRy3ZLPEIlUkqRmiRZwfF87UopUrA1UbtPcm2wwBXMAJ3gwdp1+vL9rVh//93N1rv2+fPwB/EHEvLAkBAAA=
-      PublicBukkitValues:
-        deluxemenus:dm: 1b
   - ==: org.bukkit.inventory.ItemStack
     v: 2586
     type: NETHERITE_AXE
@@ -2766,8 +2764,6 @@ loot:
           uuid: 4eef9f19-e5f6-4a77-b9ac-522d9fb2be1a
           operation: 0
       internal: H4sIAAAAAAAA/02PT06DQBxGfxhNKnqYASymy0ZCO4ShQgGZ2bV0Kn9makPBylzAxAPoQdx4Ce+gZzDuZenufXnf5ukAOlwu606I2+ZhWwqugz7QnjdtyQ/nMGr5U9s1/KADgDaCs3QlOg7vvPcQywq0yTyR99gedrxEYoGr/TXepf36BttYDn4+tf1+8u87bld3Y0Etr2C7sFvLFPlWJPg8MnKZPFJVVIHEiEm3ICpBJKY9q4gKnNxkMauJCo3AqU02G7zJJFW5SRy3ZLPEIlUkqRmiRZwfF87UopUrA1UbtPcm2wwBXMAJ3gwdp1+vL9rVh//93N1rv2+fPwB/EHEvLAkBAAA=
-      PublicBukkitValues:
-        deluxemenus:dm: 1b
   - ==: org.bukkit.inventory.ItemStack
     v: 2586
     type: NETHERITE_AXE
