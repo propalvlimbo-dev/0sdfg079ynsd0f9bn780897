@@ -1,6 +1,6 @@
 Name: bull
 Cooldown: 86400
-Permission: greatkits.kits.bull
+Permission: nKits.kits.bull
 Order: 0
 FirstTimeJoinKit: false
 OneTimeUse: false

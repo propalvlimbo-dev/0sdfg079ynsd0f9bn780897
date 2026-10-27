@@ -34,7 +34,7 @@ lang:
 
 permission:
   kit-list: false
-  kit-preview: true
+  kit-preview: false
 
 
 GUItems:

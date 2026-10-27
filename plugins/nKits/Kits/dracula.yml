@@ -1,6 +1,6 @@
 Name: dracula
 Cooldown: 432000
-Permission: greatkits.kits.dracula
+Permission: nKits.kits.dracula
 Order: 0
 FirstTimeJoinKit: false
 OneTimeUse: false

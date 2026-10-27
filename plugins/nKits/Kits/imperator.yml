@@ -1,6 +1,6 @@
 Name: imperator
 Cooldown: 86400
-Permission: greatkits.kits.imperator
+Permission: nKits.kits.imperator
 Order: 0
 FirstTimeJoinKit: false
 OneTimeUse: false

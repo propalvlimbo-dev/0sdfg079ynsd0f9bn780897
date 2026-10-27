@@ -22,13 +22,13 @@ commands:
       
       # --- RTP ---
       /rtp:
-        limit: 30 seconds
+        limit: 0 seconds
       /rtpdefault:
-        limit: 30 seconds
+        limit: 0 seconds
       /rtpfar:
-        limit: 1 minutes
+        limit: 0 seconds
       /rtpnear:
-        limit: 30 seconds
+        limit: 0 seconds
       /thor:
         limit: 2 minutes
       /report:

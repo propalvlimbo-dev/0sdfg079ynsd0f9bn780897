@@ -11,7 +11,7 @@ woodcutterRegion: "jobs_les"
 fishRegion: "jobs_fish"
 snowRegion: "snow"
 
-woodMessage: "&#F8BEFBЛесопилка &7» &fОсталось &#F8BEFB<count> &fраз!"
+woodMessage: "&x&F&8&B&E&F&BЛесопилка &7» &fОсталось &x&F&8&B&E&F&B<count> &fраз!"
 
 # Бонусы в процентах для старой системы (/hjobs sell)
 minBonus: 10
@@ -28,26 +28,26 @@ fallingBlockLifetime: 80
 sound: "ENTITY_VILLAGER_NO"
 
 # Текст для бустеров (Actionbar)
-personalBoosterBar: "&aАктивные бустеры: &#F8BEFBx2 &fПерсональный &7(<time>&7)"
-globalBoosterBar: "&aАктивные бустеры: &#F8BEFBx2 &fГлобальный &7(<time>&7)"
+personalBoosterBar: "&aАктивные бустеры: &x&F&8&B&E&F&Bx2 &fПерсональный &7(<time>&7)"
+globalBoosterBar: "&aАктивные бустеры: &x&F&8&B&E&F&Bx2 &fГлобальный &7(<time>&7)"
 
 # Сообщения при продаже
 LVL: # Сообщения для меню скупщика
   cmdMessage:
-    - "&#F8BEFBРаботы &7» &fВаш текущий опыт работы: &#F8BEFB<items-need>&8/&#F8BEFB<items-max>"
-    - "&#F8BEFBРаботы &7» &fВаш уровень работы: &#F8BEFB<level_amount>"
-    - "&#F8BEFBРаботы &7» &fПродали предметов на сумму: &#F8BEFB<salary>"
-    - "&#F8BEFBРаботы &7» &fВаша премия за уровень: &#F8BEFB<bonus>%"
+    - "&x&F&8&B&E&F&BРаботы &7» &fВаш текущий опыт работы: &x&F&8&B&E&F&B<items-need>&8/&x&F&8&B&E&F&B<items-max>"
+    - "&x&F&8&B&E&F&BРаботы &7» &fВаш уровень работы: &x&F&8&B&E&F&B<level_amount>"
+    - "&x&F&8&B&E&F&BРаботы &7» &fПродали предметов на сумму: &x&F&8&B&E&F&B<salary>"
+    - "&x&F&8&B&E&F&BРаботы &7» &fВаша премия за уровень: &x&F&8&B&E&F&B<bonus>%"
 
 Default: # Сообщения для /hjobs sell (старая система)
   cmdMessage:
-    - "&#F8BEFBРаботы &7» &fВаша зарплата: &#F8BEFB<salary>"
-    - "&#F8BEFBРаботы &7» &fВаша премия: &#F8BEFB<bonus>"
+    - "&x&F&8&B&E&F&BРаботы &7» &fВаша зарплата: &x&F&8&B&E&F&B<salary>"
+    - "&x&F&8&B&E&F&BРаботы &7» &fВаша премия: &x&F&8&B&E&F&B<bonus>"
 
 messages:
-  need-lvl: '&#F8BEFBРаботы &7» &fНеобходим &#F8BEFB<level> уровень &fпрофессии для продажи'
-  crafts: '&#F8BEFBКрафты доступны с 5 уровня профессии'
-  none: '&#F8BEFBРаботы &7» &fНедостаточно предметов в инвентаре'
+  need-lvl: '&x&F&8&B&E&F&BРаботы &7» &fНеобходим &x&F&8&B&E&F&B<level> уровень &fпрофессии для продажи'
+  crafts: '&x&F&8&B&E&F&BКрафты доступны с 5 уровня профессии'
+  none: '&x&F&8&B&E&F&BРаботы &7» &fНедостаточно предметов в инвентаре'
 
 # Цены для старой системы (/hjobs sell - ресурсы из таба)
 prices:
@@ -118,77 +118,77 @@ snow-block:
 
 # Настройка скорбордов (TAB)
 mine:
-  title: "<#F8BEFB>&lГРИФ #1</#FAD8FC>"
+  title: "&x&F&8&B&E&F&B&lГРИФ #1"
   scoreboard:
     - ""
-    - " &#F8BEFBꐁ &fУголь: &#F8BEFB<coal> шт."
-    - " &#F8BEFBꐁ &fЗолото: &#F8BEFB<gold> шт."
-    - " &#F8BEFBꐁ &fЖелезо: &#F8BEFB<iron> шт."
-    - " &#F8BEFBꐁ &fРедстоун: &#F8BEFB<redstone> шт."
-    - " &#F8BEFBꐁ &fАлмазы: &#F8BEFB<diamond> шт."
-    - " &#F8BEFBꐁ &fИзумруды: &#F8BEFB<emerald> шт."
-    - " &#F8BEFBꐁ &fЛазурит: &#F8BEFB<lapis> шт."
-    - " &#F8BEFBꐀ &fКамень: &#F8BEFB<stone> шт."
+    - " &x&F&8&B&E&F&Bꐁ &fУголь: &x&F&8&B&E&F&B<coal> шт."
+    - " &x&F&8&B&E&F&Bꐁ &fЗолото: &x&F&8&B&E&F&B<gold> шт."
+    - " &x&F&8&B&E&F&Bꐁ &fЖелезо: &x&F&8&B&E&F&B<iron> шт."
+    - " &x&F&8&B&E&F&Bꐁ &fРедстоун: &x&F&8&B&E&F&B<redstone> шт."
+    - " &x&F&8&B&E&F&Bꐁ &fАлмазы: &x&F&8&B&E&F&B<diamond> шт."
+    - " &x&F&8&B&E&F&Bꐁ &fИзумруды: &x&F&8&B&E&F&B<emerald> шт."
+    - " &x&F&8&B&E&F&Bꐁ &fЛазурит: &x&F&8&B&E&F&B<lapis> шт."
+    - " &x&F&8&B&E&F&Bꐀ &fКамень: &x&F&8&B&E&F&B<stone> шт."
     - ""
-    - " &#F8BEFBꐁ &fЗарплата: &#F8BEFB<salary> &fꐂ"
-    - " &#F8BEFBꐀ &#F8BEFBНе забудь сдать!"
+    - " &x&F&8&B&E&F&Bꐁ &fЗарплата: &x&F&8&B&E&F&B<salary> &fꐂ"
+    - " &x&F&8&B&E&F&Bꐀ &x&F&8&B&E&F&BНе забудь сдать!"
     - ""
-    - "    <#F8BEFB>&lElytrix</#FAD8FC>"
+    - "    &x&F&8&B&E&F&B&lElytrix"
     - ""
 snow:
-  title: "<#F8BEFB>&lГРИФ #1</#FAD8FC>"
+  title: "&x&F&8&B&E&F&B&lГРИФ #1"
   scoreboard:
     - ""
-    - " &#F8BEFBꐁ &fСнежный блок: &#F8BEFB<snow_block> шт."
-    - " &#F8BEFBꐀ &fСнег: &#F8BEFB<snow> шт."
+    - " &x&F&8&B&E&F&Bꐁ &fСнежный блок: &x&F&8&B&E&F&B<snow_block> шт."
+    - " &x&F&8&B&E&F&Bꐀ &fСнег: &x&F&8&B&E&F&B<snow> шт."
     - ""
-    - " &#F8BEFBꐁ &fЗарплата: &#F8BEFB<salary> &fꐂ"
-    - " &#F8BEFBꐀ &#F8BEFBНе забудь сдать!"
+    - " &x&F&8&B&E&F&Bꐁ &fЗарплата: &x&F&8&B&E&F&B<salary> &fꐂ"
+    - " &x&F&8&B&E&F&Bꐀ &x&F&8&B&E&F&BНе забудь сдать!"
     - ""
-    - "    <#F8BEFB>&lElytrix</#FAD8FC>"
+    - "    &x&F&8&B&E&F&B&lElytrix"
     - ""
 farm:
-  title: "<#F8BEFB>&lГРИФ #1</#FAD8FC>"
+  title: "&x&F&8&B&E&F&B&lГРИФ #1"
   scoreboard:
     - ""
-    - " &#F8BEFBꐁ &fКартошка: &#F8BEFB<potato> шт."
-    - " &#F8BEFBꐁ &fСвекла: &#F8BEFB<beetroot> шт."
-    - " &#F8BEFBꐁ &fМорковь: &#F8BEFB<carrot> шт."
-    - " &#F8BEFBꐁ &fПшеница: &#F8BEFB<wheat> шт."
-    - " &#F8BEFBꐁ &fАрбуз: &#F8BEFB<melon> шт."
-    - " &#F8BEFBꐀ &fТыква: &#F8BEFB<pumpkin> шт."
+    - " &x&F&8&B&E&F&Bꐁ &fКартошка: &x&F&8&B&E&F&B<potato> шт."
+    - " &x&F&8&B&E&F&Bꐁ &fСвекла: &x&F&8&B&E&F&B<beetroot> шт."
+    - " &x&F&8&B&E&F&Bꐁ &fМорковь: &x&F&8&B&E&F&B<carrot> шт."
+    - " &x&F&8&B&E&F&Bꐁ &fПшеница: &x&F&8&B&E&F&B<wheat> шт."
+    - " &x&F&8&B&E&F&Bꐁ &fАрбуз: &x&F&8&B&E&F&B<melon> шт."
+    - " &x&F&8&B&E&F&Bꐀ &fТыква: &x&F&8&B&E&F&B<pumpkin> шт."
     - ""
-    - " &#F8BEFBꐁ &fЗарплата: &#F8BEFB<salary> &fꐂ"
-    - " &#F8BEFBꐀ &#F8BEFBНе забудь сдать!"
+    - " &x&F&8&B&E&F&Bꐁ &fЗарплата: &x&F&8&B&E&F&B<salary> &fꐂ"
+    - " &x&F&8&B&E&F&Bꐀ &x&F&8&B&E&F&BНе забудь сдать!"
     - ""
-    - "    <#F8BEFB>&lElytrix</#FAD8FC>"
+    - "    &x&F&8&B&E&F&B&lElytrix"
     - ""
 woodCutter:
-  title: "<#F8BEFB>&lГРИФ #1</#FAD8FC>"
+  title: "&x&F&8&B&E&F&B&lГРИФ #1"
   scoreboard:
     - ""
-    - " &#F8BEFBꐀ &fДревесина: &#F8BEFB<countosnova> шт."
+    - " &x&F&8&B&E&F&Bꐀ &fДревесина: &x&F&8&B&E&F&B<countosnova> шт."
     - ""
-    - " &#F8BEFBꐁ &fЗарплата: &#F8BEFB<salary> &fꐂ"
-    - " &#F8BEFBꐀ &#F8BEFBНе забудь сдать!"
+    - " &x&F&8&B&E&F&Bꐁ &fЗарплата: &x&F&8&B&E&F&B<salary> &fꐂ"
+    - " &x&F&8&B&E&F&Bꐀ &x&F&8&B&E&F&BНе забудь сдать!"
     - ""
-    - "     <#F8BEFB>&lElytrix</#FAD8FC>"
+    - "     &x&F&8&B&E&F&B&lElytrix"
     - ""
 Fish:
-  title: "<#F8BEFB>&lГРИФ #1</#FAD8FC>"
+  title: "&x&F&8&B&E&F&B&lГРИФ #1"
   scoreboard:
     - ""
-    - " &#F8BEFBꐁ &fЛешь: &#F8BEFB<lesh> шт."
-    - " &#F8BEFBꐁ &fСом: &#F8BEFB<som> шт."
-    - " &#F8BEFBꐁ &fПиранья: &#F8BEFB<pidoras> шт."
-    - " &#F8BEFBꐁ &fОкунь: &#F8BEFB<oc4ko> шт."
-    - " &#F8BEFBꐁ &fКарп: &#F8BEFB<karp> шт."
-    - " &#F8BEFBꐀ &fЕрш: &#F8BEFB<eblan> шт."
+    - " &x&F&8&B&E&F&Bꐁ &fЛешь: &x&F&8&B&E&F&B<lesh> шт."
+    - " &x&F&8&B&E&F&Bꐁ &fСом: &x&F&8&B&E&F&B<som> шт."
+    - " &x&F&8&B&E&F&Bꐁ &fПиранья: &x&F&8&B&E&F&B<pidoras> шт."
+    - " &x&F&8&B&E&F&Bꐁ &fОкунь: &x&F&8&B&E&F&B<oc4ko> шт."
+    - " &x&F&8&B&E&F&Bꐁ &fКарп: &x&F&8&B&E&F&B<karp> шт."
+    - " &x&F&8&B&E&F&Bꐀ &fЕрш: &x&F&8&B&E&F&B<eblan> шт."
     - ""
-    - " &#F8BEFBꐁ &fЗарплата: &#F8BEFB<salary> &fꐂ"
-    - " &#F8BEFBꐀ &#F8BEFBНе забудь сдать!"
+    - " &x&F&8&B&E&F&Bꐁ &fЗарплата: &x&F&8&B&E&F&B<salary> &fꐂ"
+    - " &x&F&8&B&E&F&Bꐀ &x&F&8&B&E&F&BНе забудь сдать!"
     - ""
-    - "   <#F8BEFB>&lElytrix</#FAD8FC>"
+    - "   &x&F&8&B&E&F&B&lElytrix"
     - ""
 
 # ==========================================
@@ -238,22 +238,22 @@ info:
   material: STRUCTURE_VOID
   model: 10001
   lore:
-    - '  &#F8BEFBИнформация'
+    - '  &x&F&8&B&E&F&BИнформация'
     - '&f'
-    - '  &#F8BEFBВаш уровень профессии: <lvlname>'
-    - '  &#F8BEFBЛимит продаж предметов: &7<limit>/<limitmax>'
-    - '  &#F8BEFBБонус к цене: &7<percent>%'
+    - '  &x&F&8&B&E&F&BВаш уровень профессии: <lvlname>'
+    - '  &x&F&8&B&E&F&BЛимит продаж предметов: &7<limit>/<limitmax>'
+    - '  &x&F&8&B&E&F&BБонус к цене: &7<percent>%'
     - '&f'
-    - '  &#F8BEFBПредметов до следующего уровня: &7<items-need>&8/&7<items-max>'
+    - '  &x&F&8&B&E&F&BПредметов до следующего уровня: &7<items-need>&8/&7<items-max>'
     - '  &f'
     - '    &8[&7<bar>&8]'
     - '&f'
-    - '  &#F8BEFBНаграда за достижение уровня &5Легенда'
+    - '  &x&F&8&B&E&F&BНаграда за достижение уровня &5Легенда'
     - '    &7Бонус к цене: 10%'
     - '&f'
 
 craft:
-  name: '&#F8BEFBКвесты'
+  name: '&x&F&8&B&E&F&BКвесты'
   slot: 5
   material: PAPER
   lore:
@@ -274,7 +274,7 @@ craft:
   material: STONE
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &710 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &710 &fꐂ'
     - '&f'
 2-miner:
   cost: 25
@@ -284,7 +284,7 @@ craft:
   material: GRANITE
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &725 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &725 &fꐂ'
     - '&f'
 3-miner:
   cost: 300
@@ -294,7 +294,7 @@ craft:
   material: DIAMOND
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7300 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7300 &fꐂ'
     - '&f'
 4-miner:
   cost: 150
@@ -304,7 +304,7 @@ craft:
   material: LAPIS_ORE
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7150 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7150 &fꐂ'
     - '&f'
 5-miner:
   cost: 90
@@ -314,7 +314,7 @@ craft:
   material: IRON_ORE
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &790 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &790 &fꐂ'
     - '&f'
 6-miner:
   cost: 25
@@ -324,7 +324,7 @@ craft:
   material: DIORITE
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &725 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &725 &fꐂ'
     - '&f'
 7-miner:
   cost: 250
@@ -334,7 +334,7 @@ craft:
   material: OBSIDIAN
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7250 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7250 &fꐂ'
     - '&f'
 8-miner:
   cost: 75
@@ -344,7 +344,7 @@ craft:
   material: LAPIS_LAZULI
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &775 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &775 &fꐂ'
     - '&f'
 9-miner:
   cost: 450
@@ -354,7 +354,7 @@ craft:
   material: COAL_ORE
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7450 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7450 &fꐂ'
     - '&f'
 10-miner:
   cost: 450
@@ -364,7 +364,7 @@ craft:
   material: GOLD_ORE
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7450 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7450 &fꐂ'
     - '&f'
 11-miner:
   cost: 90
@@ -374,7 +374,7 @@ craft:
   material: COAL
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &790 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &790 &fꐂ'
     - '&f'
 12-miner:
   cost: 60
@@ -384,7 +384,7 @@ craft:
   material: FLINT
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &760 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &760 &fꐂ'
     - '&f'
 13-miner:
   cost: 270
@@ -394,7 +394,7 @@ craft:
   material: GOLD_INGOT
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7270 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7270 &fꐂ'
     - '&f'
 14-miner:
   cost: 400
@@ -404,7 +404,7 @@ craft:
   material: EMERALD_ORE
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7400 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7400 &fꐂ'
     - '&f'
 15-miner:
   cost: 3500
@@ -414,7 +414,7 @@ craft:
   material: ANCIENT_DEBRIS
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &73500 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &73500 &fꐂ'
     - '&f'
 
 # === Предметы для Отшельника/Рыбака (fisher) ===
@@ -427,7 +427,7 @@ craft:
   material: GUNPOWDER
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &780 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &780 &fꐂ'
     - '&f'
 3-fisher:
   cost: 1200
@@ -437,7 +437,7 @@ craft:
   material: DRAGON_BREATH
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &71200 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &71200 &fꐂ'
     - '&f'
 4-fisher:
   cost: 200
@@ -447,7 +447,7 @@ craft:
   material: LIME_WOOL
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7200 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7200 &fꐂ'
     - '&f'
 5-fisher:
   cost: 150
@@ -457,7 +457,7 @@ craft:
   material: PHANTOM_MEMBRANE
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7150 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7150 &fꐂ'
     - '&f'
 6-fisher:
   cost: 160
@@ -467,7 +467,7 @@ craft:
   material: LEATHER
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7160 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7160 &fꐂ'
     - '&f'
 7-fisher:
   cost: 100
@@ -477,7 +477,7 @@ craft:
   material: BLAZE_ROD
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7100 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7100 &fꐂ'
     - '&f'
 8-fisher:
   cost: 120
@@ -487,7 +487,7 @@ craft:
   material: MAGMA_CREAM
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7120 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7120 &fꐂ'
     - '&f'
 9-fisher:
   cost: 110
@@ -497,7 +497,7 @@ craft:
   material: SPIDER_EYE
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7110 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7110 &fꐂ'
     - '&f'
 10-fisher:
   cost: 400
@@ -507,7 +507,7 @@ craft:
   material: COBWEB
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7400 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7400 &fꐂ'
     - '&f'
 150-fisher:
   cost: 350
@@ -517,7 +517,7 @@ craft:
   material: ENDER_EYE
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7350 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7350 &fꐂ'
     - '&f'
 11-fisher:
   cost: 90
@@ -527,7 +527,7 @@ craft:
   material: BONE
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &790 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &790 &fꐂ'
     - '&f'
 12-fisher:
   cost: 10000
@@ -537,7 +537,7 @@ craft:
   material: NETHER_STAR
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &710000 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &710000 &fꐂ'
     - '&f'
 13-fisher:
   cost: 170
@@ -547,7 +547,7 @@ craft:
   material: PUFFERFISH
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7170 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7170 &fꐂ'
     - '&f'
 
 # === Предметы для Фермера (farmer) ===
@@ -559,7 +559,7 @@ craft:
   material: GLISTERING_MELON_SLICE
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7135 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7135 &fꐂ'
     - '&f'
 2-farmer:
   cost: 125
@@ -569,7 +569,7 @@ craft:
   material: MELON
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7125 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7125 &fꐂ'
     - '&f'
 3-farmer:
   cost: 150
@@ -579,7 +579,7 @@ craft:
   material: POPPED_CHORUS_FRUIT
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7150 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7150 &fꐂ'
     - '&f'
 4-farmer:
   cost: 400
@@ -589,7 +589,7 @@ craft:
   material: CAKE
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7400 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7400 &fꐂ'
     - '&f'
 5-farmer:
   cost: 135
@@ -599,7 +599,7 @@ craft:
   material: POTATO
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7135 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7135 &fꐂ'
     - '&f'
 6-farmer:
   cost: 500
@@ -609,7 +609,7 @@ craft:
   material: POISONOUS_POTATO
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7500 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7500 &fꐂ'
     - '&f'
 7-farmer:
   cost: 75
@@ -619,7 +619,7 @@ craft:
   material: NETHER_WART
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &775 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &775 &fꐂ'
     - '&f'
 8-farmer:
   cost: 125
@@ -629,7 +629,7 @@ craft:
   material: PUMPKIN
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7125 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7125 &fꐂ'
     - '&f'
 9-farmer:
   cost: 100
@@ -639,7 +639,7 @@ craft:
   material: SUGAR_CANE
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &7100 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &7100 &fꐂ'
     - '&f'
 10-farmer:
   cost: 85
@@ -649,7 +649,7 @@ craft:
   material: CARROT
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &785 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &785 &fꐂ'
     - '&f'
 11-farmer:
   cost: 32
@@ -659,7 +659,7 @@ craft:
   material: MELON_SEEDS
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &732 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &732 &fꐂ'
     - '&f'
 12-farmer:
   cost: 32
@@ -669,7 +669,7 @@ craft:
   material: PUMPKIN_SEEDS
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &732 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &732 &fꐂ'
     - '&f'
 13-farmer:
   cost: 32
@@ -679,7 +679,7 @@ craft:
   material: BEETROOT_SEEDS
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &732 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &732 &fꐂ'
     - '&f'
 
 # === Предметы для Снегоуборщика (snow) ===
@@ -691,7 +691,7 @@ craft:
   material: SNOWBALL
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &75 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &75 &fꐂ'
     - '&f'
 2-snow:
   cost: 20
@@ -701,7 +701,7 @@ craft:
   material: SNOW_BLOCK
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &720 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &720 &fꐂ'
     - '&f'
 
 # === Предметы для Лесоруба (woodcutter) ===
@@ -713,7 +713,7 @@ craft:
   material: OAK_LOG
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &715 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &715 &fꐂ'
     - '&f'
 2-woodcutter:
   cost: 15
@@ -723,7 +723,7 @@ craft:
   material: SPRUCE_LOG
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &715 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &715 &fꐂ'
     - '&f'
 3-woodcutter:
   cost: 15
@@ -733,5 +733,5 @@ craft:
   material: BIRCH_LOG
   lore:
     - '&f'
-    - '  &#F8BEFBЦена продажи: &715 &fꐂ'
+    - '  &x&F&8&B&E&F&BЦена продажи: &715 &fꐂ'
     - '&f'

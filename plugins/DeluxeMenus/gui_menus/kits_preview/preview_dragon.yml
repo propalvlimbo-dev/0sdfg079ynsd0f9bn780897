@@ -5,23 +5,39 @@ items:
   armor_0:
     slot: 27
     amount: 1
-    material: STONE
+    material: DIAMOND_BOOTS
+    enchantments:
+    - DEPTH_STRIDER;3
+    - FEATHER_FALLING;2
+    - PROTECTION;4
+    - UNBREAKING;3
   armor_1:
     slot: 18
     amount: 1
-    material: STONE
+    material: DIAMOND_LEGGINGS
+    enchantments:
+    - PROTECTION;4
+    - UNBREAKING;3
   armor_2:
     slot: 9
     amount: 1
-    material: STONE
+    material: DIAMOND_CHESTPLATE
+    enchantments:
+    - PROTECTION;4
+    - UNBREAKING;3
   armor_3:
     slot: 0
     amount: 1
-    material: STONE
+    material: DIAMOND_HELMET
+    enchantments:
+    - AQUA_AFFINITY;1
+    - PROTECTION;4
+    - RESPIRATION;3
+    - UNBREAKING;3
   offhand_item:
     slot: 36
     amount: 1
-    material: STONE
+    material: TOTEM_OF_UNDYING
   kit_badge:
     material: purple_shulker_box
     slot: 45
@@ -30,108 +46,131 @@ items:
     - '&8Предпросмотр набора'
     - ''
     - '&7Слева отображается броня и'
-    - '&7предмет второй руки (шар/тотем).'
+    - '&7предмет второй руки (щит/тотем).'
     - '&7Справа — всё содержимое набора!'
   loot_0:
     slot: 2
     amount: 1
-    material: STONE
+    material: DIAMOND_SWORD
+    enchantments:
+    - FIRE_ASPECT;2
+    - SHARPNESS;5
+    - UNBREAKING;3
   loot_1:
     slot: 3
     amount: 1
-    material: STONE
+    material: BOW
+    enchantments:
+    - FLAME;1
+    - INFINITY;1
+    - MENDING;1
+    - POWER;5
+    - UNBREAKING;2
   loot_2:
     slot: 4
     amount: 1
-    material: STONE
+    material: NETHERITE_PICKAXE
+    enchantments:
+    - EFFICIENCY;5
+    - UNBREAKING;3
   loot_3:
     slot: 5
     amount: 1
-    material: STONE
+    material: NETHERITE_AXE
+    enchantments:
+    - EFFICIENCY;5
+    - SHARPNESS;5
+    - UNBREAKING;3
   loot_4:
     slot: 6
     amount: 1
-    material: STONE
+    material: NETHERITE_SHOVEL
+    enchantments:
+    - EFFICIENCY;4
+    - UNBREAKING;3
   loot_5:
     slot: 7
     amount: 1
-    material: STONE
+    material: TOTEM_OF_UNDYING
   loot_6:
     slot: 8
-    amount: 1
-    material: STONE
+    amount: 16
+    material: ENDER_PEARL
   loot_7:
     slot: 11
-    amount: 1
-    material: STONE
+    amount: 16
+    material: GOLDEN_APPLE
   loot_8:
     slot: 12
-    amount: 1
-    material: STONE
+    amount: 64
+    material: BIRCH_LOG
   loot_9:
     slot: 13
-    amount: 1
-    material: STONE
+    amount: 64
+    material: COOKED_BEEF
   loot_10:
     slot: 14
-    amount: 1
-    material: STONE
+    amount: 64
+    material: OAK_LOG
   loot_11:
     slot: 15
-    amount: 1
-    material: STONE
+    amount: 64
+    material: EXPERIENCE_BOTTLE
   loot_12:
     slot: 16
-    amount: 1
-    material: STONE
+    amount: 64
+    material: EXPERIENCE_BOTTLE
   loot_13:
     slot: 17
-    amount: 1
-    material: STONE
+    amount: 64
+    material: GOLDEN_CARROT
   loot_14:
     slot: 20
-    amount: 1
-    material: STONE
+    amount: 64
+    material: CHORUS_FRUIT
   loot_15:
     slot: 21
-    amount: 1
-    material: STONE
+    amount: 8
+    material: TIPPED_ARROW
+    display_name: '&dСтрела Исцеления II'
+    lore:
+    - '&9Мгновенное лечение II'
   loot_16:
     slot: 22
-    amount: 1
-    material: STONE
+    amount: 64
+    material: ARROW
   loot_17:
     slot: 23
     amount: 1
-    material: STONE
+    material: TOTEM_OF_UNDYING
   loot_18:
     slot: 24
     amount: 1
-    material: STONE
+    material: TOTEM_OF_UNDYING
   loot_19:
     slot: 25
-    amount: 1
-    material: STONE
+    amount: 10
+    material: GOLD_BLOCK
   loot_20:
     slot: 26
-    amount: 1
-    material: STONE
+    amount: 12
+    material: LAPIS_BLOCK
   loot_21:
     slot: 29
-    amount: 1
-    material: STONE
+    amount: 10
+    material: IRON_BLOCK
   loot_22:
     slot: 30
-    amount: 1
-    material: STONE
+    amount: 6
+    material: DIAMOND_BLOCK
   loot_23:
     slot: 31
-    amount: 1
-    material: STONE
+    amount: 16
+    material: ENDER_PEARL
   loot_24:
     slot: 32
     amount: 1
-    material: STONE
+    material: SHIELD
   btn_back:
     material: structure_void
     slots:
@@ -145,14 +184,11 @@ items:
   btn_claim:
     material: structure_void
     slots:
+    - 50
     - 51
-    - 52
-    - 53
-    display_name: '&#55FF55&l✚ ПОЛУЧИТЬ НАБОР &7(&#AAAAAAНабор &#FD00E4&lD&#F107E9&lR&#E60EED&lA&#DA16F2&lG&#CF1DF6&lO&#C324FB&lN&7)'
+    display_name: '&#55FF55✔ Получить этот набор'
     lore:
-    - ''
-    - '&7Нажмите, чтобы сразу забрать'
-    - '&7набор &f/kit dragon &7в инвентарь!'
+    - '&7Нажмите, чтобы взять набор'
     click_commands:
     - '[close]'
     - '[player] kit dragon'

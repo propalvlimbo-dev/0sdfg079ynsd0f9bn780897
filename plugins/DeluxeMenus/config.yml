@@ -64,8 +64,6 @@ gui_menus:
     file: shop/sezon.yml
   preview_start:
     file: kits_preview/preview_start.yml
-  preview_imperator:
-    file: kits_preview/preview_imperator.yml
   preview_dragon:
     file: kits_preview/preview_dragon.yml
   preview_bull:

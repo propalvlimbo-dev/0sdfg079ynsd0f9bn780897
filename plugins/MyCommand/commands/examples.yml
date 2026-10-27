@@ -7,15 +7,19 @@ hub:
 onlinemax:
   command: /onlinemax
   type: TEXT
+  permission-required: false
+  register: true
   text:
-    - "&#F8BEFBElytrix &7» &fОбщий онлайн: &#F8BEFB%server_online%"
-    - "&#F8BEFBElytrix &7» &fОнлайн лобби: &#F8BEFB%bungee_lobby%"
+    - "&x&F&8&B&E&F&BElytrix &7» &fОбщий онлайн: &x&F&8&B&E&F&B%server_online%"
+    - "&x&F&8&B&E&F&BElytrix &7» &fОнлайн лобби: &x&F&8&B&E&F&B%bungee_lobby%"
 
 oskolki:
   command: /oskolki
   type: TEXT
+  permission-required: false
+  register: true
   text:
-    - "&#F8BEFBОсколки &7» &fУ тебя сейчас: &#F8BEFB%anrubles_balance_осколки% &fосколков"
+    - "&x&F&8&B&E&F&BОсколки &7» &fУ тебя сейчас: &x&F&8&B&E&F&B%anrubles_balance_осколки% &fосколков"
 
 site:
   command: /site
@@ -23,7 +27,7 @@ site:
   permission-required: false
   register: true
   text:
-    - "&#F8BEFBElytrix &7» &fНаш официальный сайт: &#F8BEFBhttps://elytrix.pw"
+    - "&x&F&8&B&E&F&BElytrix &7» &fНаш официальный сайт: &x&F&8&B&E&F&Bhttps://elytrix.pw"
 
 discord_cmd:
   command: /ds
@@ -31,7 +35,7 @@ discord_cmd:
   permission-required: false
   register: true
   text:
-    - "&#F8BEFBElytrix &7» &fНаш Discord: &#F8BEFBdsc.gg/elytrix"
+    - "&x&F&8&B&E&F&BElytrix &7» &fНаш Discord: &x&F&8&B&E&F&Bdsc.gg/elytrix"
 
 tg_cmd:
   command: /tg
@@ -39,28 +43,44 @@ tg_cmd:
   permission-required: false
   register: true
   text:
-    - "&#F8BEFBElytrix &7» &fНаш Telegram: &#F8BEFBt.me/elytrix_ru"
+    - "&x&F&8&B&E&F&BElytrix &7» &fНаш Telegram: &x&F&8&B&E&F&Bt.me/elytrix_ru"
 
 quest1:
   command: /quest1
-  type: ALIAS
-  alias: /quest easy
+  type: RUN_COMMAND
+  runcmd:
+    - "/quest easy"
+  permission-required: false
   register: true
 
 quest2:
   command: /quest2
-  type: ALIAS
-  alias: /quest medium
+  type: RUN_COMMAND
+  runcmd:
+    - "/quest medium"
+  permission-required: false
   register: true
 
 quest3:
   command: /quest3
-  type: ALIAS
-  alias: /quest hard
+  type: RUN_COMMAND
+  runcmd:
+    - "/quest hard"
+  permission-required: false
   register: true
 
 quest4:
   command: /quest4
-  type: ALIAS
-  alias: /quest alch
+  type: RUN_COMMAND
+  runcmd:
+    - "/quest alch"
+  permission-required: false
+  register: true
+
+quests_menu:
+  command: /quests
+  type: RUN_COMMAND
+  runcmd:
+    - "/quest easy"
+  permission-required: false
   register: true

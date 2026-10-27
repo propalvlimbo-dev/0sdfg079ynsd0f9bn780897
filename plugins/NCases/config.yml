@@ -33,11 +33,14 @@ messages:
   not_keys:
   - '&#F8BEFBКейсы &7» &cУ вас нет ключей от этого кейса'
   takeCase:
-  - '&#F8BEFBКейсы &7» &fВы забрали у игрока &7%player% &#F8BEFB%amount% &fключей от кейса &#F8BEFB%case%'
+  - '&#F8BEFBКейсы &7» &fВы забрали у игрока &7%player% &#F8BEFB%amount% &fключей
+    от кейса &#F8BEFB%case%'
   setCase:
-  - '&#F8BEFBКейсы &7» &fУ игрока &7%player% &fдобавлено &#F8BEFB%amount% &fкейсов типа &#F8BEFB%case%'
+  - '&#F8BEFBКейсы &7» &fУ игрока &7%player% &fдобавлено &#F8BEFB%amount% &fкейсов
+    типа &#F8BEFB%case%'
   lookCase:
-  - '&#F8BEFBКейсы &7» &fУ игрока &7%player% &fобнаружены кейсы &#F8BEFB%case% &fв количестве &#F8BEFB%amount%'
+  - '&#F8BEFBКейсы &7» &fУ игрока &7%player% &fобнаружены кейсы &#F8BEFB%case% &fв
+    количестве &#F8BEFB%amount%'
   not_permission:
   - '&#F8BEFBКейсы &7» &cУ вас не найдено прав на действие!'
   givedCases:
@@ -46,7 +49,7 @@ cases:
   donate:
     title: donate
     type: cmd
-    animation_direction: X
+    animation_direction: Z
     location:
       world: world_spawn
       x: 29
@@ -60,87 +63,43 @@ cases:
       itemsSpeed: 11.5
       particleSpeed: 8
       itemsOnRound: 7
-    dadmin:
-      title: ꕡ
-      material: RED_SHULKER_BOX
-      chance: 1
+    dragon:
+      title: ꔨ
+      material: PURPLE_SHULKER_BOX
+      chance: 50
       command:
-      - lp user %player% parent add dadmin
+      - lp user %player% parent add dragon
       - bc;&#F8BEFB ꐁ
-      - bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕡ
-      - bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донатом
+      - bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꔨ
+      - bc;&#F8BEFB ꐁ &fОткрыв &#F8BEFBКейс с донатом
       - 'bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
       - bc;&#F8BEFB ꐀ
-    angel:
-      title: ꕓ
-      material: WHITE_SHULKER_BOX
-      chance: 7
+    bull:
+      title: ꔲ
+      material: BROWN_SHULKER_BOX
+      chance: 32
       command:
-      - lp user %player% parent add angel
+      - lp user %player% parent add bull
       - bc;&#F8BEFB ꐁ
-      - bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕓ
-      - bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донатом
-      - 'bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
-      - bc;&#F8BEFB ꐀ
-    dhelper:
-      title: ꕠ
-      material: YELLOW_SHULKER_BOX
-      chance: 15
-      command:
-      - lp user %player% parent add dhelper
-      - bc;&#F8BEFB ꐁ
-      - bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕠ
-      - bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донатом
+      - bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꔲ
+      - bc;&#F8BEFB ꐁ &fОткрыв &#F8BEFBКейс с донатом
       - 'bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
       - bc;&#F8BEFB ꐀ
     rabbit:
       title: ꕒ
       material: WHITE_SHULKER_BOX
-      chance: 25
+      chance: 18
       command:
       - lp user %player% parent add rabbit
       - bc;&#F8BEFB ꐁ
       - bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕒ
-      - bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донатом
-      - 'bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
-      - bc;&#F8BEFB ꐀ
-    bunny:
-      title: ꕖ
-      material: GRAY_SHULKER_BOX
-      chance: 35
-      command:
-      - lp user %player% parent add bunny
-      - bc;&#F8BEFB ꐁ
-      - bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕖ
-      - bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донатом
-      - 'bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
-      - bc;&#F8BEFB ꐀ
-    hydra:
-      title: ꕀ
-      material: GREEN_SHULKER_BOX
-      chance: 24
-      command:
-      - lp user %player% parent add hydra
-      - bc;&#F8BEFB ꐁ
-      - bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕀ
-      - bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донатом
-      - 'bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
-      - bc;&#F8BEFB ꐀ
-    cobra:
-      title: ꕈ
-      material: LIME_SHULKER_BOX
-      chance: 1
-      command:
-      - lp user %player% parent add cobra
-      - bc;&#F8BEFB ꐁ
-      - bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕈ
-      - bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донатом
+      - bc;&#F8BEFB ꐁ &fОткрыв &#F8BEFBКейс с донатом
       - 'bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
       - bc;&#F8BEFB ꐀ
   money:
     title: money
     type: cmd
-    animation_direction: X
+    animation_direction: Z
     location:
       world: world_spawn
       x: 29
@@ -245,7 +204,7 @@ cases:
   rilik:
     title: rilik
     type: cmd
-    animation_direction: X
+    animation_direction: Z
     location:
       world: world_spawn
       x: 29
@@ -414,7 +373,7 @@ cases:
   legendary:
     title: legendary
     type: cmd
-    animation_direction: X
+    animation_direction: Z
     location:
       world: world_spawn
       x: 28
@@ -428,70 +387,76 @@ cases:
       itemsSpeed: 11.5
       particleSpeed: 8
       itemsOnRound: 7
-    dadmin:
-      title: ꕡ
-      material: RED_SHULKER_BOX
-      chance: 3
+    dragon:
+      title: ꔨ
+      material: PURPLE_SHULKER_BOX
+      chance: 30
       command:
-      - lp user %player% parent add dadmin
+      - lp user %player% parent add dragon
       - bc;&#F8BEFB ꐁ
-      - bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕡ
-      - bc;&#F8BEFB ꐁ &fОткрыв <#F8BEFB>&lЛЕГЕНДАРНЫЙ КЕЙС</#FFFFFF> &7(Супер кейс с донатом)
+      - bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꔨ
+      - bc;&#F8BEFB ꐁ &fОткрыв <#F8BEFB>&lЛЕГЕНДАРНЫЙ КЕЙС</#FFFFFF> &7(Супер кейс
+        с донатом)
       - 'bc;&#F8BEFB ꐁ &fПокупка кейса &#55FF55(89р) &fна сайте: &#F8BEFBhttps://elytrix.pw'
       - bc;&#F8BEFB ꐀ
-    angel:
-      title: ꕓ
+    bull:
+      title: ꔲ
+      material: BROWN_SHULKER_BOX
+      chance: 24
+      command:
+      - lp user %player% parent add bull
+      - bc;&#F8BEFB ꐁ
+      - bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꔲ
+      - bc;&#F8BEFB ꐁ &fОткрыв <#F8BEFB>&lЛЕГЕНДАРНЫЙ КЕЙС</#FFFFFF> &7(Супер кейс
+        с донатом)
+      - 'bc;&#F8BEFB ꐁ &fПокупка кейса &#55FF55(89р) &fна сайте: &#F8BEFBhttps://elytrix.pw'
+      - bc;&#F8BEFB ꐀ
+    rabbit:
+      title: ꕒ
       material: WHITE_SHULKER_BOX
-      chance: 8
-      command:
-      - lp user %player% parent add angel
-      - bc;&#F8BEFB ꐁ
-      - bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕓ
-      - bc;&#F8BEFB ꐁ &fОткрыв <#F8BEFB>&lЛЕГЕНДАРНЫЙ КЕЙС</#FFFFFF> &7(Супер кейс с донатом)
-      - 'bc;&#F8BEFB ꐁ &fПокупка кейса &#55FF55(89р) &fна сайте: &#F8BEFBhttps://elytrix.pw'
-      - bc;&#F8BEFB ꐀ
-    dhelper:
-      title: ꕠ
-      material: YELLOW_SHULKER_BOX
-      chance: 14
-      command:
-      - lp user %player% parent add dhelper
-      - bc;&#F8BEFB ꐁ
-      - bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕠ
-      - bc;&#F8BEFB ꐁ &fОткрыв <#F8BEFB>&lЛЕГЕНДАРНЫЙ КЕЙС</#FFFFFF> &7(Супер кейс с донатом)
-      - 'bc;&#F8BEFB ꐁ &fПокупка кейса &#55FF55(89р) &fна сайте: &#F8BEFBhttps://elytrix.pw'
-      - bc;&#F8BEFB ꐀ
-    pegas:
-      title: ꕉ
-      material: ORANGE_SHULKER_BOX
       chance: 18
       command:
-      - lp user %player% parent add pegas
+      - lp user %player% parent add rabbit
       - bc;&#F8BEFB ꐁ
-      - bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕉ
-      - bc;&#F8BEFB ꐁ &fОткрыв <#F8BEFB>&lЛЕГЕНДАРНЫЙ КЕЙС</#FFFFFF> &7(Супер кейс с донатом)
+      - bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕒ
+      - bc;&#F8BEFB ꐁ &fОткрыв <#F8BEFB>&lЛЕГЕНДАРНЫЙ КЕЙС</#FFFFFF> &7(Супер кейс
+        с донатом)
       - 'bc;&#F8BEFB ꐁ &fПокупка кейса &#55FF55(89р) &fна сайте: &#F8BEFBhttps://elytrix.pw'
       - bc;&#F8BEFB ꐀ
-    god:
-      title: ꕁ
-      material: YELLOW_SHULKER_BOX
-      chance: 22
+    hydra:
+      title: ꕀ
+      material: GREEN_SHULKER_BOX
+      chance: 13
       command:
-      - lp user %player% parent add god
+      - lp user %player% parent add hydra
       - bc;&#F8BEFB ꐁ
-      - bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕁ
-      - bc;&#F8BEFB ꐁ &fОткрыв <#F8BEFB>&lЛЕГЕНДАРНЫЙ КЕЙС</#FFFFFF> &7(Супер кейс с донатом)
+      - bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕀ
+      - bc;&#F8BEFB ꐁ &fОткрыв <#F8BEFB>&lЛЕГЕНДАРНЫЙ КЕЙС</#FFFFFF> &7(Супер кейс
+        с донатом)
       - 'bc;&#F8BEFB ꐁ &fПокупка кейса &#55FF55(89р) &fна сайте: &#F8BEFBhttps://elytrix.pw'
       - bc;&#F8BEFB ꐀ
     cobra:
       title: ꕈ
       material: LIME_SHULKER_BOX
-      chance: 35
+      chance: 9
       command:
       - lp user %player% parent add cobra
       - bc;&#F8BEFB ꐁ
       - bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕈ
-      - bc;&#F8BEFB ꐁ &fОткрыв <#F8BEFB>&lЛЕГЕНДАРНЫЙ КЕЙС</#FFFFFF> &7(Супер кейс с донатом)
+      - bc;&#F8BEFB ꐁ &fОткрыв <#F8BEFB>&lЛЕГЕНДАРНЫЙ КЕЙС</#FFFFFF> &7(Супер кейс
+        с донатом)
+      - 'bc;&#F8BEFB ꐁ &fПокупка кейса &#55FF55(89р) &fна сайте: &#F8BEFBhttps://elytrix.pw'
+      - bc;&#F8BEFB ꐀ
+    god:
+      title: ꕁ
+      material: YELLOW_SHULKER_BOX
+      chance: 6
+      command:
+      - lp user %player% parent add god
+      - bc;&#F8BEFB ꐁ
+      - bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕁ
+      - bc;&#F8BEFB ꐁ &fОткрыв <#F8BEFB>&lЛЕГЕНДАРНЫЙ КЕЙС</#FFFFFF> &7(Супер кейс
+        с донатом)
       - 'bc;&#F8BEFB ꐁ &fПокупка кейса &#55FF55(89р) &fна сайте: &#F8BEFBhttps://elytrix.pw'
       - bc;&#F8BEFB ꐀ
   kits:
@@ -613,7 +578,7 @@ cases:
   zhamshut:
     title: zhamshut
     type: cmd
-    animation_direction: X
+    animation_direction: Z
     location:
       world: world_spawn
       x: 48
@@ -707,7 +672,7 @@ cases:
   ditems:
     title: ditems
     type: cmd
-    animation_direction: X
+    animation_direction: Z
     location:
       world: world_spawn
       x: 28
@@ -728,7 +693,8 @@ cases:
       command:
       - give %player% enchanted_golden_apple 32
       - bc;&#F8BEFB ꐁ
-      - bc;&#F8BEFB ꐁ &fИгрок &#F8BEFB%player% &fвыиграл &c&lЗачарованные Яблоки (32 шт)
+      - bc;&#F8BEFB ꐁ &fИгрок &#F8BEFB%player% &fвыиграл &c&lЗачарованные Яблоки (32
+        шт)
       - bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами
       - 'bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
       - bc;&#F8BEFB ꐀ
@@ -739,7 +705,8 @@ cases:
       command:
       - give %player% golden_apple 64
       - bc;&#F8BEFB ꐁ
-      - bc;&#F8BEFB ꐁ &fИгрок &#F8BEFB%player% &fвыиграл &#FAD8FC&lЗолотые Яблоки (64 шт)
+      - bc;&#F8BEFB ꐁ &fИгрок &#F8BEFB%player% &fвыиграл &#FAD8FC&lЗолотые Яблоки
+        (64 шт)
       - bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами
       - 'bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
       - bc;&#F8BEFB ꐀ

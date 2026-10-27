@@ -1,6 +1,6 @@
 Name: tiger
 Cooldown: 432000
-Permission: greatkits.kits.tiger
+Permission: nKits.kits.tiger
 Order: 0
 FirstTimeJoinKit: false
 OneTimeUse: false

@@ -1,6 +1,6 @@
 Name: rabbit
 Cooldown: 432000
-Permission: greatkits.kits.rabbit
+Permission: nKits.kits.rabbit
 Order: 0
 FirstTimeJoinKit: false
 OneTimeUse: false

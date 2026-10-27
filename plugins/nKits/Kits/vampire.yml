@@ -1,6 +1,6 @@
 Name: vampire
 Cooldown: 2592000
-Permission: nkits.kit.vampire
+Permission: nKits.kits.vampire
 Order: 11
 FirstTimeJoinKit: false
 OneTimeUse: false

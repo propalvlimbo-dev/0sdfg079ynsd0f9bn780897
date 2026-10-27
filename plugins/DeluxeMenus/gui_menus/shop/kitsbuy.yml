@@ -2,319 +2,154 @@ menu_title: '§fꈁꀀꈂꌶꈂꀁ§fꈃꄅ'
 open_command: kitsbuy
 size: 54
 items:
-  item_20:
-    material: LIGHT_GRAY_SHULKER_BOX
+  kit_dragon:
+    material: PURPLE_SHULKER_BOX
     slot: 20
-    display_name: '&7Начальный набор'
+    display_name: '&7Набор &#FD00E4&lD&#F107E9&lR&#E60EED&lA&#DA16F2&lG&#CF1DF6&lO&#C324FB&lN'
     lore:
       - ''
-      - '&8 &fЦена: &#F8BEFB9 &fꐃ'
+      - '&8 &fЦена: &#F8BEFB149 &fꐃ'
       - ''
-    click_requirement:
+      - '&#F8BEFBПравая &7кнопка — предпросмотр'
+      - '&#F8BEFBЛевая &7кнопка — купить набор'
+    left_click_requirement:
       requirements:
         points_check:
           type: javascript
-          expression: '%playerpoints_points% >= 9'
+          expression: '%playerpoints_points% >= 149'
       deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
-    click_commands:
-      - '[console] p take %player_name% 9'
-      - '[console] kit start %player_name%'
-      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+        - '[message] &#F8BEFBElytrix &8» &cНедостаточно рилликов!'
+    left_click_commands:
+      - '[console] p take %player_name% 149'
+      - '[console] kit dragon %player_name%'
+      - '[message] &#F8BEFBElytrix &8» &aВы успешно приобрели набор &d&lDRAGON&a!'
+    right_click_commands:
+      - '[openguimenu] preview_dragon'
     item_flags:
       - HIDE_ATTRIBUTES
-  item_21:
-    material: BLUE_SHULKER_BOX
+  kit_bull:
+    material: BROWN_SHULKER_BOX
     slot: 21
-    display_name: '&7Набор &9&lHERO'
-    lore:
-      - ''
-      - '&8 &fЦена: &#F8BEFB19 &fꐃ'
-      - ''
-    click_requirement:
-      requirements:
-        points_check:
-          type: javascript
-          expression: '%playerpoints_points% >= 19'
-      deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
-    click_commands:
-      - '[console] p take %player_name% 19'
-      - '[console] kit hero %player_name%'
-      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
-    item_flags:
-      - HIDE_ATTRIBUTES
-  item_22:
-    material: YELLOW_SHULKER_BOX
-    slot: 22
-    display_name: '&7Набор &f&lTITAN'
-    lore:
-      - ''
-      - '&8 &fЦена: &#F8BEFB49 &fꐃ'
-      - ''
-    click_requirement:
-      requirements:
-        points_check:
-          type: javascript
-          expression: '%playerpoints_points% >= 49'
-      deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
-    click_commands:
-      - '[console] p take %player_name% 49'
-      - '[console] kit titan %player_name%'
-      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
-    item_flags:
-      - HIDE_ATTRIBUTES
-  item_23:
-    material: LIME_SHULKER_BOX
-    slot: 23
-    display_name: '&7Набор &a&lAVENGER'
-    lore:
-      - ''
-      - '&8 &fЦена: &#F8BEFB79 &fꐃ'
-      - ''
-    click_requirement:
-      requirements:
-        points_check:
-          type: javascript
-          expression: '%playerpoints_points% >= 79'
-      deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
-    click_commands:
-      - '[console] p take %player_name% 79'
-      - '[console] kit avenger %player_name%'
-      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
-    item_flags:
-      - HIDE_ATTRIBUTES
-  item_24:
-    material: CYAN_SHULKER_BOX
-    slot: 24
-    display_name: '&7Набор &b&lOVERLORD'
-    lore:
-      - ''
-      - '&8 &fЦена: &#F8BEFB109 &fꐃ'
-      - ''
-    click_requirement:
-      requirements:
-        points_check:
-          type: javascript
-          expression: '%playerpoints_points% >= 109'
-      deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
-    click_commands:
-      - '[console] p take %player_name% 109'
-      - '[console] kit overlord %player_name%'
-      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
-    item_flags:
-      - HIDE_ATTRIBUTES
-  item_29:
-    material: ORANGE_SHULKER_BOX
-    slot: 29
-    display_name: '&7Набор &#F8BEFB&lMAGISTER'
+    display_name: '&7Набор &#900098&lB&#B210BA&lU&#D31FDD&lL&#F52FFF&lL'
     lore:
       - ''
       - '&8 &fЦена: &#F8BEFB249 &fꐃ'
       - ''
-    click_requirement:
+      - '&#F8BEFBПравая &7кнопка — предпросмотр'
+      - '&#F8BEFBЛевая &7кнопка — купить набор'
+    left_click_requirement:
       requirements:
         points_check:
           type: javascript
           expression: '%playerpoints_points% >= 249'
       deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
-    click_commands:
+        - '[message] &#F8BEFBElytrix &8» &cНедостаточно рилликов!'
+    left_click_commands:
       - '[console] p take %player_name% 249'
-      - '[console] kit magister %player_name%'
-      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+      - '[console] kit bull %player_name%'
+      - '[message] &#F8BEFBElytrix &8» &aВы успешно приобрели набор &#B210BA&lBULL&a!'
+    right_click_commands:
+      - '[openguimenu] preview_bull'
     item_flags:
       - HIDE_ATTRIBUTES
-  item_30:
-    material: RED_SHULKER_BOX
-    slot: 30
-    display_name: '&7Набор &c&lIMPERATOR'
-    lore:
-      - ''
-      - '&8 &fЦена: &#F8BEFB499 &fꐃ'
-      - ''
-    click_requirement:
-      requirements:
-        points_check:
-          type: javascript
-          expression: '%playerpoints_points% >= 499'
-      deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
-    click_commands:
-      - '[console] p take %player_name% 499'
-      - '[console] kit imperator %player_name%'
-      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
-    item_flags:
-      - HIDE_ATTRIBUTES
-  item_31:
-    material: PURPLE_SHULKER_BOX
-    slot: 31
-    display_name: '&7Набор &d&lDRAGON'
-    lore:
-      - ''
-      - '&8 &fЦена: &#F8BEFB699 &fꐃ'
-      - ''
-    click_requirement:
-      requirements:
-        points_check:
-          type: javascript
-          expression: '%playerpoints_points% >= 699'
-      deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
-    click_commands:
-      - '[console] p take %player_name% 699'
-      - '[console] kit dragon %player_name%'
-      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
-    item_flags:
-      - HIDE_ATTRIBUTES
-  item_32:
-    material: ORANGE_SHULKER_BOX
-    slot: 32
-    display_name: '&7Набор &#F8BEFB&lPLUS'
-    lore:
-      - ''
-      - '&8 &fЦена: &#F8BEFB399 &fꐃ'
-      - ''
-    click_requirement:
-      requirements:
-        points_check:
-          type: javascript
-          expression: '%playerpoints_points% >= 399'
-      deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
-    click_commands:
-      - '[console] p take %player_name% 399'
-      - '[console] kit plus %player_name%'
-      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
-    item_flags:
-      - HIDE_ATTRIBUTES
-  item_33:
-    material: RED_SHULKER_BOX
-    slot: 33
-    display_name: '&7Набор &4&lPLUSPRO'
-    lore:
-      - ''
-      - '&8 &fЦена: &#F8BEFB999 &fꐃ'
-      - ''
-    click_requirement:
-      requirements:
-        points_check:
-          type: javascript
-          expression: '%playerpoints_points% >= 999'
-      deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
-    click_commands:
-      - '[console] p take %player_name% 999'
-      - '[console] kit pluspro %player_name%'
-      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
-    item_flags:
-      - HIDE_ATTRIBUTES
-  item_39:
-    material: BROWN_SHULKER_BOX
-    slot: 39
-    display_name: '&7Набор &#F8BEFB&lPVE'
-    lore:
-      - ''
-      - '&8 &fЦена: &#F8BEFB499 &fꐃ'
-      - ''
-    click_requirement:
-      requirements:
-        points_check:
-          type: javascript
-          expression: '%playerpoints_points% >= 499'
-      deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
-    click_commands:
-      - '[console] p take %player_name% 499'
-      - '[console] kit pve %player_name%'
-      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
-    item_flags:
-      - HIDE_ATTRIBUTES
-  item_40:
-    material: GREEN_SHULKER_BOX
-    slot: 40
-    display_name: '&7Набор &2&lFARM'
-    lore:
-      - ''
-      - '&8 &fЦена: &#F8BEFB599 &fꐃ'
-      - ''
-    click_requirement:
-      requirements:
-        points_check:
-          type: javascript
-          expression: '%playerpoints_points% >= 599'
-      deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
-    click_commands:
-      - '[console] p take %player_name% 599'
-      - '[console] kit farm %player_name%'
-      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
-    item_flags:
-      - HIDE_ATTRIBUTES
-  item_41:
-    material: RED_SHULKER_BOX
-    slot: 41
-    display_name: '&7Набор &c&lPVP'
-    lore:
-      - ''
-      - '&8 &fЦена: &#F8BEFB699 &fꐃ'
-      - ''
-    click_requirement:
-      requirements:
-        points_check:
-          type: javascript
-          expression: '%playerpoints_points% >= 699'
-      deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
-    click_commands:
-      - '[console] p take %player_name% 699'
-      - '[console] kit pvp %player_name%'
-      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
-    item_flags:
-      - HIDE_ATTRIBUTES
-  item_38:
+  kit_rabbit:
     material: WHITE_SHULKER_BOX
-    slot: 38
-    display_name: '&7Набор &f&lANGEL'
+    slot: 22
+    display_name: '&7Набор &#E5E5E5&lRABBIT'
     lore:
       - ''
-      - '&8 &fЦена: &#F8BEFB1199 &fꐃ'
+      - '&8 &fЦена: &#F8BEFB349 &fꐃ'
       - ''
-    click_requirement:
+      - '&#F8BEFBПравая &7кнопка — предпросмотр'
+      - '&#F8BEFBЛевая &7кнопка — купить набор'
+    left_click_requirement:
       requirements:
         points_check:
           type: javascript
-          expression: '%playerpoints_points% >= 1199'
+          expression: '%playerpoints_points% >= 349'
       deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
-    click_commands:
-      - '[console] p take %player_name% 1199'
-      - '[console] kit angel %player_name%'
-      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+        - '[message] &#F8BEFBElytrix &8» &cНедостаточно рилликов!'
+    left_click_commands:
+      - '[console] p take %player_name% 349'
+      - '[console] kit rabbit %player_name%'
+      - '[message] &#F8BEFBElytrix &8» &aВы успешно приобрели набор &f&lRABBIT&a!'
+    right_click_commands:
+      - '[openguimenu] preview_rabbit'
     item_flags:
       - HIDE_ATTRIBUTES
-  item_42:
-    material: RED_SHULKER_BOX
-    slot: 42
-    display_name: '&7Набор &#FF3B4E&lD.ADMIN'
+  kit_hydra:
+    material: GREEN_SHULKER_BOX
+    slot: 23
+    display_name: '&7Набор &#0A6C0B&lH&#0B790C&lY&#0D850E&lD&#0E920F&lR&#0F9E10&lA'
     lore:
       - ''
-      - '&8 &fЦена: &#F8BEFB2499 &fꐃ'
+      - '&8 &fЦена: &#F8BEFB499 &fꐃ'
       - ''
-    click_requirement:
+      - '&#F8BEFBПравая &7кнопка — предпросмотр'
+      - '&#F8BEFBЛевая &7кнопка — купить набор'
+    left_click_requirement:
       requirements:
         points_check:
           type: javascript
-          expression: '%playerpoints_points% >= 2499'
+          expression: '%playerpoints_points% >= 499'
       deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
-    click_commands:
-      - '[console] p take %player_name% 2499'
-      - '[console] kit dadmin %player_name%'
-      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+        - '[message] &#F8BEFBElytrix &8» &cНедостаточно рилликов!'
+    left_click_commands:
+      - '[console] p take %player_name% 499'
+      - '[console] kit hydra %player_name%'
+      - '[message] &#F8BEFBElytrix &8» &aВы успешно приобрели набор &2&lHYDRA&a!'
+    right_click_commands:
+      - '[openguimenu] preview_hydra'
+    item_flags:
+      - HIDE_ATTRIBUTES
+  kit_cobra:
+    material: LIME_SHULKER_BOX
+    slot: 24
+    display_name: '&7Набор &#00FF00&lC&#1DFF1D&lO&#39FF39&lB&#56FF56&lR&#72FF72&lA'
+    lore:
+      - ''
+      - '&8 &fЦена: &#F8BEFB699 &fꐃ'
+      - ''
+      - '&#F8BEFBПравая &7кнопка — предпросмотр'
+      - '&#F8BEFBЛевая &7кнопка — купить набор'
+    left_click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 699'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8» &cНедостаточно рилликов!'
+    left_click_commands:
+      - '[console] p take %player_name% 699'
+      - '[console] kit cobra %player_name%'
+      - '[message] &#F8BEFBElytrix &8» &aВы успешно приобрели набор &a&lCOBRA&a!'
+    right_click_commands:
+      - '[openguimenu] preview_cobra'
+    item_flags:
+      - HIDE_ATTRIBUTES
+  kit_god:
+    material: YELLOW_SHULKER_BOX
+    slot: 31
+    display_name: '&7Набор &#FBBF24&lGOD'
+    lore:
+      - ''
+      - '&8 &fЦена: &#F8BEFB899 &fꐃ'
+      - ''
+      - '&#F8BEFBПравая &7кнопка — предпросмотр'
+      - '&#F8BEFBЛевая &7кнопка — купить набор'
+    left_click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 899'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8» &cНедостаточно рилликов!'
+    left_click_commands:
+      - '[console] p take %player_name% 899'
+      - '[console] kit god %player_name%'
+      - '[message] &#F8BEFBElytrix &8» &aВы успешно приобрели набор &e&lGOD&a!'
+    right_click_commands:
+      - '[openguimenu] preview_god'
     item_flags:
       - HIDE_ATTRIBUTES
   item_45:

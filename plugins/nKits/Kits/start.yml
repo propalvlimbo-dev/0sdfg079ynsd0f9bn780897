@@ -1,6 +1,6 @@
 Name: start
 Cooldown: 3600
-Permission: greatkits.kits.start
+Permission: nKits.kits.start
 Order: 0
 FirstTimeJoinKit: false
 OneTimeUse: false

@@ -629,7 +629,7 @@ shears:
     breakMessage: '&x&F&8&B&E&F&B&lСупер Ножницы &8» &cНожницы сломались!'
 custom_items:
   angel_ball:
-    name: '&#F8BEFB&lШар Ангела'
+    name: '&x&F&8&B&E&F&B&lШар Ангела'
     material: PLAYER_HEAD
     modelData: 5012
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWJjYjBiNWJmY2EyYmI3NjljYjM4NjM1ZWRlYzBmMTE0NzRiNjdjM2RkMjE2NWFlZGIwNjA0ZTc1YzM2In19fQ==
@@ -637,20 +637,20 @@ custom_items:
     amplifier: 1
     duration: 8
     cooldown: 90
-    cooldownMessage: '&7» &fПерезарядка &#F8BEFBШара Ангела&f: &#F8BEFB%time% &fсек.'
+    cooldownMessage: '&7» &fПерезарядка &x&F&8&B&E&F&BШара Ангела&f: &x&F&8&B&E&F&B%time% &fсек.'
     lore:
     - '&cПроклятие утраты'
     - ''
     - '&7Когда во второй руке:'
-    - ' &#55FF55+3 к Броне'
-    - ' &#55FF55+6 к Здоровью'
-    - ' &#55FF55+2.5 к Урону'
-    - ' &#55FF55+15% к Скорости'
+    - ' &x&5&5&F&F&5&5+3 к Броне'
+    - ' &x&5&5&F&F&5&5+6 к Здоровью'
+    - ' &x&5&5&F&F&5&5+2.5 к Урону'
+    - ' &x&5&5&F&F&5&5+15% к Скорости'
     - ''
     - '&7При нажатии SHIFT:'
-    - ' &#F8BEFBСопротивление II (0:08)'
+    - ' &x&F&8&B&E&F&BСопротивление II (0:08)'
   dadmin_ball:
-    name: '&#FF3B4E&lШар Д.Админа'
+    name: '&x&F&F&3&B&4&E&lШар Д.Админа'
     material: PLAYER_HEAD
     modelData: 5013
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWY0YzIxZDE3YWQ2MzYzODdlYTNjNzM2YmZmNmFkZTg5NzMxN2UxMzc0Y2Q1ZDliMWMxNWU2ZTg5NTM0MzIifX19
@@ -658,15 +658,15 @@ custom_items:
     amplifier: 2
     duration: 8
     cooldown: 75
-    cooldownMessage: '&7» &fПерезарядка &#FF3B4EШара Д.Админа&f: &#FF3B4E%time% &fсек.'
+    cooldownMessage: '&7» &fПерезарядка &x&F&F&3&B&4&EШара Д.Админа&f: &x&F&F&3&B&4&E%time% &fсек.'
     lore:
     - '&cПроклятие утраты'
     - ''
     - '&7Когда во второй руке:'
-    - ' &#55FF55+4 к Броне'
-    - ' &#55FF55+10 к Здоровью'
-    - ' &#55FF55+3.5 к Урону'
-    - ' &#55FF55+20% к Скорости'
+    - ' &x&5&5&F&F&5&5+4 к Броне'
+    - ' &x&5&5&F&F&5&5+10 к Здоровью'
+    - ' &x&5&5&F&F&5&5+3.5 к Урону'
+    - ' &x&5&5&F&F&5&5+20% к Скорости'
     - ''
     - '&7При нажатии SHIFT:'
-    - ' &#FF3B4EСила III (0:08)'
+    - ' &x&F&F&3&B&4&EСила III (0:08)'

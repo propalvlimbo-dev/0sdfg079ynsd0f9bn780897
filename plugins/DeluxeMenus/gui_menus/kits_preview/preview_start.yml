@@ -5,23 +5,27 @@ items:
   armor_0:
     slot: 27
     amount: 1
-    material: STONE
+    material: LEATHER_BOOTS
+    enchantments:
+    - PROTECTION;1
   armor_1:
     slot: 18
     amount: 1
-    material: STONE
+    material: LEATHER_LEGGINGS
   armor_2:
     slot: 9
     amount: 1
-    material: STONE
+    material: LEATHER_CHESTPLATE
+    enchantments:
+    - PROTECTION;1
   armor_3:
     slot: 0
     amount: 1
-    material: STONE
+    material: LEATHER_HELMET
   offhand_item:
     slot: 36
     amount: 1
-    material: STONE
+    material: SHIELD
   kit_badge:
     material: light_gray_shulker_box
     slot: 45
@@ -30,88 +34,102 @@ items:
     - '&8Предпросмотр набора'
     - ''
     - '&7Слева отображается броня и'
-    - '&7предмет второй руки (шар/тотем).'
+    - '&7предмет второй руки (щит/тотем).'
     - '&7Справа — всё содержимое набора!'
   loot_0:
     slot: 2
     amount: 1
-    material: STONE
+    material: IRON_SWORD
   loot_1:
     slot: 3
     amount: 1
-    material: STONE
+    material: BOW
   loot_2:
     slot: 4
     amount: 1
-    material: STONE
+    material: STONE_PICKAXE
+    enchantments:
+    - EFFICIENCY;2
   loot_3:
     slot: 5
     amount: 1
-    material: STONE
+    material: GOLDEN_AXE
+    enchantments:
+    - EFFICIENCY;1
+    - UNBREAKING;3
   loot_4:
     slot: 6
     amount: 1
-    material: STONE
+    material: STONE_SHOVEL
+    enchantments:
+    - EFFICIENCY;1
   loot_5:
     slot: 7
     amount: 1
-    material: STONE
+    material: GOLDEN_HOE
+    enchantments:
+    - UNBREAKING;3
   loot_6:
     slot: 8
-    amount: 1
-    material: STONE
+    amount: 16
+    material: COOKED_MUTTON
   loot_7:
     slot: 11
     amount: 1
-    material: STONE
+    material: FLINT_AND_STEEL
   loot_8:
     slot: 12
-    amount: 1
-    material: STONE
+    amount: 16
+    material: COAL
   loot_9:
     slot: 13
-    amount: 1
-    material: STONE
+    amount: 32
+    material: OAK_LOG
   loot_10:
     slot: 14
-    amount: 1
-    material: STONE
+    amount: 21
+    material: GLASS
   loot_11:
     slot: 15
-    amount: 1
-    material: STONE
+    amount: 20
+    material: WHEAT_SEEDS
   loot_12:
     slot: 16
     amount: 1
-    material: STONE
+    material: FLETCHING_TABLE
   loot_13:
     slot: 17
-    amount: 1
-    material: STONE
+    amount: 2
+    material: FURNACE
   loot_14:
     slot: 20
     amount: 1
-    material: STONE
+    material: CARTOGRAPHY_TABLE
   loot_15:
     slot: 21
-    amount: 1
-    material: STONE
+    amount: 2
+    material: GOLD_INGOT
   loot_16:
     slot: 22
-    amount: 1
-    material: STONE
+    amount: 8
+    material: IRON_INGOT
   loot_17:
     slot: 23
-    amount: 1
-    material: STONE
+    amount: 2
+    material: PAPER
   loot_18:
     slot: 24
-    amount: 1
-    material: STONE
+    amount: 16
+    material: ARROW
   loot_19:
     slot: 25
     amount: 1
-    material: STONE
+    material: WHITE_DYE
+    display_name: '&bАура Защиты От Падения'
+    lore:
+    - '&7Уменьшает урон падения на &680%'
+    enchantments:
+    - VANISHING_CURSE;1
   btn_back:
     material: structure_void
     slots:
@@ -125,14 +143,11 @@ items:
   btn_claim:
     material: structure_void
     slots:
+    - 50
     - 51
-    - 52
-    - 53
-    display_name: '&#55FF55&l✚ ПОЛУЧИТЬ НАБОР &7(&#AAAAAAНачальный набор&7)'
+    display_name: '&#55FF55✔ Получить этот набор'
     lore:
-    - ''
-    - '&7Нажмите, чтобы сразу забрать'
-    - '&7набор &f/kit start &7в инвентарь!'
+    - '&7Нажмите, чтобы взять набор'
     click_commands:
     - '[close]'
     - '[player] kit start'

@@ -1,6 +1,6 @@
 Name: plus
 Cooldown: 864000
-Permission: greatkits.kits.plus
+Permission: nKits.kits.plus
 Order: 0
 FirstTimeJoinKit: false
 OneTimeUse: false

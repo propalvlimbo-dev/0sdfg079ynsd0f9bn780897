@@ -12,13 +12,13 @@ settings:
 
 commands:
   no_permission: "§x§F§8§B§E§F§BСостязание §7» &cУ вас нет прав!"
-  info: "§x§F§8§B§E§F§BСостязание §7» &7Текущий эвент: &#F8BEFB{current_event}."
+  info: "§x§F§8§B§E§F§BСостязание §7» &7Текущий эвент: &x&F&8&B&E&F&B{current_event}."
   stop: "§x§F§8§B§E§F§BСостязание §7» &aУспешно остановили эвент!"
   start: "§x§F§8§B§E§F§BСостязание §7» &aУспешно запустили эвент!"
   reload: "§x§F§8§B§E§F§BСостязание §7» &aВы успешно перезагрузили конфиг!"
 
 scoreboard:
-  title: "<#F8BEFB>&lГРИФ #1</#FAD8FC>"
+  title: "&x&F&8&B&E&F&B&lГРИФ #1"
   player_placeholder:
     - " {c}ꐁ &f{player_name}: {c}{player_score}"
   menu:

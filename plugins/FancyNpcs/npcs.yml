@@ -32,7 +32,7 @@ npcs:
   npc_3:
     name: npc_3
     creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
-    displayName: <reset><dark_green><b>Джамшут<br><reset><green><b>Легкий
+    displayName: <reset><#F8BEFB><b>Джамшут <gray>(Легкие квесты)
     type: PLAYER
     location:
       world: world_spawn
@@ -58,11 +58,11 @@ npcs:
       ANY_CLICK:
         '1':
           action: player_command
-          value: quest1
+          value: quest easy
   npc_6:
     name: npc_6
     creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
-    displayName: <reset><white><b>Абу-бакар<br><reset><aqua><b>Нормальный
+    displayName: <reset><#F8BEFB><b>Абу-бакар <gray>(Средние квесты)
     type: PLAYER
     location:
       world: world_spawn
@@ -88,11 +88,11 @@ npcs:
       ANY_CLICK:
         '1':
           action: player_command
-          value: quest2
+          value: quest medium
   npc_7:
     name: npc_7
     creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
-    displayName: <reset><green><b>Равшан<br><reset><red><b>Тяжелый
+    displayName: <reset><#F8BEFB><b>Равшан <gray>(Сложные квесты)
     type: PLAYER
     location:
       world: world_spawn
@@ -118,7 +118,7 @@ npcs:
       ANY_CLICK:
         '1':
           action: player_command
-          value: quest3
+          value: quest hard
   npc_8:
     name: npc_8
     creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
@@ -339,7 +339,7 @@ npcs:
   npc_15:
     name: npc_15
     creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
-    displayName: <reset><#F8BEFB><b>Битва с Боссом<br><reset><aqua>Понедельник, Среда, Пятница <reset><#F8BEFB>в <reset><aqua>17:30<br><br><reset><green>Одолейте <reset><aqua>сильного босса <reset><green>и получите <reset><aqua>награду!<br><br><reset><green>Для входа на арену используйте <reset><aqua>/boss join<br><reset><green>Или <reset><aqua>кликните <reset><green>на NPC
+    displayName: <reset><#F8BEFB><b>Битва с Боссом
     type: PLAYER
     location:
       world: world_spawn
@@ -369,7 +369,7 @@ npcs:
   npc_16:
     name: npc_16
     creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
-    displayName: <reset><dark_purple><b>Защита особняка<br><reset><#F8BEFB>Каждую субботу <reset><aqua>в <reset><#F8BEFB>17:30<br><br><reset><light_purple>Одолейте <reset><aqua>Ригурда <reset><light_purple>и его <reset><aqua>банду гоблинов<reset><light_purple>!<br><br><reset><light_purple>Для входа на арену используйте <reset><#F8BEFB>/siege join<br><reset><light_purple>Или <reset><aqua>кликните <reset><light_purple>на NPC
+    displayName: <reset><#F8BEFB><b>Защита особняка
     type: PLAYER
     location:
       world: world_spawn
@@ -692,7 +692,7 @@ npcs:
   npc_26:
     name: npc_26
     creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
-    displayName: <reset><green><b>Алхимик
+    displayName: <reset><#F8BEFB><b>Алхимик <gray>(Квесты)
     type: PLAYER
     location:
       world: world_spawn
@@ -718,7 +718,7 @@ npcs:
       ANY_CLICK:
         '1':
           action: player_command
-          value: quest4
+          value: quest alch
   npc_27:
     name: npc_27
     creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
@@ -762,7 +762,7 @@ npcs:
   npc_28:
     name: npc_28
     creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
-    displayName: <reset><#F8BEFB>/market <reset><gray>- Открыть маркет<br><reset><#F8BEFB>/market my <reset><gray>- Посмотреть свои товары<br><br><reset><#F8BEFB>/market sell <цена за штуку> <reset><gray>- Выставить предмет на продажу<br><br><reset><#F8BEFB>/market search <запрос> <reset><gray>- Поиск по предметам<br><reset><white><b>РЫНОК
+    displayName: <reset><#F8BEFB><b>РЫНОК
     type: PLAYER
     location:
       world: world_spawn
@@ -792,7 +792,7 @@ npcs:
   npc_29:
     name: npc_29
     creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
-    displayName: <reset><white><b>АУКЦИОН
+    displayName: <reset><#F8BEFB><b>АУКЦИОН
     type: PLAYER
     location:
       world: world_spawn

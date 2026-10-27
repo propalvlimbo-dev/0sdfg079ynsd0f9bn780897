@@ -5,145 +5,181 @@ items:
   armor_0:
     slot: 27
     amount: 1
-    material: STONE
+    material: DIAMOND_BOOTS
+    display_name: '&#_F&8&B&E&F&B&lБотинки PvP'
+    enchantments:
+    - PROTECTION;4
+    - FEATHER_FALLING;4
+    - DEPTH_STRIDER;3
+    - UNBREAKING;3
   armor_1:
     slot: 18
     amount: 1
-    material: STONE
+    material: DIAMOND_LEGGINGS
+    display_name: '&#_F&8&B&E&F&B&lПоножи PvP'
+    enchantments:
+    - PROTECTION;4
+    - UNBREAKING;3
   armor_2:
     slot: 9
     amount: 1
-    material: STONE
+    material: DIAMOND_CHESTPLATE
+    display_name: '&#_F&8&B&E&F&B&lНагрудник PvP'
+    enchantments:
+    - PROTECTION;4
+    - UNBREAKING;3
   armor_3:
     slot: 0
     amount: 1
-    material: STONE
+    material: DIAMOND_HELMET
+    display_name: '&#_F&8&B&E&F&B&lШлем PvP'
+    enchantments:
+    - PROTECTION;4
+    - RESPIRATION;3
+    - AQUA_AFFINITY;1
+    - UNBREAKING;3
   offhand_item:
     slot: 36
     amount: 1
-    material: STONE
+    material: SHIELD
+    enchantments:
+    - UNBREAKING;3
   kit_badge:
-    material: red_shulker_box
+    material: cyan_shulker_box
     slot: 45
-    display_name: '&#AAAAAAНабор &#FF4D4D&lP&#C52626&lV&#8B0000&lP'
+    display_name: '&#AAAAAAНабор &#F8BEFB&lP&#FAD8FC&lV&#FFFFFF&lP'
     lore:
     - '&8Предпросмотр набора'
     - ''
     - '&7Слева отображается броня и'
-    - '&7предмет второй руки (шар/тотем).'
+    - '&7предмет второй руки (щит/тотем).'
     - '&7Справа — всё содержимое набора!'
   loot_0:
     slot: 2
     amount: 1
-    material: STONE
+    material: DIAMOND_SWORD
+    display_name: '&#_F&8&B&E&F&B&lБоевой Меч PvP'
+    enchantments:
+    - SHARPNESS;4
+    - SWEEPING_EDGE;3
+    - UNBREAKING;3
   loot_1:
     slot: 3
     amount: 1
-    material: STONE
+    material: BOW
+    display_name: '&#_F&8&B&E&F&B&lБоевой Лук PvP'
+    enchantments:
+    - POWER;4
+    - PUNCH;1
+    - UNBREAKING;3
   loot_2:
     slot: 4
     amount: 1
-    material: STONE
+    material: CROSSBOW
+    display_name: '&#_F&8&B&E&F&B&lБоевой Арбалет PvP'
+    enchantments:
+    - QUICK_CHARGE;2
+    - PIERCING;4
+    - UNBREAKING;3
   loot_3:
     slot: 5
-    amount: 1
-    material: STONE
+    amount: 16
+    material: GOLDEN_APPLE
   loot_4:
     slot: 6
-    amount: 1
-    material: STONE
+    amount: 16
+    material: ENDER_PEARL
   loot_5:
     slot: 7
-    amount: 1
-    material: STONE
+    amount: 16
+    material: CHORUS_FRUIT
   loot_6:
     slot: 8
-    amount: 1
-    material: STONE
+    amount: 32
+    material: GOLDEN_CARROT
   loot_7:
     slot: 11
     amount: 1
-    material: STONE
+    material: TOTEM_OF_UNDYING
   loot_8:
     slot: 12
     amount: 1
-    material: STONE
+    material: TOTEM_OF_UNDYING
   loot_9:
     slot: 13
     amount: 1
-    material: STONE
+    material: TOTEM_OF_UNDYING
   loot_10:
     slot: 14
     amount: 1
-    material: STONE
+    material: TOTEM_OF_UNDYING
   loot_11:
     slot: 15
     amount: 1
-    material: STONE
+    material: POTION
+    display_name: '&cЗелье Силы II &7(1:30)'
+    lore:
+    - '&9Сила II (1:30)'
   loot_12:
     slot: 16
     amount: 1
-    material: STONE
+    material: POTION
+    display_name: '&cЗелье Силы II &7(1:30)'
+    lore:
+    - '&9Сила II (1:30)'
   loot_13:
     slot: 17
     amount: 1
-    material: STONE
+    material: POTION
+    display_name: '&bЗелье Скорости II &7(1:30)'
+    lore:
+    - '&9Скорость II (1:30)'
   loot_14:
     slot: 20
     amount: 1
-    material: STONE
+    material: POTION
+    display_name: '&bЗелье Скорости II &7(1:30)'
+    lore:
+    - '&9Скорость II (1:30)'
   loot_15:
     slot: 21
     amount: 1
-    material: STONE
+    material: POTION
+    display_name: '&6Зелье Огнестойкости &7(8:00)'
+    lore:
+    - '&9Огнестойкость (8:00)'
   loot_16:
     slot: 22
     amount: 1
-    material: STONE
+    material: POTION
+    display_name: '&6Зелье Огнестойкости &7(8:00)'
+    lore:
+    - '&9Огнестойкость (8:00)'
   loot_17:
     slot: 23
     amount: 1
-    material: STONE
+    material: SPLASH_POTION
+    display_name: '&dВзрывное зелье Исцеления II'
+    lore:
+    - '&9Мгновенное лечение II'
   loot_18:
     slot: 24
     amount: 1
-    material: STONE
+    material: SPLASH_POTION
+    display_name: '&dВзрывное зелье Исцеления II'
+    lore:
+    - '&9Мгновенное лечение II'
   loot_19:
     slot: 25
     amount: 1
-    material: STONE
+    material: SPLASH_POTION
+    display_name: '&dВзрывное зелье Исцеления II'
+    lore:
+    - '&9Мгновенное лечение II'
   loot_20:
     slot: 26
-    amount: 1
-    material: STONE
-  loot_21:
-    slot: 29
-    amount: 1
-    material: STONE
-  loot_22:
-    slot: 30
-    amount: 1
-    material: STONE
-  loot_23:
-    slot: 31
-    amount: 1
-    material: STONE
-  loot_24:
-    slot: 32
-    amount: 1
-    material: STONE
-  loot_25:
-    slot: 33
-    amount: 1
-    material: STONE
-  loot_26:
-    slot: 34
-    amount: 1
-    material: STONE
-  loot_27:
-    slot: 35
-    amount: 1
-    material: STONE
+    amount: 64
+    material: ARROW
   btn_back:
     material: structure_void
     slots:
@@ -157,14 +193,11 @@ items:
   btn_claim:
     material: structure_void
     slots:
+    - 50
     - 51
-    - 52
-    - 53
-    display_name: '&#55FF55&l✚ ПОЛУЧИТЬ НАБОР &7(&#AAAAAAНабор &#FF4D4D&lP&#C52626&lV&#8B0000&lP&7)'
+    display_name: '&#55FF55✔ Получить этот набор'
     lore:
-    - ''
-    - '&7Нажмите, чтобы сразу забрать'
-    - '&7набор &f/kit pvp &7в инвентарь!'
+    - '&7Нажмите, чтобы взять набор'
     click_commands:
     - '[close]'
     - '[player] kit pvp'

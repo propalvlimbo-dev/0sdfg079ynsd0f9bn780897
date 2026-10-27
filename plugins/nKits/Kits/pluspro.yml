@@ -1,6 +1,6 @@
 Name: pluspro
 Cooldown: 864000
-Permission: greatkits.kits.pluspro
+Permission: nKits.kits.pluspro
 Order: 0
 FirstTimeJoinKit: false
 OneTimeUse: false

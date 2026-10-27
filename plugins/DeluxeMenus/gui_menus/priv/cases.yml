@@ -43,13 +43,12 @@ items:
     display_name: '&#FAD8FC&lКейсы с донатом'
     lore:
     - ''
-    - '&#AAAAAAОтличный вариант, если у Вас немного денег'
-    - '&#AAAAAAно дорогую донат все же хочется. Здесь решает'
-    - '&#AAAAAAтолько ваша удача!'
+    - '&#AAAAAAОтличный вариант испытать удачу и выбить'
+    - '&#AAAAAAпривилегию от &#F8BEFBDRAGON &#AAAAAAдо &#F8BEFBRABBIT&#AAAAAA!'
     - ''
     - ' &f&l&nЦены:'
     - ''
-    - '  &#AAAAAA▶ &#55FF55&l3&#FFFFFF Донат-Кейса&#AAAAAA - &#55FF55119 руб.'
+    - '  &#AAAAAA▶ &#55FF55&l3&#FFFFFF Донат-кейса&#AAAAAA - &#55FF55119 руб.'
     - '  &#AAAAAA▶ &f&l10&#FFFFFF Донат-кейсов&#AAAAAA - &#55FF55249 руб.'
     - '  &#AAAAAA▶ &#FF5555&l25&#FFFFFF Донат-кейсов&#AAAAAA - &#55FF55399 руб.'
     - ''
@@ -87,18 +86,18 @@ items:
     - 17
     - 25
     - 26
-    display_name: <#F8BEFB>&lЛЕГЕНДАРНЫЙ КЕЙС — СУПЕР КЕЙС С ДОНАТОМ</#FFFFFF>
+    display_name: '&#F8BEFB&lСУПЕР КЕЙС С ДОНАТОМ'
     lore:
     - ''
-    - '&#AAAAAAСупер кейс с повышенными шансами, из которого'
-    - '&#AAAAAAвыпадают исключительно &#F8BEFBтоповые привилегии'
-    - '&#AAAAAAот &#55FF55COBRA &#AAAAAAдо &#FF3B4ED.ADMIN&#AAAAAA!'
+    - '&#AAAAAAПокупной супер-кейс с повышенными шансами,'
+    - '&#AAAAAAиз которого выпадают привилегии'
+    - '&#AAAAAAот &#F8BEFBDRAGON &#AAAAAAдо &#F8BEFBGOD&#AAAAAA!'
     - ''
     - ' &f&l&nЦены:'
     - ''
-    - '  &#AAAAAA▶ &#55FF55&l1&#FFFFFF Легендарный кейс&#AAAAAA - &#55FF5589 руб.'
-    - '  &#AAAAAA▶ &f&l3&#FFFFFF Легендарных кейса&#AAAAAA - &#55FF55249 руб.'
-    - '  &#AAAAAA▶ &#FF5555&l5&#FFFFFF Легендарных кейсов&#AAAAAA - &#55FF55399 руб.'
+    - '  &#AAAAAA▶ &#55FF55&l1&#FFFFFF Супер донат-кейс&#AAAAAA - &#55FF5589 руб.'
+    - '  &#AAAAAA▶ &f&l3&#FFFFFF Супер донат-кейса&#AAAAAA - &#55FF55249 руб.'
+    - '  &#AAAAAA▶ &#FF5555&l5&#FFFFFF Супер донат-кейсов&#AAAAAA - &#55FF55399 руб.'
     - ''
     - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&lhttps://elytrix.pw'
     click_commands:

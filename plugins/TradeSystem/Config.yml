@@ -1,5 +1,5 @@
 TradeSystem:
-  Prefix: '&#F8BEFBОбмен &8» &f'
+  Prefix: '&x&F&8&B&E&F&BОбмен &8» &f'
   Language: RUS
   # Permissions:
   #   "tradesystem.trade": Can accept/deny/toggle trade requests

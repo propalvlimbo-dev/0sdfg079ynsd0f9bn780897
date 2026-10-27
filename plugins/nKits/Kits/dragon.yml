@@ -1,6 +1,6 @@
 Name: dragon
 Cooldown: 86400
-Permission: greatkits.kits.dragon
+Permission: nKits.kits.dragon
 Order: 0
 FirstTimeJoinKit: false
 OneTimeUse: false

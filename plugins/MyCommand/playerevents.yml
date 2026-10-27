@@ -14,7 +14,7 @@ PlayerJoin:
   setJoinMessage: ""
   execute:
   - '$text$&aWelcome back &b$player !'
-  - '$text$&#F8BEFBOnline players : $online'
+  - '$text$&x&F&8&B&E&F&BOnline players : $online'
 
 PlayerKick:
   active: false
@@ -25,7 +25,7 @@ PlayerQuit:
   active: false
   setQuitMessage: ""
   execute:
-  - '$broadcasttext$&f$player &#F8BEFBleaved the server.'
+  - '$broadcasttext$&f$player &x&F&8&B&E&F&Bleaved the server.'
 
 PlayerRespawn:
   active: false

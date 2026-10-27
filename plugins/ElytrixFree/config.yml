@@ -1,17 +1,20 @@
 # =============================================================
-# ElytrixFree — меню бесплатных наград /free (в стиле ReallyWorld + RP GUI)
+# ElytrixFree — меню /free (| /халява | /админка)
+# Ставится на ИГРОВОЙ сервер. Цвета в стиле меню Elytrix: &#RRGGBB + &-коды.
 # =============================================================
 
+# --- Привязка к боту ---
 auth:
   http:
-    # Включите true, если на прокси запущен ElytrixAuth (проверка привязки к Telegram)
-    enabled: false
+    enabled: true
     url: 'http://127.0.0.1:8754'
     key: '7a1ccae78d60cbf5b5ae48ef3ec04f49a757fb05f9a2630a'
 
+# --- Меню ---
 menu:
-  title: '&fꈁꀀꈂꍘꈂꀁ&fꈃꄄ'
+  title: '&fꈁꀀꈂꌗꈂꀁ&fꈃꄈ'
 
+# --- Промокоды ---
 promo:
   enabled: true
   every-hours: 2
@@ -24,13 +27,14 @@ promo:
     - 'p give {player} 25'
   message:
     - ''
-    - '&7☁ &#F8BEFB&lElytrix &8» &fХАЛЯВА!'
-    - '&#F8BEFB&l┃ &fПромокод на бесплатную награду:'
+    - '&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &fХАЛЯВА!'
+    - '&#F8BEFB&l┃ &fПромокод на награду:'
     - '&#F8BEFB&l┃ &#F8BEFB&l{code}'
     - '&#F8BEFB&l┃ &fАктиваций осталось: &#F8BEFB{uses}'
-    - '&#F8BEFB&l┃ &fНаш Telegram: &#F8BEFBt.me/elytrix_ru'
+    - '&#F8BEFB&l┃ &fАктивируй в Telegram-боте: &#F8BEFBt.me/elytrix_ru'
     - ''
 
+# --- HTTP API плагина (для Telegram-бота) ---
 http-api:
   enabled: true
   host: 127.0.0.1

@@ -5,8 +5,8 @@
 #-----------------------------------------------------------------------------------------------------------#
 LANGUAGE:
  PREFIX: "&7MyCmd&8>&r "
- ECONOMY_COST: "&#F8BEFBThis command cost %s. New balance %s"
- ECONOMY_NO_MONEY: "&#F8BEFBYou need &f%s&6$ for run this command."
+ ECONOMY_COST: "&x&F&8&B&E&F&BThis command cost %s. New balance %s"
+ ECONOMY_NO_MONEY: "&x&F&8&B&E&F&BYou need &f%s&6$ for run this command."
  DEBUG_EXECUTE: "Executing: "
  COMMAND_ARGS_LINE1: "Not enough arguments... You typed "
  COMMAND_ARGS_LINE2: "-> Output command(s) :"
@@ -21,7 +21,7 @@ LANGUAGE:
  NPCS_NO_COMMAND: "&cThis NPC doesn't have command(s) to execute."
  HOLOGRAM_DELAY: "&cYou can interact again with this hologram in %ss"
  INTERACTION_DELAY: "&cYou must wait %s seconds for interact again"
- WARMUP1: "&#F8BEFBThe command will be performed in &f%s &#F8BEFBseconds"
+ WARMUP1: "&x&F&8&B&E&F&BThe command will be performed in &f%s &x&F&8&B&E&F&Bseconds"
  WARMUP2: "&aYou've skipped the warmup on this command"
  WARMUP3: "&cYou're already warming up for this command. Wait &f%s&c seconds"
  COOLDOWN1: "&cWait $days$hours$minutes$seconds before you can use this command again"

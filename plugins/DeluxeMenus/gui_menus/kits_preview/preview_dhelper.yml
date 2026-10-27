@@ -5,23 +5,45 @@ items:
   armor_0:
     slot: 27
     amount: 1
-    material: STONE
+    material: NETHERITE_BOOTS
+    enchantments:
+    - DEPTH_STRIDER;3
+    - FEATHER_FALLING;4
+    - MENDING;1
+    - PROTECTION;4
+    - UNBREAKING;3
   armor_1:
     slot: 18
     amount: 1
-    material: STONE
+    material: NETHERITE_LEGGINGS
+    enchantments:
+    - PROTECTION;4
+    - UNBREAKING;3
   armor_2:
     slot: 9
     amount: 1
-    material: STONE
+    material: NETHERITE_CHESTPLATE
+    enchantments:
+    - PROTECTION;4
+    - UNBREAKING;3
   armor_3:
     slot: 0
     amount: 1
-    material: STONE
+    material: NETHERITE_HELMET
+    enchantments:
+    - AQUA_AFFINITY;1
+    - MENDING;1
+    - PROTECTION;4
+    - RESPIRATION;3
+    - UNBREAKING;3
   offhand_item:
     slot: 36
     amount: 1
-    material: STONE
+    material: SHIELD
+    display_name: '&6Цыганский щит'
+    enchantments:
+    - THORNS;10
+    - VANISHING_CURSE;1
   kit_badge:
     material: yellow_shulker_box
     slot: 45
@@ -30,96 +52,118 @@ items:
     - '&8Предпросмотр набора'
     - ''
     - '&7Слева отображается броня и'
-    - '&7предмет второй руки (шар/тотем).'
+    - '&7предмет второй руки (щит/тотем).'
     - '&7Справа — всё содержимое набора!'
   loot_0:
     slot: 2
     amount: 1
-    material: STONE
+    material: NETHERITE_SWORD
+    enchantments:
+    - FIRE_ASPECT;2
+    - SHARPNESS;5
+    - UNBREAKING;3
   loot_1:
     slot: 3
     amount: 1
-    material: STONE
+    material: NETHERITE_PICKAXE
+    enchantments:
+    - EFFICIENCY;5
+    - UNBREAKING;3
   loot_2:
     slot: 4
     amount: 1
-    material: STONE
+    material: NETHERITE_SHOVEL
+    enchantments:
+    - EFFICIENCY;4
+    - UNBREAKING;3
   loot_3:
     slot: 5
     amount: 1
-    material: STONE
+    material: NETHERITE_AXE
+    enchantments:
+    - EFFICIENCY;5
+    - SHARPNESS;5
+    - UNBREAKING;3
   loot_4:
     slot: 6
-    amount: 1
-    material: STONE
+    amount: 16
+    material: ENDER_PEARL
   loot_5:
     slot: 7
-    amount: 1
-    material: STONE
+    amount: 24
+    material: GOLDEN_APPLE
   loot_6:
     slot: 8
     amount: 1
-    material: STONE
+    material: TOTEM_OF_UNDYING
   loot_7:
     slot: 11
     amount: 1
-    material: STONE
+    material: POTION
+    display_name: '&6Быстрее ветра'
   loot_8:
     slot: 12
     amount: 1
-    material: STONE
+    material: TOTEM_OF_UNDYING
   loot_9:
     slot: 13
     amount: 1
-    material: STONE
+    material: TOTEM_OF_UNDYING
   loot_10:
     slot: 14
     amount: 1
-    material: STONE
+    material: TOTEM_OF_UNDYING
   loot_11:
     slot: 15
     amount: 1
-    material: STONE
+    material: TOTEM_OF_UNDYING
   loot_12:
     slot: 16
-    amount: 1
-    material: STONE
+    amount: 9
+    material: END_CRYSTAL
   loot_13:
     slot: 17
-    amount: 1
-    material: STONE
+    amount: 32
+    material: OBSIDIAN
   loot_14:
     slot: 20
-    amount: 1
-    material: STONE
+    amount: 16
+    material: ENDER_PEARL
   loot_15:
     slot: 21
-    amount: 1
-    material: STONE
+    amount: 28
+    material: IRON_BLOCK
   loot_16:
     slot: 22
-    amount: 1
-    material: STONE
+    amount: 24
+    material: GOLD_BLOCK
   loot_17:
     slot: 23
-    amount: 1
-    material: STONE
+    amount: 64
+    material: YELLOW_CONCRETE
   loot_18:
     slot: 24
-    amount: 1
-    material: STONE
+    amount: 16
+    material: DIAMOND_BLOCK
   loot_19:
     slot: 25
-    amount: 1
-    material: STONE
+    amount: 64
+    material: GOLDEN_CARROT
   loot_20:
     slot: 26
-    amount: 1
-    material: STONE
+    amount: 64
+    material: ORANGE_CONCRETE
   loot_21:
     slot: 29
     amount: 1
-    material: STONE
+    material: PLAYER_HEAD
+    display_name: '&6&lШар Д.Хелпера'
+    lore:
+    - '&7+7.0 к здоровью'
+    - '&7+0.6 к скорости атаки'
+    - '&7+3 к стойкости'
+    enchantments:
+    - VANISHING_CURSE;1
   btn_back:
     material: structure_void
     slots:
@@ -133,14 +177,11 @@ items:
   btn_claim:
     material: structure_void
     slots:
+    - 50
     - 51
-    - 52
-    - 53
-    display_name: '&#55FF55&l✚ ПОЛУЧИТЬ НАБОР &7(&#AAAAAAНабор &#FACC15&lD.HELPER&7)'
+    display_name: '&#55FF55✔ Получить этот набор'
     lore:
-    - ''
-    - '&7Нажмите, чтобы сразу забрать'
-    - '&7набор &f/kit dhelper &7в инвентарь!'
+    - '&7Нажмите, чтобы взять набор'
     click_commands:
     - '[close]'
     - '[player] kit dhelper'

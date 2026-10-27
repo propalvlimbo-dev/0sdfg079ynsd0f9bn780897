@@ -1,6 +1,6 @@
 Name: hydra
 Cooldown: 432000
-Permission: greatkits.kits.hydra
+Permission: nKits.kits.hydra
 Order: 0
 FirstTimeJoinKit: false
 OneTimeUse: false

@@ -10,48 +10,48 @@ items:
     - '&8Предпросмотр набора'
     - ''
     - '&7Слева отображается броня и'
-    - '&7предмет второй руки (шар/тотем).'
+    - '&7предмет второй руки (щит/тотем).'
     - '&7Справа — всё содержимое набора!'
   loot_0:
     slot: 2
-    amount: 1
-    material: STONE
+    amount: 64
+    material: EXPERIENCE_BOTTLE
   loot_1:
     slot: 3
-    amount: 1
-    material: STONE
+    amount: 64
+    material: EXPERIENCE_BOTTLE
   loot_2:
     slot: 4
-    amount: 1
-    material: STONE
+    amount: 64
+    material: CHORUS_FRUIT
   loot_3:
     slot: 5
     amount: 1
-    material: STONE
+    material: RED_SHULKER_BOX
   loot_4:
     slot: 6
-    amount: 1
-    material: STONE
+    amount: 2
+    material: ENDER_CHEST
   loot_5:
     slot: 7
-    amount: 1
-    material: STONE
+    amount: 16
+    material: ENDER_PEARL
   loot_6:
     slot: 8
-    amount: 1
-    material: STONE
+    amount: 16
+    material: ENDER_PEARL
   loot_7:
     slot: 11
     amount: 1
-    material: STONE
+    material: RED_SHULKER_BOX
   loot_8:
     slot: 12
-    amount: 1
-    material: STONE
+    amount: 64
+    material: EXPERIENCE_BOTTLE
   loot_9:
     slot: 13
-    amount: 1
-    material: STONE
+    amount: 64
+    material: EXPERIENCE_BOTTLE
   btn_back:
     material: structure_void
     slots:
@@ -65,14 +65,11 @@ items:
   btn_claim:
     material: structure_void
     slots:
+    - 50
     - 51
-    - 52
-    - 53
-    display_name: '&#55FF55&l✚ ПОЛУЧИТЬ НАБОР &7(&#AAAAAAНабор &#FAD8FC&lPLUS&7)'
+    display_name: '&#55FF55✔ Получить этот набор'
     lore:
-    - ''
-    - '&7Нажмите, чтобы сразу забрать'
-    - '&7набор &f/kit plus &7в инвентарь!'
+    - '&7Нажмите, чтобы взять набор'
     click_commands:
     - '[close]'
     - '[player] kit plus'
