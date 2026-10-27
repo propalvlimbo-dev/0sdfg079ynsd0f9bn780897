@@ -67,7 +67,7 @@ scoreboard:
   delay-on-join-milliseconds: 0
   scoreboards:
     scoreboard:
-      title: '<#F8BEFB>&lELYTRIX — ГРИФ #1</#FFFFFF>'
+      title: '&fꕤ'
       lines:
       - ''
       - ' &#F8BEFBꐁ &fНик: &#F8BEFB%player%'

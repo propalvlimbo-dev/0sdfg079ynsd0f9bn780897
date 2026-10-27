@@ -3,8 +3,8 @@ minute: 30
 worldName: "world"
 removeSchem: false
 stopTime: 10
-xCords: 900
-zCords: 900
+xCords: 1850
+zCords: 1850
 pointsBank: 1000
 pointsForStanding: 1
 clanExpReward: 200

@@ -90,6 +90,7 @@ allow-teleport: false
 ignored-worlds:
 - world1
 - world2
+- duels
 prevent-start-if-damager:
 - GAMEMODE
 - VANISH

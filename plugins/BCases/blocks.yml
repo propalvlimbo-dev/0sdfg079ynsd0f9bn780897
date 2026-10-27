@@ -1,130 +1,122 @@
 blocks:
-  donate:
-    world: world_spawn
-    pos:
-      x: 29
-      y: 70
-      z: -3
-    animation: wheel_yz
-    menu: donate
-    prizes: donate
-    hologram:
-      offset_x: 0.5
-      offset_y: 1.85
-      offset_z: 0.5
-      lines:
-      - '&7&k||| &f&lКЕЙС С ДОНАТОМ &7&k|||'
-    idle_animation: default:fireworks
-  money:
-    world: world_spawn
-    pos:
-      x: 29
-      y: 70
-      z: 3
-    animation: wheel_yz
-    menu: money
-    prizes: money
-    hologram:
-      offset_x: 0.5
-      offset_y: 1.85
-      offset_z: 0.5
-      lines:
-      - '&7&k||| &b&lКЕЙС С ВАЛЮТОЙ &7&k|||'
-    idle_animation: default:fireworks
-  rilik:
-    world: world_spawn
-    pos:
-      x: 29
-      y: 70
-      z: 0
-    animation: wheel_yz
-    menu: rilik
-    prizes: rilik
-    hologram:
-      offset_x: 0.5
-      offset_y: 1.85
-      offset_z: 0.5
-      lines:
-      - '&7&k||| &2&lКЕЙС С РИЛЛИКАМИ &7&k|||'
-    idle_animation: default:fireworks
-  vsoilinichigo:
-    world: world_spawn
-    pos:
-      x: 26
-      y: 70
-      z: 8
-    animation: wheel_xy
-    menu: vsoilinichigo
-    prizes: vsoilinichigo
-    hologram:
-      offset_x: 0.5
-      offset_y: 1.85
-      offset_z: 0.5
-      lines:
-      - '&7&k||| &3&lВСЕ ИЛИ НИЧЕГО &7&k|||'
-    idle_animation: default:fireworks
-  legendary:
-    world: world_spawn
-    pos:
-      x: 28
-      y: 70
-      z: 6
-    animation: wheel_yz
-    menu: legendary
-    prizes: legendary
-    hologram:
-      offset_x: 0.5
-      offset_y: 2.05
-      offset_z: 0.5
-      lines:
-      - '&7&k||| <#F8BEFB>&lЛЕГЕНДАРНЫЙ КЕЙС</#FFFFFF> &7&k|||'
-      - '&#FAD8FC&lСУПЕР КЕЙС С ДОНАТОМ &8(&#55FF5589р&8)'
-    idle_animation: default:fireworks
-  kits:
-    world: world_spawn
-    pos:
-      x: 26
-      y: 70
-      z: -8
-    animation: wheel_xy
-    menu: kits
-    prizes: kits
-    hologram:
-      offset_x: 0.5
-      offset_y: 1.85
-      offset_z: 0.5
-      lines:
-      - '&7&k||| &4&lКЕЙС С КИТАМИ &7&k|||'
-    idle_animation: default:fireworks
-  zhamshut:
-    world: world_spawn
-    pos:
-      x: 48
-      y: 63
-      z: 0
-    animation: wheel_yz
-    menu: zhamshut
-    prizes: zhamshut
-    hologram:
-      offset_x: 0.5
-      offset_y: 1.85
-      offset_z: 0.5
-      lines:
-      - '&7&k||| &d&lКЕЙС ДЖАМШУТА &7&k|||'
-    idle_animation: default:fireworks
-  ditems:
-    world: world_spawn
-    pos:
-      x: 28
-      y: 70
-      z: -6
-    animation: wheel_yz
-    menu: ditems
-    prizes: ditems
-    hologram:
-      offset_x: 0.5
-      offset_y: 1.85
-      offset_z: 0.5
-      lines:
-      - '&7&k||| &#F8BEFB&lКЕЙС С ДОНАТ ВЕЩАМИ &7&k|||'
-    idle_animation: default:fireworks
+- block: magenta_shulker_box
+  world: world_spawn
+  on_click_menu: bcases:donate
+  idle_animation: default:fireworks
+  pos:
+    x: 29
+    y: 70
+    z: -3
+  hologram:
+    offsets:
+      x: 0.5
+      y: 1.85
+      z: 0.5
+    lines:
+    - '&7&k||| &f&lКЕЙС С ДОНАТОМ &7&k|||'
+- block: light_blue_shulker_box
+  world: world_spawn
+  on_click_menu: bcases:money
+  idle_animation: default:fireworks
+  pos:
+    x: 29
+    y: 70
+    z: 3
+  hologram:
+    offsets:
+      x: 0.5
+      y: 1.85
+      z: 0.5
+    lines:
+    - '&7&k||| &b&lКЕЙС С ВАЛЮТОЙ &7&k|||'
+- block: lime_shulker_box
+  world: world_spawn
+  on_click_menu: bcases:rilik
+  idle_animation: default:fireworks
+  pos:
+    x: 29
+    y: 70
+    z: 0
+  hologram:
+    offsets:
+      x: 0.5
+      y: 1.85
+      z: 0.5
+    lines:
+    - '&7&k||| &2&lКЕЙС С РИЛЛИКАМИ &7&k|||'
+- block: cyan_shulker_box
+  world: world_spawn
+  on_click_menu: bcases:vsoilinichigo
+  idle_animation: default:fireworks
+  pos:
+    x: 26
+    y: 70
+    z: 8
+  hologram:
+    offsets:
+      x: 0.5
+      y: 1.85
+      z: 0.5
+    lines:
+    - '&7&k||| &3&lВСЕ ИЛИ НИЧЕГО &7&k|||'
+- block: pink_shulker_box
+  world: world_spawn
+  on_click_menu: bcases:legendary
+  idle_animation: default:fireworks
+  pos:
+    x: 28
+    y: 70
+    z: 6
+  hologram:
+    offsets:
+      x: 0.5
+      y: 2.05
+      z: 0.5
+    lines:
+    - '&7&k||| <#F8BEFB>&lЛЕГЕНДАРНЫЙ КЕЙС</#FFFFFF> &7&k|||'
+    - '&#FAD8FC&lСУПЕР КЕЙС С ДОНАТОМ &8(&#55FF5589р&8)'
+- block: red_shulker_box
+  world: world_spawn
+  on_click_menu: bcases:kits
+  idle_animation: default:fireworks
+  pos:
+    x: 26
+    y: 70
+    z: -8
+  hologram:
+    offsets:
+      x: 0.5
+      y: 1.85
+      z: 0.5
+    lines:
+    - '&7&k||| &4&lКЕЙС С КИТАМИ &7&k|||'
+- block: purple_shulker_box
+  world: world_spawn
+  on_click_menu: bcases:zhamshut
+  idle_animation: default:fireworks
+  pos:
+    x: 48
+    y: 63
+    z: 0
+  hologram:
+    offsets:
+      x: 0.5
+      y: 1.85
+      z: 0.5
+    lines:
+    - '&7&k||| &d&lКЕЙС ДЖАМШУТА &7&k|||'
+- block: magenta_shulker_box
+  world: world_spawn
+  on_click_menu: bcases:ditems
+  idle_animation: default:fireworks
+  pos:
+    x: 28
+    y: 70
+    z: -6
+  hologram:
+    offsets:
+      x: 0.5
+      y: 1.85
+      z: 0.5
+    lines:
+    - '&7&k||| &#F8BEFB&lКЕЙС С ДОНАТ ВЕЩАМИ &7&k|||'

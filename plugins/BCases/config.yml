@@ -1,28 +1,42 @@
-# =============================================================
-# BCases — Кейсы сервера Elytrix (1.21.10)
-# Круговая анимация без меча + перенесённые кастомные меню всех кейсов
-# =============================================================
-
+database_type: file # file | mysql | mariadb
 database:
-  type: sqlite
-  file: database.db
+  user: "root"
+  password: "password"
+  maxPoolSize: 5
+  url: 'jdbc:mariadb://127.0.0.1:3306/bcases'
 
-messages:
-  reloaded:
-    - "&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &fКонфигурация кейсов &#F8BEFBBCases &fуспешно перезагружена!"
-  case_busy:
-    - "&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &cЭтот кейс сейчас открывает другой игрок!"
-  no_keys:
-    - "&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &cУ вас нет ключей от этого кейса! &7Покупка: &#F8BEFBhttps://elytrix.pw"
-  no_permission:
-    - "&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &cУ вас недостаточно прав для выполнения этой команды!"
-  give_sender:
-    - "&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &fВы выдали игроку &#F8BEFB%player% &fключи от кейса &#F8BEFB%case% &7(x%amount%)"
-  give_target:
-    - "&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &fВы получили &#F8BEFB%amount% &fключ(ей) от кейса &#F8BEFB%case%&f!"
-  set_sender:
-    - "&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &fИгроку &#F8BEFB%player% &fустановлено &#F8BEFB%amount% &fключей от кейса &#F8BEFB%case%"
-  take_sender:
-    - "&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &fУ игрока &#F8BEFB%player% &fзабрано &#F8BEFB%amount% &fключей от кейса &#F8BEFB%case%"
-  look_keys:
-    - "&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &fУ игрока &#F8BEFB%player% &fключей типа &#F8BEFB%case%&f: &#F8BEFB%amount%"
+time-format:
+  ago: 'назад'
+  in: 'через'
+  just-now: 'Только что'
+  formats:
+    years: '%years% %months%'
+    months: '%months% %days%'
+    days: '%days% %hours%'
+    hours: '%hours% %minutes%'
+    minutes: '%minutes% %seconds%'
+    seconds: '%seconds%'
+  years:
+    form-1: 'год'
+    form-2: 'года'
+    form-5: 'лет'
+  months:
+    form-1: 'месяц'
+    form-2: 'месяца'
+    form-5: 'месяцев'
+  days:
+    form-1: 'день'
+    form-2: 'дня'
+    form-5: 'дней'
+  hours:
+    form-1: 'час'
+    form-2: 'часа'
+    form-5: 'часов'
+  minutes:
+    form-1: 'минуту'
+    form-2: 'минуты'
+    form-5: 'минут'
+  seconds:
+    form-1: 'секунду'
+    form-2: 'секунды'
+    form-5: 'секунд'

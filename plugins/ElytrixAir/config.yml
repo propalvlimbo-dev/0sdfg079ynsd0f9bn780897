@@ -15,8 +15,8 @@ waitingKill: 900
 # 5.0 = высоко над структурой
 hologramHeight: 3.7
 dropItems: 20
-xCords: 900
-zCords: 900
+xCords: 1850
+zCords: 1850
 
 schematicPath: "plugins/Schematics/schematic.schem"
 activateMaterial: "RESPAWN_ANCHOR"

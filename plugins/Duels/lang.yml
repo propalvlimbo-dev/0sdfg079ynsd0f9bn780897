@@ -1,0 +1,482 @@
+# DO NOT EDIT THIS VALUE!
+config-version: 11
+
+STRINGS:
+  PREFIX: '&#F8BEFB&lElytrix &8»'
+  LINE: '&#F8BEFB&m                                                  &r'
+  HALF_LINE: '&#F8BEFB&m                        &r'
+  FAIL_PREFIX: '&#F8BEFB&lElytrix &8»&f'
+
+GENERAL:
+  true: '&#F8BEFBда'
+  false: '&fнет'
+  enabled: '&#F8BEFBвключено'
+  disabled: '&fвыключено'
+  not-selected: 'Не выбрано'
+  random: 'Случайная'
+  none: 'нет'
+  kit-selector: 'Выбор набора'
+  arena-selector: 'Выбор арены'
+  item-betting: 'Ставка предметами'
+  betting: 'Ставка'
+
+ERROR:
+  no-permission: '{PREFIX} &fНедостаточно прав для выполнения этого действия.'
+  data:
+    load-failure: '{PREFIX} &fНе удалось загрузить статистику дуэлей. Перезайдите на сервер.'
+    not-loaded: '{PREFIX} &fДанные игроков ещё загружаются, попробуйте через пару секунд.'
+    not-found: '{PREFIX} &fСтатистика игрока &#F8BEFB%name%&f не найдена.'
+  top:
+    no-data-available: '{PREFIX} &fДанные рейтинга пока отсутствуют.'
+  player:
+    not-found: '{PREFIX} &fИгрок не найден.'
+    no-longer-online: '{PREFIX} &fЭтот игрок вышел с сервера.'
+  arena:
+    not-found: '{PREFIX} &fАрена &#F8BEFB%name%&f не найдена.'
+    already-exists: '{PREFIX} &fАрена с названием &#F8BEFB%name%&f уже существует.'
+    delete-failure: '{PREFIX} &fНельзя удалить активную арену. Сначала отключите её: &#F8BEFB/duels toggle %name%'
+    invalid-position: '{PREFIX} &fПозиция должна быть &#F8BEFB1&f или &#F8BEFB2&f.'
+    no-position-set: '{PREFIX} &fДля арены &#F8BEFB%name%&f не установлены точки появления.'
+  kit:
+    not-found: '{PREFIX} &fНабор &#F8BEFB%name%&f не найден.'
+    already-exists: '{PREFIX} &fНабор с названием &#F8BEFB%name%&f уже существует.'
+    empty-hand: '{PREFIX} &fВозьмите предмет в руку для выполнения этой команды.'
+  duel:
+    is-self: '{PREFIX} &fНевозможно вызвать на поединок самого себя.'
+    inventory-not-empty: '{PREFIX} &fДля вызова на дуэль необходимо полностью очистить инвентарь.'
+    in-creative-mode: '{PREFIX} &fНельзя участвовать в дуэлях в творческом режиме.'
+    in-blacklisted-world: '{PREFIX} &fВ этом мире дуэли недоступны.'
+    is-tagged: '{PREFIX} &fВы не можете начать дуэль во время режима боя!'
+    not-in-duelzone: '{PREFIX} &fДуэли доступны только в зонах: &#F8BEFB%regions%'
+    requests-disabled: '{PREFIX} &fИгрок &#F8BEFB%name%&f отключил запросы на поединки.'
+    already-has-request: '{PREFIX} &fВы уже отправили запрос на поединок этому игроку.'
+    no-request: '{PREFIX} &fУ вас нет активных запросов на поединок от этого игрока.'
+    already-in-match:
+      sender: '{PREFIX} &fВы не можете сделать это, пока находитесь на поединке.'
+      target: '{PREFIX} &fИгрок &#F8BEFB%name%&f сейчас уже сражается на дуэли.'
+    already-in-queue: '{PREFIX} &fВы не можете сделать это, пока находитесь в очереди.'
+    prevent-teleportation: '{PREFIX} &fНельзя телепортироваться к игроку во время поединка.'
+    mode-unselected: '{PREFIX} &fВыберите набор для начала поединка.'
+    mode-fixed: '{PREFIX} &fИзменение этого режима недоступно.'
+  spectate:
+    already-spectating:
+      sender: '{PREFIX} &fВы уже находитесь в режиме наблюдения.'
+      target: '{PREFIX} &fИгрок &#F8BEFB%name%&f сейчас в режиме наблюдения.'
+    not-in-match: '{PREFIX} &fИгрок &#F8BEFB%name%&f сейчас не участвует в дуэли.'
+  setting:
+    disabled-option: '{PREFIX} &fПараметр &#F8BEFB%option%&f сейчас отключён.'
+    arena-not-applicable: '{PREFIX} &fНабор &#F8BEFB%kit%&f недоступен на арене &#F8BEFB%arena%&f.'
+  inventory-view:
+    not-a-uuid: '{PREFIX} &fНекорректный идентификатор инвентаря: &#F8BEFB%input%'
+    not-found: '{PREFIX} &fЗапись инвентаря не найдена или истекла.'
+  queue:
+    not-found: '{PREFIX} &fОчередь с набором &#F8BEFB%kit%&f и ставкой &#F8BEFB$%bet_amount%&f не найдена.'
+    already-exists: '{PREFIX} &fОчередь с набором &#F8BEFB%kit%&f и ставкой &#F8BEFB$%bet_amount%&f уже существует.'
+    already-in: '{PREFIX} &fВы уже находитесь в очереди!'
+    not-in-queue: '{PREFIX} &fВы не находитесь в очереди.'
+    not-enough-money: '{PREFIX} &fДля входа в очередь требуется &#F8BEFB$%bet_amount%&f.'
+    no-queues-available: '{PREFIX} &fСейчас нет доступных очередей.'
+  sign:
+    not-a-sign: '{PREFIX} &fБлок, на который вы смотрите, не является табличкой!'
+    not-found: '{PREFIX} &fЭта табличка не привязана к очереди дуэлей.'
+    already-exists: '{PREFIX} &fЭта табличка уже привязана! Для удаления используйте &#F8BEFB/duels delsign'
+    cancel-break: '{PREFIX} &fСначала удалите табличку очереди командой &#F8BEFB/duels delsign'
+  sound:
+    not-found: '{PREFIX} &fЗвук &#F8BEFB%name%&f не найден в конфигурации.'
+  command:
+    invalid-sub-command: '{PREFIX} &fНеизвестная подкоманда &#F8BEFB%argument%&f. Помощь: &#F8BEFB/%command%'
+    invalid-option: '{PREFIX} &fНеверный параметр &#F8BEFB%option%&f. Доступно: &#F8BEFB%available_options%'
+    invalid-action: '{PREFIX} &fНеверное действие &#F8BEFB%action%&f. Доступно: &#F8BEFB%available_actions%'
+    not-enough-money: '{PREFIX} &fУ вас недостаточно монет для такой ставки!'
+    lobby-save-failure: '{PREFIX} &fНе удалось сохранить точку лобби дуэлей.'
+    name-not-alphanumeric: '{PREFIX} &fНазвание &#F8BEFB%name%&f должно содержать только латинские буквы и цифры.'
+
+COMMAND:
+  duel:
+    usage:
+    - '{LINE}'
+    - ' &#F8BEFB&lElytrix &8— &fСистема поединков'
+    - ' &#F8BEFB/%command% <ник> [ставка] &8— &fвызвать игрока на дуэль'
+    - ' &#F8BEFB/%command% stats [ник] &8— &fпосмотреть статистику дуэлей'
+    - ' &#F8BEFB/%command% top [wins|losses|набор] &8— &fтоп игроков'
+    - ' &#F8BEFB/%command% toggle &8— &fвключить/выключить вызовы на дуэль'
+    - '{LINE}'
+    request:
+      send:
+        sender:
+        - '{LINE}'
+        - ' &#F8BEFB&lElytrix &8» &fЗапрос на поединок отправлен!'
+        - ' '
+        - ' &#F8BEFB➝ &fСоперник: &#F8BEFB%name%'
+        - ' &#F8BEFB➝ &fНабор: &#F8BEFB%kit%'
+        - ' &#F8BEFB➝ &fСтавка: &#F8BEFB$%bet_amount%'
+        - '{LINE}'
+        receiver:
+        - '{LINE}'
+        - ' &#F8BEFB&lElytrix &8» &fНовый вызов на поединок!'
+        - ' '
+        - ' &#F8BEFB➝ &fОтправитель: &#F8BEFB%name%'
+        - ' &#F8BEFB➝ &fНабор: &#F8BEFB%kit%'
+        - ' &#F8BEFB➝ &fСтавка: &#F8BEFB$%bet_amount%'
+        clickable-text:
+          info:
+            text: ' &fВыбор: '
+            hover-text: ''
+          accept:
+            text: '&#F8BEFB&l[ПРИНЯТЬ] '
+            hover-text: '&fНажмите, чтобы &#F8BEFBпринять &fвызов на поединок'
+          deny:
+            text: '&f&l[ОТКЛОНИТЬ]'
+            hover-text: '&fНажмите, чтобы &#F8BEFBотклонить &fвызов на поединок'
+          extra:
+            text: '
+{LINE}'
+            hover-text: ''
+      accept:
+        sender: '{PREFIX} &fИгрок &#F8BEFB%name% &fпринял ваш вызов на поединок!'
+        receiver: '{PREFIX} &fВы приняли вызов на поединок от &#F8BEFB%name%&f!'
+      deny:
+        sender: '{PREFIX} &fИгрок &#F8BEFB%name% &fотклонил ваш вызов на поединок.'
+        receiver: '{PREFIX} &fВы отклонили вызов на поединок от &#F8BEFB%name%&f.'
+    stats:
+      displayed:
+      - '{LINE}'
+      - ' &#F8BEFB&lСтатистика поединков &8— &#F8BEFB%name%'
+      - ' &fПобед: &#F8BEFB%wins%'
+      - ' &fПоражений: &#F8BEFB%losses%'
+      - ' &fСоотношение П/П: &#F8BEFB%wl_ratio%'
+      - ' &fЗапросы на дуэль: &#F8BEFB%requests_enabled%'
+      - '{LINE}'
+      rating:
+        header: ' &#F8BEFB&lРейтинг по наборам'
+        format: ' &#F8BEFB• &f%type%: &#F8BEFB%rating%'
+        footer: ''
+      match:
+        header: ' &#F8BEFB&lПоследние поединки'
+        format: ' &#F8BEFB%winner% &fпротив &#F8BEFB%loser% &8(&fнаведите&8)'
+        hover-text:
+        - '&fНабор: &#F8BEFB%kit%'
+        - '&fДлительность: &#F8BEFB%duration%'
+        - '&fДата: &#F8BEFB%time%'
+        - '&fЗдоровье победителя: &#F8BEFB%health%❤'
+        footer: '{LINE}'
+    toggle:
+      enabled: '{PREFIX} &fВы &#F8BEFBвключили &fполучение запросов на поединки.'
+      disabled: '{PREFIX} &fВы &#F8BEFBотключили &fполучение запросов на поединки.'
+    top:
+      next-update: '{PREFIX} &fДо обновления рейтинга: &#F8BEFB%remaining%'
+      header: '{HALF_LINE} &#F8BEFBТоп 10 &f• &#F8BEFB%type% {HALF_LINE}'
+      display-format: ' &#F8BEFB#%rank% &f%name% &8— &#F8BEFB%score% &f%identifier%'
+      footer: '{LINE}'
+
+  duels:
+    usage:
+    - '{LINE}'
+    - ' &#F8BEFB/%command% help &8— &fпоказать список разделов помощи'
+    - ' &#F8BEFB/%command% help arena &8— &fкоманды управления аренами'
+    - ' &#F8BEFB/%command% help kit &8— &fкоманды управления наборами'
+    - ' &#F8BEFB/%command% help queue &8— &fкоманды управления очередями'
+    - ' &#F8BEFB/%command% help sign &8— &fкоманды табличек очередей'
+    - ' &#F8BEFB/%command% help user &8— &fкоманды статистики игроков'
+    - ' &#F8BEFB/%command% help extra &8— &fдополнительные команды'
+    - '{LINE}'
+    help:
+      arena:
+      - '{HALF_LINE} &#F8BEFBКоманды арен {HALF_LINE}'
+      - ' &#F8BEFB/%command% create [имя] &8— &fсоздать арену'
+      - ' &#F8BEFB/%command% set [имя] [1|2] &8— &fустановить точку арены'
+      - ' &#F8BEFB/%command% delete [имя] &8— &fудалить арену'
+      - ' &#F8BEFB/%command% info [имя] &8— &fинформация об арене'
+      - ' &#F8BEFB/%command% toggle [имя] &8— &fвключить/выключить арену'
+      - ' &#F8BEFB/%command% tp [имя] <1|2> &8— &fтелепортация на арену'
+      - ' &#F8BEFB/%command% list &8— &fсписок всех арен'
+      - '{LINE}'
+      kit:
+      - '{HALF_LINE} &#F8BEFBКоманды наборов {HALF_LINE}'
+      - ' &#F8BEFB/%command% savekit <-o> [имя] &8— &fсохранить набор'
+      - ' &#F8BEFB/%command% loadkit [имя] &8— &fзагрузить набор в инвентарь'
+      - ' &#F8BEFB/%command% deletekit [имя] &8— &fудалить набор'
+      - ' &#F8BEFB/%command% setitem [имя] &8— &fустановить иконку набора'
+      - ' &#F8BEFB/%command% options [набор] &8— &fнастройки набора'
+      - ' &#F8BEFB/%command% bind [набор] &8— &fпривязка набора к аренам'
+      - ' &#F8BEFB/%command% list &8— &fсписок всех наборов'
+      - '{LINE}'
+      queue:
+      - '{HALF_LINE} &#F8BEFBКоманды очередей {HALF_LINE}'
+      - ' &#F8BEFB/%command% createqueue [ставка] [-|набор] &8— &fсоздать очередь'
+      - ' &#F8BEFB/%command% deletequeue [ставка] [-|набор] &8— &fудалить очередь'
+      - ' &#F8BEFB/%command% list &8— &fсписок очередей'
+      - '{LINE}'
+      sign:
+      - '{HALF_LINE} &#F8BEFBКоманды табличек {HALF_LINE}'
+      - ' &#F8BEFB/%command% addsign [ставка] [-|набор] &8— &fсоздать табличку'
+      - ' &#F8BEFB/%command% delsign &8— &fудалить табличку'
+      - ' &#F8BEFB/%command% list &8— &fсписок табличек'
+      - '{LINE}'
+      user:
+      - '{HALF_LINE} &#F8BEFBКоманды игроков {HALF_LINE}'
+      - ' &#F8BEFB/%command% setrating [ник] [-|набор] [число] &8— &fустановить рейтинг'
+      - ' &#F8BEFB/%command% edit [ник] [add|remove|set] [wins|losses] [число] &8— &fизменить статистику'
+      - ' &#F8BEFB/%command% resetrating [ник] [-|набор|all] &8— &fсбросить рейтинг'
+      - ' &#F8BEFB/%command% reset [ник] &8— &fсбросить статистику'
+      - '{LINE}'
+      extra:
+      - '{HALF_LINE} &#F8BEFBДополнительно {HALF_LINE}'
+      - ' &#F8BEFB/%command% setlobby &8— &fустановить точку лобби дуэлей'
+      - ' &#F8BEFB/%command% lobby &8— &fтелепортироваться в лобби дуэлей'
+      - ' &#F8BEFB/%command% playsound [имя] &8— &fпроверить звук из конфига'
+      - ' &#F8BEFB/%command% reload [модуль] &8— &fперезагрузить плагин'
+      - '{LINE}'
+    create: '{PREFIX} &fАрена &#F8BEFB%name%&f создана! Установите точки: &#F8BEFB/duels set %name% 1'
+    delete: '{PREFIX} &fАрена &#F8BEFB%name%&f успешно удалена.'
+    set: '{PREFIX} &fТочка &#F8BEFB#%position%&f для арены &#F8BEFB%name%&f установлена: &#F8BEFB%location%'
+    toggle: '{PREFIX} &fСостояние арены &#F8BEFB%name%&f: %state%&f.'
+    teleport: '{PREFIX} &fВы телепортированы на арену &#F8BEFB%name%&f (точка &#F8BEFB#%position%&f).'
+    save-kit: '{PREFIX} &fНабор &#F8BEFB%name%&f успешно сохранён.'
+    delete-kit: '{PREFIX} &fНабор &#F8BEFB%name%&f удалён.'
+    load-kit: '{PREFIX} &fНабор &#F8BEFB%name%&f загружен в ваш инвентарь.'
+    set-item: '{PREFIX} &fИконка набора &#F8BEFB%name%&f обновлена.'
+    create-queue: '{PREFIX} &fСоздана очередь для набора &#F8BEFB%kit%&f со ставкой &#F8BEFB$%bet_amount%&f.'
+    delete-queue: '{PREFIX} &fУдалена очередь для набора &#F8BEFB%kit%&f со ставкой &#F8BEFB$%bet_amount%&f.'
+    add-sign: '{PREFIX} &fСоздана табличка очереди на &#F8BEFB%location%&f (&#F8BEFB%kit%&f, &#F8BEFB$%bet_amount%&f).'
+    del-sign: '{PREFIX} &fУдалена табличка очереди на &#F8BEFB%location%&f.'
+    set-lobby: '{PREFIX} &fТочка лобби дуэлей установлена на вашей текущей позиции.'
+    lobby: '{PREFIX} &fВы перемещены в лобби дуэлей!'
+    edit: '{PREFIX} &fСтатистика игрока &#F8BEFB%name%&f обновлена: &#F8BEFB%action% %amount% %type%'
+    set-rating: '{PREFIX} &fРейтинг игрока &#F8BEFB%name%&f для набора &#F8BEFB%kit%&f установлен на &#F8BEFB%rating%&f.'
+    reset-rating: '{PREFIX} &fРейтинг игрока &#F8BEFB%name%&f для набора &#F8BEFB%kit%&f сброшен.'
+    reset: '{PREFIX} &fСтатистика игрока &#F8BEFB%name%&f полностью сброшена.'
+    info:
+    - '{HALF_LINE} &#F8BEFBАрена %name% {HALF_LINE}'
+    - ' &fЗанята: %in_use%'
+    - ' &fОтключена: %disabled%'
+    - ' &fПривязанные наборы: &#F8BEFB%kits%'
+    - ' &fТочки: &#F8BEFB%positions%'
+    - ' &fИгроки: &#F8BEFB%players%'
+    - '{LINE}'
+    list:
+    - '{LINE}'
+    - ' &4ТЁМНО-КРАСНЫЙ &8— &fотключённая арена'
+    - ' &9СИНИЙ &8— &fнет точек появления'
+    - ' &aЗЕЛЁНЫЙ &8— &fсвободная арена'
+    - ' &cКРАСНЫЙ &8— &fидёт поединок'
+    - ' &fАрены: %arenas%'
+    - ' &fНаборы: &#F8BEFB%kits%'
+    - ' &fОчереди: &#F8BEFB%queues%'
+    - ' &fТаблички: &#F8BEFB%queue_signs%'
+    - ' &fЛобби дуэлей: &#F8BEFB%lobby%'
+    - '{LINE}'
+
+  spectate:
+    usage:
+    - '{LINE}'
+    - ' &#F8BEFB/spectate [ник] &8— &fнаблюдать за поединком игрока'
+    - '{LINE}'
+    start-spectate: '{PREFIX} &fВы наблюдаете за дуэлью &#F8BEFB%name% &fпротив &#F8BEFB%opponent%&f на арене &#F8BEFB%arena%&f. Выход: &#F8BEFB/spectate'
+    stop-spectate: '{PREFIX} &fВы завершили наблюдение за дуэлью &#F8BEFB%name%&f.'
+
+  sub-command-usage: '{PREFIX} &#F8BEFB/%command% %usage% &8— &f%description%'
+
+DUEL:
+  start-failure:
+    mode-unselected: '{FAIL_PREFIX} Не выбран набор для поединка!'
+    player-is-dead: '{FAIL_PREFIX} Один из участников мёртв!'
+    in-blacklisted-world: '{FAIL_PREFIX} Один из участников находится в запрещённом для дуэлей мире!'
+    is-tagged: '{FAIL_PREFIX} Один из участников сейчас находится в режиме боя!'
+    player-moved: '{FAIL_PREFIX} Один из участников сдвинулся с места после принятия запроса!'
+    not-in-duelzone: '{FAIL_PREFIX} Один из участников покинул зону дуэлей!'
+    in-creative-mode: '{FAIL_PREFIX} Один из участников находится в творческом режиме!'
+    no-arena-available: '{FAIL_PREFIX} Сейчас все арены заняты. Попробуйте через несколько секунд!'
+    arena-in-use: '{FAIL_PREFIX} Выбранная арена уже занята. Выберите другую.'
+    arena-not-applicable: '{FAIL_PREFIX} Набор &#F8BEFB%kit%&f недоступен на этой арене.'
+    not-enough-money: '{FAIL_PREFIX} Недостаточно средств для участия в поединке со ставкой!'
+  prevent:
+    item-drop: '{PREFIX} &fВо время поединка запрещено выбрасывать предметы.'
+    command: '{PREFIX} &fВо время поединка запрещено использовать эту команду.'
+    teleportation: '{PREFIX} &fВо время поединка запрещено телепортироваться.'
+    inventory-open: '{PREFIX} &fВо время поединка запрещено открывать сторонние инвентари.'
+  projectile-hit-message: '{PREFIX} &fЗдоровье &#F8BEFB%name%&f: &#F8BEFB%health%❤'
+  on-end:
+    tie: '{PREFIX} &fПоединок завершился вничью!'
+    plugin-disable: '{PREFIX} &fПерезагрузка системы дуэлей — поединок досрочно завершён.'
+    opponent-defeat: '{PREFIX} &fИгрок &#F8BEFB%winner% &fпобедил &#F8BEFB%loser% &8(&#F8BEFB%health%❤&8, набор: &f%kit%&8)'
+  inventories:
+    message: '{PREFIX} &fИнвентари участников (нажмите на ник): '
+    name-color: '&#F8BEFB'
+  reward:
+    money:
+      message: '{PREFIX} &fВы победили и получили ставку &#F8BEFB$%money%&f!'
+      title: '&#F8BEFB+$%money% &fза победу!'
+    items:
+      message: '{PREFIX} &fВы получили трофейные предметы соперника &#F8BEFB%name%&f!'
+
+QUEUE:
+  prevent:
+    command: '{PREFIX} &fКоманда &#F8BEFB%command%&f недоступна во время поиска соперника.'
+  add: '{PREFIX} &fВы встали в очередь (набор: &#F8BEFB%kit%&f, ставка: &#F8BEFB$%bet_amount%&f). Выйти: &#F8BEFB/queue leave'
+  remove: '{PREFIX} &fВы покинули очередь поединков.'
+  found-opponent: '{PREFIX} &fСоперник найден: &#F8BEFB%name%&f! Набор: &#F8BEFB%kit%&f, ставка: &#F8BEFB$%bet_amount%&f.'
+
+SIGN:
+  format:
+  - '&#F8BEFB[Дуэли]'
+  - '&f%kit% &8• &#F8BEFB$%bet_amount%'
+  - '&fПоиск: &#F8BEFB%in_queue%'
+  - '&fВ бою: &#F8BEFB%in_match%'
+
+SPECTATE:
+  arena-broadcast: '{PREFIX} &fИгрок &#F8BEFB%name%&f начал наблюдать за поединком.'
+  match-end: '{PREFIX} &fПоединок, за которым вы наблюдали, завершён.'
+  prevent:
+    command: '{PREFIX} &fКоманда &#F8BEFB%command%&f недоступна в режиме наблюдения.'
+    teleportation: '{PREFIX} &fТелепортация недоступна в режиме наблюдения.'
+
+GUI:
+  settings:
+    title: '&#F8BEFB&lElytrix &8• &8Настройка дуэли'
+    buttons:
+      details:
+        name: '&#F8BEFB&lИнформация о поединке'
+        lore:
+        - ''
+        - ' &fСоперник: &#F8BEFB%opponent%'
+        - ' &fНабор: &#F8BEFB%kit%'
+        - ' &fСтавка: &#F8BEFB$%bet_amount%'
+        - ''
+      kit-selector:
+        name: '&#F8BEFB&lВыбор набора'
+        lore:
+        - ' &fВыбранный набор: &#F8BEFB%kit%'
+        - ''
+        - ' &#F8BEFB▸ &fНажмите, чтобы выбрать набор'
+        lore-no-permission:
+        - ' &fУ вас нет доступа к этому параметру.'
+      use-own-inventory:
+        name: '&#F8BEFB&lСвой инвентарь'
+        lore:
+        - ' &fРежим: %own_inventory%'
+        - ''
+        - ' &#F8BEFB▸ &fНажмите для переключения'
+        lore-no-permission:
+        - ' &fУ вас нет доступа к этому параметру.'
+      arena-selector:
+        name: '&#F8BEFB&lВыбор арены'
+        lore:
+        - ' &fВыбранная арена: &#F8BEFB%arena%'
+        - ''
+        - ' &#F8BEFB▸ &fНажмите, чтобы выбрать арену'
+        lore-no-permission:
+        - ' &fУ вас нет доступа к этому параметру.'
+      item-betting:
+        name: '&#F8BEFB&lСтавка предметами'
+        lore:
+        - ' &fСтатус: %item_betting%'
+        - ''
+        - ' &#F8BEFB▸ &fНажмите для переключения'
+        lore-no-permission:
+        - ' &fУ вас нет доступа к этому параметру.'
+      send:
+        name: '&#F8BEFB&lОТПРАВИТЬ ВЫЗОВ'
+      cancel:
+        name: '&f&lОТМЕНИТЬ ВЫЗОВ'
+  kit-selector:
+    title: '&#F8BEFB&lElytrix &8• &8Выбор набора'
+    buttons:
+      previous-page:
+        name: '&#F8BEFB← &fПредыдущая страница'
+      next-page:
+        name: '&fСледующая страница &#F8BEFB→'
+      empty:
+        name: '&fНа этой странице пусто'
+  arena-selector:
+    title: '&#F8BEFB&lElytrix &8• &8Выбор арены'
+    buttons:
+      arena:
+        name: '&#F8BEFB%name%'
+        lore-available:
+        - ' &fСтатус: &#F8BEFBСвободна'
+        lore-unavailable:
+        - ' &fСтатус: &7Занята'
+      previous-page:
+        name: '&#F8BEFB← &fПредыдущая страница'
+      next-page:
+        name: '&fСледующая страница &#F8BEFB→'
+      empty:
+        name: '&fНет доступных арен'
+  queues:
+    title: '&#F8BEFB&lElytrix &8• &8Очереди дуэлей'
+    buttons:
+      queue:
+        name: '&#F8BEFB&l%kit%'
+        lore:
+        - ' &fСтавка: &#F8BEFB$%bet_amount%'
+        - ' &fВ очереди: &#F8BEFB%in_queue%'
+        - ' &fВ бою: &#F8BEFB%in_match%'
+        - ''
+        - ' &#F8BEFB▸ &fНажмите, чтобы встать в очередь!'
+      previous-page:
+        name: '&#F8BEFB← &fПредыдущая страница'
+      next-page:
+        name: '&fСледующая страница &#F8BEFB→'
+      empty:
+        name: '&fОчереди пока не созданы'
+  item-betting:
+    title: '&#F8BEFB&lElytrix &8• &8Ставка предметами'
+    buttons:
+      head:
+        name: '&#F8BEFB%name%'
+      state:
+        name-ready: '&#F8BEFB&lГОТОВ'
+        name-not-ready: '&f&lНЕ ГОТОВ'
+      details:
+        name: '&#F8BEFB&lДетали поединка'
+        lore:
+        - ' &fНабор: &#F8BEFB%kit%'
+        - ' &fАрена: &#F8BEFB%arena%'
+        - ' &fСтавка: &#F8BEFB$%bet_amount%'
+      cancel:
+        name: '&f&lОТМЕНИТЬ МАТЧ'
+        lore:
+        - ' &fНажмите или закройте меню,'
+        - ' &fчтобы отменить поединок.'
+  inventory-view:
+    title: '&#F8BEFBИнвентарь &8• &8%name%'
+    buttons:
+      head:
+        name: '&#F8BEFB&l%name%'
+      potion-counter:
+        name: '&#F8BEFB%potions% &fзелий исцеления'
+      effects:
+        name: '&#F8BEFBАктивные эффекты'
+        lore-format: ' &f%type% %amplifier% &8(&#F8BEFB%duration%с&8)'
+      hunger:
+        name: '&#F8BEFB%hunger% &fед. сытости'
+      health:
+        name: '&#F8BEFB%health% ❤'
+  options:
+    title: '&#F8BEFBНабор &8• &8%kit%'
+    buttons:
+      option:
+        name: '&#F8BEFB%name%'
+        lore:
+        - ''
+        - ' &fСостояние: %state%'
+        - ''
+        - ' &#F8BEFB▸ &fНажмите для переключения'
+  bind:
+    title: '&#F8BEFBПривязка арен &8• &8%kit%'
+    buttons:
+      arena:
+        name: '&#F8BEFB%arena%'
+        lore-bound:
+        - ' &fНаборы: &#F8BEFB%kits%'
+        - ''
+        - ' &#F8BEFB&lПРИВЯЗАНА'
+        - ''
+        - ' &fНажмите для переключения'
+        lore-not-bound:
+        - ' &fНаборы: &#F8BEFB%kits%'
+        - ''
+        - ' &f&lНЕ ПРИВЯЗАНА'
+        - ''
+        - ' &#F8BEFBНажмите для переключения'

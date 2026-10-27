@@ -1,0 +1,44 @@
+hook-into-holographicdisplays: false
+
+change-check-interval: 30
+
+prefixes:
+  enabled: true
+  groups:
+    owner: '&#F8BEFB[OWNER] &f'
+    admin: '&#F8BEFB[ADMIN] &f'
+    dadmin: '&#F8BEFB[D.ADMIN] &f'
+    angel: '&#F8BEFB[ANGEL] &f'
+    dhelper: '&#F8BEFB[D.HELPER] &f'
+    moder: '&#F8BEFB[MODER] &f'
+    helper: '&#F8BEFB[HELPER] &f'
+    god: '&#F8BEFB[GOD] &f'
+    dragon: '&#F8BEFB[DRAGON] &f'
+
+types:
+  HEAD:
+    loading: '&fЗагрузка...'
+    no-data: '&fНет данных'
+    sign-format:
+    - '&f%name%'
+    - '&#F8BEFB#%rank%'
+    - '&#F8BEFB%value% &f%identifier%'
+    - '&#F8BEFB&m-------------'
+  HOLOGRAM:
+    loading: '&#F8BEFBЗагрузка рейтинга...'
+    no-data: '&fДанные пока отсутствуют'
+    header: '&#F8BEFB&m-------&r &#F8BEFB&lElytrix &8• &fТоп &#F8BEFB10 &f%type% &#F8BEFB&m-------&r'
+    line-format: '&#F8BEFB#%rank% &f%name% &8— &#F8BEFB%value% &f%identifier%'
+    footer: '&#F8BEFB&m-----------------------------------&r'
+    space-between-lines: 0.05
+  SIGN:
+    loading: '&fЗагрузка...'
+    no-data: '&fНет данных'
+    header: '&#F8BEFBТоп 10 &f%type%'
+    space-between: true
+    sign-line-format: '&#F8BEFB#%rank% &f%name%'
+
+placeholders:
+  no-rank: 'Нет в топе'
+  loading: 'Загрузка...'
+  no-data: 'Нет данных'
