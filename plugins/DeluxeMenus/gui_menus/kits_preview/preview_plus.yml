@@ -1,0 +1,78 @@
+menu_title: §fꈁꀀꈂꍗꈂꀁ§fꈃꄑ
+open_command: kitpreview_plus
+size: 54
+items:
+  kit_badge:
+    material: pink_shulker_box
+    slot: 45
+    display_name: '&#AAAAAAНабор &#FAD8FC&lPLUS'
+    lore:
+    - '&8Предпросмотр набора'
+    - ''
+    - '&7Слева отображается броня и'
+    - '&7предмет второй руки (шар/тотем).'
+    - '&7Справа — всё содержимое набора!'
+  loot_0:
+    slot: 2
+    amount: 1
+    material: STONE
+  loot_1:
+    slot: 3
+    amount: 1
+    material: STONE
+  loot_2:
+    slot: 4
+    amount: 1
+    material: STONE
+  loot_3:
+    slot: 5
+    amount: 1
+    material: STONE
+  loot_4:
+    slot: 6
+    amount: 1
+    material: STONE
+  loot_5:
+    slot: 7
+    amount: 1
+    material: STONE
+  loot_6:
+    slot: 8
+    amount: 1
+    material: STONE
+  loot_7:
+    slot: 11
+    amount: 1
+    material: STONE
+  loot_8:
+    slot: 12
+    amount: 1
+    material: STONE
+  loot_9:
+    slot: 13
+    amount: 1
+    material: STONE
+  btn_back:
+    material: structure_void
+    slots:
+    - 47
+    - 48
+    display_name: '&#F8BEFB◄ Назад к списку наборов'
+    lore:
+    - '&7Нажмите, чтобы вернуться в &f/kits'
+    click_commands:
+    - '[openguimenu] kits'
+  btn_claim:
+    material: structure_void
+    slots:
+    - 51
+    - 52
+    - 53
+    display_name: '&#55FF55&l✚ ПОЛУЧИТЬ НАБОР &7(&#AAAAAAНабор &#FAD8FC&lPLUS&7)'
+    lore:
+    - ''
+    - '&7Нажмите, чтобы сразу забрать'
+    - '&7набор &f/kit plus &7в инвентарь!'
+    click_commands:
+    - '[close]'
+    - '[player] kit plus'

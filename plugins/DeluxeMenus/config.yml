@@ -1,8 +1,3 @@
-# DeluxeMenus 1.14.1-Release main configuration file
-#
-# A full wiki on how to use this plugin can be found at:
-# https://wiki.helpch.at/helpchat-plugins/deluxemenus
-
 check_updates: true
 debug: LOW
 use_admin_commands_in_menus_list: false
@@ -21,8 +16,6 @@ gui_menus:
     file: gps.yml
   ec:
     file: ec.yml
-  free:
-    file: free.yml
   events:
     file: events.yml
   jobs:
@@ -69,4 +62,39 @@ gui_menus:
     file: shop/items.yml
   sezon:
     file: shop/sezon.yml
-
+  preview_start:
+    file: kits_preview/preview_start.yml
+  preview_imperator:
+    file: kits_preview/preview_imperator.yml
+  preview_dragon:
+    file: kits_preview/preview_dragon.yml
+  preview_bull:
+    file: kits_preview/preview_bull.yml
+  preview_tiger:
+    file: kits_preview/preview_tiger.yml
+  preview_bunny:
+    file: kits_preview/preview_bunny.yml
+  preview_rabbit:
+    file: kits_preview/preview_rabbit.yml
+  preview_hydra:
+    file: kits_preview/preview_hydra.yml
+  preview_cobra:
+    file: kits_preview/preview_cobra.yml
+  preview_god:
+    file: kits_preview/preview_god.yml
+  preview_vampire:
+    file: kits_preview/preview_vampire.yml
+  preview_pegas:
+    file: kits_preview/preview_pegas.yml
+  preview_dhelper:
+    file: kits_preview/preview_dhelper.yml
+  preview_angel:
+    file: kits_preview/preview_angel.yml
+  preview_dadmin:
+    file: kits_preview/preview_dadmin.yml
+  preview_plus:
+    file: kits_preview/preview_plus.yml
+  preview_pluspro:
+    file: kits_preview/preview_pluspro.yml
+  preview_pvp:
+    file: kits_preview/preview_pvp.yml

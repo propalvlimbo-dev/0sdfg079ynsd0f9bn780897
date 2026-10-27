@@ -1,0 +1,38 @@
+# =============================================================
+# ElytrixFree — меню бесплатных наград /free (в стиле ReallyWorld + RP GUI)
+# =============================================================
+
+auth:
+  http:
+    # Включите true, если на прокси запущен ElytrixAuth (проверка привязки к Telegram)
+    enabled: false
+    url: 'http://127.0.0.1:8754'
+    key: '7a1ccae78d60cbf5b5ae48ef3ec04f49a757fb05f9a2630a'
+
+menu:
+  title: '&fꈁꀀꈂꍘꈂꀁ&fꈃꄄ'
+
+promo:
+  enabled: true
+  every-hours: 2
+  uses-min: 10
+  uses-max: 50
+  uses-from-kinds: true
+  code-length: 8
+  require-online: true
+  commands:
+    - 'p give {player} 25'
+  message:
+    - ''
+    - '&7☁ &#F8BEFB&lElytrix &8» &fХАЛЯВА!'
+    - '&#F8BEFB&l┃ &fПромокод на бесплатную награду:'
+    - '&#F8BEFB&l┃ &#F8BEFB&l{code}'
+    - '&#F8BEFB&l┃ &fАктиваций осталось: &#F8BEFB{uses}'
+    - '&#F8BEFB&l┃ &fНаш Telegram: &#F8BEFBt.me/elytrix_ru'
+    - ''
+
+http-api:
+  enabled: true
+  host: 127.0.0.1
+  port: 9772
+  key: 's8d097ghh0789nsad7809sh890aduoigasuoisdag'

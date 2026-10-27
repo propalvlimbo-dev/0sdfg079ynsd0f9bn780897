@@ -1,0 +1,821 @@
+npcs:
+  npc_0:
+    name: npc_0
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <empty>
+    type: FOX
+    location:
+      world: world_spawn
+      x: 44.4842
+      y: 65.0
+      z: 0.5217
+      yaw: -89.2502
+      pitch: 0.0
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: false
+    turnToPlayerDistance: -1
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: growgarden
+  npc_3:
+    name: npc_3
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><dark_green><b>Джамшут<br><reset><green><b>Легкий
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: 57.5468
+      y: 64.0
+      z: 6.5273
+      yaw: 153.2184
+      pitch: -5.4149
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: quest1
+  npc_6:
+    name: npc_6
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><white><b>Абу-бакар<br><reset><aqua><b>Нормальный
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: 63.4085
+      y: 64.0
+      z: 0.4972
+      yaw: -109.5815
+      pitch: 3.283
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: quest2
+  npc_7:
+    name: npc_7
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><green><b>Равшан<br><reset><red><b>Тяжелый
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: 57.5308
+      y: 64.0
+      z: -5.5114
+      yaw: 82.6501
+      pitch: 1.5
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: quest3
+  npc_8:
+    name: npc_8
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><dark_purple><b>Странник
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: 57.5183
+      y: 62.0
+      z: -33.4676
+      yaw: 41.6048
+      pitch: -25.8702
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: endshop
+  npc_9:
+    name: npc_9
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><#F8BEFB><b><i>Барыга
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: -15.523
+      y: 71.0
+      z: 3.4868
+      yaw: -122.252
+      pitch: -1.7311
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    equipment:
+      MAINHAND:
+        ==: org.bukkit.inventory.ItemStack
+        DataVersion: 4671
+        id: minecraft:sugar
+        count: 1
+        schema_version: 1
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: dealer
+  npc_10:
+    name: npc_10
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><red><b>Киллер
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: -15.4644
+      y: 71.0
+      z: -2.4933
+      yaw: -93.6871
+      pitch: -1.4686
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: killer
+  npc_11:
+    name: npc_11
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><blue><b>Бафовар
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: -8.5167
+      y: 70.0
+      z: 24.5436
+      yaw: -160.0019
+      pitch: 5.0838
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: potion
+  npc_12:
+    name: npc_12
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><blue><b>Боевой пропуск
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: -8.537
+      y: 70.0
+      z: 16.5312
+      yaw: -132.6405
+      pitch: 5.1747
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: bp
+  npc_13:
+    name: npc_13
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><#F8BEFB><b>Путеводитель
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: -8.4792
+      y: 70.0
+      z: -15.4857
+      yaw: -40.6052
+      pitch: -18.3555
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: gps
+  npc_14:
+    name: npc_14
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><#F8BEFB><b>EL+
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: -8.5535
+      y: 70.0
+      z: -23.4762
+      yaw: -30.9911
+      pitch: -3.7174
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: plus
+  npc_15:
+    name: npc_15
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><#F8BEFB><b>Битва с Боссом<br><reset><aqua>Понедельник, Среда, Пятница <reset><#F8BEFB>в <reset><aqua>17:30<br><br><reset><green>Одолейте <reset><aqua>сильного босса <reset><green>и получите <reset><aqua>награду!<br><br><reset><green>Для входа на арену используйте <reset><aqua>/boss join<br><reset><green>Или <reset><aqua>кликните <reset><green>на NPC
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: -29.5129
+      y: 71.0
+      z: -4.4826
+      yaw: 0.3026
+      pitch: 1.8
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: boss join
+  npc_16:
+    name: npc_16
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><dark_purple><b>Защита особняка<br><reset><#F8BEFB>Каждую субботу <reset><aqua>в <reset><#F8BEFB>17:30<br><br><reset><light_purple>Одолейте <reset><aqua>Ригурда <reset><light_purple>и его <reset><aqua>банду гоблинов<reset><light_purple>!<br><br><reset><light_purple>Для входа на арену используйте <reset><#F8BEFB>/siege join<br><reset><light_purple>Или <reset><aqua>кликните <reset><light_purple>на NPC
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: -29.5124
+      y: 71.0
+      z: 5.5331
+      yaw: 179.4025
+      pitch: -0.3
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: siege join
+  npc_17:
+    name: npc_17
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><aqua><b>Отшельник
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: -8.5165
+      y: 68.0
+      z: 55.481
+      yaw: -88.7981
+      pitch: 0.0
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    equipment:
+      MAINHAND:
+        ==: org.bukkit.inventory.ItemStack
+        DataVersion: 4671
+        id: minecraft:tropical_fish
+        count: 1
+        schema_version: 1
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: hjobs sell
+        '2':
+          action: player_command
+          value: hjobs fish
+  npc_18:
+    name: npc_18
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><white><b>Фермер
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: 68.4881
+      y: 62.0
+      z: 78.5669
+      yaw: -151.1339
+      pitch: 1.8715
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: hjobs sell
+        '2':
+          action: player_command
+          value: hjobs farm
+  npc_19:
+    name: npc_19
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><#F8BEFB><b>ВСЕ ДЛЯ ГРИФА
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: 79.5189
+      y: 63.0
+      z: 61.5414
+      yaw: -117.3883
+      pitch: 0.0
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: grief
+  npc_20:
+    name: npc_20
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><#F8BEFB><b>ШАРЫ
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: 67.5028
+      y: 63.0
+      z: 61.5823
+      yaw: -131.4695
+      pitch: 2.6625
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: sphere
+  npc_21:
+    name: npc_21
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><#F8BEFB><b>КИТЫ
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: 57.4635
+      y: 63.0
+      z: 56.5258
+      yaw: -98.5284
+      pitch: 1.1845
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: kitsbuy
+  npc_22:
+    name: npc_22
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><dark_purple><b>Темный маг
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: 52.4761
+      y: 63.0
+      z: 46.539
+      yaw: -55.6284
+      pitch: -0.1263
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: mag
+  npc_23:
+    name: npc_23
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><#F8BEFB><b>СПАВНЕРЫ
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: 89.4434
+      y: 63.0
+      z: 56.516
+      yaw: -153.2563
+      pitch: 0.0
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: spawners
+  npc_24:
+    name: npc_24
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><blue><b>Опытный Кузнец
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: 94.5042
+      y: 63.0
+      z: 46.4728
+      yaw: 112.0855
+      pitch: -0.1251
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: repairexp
+  npc_25:
+    name: npc_25
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><aqua><b>Шахтер
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: 19.5062
+      y: 68.0
+      z: -43.5227
+      yaw: 67.3344
+      pitch: -2.9389
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    equipment:
+      MAINHAND:
+        ==: org.bukkit.inventory.ItemStack
+        DataVersion: 4671
+        id: minecraft:netherite_pickaxe
+        count: 1
+        schema_version: 1
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: hjobs sell
+        '2':
+          action: player_command
+          value: hjobs mine
+  npc_26:
+    name: npc_26
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><green><b>Алхимик
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: -21.4494
+      y: 71.0
+      z: -54.4913
+      yaw: -76.797
+      pitch: -8.6302
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: quest4
+  npc_27:
+    name: npc_27
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><red><b>Лесоруб
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: 116.4669
+      y: 63.0
+      z: -29.4807
+      yaw: 50.2874
+      pitch: -42.7893
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    equipment:
+      MAINHAND:
+        ==: org.bukkit.inventory.ItemStack
+        DataVersion: 4671
+        id: minecraft:wooden_axe
+        count: 1
+        schema_version: 1
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: hjobs les
+        '2':
+          action: player_command
+          value: hjobs sell
+  npc_28:
+    name: npc_28
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><#F8BEFB>/market <reset><gray>- Открыть маркет<br><reset><#F8BEFB>/market my <reset><gray>- Посмотреть свои товары<br><br><reset><#F8BEFB>/market sell <цена за штуку> <reset><gray>- Выставить предмет на продажу<br><br><reset><#F8BEFB>/market search <запрос> <reset><gray>- Поиск по предметам<br><reset><white><b>РЫНОК
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: 20.6661
+      y: 68.0
+      z: 18.5632
+      yaw: 176.4475
+      pitch: -8.2597
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: market
+  npc_29:
+    name: npc_29
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><white><b>АУКЦИОН
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: 20.5214
+      y: 68.0
+      z: -17.5502
+      yaw: 59.9743
+      pitch: 0.0
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: false
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: ah

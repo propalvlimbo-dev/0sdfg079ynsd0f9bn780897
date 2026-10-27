@@ -1,11 +1,3 @@
-##############################################################
-#                                                            #
-#                                                            #
-#                     Coded by n1zamu!                       #
-#                    Fork by hokokrtet!                      #
-#                                                            #
-##############################################################
-
 spawnWorld: world_spawn
 effect_block: world_spawn
 spawnLocation:
@@ -15,11 +7,10 @@ spawnLocation:
   z: 0
 expColorTag: '&7'
 regionMessage: '&4Регион тут!'
-
 krov_ball:
   material: PLAYER_HEAD
   modelData: 5011
-  texture: ""
+  texture: ''
   name: '&4&lШар Крови'
   cooldown: 60
   cooldownMessage: '&4&lШар Крови &7» &fПерезарядка &b%time% &fсек'
@@ -39,11 +30,10 @@ krov_ball:
     title: false
     titleName: ''
     titleText: ''
-
 darkness_ball:
   material: PLAYER_HEAD
   modelData: 5010
-  texture: ""
+  texture: ''
   name: '&5&lШар Тьмы'
   cooldown: 60
   cooldownMessage: '&5&lШар Тьмы &7» &fПерезарядка &b%time% &fсек'
@@ -63,11 +53,10 @@ darkness_ball:
     title: false
     titleName: ''
     titleText: ''
-
 lightning_ball:
   material: PLAYER_HEAD
   modelData: 5009
-  texture: ""
+  texture: ''
   name: '&d&lШар Молнии'
   cooldown: 60
   cooldownMessage: '&d&lШар Молнии &7» &fПерезарядка &b%time% &fсек'
@@ -86,11 +75,10 @@ lightning_ball:
     title: false
     titleName: ''
     titleText: ''
-
 ice_ball:
   material: PLAYER_HEAD
   modelData: 5008
-  texture: ""
+  texture: ''
   name: '&b&lШар Льда'
   cooldown: 60
   cooldownMessage: '&b&lШар Льда &7» &fПерезарядка &b%time% &fсек'
@@ -109,7 +97,6 @@ ice_ball:
     title: false
     titleName: ''
     titleText: ''
-
 ender_trapka:
   material: HEART_OF_THE_SEA
   name: '&5&lЭндер Ловушка'
@@ -161,7 +148,6 @@ ender_trapka:
     titleText: ''
     message: false
     messageText: ''
-
 trap:
   material: HEART_OF_THE_SEA
   name: '&b&lЛовушка'
@@ -212,7 +198,6 @@ trap:
     titleText: ''
     message: false
     messageText: ''
-
 fire_ball:
   material: PLAYER_HEAD
   modelData: 5003
@@ -237,7 +222,6 @@ fire_ball:
     title: false
     titleName: ''
     titleText: ''
-
 air_ball:
   material: PLAYER_HEAD
   glow: true
@@ -265,7 +249,6 @@ air_ball:
     title: false
     titleName: ''
     titleText: ''
-
 water_ball:
   material: PLAYER_HEAD
   modelData: 5005
@@ -293,7 +276,6 @@ water_ball:
     title: false
     titleName: ''
     titleText: ''
-
 earth_ball:
   material: PLAYER_HEAD
   modelData: 5002
@@ -321,7 +303,6 @@ earth_ball:
     title: false
     titleName: ''
     titleText: ''
-
 harmony_ball:
   material: PLAYER_HEAD
   modelData: 5006
@@ -350,7 +331,6 @@ harmony_ball:
     title: false
     titleName: ''
     titleText: ''
-
 chaos_ball:
   material: PLAYER_HEAD
   modelData: 5007
@@ -380,7 +360,6 @@ chaos_ball:
     title: false
     titleName: ''
     titleText: ''
-
 light_ball:
   material: PLAYER_HEAD
   modelData: 5004
@@ -409,7 +388,6 @@ light_ball:
     title: false
     titleName: ''
     titleText: ''
-
 god_ball:
   material: PLAYER_HEAD
   texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjZkNDI3YTg5YzRjYmZkOTk4ODI2YzY0MjViNjNiZmM3ZmJkMmVkZjgxZWI3ZjUyODE4NmJlNjZjNTQ1ZTc5In19fQ==
@@ -435,7 +413,6 @@ god_ball:
     title: false
     titleName: ''
     titleText: ''
-
 pegas_ball:
   material: PLAYER_HEAD
   texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmU3OGM0NzYyNjc0ZGRlOGIxYTVhMWU4NzNiMzNmMjhlMTNlN2MxMDJiMTkzZjY4MzU0OWIzOGRjNzBlMCJ9fX0=
@@ -460,7 +437,6 @@ pegas_ball:
     title: false
     titleName: ''
     titleText: ''
-
 dracula_head:
   material: PLAYER_HEAD
   texture: ewogICJ0aW1lc3RhbXAiIDogMTY2NzAwNTExMDk4MCwKICAicHJvZmlsZUlkIiA6ICI1YjcyYmU5MGZiYjg0OGNiODFiZTNhMGVlNmNlOGUzZCIsCiAgInByb2ZpbGVOYW1lIiA6ICJHb3JuZSIsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8yZTlhYzBjYzA1ZjUyODA1MTBmOTE2NzIxZDc4ODI5NTVjNjgzMTRjODkxNzBkZTgzNWQzZDMxNjQwNjAzZTliIgogICAgfQogIH0KfQ==
@@ -475,7 +451,6 @@ dracula_head:
   - '&r'
   - '&7Когда надето на голову:'
   - '&9+19% Скорость'
-
 cobra_ball:
   material: PLAYER_HEAD
   texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWRhMjgxM2Q0ZjVhY2Q2OWVkNTkwYzFkOGE0NDJiNTk1NTE5ZGNiYzBlMTcxOThhZGZhYWFhZjE1Zjg5YjAifX19
@@ -490,7 +465,6 @@ cobra_ball:
   - '&a+20% к Скорости атаки'
   - '&a+2.5 к Стойкости'
   - '&aОтравляет врагов ядом'
-
 bunny_ball:
   material: PLAYER_HEAD
   texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGNhMDNmN2U2Mzg1MTJjNzBhNDRjNDI5OTQyZTc4YzM2YTNkYWY5ZDBhNTMyOThhOWU4NjYyYzJiNjMyZTEyOSJ9fX0=
@@ -501,7 +475,6 @@ bunny_ball:
   - '&7Когда во второй руке:'
   - '&9+3.9 к Броне'
   - '&9+21% к Скорости'
-
 draconid_totem:
   material: TOTEM_OF_UNDYING
   name: '&x&F&8&B&E&F&BТотем Драконида'
@@ -509,20 +482,17 @@ draconid_totem:
   lore:
   - '&7Срабатывает, когда'
   - '&7лежит в инвентаре'
-
 witch_totem:
   material: TOTEM_OF_UNDYING
   name: '&5Тотем Ведьмы'
   message: '&5Тотем Ведьмы &7» &aВы сохранили свои эффекты'
   lore:
   - '&7Сохраняет эффекты'
-
 neptun_trident:
   material: TRIDENT
   name: '&b&lТрезубец Нептуна'
   lore:
   - '&7Даёт рывок к цели, при успешном попадании трезубцем на расстоянии'
-
 kratos_axe:
   material: NETHERITE_AXE
   name: '&c&lТопор Кратоса'
@@ -533,20 +503,17 @@ kratos_axe:
   - '&r'
   - '&7Когда в руке'
   - '&cЗамедление II'
-
 healing_potion:
   material: POTION
   name: Целительное зелье
   lore:
   - Снимает негативные эффекты
-
 random_potion:
   material: POTION
   name: '&b&lРандомное зелье'
   lore:
   - '&9&kРандомное зелье'
   - '&9Дает 3 случайных эффекта'
-
 random_egg:
   material: PIG_SPAWN_EGG
   name: '&b&lРандомное яйцо'
@@ -554,19 +521,16 @@ random_egg:
   - ''
   - '  &9Призывает: &k1234567'
   - ''
-
 clear_arrow:
   material: TIPPED_ARROW
   name: '&f&lКлирик'
   lore:
   - '&9Очищает все эффекты c врага'
-
 heart_of_hydra:
   material: HEART_OF_THE_SEA
   name: '&5Сердце Гидры'
   lore:
   - При использовании сохраняет ваши вещи
-
 scroll_of_exp:
   material: FLOWER_BANNER_PATTERN
   name: '&fСвиток опыта'
@@ -584,7 +548,6 @@ scroll_of_exp:
   - '&9При нажатии ПКМ:'
   - '  &fДает вам 5 опыта'
   - ''
-
 anti_fly:
   material: FIREWORK_STAR
   name: '&5Анти Полет'
@@ -607,7 +570,6 @@ anti_fly:
     title: false
     titleName: ''
     titleText: ''
-
 dark_pulse:
   material: FIREWORK_STAR
   name: '&5&lТёмный Пульс'
@@ -630,7 +592,6 @@ dark_pulse:
     title: false
     titleName: ''
     titleText: ''
-
 farm_ball:
   material: PLAYER_HEAD
   texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWFmMzI4Yzg3YjA2ODUwOWFjYTk4MzRlZmFjZTE5NzcwNWZlNWQ0ZjA4NzE3MzFiN2IyMWNkOTliOWZkZGMifX19
@@ -654,7 +615,6 @@ farm_ball:
     title: false
     titleName: ''
     titleText: ''
-
 shears:
   material: SHEARS
   name: '&x&F&8&B&E&F&B&lСупер Ножницы &7- &x&F&8&B&E&F&B3 &7использований'
@@ -667,3 +627,46 @@ shears:
     inRegion: '&x&F&8&B&E&F&B&lСупер Ножницы &8» &cТы находишься в регионе, действие невозможно'
     isBreaking: '&x&F&8&B&E&F&B&lСупер Ножницы &8» &fПодождите &x&F&8&B&E&F&B%time% &fсек.'
     breakMessage: '&x&F&8&B&E&F&B&lСупер Ножницы &8» &cНожницы сломались!'
+custom_items:
+  angel_ball:
+    name: '&#F8BEFB&lШар Ангела'
+    material: PLAYER_HEAD
+    modelData: 5012
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWJjYjBiNWJmY2EyYmI3NjljYjM4NjM1ZWRlYzBmMTE0NzRiNjdjM2RkMjE2NWFlZGIwNjA0ZTc1YzM2In19fQ==
+    effect: RESISTANCE
+    amplifier: 1
+    duration: 8
+    cooldown: 90
+    cooldownMessage: '&7» &fПерезарядка &#F8BEFBШара Ангела&f: &#F8BEFB%time% &fсек.'
+    lore:
+    - '&cПроклятие утраты'
+    - ''
+    - '&7Когда во второй руке:'
+    - ' &#55FF55+3 к Броне'
+    - ' &#55FF55+6 к Здоровью'
+    - ' &#55FF55+2.5 к Урону'
+    - ' &#55FF55+15% к Скорости'
+    - ''
+    - '&7При нажатии SHIFT:'
+    - ' &#F8BEFBСопротивление II (0:08)'
+  dadmin_ball:
+    name: '&#FF3B4E&lШар Д.Админа'
+    material: PLAYER_HEAD
+    modelData: 5013
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWY0YzIxZDE3YWQ2MzYzODdlYTNjNzM2YmZmNmFkZTg5NzMxN2UxMzc0Y2Q1ZDliMWMxNWU2ZTg5NTM0MzIifX19
+    effect: STRENGTH
+    amplifier: 2
+    duration: 8
+    cooldown: 75
+    cooldownMessage: '&7» &fПерезарядка &#FF3B4EШара Д.Админа&f: &#FF3B4E%time% &fсек.'
+    lore:
+    - '&cПроклятие утраты'
+    - ''
+    - '&7Когда во второй руке:'
+    - ' &#55FF55+4 к Броне'
+    - ' &#55FF55+10 к Здоровью'
+    - ' &#55FF55+3.5 к Урону'
+    - ' &#55FF55+20% к Скорости'
+    - ''
+    - '&7При нажатии SHIFT:'
+    - ' &#FF3B4EСила III (0:08)'

@@ -3,13 +3,13 @@ groups:
     titan: 1
     hero: 2
   angel:
-    dragon: 2
-    imperator: 2
-    magister: 3
-  dhelper:
     bull: 1
     dragon: 3
     imperator: 3
+  dhelper:
+    dragon: 2
+    imperator: 2
+    magister: 3
   dadmin:
     cobra: 1
     hydra: 2
@@ -30,12 +30,12 @@ weight:
   cobra: 10
   god: 11
   pegas: 12
-  angel: 13
-  dhelper: 14
+  angel: 14
+  dhelper: 13
   dadmin: 15
 grant commands:
-  - lp user %player% parent add %group%
-  - bc &x&F&8&B&E&F&B%granter% &fвыдал игроку &x&F&8&B&E&F&B%player% &fпривилегию &x&F&8&B&E&F&B%group%
+- lp user %player% parent add %group%
+- bc &x&F&8&B&E&F&B%granter% &fвыдал игроку &x&F&8&B&E&F&B%player% &fпривилегию &x&F&8&B&E&F&B%group%
 messages:
   help: '&x&F&8&B&E&F&BГрант &7» &f/grant &x&F&8&B&E&F&B[ник] [группа]&f!'
   player not found: '&cИгрок не найден!'

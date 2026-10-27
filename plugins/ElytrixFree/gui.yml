@@ -1,0 +1,300 @@
+menu:
+  title: '&fꈁꀀꈂꍘꈂꀁ&fꈃꄄ'
+  size: 54
+design:
+  fill: none
+  panes: {}
+info:
+  enabled: true
+  slot: 4
+  material: clock
+  name: '&7« &#F8BEFB&lТвоё время на Elytrix &7»'
+  lore:
+  - '&#F8BEFB&l┃'
+  - '&#F8BEFB&l┃ &fНаиграно на сервере: &#F8BEFB{time}'
+  - '&#F8BEFB&l┃ &fИграй на сервере и забирай'
+  - '&#F8BEFB&l┃ &fбесплатные &#F8BEFBриллики&f, &#F8BEFBкейсы&f, &#F8BEFBшары &fи &#F8BEFBдонат&f!'
+  - '&#F8BEFB&l┃'
+  - '&7● &fВремя копится автоматически во время игры'
+close:
+  enabled: true
+  slot: 49
+  material: structure_void
+  name: '&7« &cЗакрыть меню &7»'
+  lore:
+  - '&#F8BEFB&l┃ &fНажмите, чтобы закрыть меню наград.'
+locked:
+  slot: 22
+  material: barrier
+  name: '&c&lПривяжите аккаунт к Telegram'
+  lore:
+  - '&#F8BEFB&l┃'
+  - '&#F8BEFB&l┃ &fЧтобы забирать бесплатные награды,'
+  - '&#F8BEFB&l┃ &fпривяжите аккаунт через команду &#F8BEFB/addtg'
+  - '&#F8BEFB&l┃'
+  - '&7● &fНажмите, чтобы выполнить &f/addtg'
+  command: addtg
+messages:
+  already-claimed:
+  - ''
+  - '&7☁ &#F8BEFB&lElytrix &8» &fБесплатные награды'
+  - '&#F8BEFB&l┃ &fНаграда {reward} &cуже получена!'
+  - '&#F8BEFB&l┃ &fКаждую награду можно забрать один раз.'
+  - ''
+  not-enough-time:
+  - ''
+  - '&7☁ &#F8BEFB&lElytrix &8» &fБесплатные награды'
+  - '&#F8BEFB&l┃ &fНаграда {reward} &cещё недоступна!'
+  - '&#F8BEFB&l┃ &fТребуется наиграть: &#F8BEFB{need}'
+  - '&#F8BEFB&l┃ &fВаше время в игре: &f{time}'
+  - ''
+  inventory-full:
+  - ''
+  - '&7☁ &#F8BEFB&lElytrix &8» &cВаш инвентарь полон! Освободите слот.'
+  - ''
+  not-linked:
+  - ''
+  - '&7☁ &#F8BEFB&lElytrix &8» &cСначала привяжите аккаунт через /addtg!'
+  - ''
+  link-failed:
+  - ''
+  - '&7☁ &#F8BEFB&lElytrix &8» &cОшибка проверки привязки, попробуйте через пару секунд.'
+  - ''
+  success:
+  - ''
+  - '&7☁ &#F8BEFB&lElytrix &8» &a&lНаграда успешно получена!'
+  - '&#F8BEFB&l┃ &fВы забрали: &#F8BEFB{reward}'
+  - '&#F8BEFB&l┃ &fПриятной игры на &#F8BEFBmc.Elytrix.pw&f!'
+  - ''
+  locked-run:
+  - ''
+  - '&7☁ &#F8BEFB&lElytrix &8» &fВыполнена команда &#F8BEFB/{cmd}&f.'
+  - ''
+  no-rewards:
+  - '&cНаграды временно не настроены.'
+rewards:
+  free1:
+    slot: 20
+    minutes: 10
+    material: head:eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDA4Y2U3ZGViYTU2YjcyNmE4MzJiNjExMTVjYTE2MzM2MTM1OWMzMDQzNGY3ZDVlM2MzZmFhNmZlNDA1MiJ9fX0=
+    claimed-material: minecart
+    name: '&7« &#F8BEFB&lПодарок Новичка &8(&f#1&8) &7»'
+    lore:
+    - '&#F8BEFB&l┃'
+    - '&#F8BEFB&l┃ &fНаиграть: &#F8BEFB{need}'
+    - '&#F8BEFB&l┃ &fВаше время: &f{time}'
+    - '&#F8BEFB&l┃'
+    - '&#F8BEFB&l┃ &fСодержимое награды:'
+    - '&#F8BEFB&l┃  &#F8BEFB• &f15 000$ игровой валюты'
+    - '&#F8BEFB&l┃  &#F8BEFB• &f15 &#F8BEFBРилликов &fꐃ'
+    - '&#F8BEFB&l┃  &#F8BEFB• &fКейс с валютой &7x1'
+    - '&#F8BEFB&l┃'
+    - '{status}'
+    items: []
+    commands:
+    - eco give {player} 15000
+    - p give {player} 15
+    - cases give {player} money 1
+  free2:
+    slot: 21
+    minutes: 30
+    material: head:eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWZkMTA4MzgzZGZhNWIwMmU4NjYzNTYwOTU0MTUyMGU0ZTE1ODk1MmQ2OGMxYzhmOGYyMDBlYzdlODg2NDJkIn19fQ==
+    claimed-material: minecart
+    name: '&7« &#F8BEFB&lСтартовый Капитал &8(&f#2&8) &7»'
+    lore:
+    - '&#F8BEFB&l┃'
+    - '&#F8BEFB&l┃ &fНаиграть: &#F8BEFB{need}'
+    - '&#F8BEFB&l┃ &fВаше время: &f{time}'
+    - '&#F8BEFB&l┃'
+    - '&#F8BEFB&l┃ &fСодержимое награды:'
+    - '&#F8BEFB&l┃  &#F8BEFB• &f35 000$ игровой валюты'
+    - '&#F8BEFB&l┃  &#F8BEFB• &f30 &#F8BEFBРилликов &fꐃ'
+    - '&#F8BEFB&l┃  &#F8BEFB• &fЗолотые яблоки &7x16'
+    - '&#F8BEFB&l┃'
+    - '{status}'
+    items: []
+    commands:
+    - eco give {player} 35000
+    - p give {player} 30
+    - minecraft:give {player} golden_apple 16
+  free3:
+    slot: 22
+    minutes: 60
+    material: head:eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDVjNmRjMmJiZjUxYzM2Y2ZjNzcxNDU4NWE2YTU2ODNlZjJiMTRkNDdkOGZmNzE0NjU0YTg5M2Y1ZGE2MjIifX19
+    claimed-material: minecart
+    name: '&7« &#F8BEFB&lЛарец Рилликов &8(&f#3&8) &7»'
+    lore:
+    - '&#F8BEFB&l┃'
+    - '&#F8BEFB&l┃ &fНаиграть: &#F8BEFB{need}'
+    - '&#F8BEFB&l┃ &fВаше время: &f{time}'
+    - '&#F8BEFB&l┃'
+    - '&#F8BEFB&l┃ &fСодержимое награды:'
+    - '&#F8BEFB&l┃  &#F8BEFB• &f50 &#F8BEFBРилликов &fꐃ'
+    - '&#F8BEFB&l┃  &#F8BEFB• &fКейс с Рилликами &7x1'
+    - '&#F8BEFB&l┃  &#F8BEFB• &fТрапка &7x2'
+    - '&#F8BEFB&l┃'
+    - '{status}'
+    items: []
+    commands:
+    - p give {player} 50
+    - cases give {player} rilik 1
+    - rwitems trap {player}
+    - rwitems trap {player}
+  free4:
+    slot: 23
+    minutes: 120
+    material: head:eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2Y2YmY5NThhYmQ3ODI5NWVlZDZmZmMyOTNiMWFhNTk1MjZlODBmNTQ5NzY4MjllYTA2ODMzN2MyZjVlOCJ9fX0=
+    claimed-material: minecart
+    name: '&7« &#F8BEFB&lНабор Искателя &8(&f#4&8) &7»'
+    lore:
+    - '&#F8BEFB&l┃'
+    - '&#F8BEFB&l┃ &fНаиграть: &#F8BEFB{need}'
+    - '&#F8BEFB&l┃ &fВаше время: &f{time}'
+    - '&#F8BEFB&l┃'
+    - '&#F8BEFB&l┃ &fСодержимое награды:'
+    - '&#F8BEFB&l┃  &#F8BEFB• &f75 000$ игровой валюты'
+    - '&#F8BEFB&l┃  &#F8BEFB• &fКейс с Вещами &7x1'
+    - '&#F8BEFB&l┃  &#F8BEFB• &fДезориентация (Анти-Флай) &7x2'
+    - '&#F8BEFB&l┃'
+    - '{status}'
+    items: []
+    commands:
+    - eco give {player} 75000
+    - cases give {player} ditems 1
+    - rwitems anti_fly {player}
+    - rwitems anti_fly {player}
+  free5:
+    slot: 24
+    minutes: 240
+    material: totem_of_undying
+    claimed-material: minecart
+    name: '&7« &#F8BEFB&lБоевой Трофей &8(&f#5&8) &7»'
+    lore:
+    - '&#F8BEFB&l┃'
+    - '&#F8BEFB&l┃ &fНаиграть: &#F8BEFB{need}'
+    - '&#F8BEFB&l┃ &fВаше время: &f{time}'
+    - '&#F8BEFB&l┃'
+    - '&#F8BEFB&l┃ &fСодержимое награды:'
+    - '&#F8BEFB&l┃  &#F8BEFB• &f85 &#F8BEFBРилликов &fꐃ'
+    - '&#F8BEFB&l┃  &#F8BEFB• &fКейс с Донатом &7x1'
+    - '&#F8BEFB&l┃  &#F8BEFB• &fПривилегия &fꔤ &8(IMPERATOR на 3 дня)'
+    - '&#F8BEFB&l┃'
+    - '{status}'
+    items: []
+    commands:
+    - p give {player} 85
+    - cases give {player} donate 1
+    - lp user {player} parent addtemp imperator 3d
+  free6:
+    slot: 29
+    minutes: 360
+    material: head:eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWFiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
+    claimed-material: minecart
+    name: '&7« &#F8BEFB&lТайник Стихий &8(&f#6&8) &7»'
+    lore:
+    - '&#F8BEFB&l┃'
+    - '&#F8BEFB&l┃ &fНаиграть: &#F8BEFB{need}'
+    - '&#F8BEFB&l┃ &fВаше время: &f{time}'
+    - '&#F8BEFB&l┃'
+    - '&#F8BEFB&l┃ &fСодержимое награды:'
+    - '&#F8BEFB&l┃  &#F8BEFB• &fШар Кобры &7x1'
+    - '&#F8BEFB&l┃  &#F8BEFB• &f120 000$ игровой валюты'
+    - '&#F8BEFB&l┃  &#F8BEFB• &fКейс «Всё или Ничего» &7x1'
+    - '&#F8BEFB&l┃'
+    - '{status}'
+    items: []
+    commands:
+    - rwitems cobra_ball {player}
+    - eco give {player} 120000
+    - cases give {player} vsoilinichigo 1
+  free7:
+    slot: 30
+    minutes: 600
+    material: netherite_ingot
+    claimed-material: minecart
+    name: '&7« &#F8BEFB&lСокровище Гладиатора &8(&f#7&8) &7»'
+    lore:
+    - '&#F8BEFB&l┃'
+    - '&#F8BEFB&l┃ &fНаиграть: &#F8BEFB{need}'
+    - '&#F8BEFB&l┃ &fВаше время: &f{time}'
+    - '&#F8BEFB&l┃'
+    - '&#F8BEFB&l┃ &fСодержимое награды:'
+    - '&#F8BEFB&l┃  &#F8BEFB• &f150 &#F8BEFBРилликов &fꐃ'
+    - '&#F8BEFB&l┃  &#F8BEFB• &fКейс с Рилликами &7x2'
+    - '&#F8BEFB&l┃  &#F8BEFB• &fСмертельная Трапка &7x3'
+    - '&#F8BEFB&l┃'
+    - '{status}'
+    items: []
+    commands:
+    - p give {player} 150
+    - cases give {player} rilik 2
+    - rwitems ender_trap {player}
+    - rwitems ender_trap {player}
+    - rwitems ender_trap {player}
+  free8:
+    slot: 31
+    minutes: 960
+    material: enchanted_golden_apple
+    claimed-material: minecart
+    name: '&7« &#F8BEFB&lДраконий Дар &8(&f#8&8) &7»'
+    lore:
+    - '&#F8BEFB&l┃'
+    - '&#F8BEFB&l┃ &fНаиграть: &#F8BEFB{need}'
+    - '&#F8BEFB&l┃ &fВаше время: &f{time}'
+    - '&#F8BEFB&l┃'
+    - '&#F8BEFB&l┃ &fСодержимое награды:'
+    - '&#F8BEFB&l┃  &#F8BEFB• &fПривилегия &fꔨ &8(DRAGON навсегда!)'
+    - '&#F8BEFB&l┃  &#F8BEFB• &fШар Света &7x1'
+    - '&#F8BEFB&l┃  &#F8BEFB• &f250 000$ игровой валюты'
+    - '&#F8BEFB&l┃'
+    - '{status}'
+    items: []
+    commands:
+    - lp user {player} parent add dragon
+    - rwitems light_ball {player}
+    - eco give {player} 250000
+  free9:
+    slot: 32
+    minutes: 1440
+    material: nether_star
+    claimed-material: minecart
+    name: '&7« &#F8BEFB&lЗвезда Elytrix &8(&f#9&8) &7»'
+    lore:
+    - '&#F8BEFB&l┃'
+    - '&#F8BEFB&l┃ &fНаиграть: &#F8BEFB{need}'
+    - '&#F8BEFB&l┃ &fВаше время: &f{time}'
+    - '&#F8BEFB&l┃'
+    - '&#F8BEFB&l┃ &fСодержимое награды:'
+    - '&#F8BEFB&l┃  &#F8BEFB• &f300 &#F8BEFBРилликов &fꐃ'
+    - '&#F8BEFB&l┃  &#F8BEFB• &fКейс с Донатом &7x2'
+    - '&#F8BEFB&l┃  &#F8BEFB• &fШар Хаоса &7x1'
+    - '&#F8BEFB&l┃'
+    - '{status}'
+    items: []
+    commands:
+    - p give {player} 300
+    - cases give {player} donate 2
+    - rwitems chaos_ball {player}
+  free10:
+    slot: 33
+    minutes: 2160
+    material: head:eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWY0YzIxZDE3YWQ2MzYzODdlYTNjNzM2YmZmNmFkZTg5NzMxN2UxMzc0Y2Q1ZDliMWMxNWU2ZTg5NTM0MzIifX19
+    claimed-material: minecart
+    name: '&7« &#FF3B4E&lКоролевский Гранд-Приз &8(&f#10&8) &7»'
+    lore:
+    - '&#F8BEFB&l┃'
+    - '&#F8BEFB&l┃ &fНаиграть: &#F8BEFB{need}'
+    - '&#F8BEFB&l┃ &fВаше время: &f{time}'
+    - '&#F8BEFB&l┃'
+    - '&#F8BEFB&l┃ &fСодержимое награды:'
+    - '&#F8BEFB&l┃  &#55FF55• &fЛегендарный Кейс (Супер Донат) &7x1'
+    - '&#F8BEFB&l┃  &#F8BEFB• &f500 &#F8BEFBРилликов &fꐃ'
+    - '&#F8BEFB&l┃  &#F8BEFB• &fШар Бога &7x1 &f+ 500 000$'
+    - '&#F8BEFB&l┃'
+    - '{status}'
+    items: []
+    commands:
+    - cases give {player} legendary 1
+    - p give {player} 500
+    - rwitems god_ball {player}
+    - eco give {player} 500000

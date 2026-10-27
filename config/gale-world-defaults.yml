@@ -1,0 +1,25 @@
+_version: 1
+gameplay-mechanics:
+  entities-can-random-stroll-into-non-ticking-chunks: false
+  entity-wake-up-duration-ratio-standard-deviation: 0.2
+  fixes:
+    broadcast-crit-animations-as-the-entity-being-critted: false
+    mc-121706: false
+    mc-238526: false
+  hide-flames-on-entities-with-fire-resistance: false
+  try-respawn-ender-dragon-after-end-crystal-place: true
+small-optimizations:
+  load-chunks:
+    to-activate-climbing-entities: false
+    to-spawn-phantoms: false
+  max-projectile-chunk-loads:
+    per-projectile:
+      max: 6
+      remove-from-world-after-reach-limit: false
+      reset-movement-after-reach-limit: false
+    per-tick: 6
+  reduced-intervals:
+    check-stuck-in-wall: 10
+    villager-item-repickup: 100
+  save-fireworks: false
+  use-optimized-sheep-offspring-color: true

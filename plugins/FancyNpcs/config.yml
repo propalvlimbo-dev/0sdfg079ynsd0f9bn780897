@@ -1,0 +1,9 @@
+language: ru
+mute_version_notification: true
+enable_autosave: true
+autosave_interval: 15
+npc_update_interval: 30
+npc_update_visibility_interval: 20
+turn_to_player_distance: 10
+visibility_distance: 64
+remove_npcs_from_playerlist_delay: 40

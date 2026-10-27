@@ -1,0 +1,31 @@
+bossbar:
+  enable: true
+  style: SOLID
+  color: PINK
+  title: '&#F8BEFB&lРежим ПВП &8| &fДо окончания: &#F8BEFB{time}'
+  progress: true
+actions:
+  on-start-damager:
+  - '[MESSAGE] &#F8BEFBРежим боя &7» &fВы начали бой с &#F8BEFB{0}&f! Не выходите из игры.'
+  on-start-target:
+  - '[MESSAGE] &#F8BEFBРежим боя &7» &fИгрок &#F8BEFB{0} &fнапал на вас! Не выходите из игры.'
+  on-join:
+  - '[MESSAGE] &#F8BEFBРежим боя &7» &fВы вступили в бой с &#F8BEFB{0}&f!'
+  on-merge: []
+  on-stop:
+  - '[MESSAGE] &#F8BEFBРежим боя &7» &fБой &aзавершён&f. Теперь можно безопасно выходить!'
+  on-item-cooldown:
+  - '[MESSAGE] &#F8BEFBРежим боя &7» &fПодождите &#F8BEFB{0} &fперед использованием &#F8BEFB{1}&f!'
+  on-pvp-leave:
+  - '[BROADCASTMESSAGE] &#F8BEFBРежим боя &7» &fИгрок &#F8BEFB{0} &fиспугался и вышел во время боя (&cубит&f)!'
+  on-pvp-command:
+  - '[MESSAGE] &#F8BEFBРежим боя &7» &cКоманды запрещены во время ПВП!'
+  on-interact-prevention:
+  - '[MESSAGE] &#F8BEFBРежим боя &7» &cНельзя использовать {0} во время боя!'
+  on-tick:
+  - '[ACTIONBAR] &#F8BEFB&l⚔ Режим ПВП &8| &fОсталось: &#F8BEFB{0}'
+  on-player-command:
+  - '[MESSAGE] &#F8BEFBРежим боя &7» &cЭтот игрок сейчас находится в бою!'
+  on-cooldown-expired: []
+  on-item-held: []
+config-version: 2

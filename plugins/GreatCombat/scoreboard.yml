@@ -1,0 +1,15 @@
+enable: true
+title: '  &#F8BEFB&lᴇʟʏᴛʀɪx &8| &c&lПВП  '
+lines:
+- ''
+- ' &#F9C5FCꐁ &fРежим боя активен!'
+- ' &#F9C5FCꐁ &fДо конца: &#F8BEFB{time}'
+- ''
+- ' &#F9C5FCꐁ &fПротивники:'
+- ' {opponents}'
+- ''
+- ' &7Выход из игры = &cСмерть'
+- '   &#F9C5FChttps://elytrix.pw'
+opponent: '&#F8BEFB▸ &f{player} &c{health}❤ &7({ping}ms)'
+empty: '&7Нет данных'
+config-version: 1

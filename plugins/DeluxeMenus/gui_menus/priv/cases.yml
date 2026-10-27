@@ -1,8 +1,8 @@
-menu_title: '§fꈁꀀꈂꍕꈂꀁ§fꈃꄁ'
+menu_title: §fꈁꀀꈂꍕꈂꀁ§fꈃꄁ
 open_command: cases
 size: 54
 items:
-  'structure_void':
+  structure_void:
     material: structure_void
     slots:
     - 9
@@ -19,21 +19,21 @@ items:
     - 38
     display_name: '&#55FF55&lКейсы с рилликами'
     lore:
-      - ''
-      - '&#AAAAAAЭтот кейс - не просто контейнер с обычными предметами'
-      - '&#AAAAAAэто путь к обогащению и успеху в виртуальной реальности'
-      - '&#AAAAAAвашей любимой игры!'
-      - ''
-      - ' &f&l&nЦены:'
-      - ''
-      - '  &#AAAAAA▶ &#55FF55&l1&#FFFFFF Кейса с рилликами&#AAAAAA - &#55FF5599 руб.'
-      - '  &#AAAAAA▶ &f&l3&#FFFFFF Кейсов с рилликами&#AAAAAA - &#55FF55269 руб.'
-      - '  &#AAAAAA▶ &#FF5555&l5&#FFFFFF Кейсов с рилликами&#AAAAAA - &#55FF55419 руб.'
-      - ''
-      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&lhttps://elytrix.pw'
+    - ''
+    - '&#AAAAAAЭтот кейс - не просто контейнер с обычными предметами'
+    - '&#AAAAAAэто путь к обогащению и успеху в виртуальной реальности'
+    - '&#AAAAAAвашей любимой игры!'
+    - ''
+    - ' &f&l&nЦены:'
+    - ''
+    - '  &#AAAAAA▶ &#55FF55&l1&#FFFFFF Кейса с рилликами&#AAAAAA - &#55FF5599 руб.'
+    - '  &#AAAAAA▶ &f&l3&#FFFFFF Кейсов с рилликами&#AAAAAA - &#55FF55269 руб.'
+    - '  &#AAAAAA▶ &#FF5555&l5&#FFFFFF Кейсов с рилликами&#AAAAAA - &#55FF55419 руб.'
+    - ''
+    - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&lhttps://elytrix.pw'
     click_commands:
-      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&lhttps://elytrix.pw' 
-  'structure_void_1':
+    - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&lhttps://elytrix.pw'
+  structure_void_1:
     material: structure_void
     slots:
     - 12
@@ -42,21 +42,21 @@ items:
     - 22
     display_name: '&#FAD8FC&lКейсы с донатом'
     lore:
-      - ''
-      - '&#AAAAAAОтличный вариант, если у Вас немного денег'
-      - '&#AAAAAAно дорогую донат все же хочется. Здесь решает'
-      - '&#AAAAAAтолько ваша удача!'
-      - ''
-      - ' &f&l&nЦены:'
-      - ''
-      - '  &#AAAAAA▶ &#55FF55&l3&#FFFFFF Донат-Кейса&#AAAAAA - &#55FF55119 руб.'
-      - '  &#AAAAAA▶ &f&l10&#FFFFFF Донат-кейсов&#AAAAAA - &#55FF55249 руб.'
-      - '  &#AAAAAA▶ &#FF5555&l25&#FFFFFF Донат-кейсов&#AAAAAA - &#55FF55399 руб.'
-      - ''
-      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&lhttps://elytrix.pw'
+    - ''
+    - '&#AAAAAAОтличный вариант, если у Вас немного денег'
+    - '&#AAAAAAно дорогую донат все же хочется. Здесь решает'
+    - '&#AAAAAAтолько ваша удача!'
+    - ''
+    - ' &f&l&nЦены:'
+    - ''
+    - '  &#AAAAAA▶ &#55FF55&l3&#FFFFFF Донат-Кейса&#AAAAAA - &#55FF55119 руб.'
+    - '  &#AAAAAA▶ &f&l10&#FFFFFF Донат-кейсов&#AAAAAA - &#55FF55249 руб.'
+    - '  &#AAAAAA▶ &#FF5555&l25&#FFFFFF Донат-кейсов&#AAAAAA - &#55FF55399 руб.'
+    - ''
+    - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&lhttps://elytrix.pw'
     click_commands:
-      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&lhttps://elytrix.pw' 
-  'structure_void_2':
+    - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&lhttps://elytrix.pw'
+  structure_void_2:
     material: structure_void
     slots:
     - 14
@@ -65,45 +65,45 @@ items:
     - 24
     display_name: '&#55FFFF&lКейсы с валютой'
     lore:
-      - ''
-      - '&#AAAAAAВам не хватает монеток на приобретение'
-      - '&#AAAAAAчего-либо? Не беда! Ведь Вы'
-      - '&#AAAAAAможете купить кейсы с &#F8BEFBвалютой &#AAAAAAна сайте и'
-      - '&#AAAAAAсиюминутно обогатиться на сервере!'
-      - ''
-      - ' &f&l&nЦены:'
-      - ''
-      - '  &#AAAAAA▶ &#55FF55&l3&#FFFFFF Кейса с валютой&#AAAAAA - &#55FF5546 руб.'
-      - '  &#AAAAAA▶ &f&l10&#FFFFFF Кейсов с валютой&#AAAAAA - &#55FF55149 руб.'
-      - '  &#AAAAAA▶ &#FF5555&l25&#FFFFFF Кейсов с валютой&#AAAAAA - &#55FF55399 руб.'
-      - ''
-      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&lhttps://elytrix.pw'
+    - ''
+    - '&#AAAAAAВам не хватает монеток на приобретение'
+    - '&#AAAAAAчего-либо? Не беда! Ведь Вы'
+    - '&#AAAAAAможете купить кейсы с &#F8BEFBвалютой &#AAAAAAна сайте и'
+    - '&#AAAAAAсиюминутно обогатиться на сервере!'
+    - ''
+    - ' &f&l&nЦены:'
+    - ''
+    - '  &#AAAAAA▶ &#55FF55&l3&#FFFFFF Кейса с валютой&#AAAAAA - &#55FF5546 руб.'
+    - '  &#AAAAAA▶ &f&l10&#FFFFFF Кейсов с валютой&#AAAAAA - &#55FF55149 руб.'
+    - '  &#AAAAAA▶ &#FF5555&l25&#FFFFFF Кейсов с валютой&#AAAAAA - &#55FF55399 руб.'
+    - ''
+    - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&lhttps://elytrix.pw'
     click_commands:
-      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&lhttps://elytrix.pw' 
-  'structure_void_3':
+    - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&lhttps://elytrix.pw'
+  structure_void_3:
     material: structure_void
     slots:
     - 16
     - 17
     - 25
     - 26
-    display_name: '&#0000AA&lКейсы с префиксами'
+    display_name: <#F8BEFB>&lЛЕГЕНДАРНЫЙ КЕЙС — СУПЕР КЕЙС С ДОНАТОМ</#FFFFFF>
     lore:
-      - ''
-      - '&#AAAAAAУникальный набор состоящий из легендарных'
-      - '&#AAAAAAпрефиксов, которые можно выбить'
-      - '&#AAAAAAтолько из данного кейса!'
-      - ''
-      - ' &f&l&nЦены:'
-      - ''
-      - '  &#AAAAAA▶ &#55FF55&l3&#FFFFFF Кейса с префиксами&#AAAAAA - &#55FF5559 руб.'
-      - '  &#AAAAAA▶ &f&l10&#FFFFFF Кейсов с префиксами&#AAAAAA - &#55FF55149 руб.'
-      - '  &#AAAAAA▶ &#FF5555&l25&#FFFFFF Кейсов с префиксами&#AAAAAA - &#55FF55239 руб.'
-      - ''
-      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&lhttps://elytrix.pw'
+    - ''
+    - '&#AAAAAAСупер кейс с повышенными шансами, из которого'
+    - '&#AAAAAAвыпадают исключительно &#F8BEFBтоповые привилегии'
+    - '&#AAAAAAот &#55FF55COBRA &#AAAAAAдо &#FF3B4ED.ADMIN&#AAAAAA!'
+    - ''
+    - ' &f&l&nЦены:'
+    - ''
+    - '  &#AAAAAA▶ &#55FF55&l1&#FFFFFF Легендарный кейс&#AAAAAA - &#55FF5589 руб.'
+    - '  &#AAAAAA▶ &f&l3&#FFFFFF Легендарных кейса&#AAAAAA - &#55FF55249 руб.'
+    - '  &#AAAAAA▶ &#FF5555&l5&#FFFFFF Легендарных кейсов&#AAAAAA - &#55FF55399 руб.'
+    - ''
+    - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&lhttps://elytrix.pw'
     click_commands:
-      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&lhttps://elytrix.pw' 
-  'structure_void_4':
+    - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&lhttps://elytrix.pw'
+  structure_void_4:
     material: structure_void
     slots:
     - 30
@@ -112,21 +112,21 @@ items:
     - 40
     display_name: '&#AA00AA&lКейсы с вещами'
     lore:
-      - ''
-      - '&#AAAAAAЭтот кейс даёт возможность быстро получить предметы'
-      - '&#AAAAAAкоторые помогут начать твое выживание на нашем'
-      - '&#AAAAAAлюбимом сервере!'
-      - ''
-      - ' &f&l&nЦены:'
-      - ''
-      - '  &#AAAAAA▶ &#55FF55&l5&#FFFFFF Кейса с вещами&#AAAAAA - &#55FF5599 руб.'
-      - '  &#AAAAAA▶ &f&l10&#FFFFFF Кейсов с вещами&#AAAAAA - &#55FF55179 руб.'
-      - '  &#AAAAAA▶ &#FF5555&l15&#FFFFFF Кейсов с вещами&#AAAAAA - &#55FF55265 руб.'
-      - ''
-      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&lhttps://elytrix.pw'
+    - ''
+    - '&#AAAAAAЭтот кейс даёт возможность быстро получить предметы'
+    - '&#AAAAAAкоторые помогут начать твое выживание на нашем'
+    - '&#AAAAAAлюбимом сервере!'
+    - ''
+    - ' &f&l&nЦены:'
+    - ''
+    - '  &#AAAAAA▶ &#55FF55&l5&#FFFFFF Кейса с вещами&#AAAAAA - &#55FF5599 руб.'
+    - '  &#AAAAAA▶ &f&l10&#FFFFFF Кейсов с вещами&#AAAAAA - &#55FF55179 руб.'
+    - '  &#AAAAAA▶ &#FF5555&l15&#FFFFFF Кейсов с вещами&#AAAAAA - &#55FF55265 руб.'
+    - ''
+    - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&lhttps://elytrix.pw'
     click_commands:
-      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&lhttps://elytrix.pw' 
-  'structure_void_5':
+    - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&lhttps://elytrix.pw'
+  structure_void_5:
     material: structure_void
     slots:
     - 32
@@ -135,22 +135,22 @@ items:
     - 42
     display_name: '&#FAD8FC&lКейсы с донат вещами'
     lore:
-      - ''
-      - '&#AAAAAAЭтот кейс - предлагает вам уникальный шанс окунуться в мир тайн и сокровищ'
-      - '&#AAAAAAcкрытых внутри этого загадочного контейнера.'
-      - '&#AAAAAAОткройте его и вас ждет множество захватывающих предметов,'
-      - '&#AAAAAAкоторые изменят ваше приключение в игре!'
-      - ''
-      - ' &f&l&nЦены:'
-      - ''
-      - '  &#AAAAAA▶ &#55FF55&l3&#FFFFFF Кейса с донат вещами&#AAAAAA - &#55FF55399 руб.'
-      - '  &#AAAAAA▶ &f&l5&#FFFFFF Кейсов с донат вещами&#AAAAAA - &#55FF55649 руб.'
-      - '  &#AAAAAA▶ &#FF5555&l10&#FFFFFF Кейсов с донат вещами&#AAAAAA - &#55FF551299 руб.'
-      - ''
-      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&lhttps://elytrix.pw'
+    - ''
+    - '&#AAAAAAЭтот кейс - предлагает вам уникальный шанс окунуться в мир тайн и сокровищ'
+    - '&#AAAAAAcкрытых внутри этого загадочного контейнера.'
+    - '&#AAAAAAОткройте его и вас ждет множество захватывающих предметов,'
+    - '&#AAAAAAкоторые изменят ваше приключение в игре!'
+    - ''
+    - ' &f&l&nЦены:'
+    - ''
+    - '  &#AAAAAA▶ &#55FF55&l3&#FFFFFF Кейса с донат вещами&#AAAAAA - &#55FF55399 руб.'
+    - '  &#AAAAAA▶ &f&l5&#FFFFFF Кейсов с донат вещами&#AAAAAA - &#55FF55649 руб.'
+    - '  &#AAAAAA▶ &#FF5555&l10&#FFFFFF Кейсов с донат вещами&#AAAAAA - &#55FF551299 руб.'
+    - ''
+    - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&lhttps://elytrix.pw'
     click_commands:
-      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&lhttps://elytrix.pw' 
-  'structure_void_6':
+    - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&lhttps://elytrix.pw'
+  structure_void_6:
     material: structure_void
     slots:
     - 34
@@ -159,17 +159,17 @@ items:
     - 44
     display_name: '&#AA0000&lКейсы с китами'
     lore:
-      - ''
-      - '&#AAAAAAЭтот кейс - предлагает вам уникальную возможность'
-      - '&#AAAAAAобзавестись наборами экипировки, которые сделают вашего персонажа непобедимым. '
-      - '&#AAAAAAОткройте этот кейс и отправляйтесь на поиски славы и богатства!'
-      - ''
-      - ' &f&l&nЦены:'
-      - ''
-      - '  &#AAAAAA▶ &#55FF55&l3&#FFFFFF Кейса с вещами&#AAAAAA - &#55FF55299 руб.'
-      - '  &#AAAAAA▶ &f&l5&#FFFFFF Кейсов с вещами&#AAAAAA - &#55FF55489 руб.'
-      - '  &#AAAAAA▶ &#FF5555&l10&#FFFFFF Кейсов с вещами&#AAAAAA - &#55FF55799 руб.'
-      - ''
-      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&lhttps://elytrix.pw'
+    - ''
+    - '&#AAAAAAЭтот кейс - предлагает вам уникальную возможность'
+    - '&#AAAAAAобзавестись наборами экипировки, которые сделают вашего персонажа непобедимым. '
+    - '&#AAAAAAОткройте этот кейс и отправляйтесь на поиски славы и богатства!'
+    - ''
+    - ' &f&l&nЦены:'
+    - ''
+    - '  &#AAAAAA▶ &#55FF55&l3&#FFFFFF Кейса с вещами&#AAAAAA - &#55FF55299 руб.'
+    - '  &#AAAAAA▶ &f&l5&#FFFFFF Кейсов с вещами&#AAAAAA - &#55FF55489 руб.'
+    - '  &#AAAAAA▶ &#FF5555&l10&#FFFFFF Кейсов с вещами&#AAAAAA - &#55FF55799 руб.'
+    - ''
+    - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&lhttps://elytrix.pw'
     click_commands:
-      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&lhttps://elytrix.pw' 
+    - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&lhttps://elytrix.pw'

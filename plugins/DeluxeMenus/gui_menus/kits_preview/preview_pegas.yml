@@ -1,0 +1,245 @@
+menu_title: §fꈁꀀꈂꍗꈂꀁ§fꈃꄑ
+open_command: kitpreview_pegas
+size: 54
+items:
+  armor_0:
+    slot: 27
+    amount: 1
+    material: NETHERITE_BOOTS
+    enchantments:
+    - DEPTH_STRIDER;3
+    - FEATHER_FALLING;2
+    - PROTECTION;4
+    - UNBREAKING;3
+  armor_1:
+    slot: 18
+    amount: 1
+    material: NETHERITE_LEGGINGS
+    enchantments:
+    - PROTECTION;4
+    - UNBREAKING;3
+  armor_2:
+    slot: 9
+    amount: 1
+    material: NETHERITE_CHESTPLATE
+    enchantments:
+    - PROTECTION;4
+    - UNBREAKING;3
+  armor_3:
+    slot: 0
+    amount: 1
+    material: NETHERITE_HELMET
+    enchantments:
+    - AQUA_AFFINITY;1
+    - PROTECTION;4
+    - RESPIRATION;3
+    - UNBREAKING;3
+  kit_badge:
+    material: orange_shulker_box
+    slot: 45
+    display_name: '&#AAAAAAНабор &#F59E0B&lPEGAS'
+    lore:
+    - '&8Предпросмотр набора'
+    - ''
+    - '&7Слева отображается броня и'
+    - '&7предмет второй руки (шар/тотем).'
+    - '&7Справа — всё содержимое набора!'
+  loot_0:
+    slot: 2
+    amount: 1
+    material: NETHERITE_SWORD
+    enchantments:
+    - FIRE_ASPECT;2
+    - SHARPNESS;5
+    - UNBREAKING;3
+  loot_1:
+    slot: 3
+    amount: 1
+    material: NETHERITE_PICKAXE
+    enchantments:
+    - EFFICIENCY;7
+    - UNBREAKING;3
+  loot_2:
+    slot: 4
+    amount: 1
+    material: NETHERITE_AXE
+    enchantments:
+    - EFFICIENCY;7
+    - UNBREAKING;3
+  loot_3:
+    slot: 5
+    amount: 1
+    material: NETHERITE_SHOVEL
+    enchantments:
+    - EFFICIENCY;7
+    - UNBREAKING;3
+  loot_4:
+    slot: 6
+    amount: 1
+    material: BOW
+    enchantments:
+    - FLAME;1
+    - INFINITY;1
+    - MENDING;1
+    - POWER;7
+    - PUNCH;2
+    - UNBREAKING;2
+  loot_5:
+    slot: 7
+    amount: 16
+    material: ENDER_PEARL
+  loot_6:
+    slot: 8
+    amount: 1
+    material: TOTEM_OF_UNDYING
+  loot_7:
+    slot: 11
+    amount: 64
+    material: GOLDEN_CARROT
+  loot_8:
+    slot: 12
+    amount: 48
+    material: GOLDEN_APPLE
+  loot_9:
+    slot: 13
+    amount: 64
+    material: ARROW
+  loot_10:
+    slot: 14
+    amount: 32
+    material: TIPPED_ARROW
+  loot_11:
+    slot: 15
+    amount: 64
+    material: BROWN_CONCRETE
+  loot_12:
+    slot: 16
+    amount: 64
+    material: BROWN_WOOL
+  loot_13:
+    slot: 17
+    amount: 1
+    material: BROWN_SHULKER_BOX
+  loot_14:
+    slot: 20
+    amount: 16
+    material: ENDER_PEARL
+  loot_15:
+    slot: 21
+    amount: 1
+    material: TOTEM_OF_UNDYING
+  loot_16:
+    slot: 22
+    amount: 8
+    material: TIPPED_ARROW
+    display_name: '&b&lСтрела Бури'
+    lore:
+    - '&4Тошнота &7(00:12)'
+    - '&4Регенирация &7(00:10)'
+    - '&4Слепота &7(00:12)'
+    - '&4Утомление &7(00:12)'
+    item_flags:
+    - HIDE_ENCHANTS
+  loot_17:
+    slot: 23
+    amount: 64
+    material: DARK_OAK_WOOD
+  loot_18:
+    slot: 24
+    amount: 64
+    material: BROWN_TERRACOTTA
+  loot_19:
+    slot: 25
+    amount: 64
+    material: CHORUS_FRUIT
+  loot_20:
+    slot: 26
+    amount: 7
+    material: ENCHANTED_GOLDEN_APPLE
+  loot_21:
+    slot: 29
+    amount: 16
+    material: ENDER_PEARL
+  loot_22:
+    slot: 30
+    amount: 1
+    material: TOTEM_OF_UNDYING
+  loot_23:
+    slot: 31
+    amount: 1
+    material: ELYTRA
+    display_name: '&3&lКрылья ПЕГАСА'
+    enchantments:
+    - MENDING;1
+    - THORNS;1
+    - UNBREAKING;5
+    item_flags:
+    - HIDE_ATTRIBUTES
+  loot_24:
+    slot: 32
+    amount: 64
+    material: FIREWORK_ROCKET
+  loot_25:
+    slot: 33
+    amount: 32
+    material: DIAMOND_BLOCK
+  loot_26:
+    slot: 34
+    amount: 32
+    material: GOLD_BLOCK
+  loot_27:
+    slot: 35
+    amount: 32
+    material: IRON_BLOCK
+  loot_28:
+    slot: 38
+    amount: 32
+    material: LAPIS_BLOCK
+  loot_29:
+    slot: 39
+    amount: 16
+    material: ENDER_PEARL
+  loot_30:
+    slot: 40
+    amount: 1
+    material: TOTEM_OF_UNDYING
+  loot_31:
+    slot: 41
+    amount: 64
+    material: OBSIDIAN
+  loot_32:
+    slot: 42
+    amount: 22
+    material: END_CRYSTAL
+  loot_33:
+    slot: 43
+    amount: 1
+    material: TOTEM_OF_UNDYING
+  loot_34:
+    slot: 44
+    amount: 1
+    material: TOTEM_OF_UNDYING
+  btn_back:
+    material: structure_void
+    slots:
+    - 47
+    - 48
+    display_name: '&#F8BEFB◄ Назад к списку наборов'
+    lore:
+    - '&7Нажмите, чтобы вернуться в &f/kits'
+    click_commands:
+    - '[openguimenu] kits'
+  btn_claim:
+    material: structure_void
+    slots:
+    - 51
+    - 52
+    - 53
+    display_name: '&#55FF55&l✚ ПОЛУЧИТЬ НАБОР &7(&#AAAAAAНабор &#F59E0B&lPEGAS&7)'
+    lore:
+    - ''
+    - '&7Нажмите, чтобы сразу забрать'
+    - '&7набор &f/kit pegas &7в инвентарь!'
+    click_commands:
+    - '[close]'
+    - '[player] kit pegas'

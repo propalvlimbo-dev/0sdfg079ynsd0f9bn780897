@@ -1,0 +1,219 @@
+config-version: '3.0'
+async:
+  async-chunk-send:
+    enabled: true
+  async-mob-spawning:
+    enabled: true
+  async-pathfinding:
+    enabled: true
+    max-threads: 4
+    keepalive: 60
+    queue-size: 4096
+    reject-policy: CALLER_RUNS
+  async-playerdata-save:
+    enabled: true
+  async-entity-tracker:
+    enabled: false
+    threads: 0
+  parallel-world-ticking:
+    enabled: false
+    threads: 8
+    log-container-creation-stacktraces: false
+    disable-hard-throw: false
+    async-unsafe-read-handling: DISABLED
+performance:
+  check-survival-before-growth:
+    cactus-check-survival: false
+  despawn-time:
+    proactive-weak-loading-despawn: false
+  dont-save-entity:
+    dont-save-primed-tnt: true
+    dont-save-falling-block: true
+  dab:
+    enabled: true
+    dont-enable-if-in-water: true
+    start-distance: 8
+    max-tick-freq: 20
+    activation-dist-mod: 7
+    blacklisted-entities:
+    - villager
+    - axolotl
+    - hoglin
+    - zombified_piglin
+    - goat
+  enable-cached-minecraft-to-bukkit-entitytype-convert: true
+  entity-goal:
+    start-tick-chance:
+      nearest-attackable-target: -1
+      follow-parent: -1
+      avoid-entity: -1
+      temptation: -1
+      enderman-look-for-player: -1
+  fast-biome-manager-seed-obfuscation:
+    enabled: true
+    seed-obfuscation-key: 304498636991604657
+  faster-random-generator:
+    enabled: true
+    enable-for-worldgen: false
+    warn-for-slime-chunk: true
+    use-legacy-random-for-slime-chunk: false
+  faster-structure-gen-future-sequencing: true
+  reuse-random-ticking-blockpos: false
+  cache-biome:
+    enabled: true
+    mob-spawning: true
+    advancements: true
+  optimize-block-entities: true
+  optimize-mob-despawn: true
+  only-tick-items-in-hand: true
+  optimize-mob-spawning: true
+  optimize-no-action-time:
+    disable-light-check: false
+  optimize-player-movement: true
+  optimize-random-tick: true
+  optimize-waypoint: false
+  optimized-powered-rails: true
+  reduce-packets:
+    reduce-entity-move-packets: false
+    reduce-entity-motion-packets: false
+    disable-useless-particles: true
+  skip-ai-for-non-aware-mob: true
+  datapack:
+    skip-inactive-entity-for-execute-command: true
+  skip-map-item-data-updates-if-map-does-not-have-craftmaprenderer: true
+  sleeping-block-entity: true
+  throttle-mob-spawning:
+    enabled: true
+    monster:
+      min-failed: 8
+      spawn-chance: 25.0
+    creature:
+      min-failed: 8
+      spawn-chance: 25.0
+    ambient:
+      min-failed: 8
+      spawn-chance: 25.0
+    axolotls:
+      min-failed: 8
+      spawn-chance: 25.0
+    underground_water_creature:
+      min-failed: 8
+      spawn-chance: 25.0
+    water_creature:
+      min-failed: 8
+      spawn-chance: 25.0
+    water_ambient:
+      min-failed: 8
+      spawn-chance: 25.0
+  create-snapshot-on-retrieving-blockstate: false
+  use-virtual-thread:
+    bukkit-async-scheduler: true
+    folia-async-scheduler: false
+    async-chat-executor: true
+    download-pool: true
+    auth-pool: true
+    paper-configuration-pool: true
+fixes:
+  vanilla-bug-fix:
+    mc-270656: false
+    mc-301114: true
+    mc-301114-max-entries: 512
+    mc-152094: false
+  prevent-moving-into-weak-loaded-chunks:
+    enabled: true
+    projectiles: true
+gameplay-mechanisms:
+  afk-command:
+    enabled: false
+  inventory-overflow-event:
+    enabled: false
+    listener-class: com.example.package.PlayerInventoryOverflowEvent
+  player:
+    max-use-item-distance: 1.0000001
+  allow-tripwire-dupe: false
+  death-item-drop-knockback:
+    drop-around: true
+    horizontal-force: 0.5
+    vertical-force: 0.2
+  ice-and-snow-chance: 48
+  knockback:
+    snowball-knockback-players: false
+    egg-knockback-players: false
+    can-player-knockback-zombie: true
+    flush-location-while-knockback-player: true
+    old-blast-protection-explosion-knockback: false
+  only-player-pushable: false
+  spawner-settings:
+    enabled: false
+    checks:
+      light-level-check: false
+      spawner-max-nearby-check: true
+      check-for-nearby-players: true
+      spawner-block-checks: false
+      water-prevent-spawn-check: false
+      ignore-spawn-rules: false
+    min-spawn-delay: 200
+    max-spawn-delay: 800
+  use-spigot-item-merging-mechanism: false
+  use-vanilla-hopper: false
+network:
+  async-switch-state: true
+  chat-message-signature: false
+  OptimizeNonFlushPacketSending: false
+  protocol-support:
+    strict-mode: false
+    jade-protocol: false
+    appleskin-protocol: false
+    appleskin-protocol-sync-tick-interval: 20
+    asteorbar-protocol: false
+    chatimage-protocol: false
+    xaero-map-protocol: false
+    xaero-map-server-id: 512920065
+    syncmatica-protocol: false
+    syncmatica-quota: false
+    syncmatica-quota-limit: 40000000
+    do-a-barrel-roll-protocol: false
+    do-a-barrel-roll-allow-thrusting: false
+    do-a-barrel-roll-force-enabled: false
+    do-a-barrel-roll-force-installed: false
+    do-a-barrel-roll-installed-timeout: 0
+misc:
+  connection-message:
+    join:
+      enabled: true
+      message: default
+    quit:
+      enabled: true
+      message: default
+  disable-world-data-saving:
+    worlds: []
+  including-5s-in-get-tps: true
+  lag-compensation:
+    enabled: false
+    enable-for-water: false
+    enable-for-lava: false
+  region-format:
+    format-name: MCA
+    compress-level: 6
+    io-thread-count: 6
+    io-flush-delay: -1
+    linear-use-virtual-thread: true
+  remove-change-non-editable-sign-warning: true
+  remove-spigot-check-bungee-config: false
+  secure-seed:
+    enabled: false
+  sentry:
+    dsn: ''
+    log-level: WARN
+    only-log-thrown: true
+  rebrand:
+    server-mod-name: Elytrix
+    server-gui-name: Elytrix Console
+  message:
+    unknown-command: default
+  vanilla-username-check:
+    remove-all-check: false
+    enforce-skull-validation: true
+    allow-old-players-join: false
+    use-username-regex: false
+    username-regex: ^[a-zA-Z0-9_.]*$

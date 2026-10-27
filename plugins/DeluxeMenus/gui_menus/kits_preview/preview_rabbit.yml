@@ -1,0 +1,162 @@
+menu_title: §fꈁꀀꈂꍗꈂꀁ§fꈃꄑ
+open_command: kitpreview_rabbit
+size: 54
+items:
+  armor_0:
+    slot: 27
+    amount: 1
+    material: STONE
+  armor_1:
+    slot: 18
+    amount: 1
+    material: STONE
+  armor_2:
+    slot: 9
+    amount: 1
+    material: STONE
+  armor_3:
+    slot: 0
+    amount: 1
+    material: STONE
+  offhand_item:
+    slot: 36
+    amount: 1
+    material: STONE
+  kit_badge:
+    material: white_shulker_box
+    slot: 45
+    display_name: '&#AAAAAAНабор &#E5E5E5&lRABBIT'
+    lore:
+    - '&8Предпросмотр набора'
+    - ''
+    - '&7Слева отображается броня и'
+    - '&7предмет второй руки (шар/тотем).'
+    - '&7Справа — всё содержимое набора!'
+  loot_0:
+    slot: 2
+    amount: 1
+    material: STONE
+  loot_1:
+    slot: 3
+    amount: 1
+    material: STONE
+  loot_2:
+    slot: 4
+    amount: 1
+    material: STONE
+  loot_3:
+    slot: 5
+    amount: 1
+    material: STONE
+  loot_4:
+    slot: 6
+    amount: 1
+    material: STONE
+  loot_5:
+    slot: 7
+    amount: 1
+    material: STONE
+  loot_6:
+    slot: 8
+    amount: 1
+    material: STONE
+  loot_7:
+    slot: 11
+    amount: 1
+    material: STONE
+  loot_8:
+    slot: 12
+    amount: 1
+    material: STONE
+  loot_9:
+    slot: 13
+    amount: 1
+    material: STONE
+  loot_10:
+    slot: 14
+    amount: 1
+    material: STONE
+  loot_11:
+    slot: 15
+    amount: 1
+    material: STONE
+  loot_12:
+    slot: 16
+    amount: 1
+    material: STONE
+  loot_13:
+    slot: 17
+    amount: 1
+    material: STONE
+  loot_14:
+    slot: 20
+    amount: 1
+    material: STONE
+  loot_15:
+    slot: 21
+    amount: 1
+    material: STONE
+  loot_16:
+    slot: 22
+    amount: 1
+    material: STONE
+  loot_17:
+    slot: 23
+    amount: 1
+    material: STONE
+  loot_18:
+    slot: 24
+    amount: 1
+    material: STONE
+  loot_19:
+    slot: 25
+    amount: 1
+    material: STONE
+  loot_20:
+    slot: 26
+    amount: 1
+    material: STONE
+  loot_21:
+    slot: 29
+    amount: 1
+    material: STONE
+  loot_22:
+    slot: 30
+    amount: 1
+    material: STONE
+  loot_23:
+    slot: 31
+    amount: 1
+    material: STONE
+  loot_24:
+    slot: 32
+    amount: 1
+    material: STONE
+  loot_25:
+    slot: 33
+    amount: 1
+    material: STONE
+  btn_back:
+    material: structure_void
+    slots:
+    - 47
+    - 48
+    display_name: '&#F8BEFB◄ Назад к списку наборов'
+    lore:
+    - '&7Нажмите, чтобы вернуться в &f/kits'
+    click_commands:
+    - '[openguimenu] kits'
+  btn_claim:
+    material: structure_void
+    slots:
+    - 51
+    - 52
+    - 53
+    display_name: '&#55FF55&l✚ ПОЛУЧИТЬ НАБОР &7(&#AAAAAAНабор &#E5E5E5&lRABBIT&7)'
+    lore:
+    - ''
+    - '&7Нажмите, чтобы сразу забрать'
+    - '&7набор &f/kit rabbit &7в инвентарь!'
+    click_commands:
+    - '[close]'
+    - '[player] kit rabbit'

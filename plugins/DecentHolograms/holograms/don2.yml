@@ -13,30 +13,30 @@ pages:
     height: 0.3
   - content: '&fꔨ &f— &#F8BEFB&l39р'
     height: 0.3
-  - content: '&fꔲ &f— &#F8BEFB&l89р'
+  - content: '&fꔲ &f— &#F8BEFB&l69р'
     height: 0.3
-  - content: '&fꕒ &f— &#F8BEFB&l149р'
+  - content: '&fꕒ &f— &#F8BEFB&l109р'
     height: 0.3
-  - content: '&fꕀ &f— &#F8BEFB&l229р'
+  - content: '&fꕀ &f— &#F8BEFB&l159р'
     height: 0.3
-  - content: '&fꕈ &f— &#F8BEFB&l349р'
+  - content: '&fꕈ &f— &#F8BEFB&l219р'
     height: 0.3
-  - content: '&fꕁ &f— &#F8BEFB&l499р'
+  - content: '&fꕁ &f— &#F8BEFB&l289р'
     height: 0.3
-  - content: '&fꕉ &f— &#F8BEFB&l679р'
+  - content: '&fꕉ &f— &#F8BEFB&l379р'
+    height: 0.3
+  - content: '&fꕠ &f— &#F8BEFB&l499р'
     height: 0.3
   - content: '&fꕓ &f— &f&l899р'
     height: 0.3
-  - content: '&fꕠ &f— &#F8BEFB&l1499р'
-    height: 0.3
   - content: '&fꕡ &f— &#FF3B4E&l3000р'
-    height: 0.6
+    height: 0.5
+  - content: '&7[<#F8BEFB>&lЛегендарный кейс</#FFFFFF>&7] &7- &#55FF55&l89р'
+    height: 0.3
   - content: '&7[&#F8BEFB3 кейса с донатом&7]&7 - &f&l119р'
     height: 0.3
   - content: '&7[&#F8BEFB10 кейсов с донатом&7]&7 - &f&l249р'
-    height: 0.3
-  - content: '&7[&#F8BEFB25 кейсов с донатом&7]&7 - &f&l399р'
-    height: 0.6
+    height: 0.5
   - content: '&7Покупка на сайте: &#F8BEFB&lhttps://elytrix.pw'
     height: 0.3
   actions: {}
