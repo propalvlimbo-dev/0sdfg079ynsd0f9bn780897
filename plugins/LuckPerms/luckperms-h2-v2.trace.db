@@ -1,0 +1,6 @@
+2026-10-27 12:45:25 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT name, permission, [*]value FROM luckperms_group_permissions WHERE permission LIKE 'weight.%' OR permission LIKE 'prefix.%' OR permission LIKE 'group.%' ORDER BY name, permission"; expected "*, INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT name, permission, value FROM luckperms_group_permissions WHERE permission LIKE 'weight.%' OR permission LIKE 'prefix.%' OR permission LIKE 'group.%' ORDER BY name, permission [42001-214]
+2026-10-27 12:45:39 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "luckperms_group_permissions" not found (candidates are: "LUCKPERMS_GROUP_PERMISSIONS"); SQL statement:
+SELECT "name", "permission", "value" FROM "luckperms_group_permissions" WHERE "permission" LIKE 'weight.%' OR "permission" LIKE 'prefix.%' OR "permission" LIKE 'group.%' ORDER BY "name", "permission" [42103-214]

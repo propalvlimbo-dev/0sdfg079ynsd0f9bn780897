@@ -12,7 +12,7 @@ items:
     - ' &fВаш баланс: &#F8BEFB%playerpoints_points_formatted% &fꐃ'
     - ''
     - '&7Пополнить баланс можно'
-    - '&7на сайте: &#F8BEFB%elytrix_site%'
+    - '&7на сайте: &#F8BEFBhttps://elytrix.pw'
     item_flags:
     - HIDE_ENCHANTS
     - HIDE_ATTRIBUTES
@@ -51,7 +51,7 @@ items:
           output: 139
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 139'
     - '[console] give %player_name% spawner 1'
@@ -80,7 +80,7 @@ items:
           output: 379
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 379'
     - '[console] give %player_name% spawner 3'
@@ -109,7 +109,7 @@ items:
           output: 649
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 649'
     - '[console] give %player_name% spawner 6'
@@ -138,7 +138,7 @@ items:
           output: 899
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 899'
     - '[console] give %player_name% spawner 9'
@@ -167,7 +167,7 @@ items:
           output: 1099
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 1099'
     - '[console] give %player_name% spawner 12'
@@ -196,7 +196,7 @@ items:
           output: 89
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 89'
     - '[console] give %player_name% chicken_spawn_egg 3'
@@ -225,7 +225,7 @@ items:
           output: 119
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 119'
     - '[console] give %player_name% stray_spawn_egg 3'
@@ -254,7 +254,7 @@ items:
           output: 149
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 149'
     - '[console] give %player_name% cow_spawn_egg 3'
@@ -283,7 +283,7 @@ items:
           output: 149
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 149'
     - '[console] give %player_name% horse_spawn_egg 3'
@@ -312,7 +312,7 @@ items:
           output: 149
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 149'
     - '[console] give %player_name% sheep_spawn_egg 3'
@@ -341,7 +341,7 @@ items:
           output: 149
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 149'
     - '[console] give %player_name% spider_spawn_egg 3'
@@ -370,7 +370,7 @@ items:
           output: 179
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 179'
     - '[console] give %player_name% hoglin_spawn_egg 3'
@@ -399,7 +399,7 @@ items:
           output: 179
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 179'
     - '[console] give %player_name% phantom_spawn_egg 3'
@@ -428,7 +428,7 @@ items:
           output: 179
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 179'
     - '[console] give %player_name% slime_spawn_egg 3'
@@ -457,7 +457,7 @@ items:
           output: 179
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 179'
     - '[console] give %player_name% tropical_fish_spawn_egg 3'
@@ -486,7 +486,7 @@ items:
           output: 199
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 199'
     - '[console] give %player_name% blaze_spawn_egg 3'
@@ -515,7 +515,7 @@ items:
           output: 199
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 199'
     - '[console] give %player_name% cave_spider_spawn_egg 3'
@@ -544,7 +544,7 @@ items:
           output: 199
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 199'
     - '[console] give %player_name% husk_spawn_egg 3'
@@ -573,7 +573,7 @@ items:
           output: 199
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 199'
     - '[console] give %player_name% stray_spawn_egg 3'
@@ -602,7 +602,7 @@ items:
           output: 199
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 199'
     - '[console] give %player_name% turtle_spawn_egg 3'
@@ -631,7 +631,7 @@ items:
           output: 219
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 219'
     - '[console] give %player_name% creeper_spawn_egg 3'
@@ -660,7 +660,7 @@ items:
           output: 219
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 219'
     - '[console] give %player_name% pillager_spawn_egg 3'
@@ -689,7 +689,7 @@ items:
           output: 240
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 240'
     - '[console] give %player_name% zombie_horse_spawn_egg 3'
@@ -718,7 +718,7 @@ items:
           output: 240
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 240'
     - '[console] give %player_name% zombified_piglin_spawn_egg 3'
@@ -747,7 +747,7 @@ items:
           output: 249
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 249'
     - '[console] give %player_name% armadillo_spawn_egg 3'
@@ -776,7 +776,7 @@ items:
           output: 249
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 249'
     - '[console] give %player_name% magma_cube_spawn_egg 3'
@@ -805,7 +805,7 @@ items:
           output: 249
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 249'
     - '[console] give %player_name% phantom_spawn_egg 3'
@@ -834,7 +834,7 @@ items:
           output: 249
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 249'
     - '[console] give %player_name% pillager_spawn_egg 3'
@@ -863,7 +863,7 @@ items:
           output: 249
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 249'
     - '[console] give %player_name% rabbit_spawn_egg 3'
@@ -892,7 +892,7 @@ items:
           output: 299
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 299'
     - '[console] give %player_name% zombie_villager_spawn_egg 3'
@@ -921,7 +921,7 @@ items:
           output: 349
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 349'
     - '[console] give %player_name% sniffer_spawn_egg 3'
@@ -950,7 +950,7 @@ items:
           output: 379
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 379'
     - '[console] give %player_name% enderman_spawn_egg 3'
@@ -979,7 +979,7 @@ items:
           output: 399
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 399'
     - '[console] give %player_name% breeze_spawn_egg 3'
@@ -1008,7 +1008,7 @@ items:
           output: 399
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 399'
     - '[console] give %player_name% piglin_brute_spawn_egg 3'
@@ -1037,7 +1037,7 @@ items:
           output: 429
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 429'
     - '[console] give %player_name% witch_spawn_egg 3'
@@ -1066,7 +1066,7 @@ items:
           output: 499
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 499'
     - '[console] give %player_name% iron_golem_spawn_egg 3'
@@ -1095,7 +1095,7 @@ items:
           output: 699
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 699'
     - '[console] give %player_name% shulker_spawn_egg 3'
@@ -1124,7 +1124,7 @@ items:
           output: 699
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 699'
     - '[console] give %player_name% wither_skeleton_spawn_egg 3'
@@ -1153,7 +1153,7 @@ items:
           output: 1499
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 1499'
     - '[console] give %player_name% vindicator_spawn_egg 3'
@@ -1184,7 +1184,7 @@ items:
           output: 119
           deny_commands:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
-          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
     - '[console] points take %player_name% 119'
     - '[console] randomegg %player_name%'

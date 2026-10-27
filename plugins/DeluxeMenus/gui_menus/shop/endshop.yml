@@ -37,11 +37,11 @@ items:
           type: javascript
           expression: '%elytrixoskolki_amount% >= 25'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] smileoskolki take %player_name% 25'
       - '[console] kit enderaxe %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'ловушка':
     display_name: '&r&l&#aa00aa&lЭндер Ловушка&r'
     slot: 22
@@ -65,11 +65,11 @@ items:
           type: javascript
           expression: '%elytrixoskolki_amount% >= 10'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] smileoskolki take %player_name% 10'
       - '[console] rwitems ENDER_TRAP %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'шлем':
     display_name: '&r&l&f&lНерушимый Шлем&r'
     slot: 23
@@ -91,11 +91,11 @@ items:
           type: javascript
           expression: '%elytrixoskolki_amount% >= 35'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] smileoskolki take %player_name% 35'
       - '[console] kit nerum %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'скорость':
     display_name: '&r&#55ffffСкорость II&r'
     slot: 37
@@ -114,11 +114,11 @@ items:
           type: javascript
           expression: '%elytrixoskolki_amount% >= 15'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] smileoskolki take %player_name% 15'
       - '[console] effect give %player_name% speed 3600 1'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'инвиз':
     display_name: '&r&#55ffffНевидимость&r'
     slot: 38
@@ -137,11 +137,11 @@ items:
           type: javascript
           expression: '%elytrixoskolki_amount% >= 15'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] smileoskolki take %player_name% 15'
       - '[console] effect give %player_name% invisibility 3600'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'огнестойкость':
     display_name: '&r&#55ffffОгнестойкость&r'
     slot: 39
@@ -160,11 +160,11 @@ items:
           type: javascript
           expression: '%elytrixoskolki_amount% >= 15'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] smileoskolki take %player_name% 15'
       - '[console] effect give %player_name% fire_resistance 3600'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'удача':
     display_name: '&r&#55ffffУдача&r'
     slot: 40
@@ -183,11 +183,11 @@ items:
           type: javascript
           expression: '%elytrixoskolki_amount% >= 10'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] smileoskolki take %player_name% 10'
       - '[console] effect give %player_name% luck 3600'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   '41':
     display_name: '&r&#55ffffПрыгучесть&r'
     slot: 41
@@ -206,11 +206,11 @@ items:
           type: javascript
           expression: '%elytrixoskolki_amount% >= 15'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] smileoskolki take %player_name% 15'
       - '[console] effect give %player_name% jump_boost 3600 0'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'регенка':
     display_name: '&r&#55ffffРегенерация II&r'
     slot: 42
@@ -229,11 +229,11 @@ items:
           type: javascript
           expression: '%elytrixoskolki_amount% >= 25'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] smileoskolki take %player_name% 25'
       - '[console] effect give %player_name% regeneration 1800 1'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'силка':
     display_name: '&r&#55ffffСила II&r'
     slot: 43
@@ -252,8 +252,8 @@ items:
           type: javascript
           expression: '%elytrixoskolki_amount% >= 15'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] smileoskolki take %player_name% 15'
       - '[console] effect give %player_name% strength 3600 1'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'

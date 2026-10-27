@@ -28,11 +28,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 199'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 199'
       - '[console] rwitems FIRE_BALL %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'player_head_1':
     material: player_head
     slot: 13
@@ -60,11 +60,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 219'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 219'
       - '[console] rwitems WATER_BALL %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'player_head_2':
     material: player_head
     slot: 14
@@ -92,11 +92,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 189'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 189'
       - '[console] rwitems EARTH_BALL %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'player_head_3':
     material: player_head
     slot: 21
@@ -125,11 +125,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 189'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 189'
       - '[console] rwitems LIGHT_BALL %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'player_head_4':
     material: player_head
     slot: 22
@@ -157,11 +157,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 229'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 229'
       - '[console] rwitems HARMONY_BALL %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'player_head_5':
     material: player_head
     slot: 23
@@ -191,11 +191,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 249'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 249'
       - '[console] rwitems CHAOS_BALL %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'player_head_6':
     material: player_head
     slot: 29
@@ -224,11 +224,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 149'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 149'
       - '[console] rwitems KROV_BALL %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'player_head_7':
     material: player_head
     slot: 30
@@ -256,11 +256,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 149'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 149'
       - '[console] rwitems DARKNESS_BALL %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'player_head_8':
     material: player_head
     slot: 31
@@ -288,11 +288,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 199'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 199'
       - '[console] rwitems AIR_BALL %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'player_head_9':
     material: player_head
     slot: 32
@@ -318,11 +318,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 169'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 169'
       - '[console] rwitems LIGHTNING_BALL %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'player_head_10':
     material: player_head
     slot: 33
@@ -349,11 +349,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 179'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 179'
       - '[console] rwitems ICE_BALL %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'player_head_11':
     material: player_head
     slot: 36
@@ -528,6 +528,6 @@ items:
       - '&#555555 &#FFFFFFВаш баланс: &#FAD8FC%playerpoints_points_formatted% &#FFFFFFꐃ'
       - ''
       - '&#AAAAAAПополнить баланс можно'
-      - '&#AAAAAAна сайте: &#FAD8FC%elytrix_site%'
+      - '&#AAAAAAна сайте: &#FAD8FChttps://elytrix.pw'
     model_data: 100020
     

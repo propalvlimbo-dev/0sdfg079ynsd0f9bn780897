@@ -7,29 +7,29 @@ facing: 0.0
 down-origin: false
 pages:
 - lines:
-  - content: '&fДонат на сервере &#F8BEFB&l%elytrix_nameserver%'
+  - content: '&fДонат на сервере &#F8BEFB&lElytrix'
     height: 0.5
   - content: '&7Цены на донат:'
     height: 0.3
-  - content: '&fꔄ &f&l39p'
+  - content: '&fꔨ &f— &#F8BEFB&l39р'
     height: 0.3
-  - content: '&fꔈ &f&l89p'
+  - content: '&fꔲ &f— &#F8BEFB&l89р'
     height: 0.3
-  - content: '&fꔒ &f&l129p'
+  - content: '&fꕒ &f— &#F8BEFB&l149р'
     height: 0.3
-  - content: '&fꔖ &f&l289p'
+  - content: '&fꕀ &f— &#F8BEFB&l229р'
     height: 0.3
-  - content: '&fꔠ &f&l589p'
+  - content: '&fꕈ &f— &#F8BEFB&l349р'
     height: 0.3
-  - content: '&fꔤ &f&l999p'
+  - content: '&fꕁ &f— &#F8BEFB&l499р'
     height: 0.3
-  - content: '&fꔨ &f&l1899p'
+  - content: '&fꕉ &f— &#F8BEFB&l679р'
     height: 0.3
-  - content: '&fꕠ &f&l6666p'
+  - content: '&fꕓ &f— &f&l899р'
     height: 0.3
-  - content: '&fꕁ &f&l4444p'
+  - content: '&fꕠ &f— &#F8BEFB&l1499р'
     height: 0.3
-  - content: '&fꕉ &f&l2126p'
+  - content: '&fꕡ &f— &#FF3B4E&l3000р'
     height: 0.6
   - content: '&7[&#F8BEFB3 кейса с донатом&7]&7 - &f&l119р'
     height: 0.3
@@ -37,6 +37,6 @@ pages:
     height: 0.3
   - content: '&7[&#F8BEFB25 кейсов с донатом&7]&7 - &f&l399р'
     height: 0.6
-  - content: '&7Покупка на сайте: &#F8BEFB&l%elytrix_site%&#F8BEFB&l'
+  - content: '&7Покупка на сайте: &#F8BEFB&lhttps://elytrix.pw'
     height: 0.3
   actions: {}

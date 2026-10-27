@@ -72,6 +72,28 @@ cases:
       itemsSpeed: 11.5
       particleSpeed: 8
       itemsOnRound: 7
+    dadmin:
+      title: "ꕡ"
+      material: "RED_SHULKER_BOX"
+      chance: 1
+      command:
+        - "lp user %player% parent add dadmin"
+        - "bc;&#F8BEFB ꐁ"
+        - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕡ"
+        - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донатом"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
+        - "bc;&#F8BEFB ꐀ"
+    angel:
+      title: "ꕓ"
+      material: "WHITE_SHULKER_BOX"
+      chance: 7
+      command:
+        - "lp user %player% parent add angel"
+        - "bc;&#F8BEFB ꐁ"
+        - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕓ"
+        - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донатом"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
+        - "bc;&#F8BEFB ꐀ"
     dhelper:
       title: "ꕠ"
       material: "YELLOW_SHULKER_BOX"
@@ -81,7 +103,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕠ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донатом"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     rabbit:
       title: "ꕒ"
@@ -92,7 +114,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕒ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донатом"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"       
     bunny:
       title: "ꕖ"
@@ -103,7 +125,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕖ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донатом"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"  
     hydra:
       title: "ꕀ"
@@ -114,7 +136,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕀ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донатом"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"  
     cobra:
       title: "ꕈ"
@@ -125,7 +147,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕈ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донатом"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
         
         
@@ -155,7 +177,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &#FAD8FC&l15.000 &fꐂ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с валютой"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     25000:
       title: "&a&l25.000 &fꐂ"
@@ -166,7 +188,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &a&l25.000 &fꐂ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с валютой"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     50000:
       title: "&a&l50.000 &fꐂ"
@@ -177,7 +199,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &a&l50.000 &fꐂ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с валютой"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     75000:
       title: "&a&l75.000 &fꐂ"
@@ -188,7 +210,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &a&l75.000 &fꐂ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с валютой"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     150000:
       title: "&#F8BEFB&l150.000 &fꐂ"
@@ -199,7 +221,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &#F8BEFB&l150.000 &fꐂ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с валютой"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     250000:
       title: "&c&l250.000 &fꐂ"
@@ -210,7 +232,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &c&l250.000 &fꐂ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с валютой"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     500000:
       title: "&c&l500.000 &fꐂ"
@@ -221,7 +243,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &c&l500.000 &fꐂ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с валютой"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     1000000:
       title: "&d&l1.000.000 &fꐂ"
@@ -232,7 +254,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &d&l1.000.000 &fꐂ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с валютой"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
 
 
@@ -298,7 +320,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &#F8BEFB&l150 &fꐃ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с рилликами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     300:
       title: "&c&l300 &fꐃ"
@@ -309,7 +331,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &c&l300 &fꐃ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с рилликами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     500:
       title: "&c&l500 &fꐃ"
@@ -320,7 +342,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &c&l500 &fꐃ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с рилликами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     1000:
       title: "&c&l1000 &fꐃ"
@@ -331,7 +353,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &c&l1000 &fꐃ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с рилликами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     3000:
       title: "&4&l3000 &fꐃ"
@@ -342,7 +364,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &4&l3000 &fꐃ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с рилликами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     6000:
       title: "&4&l6000 &fꐃ"
@@ -353,7 +375,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &4&l6000 &fꐃ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с рилликами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     15000:
       title: "&4&l15000 &fꐃ"
@@ -364,7 +386,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &4&l15000 &fꐃ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с рилликами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
   vsoilinichigo:
     title: "vsoilinichigo"
@@ -392,7 +414,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꔨ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &cВСЕ ИЛИ НИЧЕГО"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     fulladmin:
       title: "ꔷ"
@@ -403,7 +425,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꔷ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &cВСЕ ИЛИ НИЧЕГО"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
         
         
@@ -433,40 +455,51 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕠ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &cЛЕГЕНДАРНЫЙ КЕЙС"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
-    sponsor:
-      title: "ꕗꕘꕙ"
-      material: "LIME_SHULKER_BOX"
+    dadmin:
+      title: "ꕡ"
+      material: "RED_SHULKER_BOX"
       chance: 2
       command:
-        - "lp user %player% parent add sponsor"
+        - "lp user %player% parent add dadmin"
         - "bc;&#F8BEFB ꐁ"
-        - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕗꕘꕙ"
+        - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕡ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &cЛЕГЕНДАРНЫЙ КЕЙС"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
+        - "bc;&#F8BEFB ꐀ"
+    angel:
+      title: "ꕓ"
+      material: "WHITE_SHULKER_BOX"
+      chance: 8
+      command:
+        - "lp user %player% parent add angel"
+        - "bc;&#F8BEFB ꐁ"
+        - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕓ"
+        - "bc;&#F8BEFB ꐁ &fОткрыв &cЛЕГЕНДАРНЫЙ КЕЙС"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     pegas:
-      title: "ꕔꕕ"
+      title: "ꕉ"
       material: "ORANGE_SHULKER_BOX"
       chance: 5
       command:
         - "lp user %player% parent add pegas"
         - "bc;&#F8BEFB ꐁ"
-        - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕔꕕ"
+        - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕉ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &cЛЕГЕНДАРНЫЙ КЕЙС"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ" 
     vampire:
-      title: "ꕐꕑ"
+      title: "ꕅ"
       material: "RED_SHULKER_BOX"
       chance: 5
       command:
         - "lp user %player% parent add vampire"
         - "bc;&#F8BEFB ꐁ"
-        - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕐꕑ"
+        - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕅ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &cЛЕГЕНДАРНЫЙ КЕЙС"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"    
     rabbit:
       title: "ꕒ"
@@ -477,7 +510,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕒ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &cЛЕГЕНДАРНЫЙ КЕЙС"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"       
         
         
@@ -507,7 +540,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &7Набор &fꔶ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с китами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     kitbunny:
       title: "&7Набор &fꕖ"
@@ -518,7 +551,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &7Набор &fꕖ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с китами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     kithydra:
       title: "&7Набор &fꕀ"
@@ -529,7 +562,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &7Набор &fꕀ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с китами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     kitdracula:
       title: "&7Набор &fꕄ"
@@ -540,7 +573,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &7Набор &fꕄ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с китами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     kitcobra:
       title: "&7Набор &fꕈ"
@@ -551,7 +584,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &7Набор &fꕈ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с китами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     kitrabbit:
       title: "&7Набор &fꕒ"
@@ -562,7 +595,29 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &7Набор &fꕒ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с китами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
+        - "bc;&#F8BEFB ꐀ"
+    kitangel:
+      title: "&7Набор &fꕓ"
+      material: "WHITE_SHULKER_BOX"
+      chance: 6
+      command:
+        - "kit angel %player%"
+        - "bc;&#F8BEFB ꐁ"
+        - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &7Набор &fꕓ"
+        - "bc;&#F8BEFB ꐁ &fОткрыв &4Кейс с китами"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
+        - "bc;&#F8BEFB ꐀ"
+    kitdadmin:
+      title: "&7Набор &fꕡ"
+      material: "RED_SHULKER_BOX"
+      chance: 2
+      command:
+        - "kit dadmin %player%"
+        - "bc;&#F8BEFB ꐁ"
+        - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &7Набор &fꕡ"
+        - "bc;&#F8BEFB ꐁ &fОткрыв &4Кейс с китами"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     kitdhelper:
       title: "&7Набор &fꕠ"
@@ -573,7 +628,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл &7Набор &fꕠ"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с китами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
 
   zhamshut:
@@ -602,7 +657,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꔶ &#FAD8FC(30д)"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс Джамшута"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     rabbit:
       title: "ꕒ &f(30д)"
@@ -613,7 +668,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕒ &#FAD8FC(30д)"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс Джамшута"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     bunny:
       title: "ꕖ &f(30д)"
@@ -624,7 +679,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕖ &#FAD8FC(30д)"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс Джамшута"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     dhelper:
       title: "ꕠ &f(30д)"
@@ -635,7 +690,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕠ &#FAD8FC(30д)"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс Джамшута"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     hydra:
       title: "ꕀ &f(30д)"
@@ -646,7 +701,18 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕀ &#FAD8FC(30д)"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс Джамшута"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
+        - "bc;&#F8BEFB ꐀ"
+    angel:
+      title: "ꕓ &f(30д)"
+      material: "WHITE_SHULKER_BOX"
+      chance: 1
+      command:
+        - "lp user %player% parent addtemp angel 30d"
+        - "bc;&#F8BEFB ꐁ"
+        - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕓ &#FAD8FC(30д)"
+        - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс Джамшута"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     cobra:
       title: "ꕈ &f(30д)"
@@ -657,7 +723,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#FAD8FC%player% &fвыиграл ꕈ &#FAD8FC(30д)"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс Джамшута"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
         
   ditems:
@@ -686,7 +752,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#F8BEFB%player% &fвыиграл &c&lЗачарованные Яблоки (32 шт)"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     golden_apples:
       title: "&f&lЗолотые Яблоки &7(64 шт)"
@@ -697,7 +763,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#F8BEFB%player% &fвыиграл &#FAD8FC&lЗолотые Яблоки (64 шт)"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     kratos_axe:
       title: "&c&lТопор Кратоса"
@@ -708,7 +774,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#F8BEFB%player% &fвыиграл &c&lТопор Кратоса"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     neptun_trident:
       title: "&b&lТрезубец Нептуна"
@@ -719,7 +785,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#F8BEFB%player% &fвыиграл &b&lТрезубец Нептуна"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     shears:
       title: "&#F8BEFB&lСупер Ножницы"
@@ -730,7 +796,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#F8BEFB%player% &fвыиграл &#F8BEFB&lСупер Ножницы"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     trap:
       title: "&b&lЛовушка"
@@ -741,7 +807,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#F8BEFB%player% &fвыиграл &b&lЛовушку"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     netherite_pickaxe:
       title: "&#F8BEFB&lНезеритовая Кирка"
@@ -752,7 +818,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#F8BEFB%player% &fвыиграл &#F8BEFB&lНезеритовую Кирку"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     fire_ball:
       title: "&c&lШар Огня"
@@ -764,7 +830,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#F8BEFB%player% &fвыиграл &c&lШар Огня"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     water_ball:
       title: "&9&lШар Воды"
@@ -775,7 +841,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#F8BEFB%player% &fвыиграл &9&lШар Воды"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     earth_ball:
       title: "&#F8BEFB&lШар Земли"
@@ -786,7 +852,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#F8BEFB%player% &fвыиграл &#F8BEFB&lШар Земли"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     light_ball:
       title: "&f&lШар Света"
@@ -797,7 +863,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#F8BEFB%player% &fвыиграл &#FAD8FC&lШар Света"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     harmony_ball:
       title: "&d&lШар Порядка"
@@ -808,7 +874,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#F8BEFB%player% &fвыиграл &d&lШар Порядка"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     chaos_ball:
       title: "&5&lШар Хаоса"
@@ -819,7 +885,7 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#F8BEFB%player% &fвыиграл &5&lШар Хаоса"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"
     farm_ball:
       title: "&a&lШар Огородника"
@@ -830,5 +896,5 @@ cases:
         - "bc;&#F8BEFB ꐁ"
         - "bc;&#F8BEFB ꐁ &fИгрок &#F8BEFB%player% &fвыиграл &a&lШар Огородника"
         - "bc;&#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами"
-        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFB%elytrix_site%"
+        - "bc;&#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw"
         - "bc;&#F8BEFB ꐀ"

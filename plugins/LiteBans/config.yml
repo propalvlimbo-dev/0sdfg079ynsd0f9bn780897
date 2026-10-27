@@ -77,6 +77,10 @@ durations:
   # The highest limit matched by permissions will be used for duration limits.
   # If a player has "litebans.group.unlimited", they will bypass these.
   limits:
+    dadmin:
+      permission: litebans.group.dadmin
+      tempban: 90d
+      tempmute: 90d
     moder:
       permission: litebans.group.dhelper
       tempban: 30d

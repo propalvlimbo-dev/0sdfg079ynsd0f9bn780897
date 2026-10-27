@@ -16,11 +16,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 149'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 149'
       - '[console] cloudenchants WISDOM %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'enchanted_book_1':
     material: enchanted_book
     slot: 22
@@ -35,11 +35,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 249'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 249'
       - '[console] cloudenchants DRILL %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'enchanted_book_2':
     material: enchanted_book
     slot: 23
@@ -54,11 +54,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 119'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 119'
       - '[console] cloudenchants WOODCUTTER %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'enchanted_book_3':
     material: enchanted_book
     slot: 30
@@ -73,11 +73,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 49'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 49'
       - '[console] cloudenchants LIGHTNER %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'enchanted_book_4':
     material: enchanted_book
     slot: 31
@@ -92,11 +92,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 29'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 29'
       - '[console] cloudenchants TELEPATION %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'enchanted_book_5':
     material: enchanted_book
     slot: 32
@@ -111,11 +111,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 189'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 189'
       - '[console] cloudenchants STEALER %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'arrow':
     material: arrow
     slot: 45

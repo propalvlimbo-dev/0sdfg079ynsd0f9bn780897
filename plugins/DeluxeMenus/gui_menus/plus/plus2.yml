@@ -19,11 +19,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 799'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 799'
       - '[console] cakesub give %player_name% 91'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'red_concrete':
     material: red_concrete
     slots:

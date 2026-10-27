@@ -14,7 +14,7 @@ header-footer:
       - ''
       footer:
       - ''
-      - '&fОнлайн: &#F8BEFB%online% &8| &fIP: &#F8BEFBmc.Elytrix.pw'
+      - '&fОнлайн: &#F8BEFB%online%'
       - ''
       - '&fНаш Сайт: <#F8BEFB>&lhttps://elytrix.pw</#FAD8FC>'
       - '&fDiscord: &#F8BEFBdsc.gg/elytrix &8| &fTelegram: &#F8BEFBt.me/elytrix_ru'
@@ -27,7 +27,7 @@ scoreboard-teams:
   enable-collision: true
   invisible-nametags: false
   sorting-types:
-  - GROUPS:admin,fulladmin,mladmin,glmoder,stmoder,moderplus,moder,offdmoder,mlmoder,helper,youtube,media,pegas,god,cobra,dracula,hydra,vampire,rabbit,dhelper,bunny,tiger,bull,dragon,imperator,magister,overlord,avenger,titan,hero,default
+  - GROUPS:admin,fulladmin,mladmin,glmoder,stmoder,moderplus,moder,offdmoder,mlmoder,helper,youtube,media,dadmin,dhelper,angel,pegas,vampire,god,cobra,hydra,rabbit,dracula,bunny,tiger,bull,dragon,imperator,magister,overlord,avenger,titan,hero,default
   - PLACEHOLDER_A_TO_Z:%player%
   case-sensitive-sorting: true
   can-see-friendly-invisibles: false

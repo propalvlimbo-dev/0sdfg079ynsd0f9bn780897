@@ -30,9 +30,9 @@ items:
       - '  &#AAAAAA▶ &f&l3&#FFFFFF Кейсов с рилликами&#AAAAAA - &#55FF55269 руб.'
       - '  &#AAAAAA▶ &#FF5555&l5&#FFFFFF Кейсов с рилликами&#AAAAAA - &#55FF55419 руб.'
       - ''
-      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&l%elytrix_site%'
+      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&lhttps://elytrix.pw'
     click_commands:
-      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%' 
+      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&lhttps://elytrix.pw' 
   'structure_void_1':
     material: structure_void
     slots:
@@ -53,9 +53,9 @@ items:
       - '  &#AAAAAA▶ &f&l10&#FFFFFF Донат-кейсов&#AAAAAA - &#55FF55249 руб.'
       - '  &#AAAAAA▶ &#FF5555&l25&#FFFFFF Донат-кейсов&#AAAAAA - &#55FF55399 руб.'
       - ''
-      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&l%elytrix_site%'
+      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&lhttps://elytrix.pw'
     click_commands:
-      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%' 
+      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&lhttps://elytrix.pw' 
   'structure_void_2':
     material: structure_void
     slots:
@@ -77,9 +77,9 @@ items:
       - '  &#AAAAAA▶ &f&l10&#FFFFFF Кейсов с валютой&#AAAAAA - &#55FF55149 руб.'
       - '  &#AAAAAA▶ &#FF5555&l25&#FFFFFF Кейсов с валютой&#AAAAAA - &#55FF55399 руб.'
       - ''
-      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&l%elytrix_site%'
+      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&lhttps://elytrix.pw'
     click_commands:
-      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%' 
+      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&lhttps://elytrix.pw' 
   'structure_void_3':
     material: structure_void
     slots:
@@ -100,9 +100,9 @@ items:
       - '  &#AAAAAA▶ &f&l10&#FFFFFF Кейсов с префиксами&#AAAAAA - &#55FF55149 руб.'
       - '  &#AAAAAA▶ &#FF5555&l25&#FFFFFF Кейсов с префиксами&#AAAAAA - &#55FF55239 руб.'
       - ''
-      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&l%elytrix_site%'
+      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&lhttps://elytrix.pw'
     click_commands:
-      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%' 
+      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&lhttps://elytrix.pw' 
   'structure_void_4':
     material: structure_void
     slots:
@@ -123,9 +123,9 @@ items:
       - '  &#AAAAAA▶ &f&l10&#FFFFFF Кейсов с вещами&#AAAAAA - &#55FF55179 руб.'
       - '  &#AAAAAA▶ &#FF5555&l15&#FFFFFF Кейсов с вещами&#AAAAAA - &#55FF55265 руб.'
       - ''
-      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&l%elytrix_site%'
+      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&lhttps://elytrix.pw'
     click_commands:
-      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%' 
+      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&lhttps://elytrix.pw' 
   'structure_void_5':
     material: structure_void
     slots:
@@ -147,9 +147,9 @@ items:
       - '  &#AAAAAA▶ &f&l5&#FFFFFF Кейсов с донат вещами&#AAAAAA - &#55FF55649 руб.'
       - '  &#AAAAAA▶ &#FF5555&l10&#FFFFFF Кейсов с донат вещами&#AAAAAA - &#55FF551299 руб.'
       - ''
-      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&l%elytrix_site%'
+      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&lhttps://elytrix.pw'
     click_commands:
-      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%' 
+      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&lhttps://elytrix.pw' 
   'structure_void_6':
     material: structure_void
     slots:
@@ -170,6 +170,6 @@ items:
       - '  &#AAAAAA▶ &f&l5&#FFFFFF Кейсов с вещами&#AAAAAA - &#55FF55489 руб.'
       - '  &#AAAAAA▶ &#FF5555&l10&#FFFFFF Кейсов с вещами&#AAAAAA - &#55FF55799 руб.'
       - ''
-      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&l%elytrix_site%'
+      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FAD8FC&lhttps://elytrix.pw'
     click_commands:
-      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%' 
+      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&lhttps://elytrix.pw' 

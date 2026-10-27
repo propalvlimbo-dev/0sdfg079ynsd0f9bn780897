@@ -133,7 +133,7 @@ mine:
     - " &#F8BEFBꐁ &fЗарплата: &#F8BEFB<salary> &fꐂ"
     - " &#F8BEFBꐀ &#F8BEFBНе забудь сдать!"
     - ""
-    - "    <#F8BEFB>&l%elytrix_nameserver%</#FAD8FC>"
+    - "    <#F8BEFB>&lElytrix</#FAD8FC>"
     - ""
 snow:
   title: "<#F8BEFB>&lГРИФ #1</#FAD8FC>"
@@ -145,7 +145,7 @@ snow:
     - " &#F8BEFBꐁ &fЗарплата: &#F8BEFB<salary> &fꐂ"
     - " &#F8BEFBꐀ &#F8BEFBНе забудь сдать!"
     - ""
-    - "    <#F8BEFB>&l%elytrix_nameserver%</#FAD8FC>"
+    - "    <#F8BEFB>&lElytrix</#FAD8FC>"
     - ""
 farm:
   title: "<#F8BEFB>&lГРИФ #1</#FAD8FC>"
@@ -161,7 +161,7 @@ farm:
     - " &#F8BEFBꐁ &fЗарплата: &#F8BEFB<salary> &fꐂ"
     - " &#F8BEFBꐀ &#F8BEFBНе забудь сдать!"
     - ""
-    - "    <#F8BEFB>&l%elytrix_nameserver%</#FAD8FC>"
+    - "    <#F8BEFB>&lElytrix</#FAD8FC>"
     - ""
 woodCutter:
   title: "<#F8BEFB>&lГРИФ #1</#FAD8FC>"
@@ -172,7 +172,7 @@ woodCutter:
     - " &#F8BEFBꐁ &fЗарплата: &#F8BEFB<salary> &fꐂ"
     - " &#F8BEFBꐀ &#F8BEFBНе забудь сдать!"
     - ""
-    - "     <#F8BEFB>&l%elytrix_nameserver%</#FAD8FC>"
+    - "     <#F8BEFB>&lElytrix</#FAD8FC>"
     - ""
 Fish:
   title: "<#F8BEFB>&lГРИФ #1</#FAD8FC>"
@@ -188,7 +188,7 @@ Fish:
     - " &#F8BEFBꐁ &fЗарплата: &#F8BEFB<salary> &fꐂ"
     - " &#F8BEFBꐀ &#F8BEFBНе забудь сдать!"
     - ""
-    - "   <#F8BEFB>&l%elytrix_nameserver%</#FAD8FC>"
+    - "   <#F8BEFB>&lElytrix</#FAD8FC>"
     - ""
 
 # ==========================================

@@ -1,12 +1,12 @@
 
-block_message: '§x§F§8§B§E§F§B%elytrix_nameserver% §7» §fКоманда не найдена'
+block_message: '§x§F§8§B§E§F§BElytrix §7» §fКоманда не найдена'
 
 blocked_sym: true
 disable-for-ops: true
 
 messages:
-  normal-block: '&x&F&8&B&E&F&B%elytrix_nameserver% &7» &fКоманда не найдена'
-  bypass-warning: '&x&F&8&B&E&F&B%elytrix_nameserver% &7» &cКоманда запрещена. При повторной попытке вы будете временно заблокированы'
+  normal-block: '&x&F&8&B&E&F&BElytrix &7» &fКоманда не найдена'
+  bypass-warning: '&x&F&8&B&E&F&BElytrix &7» &cКоманда запрещена. При повторной попытке вы будете временно заблокированы'
   fake-error: '&cВнутрисерверная ошибка 0x00000003'
 
 groups:

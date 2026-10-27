@@ -23,11 +23,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 59'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 59'
       - '[console] kit razdor %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     hide_effects: true
   'potion_1':
     material: potion
@@ -51,11 +51,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 89'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 89'
       - '[console] kit bezdna %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     hide_effects: true
   'potion_2':
     material: potion
@@ -79,11 +79,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 69'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 69'
       - '[console] kit celitel %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     hide_effects: true
   'potion_3':
     material: potion
@@ -103,11 +103,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 49'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 49'
       - '[console] kit random %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     hide_effects: true
   'tipped_arrow':
     material: tipped_arrow
@@ -128,11 +128,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 49'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 49'
       - '[console] kit strela %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     hide_effects: true
   'potion_4':
     material: potion
@@ -153,11 +153,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 49'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 49'
       - '[console] kit vetra %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     hide_effects: true
   'potion_5':
     material: potion
@@ -182,11 +182,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 69'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 69'
       - '[console] kit razlom %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     hide_effects: true
   'potion_6':
     material: potion
@@ -210,11 +210,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 79'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 79'
       - '[console] kit garmon %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     hide_effects: true
   'tipped_arrow_1':
     material: tipped_arrow
@@ -235,11 +235,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 99'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 99'
       - '[console] kit grav %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     hide_effects: true
   'tipped_arrow_2':
     material: tipped_arrow
@@ -261,11 +261,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 109'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 109'
       - '[console] kit lice %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     hide_effects: true
   'tipped_arrow_3':
     material: tipped_arrow
@@ -289,11 +289,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 99'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 99'
       - '[console] kit bura %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     hide_effects: true
   'tipped_arrow_4':
     material: tipped_arrow
@@ -314,11 +314,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 49'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 49'
       - '[console] kit klirik %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     hide_effects: true
   'arrow':
     material: arrow
@@ -336,6 +336,6 @@ items:
       - '&#555555 &#FFFFFFВаш баланс: &#FAD8FC%playerpoints_points_formatted% &#FFFFFFꐃ'
       - ''
       - '&#AAAAAAПополнить баланс можно'
-      - '&#AAAAAAна сайте: &#FAD8FC%elytrix_site%'
+      - '&#AAAAAAна сайте: &#FAD8FChttps://elytrix.pw'
     model_data: 100020
     

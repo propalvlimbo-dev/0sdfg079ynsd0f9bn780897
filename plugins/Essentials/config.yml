@@ -777,7 +777,16 @@ sethome-multiple:
   overlord: 12
   magister: 32
   imperator: 48
-  dragon: 999
+  dragon: 8
+  bull: 16
+  rabbit: 24
+  hydra: 36
+  cobra: 48
+  god: 64
+  pegas: 999
+  angel: 999
+  dhelper: 999
+  dadmin: 999
 
 # In this example someone with 'essentials.sethome.multiple' and 'essentials.sethome.multiple.vip' will have 5 homes.
 # Remember, they MUST have both permission nodes in order to be able to set multiple homes.

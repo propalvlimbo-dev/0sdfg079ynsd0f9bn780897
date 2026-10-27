@@ -68,3 +68,24 @@
    - `Elytrix-RP-1.21.zip` (~7.4 МБ — готовый ресурспак)
 2. Положите `.001`, `.002` и `СОБРАТЬ_СБОРКУ.bat` в одну папку и запустите **`СОБРАТЬ_СБОРКУ.bat`** — за 2 секунды появится готовый архив `Elytrix-1.21-Plugins.zip` (SHA-256: `0eb8e51ef6a78dd624a1d17b3b49fc9dfa52821533487805cf661276d5774751`).
 3. Распакуйте папку `plugins` из `ELYTRIX 1.21 — GRIEF` в корень вашего сервера Paper/Purpur 1.21, а `Elytrix-RP-1.21.zip` установите клиентам или подключите в `server.properties` (`resource-pack=`).
+
+
+---
+
+## Обновление #2 (Донаты ANGEL и D.ADMIN, NCases VirtualEntity + HEX, удаление ElytrixPlaceholders, апдейт плагинов)
+
+1. **Полное удаление `ElytrixPlaceholders`**:
+   - Удалены `plugins/ElytrixPlaceholders.jar` и папка `plugins/ElytrixPlaceholders/`.
+   - Все плейсхолдеры `%elytrix_nameserver%`, `%elytrix_site%` и др. статически заменены на `Elytrix` и `https://elytrix.pw` в 27 конфигурациях и в байткоде `ElytrixDealer.jar`.
+2. **Полная переработка `NCases-1.jar` (HEX + градиенты + пакетная VirtualEntity-анимация в стиле BCases)**:
+   - Переписан `HexColorUtility` (`&#RRGGBB`, градиенты `<#RRGGBB>...</#RRGGBB>`, `&x`, классические `&`-цвета) и подключён ко всем GUI, предметам (`CrateItem`, `ConfigurationItem`), сообщениям (`MessageManager`), голограммам (`HologramManager`) и наградам.
+   - Полностью переписана анимация `RotatingCircleAnimation` на асинхронный расчёт траектории + пакетные `VirtualEntity`-рендереры (`NmsSmallHeadHologramRenderer` + `NmsTextHologramRenderer` из `DecentHolograms NMS API`, трекинг игроков в радиусе 32 блоков, плавный вылет, cubic ease-out вращение с ускоряющимся/замедляющимся звуком и подъём награды) — **0 серверных энтити и 0 вызовов `DHAPI.createHologram` во время прокрутки**.
+   - Исправлена выдача текстур кастомных голов на Paper/Pufferfish 1.21.10 (`SkullUtils.setSkullTexture`) и нормализация весов в `RandomizationUtility`.
+3. **TAB (`plugins/TAB/config.yml`)**:
+   - Из нижней строки таба убран `IP: mc.Elytrix.pw`, оставлен только счётчик онлайна (`&fОнлайн: &#F8BEFB%online%`).
+4. **Новые привилегии `ANGEL` (899р) и `D.ADMIN` (3000р) + новая ценовая сетка от `DRAGON` (39р)**:
+   - Отрисованы кастомные префиксы в ресурспаке (`prefix.png`: `ANGEL` — `ꕓ` белый эпический префикс с крыльями и нимбом; `D.ADMIN` — `ꕡ` рубиново-красный префикс на базе `ADMIN` с короной и золотыми акцентами), перерисовано меню `/donate` (`content_56.png`, 10 плашек) и расширены слоты `/kits` (`content_39.png`) и `/kitsbuy` (`content_36.png`).
+   - Ценовая сетка платных донатов: `DRAGON` (39р), `BULL` (89р), `RABBIT` (149р), `HYDRA` (229р), `COBRA` (349р), `GOD` (499р), `PEGAS` (679р), `ANGEL` (899р), `D.HELPER` (1499р), `D.ADMIN` (3000р).
+   - Настроены группы в `LuckPerms` (`angel` w=25, `dhelper` w=26, `dadmin` w=27), созданы полные 1.21.10 киты `nKits/Kits/angel.yml` и `nKits/Kits/dadmin.yml` (старый кит крыльев для магазина сохранён как `angelwings.yml`), обновлены `/donate`, `/kits`, `/kitsbuy`, голограммы `don1.yml`/`don2.yml`, `TAB`, `CakeChat`, `NCases`, `ElytrixGranter`, `WGExtender`, `Essentials`, `LiteBans`.
+5. **Обновление стандартных плагинов до актуальных версий**:
+   - `LuckPerms` -> `5.5.71`, `PlaceholderAPI` -> `2.12.3`, `EssentialsX` + `EssentialsXSpawn` -> `2.22.0`, `PlayerPoints` -> `3.3.5`, чистые оригинальные `ProtocolLib` `5.4.0` и `MyCommand` `5.7.4`.

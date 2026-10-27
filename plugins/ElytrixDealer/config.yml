@@ -11,7 +11,7 @@ info:
     - "&x&F&8&B&E&F&BРомашки: &f%balance% &fꐄ"
   modelData: 10001
 notEnoughExp:
-  - "&x&F&8&B&E&F&B%elytrix_nameserver% &7» &cУ вас маленький уровень БП!"
-  - "&x&F&8&B&E&F&B%elytrix_site% &7» &cДля покупки нужен %needLvl% уровень!"
+  - "&x&F&8&B&E&F&BElytrix &7» &cУ вас маленький уровень БП!"
+  - "&x&F&8&B&E&F&Bhttps://elytrix.pw &7» &cДля покупки нужен %needLvl% уровень!"
 notEnoughMoney:
-  - "&x&F&8&B&E&F&B%elytrix_nameserver% &7» &cУ вас мало денег!"
+  - "&x&F&8&B&E&F&BElytrix &7» &cУ вас мало денег!"

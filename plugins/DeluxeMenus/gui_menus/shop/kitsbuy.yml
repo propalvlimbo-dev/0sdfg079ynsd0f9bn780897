@@ -16,11 +16,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 9'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 9'
       - '[console] kit start %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     item_flags:
       - HIDE_ATTRIBUTES
   item_21:
@@ -37,11 +37,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 19'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 19'
       - '[console] kit hero %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     item_flags:
       - HIDE_ATTRIBUTES
   item_22:
@@ -58,11 +58,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 49'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 49'
       - '[console] kit titan %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     item_flags:
       - HIDE_ATTRIBUTES
   item_23:
@@ -79,11 +79,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 79'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 79'
       - '[console] kit avenger %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     item_flags:
       - HIDE_ATTRIBUTES
   item_24:
@@ -100,11 +100,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 109'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 109'
       - '[console] kit overlord %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     item_flags:
       - HIDE_ATTRIBUTES
   item_29:
@@ -121,11 +121,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 249'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 249'
       - '[console] kit magister %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     item_flags:
       - HIDE_ATTRIBUTES
   item_30:
@@ -142,11 +142,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 499'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 499'
       - '[console] kit imperator %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     item_flags:
       - HIDE_ATTRIBUTES
   item_31:
@@ -163,11 +163,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 699'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 699'
       - '[console] kit dragon %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     item_flags:
       - HIDE_ATTRIBUTES
   item_32:
@@ -184,11 +184,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 399'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 399'
       - '[console] kit plus %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     item_flags:
       - HIDE_ATTRIBUTES
   item_33:
@@ -205,11 +205,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 999'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 999'
       - '[console] kit pluspro %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     item_flags:
       - HIDE_ATTRIBUTES
   item_39:
@@ -226,11 +226,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 499'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 499'
       - '[console] kit pve %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     item_flags:
       - HIDE_ATTRIBUTES
   item_40:
@@ -247,11 +247,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 599'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 599'
       - '[console] kit farm %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     item_flags:
       - HIDE_ATTRIBUTES
   item_41:
@@ -268,11 +268,53 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 699'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 699'
       - '[console] kit pvp %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+    item_flags:
+      - HIDE_ATTRIBUTES
+  item_38:
+    material: WHITE_SHULKER_BOX
+    slot: 38
+    display_name: '&7Набор &f&lANGEL'
+    lore:
+      - ''
+      - '&8 &fЦена: &#F8BEFB1199 &fꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 1199'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 1199'
+      - '[console] kit angel %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+    item_flags:
+      - HIDE_ATTRIBUTES
+  item_42:
+    material: RED_SHULKER_BOX
+    slot: 42
+    display_name: '&7Набор &#FF3B4E&lD.ADMIN'
+    lore:
+      - ''
+      - '&8 &fЦена: &#F8BEFB2499 &fꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 2499'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 2499'
+      - '[console] kit dadmin %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
     item_flags:
       - HIDE_ATTRIBUTES
   item_45:
@@ -293,7 +335,7 @@ items:
       - '&8 &fВаш баланс: &#F8BEFB%playerpoints_points_formatted% &fꐃ'
       - ''
       - '&7Пополнить баланс можно'
-      - '&7на сайте: &#F8BEFB%elytrix_site%'
+      - '&7на сайте: &#F8BEFBhttps://elytrix.pw'
     model_data: 10001
     item_flags:
       - HIDE_ATTRIBUTES

@@ -7,6 +7,9 @@ format:
 
 donatePlaceholders:
   default: ""
+  angel: "&f&l"
+  dhelper: "&x&F&8&B&E&F&B&l"
+  dadmin: "&x&F&F&3&B&4&E&l"
   winner: "&x&F&8&B&E&F&B&l"
   offsponsor: "&x&6&4&F&B&0&8&l"
   sponsor: "&x&6&4&F&B&0&8&l"
@@ -61,7 +64,7 @@ autoMessage:
     1:
       - ""
       - "&#F8BEFB ꐁ&f Хотите быть в курсе последних новостей"
-      - "&#F9C8FC ꐁ&f и обновлений сервера &#F8BEFB&l%elytrix_nameserver%&f?"
+      - "&#F9C8FC ꐁ&f и обновлений сервера &#F8BEFB&lElytrix&f?"
       - "&#FAD2FD ꐁ&f Подписывайтесь на наш &#F8BEFB&lTelegram&f канал:"
       - "&#FBDCFE ꐀ&f &#F8BEFBt.me/elytrix_ru"
       - ""
@@ -75,7 +78,7 @@ autoMessage:
     3:
       - ""
       - "&#F8BEFB ꐁ&f Ищете тиммейтов для игры или хотите"
-      - "&#F9C8FC ꐁ&f пообщаться с игроками &#F8BEFB&l%elytrix_nameserver%&f?"
+      - "&#F9C8FC ꐁ&f пообщаться с игроками &#F8BEFB&lElytrix&f?"
       - "&#FAD2FD ꐁ&f Заходите на наш официальный &#F8BEFB&lDiscord&f сервер:"
       - "&#FBDCFE ꐀ&f &#F8BEFBdsc.gg/elytrix"
       - ""

@@ -22,11 +22,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 279'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 279'
       - '[console] naura HUNTER %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'clay_ball':
     material: clay_ball
     slot: 22
@@ -46,11 +46,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 519'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 519'
       - '[console] naura DAMAGE %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'popped_chorus_fruit':
     material: popped_chorus_fruit
     slot: 23
@@ -72,11 +72,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 299'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 299'
       - '[console] naura TELEPORTATION %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'gold_nugget':
     material: gold_nugget
     slot: 30
@@ -97,11 +97,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 259'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 259'
       - '[console] naura RICH %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'white_dye':
     material: white_dye
     slot: 31
@@ -121,11 +121,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 29'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 29'
       - '[console] naura FALL %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'ghast_tear':
     material: ghast_tear
     slot: 32
@@ -145,11 +145,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 119'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 119'
       - '[console] naura CRYSTAL %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'arrow':
     material: arrow
     slot: 45
@@ -166,6 +166,6 @@ items:
       - '&#555555 &#FFFFFFВаш баланс: &#FAD8FC%playerpoints_points_formatted% &#FFFFFFꐃ'
       - ''
       - '&#AAAAAAПополнить баланс можно'
-      - '&#AAAAAAна сайте: &#FAD8FC%elytrix_site%'
+      - '&#AAAAAAна сайте: &#FAD8FChttps://elytrix.pw'
     model_data: 100010
     

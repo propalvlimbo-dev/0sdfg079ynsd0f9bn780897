@@ -1,6 +1,6 @@
 Name: dhelper
 Cooldown: 432000
-Permission: greatkits.kits.dhelper
+Permission: nKits.kits.dhelper
 Order: 0
 FirstTimeJoinKit: false
 OneTimeUse: false

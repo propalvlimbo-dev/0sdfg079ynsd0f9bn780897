@@ -20,11 +20,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 149'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 149'
       - '[console] kit shield %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'elytra':
     material: elytra
     slot: 13
@@ -44,11 +44,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 409'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 409'
-      - '[console] kit angel %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[console] kit angelwings %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'firework_star':
     material: firework_star
     slot: 14
@@ -69,11 +69,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 400'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 400'
       - '[console] rwitems ANTI_FLY %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'shears':
     material: shears
     slot: 21
@@ -92,11 +92,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 199'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 199'
       - '[console] rwitems SHEARS %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'flower_banner_pattern':
     material: flower_banner_pattern
     slot: 22
@@ -125,11 +125,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 199'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 199'
       - '[console] rwitems SCROLL_OF_EXPERIENCE %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'heart_of_the_sea':
     material: heart_of_the_sea
     slot: 23
@@ -150,11 +150,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 49'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 49'
       - '[console] rwitems TRAP %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'totem_of_undying':
     material: totem_of_undying
     slot: 30
@@ -173,11 +173,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 99'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 99'
       - '[console] rwitems WITCH_TOTEM %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'firework_star_1':
     material: firework_star
     slot: 31
@@ -199,11 +199,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 199'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 199'
       - '[console] rwitems DARK_PULSE %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'totem_of_undying_1':
     material: totem_of_undying
     slot: 32
@@ -223,11 +223,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 129'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 129'
       - '[console] rwitems DRACONID_TOTEM %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'golden_apple':
     material: golden_apple
     slot: 39
@@ -242,11 +242,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 129'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 129'
       - '[console] minecraft:give %player_name% minecraft:golden_apple 1'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'enchanted_golden_apple':
     material: enchanted_golden_apple
     slot: 40
@@ -261,11 +261,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 129'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 129'
       - '[console] minecraft:give %player_name% minecraft:enchanted_golden_apple 1'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'bubble_coral':
     material: bubble_coral
     slot: 41
@@ -284,11 +284,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 7'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 7'
       - '[console] smileoskolki give %player_name% 1'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'arrow':
     material: arrow
     slot: 45
@@ -305,6 +305,6 @@ items:
       - '&#555555 &#FFFFFFВаш баланс: &#FAD8FC%playerpoints_points_formatted% &#FFFFFFꐃ'
       - ''
       - '&#AAAAAAПополнить баланс можно'
-      - '&#AAAAAAна сайте: &#FAD8FC%elytrix_site%'
+      - '&#AAAAAAна сайте: &#FAD8FChttps://elytrix.pw'
     model_data: 100020
     

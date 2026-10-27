@@ -23,11 +23,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 319'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 319'
       - '[console] rwitems FARM_BALL %player_name%'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'brewing_stand':
     material: brewing_stand
     slot: 12
@@ -46,11 +46,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 119'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 119'
       - '[console] nfurnace %player_name% BREWING_STAND 2'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'brewing_stand_1':
     material: brewing_stand
     slot: 13
@@ -69,11 +69,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 174'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 174'
       - '[console] nfurnace %player_name% BREWING_STAND 3'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'brewing_stand_2':
     material: brewing_stand
     slot: 14
@@ -92,11 +92,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 289'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 289'
       - '[console] nfurnace %player_name% BREWING_STAND 4'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'furnace':
     material: furnace
     slot: 21
@@ -115,11 +115,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 139'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 139'
       - '[console] nfurnace %player_name% FURNACE SPEED'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'furnace_1':
     material: furnace
     slot: 22
@@ -138,11 +138,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 149'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 149'
       - '[console] nfurnace %player_name% FURNACE LUCKY'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'furnace_2':
     material: furnace
     slot: 23
@@ -162,11 +162,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 339'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 339'
       - '[console] nfurnace %player_name% FURNACE COMBINATION'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'smoker':
     material: smoker
     slot: 30
@@ -185,11 +185,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 139'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 139'
       - '[console] nfurnace %player_name% SMOKER SPEED'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'smoker_1':
     material: smoker
     slot: 31
@@ -208,11 +208,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 149'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 149'
       - '[console] nfurnace %player_name% SMOKER LUCKY'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'smoker_2':
     material: smoker
     slot: 32
@@ -232,11 +232,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 339'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 339'
       - '[console] nfurnace %player_name% SMOKER COMBINATION'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'blast_furnace':
     material: blast_furnace
     slot: 39
@@ -255,11 +255,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 139'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 139'
       - '[console] nfurnace %player_name% BLAST_FURNACE SPEED'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'blast_furnace_1':
     material: blast_furnace
     slot: 40
@@ -278,11 +278,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 149'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 149'
       - '[console] nfurnace %player_name% BLAST_FURNACE LUCKY'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'blast_furnace_2':
     material: blast_furnace
     slot: 41
@@ -302,11 +302,11 @@ items:
           type: javascript
           expression: '%playerpoints_points% >= 339'
       deny_commands:
-        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 339'
       - '[console] nfurnace %player_name% BLAST_FURNACE COMBINATION'
-      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'arrow':
     material: arrow
     slot: 45
@@ -323,6 +323,6 @@ items:
       - '&#555555 &#FFFFFFВаш баланс: &#FAD8FC%playerpoints_points_formatted% &#FFFFFFꐃ'
       - ''
       - '&#AAAAAAПополнить баланс можно'
-      - '&#AAAAAAна сайте: &#FAD8FC%elytrix_site%'
+      - '&#AAAAAAна сайте: &#FAD8FChttps://elytrix.pw'
     model_data: 100020
     
