@@ -1,0 +1,647 @@
+######## created by samus2002 #########
+
+Changetarget:  
+  Cooldown: 0
+  Skills:
+  - runaitargetselector{target=clear}
+  - runaitargetselector{target=players}
+  
+Cancelattack:
+  Skills:
+  - CancelEvent
+  
+DwarfImmobilize:
+  Conditions:
+  - targetwithin{r=8} false 
+  Skills:
+  - potion{type=SLOW;d=40;lvl=255;ambient=false;p=false;icon=false} @self 
+  - effect:particles{p=smoke;amount=1;hS=0.1;vS=0.1;y=1.5} @self 0.5 
+  
+DwarfActivate:
+  Conditions:
+  - targetwithin{r=8} true 
+  Skills:
+  - potion{type=SLOW;clear=true} @self 
+  - effect:sound{s=entity.pillager.ambient;volume=1;pitch=1} @self 
+  - effect:particles{p=cloud;amount=10;hS=0.3;vS=0.3;y=1} @self 
+  
+Dwarf_Knight_Tame:
+  Conditions:
+  - incombat false
+  TriggerConditions:
+  - holding{m=GOLD_INGOT} true
+  Skills:
+  - randomskill{skills=Dwarf_Knight_Tame_FAIL,Dwarf_Knight_Tame_FAIL,Dwarf_Knight_Tame_FAIL,Dwarf_Knight_Tame_SUCCESS}
+  - consumeslot{slot=HAND;amount=1} @trigger
+
+Dwarf_Knight_Tame_FAIL:
+  Skills:
+  - effect:sound{s=entity.pillager.ambient;volume=1;pitch=0.8} @self
+  - effect:particles{particle=smoke;amount=15;hS=0.3;vS=0.35;y=0.9;speed=0;forwardOffset=0;sideOffset=0} @self
+  
+Dwarf_Knight_Tame_SUCCESS:
+  Skills:
+  - effect:sound{s=entity.pillager.ambient;volume=1;pitch=1.15} @self
+  - effect:particles{particle=heart;amount=15;hS=0.3;vS=0.35;y=0.9;speed=0;forwardOffset=0;sideOffset=0} @self
+  
+  - remove{delay=1} @self
+  - partvisibility{p=body;v=false;em=false} @self
+  - partvisibility{p=head;v=false;em=false} @self
+  - partvisibility{p=left;v=false;em=false} @self
+  - partvisibility{p=right;v=false;em=false} @self
+  - partvisibility{p=beard;v=false;em=false} @self
+  - partvisibility{p=chest;v=false;em=false} @self
+  - summon{type=Dwarf_Knight_Friendly;amount=1;radius=0;yRadius=0;onSurface=true} @self
+  
+  
+
+
+Dwarf_Huntsman_Tame:
+  Conditions:
+  - incombat false
+  TriggerConditions:
+  - holding{m=GOLD_INGOT} true
+  Skills:
+  - randomskill{skills=Dwarf_Huntsman_Tame_FAIL,Dwarf_Huntsman_Tame_FAIL,Dwarf_Huntsman_Tame_FAIL,Dwarf_Huntsman_Tame_SUCCESS}
+  - consumeslot{slot=HAND;amount=1} @trigger
+
+Dwarf_Huntsman_Tame_FAIL:
+  Skills:
+  - effect:sound{s=entity.pillager.ambient;volume=1;pitch=0.8} @self
+  - effect:particles{particle=smoke;amount=15;hS=0.3;vS=0.35;y=0.9;speed=0;forwardOffset=0;sideOffset=0} @self
+  
+Dwarf_Huntsman_Tame_SUCCESS:
+  Skills:
+  - effect:sound{s=entity.pillager.ambient;volume=1;pitch=1.15} @self
+  - effect:particles{particle=heart;amount=15;hS=0.3;vS=0.35;y=0.9;speed=0;forwardOffset=0;sideOffset=0} @self
+  
+  - remove{delay=1} @self
+  - partvisibility{p=body;v=false;em=false} @self
+  - partvisibility{p=head;v=false;em=false} @self
+  - partvisibility{p=left;v=false;em=false} @self
+  - partvisibility{p=right;v=false;em=false} @self
+  - partvisibility{p=beard;v=false;em=false} @self
+  - partvisibility{p=cape;v=false;em=false} @self
+  - partvisibility{p=chest;v=false;em=false} @self
+  - summon{type=Dwarf_Huntsman_Friendly;amount=1;radius=0;yRadius=0;onSurface=true} @self
+  
+  
+Dwarf_Cleric_Tame:
+  Conditions:
+  - incombat false
+  TriggerConditions:
+  - holding{m=GOLD_INGOT} true
+  Skills:
+  - randomskill{skills=Dwarf_Cleric_Tame_FAIL,Dwarf_Cleric_Tame_FAIL,Dwarf_Cleric_Tame_FAIL,Dwarf_Cleric_Tame_SUCCESS}
+  - consumeslot{slot=HAND;amount=1} @trigger
+
+Dwarf_Cleric_Tame_FAIL:
+  Skills:
+  - effect:sound{s=entity.pillager.ambient;volume=1;pitch=0.8} @self
+  - effect:particles{particle=smoke;amount=15;hS=0.3;vS=0.35;y=0.9;speed=0;forwardOffset=0;sideOffset=0} @self
+  
+Dwarf_Cleric_Tame_SUCCESS:
+  Skills:
+  - effect:sound{s=entity.pillager.ambient;volume=1;pitch=1.15} @self
+  - effect:particles{particle=heart;amount=15;hS=0.3;vS=0.35;y=0.9;speed=0;forwardOffset=0;sideOffset=0} @self
+  
+  - remove{delay=1} @self
+  - partvisibility{p=body;v=false;em=false} @self
+  - partvisibility{p=head;v=false;em=false} @self
+  - partvisibility{p=left;v=false;em=false} @self
+  - partvisibility{p=right;v=false;em=false} @self
+  - partvisibility{p=beard;v=false;em=false} @self
+  - partvisibility{p=page;v=false;em=false} @self
+  - partvisibility{p=cape;v=false;em=false} @self
+  - partvisibility{p=chest;v=false;em=false} @self
+  - summon{type=Dwarf_Cleric_Friendly;amount=1;radius=0;yRadius=0;onSurface=true} @self
+  
+# Dwarf Knight #
+  
+Dwarf_Knight_Attack:
+  Conditions:
+  - offgcd
+  - targetwithin{d=4} true
+  Skills:
+  - gcd{ticks=50}
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=11} @self
+  - state{s=attack;li=2;lo=3} @self
+  
+  - delay 12
+  - lunge{velocity=0.8;velocityY=0.01} @forward{f=5;y=-1}
+  - effect:sound{s=entity.pillager.ambient;volume=1;pitch=1} @self 0.5
+  - effect:sound{s=entity.player.attack.sweep;volume=1;pitch=0.9} @self
+  - totem{md=2;c=1;oH=Dwarf_Knight_Attack_DAMAGE;hnp=false;hp=true;hR=2.5;vR=2;i=1} @forward{f=1}
+  
+  - delay 5
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=7} @self
+  
+  - delay 8
+  - lunge{velocity=0.8;velocityY=0.01} @forward{f=5;y=-1}
+  - effect:sound{s=entity.pillager.ambient;volume=1;pitch=1} @self 0.5
+  - effect:sound{s=entity.player.attack.sweep;volume=1;pitch=0.9} @self
+  - totem{md=2;c=1;oH=Dwarf_Knight_Attack_DAMAGE;hnp=false;hp=true;hR=2.5;vR=2;i=1} @forward{f=1}
+  
+  - delay 5
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=7} @self
+  
+Dwarf_Knight_Attack_DAMAGE:
+  TargetConditions:
+  - isblocking false
+  Skills:
+  - damage{a=4;pkb=false;hnp=false;hp=true}
+  
+Dwarf_Knight_Call:
+  Cooldown: 15
+  Conditions:
+  - offgcd
+  - targetwithin{d=15} true
+  Skills:
+  - gcd{ticks=52}
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=52} @self
+  - state{s=skill;li=2;lo=3} @self
+  
+  - delay 15
+  - effect:sound{s=item.goat_horn.sound.7;volume=1.3;pitch=1} @self
+  
+  - delay 10
+  - skill{s=Dwarf_Rally} @target
+  - delay 1
+  - skill{s=Dwarf_RallyFX} @MIR{r=15;t=Dwarf_Knight,Dwarf_Huntsman,Dwarf_Cleric}
+  - signal{s=RALLY} @MIR{r=15;t=Dwarf_Knight,Dwarf_Huntsman,Dwarf_Cleric}
+  
+Dwarf_Hit:
+  Cooldown: 1
+  Skills:
+  - effect:sound{s=entity.pillager.hurt;volume=1;pitch=0.9} @self
+  - state{s=hit} @self
+  
+Dwarf_Rally:
+  Skills:
+  - rally{types=Dwarf_Knight,Dwarf_Huntsman,Dwarf_Cleric;radius=15;ot=true}
+  
+Dwarf_RallyFX:
+  TargetConditions:
+  - hasowner false
+  Skills:
+  - effect:particles{particle=villager_angry;amount=7;hS=0.2;vS=0.3;y=1.2;speed=0;forwardOffset=0;sideOffset=0}
+  
+Dwarf_Knight_Friendly_Attack:
+  Conditions:
+  - offgcd
+  - targetwithin{d=4} true
+  Skills:
+  - gcd{ticks=50}
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=11} @self
+  - state{s=attack;li=2;lo=3} @self
+  
+  - delay 12
+  - lunge{velocity=0.8;velocityY=0.01} @forward{f=5;y=-1}
+  - effect:sound{s=entity.pillager.ambient;volume=1;pitch=1} @self 0.5
+  - effect:sound{s=entity.player.attack.sweep;volume=1;pitch=0.9} @self
+  - skill{s=Dwarf_Knight_Friendly_Attack_DAMAGE} @target
+  
+  - delay 5
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=7} @self
+  
+  - delay 8
+  - lunge{velocity=0.8;velocityY=0.01} @forward{f=5;y=-1}
+  - effect:sound{s=entity.pillager.ambient;volume=1;pitch=1} @self 0.5
+  - effect:sound{s=entity.player.attack.sweep;volume=1;pitch=0.9} @self
+  - skill{s=Dwarf_Knight_Friendly_Attack_DAMAGE} @target
+  
+  - delay 5
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=7} @self
+  
+Dwarf_Knight_Friendly_Attack_DAMAGE:
+  TargetConditions:
+  - isblocking false
+  Skills:
+  - damage{a=4;pkb=false;hnp=true;hp=true}
+  
+# Dwarf Huntsman #
+
+Dwarf_Huntsman_Attack:
+  Conditions:
+  - offgcd
+  - targetwithin{d=15} true
+  Skills:
+  - gcd{ticks=60}
+  - effect:sound{s=item.crossbow.loading_start;volume=1.2;pitch=1} @self
+  - effect:sound{s=item.crossbow.loading_middle;volume=1.2;pitch=1;delay=10} @self
+  - effect:sound{s=item.crossbow.loading_end;volume=1.2;pitch=1;delay=20} @self
+  
+  - delay 40
+  - state{s=attack;li=2;lo=3} @self
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=27} @self
+  - effect:sound{s=entity.pillager.ambient;volume=1;pitch=1;delay=2} @self 0.5
+  - effect:sound{s=item.crossbow.shoot;volume=1;pitch=1;delay=5} @self
+  - delay 5
+  #- shoot{type=ARROW;velocity=0.6;damage=5;accuracy=1;vs=1;hs=1} @target
+  - projectile{g=0.2;bulletType=MOB;mob=dwarf_arrow;onHit=Dwarf_Huntsman_Attack_DAMAGE;v=18;i=1;hR=1;vR=1;mr=30;hnp=true;hO=0;sE=true;sB=true;hs=false;hfs=0;syo=1;tyo=1} @target
+  
+Dwarf_Huntsman_Attack_DAMAGE:
+  TargetConditions:
+  - isblocking false
+  Skills:
+  - damage{a=5;pkb=false;hnp=true;hp=true}
+  - effect:sound{s=entity.player.attack.crit;volume=1;pitch=1}
+  
+# Dwarf Cleric #
+
+Dwarf_Cleric_Attack:
+  Conditions:
+  - offgcd
+  - targetwithin{d=4} true
+  Skills:
+  - gcd{ticks=39}
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=23} @self
+  - state{s=attack;li=2;lo=3} @self
+  
+  - delay 24
+  - lunge{velocity=0.8;velocityY=0.01} @forward{f=5;y=-1}
+  - effect:sound{s=entity.pillager.ambient;volume=1;pitch=1} @self 0.5
+  - effect:sound{s=entity.player.attack.sweep;volume=1;pitch=0.9} @self
+  - totem{md=2;c=1;oH=Dwarf_Cleric_Attack_DAMAGE;hnp=false;hp=true;hR=2.5;vR=2;i=1} @forward{f=1}
+  
+  - delay 5
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=15} @self
+  
+Dwarf_Cleric_Attack_DAMAGE:
+  TargetConditions:
+  - isblocking false
+  Skills:
+  - damage{a=4;pkb=false;hnp=false;hp=true}
+  
+Dwarf_Cleric_Attack_Friendly:
+  Conditions:
+  - offgcd
+  - targetwithin{d=4} true
+  Skills:
+  - gcd{ticks=39}
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=23} @self
+  - state{s=attack;li=2;lo=3} @self
+  
+  - delay 24
+  - lunge{velocity=0.8;velocityY=0.01} @forward{f=5;y=-1}
+  - effect:sound{s=entity.pillager.ambient;volume=1;pitch=1} @self 0.5
+  - effect:sound{s=entity.player.attack.sweep;volume=1;pitch=0.9} @self
+  - skill{s=Dwarf_Cleric_Attack_Friendly_DAMAGE} @target
+  
+  - delay 5
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=15} @self
+  
+Dwarf_Cleric_Attack_Friendly_DAMAGE:
+  TargetConditions:
+  - isblocking false
+  Skills:
+  - damage{a=4;pkb=false;hnp=false;hp=true}
+  
+  
+  
+Dwarf_Cleric_Heal:
+  Cooldown: 5
+  Conditions:
+  - offgcd
+  - targetwithin{d=20} true
+  - mobsInRadius{types=Dwarf_Knight,Dwarf_Huntsman,Dwarf_Cleric;amount=1to100;radius=10} true
+  Skills:
+  - gcd{ticks=62}
+  - state{s=skill;li=2;lo=3} @self
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=62} @self
+  - effect:sound{s=entity.pillager.ambient;volume=1;pitch=1} @self 0.5
+  
+  - delay 20
+  - skill{s=Dwarf_Cleric_Heal_H} @MIR{r=10;t=Dwarf_Knight,Dwarf_Huntsman,Dwarf_Cleric;limit=1}
+  - delay 10
+  - skill{s=Dwarf_Cleric_Heal_H} @MIR{r=10;t=Dwarf_Knight,Dwarf_Huntsman,Dwarf_Cleric;limit=1}
+  - delay 10
+  - skill{s=Dwarf_Cleric_Heal_H} @MIR{r=10;t=Dwarf_Knight,Dwarf_Huntsman,Dwarf_Cleric;limit=1}
+  
+Dwarf_Cleric_Heal_H:
+  Skills:
+  - effect:sound{s=block.note_block.chime;volume=1;pitch=1} @self
+  - effect:sound{s=block.note_block.chime;volume=1;pitch=1.1;delay=2} @self
+  - effect:sound{s=block.note_block.chime;volume=1;pitch=1.2;delay=4} @self
+  - effect:sound{s=block.note_block.chime;volume=1;pitch=1.5;delay=6} @self
+  - heal{a=8}
+  - orbital{r=0.8;onTick=Dwarf_Cleric_heal_TICK;points=16;interval=1;duration=27;oy=1}
+  - orbital{r=0.8;onTick=Dwarf_Cleric_heal_TICK;points=16;interval=1;duration=27;oy=2}
+
+Dwarf_Cleric_heal_TICK:
+  Skills:
+  - effect:particles{p=totem;amount=1;speed=0;hS=0;vS=0} @origin
+  
+Dwarf_Cleric_Heal_Friendly:
+  Cooldown: 5
+  Conditions:
+  - offgcd
+  - targetwithin{d=20} true
+  Skills:
+  - gcd{ticks=62}
+  - state{s=skill;li=2;lo=3} @self
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=62} @self
+  - effect:sound{s=entity.pillager.ambient;volume=1;pitch=1} @self 0.5
+  
+  - delay 20
+  - skill{s=Dwarf_Cleric_Heal_H} @Owner
+  
+# Dwarf Blacksmith #
+
+Dwarf_Blacksmith_Attack:
+  Skills:
+  - randomskill{skills=Dwarf_Blacksmith_Skill,Dwarf_Blacksmith_Skill,Dwarf_Blacksmith_Attack_Basic,Dwarf_Blacksmith_Attack_Smash,Dwarf_Blacksmith_Sword_Spin,Dwarf_Blacksmith_Spear_Throw}
+
+Dwarf_Blacksmith_Skill:
+  Cooldown: 9
+  Skills:
+  - randomskill{skills=Forge_Sword,Forge_Spear,Forge_Shield}
+  
+Dwarf_Blacksmith_Attack_Basic:
+  Conditions:
+  - offgcd
+  - targetwithin{d=6} true
+  Skills:
+  - gcd{ticks=45}
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=19} @self
+  - state{s=attack_1;li=2;lo=3} @self
+  - effect:sound{s=entity.pillager.ambient;volume=1;pitch=0.8} @self 0.5
+  
+  - delay 20
+  - lunge{velocity=0.45;velocityY=0.01;repeat=1;repeatinterval=7} @forward{f=5;y=-1}
+  - effect:sound{s=entity.player.attack.sweep;volume=1;pitch=0.85} @self
+  - effect:sound{s=entity.zombie.infect;volume=1;pitch=1} @self
+  - totem{md=2;c=1;oH=Dwarf_Blacksmith_Attack_Basic_DAMAGE;hnp=false;hp=true;hR=4;vR=4;i=1;delay=3} @forward{f=1}
+  
+  - delay 7
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=17} @self
+  
+Dwarf_Blacksmith_Attack_Basic_DAMAGE:
+  TargetConditions:
+  - isblocking false
+  Skills:
+  - damage{a=5;pkb=false;hnp=false;hp=true}
+  
+Dwarf_Blacksmith_Attack_Smash:
+  Conditions:
+  - offgcd
+  - targetwithin{d=6} true
+  Skills:
+  - gcd{ticks=57}
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=57} @self
+  - state{s=attack_2;li=2;lo=3} @self
+  - effect:sound{s=entity.pillager.ambient;volume=1;pitch=0.8} @self 0.5
+  
+  - delay 20
+  - effect:sound{s=entity.player.attack.sweep;volume=1;pitch=0.85} @self
+  - effect:sound{s=entity.zombie.infect;volume=1;pitch=1} @self
+  
+  - delay 4
+  - effect:sound{s=block.anvil.land;volume=1;pitch=0.7} @self
+  - totem{md=2;c=1;oH=Dwarf_Blacksmith_Attack_Smash_DAMAGE;hnp=false;hp=true;hR=4;vR=4;i=1;delay=3} @forward{f=2}
+  - effect:particles{particle=lava;amount=20;hS=0.3;vS=1.4;y=0.7;speed=0;forwardOffset=0;sideOffset=0} @self
+
+  - effect:particlering{particle=flame;radius=0.5;points=15;amount=1;speed=0.1;hS=0;vS=0;y=0.1} @forward{f=2}
+  - delay 1
+  - effect:particlering{particle=flame;radius=1;points=15;amount=1;speed=0.1;hS=0;vS=0;y=0.1} @forward{f=2}
+  - delay 1
+  - effect:particlering{particle=flame;radius=1.5;points=20;amount=1;speed=0.1;hS=0;vS=0;y=0.1} @forward{f=2}
+  - delay 1
+  - effect:particlering{particle=flame;radius=2;points=25;amount=1;speed=0.1;hS=0;vS=0;y=0.1} @forward{f=2}
+  - delay 1
+  - effect:particlering{particle=flame;radius=2.5;points=30;amount=1;speed=0.1;hS=0;vS=0;y=0.1} @forward{f=2}
+  - delay 1
+  - effect:particlering{particle=flame;radius=3;points=35;amount=1;speed=0.1;hS=0;vS=0;y=0.1} @forward{f=2}
+  - delay 1
+  - effect:particlering{particle=flame;radius=3.5;points=40;amount=1;speed=0.1;hS=0;vS=0;y=0.1} @forward{f=2}
+  - delay 1
+  - effect:particlering{particle=flame;radius=4;points=45;amount=1;speed=0.1;hS=0;vS=0;y=0.1} @forward{f=2}
+  - delay 1
+  - effect:particlering{particle=flame;radius=4.5;points=50;amount=1;speed=0.1;hS=0;vS=0;y=0.1} @forward{f=2}
+  - delay 1
+  - effect:particlering{particle=flame;radius=5;points=55;amount=1;speed=0.1;hS=0;vS=0;y=0.1} @forward{f=2}
+  - delay 1
+  - effect:particlering{particle=flame;radius=5.5;points=60;amount=1;speed=0.1;hS=0;vS=0;y=0.1} @forward{f=2}
+  - delay 1
+  - effect:particlering{particle=flame;radius=6;points=65;amount=1;speed=0.1;hS=0;vS=0;y=0.1} @forward{f=2}
+  - delay 1
+  - effect:particlering{particle=flame;radius=6.5;points=70;amount=1;speed=0.1;hS=0;vS=0;y=0.1} @forward{f=2}
+  
+Dwarf_Blacksmith_Attack_Smash_DAMAGE:
+  TargetConditions:
+  - isblocking false
+  Skills:
+  - damage{a=5;pkb=false;hnp=false;hp=true}
+  - ignite{ticks=80}
+  
+Dwarf_Blacksmith_Hit:
+  Cooldown: 0.7
+  Skills:
+  - effect:sound{s=entity.pillager.hurt;volume=0.9;pitch=0.8} @self
+  - state{s=hit} @self
+  
+# Forge - Sword #
+
+Forge_Sword:
+  Conditions:
+  - offgcd
+  - targetwithin{d=20} true
+  Skills:
+  - gcd{ticks=50}
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=50} @self
+  - state{s=anvil_summon} @self
+  - effect:particles{particle=crimson_spore;amount=15;hS=0.35;vS=0.35;y=0;speed=0;forwardOffset=0;sideOffset=0} @ModelPart{p=anvil}
+  - partvisibility{p=anvil;v=true;delay=1} @self
+  - partvisibility{p=sword;v=false} @self
+  - partvisibility{p=shield;v=false} @self
+  - partvisibility{p=spear;v=false} @self
+  
+  - delay 4
+  - effect:sound{s=block.anvil.land;volume=1;pitch=0.85} @self
+  
+  - delay 1
+  - state{s=anvil_smash} @self
+  - partvisibility{p=iron;v=true} @self
+  
+  - delay 25
+  - effect:sound{s=entity.blaze.hurt;volume=1.4;pitch=0.8} @self
+  - effect:particles{particle=crimson_spore;amount=15;hS=0.5;vS=0.5;y=1.5;speed=0.15;forwardOffset=0;sideOffset=0} @ModelPart{p=anvil}
+  
+  - delay 15
+  - effect:sound{s=entity.blaze.hurt;volume=1.4;pitch=0.8} @self
+  - effect:sound{s=entity.wither.hurt;volume=1;pitch=0.8;delay=5} @self
+  - effect:particles{particle=crimson_spore;amount=15;hS=0.5;vS=0.5;y=1.5;speed=0.15;forwardOffset=0;sideOffset=0} @ModelPart{p=anvil}
+  - effect:particles{particle=lava;amount=20;hS=0.5;vS=0.5;y=1.5;speed=0.15;forwardOffset=0;sideOffset=0} @ModelPart{p=anvil}
+  - partvisibility{p=iron;v=false} @self
+  - partvisibility{p=sword;v=true} @self
+  - setstance{stance=swordphase} @self
+  
+  - delay 10
+  - effect:particles{particle=crimson_spore;amount=15;hS=0.35;vS=0.35;y=0;speed=0;forwardOffset=0;sideOffset=0} @ModelPart{p=anvil}
+  - partvisibility{p=anvil;v=false} @self
+
+  
+Dwarf_Blacksmith_Sword_Spin:
+  Conditions:
+  - offgcd
+  - targetwithin{d=11} true
+  - stance swordphase
+  Skills:
+  - gcd{ticks=74}
+  - potion{type=SLOW;duration=29;level=50;hasParticles=false} @self
+  - state{s=attack_sword;li=2;lo=3} @self
+  - effect:sound{s=entity.pillager.ambient;volume=1;pitch=0.8;delay=20} @self 0.5
+  
+  - delay 30
+  - lunge{velocity=1.75;velocityY=0.01} @forward{f=5;y=-1}
+  - effect:sound{s=entity.wither.shoot;volume=1;pitch=0.75;delay=4} @self
+  - damage{a=5;pkb=false;hnp=false;hp=true;delay=4} @EIR{r=5.5}
+  - effect:sound{s=entity.wither.shoot;volume=1;pitch=0.9;delay=16} @self
+  - damage{a=5;pkb=false;hnp=false;hp=true;delay=16} @EIR{r=5.5}
+  
+  - delay 22
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=22} @self
+  
+# Forge - Spear #
+
+Forge_Spear:
+  Conditions:
+  - offgcd
+  - targetwithin{d=20} true
+  Skills:
+  - gcd{ticks=50}
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=50} @self
+  - state{s=anvil_summon} @self
+  - effect:particles{particle=crimson_spore;amount=15;hS=0.35;vS=0.35;y=0;speed=0;forwardOffset=0;sideOffset=0} @ModelPart{p=anvil}
+  - partvisibility{p=anvil;v=true;delay=1} @self
+  - partvisibility{p=sword;v=false} @self
+  - partvisibility{p=shield;v=false} @self
+  - partvisibility{p=spear;v=false} @self
+  
+  - delay 4
+  - effect:sound{s=block.anvil.land;volume=1;pitch=0.85} @self
+  
+  - delay 1
+  - state{s=anvil_smash} @self
+  - partvisibility{p=iron;v=true} @self
+  
+  - delay 25
+  - effect:sound{s=entity.blaze.hurt;volume=1.4;pitch=0.8} @self
+  - effect:particles{particle=crimson_spore;amount=15;hS=0.5;vS=0.5;y=1.5;speed=0.15;forwardOffset=0;sideOffset=0} @ModelPart{p=anvil}
+  
+  - delay 15
+  - effect:sound{s=entity.blaze.hurt;volume=1.4;pitch=0.8} @self
+  - effect:sound{s=entity.wither.hurt;volume=1;pitch=0.8;delay=5} @self
+  - effect:particles{particle=crimson_spore;amount=15;hS=0.5;vS=0.5;y=1.5;speed=0.15;forwardOffset=0;sideOffset=0} @ModelPart{p=anvil}
+  - effect:particles{particle=lava;amount=20;hS=0.5;vS=0.5;y=1.5;speed=0.15;forwardOffset=0;sideOffset=0} @ModelPart{p=anvil}
+  - partvisibility{p=iron;v=false} @self
+  - partvisibility{p=spear;v=true} @self
+  - setstance{stance=spearphase} @self
+  
+  - delay 10
+  - effect:particles{particle=crimson_spore;amount=15;hS=0.35;vS=0.35;y=0;speed=0;forwardOffset=0;sideOffset=0} @ModelPart{p=anvil}
+  - partvisibility{p=anvil;v=false} @self
+
+  
+Dwarf_Blacksmith_Spear_Throw:
+  Conditions:
+  - offgcd
+  - targetwithin{d=20} true
+  - stance spearphase
+  Skills:
+  - gcd{ticks=75}
+  - potion{type=SLOW;duration=40;level=40;hasParticles=false} @self
+  - state{s=throw_spear;li=2;lo=3} @self
+  - look{repeat=39;repeatinterval=1} @PIR{r=20;sort=NEAREST;limit=1}
+  - effect:sound{s=entity.pillager.ambient;volume=1;pitch=0.8;delay=10} @self 0.5
+  
+  - delay 40
+  - effect:sound{s=entity.wither.shoot;volume=1.2;pitch=1.15;delay=3} @self
+  - projectile{delay=5;g=0.2;bulletType=MOB;mob=blacksmith_spear;onHit=Dwarf_Blacksmith_Spear_Throw_DAMAGE;v=20;i=1;hR=1.5;vR=1.5;mr=50;hnp=false;hO=0;sE=true;sB=true;hs=false;hfs=0;syo=3;tyo=3} @forward{f=10;y=0}
+  - partvisibility{p=spear;v=false;delay=5} @self
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=35} @self
+  - setstance{stance=normalphase} @self
+  
+Dwarf_Blacksmith_Spear_Throw_DAMAGE:
+  TargetConditions:
+  - isblocking false
+  Skills:
+  - damage{a=8;pkb=false;hnp=true;hp=true}
+  - effect:sound{s=entity.player.attack.crit;volume=1;pitch=1}
+  
+# Forge - Shield #
+
+Forge_Shield:
+  Conditions:
+  - offgcd
+  - targetwithin{d=20} true
+  Skills:
+  - gcd{ticks=50}
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=50} @self
+  - state{s=anvil_summon} @self
+  - effect:particles{particle=crimson_spore;amount=15;hS=0.35;vS=0.35;y=0;speed=0;forwardOffset=0;sideOffset=0} @ModelPart{p=anvil}
+  - partvisibility{p=anvil;v=true;delay=1} @self
+  - partvisibility{p=sword;v=false} @self
+  - partvisibility{p=shield;v=false} @self
+  - partvisibility{p=spear;v=false} @self
+  
+  - delay 4
+  - effect:sound{s=block.anvil.land;volume=1;pitch=0.85} @self
+  
+  - delay 1
+  - state{s=anvil_smash} @self
+  - partvisibility{p=iron;v=true} @self
+  
+  - delay 25
+  - effect:sound{s=entity.blaze.hurt;volume=1.4;pitch=0.8} @self
+  - effect:particles{particle=crimson_spore;amount=15;hS=0.5;vS=0.5;y=1.5;speed=0.15;forwardOffset=0;sideOffset=0} @ModelPart{p=anvil}
+  
+  - delay 15
+  - effect:sound{s=entity.blaze.hurt;volume=1.4;pitch=0.8} @self
+  - effect:sound{s=entity.wither.hurt;volume=1;pitch=0.8;delay=5} @self
+  - effect:particles{particle=crimson_spore;amount=15;hS=0.5;vS=0.5;y=1.5;speed=0.15;forwardOffset=0;sideOffset=0} @ModelPart{p=anvil}
+  - effect:particles{particle=lava;amount=20;hS=0.5;vS=0.5;y=1.5;speed=0.15;forwardOffset=0;sideOffset=0} @ModelPart{p=anvil}
+  - partvisibility{p=iron;v=false} @self
+  - partvisibility{p=shield;v=true} @self
+  - setstance{stance=shieldphase} @self
+  
+  - delay 10
+  - effect:particles{particle=crimson_spore;amount=15;hS=0.35;vS=0.35;y=0;speed=0;forwardOffset=0;sideOffset=0} @ModelPart{p=anvil}
+  - partvisibility{p=anvil;v=false} @self
+  
+Dwarf_Blacksmith_Parry:
+  Conditions:
+  - stance shieldphase
+  Skills:
+  - onDamaged{auraName=parry;c=1;oH=Dwarf_Blacksmith_Parry_Skill;cE=true} @self
+  
+Dwarf_Blacksmith_Parry_Skill:
+  Conditions:
+  - offgcd
+  Skills:
+  - gcd{ticks=30}
+  - state{s=shield_parry;li=2;lo=3} @self
+  - effect:sound{s=entity.iron_golem.repair;volume=0.9;pitch=1} @self
+# cjdczkjlSqL152geyU3QMhm7RKGHn6F3Nwwe1uN9kvPQILHP92B3wkyhL8H4JcR4GJyNz3Tf2eOGDnExlRSDE57eQ0U7+1vr8Kare6+CQVg=

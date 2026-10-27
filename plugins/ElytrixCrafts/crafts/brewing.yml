@@ -1,0 +1,64 @@
+menu-slot: 1
+cooldown-hours: 24
+permission: quest.alch
+chain: alch
+result:
+  ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: BREWING_STAND
+  meta:
+    ==: ItemMeta
+    meta-type: TILE_ENTITY
+    display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"white","text":"Зельеварка
+      ведьмы "},{"italic":false,"color":"gold","text":"3 уровня"}],"text":""}'
+    lore:
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Скорость
+      варки "},{"italic":false,"color":"gold","text":"10 сек"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Тратит
+      в "},{"italic":false,"color":"gold","text":"3 раза больше порошка"}],"text":""}'
+    enchants:
+      DURABILITY: 1
+    ItemFlags:
+    - HIDE_ENCHANTS
+    - HIDE_UNBREAKABLE
+    PublicBukkitValues:
+      rwfurnace:nfurnace-block: WITCH
+      rwfurnace:nfurnace-level: 3i
+    blockMaterial: BREWING_STAND
+ingredients:
+  '0':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BLAZE_POWDER
+  '1':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: GOLDEN_APPLE
+  '2':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: GUNPOWDER
+  '3':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: FERMENTED_SPIDER_EYE
+  '4':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BREWING_STAND
+  '5':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHER_WART
+  '6':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHER_STAR
+  '7':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BEACON
+  '8':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHER_STAR

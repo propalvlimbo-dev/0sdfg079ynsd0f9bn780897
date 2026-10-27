@@ -1,0 +1,555 @@
+#########################################################
+## Developed by Little Room, patreon.com/littleroomdev ##
+#########################################################
+
+gp2_goblin_dummy:
+  Type: ARMOR_STAND
+  Options:
+    Marker: true
+    Invisible: true
+  Skills:
+  - remove{delay=40} @self ~onSpawn
+
+
+######################
+### GOBLIN WARRIOR ###
+######################
+
+gp2_goblin_warrior:
+  Type: HUSK  
+  Display: "Goblin Warrior"
+  Health: 10
+  AITargetSelectors:
+  - OtherFaction
+  - players
+  Modules:
+    ThreatTable: true
+  Faction: GOBLIN
+  Damage: 1
+  Options:
+    Silent: true
+    PreventOtherDrops: true
+    KnockbackResistance: 0.5
+    FollowRange: 32
+    Despawn: false
+  Skills:
+  - CancelEvent @self ~onInteract
+  - model{m=gp2_goblin_warrior;usm=true;step=1} @self ~onSpawn
+  - model{m=gp2_goblin_warrior;usm=true;step=1} @self ~onLoad
+  - BodyClamp{mh=25;mb=25;rde=60;rdu=60} @self ~onSpawn
+  - BodyClamp{mh=25;mb=25;rde=60;rdu=60} @self ~onLoad
+  - setspeed{type=walking;speed=1.5} @self ~onSpawn
+  - setvariable{var=caster.shield;value="true";type=STRING} @self ~onSpawn
+  - setvariable{var=caster.shieldhealth;value="25";type=INTEGER} @self ~onSpawn
+  - setstance{stance=shield_down} @self ~onSpawn
+  - skill{s=gp2_goblin_warrior_randomize} @self ~onSpawn
+  - skill{s=gp2_goblin_warrior_randomize} @self ~onLoad
+  - skill{s=gp2_goblin_idle_fidget} @self ~onTimer:60  .25
+  - skill{s=gp2_goblin_scream} @self ~onTimer:60  .5
+  - skill{s=gp2_goblin_bow_stop} @self ~onTimer:10
+  - skill{s=gp2_goblin_bow_runaway} @self ~onTimer:10
+  - skill{s=gp2_shield_proximity} @self ~onTimer:10
+  - skill{s=gp2_goblin_shoot_arrow} @target ~onTimer:20
+  - skill{s=gp2_shield_armor} @self ~onTimer:20
+  - skill{s=gp2_shield_hit} @self ~onDamaged
+  - skill{s=gp2_goblin_throw_rock} @target ~onTimer:20 .5
+  - randomskill{skills=gp2_goblin_swing_1_sync,gp2_goblin_swing_2_sync,gp2_goblin_swing_3_sync,gp2_goblin_kick_sync,gp2_shield_bash_sync;sync=true} @self ~onAttack
+  - skill{s=gp2_goblin_toss_up} @self ~onTimer:1
+  - skill{s=gp2_goblin_toss_up_land} @self ~onTimer:1
+  - skill{s=gp2_goblin_exploded} @self ~onDamaged
+  - skill{s=gp2_goblin_find_weapon} @IIR{r=12;sort=NEAREST;limit=1} ~onTimer:10
+  - skill{s=gp2_goblin_grab_weapon} @IIR{r=2} ~onTimer:10
+  - skill{s=gp2_goblin_death} @self ~onDeath
+  - skill{s=gp2_goblins_gotoking} @MobsInRadius{r=48;types=gp2_goblin_king} ~onTimer:20
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_laugh;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self ~onTimer:60 .25
+  - skill{s=gp2_goblin_warrior_blobai} @MobsInRadius{r=32;types=gp2_goblin_warrior;sort=NEAREST;limit=1} ~onTimer:20
+  
+###################
+### GOBLIN KING ###
+###################
+
+gp2_goblin_king:
+  Type: HUSK
+  Display: "The Goblin King"
+  Health: 400
+  AITargetSelectors:
+  - players
+  - SpecificFaction ORK
+  - monsters
+  - villagers
+  Modules:
+    ThreatTable: true
+  Faction: GOBLIN
+  Damage: 1
+  Options:
+    Silent: true
+    PreventOtherDrops: true
+    KnockbackResistance: 1
+    FollowRange: 32
+    Despawn: false
+  Skills:
+  - CancelEvent @self ~onInteract
+  - model{m=gp2_goblin_king;usm=true;step=1} @self ~onSpawn
+  - model{m=gp2_goblin_king;usm=true;step=1} @self ~onLoad
+  - BodyClamp{mh=25;mb=25;rde=60;rdu=60} @self ~onSpawn
+  - BodyClamp{mh=25;mb=25;rde=60;rdu=60} @self ~onLoad
+  - setspeed{type=walking;speed=1} @self ~onSpawn
+  - skill{s=gp2_goblin_king_bossbar_damage} @self ~onDamaged
+  - skill{s=gp2_goblinking_idle_fidget} @self ~onTimer:60  .5
+  - randomskill{skills=gp2_goblinking_swing_1_sync} @target ~onAttack
+  - skill{s=gp2_goblinking_shoulder} @target ~onTimer:20
+  - skill{s=gp2_goblinking_slam} @target ~onTimer:20
+  - skill{s=gp2_goblinking_death} @self ~onDeath
+  
+
+  
+#####################
+### GOBLIN SHAMAN ###
+#####################
+
+gp2_goblin_shaman:
+  Type: HUSK  
+  Display: "Goblin Shaman"
+  Health: 100
+  AITargetSelectors:
+  - players
+  - SpecificFaction ORK
+  - monsters
+  - villagers
+  Modules:
+    ThreatTable: true
+  Faction: GOBLIN
+  Damage: 1
+  Options:
+    Silent: true
+    PreventOtherDrops: true
+    KnockbackResistance: 1
+    FollowRange: 32
+    Despawn: false
+  Skills:
+  - CancelEvent @self ~onInteract
+  - CancelEvent @self ~onAttack
+  - model{m=gp2_goblin_shaman;usm=true;step=1} @self ~onSpawn
+  - model{m=gp2_goblin_shaman;usm=true;step=1} @self ~onLoad
+  - BodyClamp{mh=25;mb=25;rde=60;rdu=60} @self ~onSpawn
+  - BodyClamp{mh=25;mb=25;rde=60;rdu=60} @self ~onLoad
+  - lockmodelhead{mid=gp2_goblin_shaman;lockyaw=false;lockpitch=true} @self ~onSpawn
+  - setspeed{type=walking;speed=0.75} @self ~onSpawn
+  - skill{s=gp2_goblinshaman_distance} @self ~onTimer:10
+  - skill{s=gp2_goblinshaman_teleport} @self ~onTimer:5
+  - skill{s=gp2_goblinshaman_teleport_closegap} @MobsInRadius{r=64;types=gp2_goblin_warrior,gp2_goblin_king} ~onTimer:5
+  - skill{s=gp2_goblinshaman_projectile} @target ~onTimer:20
+  - skill{s=gp2_goblinshaman_doppelganger_summon} @self ~onTimer:20 <50%
+  - skill{s=gp2_goblinshaman_end_doppelganger} @self ~onDamaged
+  - skill{s=gp2_goblinshaman_heal_king} @MobsInRadius{r=24;types=gp2_goblin_king} ~onTimer:20
+  - skill{s=gp2_goblinshaman_death} @self ~onDeath
+  - skill{s=gp2_goblins_gotoking} @MobsInRadius{r=48;types=gp2_goblin_king} ~onTimer:20
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_shaman_laugh;v=2;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self ~onTimer:60 .25
+
+gp2_goblin_doppelganger:
+  Type: IRON_GOLEM  
+  Display: "Goblin Shaman Doppelganger"
+  Health: 100
+  AITargetSelectors:
+  - players
+  - SpecificFaction ORK
+  - monsters
+  - villagers
+  Modules:
+    ThreatTable: true
+  Faction: GOBLIN
+  Damage: 1
+  Options:
+    Silent: true
+    PreventOtherDrops: true
+    KnockbackResistance: 1
+    FollowRange: 32
+    Despawn: false
+  Skills:
+  - CancelEvent @self ~onInteract
+  - CancelEvent @self ~onAttack
+  - model{m=gp2_goblin_shaman_doppelganger;usm=true;step=1} @self ~onSpawn
+  - model{m=gp2_goblin_shaman_doppelganger;usm=true;step=1} @self ~onLoad
+  - BodyClamp{mh=25;mb=25;rde=60;rdu=60} @self ~onSpawn
+  - BodyClamp{mh=25;mb=25;rde=60;rdu=60} @self ~onLoad
+  - setspeed{type=walking;speed=0.75} @self ~onSpawn
+  - skill{s=gp2_goblinshaman_distance} @self ~onTimer:10
+  - skill{s=gp2_goblinshaman_projectile} @target ~onTimer:20
+  - skill{s=gp2_goblinshaman_doppelganger_death} @self ~onDamaged
+  
+  
+  
+  
+####################################
+### PREDETERMINED GOBLIN CLASSES ###
+####################################
+
+gp2_goblin_archer:
+  Type: HUSK  
+  Display: "Goblin Warrior"
+  Health: 100
+  AITargetSelectors:
+  - players
+  - SpecificFaction ORK
+  - monsters
+  - villagers
+  - animals
+  Modules:
+    ThreatTable: true
+  Faction: GOBLIN
+  Damage: 1
+  Options:
+    Silent: true
+    PreventOtherDrops: true
+    KnockbackResistance: 0.5
+    FollowRange: 32
+    Despawn: false
+  Skills:
+  - CancelEvent @self ~onInteract
+  - model{m=gp2_goblin_warrior;usm=true;step=1} @self ~onSpawn
+  - model{m=gp2_goblin_warrior;usm=true;step=1} @self ~onLoad
+  - BodyClamp{mh=25;mb=25;rde=60;rdu=60} @self ~onSpawn
+  - BodyClamp{mh=25;mb=25;rde=60;rdu=60} @self ~onLoad
+  - setspeed{type=walking;speed=1.5} @self ~onSpawn
+  - setvariable{var=caster.shield;value="true";type=STRING} @self ~onSpawn
+  - setvariable{var=caster.shieldhealth;value="25";type=INTEGER} @self ~onSpawn
+  - setstance{stance=shield_down} @self ~onSpawn
+  - skill{s=gp2_goblin_weapon_bow} @self ~onSpawn
+  - skill{s=gp2_goblin_idle_fidget} @self ~onTimer:60  .25
+  - skill{s=gp2_goblin_scream} @self ~onTimer:60  .5
+  - skill{s=gp2_goblin_bow_stop} @self ~onTimer:10
+  - skill{s=gp2_goblin_bow_runaway} @self ~onTimer:10
+  - skill{s=gp2_shield_proximity} @self ~onTimer:10
+  - skill{s=gp2_goblin_shoot_arrow} @target ~onTimer:20
+  - skill{s=gp2_shield_armor} @self ~onTimer:20
+  - skill{s=gp2_shield_hit} @self ~onDamaged
+  - skill{s=gp2_goblin_throw_rock} @target ~onTimer:20 .5
+  - randomskill{skills=gp2_goblin_swing_1_sync,gp2_goblin_swing_2_sync,gp2_goblin_swing_3_sync,gp2_goblin_kick_sync,gp2_shield_bash_sync;sync=true} @self ~onAttack
+  - skill{s=gp2_goblin_toss_up} @self ~onTimer:1
+  - skill{s=gp2_goblin_toss_up_land} @self ~onTimer:1
+  - skill{s=gp2_goblin_exploded} @self ~onDamaged
+  - skill{s=gp2_goblin_find_weapon} @IIR{r=12;sort=NEAREST;limit=1} ~onTimer:10
+  - skill{s=gp2_goblin_grab_weapon} @IIR{r=2} ~onTimer:10
+  - skill{s=gp2_goblin_death} @self ~onDeath
+  - skill{s=gp2_goblins_gotoking} @MobsInRadius{r=48;types=gp2_goblin_king} ~onTimer:20
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_laugh;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self ~onTimer:60 .25
+  - skill{s=gp2_goblin_warrior_blobai} @MobsInRadius{r=32;types=gp2_goblin_warrior;sort=NEAREST;limit=1} ~onTimer:20
+  
+
+gp2_goblin_club:
+  Type: HUSK  
+  Display: "Goblin Warrior"
+  Health: 25
+  AITargetSelectors:
+  - players
+  - SpecificFaction ORK
+  - monsters
+  - villagers
+  - animals
+  Modules:
+    ThreatTable: true
+  Faction: GOBLIN
+  Damage: 1
+  Options:
+    Silent: true
+    PreventOtherDrops: true
+    KnockbackResistance: 0.5
+    FollowRange: 32
+    Despawn: false
+  Skills:
+  - CancelEvent @self ~onInteract
+  - model{m=gp2_goblin_warrior;usm=true;step=1} @self ~onSpawn
+  - model{m=gp2_goblin_warrior;usm=true;step=1} @self ~onLoad
+  - BodyClamp{mh=25;mb=25;rde=60;rdu=60} @self ~onSpawn
+  - BodyClamp{mh=25;mb=25;rde=60;rdu=60} @self ~onLoad
+  - setspeed{type=walking;speed=1.5} @self ~onSpawn
+  - setvariable{var=caster.shield;value="true";type=STRING} @self ~onSpawn
+  - setvariable{var=caster.shieldhealth;value="25";type=INTEGER} @self ~onSpawn
+  - setstance{stance=shield_down} @self ~onSpawn
+  - skill{s=gp2_goblin_weapon_club} @self ~onSpawn
+  - skill{s=gp2_goblin_idle_fidget} @self ~onTimer:60  .25
+  - skill{s=gp2_goblin_scream} @self ~onTimer:60  .5
+  - skill{s=gp2_goblin_bow_stop} @self ~onTimer:10
+  - skill{s=gp2_goblin_bow_runaway} @self ~onTimer:10
+  - skill{s=gp2_shield_proximity} @self ~onTimer:10
+  - skill{s=gp2_goblin_shoot_arrow} @target ~onTimer:20
+  - skill{s=gp2_shield_armor} @self ~onTimer:20
+  - skill{s=gp2_shield_hit} @self ~onDamaged
+  - skill{s=gp2_goblin_throw_rock} @target ~onTimer:20 .5
+  - randomskill{skills=gp2_goblin_swing_1_sync,gp2_goblin_swing_2_sync,gp2_goblin_swing_3_sync,gp2_goblin_kick_sync,gp2_shield_bash_sync;sync=true} @self ~onAttack
+  - skill{s=gp2_goblin_toss_up} @self ~onTimer:1
+  - skill{s=gp2_goblin_toss_up_land} @self ~onTimer:1
+  - skill{s=gp2_goblin_exploded} @self ~onDamaged
+  - skill{s=gp2_goblin_find_weapon} @IIR{r=12;sort=NEAREST;limit=1} ~onTimer:10
+  - skill{s=gp2_goblin_grab_weapon} @IIR{r=2} ~onTimer:10
+  - skill{s=gp2_goblin_death} @self ~onDeath
+  - skill{s=gp2_goblins_gotoking} @MobsInRadius{r=48;types=gp2_goblin_king} ~onTimer:20
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_laugh;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self ~onTimer:60 .25
+  - skill{s=gp2_goblin_warrior_blobai} @MobsInRadius{r=32;types=gp2_goblin_warrior;sort=NEAREST;limit=1} ~onTimer:20
+    
+
+gp2_goblin_frying_pan:
+  Type: HUSK  
+  Display: "Goblin Warrior"
+  Health: 25
+  AITargetSelectors:
+  - players
+  - SpecificFaction ORK
+  - monsters
+  - villagers
+  - animals
+  Modules:
+    ThreatTable: true
+  Faction: GOBLIN
+  Damage: 1
+  Options:
+    Silent: true
+    PreventOtherDrops: true
+    KnockbackResistance: 0.5
+    FollowRange: 32
+    Despawn: false
+  Skills:
+  - CancelEvent @self ~onInteract
+  - model{m=gp2_goblin_warrior;usm=true;step=1} @self ~onSpawn
+  - model{m=gp2_goblin_warrior;usm=true;step=1} @self ~onLoad
+  - BodyClamp{mh=25;mb=25;rde=60;rdu=60} @self ~onSpawn
+  - BodyClamp{mh=25;mb=25;rde=60;rdu=60} @self ~onLoad
+  - setspeed{type=walking;speed=1.5} @self ~onSpawn
+  - setvariable{var=caster.shield;value="true";type=STRING} @self ~onSpawn
+  - setvariable{var=caster.shieldhealth;value="25";type=INTEGER} @self ~onSpawn
+  - setstance{stance=shield_down} @self ~onSpawn
+  - skill{s=gp2_goblin_weapon_frying_pan} @self ~onSpawn
+  - skill{s=gp2_goblin_idle_fidget} @self ~onTimer:60  .25
+  - skill{s=gp2_goblin_scream} @self ~onTimer:60  .5
+  - skill{s=gp2_goblin_bow_stop} @self ~onTimer:10
+  - skill{s=gp2_goblin_bow_runaway} @self ~onTimer:10
+  - skill{s=gp2_shield_proximity} @self ~onTimer:10
+  - skill{s=gp2_goblin_shoot_arrow} @target ~onTimer:20
+  - skill{s=gp2_shield_armor} @self ~onTimer:20
+  - skill{s=gp2_shield_hit} @self ~onDamaged
+  - skill{s=gp2_goblin_throw_rock} @target ~onTimer:20 .5
+  - randomskill{skills=gp2_goblin_swing_1_sync,gp2_goblin_swing_2_sync,gp2_goblin_swing_3_sync,gp2_goblin_kick_sync,gp2_shield_bash_sync;sync=true} @self ~onAttack
+  - skill{s=gp2_goblin_toss_up} @self ~onTimer:1
+  - skill{s=gp2_goblin_toss_up_land} @self ~onTimer:1
+  - skill{s=gp2_goblin_exploded} @self ~onDamaged
+  - skill{s=gp2_goblin_find_weapon} @IIR{r=12;sort=NEAREST;limit=1} ~onTimer:10
+  - skill{s=gp2_goblin_grab_weapon} @IIR{r=2} ~onTimer:10
+  - skill{s=gp2_goblin_death} @self ~onDeath
+  - skill{s=gp2_goblins_gotoking} @MobsInRadius{r=48;types=gp2_goblin_king} ~onTimer:20
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_laugh;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self ~onTimer:60 .25
+  - skill{s=gp2_goblin_warrior_blobai} @MobsInRadius{r=32;types=gp2_goblin_warrior;sort=NEAREST;limit=1} ~onTimer:20
+    
+
+gp2_goblin_wooden_spoon:
+  Type: HUSK  
+  Display: "Goblin Warrior"
+  Health: 5
+  AITargetSelectors:
+  - players
+  - SpecificFaction ORK
+  - monsters
+  - villagers
+  - animals
+  Modules:
+    ThreatTable: true
+  Faction: GOBLIN
+  Damage: 1
+  Options:
+    Silent: true
+    PreventOtherDrops: true
+    KnockbackResistance: 0.5
+    FollowRange: 32
+    Despawn: false
+  Skills:
+  - CancelEvent @self ~onInteract
+  - model{m=gp2_goblin_warrior;usm=true;step=1} @self ~onSpawn
+  - model{m=gp2_goblin_warrior;usm=true;step=1} @self ~onLoad
+  - BodyClamp{mh=25;mb=25;rde=60;rdu=60} @self ~onSpawn
+  - BodyClamp{mh=25;mb=25;rde=60;rdu=60} @self ~onLoad
+  - setspeed{type=walking;speed=1.5} @self ~onSpawn
+  - setvariable{var=caster.shield;value="true";type=STRING} @self ~onSpawn
+  - setvariable{var=caster.shieldhealth;value="25";type=INTEGER} @self ~onSpawn
+  - setstance{stance=shield_down} @self ~onSpawn
+  - skill{s=gp2_goblin_weapon_wooden_spoon} @self ~onSpawn
+  - skill{s=gp2_goblin_idle_fidget} @self ~onTimer:60  .25
+  - skill{s=gp2_goblin_scream} @self ~onTimer:60  .5
+  - skill{s=gp2_goblin_bow_stop} @self ~onTimer:10
+  - skill{s=gp2_goblin_bow_runaway} @self ~onTimer:10
+  - skill{s=gp2_shield_proximity} @self ~onTimer:10
+  - skill{s=gp2_goblin_shoot_arrow} @target ~onTimer:20
+  - skill{s=gp2_shield_armor} @self ~onTimer:20
+  - skill{s=gp2_shield_hit} @self ~onDamaged
+  - skill{s=gp2_goblin_throw_rock} @target ~onTimer:20 .5
+  - randomskill{skills=gp2_goblin_swing_1_sync,gp2_goblin_swing_2_sync,gp2_goblin_swing_3_sync,gp2_goblin_kick_sync,gp2_shield_bash_sync;sync=true} @self ~onAttack
+  - skill{s=gp2_goblin_toss_up} @self ~onTimer:1
+  - skill{s=gp2_goblin_toss_up_land} @self ~onTimer:1
+  - skill{s=gp2_goblin_exploded} @self ~onDamaged
+  - skill{s=gp2_goblin_find_weapon} @IIR{r=12;sort=NEAREST;limit=1} ~onTimer:10
+  - skill{s=gp2_goblin_grab_weapon} @IIR{r=2} ~onTimer:10
+  - skill{s=gp2_goblin_death} @self ~onDeath
+  - skill{s=gp2_goblins_gotoking} @MobsInRadius{r=48;types=gp2_goblin_king} ~onTimer:20
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_laugh;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self ~onTimer:60 .25
+  - skill{s=gp2_goblin_warrior_blobai} @MobsInRadius{r=32;types=gp2_goblin_warrior;sort=NEAREST;limit=1} ~onTimer:20
+  
+gp2_goblin_broken_pitchfork:
+  Type: HUSK  
+  Display: "Goblin Warrior"
+  Health: 25
+  AITargetSelectors:
+  - players
+  - SpecificFaction ORK
+  - monsters
+  - villagers
+  - animals
+  Modules:
+    ThreatTable: true
+  Faction: GOBLIN
+  Damage: 1
+  Options:
+    Silent: true
+    PreventOtherDrops: true
+    KnockbackResistance: 0.5
+    FollowRange: 32
+    Despawn: false
+  Skills:
+  - CancelEvent @self ~onInteract
+  - model{m=gp2_goblin_warrior;usm=true;step=1} @self ~onSpawn
+  - model{m=gp2_goblin_warrior;usm=true;step=1} @self ~onLoad
+  - BodyClamp{mh=25;mb=25;rde=60;rdu=60} @self ~onSpawn
+  - BodyClamp{mh=25;mb=25;rde=60;rdu=60} @self ~onLoad
+  - setspeed{type=walking;speed=1.5} @self ~onSpawn
+  - setvariable{var=caster.shield;value="true";type=STRING} @self ~onSpawn
+  - setvariable{var=caster.shieldhealth;value="25";type=INTEGER} @self ~onSpawn
+  - setstance{stance=shield_down} @self ~onSpawn
+  - skill{s=gp2_goblin_weapon_broken_pitchfork} @self ~onSpawn
+  - skill{s=gp2_goblin_idle_fidget} @self ~onTimer:60  .25
+  - skill{s=gp2_goblin_scream} @self ~onTimer:60  .5
+  - skill{s=gp2_goblin_bow_stop} @self ~onTimer:10
+  - skill{s=gp2_goblin_bow_runaway} @self ~onTimer:10
+  - skill{s=gp2_shield_proximity} @self ~onTimer:10
+  - skill{s=gp2_goblin_shoot_arrow} @target ~onTimer:20
+  - skill{s=gp2_shield_armor} @self ~onTimer:20
+  - skill{s=gp2_shield_hit} @self ~onDamaged
+  - skill{s=gp2_goblin_throw_rock} @target ~onTimer:20 .5
+  - randomskill{skills=gp2_goblin_swing_1_sync,gp2_goblin_swing_2_sync,gp2_goblin_swing_3_sync,gp2_goblin_kick_sync,gp2_shield_bash_sync;sync=true} @self ~onAttack
+  - skill{s=gp2_goblin_toss_up} @self ~onTimer:1
+  - skill{s=gp2_goblin_toss_up_land} @self ~onTimer:1
+  - skill{s=gp2_goblin_exploded} @self ~onDamaged
+  - skill{s=gp2_goblin_find_weapon} @IIR{r=12;sort=NEAREST;limit=1} ~onTimer:10
+  - skill{s=gp2_goblin_grab_weapon} @IIR{r=2} ~onTimer:10
+  - skill{s=gp2_goblin_death} @self ~onDeath
+  - skill{s=gp2_goblins_gotoking} @MobsInRadius{r=48;types=gp2_goblin_king} ~onTimer:20
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_laugh;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self ~onTimer:60 .25
+  - skill{s=gp2_goblin_warrior_blobai} @MobsInRadius{r=32;types=gp2_goblin_warrior;sort=NEAREST;limit=1} ~onTimer:20
+  
+  
+gp2_goblin_knife:
+  Type: HUSK  
+  Display: "Goblin Warrior"
+  Health: 25
+  AITargetSelectors:
+  - players
+  - SpecificFaction ORK
+  - monsters
+  - villagers
+  - animals
+  Modules:
+    ThreatTable: true
+  Faction: GOBLIN
+  Damage: 1
+  Options:
+    Silent: true
+    PreventOtherDrops: true
+    KnockbackResistance: 0.5
+    FollowRange: 32
+    Despawn: false
+  Skills:
+  - CancelEvent @self ~onInteract
+  - model{m=gp2_goblin_warrior;usm=true;step=1} @self ~onSpawn
+  - model{m=gp2_goblin_warrior;usm=true;step=1} @self ~onLoad
+  - BodyClamp{mh=25;mb=25;rde=60;rdu=60} @self ~onSpawn
+  - BodyClamp{mh=25;mb=25;rde=60;rdu=60} @self ~onLoad
+  - setspeed{type=walking;speed=1.5} @self ~onSpawn
+  - setvariable{var=caster.shield;value="true";type=STRING} @self ~onSpawn
+  - setvariable{var=caster.shieldhealth;value="25";type=INTEGER} @self ~onSpawn
+  - setstance{stance=shield_down} @self ~onSpawn
+  - skill{s=gp2_goblin_weapon_knife} @self ~onSpawn
+  - skill{s=gp2_goblin_idle_fidget} @self ~onTimer:60  .25
+  - skill{s=gp2_goblin_scream} @self ~onTimer:60  .5
+  - skill{s=gp2_goblin_bow_stop} @self ~onTimer:10
+  - skill{s=gp2_goblin_bow_runaway} @self ~onTimer:10
+  - skill{s=gp2_shield_proximity} @self ~onTimer:10
+  - skill{s=gp2_goblin_shoot_arrow} @target ~onTimer:20
+  - skill{s=gp2_shield_armor} @self ~onTimer:20
+  - skill{s=gp2_shield_hit} @self ~onDamaged
+  - skill{s=gp2_goblin_throw_rock} @target ~onTimer:20 .5
+  - randomskill{skills=gp2_goblin_swing_1_sync,gp2_goblin_swing_2_sync,gp2_goblin_swing_3_sync,gp2_goblin_kick_sync,gp2_shield_bash_sync;sync=true} @self ~onAttack
+  - skill{s=gp2_goblin_toss_up} @self ~onTimer:1
+  - skill{s=gp2_goblin_toss_up_land} @self ~onTimer:1
+  - skill{s=gp2_goblin_exploded} @self ~onDamaged
+  - skill{s=gp2_goblin_find_weapon} @IIR{r=12;sort=NEAREST;limit=1} ~onTimer:10
+  - skill{s=gp2_goblin_grab_weapon} @IIR{r=2} ~onTimer:10
+  - skill{s=gp2_goblin_death} @self ~onDeath
+  - skill{s=gp2_goblins_gotoking} @MobsInRadius{r=48;types=gp2_goblin_king} ~onTimer:20
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_laugh;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self ~onTimer:60 .25
+  - skill{s=gp2_goblin_warrior_blobai} @MobsInRadius{r=32;types=gp2_goblin_warrior;sort=NEAREST;limit=1} ~onTimer:20
+  
+  
+  
+  
+  
+#############
+### PROPS ###
+#############
+
+
+
+gp2_decor_torch:
+  Type: ARMOR_STAND
+  Display: 'Goblin Torch'
+  Health: 5
+  Options:
+    HasArms: false
+    PreventOtherDrops: true
+    Despawn: persistent
+    Collidable: false
+    Interactable: false
+  Drops:
+  - gp2_decor_torch 1 1
+  Skills:
+  - model{mid=gp2_decor_torch;d=false;i=true} @self ~onSpawn
+  - model{mid=gp2_decor_torch;d=false;i=true} @self ~onLoad
+  - BodyClamp{mh=0;mb=0;rde=0;rdu=0} @self ~onSpawn
+  - BodyClamp{mh=0;mb=0;rde=0;rdu=0} @self ~onLoad
+  - skill{s=gp2_decor_rotate} @self ~onInteract
+  - skill{s=gp2_decor_rotatecheck} @self ~onTimer:5
+  - setvariable{var=caster.rotate;value="1";type=INTEGER} @self ~onSpawn
+  - setblock{m=LIGHT;md=0} @selflocation{y=1} ~onSpawn
+  - setblock{m=AIR;md=0} @selflocation{y=1} ~onDeath
+  - skill{s=gp2_decor_torch} @selflocation{yo=1.5} ~onTimer:5
+
+
+gp2_decor_weapon_rack:
+  Type: ARMOR_STAND
+  Display: 'Goblin Torch'
+  Health: 5
+  Options:
+    HasArms: false
+    PreventOtherDrops: true
+    Despawn: persistent
+    Collidable: false
+    Interactable: false
+  Drops:
+  - gp2_decor_weapon_rack 1 1
+  Skills:
+  - model{mid=gp2_decor_weapon_rack;d=false;i=true} @self ~onSpawn
+  - model{mid=gp2_decor_weapon_rack;d=false;i=true} @self ~onLoad
+  - BodyClamp{mh=0;mb=0;rde=0;rdu=0} @self ~onSpawn
+  - BodyClamp{mh=0;mb=0;rde=0;rdu=0} @self ~onLoad
+  - skill{s=gp2_decor_rotate} @self ~onInteract
+  - skill{s=gp2_decor_rotatecheck} @self ~onTimer:5
+  - setvariable{var=caster.rotate;value="1";type=INTEGER} @self ~onSpawn
+  - skill{s=gp2_decor_weapon_rack_1_randomize} @self ~onSpawn
+  - skill{s=gp2_decor_weapon_rack_2_randomize} @self ~onSpawn
+
+# 9897V4N5PR1WX

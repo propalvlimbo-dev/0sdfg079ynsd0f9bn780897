@@ -1,0 +1,82 @@
+config-version: '1.7'
+
+messages:
+  pvp-started: '&x&F&8&B&E&F&BАнтиРелог &7» &fВы вошли в PVP режим. За выход с сервера - &cсмерть'
+  pvp-started-title: ''
+  pvp-started-subtitle: ''
+  pvp-stopped: '&x&F&8&B&E&F&BАнтиРелог &7» &fPVP режим &aзакончился&f. Можно спокойно выходить'
+  pvp-stopped-title: ''
+  pvp-stopped-subtitle: ''
+  pvp-stopped-actionbar: ''
+  in-pvp-bossbar: '&7До окончания PVP режима &c%time% &7секунд.'
+  in-pvp-actionbar: ''
+  pvp-leaved: ''
+  commands-disabled: '&x&F&8&B&E&F&BАнтиРелог &7» &fКоманды в PVP режиме запрещены.'
+  item-cooldown: ''
+  item-disabled-in-pvp: ''
+  totem-cooldown: ''
+  totem-disabled-in-pvp: ''
+  pvp-started-with-powerups: ''
+golden-apple-cooldown: 5
+enchanted-golden-apple-cooldown: 10
+ender-pearl-cooldown: 15
+chorus-cooldown: 5
+firework-cooldown: 8
+totem-cooldown: 0
+pvp-time: 30
+disable-commands-in-pvp: true
+commands-whitelist:
+- msg
+- m
+- w
+- tell
+- spec
+- report
+#Отменять ли взаимодействие с энтити, во время пвп
+cancel-interact-with-entities: false
+#Убивать ли игрока если он вышел во время пвп?
+kill-on-leave: true
+#Убивать ли игрока если его кикнули во время пвп?
+kill-on-kick: true
+#Выполнять ли команды, если игрока кикнули во время пвп?
+run-commands-on-kick: false
+#Какой текст должен быть впричине кика, чтобы его убило/выполнились команды. Если пусто, то будет убивать/выполняться команды всегда
+kick-messages: []
+#Какие команды запускать от консоли при выходе игрока во время пвп?
+#commands-on-leave:
+#- command1
+#- command2 %player%
+commands-on-leave:
+- kill %player%
+#Отключать ли у игрока который ударил FLY, GM, GOD, VANISH?
+disable-powerups: true
+#Какие команды выполнять, если были отключены усиления у игрока
+#Данную настройку можно использовать например для того, чтобы наложить на игрока отрицательный эффект, если он начал пвп в ГМ/ФЛАЕ/и тд
+#commands-on-powerups-disable: 
+#- command1 %player%
+#- effect give %player% weakness 10
+commands-on-powerups-disable: []
+#Отключать ли возможность телепортироваться во время пвп?
+disable-teleports-in-pvp: true
+#Игнорировать ли PVP deny во время пвп между игроками?
+ignore-worldguard: false
+#Включать ли игроку, который не участвует в пвп и удрарил другого игрока в pvp, pvp режим
+#Если два игрока дерутся на територии где PVP deny и их ударить, то у того кто ударил так-же включится PVP режим
+join-pvp-in-worldguard: false
+#В каких регионах не будет работать плагин
+#ignored-worldguard-regions:
+#- duels1
+#- region2
+ignored-worldguard-regions: []
+#Отключать ли активный ПВП режим когда игрок заходит в игнорируемый регион?
+disable-pvp-in-ignored-region: false
+#Скрывать ли сообщения о заходе игроков?
+hide-join-message: true
+#Скрывать ли сообщения о выходе игроков?
+hide-leave-message: true
+#Скрывать ли сообщение о смерти игроков?
+hide-death-message: true
+#Миры в котором плагин не работает
+disabledWorlds:
+- world1
+- world2

@@ -1,0 +1,64 @@
+Name: garmon
+Cooldown: 0
+Permission: nKits.kits.garmon
+Order: 0
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_color:15658476,custom_effects:[{amplifier:2b,duration:340,id:"minecraft:health_boost",show_icon:1b},{amplifier:2b,duration:340,id:"minecraft:regeneration",show_icon:1b},{duration:600,id:"minecraft:resistance",show_icon:1b},{duration:600,id:"minecraft:slow_falling",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"light_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Зелье
+        Гармонии",underlined:0b}],text:""}'
+    schema_version: 1
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  Armor:
+  - null
+  - null
+  - null
+  - null

@@ -1,0 +1,87 @@
+# ============================================================ #
+#                 Конфигурация WPvPRoom                      #
+# ============================================================ #
+
+spawn:
+  world: "world_spawn"
+  x: 0
+  y: 69
+  z: 0
+  yaw: 90
+  pitch: 0
+
+game:
+  play_time: 300
+  time_left: 30
+
+cancel_teleport: true
+cancel_commands: true
+
+rooms:
+  room_1:
+    room:
+      pos1:
+        world: "world_spawn"
+        x: -26
+        y: 70
+        z: -5
+      pos2:
+        world: "world_spawn"
+        x: -18
+        y: 77
+        z: -17
+    door:
+      block: LIGHT_GRAY_STAINED_GLASS
+      pos1:
+        world: "world_spawn"
+        x: -24
+        y: 71
+        z: -5
+      pos2:
+        world: "world_spawn"
+        x: -20
+        y: 76
+        z: -5
+  room_2:
+    room:
+      pos1:
+        world: "world_spawn"
+        x: -18
+        y: 70
+        z: 5
+      pos2:
+        world: "world_spawn"
+        x: -26
+        y: 77
+        z: 18
+    door:
+      block: LIGHT_GRAY_STAINED_GLASS
+      pos1:
+        world: "world_spawn"
+        x: -24
+        y: 71
+        z: 5
+      pos2:
+        world: "world_spawn"
+        x: -20
+        y: 76
+        z: 5
+
+messages:
+  join: "&x&F&8&B&E&F&B%elytrix_nameserver% &7» &fВы вошли в PVP кабинку!"
+  exit: "&x&F&8&B&E&F&B%elytrix_nameserver% &7» &fВы покинули PVP кабинку!"
+  busy: "&x&F&8&B&E&F&B%elytrix_nameserver% &7» &fКабинка занята!"
+  start: "&x&F&8&B&E&F&B%elytrix_nameserver% &7» &fPVP началось!"
+  info: "&x&F&8&B&E&F&B%elytrix_nameserver% &7» &fPVP закончится через &x&F&8&B&E&F&B{time} &fсек."
+  win: "&x&F&8&B&E&F&B%elytrix_nameserver% &7» &fВы выиграли своего оппонента."
+  lose: "&x&F&8&B&E&F&B%elytrix_nameserver% &7» &fВы проиграли своему оппоненту."
+  draw: "&x&F&8&B&E&F&B%elytrix_nameserver% &7» &fВремя вышло! Ничья."
+  teleport: "&x&F&8&B&E&F&B%elytrix_nameserver% &7» &fУ вас осталось &x&F&8&B&E&F&B{time} &fсек. чтобы подобрать ресурсы."
+  no_teleport: "&x&F&8&B&E&F&B%elytrix_nameserver% &7» &fНельзя телепортироваться из кабинки."
+  no_command: "&x&F&8&B&E&F&B%elytrix_nameserver% &7» &cНельзя использовать команды во время PVP."
+  opponent_left: "&x&F&8&B&E&F&B%elytrix_nameserver% &7» &fВаш оппонент покинул кабинку, вы победили!"
+  third_player: "&x&F&8&B&E&F&B%elytrix_nameserver% &7» &fКомната уже заполнена!"
+  command_blocked: "&x&F&8&B&E&F&B%elytrix_nameserver% &7» &cКоманды заблокированы во время PVP!"
+  teleport_blocked: "&x&F&8&B&E&F&B%elytrix_nameserver% &7» &cТелепортация заблокирована во время PVP!"
+  item_blocked: "&x&F&8&B&E&F&B%elytrix_nameserver% &7» &cИспользование этого предмета заблокировано во время PVP!"
+  drop_blocked: "&x&F&8&B&E&F&B%elytrix_nameserver% &7» &cВ этой зоне нельзя выбрасывать предметы!" 

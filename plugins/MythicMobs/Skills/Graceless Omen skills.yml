@@ -1,0 +1,849 @@
+#----------------------------------   Graceless Omen spawn
+
+wolfmob41spawn:
+  Cooldown: 99999
+  Conditions:
+  - playerwithin{d=25} true
+  Skills:
+  - effect:sound{s=ambient.cave;v=1.4;p=2} @PIR{r=50}
+  - effect:sound{s=entity.wither.spawn;v=1;p=0.7} @PIR{r=50}
+  - delay 20
+  - sendtitle{title="";subtitle="&7&lInvaded by Graceless Omen";d=10;fi=5;fo=10} @PIR{r=50}
+  - delay 25
+  - summon{t=wolfmob41_surround} @self
+  - sendtitle{title="";subtitle="&7&lInvaded by Graceless Omen";d=10;fi=5;fo=10} @PIR{r=50}
+  - delay 25
+  - summon{t=wolfmob41} @self
+  - sendtitle{title="";subtitle="&7&lInvaded by Graceless Omen";d=10;fi=5;fo=10} @PIR{r=50}
+  - remove @self
+  
+
+#----------------------------------   Graceless Omen Danage
+
+wolfmob41_sword_swing:
+  Skills:
+  - effect:particles{particle=reddust;color=#35443b;amount=40;hs=3;vs=0.2;y=0.6} @forward{a=2}
+  - damage{a=1;pi=true} 
+  - throw{velocity=5;velocityY=3}
+  
+wolfmob41_sword_smash:
+  Skills:
+  - effect:particles{particle=reddust;color=#35443b;amount=40;hs=3;vs=0.2;y=0.6} @forward{a=3}
+  - damage{a=1;pi=true} 
+  - throw{velocity=10;velocityY=2}
+ 
+wolfmob41_sword_thrust:
+  Skills:
+  - effect:particles{particle=reddust;color=#35443b;amount=40;hs=0.4;vs=0.7;y=0.6} @forward{a=5}
+  - damage{a=1;pi=true} 
+  - throw{velocity=12;velocityY=0}
+  
+wolfmob41_sword_swing_thrust:
+  Skills:
+  - effect:particles{particle=reddust;color=#35443b;amount=40;hs=3;vs=0.2;y=0.6} @forward{a=2}
+  - damage{a=1;pi=true} 
+  - throw{velocity=5;velocityY=3}
+ 
+wolfmob41_sword_jump_smash:
+  Skills:
+  - effect:particles{particle=reddust;color=#35443b;amount=60;hs=5;vs=0.2;y=0.6} @forward{a=2.5}
+  - damage{a=1;pi=true} 
+  - throw{velocity=6}
+  - potion{t=slow;d=20;l=3}
+
+wolfmob41_sword_spin:
+  Skills:
+  - effect:particles{particle=reddust;color=#35443b;amount=40;hs=5;vs=0.2;y=0.7} @forward{a=1}
+  - damage{a=1;pi=true} 
+  - throw{velocity=3;velocityY=3}
+  
+wolfmob41_hammer_smash:
+  Skills:
+  - effect:particles{particle=reddust;color=#e7c660;amount=60;hs=3.6;vs=0.1;y=0.1} @forward{a=2}
+  - damage{a=1;pi=true} 
+  - potion{t=slow;d=20;l=3}
+
+wolfmob41_dagger_uppercut:
+  Skills:
+  - effect:particles{particle=reddust;color=#e7c660;amount=40;hs=0.4;vs=1;y=0.7} @forward{a=2}
+  - damage{a=1;pi=true} 
+  - throw{velocity=4;velocityY=5}
+  
+wolfmob41_dagger_shot:
+  Skills:
+  - damage{a=1;pi=true} 
+
+
+wolfmob41_lightsword_swing:
+  Skills:
+  - effect:particles{particle=reddust;color=#e7c660;amount=10;hs=1;vs=1;y=0.5} @forward{a=2}
+  - damage{a=1;pi=true} 
+
+wolfmob41_lightsword_fall:
+  Skills:
+  - damage{a=1;pi=true;pk=true} @ENO{r=1.8}
+  - effect:particles{particle=reddust;color=#e7c660;amount=10;hs=0.4;vs=0.1;y=0.1} @origin
+  - effect:sound{s=block.glass.break;v=0.6;p=3} @self
+
+wolfmob41_lightspear_throw:
+  Skills:
+  - damage{a=1;pi=true} 
+  - throw{velocity=12;velocityY=1}
+  
+wolfmob41_lightspear_thrust:
+  Skills:
+  - damage{a=1;pi=true;pk=false} 
+  - throw{velocity=12;velocityY=1}
+  - effect:particles{particle=reddust;color=#e7c660;amount=10;hs=0.5;vs=1;y=0.5} @forward{a=5}
+
+#----------------------------------   Graceless Omen Light Weapon show and off
+
+wolfmob41_hammer_on:
+  Skills:
+  - sound{s=block.beacon.power_select;p=1.6;v=2} @self
+  - partvisibility{m=wolfmob41;p=light_hammer;v=true} @self
+  - effect:particles{particle=reddust;color=#e7c660;amount=30;hs=1.5;vs=1.5;y=1.4} @ModelPart{m=wolfmob41;p=light_hammer}
+
+wolfmob41_hammer_off:
+  Skills:
+  - effect:sound{s=block.fire.extinguish;v=0.6;p=0} @self
+  - partvisibility{m=wolfmob41;p=light_hammer;v=false} @self
+  - effect:particles{particle=reddust;color=#e7c660;amount=20;hs=1;vs=1.1;y=2.1} @forward{a=2.6}
+  - effect:particles{particle=endRod;amount=10;hs=0.7;vs0.7;y=0.5;s=0.2} @forward{a=2.6}
+  
+wolfmob41_dagger_on:
+  Skills:
+  - sound{s=block.beacon.power_select;p=2.6;v=1.7} @self
+  - partvisibility{m=wolfmob41;p=light_dagger;v=true} @self
+  - effect:particles{particle=reddust;color=#e7c660;amount=30;hs=1.1;vs=1.1;y=0.5} @ModelPart{m=wolfmob41;p=light_dagger}
+  
+wolfmob41_dagger_off:
+  Skills:
+  - effect:sound{s=block.fire.extinguish;v=0.6;p=0} @self
+  - partvisibility{m=wolfmob41;p=light_dagger;v=false} @self
+  - effect:particles{particle=reddust;color=#e7c660;amount=10;hs=0.4;vs=0.7;y=0.7} @ModelPart{m=wolfmob41;p=light_dagger}
+  - effect:particles{particle=endRod;amount=10;hs=0.7;vs0.7;y=0.5;s=1.2} @ModelPart{m=wolfmob41;p=light_dagger}
+
+wolfmob41_sword_on:
+  Skills:
+  - sound{s=block.beacon.power_select;p=2.6;v=1.7} @self
+  - partvisibility{m=wolfmob41;p=light_sword;v=true} @self
+  - effect:particles{particle=reddust;color=#e7c660;amount=30;hs=1.1;vs=1.1;y=0.5} @ModelPart{m=wolfmob41;p=light_dagger}
+  
+wolfmob41_sword_off:
+  Skills:
+  - effect:sound{s=block.fire.extinguish;v=0.6;p=0} @self
+  - partvisibility{m=wolfmob41;p=light_sword;v=false} @self
+  - effect:particles{particle=reddust;color=#e7c660;amount=10;hs=0.4;vs=0.7;y=0.7} @ModelPart{m=wolfmob41;p=light_dagger}
+  - effect:particles{particle=endRod;amount=10;hs=0.7;vs0.7;y=0.5;s=1.2} @ModelPart{m=wolfmob41;p=light_dagger}
+
+wolfmob41_spear_on:
+  Skills:
+  - sound{s=block.beacon.power_select;p=1.6;v=2} @self
+  - partvisibility{m=wolfmob41;p=light_spear;v=true} @self
+  - effect:particles{particle=reddust;color=#e7c660;amount=30;hs=1.5;vs=1.5;y=1.4} @ModelPart{m=wolfmob41;p=light_spear}
+
+wolfmob41_spear_off:
+  Skills:
+  - effect:sound{s=block.fire.extinguish;v=0.6;p=0} @self
+  - partvisibility{m=wolfmob41;p=light_spear;v=false} @self
+  - effect:particles{particle=reddust;color=#e7c660;amount=20;hs=1;vs=1.1;y=2.1} @ModelPart{m=wolfmob41;p=light_spear}
+  - effect:particles{particle=endRod;amount=10;hs=0.7;vs0.7;y=0.5;s=0.2} @ModelPart{m=wolfmob41;p=light_spear}
+
+#----------------------------------   Attack select
+
+wolfmob41attack:
+  Conditions:
+  - offgcd
+  Skills:
+  - randomskill{s=wolfmob41combo,wolfmob41combofar}
+
+wolfmob41combo:
+  Conditions:
+  - offgcd
+  Skills:
+  - randomskill{s=wolfmob41close_combo1,wolfmob41close_combo2,wolfmob41close_combo3,wolfmob41close_combo4,wolfmob41close_combo5}
+
+wolfmob41combofar:
+  Conditions:
+  - offgcd
+  Skills:
+  - randomskill{s=wolfmob41far_combo1,wolfmob41far_combo2,wolfmob41far_combo3,wolfmob41far_combo4,wolfmob41spear_thrust}
+
+wolfmob41range:
+  Cooldown: 3
+  Conditions:
+  - offgcd
+  Skills:
+  - randomskill{s=wolfmob41spear_throw,wolfmob41dagger_throw,wolfmob41_lightsword_falling}
+
+#----------------------------------   Close Combo
+
+wolfmob41close_combo1:
+  Conditions:
+  - offgcd
+  TargetConditions:
+  - distance{d=0to7} true
+  Skills:
+  - gcd{ticks=161} @self
+  - state{s=combo_1} @self
+  - setspeed{s=0.001} @self
+  - delay 16
+  - setspeed{s=2.8} @self
+  - sound{s=entity.player.attack.sweep;p=1.2;v=1.8;delay=2} @self
+  - delay 4
+  - skill{s=wolfmob41_sword_swing} @LivingInCone{a=120.0;r=5.0;rot=0.0}
+  - setspeed{s=0.001} @self
+  - delay 16
+  - setspeed{s=2.8} @self
+  - sound{s=entity.player.attack.sweep;p=0.8;v=1.7;delay=2} @self
+  - delay 4
+  - skill{s=wolfmob41_sword_swing} @LivingInCone{a=120.0;r=5.0;rot=0.0}
+  - setspeed{s=0.001} @self
+  - skill{s=wolfmob41_hammer_on;delay=10} @self 
+  - delay 19
+  - setspeed{s=3.5} @self
+  - delay 4
+  - setAI{ai=false} @self
+  - skill{s=wolfmob41_hammer_smash} @EIR{r=5}
+  - setspeed{s=0.001} @self
+  - sound{s=entity.zombie.attack_wooden_door;p=0.8;v=1.6} @self
+  - skill{s=wolfmob41_hammer_off;delay=12} @self 
+  - delay 24
+  - setAI{ai=true} @self
+  - delay 2
+  - setspeed{s=3.8} @self
+  - delay 3
+  - skill{s=wolfmob41_sword_smash} @LivingInCone{a=70.0;r=5.0;rot=0.0}
+  - effect:sound{s=entity.generic.explode;p=3;v=1.7} @self
+  - setspeed{s=0.001} @self
+  - setAI{ai=false} @self
+  - delay 29
+  - setAI{ai=true} @self
+  - delay 2
+  - spin{d=20;v=0} @self
+  - setspeed{s=5} @self
+  - delay 7
+  - skill{s=wolfmob41_sword_jump_smash} @EIR{r=5}
+  - sound{s=entity.zombie.attack_wooden_door;p=0.8;v=1.6} @self
+  - effect:sound{s=entity.generic.explode;p=3;v=1.9} @self
+  - setAI{ai=false} @self
+  - setspeed{s=0.001} @self
+  - delay 29
+  - setAI{ai=true} @self
+  - setspeed{s=1.23} @self
+  
+
+wolfmob41close_combo2:
+  Conditions:
+  - offgcd
+  TargetConditions:
+  - distance{d=0to7} true
+  Skills:
+  - gcd{ticks=128} @self
+  - state{s=combo_2} @self
+  - setspeed{s=0.001} @self
+  - delay 16
+  - setspeed{s=2.8} @self
+  - delay 4
+  - sound{s=entity.player.attack.sweep;p=1.2;v=1.8;delay=2} @self
+  - skill{s=wolfmob41_sword_swing} @LivingInCone{a=120.0;r=5.0;rot=0.0}
+  - setspeed{s=0.001} @self
+  - delay 16
+  - setspeed{s=2.8} @self
+  - sound{s=entity.player.attack.sweep;p=0.8;v=1.7;delay=2} @self
+  - delay 4
+  - skill{s=wolfmob41_sword_swing} @LivingInCone{a=120.0;r=5.0;rot=0.0}
+  - setspeed{s=0.001} @self
+  - skill{s=wolfmob41_dagger_on;delay=5} @self
+  - delay 11
+  - setspeed{s=3.3} @self
+  - delay 3
+  - sound{s=entity.player.attack.sweep;p=1.1;v=2} @self
+  - delay 2
+  - skill{s=wolfmob41_dagger_uppercut} @LivingInCone{a=90.0;r=4.0;rot=0.0}
+  - setspeed{s=0.001} @self
+  - delay 12
+  - setspeed{s=1.5} @self
+  - lunge{velocity=1.1;repeat=7;repeatinterval=2} @selflocation{forwardoffset=30}
+  - delay 15
+  - setspeed{s=0.01} @self
+  - delay 15
+  - skill{s=wolfmob41_dagger_off} @self
+  - sound{s=entity.evoker.cast_spell;p=1.2;v=2} @self
+  - projectile{bulletType=MOB;mob=wolfmob41dagger;oH=wolfmob41_dagger_shot;i=1;mr=90;v=27;sB=false;hR=1.5;hp=true;hnp=true;sso=0;sfo=1;syo=3.5;tyo=0.7} @target
+  - projectile{bulletType=MOB;mob=wolfmob41dagger;oH=wolfmob41_dagger_shot;i=1;mr=90;v=27;ho=10;sB=false;hR=1.5;hp=true;hnp=true;sso=0;sfo=1;syo=3.5;tyo=0.7} @target
+  - projectile{bulletType=MOB;mob=wolfmob41dagger;oH=wolfmob41_dagger_shot;i=1;mr=90;v=27;ho=-10;sB=false;hR=1.5;hp=true;hnp=true;sso=0;sfo=1;syo=3.5;tyo=0.7} @target
+  - setAI{ai=false} @self
+  - delay 27
+  - setAI{ai=true} @self
+  - setspeed{s=1.23} @self
+
+
+wolfmob41close_combo3:
+  Conditions:
+  - offgcd
+  TargetConditions:
+  - distance{d=0to7} true
+  Skills:
+  - gcd{ticks=182} @self
+  - state{s=combo_3} @self
+  - setspeed{s=0.001} @self
+  - delay 16
+  - setspeed{s=2.8} @self
+  - delay 4
+  - sound{s=entity.player.attack.sweep;p=1.2;v=1.8;delay=2} @self
+  - skill{s=wolfmob41_sword_swing} @LivingInCone{a=120.0;r=5.0;rot=0.0}
+  - setspeed{s=0.001} @self
+  - delay 16
+  - setspeed{s=2.8} @self
+  - sound{s=entity.player.attack.sweep;p=0.8;v=1.7;delay=2} @self
+  - delay 4
+  - skill{s=wolfmob41_sword_swing} @LivingInCone{a=120.0;r=5.0;rot=0.0}
+  - setspeed{s=0.001} @self
+  - skill{s=wolfmob41_hammer_on;delay=10} @self 
+  - delay 19
+  - setspeed{s=3.5} @self
+  - delay 4
+  - setAI{ai=false} @self
+  - skill{s=wolfmob41_hammer_smash} @EIR{r=5}
+  - setspeed{s=0.001} @self
+  - sound{s=entity.zombie.attack_wooden_door;p=0.8;v=1.6} @self
+  - skill{s=wolfmob41_hammer_off;delay=12} @self 
+  - delay 24
+  - setAI{ai=true} @self
+  - delay 3
+  - setspeed{s=3.2} @self
+  - sound{s=entity.player.attack.sweep;p=1.2;v=1.8;delay=2} @self
+  - delay 4
+  - skill{s=wolfmob41_sword_swing} @LivingInCone{a=120.0;r=5.0;rot=0.0}
+  - setspeed{s=0.001} @self
+  - delay 10
+  - skill{s=wolfmob41_hammer_on} @self 
+  - delay 10
+  - setspeed{s=4.5} @self
+  - delay 4
+  - setAI{ai=false} @self
+  - skill{s=wolfmob41_hammer_smash} @EIR{r=5}
+  - sound{s=entity.zombie.attack_wooden_door;p=0.8;v=1.6} @self
+  - setspeed{s=0.001} @self
+  - skill{s=wolfmob41_hammer_off;delay=12} @self 
+  - delay 24
+  - setAI{ai=true} @self
+  - delay 2
+  - setspeed{s=3.8} @self
+  - delay 3
+  - skill{s=wolfmob41_sword_smash} @LivingInCone{a=70.0;r=5.0;rot=0.0}
+  - effect:sound{s=entity.generic.explode;p=3;v=1.7} @self
+  - setspeed{s=0.001} @self
+  - setAI{ai=false} @self
+  - delay 35
+  - setAI{ai=true} @self
+  - setspeed{s=1.23} @self
+
+wolfmob41close_combo4:
+  Conditions:
+  - offgcd
+  TargetConditions:
+  - distance{d=0to7} true
+  Skills:
+  - gcd{ticks=87} @self
+  - state{s=combo_4} @self
+  - setspeed{s=0.001} @self
+  - delay 16
+  - setspeed{s=2.8} @self
+  - sound{s=entity.player.attack.sweep;p=1.2;v=1.8;delay=2} @self
+  - delay 4
+  - skill{s=wolfmob41_sword_swing} @LivingInCone{a=120.0;r=5.0;rot=0.0}
+  - setspeed{s=0.001} @self
+  - delay 25
+  - setspeed{s=3.8} @self
+  - sound{s=entity.evoker.cast_spell;p=1.2;v=2} @self
+  - skill{s=wolfmob41_sword_thrust;repeat=2;repeatinterval=2} @LivingInCone{a=40.0;r=5.5;rot=0.0}
+  - delay 6
+  - setspeed{s=0.001} @self
+  - setAI{ai=false} @self
+  - delay 35
+  - setAI{ai=true} @self
+  - setspeed{s=1.23} @self
+
+wolfmob41close_combo5:
+  Conditions:
+  - offgcd
+  TargetConditions:
+  - distance{d=0to7} true
+  Skills:
+  - gcd{ticks=204} @self
+  - state{s=combo_5} @self
+  - setspeed{s=0.001} @self
+  - delay 16
+  - setspeed{s=2.8} @self
+  - sound{s=entity.player.attack.sweep;p=1.2;v=1.8;delay=2} @self
+  - delay 4
+  - skill{s=wolfmob41_sword_swing} @LivingInCone{a=120.0;r=5.0;rot=0.0}
+  - setspeed{s=0.001} @self
+  - delay 16
+  - setspeed{s=2.8} @self
+  - sound{s=entity.player.attack.sweep;p=0.8;v=1.7;delay=2} @self
+  - delay 4
+  - skill{s=wolfmob41_sword_swing} @LivingInCone{a=120.0;r=5.0;rot=0.0}
+  - setspeed{s=0.001} @self
+  - skill{s=wolfmob41_sword_on;delay=7} @self 
+  - delay 16
+  - setspeed{s=3.3} @self
+  - sound{s=entity.player.attack.sweep;p=1.3;v=1.7;delay=1} @self
+  - delay 3
+  - skill{s=wolfmob41_lightsword_swing} @LivingInCone{a=80.0;r=4.0;rot=0.0}
+  - setspeed{s=0.001} @self
+  - delay 1
+  - setspeed{s=3.3} @self
+  - sound{s=entity.player.attack.sweep;p=1.2;v=1.7;delay=2} @self
+  - delay 4
+  - skill{s=wolfmob41_lightsword_swing} @LivingInCone{a=80.0;r=4.0;rot=0.0}
+  - setspeed{s=0.001} @self
+  - skill{s=wolfmob41_sword_off;delay=3} @self 
+  - delay 7
+  - skill{s=wolfmob41_hammer_on} @self 
+  - delay 8
+  - setspeed{s=3.5} @self
+  - delay 4
+  - setAI{ai=false} @self
+  - skill{s=wolfmob41_hammer_smash} @EIR{r=5}
+  - setspeed{s=0.001} @self
+  - sound{s=entity.zombie.attack_wooden_door;p=0.8;v=1.6} @self
+  - skill{s=wolfmob41_hammer_off;delay=12} @self 
+  - delay 28
+  - setAI{ai=true} @self
+  - setspeed{s=2.8} @self
+  - delay 4
+  - sound{s=entity.player.attack.sweep;p=1.2;v=1.8;delay=2} @self
+  - skill{s=wolfmob41_sword_swing} @LivingInCone{a=120.0;r=5.0;rot=0.0}
+  - setspeed{s=0.001} @self
+  - skill{s=wolfmob41_dagger_on;delay=5} @self
+  - delay 11
+  - setspeed{s=3.3} @self
+  - delay 3
+  - sound{s=entity.player.attack.sweep;p=1.1;v=2} @self
+  - delay 2
+  - skill{s=wolfmob41_dagger_uppercut} @LivingInCone{a=90.0;r=4.0;rot=0.0}
+  - setspeed{s=0.001} @self
+  - delay 12
+  - setspeed{s=1.5} @self
+  - lunge{velocity=1.1;repeat=7;repeatinterval=2} @selflocation{forwardoffset=30}
+  - delay 15
+  - setspeed{s=0.01} @self
+  - delay 15
+  - skill{s=wolfmob41_dagger_off} @self
+  - sound{s=entity.evoker.cast_spell;p=1.2;v=2} @self
+  - projectile{bulletType=MOB;mob=wolfmob41dagger;oH=wolfmob41_dagger_shot;i=1;mr=90;v=27;sB=false;hR=1.5;hp=true;hnp=true;sso=0;sfo=1;syo=3.5;tyo=0.7} @target
+  - projectile{bulletType=MOB;mob=wolfmob41dagger;oH=wolfmob41_dagger_shot;i=1;mr=90;v=27;ho=10;sB=false;hR=1.5;hp=true;hnp=true;sso=0;sfo=1;syo=3.5;tyo=0.7} @target
+  - projectile{bulletType=MOB;mob=wolfmob41dagger;oH=wolfmob41_dagger_shot;i=1;mr=90;v=27;ho=-10;sB=false;hR=1.5;hp=true;hnp=true;sso=0;sfo=1;syo=3.5;tyo=0.7} @target
+  - setAI{ai=false} @self
+  - delay 27
+  - setAI{ai=true} @self
+  - setspeed{s=1.23} @self
+
+#----------------------------------   far Combo
+
+wolfmob41far_combo1:
+  Conditions:
+  - offgcd
+  TargetConditions:
+  - distance{d=3to10} true
+  Skills:
+  - gcd{ticks=213} @self
+  - state{s=combo_far1} @self
+  - setspeed{s=2} @self
+  - delay 24
+  - setspeed{s=3} @self
+  - sound{s=entity.player.attack.sweep;p=1.2;v=1.8;delay=2} @self
+  - delay 4
+  - skill{s=wolfmob41_sword_swing} @EIR{r=4}
+  - setspeed{s=0.001} @self
+  - delay 20
+  - setspeed{s=2.8} @self
+  - sound{s=entity.player.attack.sweep;p=1.1;v=1.8;delay=2} @self
+  - delay 4
+  - skill{s=wolfmob41_sword_swing} @LivingInCone{a=120.0;r=5.0;rot=0.0}
+  - setspeed{s=0.001} @self
+  - delay 6
+  - setspeed{s=2.6} @self
+  - skill{s=wolfmob41_sword_spin;delay=4} @LivingInCone{a=120.0;r=5.0;rot=0.0}
+  - skill{s=wolfmob41_sword_spin;delay=7} @EIR{r=5}
+  - delay 7
+  - setspeed{s=0.001} @self
+  - delay 15
+  - setspeed{s=2.8} @self
+  - sound{s=entity.player.attack.sweep;p=0.8;v=1.7;delay=2} @self
+  - delay 4
+  - skill{s=wolfmob41_sword_swing} @LivingInCone{a=120.0;r=5.0;rot=0.0}
+  - setspeed{s=0.001} @self
+  - skill{s=wolfmob41_hammer_on;delay=10} @self 
+  - delay 19
+  - setspeed{s=3.5} @self
+  - delay 4
+  - setAI{ai=false} @self
+  - skill{s=wolfmob41_hammer_smash} @EIR{r=5}
+  - setspeed{s=0.001} @self
+  - sound{s=entity.zombie.attack_wooden_door;p=0.8;v=1.6} @self
+  - skill{s=wolfmob41_hammer_off;delay=12} @self 
+  - delay 32
+  - setAI{ai=true} @self
+  - delay 3
+  - setspeed{s=3.8} @self
+  - delay 3
+  - skill{s=wolfmob41_sword_smash} @LivingInCone{a=70.0;r=5.0;rot=0.0}
+  - effect:sound{s=entity.generic.explode;p=3;v=1.7} @self
+  - setspeed{s=0.001} @self
+  - setAI{ai=false} @self
+  - delay 29
+  - setAI{ai=true} @self
+  - delay 2
+  - setspeed{s=5} @self
+  - spin{v=0;d=20} @self
+  - delay 7
+  - skill{s=wolfmob41_sword_jump_smash} @EIR{r=5}
+  - sound{s=entity.zombie.attack_wooden_door;p=0.8;v=1.6} @self
+  - effect:sound{s=entity.generic.explode;p=3;v=1.9} @self
+  - setAI{ai=false} @self
+  - setspeed{s=0.001} @self
+  - delay 29
+  - setAI{ai=true} @self
+  - setspeed{s=1.23} @self
+
+wolfmob41far_combo2:
+  Conditions:
+  - offgcd
+  TargetConditions:
+  - distance{d=3to10} true
+  Skills:
+  - gcd{ticks=200} @self
+  - state{s=combo_far2} @self
+  - setspeed{s=2} @self
+  - delay 24
+  - setspeed{s=3} @self
+  - sound{s=entity.player.attack.sweep;p=1.2;v=1.8;delay=2} @self
+  - delay 4
+  - skill{s=wolfmob41_sword_swing} @EIR{r=4}
+  - setspeed{s=0.001} @self
+  - skill{s=wolfmob41_hammer_on;delay=10} @self 
+  - delay 20
+  - setspeed{s=3.5} @self
+  - delay 4
+  - setAI{ai=false} @self
+  - skill{s=wolfmob41_hammer_smash} @EIR{r=5}
+  - setspeed{s=0.001} @self
+  - sound{s=entity.zombie.attack_wooden_door;p=0.8;v=1.6} @self
+  - skill{s=wolfmob41_hammer_off;delay=12} @self 
+  - delay 25
+  - setAI{ai=true} @self
+  - delay 3
+  - setspeed{s=2.8} @self
+  - sound{s=entity.player.attack.sweep;p=1.2;v=1.8;delay=2} @self
+  - delay 4
+  - skill{s=wolfmob41_sword_swing} @LivingInCone{a=120.0;r=5.0;rot=0.0}
+  - setspeed{s=0.001} @self
+  - skill{s=wolfmob41_sword_on;delay=7} @self 
+  - delay 16
+  - setspeed{s=3.3} @self
+  - sound{s=entity.player.attack.sweep;p=1.3;v=1.7;delay=1} @self
+  - delay 3
+  - skill{s=wolfmob41_lightsword_swing} @LivingInCone{a=80.0;r=4.0;rot=0.0}
+  - setspeed{s=0.001} @self
+  - delay 1
+  - setspeed{s=3.3} @self
+  - sound{s=entity.player.attack.sweep;p=1.2;v=1.7;delay=2} @self
+  - delay 4
+  - skill{s=wolfmob41_lightsword_swing} @LivingInCone{a=80.0;r=4.0;rot=0.0}
+  - setspeed{s=0.001} @self
+  - skill{s=wolfmob41_sword_off;delay=3} @self 
+  - skill{s=wolfmob41_hammer_on;delay=10} @self 
+  - delay 16
+  - setspeed{s=3.5} @self
+  - delay 4
+  - setAI{ai=false} @self
+  - skill{s=wolfmob41_hammer_smash} @EIR{r=5}
+  - setspeed{s=0.001} @self
+  - sound{s=entity.zombie.attack_wooden_door;p=0.8;v=1.6} @self
+  - skill{s=wolfmob41_hammer_off;delay=12} @self 
+  - delay 20
+  - setAI{ai=true} @self
+  - delay 3
+  - setspeed{s=3.8} @self
+  - delay 3
+  - skill{s=wolfmob41_sword_smash} @LivingInCone{a=70.0;r=5.0;rot=0.0}
+  - effect:sound{s=entity.generic.explode;p=3;v=1.7} @self
+  - setspeed{s=0.001} @self
+  - setAI{ai=false} @self
+  - delay 43
+  - setspeed{s=1.23} @self
+  - setAI{ai=true} @self
+
+
+wolfmob41far_combo3:
+  Conditions:
+  - offgcd
+  TargetConditions:
+  - distance{d=3to10} true
+  Skills:
+  - gcd{ticks=137} @self
+  - state{s=combo_far3} @self
+  - setspeed{s=2} @self
+  - delay 24
+  - setspeed{s=3} @self
+  - sound{s=entity.player.attack.sweep;p=1.2;v=1.8;delay=2} @self
+  - delay 4
+  - skill{s=wolfmob41_sword_swing} @EIR{r=4}
+  - setspeed{s=0.001} @self
+  - delay 20
+  - setspeed{s=2.8} @self
+  - sound{s=entity.player.attack.sweep;p=1.1;v=1.8;delay=2} @self
+  - delay 4
+  - skill{s=wolfmob41_sword_swing} @LivingInCone{a=120.0;r=5.0;rot=0.0}
+  - setspeed{s=0.001} @self
+  - delay 6
+  - setspeed{s=2.6} @self
+  - skill{s=wolfmob41_sword_spin;delay=4} @LivingInCone{a=120.0;r=5.0;rot=0.0}
+  - skill{s=wolfmob41_sword_spin;delay=7} @EIR{r=5}
+  - delay 7
+  - setspeed{s=0.001} @self
+  - delay 15
+  - delay 9
+  - setspeed{s=3.8} @self
+  - delay 3
+  - skill{s=wolfmob41_sword_smash} @LivingInCone{a=70.0;r=5.0;rot=0.0}
+  - effect:sound{s=entity.generic.explode;p=3;v=1.7} @self
+  - setspeed{s=0.001} @self
+  - setAI{ai=false} @self
+  - delay 43
+  - setspeed{s=1.23} @self
+  - setAI{ai=true} @self
+  
+wolfmob41far_combo4:
+  Conditions:
+  - offgcd
+  TargetConditions:
+  - distance{d=3to10} true
+  Skills:
+  - gcd{ticks=126} @self
+  - state{s=combo_far4} @self
+  - setspeed{s=2} @self
+  - delay 24
+  - setspeed{s=3} @self
+  - sound{s=entity.player.attack.sweep;p=1.2;v=1.8;delay=2} @self
+  - delay 4
+  - skill{s=wolfmob41_sword_swing} @EIR{r=4}
+  - setspeed{s=0.001} @self
+  - delay 20
+  - setspeed{s=2.8} @self
+  - sound{s=entity.player.attack.sweep;p=1.1;v=1.8;delay=2} @self
+  - delay 4
+  - skill{s=wolfmob41_sword_swing} @LivingInCone{a=120.0;r=5.0;rot=0.0}
+  - setspeed{s=0.001} @self
+  - delay 6
+  - delay 26
+  - setspeed{s=3.8} @self
+  - sound{s=entity.evoker.cast_spell;p=1.2;v=2} @self
+  - skill{s=wolfmob41_sword_thrust;repeat=2;repeatinterval=2} @LivingInCone{a=40.0;r=5.5;rot=0.0}
+  - delay 6
+  - setspeed{s=0.001} @self
+  - setAI{ai=false} @self
+  - delay 35
+  - setAI{ai=true} @self
+  - setspeed{s=1.23} @self
+
+
+wolfmob41dagger_throw:
+  Cooldown: 5
+  Conditions:
+  - offgcd
+  TargetConditions:
+  - distance{d=12to20} true
+  Skills:
+  - gcd{ticks=41} @self
+  - state{s=dagger_throw} @self
+  - setspeed{s=0.001} @self
+  - delay 4
+  - skill{s=wolfmob41_dagger_on} @self
+  - delay 5
+  - sound{s=entity.evoker.cast_spell;p=1.2;v=2} @self
+  - projectile{bulletType=MOB;mob=wolfmob41dagger;oH=wolfmob41_dagger_shot;i=1;mr=90;v=27;sB=false;hR=1.5;hp=true;hnp=true;sso=0;sfo=1;syo=1.5;tyo=0.7} @target
+  - projectile{bulletType=MOB;mob=wolfmob41dagger;oH=wolfmob41_dagger_shot;i=1;mr=90;v=27;ho=10;sB=false;hR=1.5;hp=true;hnp=true;sso=0;sfo=1;syo=1.5;tyo=0.7} @target
+  - projectile{bulletType=MOB;mob=wolfmob41dagger;oH=wolfmob41_dagger_shot;i=1;mr=90;v=27;ho=-10;sB=false;hR=1.5;hp=true;hnp=true;sso=0;sfo=1;syo=1.5;tyo=0.7} @target
+  - skill{s=wolfmob41_dagger_off;delay=3} @self
+  - delay 5
+  - skill{s=wolfmob41_dagger_on} @self
+  - delay 5
+  - sound{s=entity.evoker.cast_spell;p=1.2;v=2} @self
+  - projectile{bulletType=MOB;mob=wolfmob41dagger;oH=wolfmob41_dagger_shot;i=1;mr=90;v=27;sB=false;hR=1.5;hp=true;hnp=true;sso=0;sfo=1;syo=1.5;tyo=0.7} @target
+  - projectile{bulletType=MOB;mob=wolfmob41dagger;oH=wolfmob41_dagger_shot;i=1;mr=90;v=27;ho=10;sB=false;hR=1.5;hp=true;hnp=true;sso=0;sfo=1;syo=1.5;tyo=0.7} @target
+  - projectile{bulletType=MOB;mob=wolfmob41dagger;oH=wolfmob41_dagger_shot;i=1;mr=90;v=27;ho=-10;sB=false;hR=1.5;hp=true;hnp=true;sso=0;sfo=1;syo=1.5;tyo=0.7} @target
+  - skill{s=wolfmob41_dagger_off} @self
+  - delay 21
+  - setspeed{s=1.23} @self
+
+#----------------------------------   others attack
+
+wolfmob41_lightsword_falling:
+  Cooldown: 45
+  Conditions:
+  - offgcd
+  TargetConditions:
+  - distance{d=2to16} true
+  Skills:
+  - gcd{ticks=66} @self
+  - state{s=swordfall} @self
+  - setAI{ai=false} @self
+  - delay 14
+  - skill{s=wolfmob41_sword_on} @self 
+  - delay 12
+  - sound{s=entity.player.attack.sweep;p=0.3;v=0.8} @self
+  - delay 2
+  - skill{s=wolfmob41swordfall-1}
+  - effect:sound{s=entity.generic.explode;p=2;v=1.2;delay=2} @origin
+  - delay 10
+  - skill{s=wolfmob41_sword_off} @self 
+  - delay 28
+  - setAI{ai=true} @self
+  
+wolfmob41swordfall-1:
+  Skills:
+  - projectile{onTick=wolfmob41swordfall-2;v=14;i=5;hR=1;vR=1;syo=0;hs=true;hfs=-0;hp=false;mr=30;FromOrigin=true} @RingAroundOrigin{radius=15;points=8}
+  - delay 15
+  - projectile{onTick=wolfmob41swordfall-2;v=14;i=5;hR=1;vR=1;syo=0;hs=true;hfs=-0;hp=false;mr=30;FromOrigin=true} @RingAroundOrigin{radius=15;points=8}
+  - delay 15
+  - projectile{onTick=wolfmob41swordfall-2;v=14;i=5;hR=1;vR=1;syo=0;hs=true;hfs=-0;hp=false;mr=30;FromOrigin=true} @RingAroundOrigin{radius=15;points=8}
+  - delay 15
+  - projectile{onTick=wolfmob41swordfall-2;v=14;i=5;hR=1;vR=1;syo=0;hs=true;hfs=-0;hp=false;mr=30;FromOrigin=true} @RingAroundOrigin{radius=15;points=8}
+  - delay 15
+  - projectile{onTick=wolfmob41swordfall-2;v=14;i=5;hR=1;vR=1;syo=0;hs=true;hfs=-0;hp=false;mr=30;FromOrigin=true} @RingAroundOrigin{radius=15;points=8}
+  - delay 15
+  - projectile{onTick=wolfmob41swordfall-2;v=14;i=5;hR=1;vR=1;syo=0;hs=true;hfs=-0;hp=false;mr=30;FromOrigin=true} @RingAroundOrigin{radius=15;points=8}
+  - delay 15
+  - projectile{onTick=wolfmob41swordfall-2;v=14;i=5;hR=1;vR=1;syo=0;hs=true;hfs=-0;hp=false;mr=30;FromOrigin=true} @RingAroundOrigin{radius=15;points=8}
+  - delay 15
+  - projectile{onTick=wolfmob41swordfall-2;v=14;i=5;hR=1;vR=1;syo=0;hs=true;hfs=-0;hp=false;mr=30;FromOrigin=true} @RingAroundOrigin{radius=15;points=8}
+
+wolfmob41swordfall-2:
+  Skills:  
+  - randomskill{s=wolfmob41swordfall-2-1,wolfmob41swordfall-2-2,wolfmob41swordfall-2-3,wolfmob41swordfall-2-4} 
+
+wolfmob41swordfall-2-1:
+  Skills:
+  - summon{t=wolfmob41swordfall;r=2;yr=0;delay=2} @origin
+
+wolfmob41swordfall-2-2:
+  Skills:
+  - summon{t=wolfmob41swordfall;r=2;yr=0;delay=4} @origin
+
+wolfmob41swordfall-2-3:
+  Skills:
+  - summon{t=wolfmob41swordfall;r=2;yr=0;delay=6} @origin
+
+wolfmob41swordfall-2-4:
+  Skills:
+  - summon{t=wolfmob41swordfall;r=2;yr=0;delay=8} @origin  
+  
+wolfmob41spear_throw:
+  Cooldown: 12
+  Conditions:
+  - offgcd
+  TargetConditions:
+  - distance{d=7to12} true
+  Skills:
+  - gcd{ticks=66} @self
+  - state{s=spear_throw} @self
+  - setSpeed{s=1.1} @self
+  - delay 7
+  - skill{s=wolfmob41_spear_on} @self
+  - delay 23
+  - effect:sound{s=item.trident.riptide_3;v=1} @self
+  - sound{s=entity.player.attack.sweep;p=0.3;v=1.8} @self
+  - setSpeed{s=2} @self
+  - delay 2
+  - skill{s=wolfmob41_spear_off} @self
+  - projectile{bulletType=MOB;mob=wolfmob41spear;oH=wolfmob41_lightspear_throw;oE=wolfmob41spear_throw-1;i=1;mr=90;v=27;sB=true;vR=0.01;hp=true;hnp=false;sE=false;sfo=1.2;syo=2.5;tyo=0.1} @selflocation{forwardOffset=-10}
+  - setAI{ai=false} @self
+  - setSpeed{s=0.001} @self
+  - delay 28
+  - setAI{ai=true} @self
+  - setSpeed{s=1.23} @self
+  
+wolfmob41spear_throw-1:
+  Skills:
+  - summon{type=wolfmob41spearvfx} @BlocksNearOrigin{r=6;limit=1;sort=Nearest;yOffset=1;oa=true}
+  - effect:sound{s=entity.generic.explode;v=2;p=2} 
+
+wolfmob41spear_thrust:
+  Cooldown: 6
+  Conditions:
+  - offgcd
+  TargetConditions:
+  - distance{d=3to9} true
+  Skills:
+  - gcd{ticks=41} @self
+  - state{s=spear_thrust} @self
+  - setspeed{s=0.001} @self
+  - delay 2
+  - skill{s=wolfmob41_spear_on} @self
+  - delay 5
+  - setspeed{s=3.3} @self
+  - delay 2
+  - sound{s=entity.player.attack.sweep;p=1.4;v=1.8} @self
+  - delay 2
+  - setspeed{s=0.001} @self
+  - skill{s=wolfmob41_lightspear_thrust} @LivingInCone{a=40.0;r=6.5;rot=0.0}
+  - delay 9
+  - skill{s=wolfmob41_spear_off} @self
+  - delay 11
+  - setspeed{s=1.23} @self
+
+wolfmob41sword_swing_thrust:
+  Cooldown: 10
+  Conditions:
+  - offgcd
+  TargetConditions:
+  - distance{d=10to18} true
+  Skills:
+  - gcd{ticks=61} @self
+  - state{s=sword_thrust} @self
+  - setspeed{s=1.35} @self
+  - effect:spin{duration=20;velocity=0} @self 
+  - effect:sound{s=item.armor.equip_leather;v=3;p=1} @self
+  - lunge{velocity=0.8;repeat=6;repeatinterval=2} @selflocation{sideoffset=-10;forwardOffset=-8}
+  - delay 13
+  - setspeed{s=0.001} @self
+  - delay 10
+  - setspeed{s=3} @self
+  - effect:spin{duration=14;velocity=0} @self 
+  - lunge{velocity=4.3} @target
+  - lunge{velocity=2.3;delay=3} @target
+  - sound{s=entity.player.attack.sweep;p=1.2;v=1.8;delay=2} @self
+  - delay 8
+  - skill{s=wolfmob41_sword_swing_thrust} @LivingInCone{a=160.0;r=5;rot=0.0}
+  - skill{s=wolfmob41_sword_swing_thrust} @EIR{r=4}
+  - setspeed{s=0.001} @self
+  - delay 29
+  - setspeed{s=1.23} @self
+  - setAI{ai=true} @self
+  
+ 
+#----------------------------------   Death skills
+ 
+wolfmob41death:
+  Skills:
+  - sound{s=block.anvil.land;p=1.4;v=0.2} @self
+  - sound{s=entity.axolotl.death;p=2.5;v=2} @self
+  - partvisibility{m=wolfmob41;p=light_sword;v=false} @self
+  - partvisibility{m=wolfmob41;p=light_spear;v=false} @self
+  - partvisibility{m=wolfmob41;p=light_dagger;v=false} @self
+  - partvisibility{m=wolfmob41;p=light_hammer;v=false} @self
+  - delay 14
+  - effect:particles{particle=smoke;amount=5;hs=0.5;vs=0.8;y=0.7;s=0.2;repeat=17;repeatInterval=3} @self
+  - delay 43
+  - effect:sound{s=entity.polar_bear.step;v=1.7;p=0.7} @self
+  - delay 26
+  - effect:sound{s=block.fire.extinguish;v=0.6;p=0} @self 
+  - effect:particles{particle=cloud;a=80;s=1;hs=1.2;vs=2.} @self 
+  - effect:particles{particle=endRod;a=80;s=1;hs=1;vs=1} @self 
+# dpwgy6+P2bDv8kvcBDOUUROGdqVyWkNwA4/ebeku/k0DPqk6iusUpYRLprjnvQfbU/Ik9Tu1b9a3Jgl6H5nQ7Z3B5MLjL/2mXdkpTdCjXFs=

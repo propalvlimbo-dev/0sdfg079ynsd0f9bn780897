@@ -1,0 +1,18 @@
+# ========================================
+#    ElytrixPlaceholders Configuration
+#    Website: https://elytrix.pw
+#    Discord: dsc.gg/elytrix
+#    Telegram: t.me/elytrix_ru
+# ========================================
+
+placeholders:
+  nameserver: "Elytrix"
+  site: "https://elytrix.pw"
+  site_short: "elytrix.pw"
+  ip: "mc.Elytrix.pw"
+  discord: "dsc.gg/elytrix"
+  tg: "t.me/elytrix_ru"
+
+settings:
+  debug: false
+  auto-reload: false

@@ -1,0 +1,492 @@
+damage_1:
+- ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: SHEARS
+  meta:
+    ==: ItemMeta
+    meta-type: UNSPECIFIC
+    display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gold","text":"Супер
+      Ножницы "},{"bold":false,"italic":false,"color":"gray","text":"- "},{"italic":false,"color":"gold","text":"3
+      "},{"italic":false,"color":"gray","text":"использований"}],"text":""}'
+    lore:
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Использований:
+      3"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Этими
+      ножницами можно "},{"italic":false,"color":"gold","text":"ломать "},{"italic":false,"color":"gray","text":"спавнера"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Время
+      ломания: "},{"italic":false,"color":"gold","text":"25 секунд"}],"text":""}'
+    - '{"text":""}'
+    ItemFlags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    - HIDE_DESTROYS
+    - HIDE_PLACED_ON
+    - HIDE_POTION_EFFECTS
+    - HIDE_DYE
+    PublicBukkitValues:
+      minecraft:shears: SHEARS
+- ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: FIREWORK_STAR
+  meta:
+    ==: ItemMeta
+    meta-type: FIREWORK_EFFECT
+    display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Анти
+      Полет"}],"text":""}'
+    lore:
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"red","text":"Проклятье
+      утраты"}],"text":""}'
+    - '{"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Когда
+      во второй руке"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"При
+      нажатии SHIFT:"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"Запрещает
+      полеты в радиусе 16 блоков"}],"text":""}'
+    enchants:
+      VANISHING_CURSE: 1
+    ItemFlags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    - HIDE_DESTROYS
+    - HIDE_PLACED_ON
+    - HIDE_POTION_EFFECTS
+    - HIDE_DYE
+    PublicBukkitValues:
+      minecraft:anti_fly: ANTI_FLY
+- ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: SHIELD
+  meta:
+    ==: ItemMeta
+    meta-type: TILE_ENTITY
+    display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gold","text":"Цыганский
+      щит"}],"text":""}'
+    enchants:
+      THORNS: 10
+    Unbreakable: true
+    blockMaterial: SHIELD
+- ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: ELYTRA
+  meta:
+    ==: ItemMeta
+    meta-type: UNSPECIFIC
+    display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_aqua","text":"Крылья
+      Ангела"}],"text":""}'
+    enchants:
+      MENDING: 1
+      THORNS: 1
+      DURABILITY: 5
+    attribute-modifiers:
+      GENERIC_MAX_HEALTH:
+      - ==: org.bukkit.attribute.AttributeModifier
+        amount: 6.0
+        name: 47fa394d-8fb4-4892-96b4-c0c4ca1aff4d
+        slot: CHEST
+        uuid: 47fa394d-8fb4-4892-96b4-c0c4ca1aff4d
+        operation: 0
+- ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: TOTEM_OF_UNDYING
+  meta:
+    ==: ItemMeta
+    meta-type: UNSPECIFIC
+    display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Тотем
+      Ведьмы"}],"text":""}'
+    lore:
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Сохраняет
+      эффекты"}],"text":""}'
+    enchants:
+      VANISHING_CURSE: 1
+    ItemFlags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    - HIDE_DESTROYS
+    - HIDE_PLACED_ON
+    - HIDE_POTION_EFFECTS
+    - HIDE_DYE
+    PublicBukkitValues:
+      minecraft:witch_totem: WITCH_TOTEM
+- ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: FLOWER_BANNER_PATTERN
+  meta:
+    ==: ItemMeta
+    meta-type: UNSPECIFIC
+    display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"yellow","text":"Свиток
+      опыта"}],"text":""}'
+    lore:
+    - '{"text":""}'
+    - '{"extra":[{"text":"  "},{"italic":false,"color":"gray","text":"||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||  "}],"text":""}'
+    - '{"extra":[{"text":"  "},{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"0
+      "},{"italic":false,"color":"white","text":"ꐇ  "}],"text":""}'
+    - '{"text":""}'
+    - '{"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"Когда
+      во второй руке:"}],"text":""}'
+    - '{"extra":[{"text":"  "},{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"yellow","text":"Собирает
+      в себя весь опыт"}],"text":""}'
+    - '{"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"Когда
+      в основной руке:"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"При
+      нажатии ПКМ:"}],"text":""}'
+    - '{"extra":[{"text":"  "},{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"yellow","text":"Дает
+      вам 5 опыта"}],"text":""}'
+    - '{"text":""}'
+    ItemFlags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    - HIDE_DESTROYS
+    - HIDE_PLACED_ON
+    - HIDE_POTION_EFFECTS
+    - HIDE_DYE
+    PublicBukkitValues:
+      minecraft:scroll_of_exp: SCROLL_OF_EXPERIENCE
+- ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: TOTEM_OF_UNDYING
+  meta:
+    ==: ItemMeta
+    meta-type: UNSPECIFIC
+    display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gold","text":"Тотем
+      Драконида"}],"text":""}'
+    lore:
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Срабатывает,
+      когда"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"лежит
+      в инвентаре"}],"text":""}'
+    enchants:
+      VANISHING_CURSE: 1
+    ItemFlags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    - HIDE_DESTROYS
+    - HIDE_PLACED_ON
+    - HIDE_POTION_EFFECTS
+    - HIDE_DYE
+    PublicBukkitValues:
+      minecraft:draconid_totem: DRACONID_TOTEM
+- ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: ENCHANTED_GOLDEN_APPLE
+- ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: GOLDEN_APPLE
+  amount: 32
+- ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: PLAYER_HEAD
+  meta:
+    ==: ItemMeta
+    meta-type: SKULL
+    display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"yellow","text":"Шар
+      Света"}],"text":""}'
+    lore:
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"red","text":"Проклятие
+      утраты "}],"text":""}'
+    - '{"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Когда
+      во второй руке"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"При
+      нажатии SHIFT:"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"В
+      радиусе 16 блоков"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Светлячок
+      (01:00)"}],"text":""}'
+    - '{"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"При
+      экипировке в левой руке:"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+      +2 Урон атаки"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+      +3.5 Удача"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+      +3 Броня"}],"text":""}'
+    custom-model-data: 5004
+    ItemFlags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    - HIDE_DESTROYS
+    - HIDE_PLACED_ON
+    - HIDE_POTION_EFFECTS
+    - HIDE_DYE
+    internal: H4sIAAAAAAAA/02PPU7DMBzF/yCQSmDmEkjIISSoQwegSHGUD9Imce2tTV3yYYeqTao6F0DchZFbMMMBkDgDKx6Z3u/p95ZnABhwNq07IR43z6tScAMMTWu+aUu+PYFBy/dtt+FbAwAOBnCczUXH4Z0rD7FZgZYzT+QKO7onUyQiXK1vcJOpxT12sNTevXV8Nfy3tds5sQW1vII1cbeQGfKtieDuxMxluguusjogdyVN8p5VtI8IRVQGKKi8Ohw/7aOEVWH/YAZJbVGZKs2K9mEZJVRnbTHiyYikNiPxNSOsCMbYxI05XMWjEcApHOKlPnL0/fV78XMZui/Zp/9x/vYK8AcCxCZuCgEAAA==
+    PublicBukkitValues:
+      minecraft:light_ball: LIGHT_BALL
+- ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: PLAYER_HEAD
+  meta:
+    ==: ItemMeta
+    meta-type: SKULL
+    display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"red","text":"Шар
+      Огня"}],"text":""}'
+    lore:
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"red","text":"Проклятие
+      утраты "}],"text":""}'
+    - '{"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Когда
+      в руке"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Огнеупорность"}],"text":""}'
+    - '{"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"При
+      экипировке в левой руке:"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+      +2.5 Урон атаки"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+      +0.3 Скорость атаки"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+      +4 Макс. здоровье"}],"text":""}'
+    custom-model-data: 5003
+    ItemFlags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    - HIDE_DESTROYS
+    - HIDE_PLACED_ON
+    - HIDE_POTION_EFFECTS
+    - HIDE_DYE
+    internal: H4sIAAAAAAAA/02Pu07DMBiFfxBIJbCyMjAyOYQEdajEpUh1VCekTeLaW5u65OKEKk2qOuIBKvESSIysPAIPwCPhkel8R99ZjgFgwNm0aKV8rl9XmRQGGJrWom4ysTmBXiN2TVuLjQEABz04jueyFfAtlIv4LEXLmSsThR3dwymSPs7Xt7iK1eIRO7jUfnTvjFX/39Zu5tSWzHJTXgXtoozR2JpIMZqYSRltyXVcEPqQsTDpeM46nzLESoJI7hbe8GXnhzz3uieThIXFykhpVqzzMj9kOguLU7f0aWRzGtxwylMyxCauzP4qGAwATuEQL/WRo7eL3/3+B19+Xt29j77OPwD+AL21jLsKAQAA
+    PublicBukkitValues:
+      minecraft:fire_ball: FIRE_BALL
+- ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: PLAYER_HEAD
+  meta:
+    ==: ItemMeta
+    meta-type: SKULL
+    display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"Шар
+      Воды"}],"text":""}'
+    lore:
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"red","text":"Проклятие
+      утраты "}],"text":""}'
+    - '{"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Когда
+      во второй руке"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"При
+      нажатии SHIFT:"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Подводное
+      дыхание (01:00)"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Грация
+      дельфина (00:10)"}],"text":""}'
+    - '{"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"При
+      экипировке в левой руке:"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+      +30% Скорость передвижения"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+      +12 Макс. здоровье"}],"text":""}'
+    custom-model-data: 5005
+    ItemFlags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    - HIDE_DESTROYS
+    - HIDE_PLACED_ON
+    - HIDE_POTION_EFFECTS
+    - HIDE_DYE
+    internal: H4sIAAAAAAAA/02PT1KDMByFfzo6U9HDBBGcLrpQq0OYBkoLpMmuhVT+BKwUOg0n8RLu3HoHD+EhnHFjlq7e9+Z7m2cAGHC1rHop5+3LtpDCAEPTTrRdIfYXMOrEsetbsTcA4GQE58la9gI+hPIQX+UoW3kyVdjRPVoiGeByd4ubRG0esINr7d07Z6bG/7Z2t6a2ZJaX8ybsN3WCZtZCCndhpnV8INdJReh9waJ04CUbAsoQqwkipVf50+djEPHSHx5NElUWq2OlWbHBL4KI6awsTr06oLHNaXjDKc/JFJu4McfbcDIBuIRTnOkjZ69fTxJ+3Z/P9+ztkOJvgD8UFTVmCgEAAA==
+    PublicBukkitValues:
+      minecraft:water_ball: WATER_BALL
+- ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: PLAYER_HEAD
+  meta:
+    ==: ItemMeta
+    meta-type: SKULL
+    display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gold","text":"Шар
+      Земли"}],"text":""}'
+    lore:
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"red","text":"Проклятие
+      утраты "}],"text":""}'
+    - '{"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Когда
+      во второй руке"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"При
+      нажатии SHIFT:"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Спешка
+      II (00:08)"}],"text":""}'
+    - '{"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"При
+      экипировке в левой руке:"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+      +2 Сопротивление отбрасыванию"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+      +4 Прочность брони"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+      +4.5 Броня"}],"text":""}'
+    custom-model-data: 5002
+    ItemFlags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    - HIDE_DESTROYS
+    - HIDE_PLACED_ON
+    - HIDE_POTION_EFFECTS
+    - HIDE_DYE
+    internal: H4sIAAAAAAAA/02Pu07DMBiFfxBIJfAwDmmCOlTiUkQdNQlpk7j2gNSmLrnYoUoTqPMqTEysDCyInWfgOVhZ8Mh0vqPvLMcAMOBkVrZC3NYP61xwAwxNG143Od8eQa/hu6at+dYAgL0eHCYL0XJ458pFbJ6h1dwVqcKO7tEMiQAXmzNcJWp5hR0stR9fOBM1+Le1mwWxBbXcjFVhu5QJmlhTwcdTM5Xxo3ealB65zGmUdqygXUAootJDXuGW/uh+F0Ss8Ltr04tKi8pYaVa08/MgojpLixFXBiS2GQn7jLDMG2ETV+ZgHQ6HAMewj1f6yMFv/+P75en85/X5q7h5+7wD+AMkUwf7CgEAAA==
+    PublicBukkitValues:
+      minecraft:earth_ball: EARTH_BALL
+- ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: PLAYER_HEAD
+  meta:
+    ==: ItemMeta
+    meta-type: SKULL
+    display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Шар
+      Хаоса"}],"text":""}'
+    lore:
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"red","text":"Проклятие
+      утраты "}],"text":""}'
+    - '{"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Когда
+      во второй руке"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"При
+      нажатии SHIFT:"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"В
+      радиусе 8 блоков"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Слабость
+      II (00:10)"}],"text":""}'
+    - '{"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"При
+      экипировке в левой руке:"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+      +2.5 Броня"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+      -10 Макс. здоровье"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+      +3 Урон атаки"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+      +0.4 Скорость атаки"}],"text":""}'
+    custom-model-data: 10001
+    ItemFlags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    - HIDE_DESTROYS
+    - HIDE_PLACED_ON
+    - HIDE_POTION_EFFECTS
+    - HIDE_DYE
+    internal: H4sIAAAAAAAA/02PT06DQByFfxqbtOjaS7hwEMF00UW1Jh3SAWmB6cyO0qn8mcGGgungZUxceAG3Jl7IO8jS1ftevrd5BoABF6uylfKpftnlUhhg9LQXdZOLwwiGjTg2bS0OBgCcDGEQJ7IV8CW0i/g6Q9u1K1ONnb6HKyR9XOzvcBXrzQN2sOr9fOos9Pjf1m4SaktmuRmvgnajYrSwllLMl2aqoldyE5eE3ucsTDtesM6nDDFFECnc0ps9H/2QF173aJKwtJiKdM+adV7uh6zP0uLUVT6NbE6DW055RmbYxJU53gWTCcA5nOJtf+Ts/Xs0KJNp+vl2ffX7cfkD8Ad1HozMCgEAAA==
+    PublicBukkitValues:
+      minecraft:chaos_ball: CHAOS_BALL
+- ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: PLAYER_HEAD
+  meta:
+    ==: ItemMeta
+    meta-type: SKULL
+    display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"light_purple","text":"Шар
+      Порядка"}],"text":""}'
+    lore:
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"red","text":"Проклятие
+      утраты "}],"text":""}'
+    - '{"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Когда
+      во второй руке"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"При
+      нажатии SHIFT:"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Регенерация
+      II (00:08)"}],"text":""}'
+    - '{"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"При
+      экипировке в левой руке:"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+      +15% Скорость передвижения"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+      +2 Броня"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+      +20 Макс. здоровье"}],"text":""}'
+    custom-model-data: 5006
+    ItemFlags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    - HIDE_DESTROYS
+    - HIDE_PLACED_ON
+    - HIDE_POTION_EFFECTS
+    - HIDE_DYE
+    internal: H4sIAAAAAAAA/02PT06DQByFfxpNKnoDT2DiYhDBNKZJ1Zp0sAOlBaYzu5ZO5c8MNhRMh6N4DONR3BsP4dJElq7e9/K9zTMADDibF42U0+plk0lhgNHRVlR1JnYn0KvFvm4qsTMA4KAHx/FSNgI+hHYRX6RovXBlorHT9XCOpI/z7Q0uY716wA5WnR/fORPd/7e16yW1JbPclJdBs1IxmlgzKcYzM1HRK7mKC0LvMxYmLc9Z61OGmCKI5G7hjZ73fshzr300SVhYTEW6Y81aL/ND1mVhceoqn0Y2p8E1pzwlI2zi0uxvgsEA4BQO8bo7cnR++3Px/jscvj19fn9NzUuAP1Z+rboKAQAA
+    PublicBukkitValues:
+      minecraft:harmony_ball: HARMONY_BALL
+- ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: PLAYER_HEAD
+  meta:
+    ==: ItemMeta
+    meta-type: SKULL
+    display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"white","text":"Шар
+      Воздуха"}],"text":""}'
+    lore:
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"red","text":"Проклятие
+      утраты "}],"text":""}'
+    - '{"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Когда
+      во второй руке"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"При
+      нажатии SHIFT:"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Левитация
+      II (00:08)"}],"text":""}'
+    - '{"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"При
+      экипировке в левой руке:"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+      +2.3 Урон атаки"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+      +35% Скорость передвижения"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+      +1.5 Отбрасывание атаки"}],"text":""}'
+    custom-model-data: 5001
+    ItemFlags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    - HIDE_DESTROYS
+    - HIDE_PLACED_ON
+    - HIDE_POTION_EFFECTS
+    - HIDE_DYE
+    internal: H4sIAAAAAAAA/02Pu07DMBiFfxBIJbAy8AJsSA4hQZXoABSpjuqENBfXZmpTl1zstEoTVOcJeBomBp6JN0AsZGQ639F3lmMAGHAWlq2Uz/VmnUthgNHTVtRNLnYnMGjEvmlrsTMA4GAAx8lCtgI+hXYRn2doNXdlqrHT9yhE0sfF9hZXiV4+Yger3k/unake/tvazYLaklluxqugXaoETa2ZFJOZmar4jVwnJaEPOYvSjhes8ylDTBFECrf0xq97P+KF1z2ZJCotpmLds2adl/sR67O0OHWVT2Ob0+CGU56RMTZxZQ7XwWgEcAqHeNUfOfq5Ct/P8eT74+LyF3+93AH8AeWigqAKAQAA
+    PublicBukkitValues:
+      minecraft:air_ball: AIR_BALL
+damage_100:
+- ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: PLAYER_HEAD
+  meta:
+    ==: ItemMeta
+    meta-type: SKULL
+    display-name: '{"italic":false,"color":"dark_purple","text":"Голова Джека"}'
+    enchants:
+      PROTECTION_ENVIRONMENTAL: 4
+      VANISHING_CURSE: 1
+    attribute-modifiers:
+      GENERIC_ARMOR_TOUGHNESS:
+      - ==: org.bukkit.attribute.AttributeModifier
+        amount: 2.0
+        name: armor_toughness
+        slot: HEAD
+        uuid: 4b733c7b-0c85-4f4d-bbb4-857f4892b60e
+        operation: 0
+      GENERIC_MAX_HEALTH:
+      - ==: org.bukkit.attribute.AttributeModifier
+        amount: 6.0
+        name: max_health
+        slot: HEAD
+        uuid: 1c66bee2-f3ce-4a3b-b482-dc430ad1885c
+        operation: 0
+      GENERIC_ARMOR:
+      - ==: org.bukkit.attribute.AttributeModifier
+        amount: 3.0
+        name: armor
+        slot: HEAD
+        uuid: ef90f8d2-3206-4a85-bd3f-967d6ed142d6
+        operation: 0
+    internal: H4sIAAAAAAAA/02PT06DQBxGfzWaVHTjAVy5czVAwHTZSChDCggFZGbX0mn4M1MbCrUz1/AC3sGlB/A83kCW7t6X922eBqDB7aodOH/p3nY1ZxpoIx1Y19fseA3Tnp37oWNHDQAmU7jK13xg8MWkj2hRoW3h81Jie9zpCvEIN4cnvM/l5hnbWIzem9tLOfv3tfr1q8WJ6Vd0Hw8bkaOlmXDmJXopshNRVRMKjKhwq0BlKEiJpE2gQqc0aErbQMV66LQGXYzeoIKo0ggct6aLzAyaRBAjRlFavkfO3CSNK0LV6kT6s12BAG7gAm/Hjktr8v1492PffzjZw6f3ewb4A/rQx2cJAQAA

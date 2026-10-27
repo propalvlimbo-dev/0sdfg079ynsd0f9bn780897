@@ -1,0 +1,217 @@
+options:
+  options:
+    disabled_for_ops: true
+    cooldowns_enabled: true
+    limits_enabled: true
+    save_interval_in_minutes: 15
+    command_confirmation: true
+  units:
+    seconds: 'секунд'
+    minutes: 'минут'
+    hours: 'часов'
+  messages:
+    cooling_down: '&x&F&8&B&E&F&BЗадержка &8» &fПожалуйста, подождите &x&F&8&B&E&F&B&seconds& &unit& &fдо повторного использования команды.'
+commands:
+  groups:
+    default:
+      # --- ТЕЛЕПОРТАЦИЯ (Без лимитов по запросу) ---
+      /spawn:
+        limit: 0 seconds
+      /home:
+        limit: 0 seconds
+      
+      # --- RTP ---
+      /rtp:
+        limit: 30 seconds
+      /rtpdefault:
+        limit: 30 seconds
+      /rtpfar:
+        limit: 1 minutes
+      /rtpnear:
+        limit: 30 seconds
+      /thor:
+        limit: 2 minutes
+      /report:
+        limit: 2 minutes
+
+      # --- ВАЖНОЕ ВЫЖИВАНИЕ ---
+      /back:
+        limit: 60 seconds   # Чтобы нельзя было бесконечно ресаться на месте смерти
+      /tpa:
+        limit: 15 seconds
+      /tpahere:
+        limit: 15 seconds
+      /warp:
+        limit: 5 seconds
+      //wand:
+        limit: 5 seconds
+
+      # --- КОМАНДЫ СО СКРИНШОТОВ (Донатерские возможности) ---
+      # Даже если это default, настраиваем тут, чтобы при получении прав (например, из кейса) были лимиты.
+      
+      # Еда и Здоровье
+      /feed:
+        limit: 1 minutes
+      /eat:
+        limit: 1 minutes
+      /heal:
+        limit: 1 minutes
+
+      /repair:
+        limit: 1 minutes
+      /fix:
+        limit: 1 minutes
+      
+      # Утилиты
+      /fly:
+        limit: 10 seconds   # Анти-спам режимом полета (защита от багов)
+      /hat:
+        limit: 5 seconds
+      /craft:
+        limit: 5 seconds
+      /enderchest:
+        limit: 0 seconds    # Обычно доступ к эндер-сундуку не ограничивают
+      /ec:
+        limit: 0 seconds
+      /near:
+        limit: 1 seconds   # Чтобы не спамили сканером игроков
+      /ptime:
+        limit: 5 seconds
+      /pweather:
+        limit: 5 seconds
+      /pvp:
+        limit: 5 seconds
+      
+      # Социальные и Админские (из рангов Rabbit/Cobra/Tiger)
+      /nick:
+        limit: 60 seconds   # Смена ника раз в минуту
+      /lightning:
+        limit: 5 minutes  # Молния
+      /shock:
+        limit: 20 seconds
+      /broadcast:
+        limit: 5 minutes    # Объявления не чаще раза в 5 минут
+      /bc:
+        limit: 5 minutes
+      /sun:
+        limit: 2 minutes
+      /rain:
+        limit: 2 minutes
+      /day:
+        limit: 2 minutes
+      /night:
+        limit: 2 minutes
+      /ext:
+        limit: 10 seconds   # Тушение
+
+      # --- ОБЩЕНИЕ И ЭКОНОМИКА ---
+      /pay:
+        limit: 5 seconds
+      /msg:
+        limit: 2 seconds
+      /tell:
+        limit: 2 seconds
+      /m:
+        limit: 2 seconds
+      /killer:
+        limit: 10 seconds
+    xzkto:
+      # --- ТЕЛЕПОРТАЦИЯ (Без лимитов по запросу) ---
+      /spawn:
+        limit: 0 seconds
+      /home:
+        limit: 0 seconds
+      
+      # --- RTP ---
+      /rtp:
+        limit: 0 seconds
+      /rtpdefault:
+        limit: 0 seconds
+      /rtpfar:
+        limit: 0 seconds
+      /rtpnear:
+        limit: 0 seconds
+      /thor:
+        limit: 0 seconds
+      /report:
+        limit: 0 seconds
+
+      # --- ВАЖНОЕ ВЫЖИВАНИЕ ---
+      /back:
+        limit: 0 seconds   # Чтобы нельзя было бесконечно ресаться на месте смерти
+      /tpa:
+        limit: 0 seconds
+      /tpahere:
+        limit: 0 seconds
+      /warp:
+        limit: 0 seconds
+      //wand:
+        limit: 0 seconds
+
+      # --- КОМАНДЫ СО СКРИНШОТОВ (Донатерские возможности) ---
+      # Даже если это default, настраиваем тут, чтобы при получении прав (например, из кейса) были лимиты.
+      
+      # Еда и Здоровье
+      /feed:
+        limit: 0 seconds
+      /eat:
+        limit: 0 seconds
+      /heal:
+        limit: 0 seconds
+
+      /repair:
+        limit: 0 seconds
+      /fix:
+        limit: 0 seconds
+      
+      # Утилиты
+      /fly:
+        limit: 0 seconds   # Анти-спам режимом полета (защита от багов)
+      /hat:
+        limit: 5 seconds
+      /craft:
+        limit: 5 seconds
+      /enderchest:
+        limit: 0 seconds    # Обычно доступ к эндер-сундуку не ограничивают
+      /ec:
+        limit: 0 seconds
+      /near:
+        limit: 0 seconds   # Чтобы не спамили сканером игроков
+      /ptime:
+        limit: 5 seconds
+      /pweather:
+        limit: 5 seconds
+      /pvp:
+        limit: 0 seconds
+      
+      # Социальные и Админские (из рангов Rabbit/Cobra/Tiger)
+      /nick:
+        limit: 60 seconds   # Смена ника раз в минуту
+      /lightning:
+        limit: 5 minutes  # Молния
+      /shock:
+        limit: 20 seconds
+      /broadcast:
+        limit: 5 minutes    # Объявления не чаще раза в 5 минут
+      /bc:
+        limit: 5 minutes
+      /sun:
+        limit: 2 minutes
+      /rain:
+        limit: 2 minutes
+      /day:
+        limit: 2 minutes
+      /night:
+        limit: 2 minutes
+      /ext:
+        limit: 10 seconds   # Тушение
+
+      # --- ОБЩЕНИЕ И ЭКОНОМИКА ---
+      /pay:
+        limit: 5 seconds
+      /msg:
+        limit: 2 seconds
+      /tell:
+        limit: 2 seconds
+      /m:
+        limit: 2 seconds

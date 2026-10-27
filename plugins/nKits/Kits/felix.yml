@@ -1,0 +1,65 @@
+Name: felix
+Cooldown: 0
+Permission: nKits.kits.felix
+Order: 0
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:enchantment_glint_override: 1b
+      minecraft:potion_contents: '{custom_color:16766720,custom_effects:[{amplifier:2b,duration:3600,id:"minecraft:absorption",show_icon:1b},{amplifier:1b,duration:3600,id:"minecraft:luck",show_icon:1b},{amplifier:1b,duration:3600,id:"minecraft:haste",show_icon:1b},{duration:1800,id:"minecraft:invisibility",show_icon:1b},{amplifier:1b,duration:1200,id:"minecraft:regeneration",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Феликс
+        Фелицис",underlined:0b}],text:""}'
+    schema_version: 1
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  Armor:
+  - null
+  - null
+  - null
+  - null

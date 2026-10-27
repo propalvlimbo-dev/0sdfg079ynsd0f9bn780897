@@ -1,0 +1,280 @@
+menu_title: '§fꈁꀀꈂꍖꈂꀁ§fꈃꄁ'
+open_command: donate
+size: 54
+items:
+  'structure_void':
+    material: structure_void
+    slots:
+    - 0
+    - 1
+    - 2
+    - 3
+    display_name: '&#FFFFFFꔄ %player_name% &#555555| &#AAAAAAНавсегда: &#FFFFFF&l39 &#AAAAAAрублей'
+    lore:
+      - '&#AAAAAA&l┇ &#FFFFFFУникальный кит - &#5555FF&l/kit hero'
+      - '&#AAAAAA&l┇ &#FFFFFFВиртуальный верстак - &#5555FF&l/craft'
+      - '&#AAAAAA&l┇ &#FFFFFFУзнать координаты  - &#5555FF&l/getpos'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇&#5555FF&l+ 5 &#FFFFFFСлотов на аукционе'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FFFFFFКоличество приватов: &#5555FF&l2'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FFFFFFПрефикс &#AAAAAA[&#5555FF&lHERO&#AAAAAA] &#FFFFFFв чате и табе'
+      - ''
+      - '&#5555FF➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%'
+    click_commands:
+      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%' 
+  'structure_void_1':
+    material: structure_void
+    slots:
+    - 5
+    - 6
+    - 7
+    - 8
+    display_name: '&#FFFFFFꔤ %player_name% &#555555| &#AAAAAAНавсегда: &#FFFFFF&l999 &#AAAAAAрублей'
+    lore:
+      - '&#AAAAAA&l┇ &#FFFFFFУникальный кит - &#FF5555&l/kit imperator'
+      - '&#AAAAAA&l┇ &#FFFFFFДополнительный Набор  - &#FF5555&l/kit plus'
+      - '&#AAAAAA&l┇ &#FFFFFFВозможность писать объявление - &#FF5555&l/broadcast'
+      - '&#AAAAAA&l┇ &#FFFFFFУзнать имя игрока - &#FF5555&l/realname'
+      - '&#AAAAAA&l┇ &#FFFFFFУдарить молнией - &#FF5555&l/lightning'
+      - '&#AAAAAA&l┇ &#FFFFFFРТП рядом с игроками - &#FF5555&l/rtp'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FF5555&l+ x2.0 &#FFFFFFвалюты за мобов и убийства'
+      - '&#AAAAAA&l┇ &#FF5555&l+ &#FFFFFFзаход даже на заполненный сервер'
+      - '&#AAAAAA&l┇ &#FF5555&l+ 36 &#FFFFFFслотов на аукционе'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FFFFFFКоличество приватов: &#FF5555&l96'
+      - '&#AAAAAA&l┇ &#FFFFFFДомов для /sethome: &#FF5555&l48'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FFFFFFПрефикс &#AAAAAA[&#FF5555&lIMPERATOR&#AAAAAA] &#FFFFFFв чате и табе'
+      - ''
+      - '&#FF5555➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%'
+    click_commands:
+      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%' 
+  'structure_void_2':
+    material: structure_void
+    slots:
+    - 9
+    - 10
+    - 11
+    - 12
+    display_name: '&#FFFFFFꔈ %player_name% &#555555| &#AAAAAAНавсегда: &#FFFFFF&l89 &#AAAAAAрублей'
+    lore:
+      - '&#AAAAAA&l┇ &#FFFFFFУникальный кит - &f&l/kit titan'
+      - '&#AAAAAA&l┇ &#FFFFFFНадеть блок - &f&l/hat'
+      - '&#AAAAAA&l┇ &#FFFFFFВосполнить голод - &f&l/feed'
+      - '&#AAAAAA&l┇ &#FFFFFFРТП на большое расстояние - &f&l/rtp'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇&f&l+ 7 &#FFFFFFСлотов на аукционе'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FFFFFFКоличество приватов: &f&l4'
+      - '&#AAAAAA&l┇ &#FFFFFFДомов для /sethome: &f&l3'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FFFFFFПрефикс &#AAAAAA[&f&lTITAN&#AAAAAA] &#FFFFFFв чате и табе'
+      - ''
+      - '&f➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%'
+    click_commands:
+      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%' 
+  'structure_void_3':
+    material: structure_void
+    slots:
+    - 14
+    - 15
+    - 16
+    - 17
+    display_name: '&#FFFFFFꔨ %player_name% &#555555| &#AAAAAAНавсегда: &#FFFFFF&l1899 &#AAAAAAрублей'
+    lore:
+      - '&#AAAAAA&l┇ &#FFFFFFУникальный кит - &#FF55FF&l/kit dragon'
+      - '&#AAAAAA&l┇ &#FFFFFFДополнительный Мега-Набор - &#FF55FF&l/kit pluspro'
+      - '&#AAAAAA&l┇ &#FFFFFFВключить режим полета - &#FF55FF&l/fly'
+      - '&#AAAAAA&l┇ &#FFFFFFВозможность выдавать донат - &#FF55FF&l/grant'
+      - '&#AAAAAA&l┇ &#FFFFFFУстановить ясную погоду - &#FF55FF&l/sun'
+      - '&#AAAAAA&l┇ &#FFFFFFУстановить пасмурную погоду - &#FF55FF&l/rain'
+      - '&#AAAAAA&l┇ &#FFFFFFУстановить ночь в мире - &#FF55FF&l/night'
+      - '&#AAAAAA&l┇ &#FFFFFFУстановить день в мире - &#FF55FF&l/day'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FF55FF&l+ x3.0 &#FFFFFFвалюты за мобов и убийства'
+      - '&#AAAAAA&l┇ &#FF55FF&l+ &#FFFFFFзаход даже на заполненный сервер'
+      - '&#AAAAAA&l┇ &#FF55FF&l+ 999 &#FFFFFFслотов на аукционе'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FFFFFFКоличество приватов: &#FF55FF&l999+'
+      - '&#AAAAAA&l┇ &#FFFFFFДомов для /sethome: &#FF55FF&l999+'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FFFFFFПрефикс &#AAAAAA[&#FF55FF&lDRAGON&#AAAAAA] &#FFFFFFв чате и табе'
+      - ''
+      - '&#FF55FF➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%'
+    click_commands:
+      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%' 
+  'structure_void_4':
+    material: structure_void
+    slots:
+    - 18
+    - 19
+    - 20
+    - 21
+    display_name: '&#FFFFFFꔒ %player_name% &#555555| &#AAAAAAНавсегда: &#FFFFFF&l129 &#AAAAAAрублей'
+    lore:
+      - '&#AAAAAA&l┇ &#FFFFFFУникальный кит - &#55FF55&l/kit avenger'
+      - '&#AAAAAA&l┇ &#FFFFFFОткрыть эндер-сундук - &#55FF55&l/enderchest'
+      - '&#AAAAAA&l┇ &#FFFFFFПотушить себя от огня - &#55FF55&l/ext'
+      - '&#AAAAAA&l┇ &#FFFFFFИгнорировать игрока - &#55FF55&l/ignore'
+      - '&#AAAAAA&l┇ &#FFFFFFОчистить инвентарь - &#55FF55&l/clear'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇&#55FF55&l+ 9 &#FFFFFFСлотов на аукционе'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FFFFFFКоличество приватов: &#55FF55&l8'
+      - '&#AAAAAA&l┇ &#FFFFFFДомов для /sethome: &#55FF55&l6'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FFFFFFПрефикс &#AAAAAA[&#55FF55&lAVENGER&#AAAAAA] &#FFFFFFв чате и табе'
+      - ''
+      - '&#55FF55➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%'
+    click_commands:
+      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%' 
+  'structure_void_5':
+    material: structure_void
+    slots:
+    - 23
+    - 24
+    - 25
+    - 26
+    display_name: '&#FFFFFFꕉ %player_name% &#555555| &#AAAAAAНавсегда: &#FFFFFF&l2126 &#AAAAAAрублей'
+    lore:
+      - '&#AAAAAA&l┇ &#FFFFFFНаборы &#AA0000&lPLUS &#AA0000&lPLUSPRO - &#FAD8FC&l/kit'
+      - '&#AAAAAA&l┇ &#FFFFFFУникальный набор &#FAD8FC&lPEGAS'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FAD8FC&l+ x5.0 &#FFFFFFвалюты за мобов и убийства'
+      - '&#AAAAAA&l┇ &#FAD8FC&l+ &#FFFFFFзаход даже на заполненный сервер'
+      - '&#AAAAAA&l┇ &#FAD8FC&l+ 999 &#FFFFFFслотов на аукционе'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FFFFFFКоличество приватов: &#FAD8FC&l999+'
+      - '&#AAAAAA&l┇ &#FFFFFFДомов для /sethome: &#FAD8FC&l999+'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FFFFFFПрефикс &#AAAAAA[&#FAD8FC&lPEGAS&#AAAAAA] &#FFFFFFв чате и табе'
+      - ''
+      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%'
+    click_commands:
+      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%' 
+  'structure_void_6':
+    material: structure_void
+    slots:
+    - 27
+    - 28
+    - 29
+    - 30
+    display_name: '&#FFFFFFꔖ %player_name% &#555555| &#AAAAAAНавсегда: &#FFFFFF&l289 &#AAAAAAрублей'
+    lore:
+      - '&#AAAAAA&l┇ &#FFFFFFУникальный кит - &#55FFFF&l/kit overlord'
+      - '&#AAAAAA&l┇ &#FFFFFFПочинить предмет  - &#55FFFF&l/repair'
+      - '&#AAAAAA&l┇ &#FFFFFFНайти игрока - &#55FFFF&l/near'
+      - '&#AAAAAA&l┇ &#FFFFFFУстановить личное время - &#55FFFF&l/ptime'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#55FFFF&l+ 14 &#FFFFFFСлотов на аукционе'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FFFFFFКоличество приватов: &#55FFFF&l16'
+      - '&#AAAAAA&l┇ &#FFFFFFДомов для /sethome: &#55FFFF&l12'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FFFFFFПрефикс &#AAAAAA[&#55FFFF&lOVERLORD&#AAAAAA] &#FFFFFFв чате и табе'
+      - ''
+      - '&#55FFFF➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%'
+    click_commands:
+      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%' 
+  'structure_void_7':
+    material: structure_void
+    slots:
+    - 32
+    - 33
+    - 34
+    - 35
+    display_name: '&#FFFFFFꕠ %player_name% &#555555| &#AAAAAAНавсегда: &#FFFFFF&l6666 &#AAAAAAрублей'
+    lore:
+      - '&#AAAAAA&l┇ &#FFFFFFОтсутствие задержек на - &#FAD8FC&l/mute'
+      - '&#AAAAAA&l┇ &#FFFFFFНаборы &#FF55FF&lDRAGON &#AA0000&lPLUS &#AA0000&lPLUSPRO - &#FAD8FC&l/kit'
+      - '&#AAAAAA&l┇ &#FAD8FC&l+ &#F8BEFBНеприкосновенность &#FFFFFFсо стороны администрации'
+      - '&#AAAAAA&l┇ &#FAD8FC&l+ &#FFFFFFНет &#F8BEFBзадержек/ограничений &#FFFFFFна команду &#FAD8FC&l/mute'
+      - '&#AAAAAA&l┇ &#FAD8FC&l+ &#F8BEFBДобавление &#FFFFFFв админ-беседу ВК'
+      - '&#AAAAAA&l┇ &#FAD8FC&l+ &#F8BEFBПрямая связь &#FFFFFFс администрацией'
+      - '&#AAAAAA&l┇ &#FAD8FC&l+ &#FFFFFFВы состоите в &#F8BEFBкоманде проекта'
+      - '&#AAAAAA&l┇ &#FAD8FC&l+ &#FFFFFFВысокий шанс &#F8BEFBповышения'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FAD8FC&l+ x4.0 &#FFFFFFвалюты за мобов и убийства'
+      - '&#AAAAAA&l┇ &#FAD8FC&l+ &#FFFFFFзаход даже на заполненный сервер'
+      - '&#AAAAAA&l┇ &#FAD8FC&l+ 999 &#FFFFFFслотов на аукционе'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FFFFFFКоличество приватов: &#FAD8FC&l999+'
+      - '&#AAAAAA&l┇ &#FFFFFFДомов для /sethome: &#FAD8FC&l999+'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FFFFFFПрефикс &#AAAAAA[&#FAD8FC&lD.HELPER&#AAAAAA] &#FFFFFFв чате и табе'
+      - ''
+      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%'
+    click_commands:
+      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%' 
+  'structure_void_8':
+    material: structure_void
+    slots:
+    - 36
+    - 37
+    - 38
+    - 39
+    display_name: '&#FFFFFFꔠ %player_name% &#555555| &#AAAAAAНавсегда: &#FFFFFF&l589 &#AAAAAAрублей'
+    lore:
+      - '&#AAAAAA&l┇ &#FFFFFFУникальный кит - &#FAD8FC&l/kit magister'
+      - '&#AAAAAA&l┇ &#FFFFFFСменить ник в игре - &#FAD8FC&l/nick'
+      - '&#AAAAAA&l┇ &#FFFFFFДоступ к инвентарю - &#FAD8FC&l/invsee'
+      - '&#AAAAAA&l┇ &#FFFFFFПочинить предметы - &#FAD8FC&l/repair all'
+      - '&#AAAAAA&l┇ &#FFFFFFПополнить здоровье - &#FAD8FC&l/heal'
+      - '&#AAAAAA&l┇ &#FFFFFFОтключить телепортации - &#FAD8FC&l/tptoggle'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FAD8FC&l+ x1.5 &#FFFFFFвалюты за убийства'
+      - '&#AAAAAA&l┇ &#FAD8FC&l+ 22 &#FFFFFFслотов на аукционе'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FFFFFFКоличество приватов: &#FAD8FC&l48'
+      - '&#AAAAAA&l┇ &#FFFFFFДомов для /sethome: &#FAD8FC&l32'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FFFFFFПрефикс &#AAAAAA[&#FAD8FC&lMAGISTER&#AAAAAA] &#FFFFFFв чате и табе'
+      - ''
+      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%'
+    click_commands:
+      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%' 
+  'structure_void_9':
+    material: structure_void
+    slots:
+    - 41
+    - 42
+    - 43
+    - 44
+    display_name: '&#FFFFFFꕁ %player_name% &#555555| &#AAAAAAНавсегда: &#FFFFFF&l4444 &#AAAAAAрублей'
+    lore:
+      - '&#AAAAAA&l┇ &#FFFFFFНаборы &#AA0000&lPLUS &#AA0000&lPLUSPRO - &#FAD8FC&l/kit'
+      - '&#AAAAAA&l┇ &#FFFFFFУникальный набор &#FAD8FC&lGOD'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FAD8FC&l+ x5.0 &#FFFFFFвалюты за мобов и убийства'
+      - '&#AAAAAA&l┇ &#FAD8FC&l+ &#FFFFFFзаход даже на заполненный сервер'
+      - '&#AAAAAA&l┇ &#FAD8FC&l+ 999 &#FFFFFFслотов на аукционе'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FFFFFFКоличество приватов: &#FAD8FC&l999+'
+      - '&#AAAAAA&l┇ &#FFFFFFДомов для /sethome: &#FAD8FC&l999+'
+      - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+      - '&#AAAAAA&l┇ &#FFFFFFПрефикс &#AAAAAA[&#FAD8FC&lGOD&#AAAAAA] &#FFFFFFв чате и табе'
+      - ''
+      - '&#FAD8FC➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%'
+    click_commands:
+      - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#FFFFFF&l%elytrix_site%' 
+  'structure_void_10':
+    material: structure_void
+    slots:
+    - 47
+    - 48
+    - 49
+    - 50
+    - 51
+    display_name: '&#FAD8FC&lКЕЙСЫ'
+    lore:
+      - ''
+      - '&#AAAAAAОткрой кейс и получи'
+      - '&#AAAAAAслучайную награду'
+      - ''
+      - '&#F8BEFBНажми, чтобы открыть'
+    click_commands:
+      - '[player] cases'  
+    

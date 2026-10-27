@@ -1,0 +1,23 @@
+menu_title: '§fꈁꀀꈂꌄꈂꀁ§fꈃꄂ'
+open_command: warp
+size: 54
+items:
+  item_21:
+    material: COMMAND_BLOCK
+    slot: 21
+    display_name: '&#F8BEFBСерверные варпы'
+    click_commands:
+      - '[player] warps'
+  item_23:
+    material: DIAMOND
+    slot: 23
+    display_name: '&#F8BEFBДонатерские варпы'
+    click_commands:
+      - '[player] hwarps:warp'
+  item_45:
+    material: ARROW
+    slot: 45
+    display_name: '&#F8BEFBНазад'
+    model_data: 10002
+    click_commands:
+      - '[player] menu'

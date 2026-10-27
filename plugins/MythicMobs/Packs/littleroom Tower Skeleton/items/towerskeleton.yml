@@ -1,0 +1,28 @@
+#########################################################
+## Developed by Little Room, patreon.com/littleroomdev ##
+#########################################################
+
+  
+TOWERSKELETON_sword:
+  Id: INK_SAC
+  Model: 13370038
+  Display: 'Tower Skeleton Glaive'
+  Skills:
+  - damage{a=20} @target ~onSwing
+  - skill{s=TOWERSKELETON_sword_item_special} @targetlocation ~onSwing
+  
+TOWERSKELETON_helmet:
+  Id: INK_SAC
+  Model: 13370039
+  Display: 'Tower Skeleton Horns'
+  Type: HAT
+  
+TOWERSKELETON_shield:
+  Id: SHIELD
+  Model: 13370040
+  Display: 'Tower Skeleton Aegis'
+  Skills:
+  - skill{s=TOWERSKELETON_shield_item_special_flamethrower_projectile} @targetlocation ~onTimer:1
+
+
+# 7806V46VN63W4Y53

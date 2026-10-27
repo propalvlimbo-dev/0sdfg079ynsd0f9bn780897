@@ -1,0 +1,67 @@
+Name: klirik
+Cooldown: 0
+Permission: nKits.kits.klirik
+Order: 0
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:tipped_arrow
+    count: 2
+    components:
+      minecraft:lore: '[{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"Очищает
+        все эффекты c врага",underlined:0b}],text:""}]'
+      minecraft:potion_contents: '{custom_color:16777215}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:written_book_content","minecraft:painting/variant","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:block_state","minecraft:firework_explosion","minecraft:container","minecraft:banner_patterns","minecraft:jukebox_playable","minecraft:container_loot","minecraft:fireworks","minecraft:bees","minecraft:charged_projectiles","minecraft:potion_contents","minecraft:map_id","minecraft:instrument","minecraft:bundle_contents","minecraft:block_entity_data","minecraft:dyed_color","minecraft:trim","minecraft:stored_enchantments"]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"Клирик",underlined:0b}],text:""}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:clear_arrow":"CLEAR_ARROW"}}'
+    schema_version: 1
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  Armor:
+  - null
+  - null
+  - null
+  - null

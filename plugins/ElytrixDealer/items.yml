@@ -1,0 +1,805 @@
+default_items:
+  ciganski_shit:
+    material: SHIELD
+    name: "&x&F&8&B&E&F&BЦыганский щит"
+    price: 199
+    needLvl: 1
+    count: 1
+    slot: 10
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;ik give цыганский_щит %player%"
+    lore:
+      - "&7Шипы X"
+      - "&cПроклятье утраты"
+      - "&x&F&8&B&E&F&BНеразрушимый"
+      - " "
+      - "&7Цена: &x&F&8&B&E&F&B199 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  lopata_pesok:
+    material: NETHERITE_SHOVEL
+    name: "&x&F&8&B&E&F&B&lЛопата &8Песочника"
+    price: 159
+    needLvl: 1
+    count: 1
+    slot: 11
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;ik give лопата_песочника %player%"
+    lore:
+      - "&7Эффективность VII"
+      - "&7Прочность III"
+      - "&7Удача III"
+      - "&cПроклятье утраты"
+      - " "
+      - "&7Цена: &x&F&8&B&E&F&B159 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  kirka_kamenshika:
+    material: NETHERITE_PICKAXE
+    name: "&x&F&8&B&E&F&BКирка Каменщика"
+    price: 149
+    needLvl: 1
+    count: 1
+    slot: 22
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;ik give кирка_каменщика %player%"
+    lore:
+      - "&7Эффективность X"
+      - "&7Прочность III"
+      - "&cПроклятье утраты"
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B149 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  kirka_vezynchik:
+    material: NETHERITE_PICKAXE
+    name: "&5&lВезунчик"
+    price: 149
+    needLvl: 2
+    count: 1
+    slot: 12
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;ik give кирка_везунчик %player%"
+    lore:
+      - "&7Починка"
+      - "&7Удача V"
+      - "&7Прочность III"
+      - "&cПроклятье утраты"
+      - " "
+      - "&7Цена: &x&F&8&B&E&F&B149 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  sekira:
+    material: NETHERITE_AXE
+    name: "&x&F&8&B&E&F&B&lСекира"
+    price: 219
+    needLvl: 2
+    count: 1
+    slot: 20
+    color: 150
+    modelData: 0
+    headId: "klcxzlzcx"
+    commands:
+      - "console;ik give секира %player%"
+    lore:
+      - "&7Эффективность X"
+      - "&7Прочность III"
+      - "&7Удача III"
+      - "&cПроклятье утраты"
+      - ""
+      - "&7Цена: &x&F&8&B&E&F&B219 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  charyabloko:
+    material: ENCHANTED_GOLDEN_APPLE
+    name: "&x&F&8&B&E&F&BЗачарованное золотое яблоко"
+    price: 120
+    needLvl: 3
+    count: 1
+    slot: 29
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;give %player% enchanted_golden_apple 1"
+    lore:
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B120 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  klirik:
+    material: TIPPED_ARROW
+    name: "&f&lКлирик"
+    price: 179
+    needLvl: 3
+    count: 2
+    slot: 16
+    color: 16777215
+    modelData: 0
+    headId: "klcxzlzcx"
+    commands:
+      - "console;nitems CLEAR_ARROW %player%"
+      - "console;nitems CLEAR_ARROW %player%"
+    lore:
+      - "&9Очищает все эффекты с врага"
+      - " "
+      - "&7Цена: &x&F&8&B&E&F&B179 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  pechka:
+    material: FURNACE
+    name: "&x&F&8&B&E&F&BСупер-печь 4 уровня"
+    price: 249
+    needLvl: 3
+    count: 1
+    slot: 32
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;nfurnace:nfurnace %player% FURNACE SPEED"
+    lore:
+      - "&7Множитель результата: &x&F&8&B&E&F&B+50%"
+      - "&7Время переплавки &x&F&8&B&E&F&B-25%"
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B249 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  pushechka:
+    material: BOW
+    name: "&7&lПушечка"
+    price: 359
+    needLvl: 4
+    count: 1
+    slot: 23
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;ik give пушечка %player%"
+    lore:
+      - "&7Воспламенение"
+      - "&7Бесконечность"
+      - "&7Починка"
+      - "&7Сила V"
+      - "&7Откидывание V"
+      - "&7Прочность II"
+      - '&cПроклятье утраты'
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B359 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  kniga_1:
+    material: ENCHANTED_BOOK
+    name: "&x&F&8&B&E&F&BЧародейская книга"
+    price: 239
+    needLvl: 4
+    count: 1
+    slot: 13
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;ik give kn4 %player%"
+    lore:
+      - "&7Светлячок (Подсчвечивает игрока при ударе)"
+      - ""
+      - "&7Цена: &x&F&8&B&E&F&B239 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  arbalet_domera:
+    material: CROSSBOW
+    name: "&x&F&8&B&E&F&BАрбалет Домера"
+    price: 249
+    needLvl: 5
+    count: 1
+    slot: 14
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;ik give арбалет_домера %player%"
+    lore:
+      - "&7Починка"
+      - "&7Тройной выстрел"
+      - "&7Пронзающия стрела IV"
+      - "&7Сила V"
+      - "&7Быстрая перезарядка III"
+      - "&7Прочность III"
+      - "&cПроклятье утраты"
+      - " "
+      - "&7Цена: &x&F&8&B&E&F&B249 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  pauchka:
+    material: POTION
+    name: "&c&lПаучье чутье"
+    price: 299
+    needLvl: 5
+    count: 1
+    slot: 15
+    color: 16711680
+    modelData: 0
+    headId: ""
+    commands:
+      - "console;ik give payk %player%"
+    lore:
+      - "&9Скорость III (1:00)"
+      - "&9Спешка (0:15)"
+      - "&9Сила III (1:00)"
+      - "&9Огестойкость (10:00)"
+      - "&cТошнота (0:40)"
+      - " "
+      - "&5При применении:"
+      - "&9+60% Скорость"
+      - "&9+10% Скорость атаки"
+      - "&9+9 Урон"
+      - " "
+      - "&7Цена: &x&F&8&B&E&F&B299 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  pasxaltopor:
+    material: NETHERITE_AXE
+    name: "&4&lСекира Хаоса"
+    price: 399
+    needLvl: 5
+    count: 1
+    slot: 25
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;ik give chaos %player%"
+    lore:
+      - "&7Заговор огня II"
+      - "&7Острота VI"
+      - "&7Прочность III"
+      - "&cПроклятие утраты"
+      - ""
+      - "&7Когда в ведущей руке:"
+      - "&a13.5 Урон"
+      - "&a1 Скорость атаки"
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B399 &rꐄ"
+    attributes: true
+    enchants: true
+    potions: true
+  mech2:
+    material: NETHERITE_SWORD
+    name: "&x&F&8&B&E&F&BФарм Меч"
+    price: 349
+    needLvl: 5
+    count: 1
+    slot: 30
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;ik give farm %player%"
+    lore:
+      - "&7Добыча V"
+      - "&7Прочность V"
+      - "&cПроклятье утраты"
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B349 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  opyatkniga:
+    material: ENCHANTED_BOOK
+    name: "&x&F&8&B&E&F&BЧародейская книга"
+    price: 599
+    needLvl: 6
+    count: 1
+    slot: 19
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;ik give kn3 %player%"
+    lore:
+      - "&7Бур (Копает 3x3)"
+      - " "
+      - "&7Цена: &x&F&8&B&E&F&B599 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  ogorodnik:
+    material: PLAYER_HEAD
+    name: "&aШар огородника"
+    price: 349
+    needLvl: 6
+    count: 1
+    slot: 28
+    color: 150
+    modelData: 0
+    headId: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWFmMzI4Yzg3YjA2ODUwOWFjYTk4MzRlZmFjZTE5NzcwNWZlNWQ0ZjA4NzE3MzFiN2IyMWNkOTliOWZkZGMifX19"
+    commands:
+      - "console;nitems FARM_BALL %player%"
+    lore:
+      - "&cПроклятье утраты"
+      - "&7Удача III (На растения)"
+      - ""
+      - "&7Когда во второй руке"
+      - "&7При нажатии SHIFT:"
+      - "&9Выращивает растения вокруг вас"
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B349 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  sharskorosti:
+    material: PLAYER_HEAD
+    name: "&9&lШар Воды"
+    price: 329
+    needLvl: 6
+    count: 1
+    slot: 31
+    color: 150
+    modelData: 5005
+    headId: ""
+    commands:
+      - "console;ik give water %player%"
+    lore:
+      - "&cПроклятие утраты "
+      - ""
+      - "&7Когда во второй руке"
+      - "&7При нажатии SHIFT:"
+      - "&7Подводное дыхание (01:00)"
+      - "&7Грация дельфина (00:10)"
+      - ""
+      - "&7При экипировке в левой руке:"
+      - "&9 +30% Скорость передвижения"
+      - "&9 +12 Макс. здоровье"
+      - ""
+      - "&7==================="
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B329 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  stoika:
+    material: PLAYER_HEAD
+    name: "&x&F&8&B&E&F&B&lШар Земли"
+    price: 369
+    needLvl: 6
+    count: 1
+    slot: 39
+    color: 150
+    modelData: 5002
+    headId: ""
+    commands:
+      - "console;ik give dirt %player%"
+    lore:
+      - "&cПроклятие утраты "
+      - ""
+      - "&7Когда во второй руке"
+      - "&7При нажатии SHIFT:"
+      - "&7Спешка II (00:08)"
+      - ""
+      - "&7При экипировке в левой руке:"
+      - "&9 +2 Сопротивление отбрасыванию"
+      - "&9 +4 Прочность брони"
+      - "&9 +4.5 Броня"
+      - ""
+      - "&7==================="
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B369 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  mech1:
+    material: NETHERITE_SWORD
+    name: "&b&lФростморн"
+    price: 1399
+    needLvl: 7
+    count: 1
+    slot: 24
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;ik give frost %player%"
+    lore:
+      - "&7Заговор Огня X"
+      - "&7Острота VI"
+      - "&7Прочность III"
+      - "&cПроклятье утраты"
+      - "&x&F&8&B&E&F&BНеразрушимый"
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B1399 &rꐄ"
+    attributes: true
+    enchants: true
+    potions: true
+  drakonidka:
+    material: TOTEM_OF_UNDYING
+    name: "&x&F&8&B&E&F&BТотем Драконида"
+    price: 299
+    needLvl: 7
+    count: 1
+    slot: 38
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;nitems DRACONID_TOTEM %player%"
+    lore:
+      - "&cПроклятье утраты"
+      - "&7Срабатывает, когда"
+      - "&7лежит в инвентаре"
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B299 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  sharbunny:
+    material: PLAYER_HEAD
+    name: "&x&1&6&1&6&1&6&lГолова &x&1&6&1&6&1&6&lB&x&2&5&2&5&2&5&lU&x&3&5&3&5&3&5&lN&x&4&4&4&4&4&4&lN&x&5&3&5&3&5&3&lY"
+    price: 499
+    needLvl: 7
+    count: 1
+    slot: 34
+    color: 150
+    modelData: 0
+    headId: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGNhMDNmN2U2Mzg1MTJjNzBhNDRjNDI5OTQyZTc4YzM2YTNkYWY5ZDBhNTMyOThhOWU4NjYyYzJiNjMyZTEyOSJ9fX0="
+    commands:
+      - "console;ik give ШарБанни %player%"
+    lore:
+      - "&cПроклятье утраты"
+      - "&7Когда во второй руке:"
+      - "  &8+3.9 броня"
+      - "  &8+21% к скорости атаки"
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B499 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  sharsili:
+    material: PLAYER_HEAD
+    name: "&d&lШар Порядка"
+    price: 349
+    needLvl: 7
+    count: 1
+    slot: 37
+    color: 150
+    modelData: 5006
+    headId: ""
+    commands:
+      - "console;ik give order %player%"
+    lore:
+      - "&cПроклятие утраты "
+      - ""
+      - "&7Когда во второй руке"
+      - "&7При нажатии SHIFT:"
+      - "&7Регенерация II (00:08)"
+      - ""
+      - "&7При экипировке в левой руке:"
+      - "&9 +15% Скорость передвижения"
+      - "&9 +20 Макс. здоровье"
+      - "&9 +2 Броня"
+      - ""
+      - "&7==================="
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B349 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  shartiger:
+    material: PLAYER_HEAD
+    name: "&x&F&8&B&E&F&B&lТигринная голова"
+    price: 599
+    needLvl: 8
+    count: 1
+    slot: 43
+    color: 150
+    modelData: 0
+    headId: "ewogICJ0aW1lc3RhbXAiIDogMTY0MDM0NTUwMTk5MSwKICAicHJvZmlsZUlkIiA6ICI2MmJiNjAyZjE0Nzk0NzZiYjlkMmQ0MWZiNDc0NDA1YSIsCiAgInByb2ZpbGVOYW1lIiA6ICJTb2NpYWxpc21vIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzJjMTYyYzE2ZTAxNDMzYjNkYTY2NzRkNjQyYzNlYWI0YmU5ZTZkNzFlMjBhMzMyNTU2NGM0ZDAzYTgxMjYwNmEiCiAgICB9LAogICAgIkNBUEUiIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzIzNDBjMGUwM2RkMjRhMTFiMTVhOGIzM2MyYTdlOWUzMmFiYjIwNTFiMjQ4MWQwYmE3ZGVmZDYzNWNhN2E5MzMiCiAgICB9CiAgfQp9"
+    commands:
+      - "console;ik give ШарТигра %player%"
+    lore:
+      - "&cПроклятье утраты"
+      - "&7Когда во второй руке:"
+      - "  &x&F&8&B&E&F&B+2.5 к урону"
+      - "  &x&F&8&B&E&F&B+25% к скорости"
+      - "  &x&F&8&B&E&F&B+1 к здоровью"
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B599 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  aurabogacha:
+    material: GOLD_NUGGET
+    name: "&bАура Богача"
+    price: 639
+    needLvl: 8
+    count: 1
+    slot: 40
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;nitems RICH_AURA %player%"
+    lore:
+      - "&cПроклятье утраты"
+      - "&7Умножает множитель добычи денег с мобов на &x&F&8&B&E&F&B1.0"
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B639 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  auratverdosti:
+    material: CLAY_BALL
+    name: "&bАура Твёрдости Брони"
+    price: 699
+    needLvl: 8
+    count: 1
+    slot: 41
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;nitems ARMOR %player%"
+    lore:
+      - "&cПроклятье утраты"
+      - "&7Уменьшает входящий урон от игрока"
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B699 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  svitokopita:
+    material: FLOWER_BANNER_PATTERN
+    name: "&fСвиток опыта"
+    price: 999
+    needLvl: 8
+    count: 1
+    slot: 33
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;nitems SCROLL_OF_EXPERIENCE %player%"
+    lore:
+      - "&9Когда во второй руке:"
+      - "  &fСобирает в себя весь опыт"
+      - ""
+      - "&9Когда в основной руке:"
+      - "&9При нажатии ПКМ:"
+      - "  &fДает вам 5 опыта"
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B999 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  antipolet:
+    material: FIREWORK_STAR
+    name: "&5Анти Полет"
+    price: 799
+    needLvl: 9
+    count: 1
+    slot: 21
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;nitems ANTI_FLY %player%"
+    lore:
+      - "&cПроклятие утраты"
+      - ""
+      - "&7Когда во второй руке:"
+      - "  &7Когда во второй руке"
+      - "  &7При нажатии SHIFT"
+      - "  &9Запрещает полеты в радиусе 16 блоков"
+      - ""
+      - "&7Цена: &x&F&8&B&E&F&B799 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+  elytra:
+    material: ELYTRA
+    name: "&3&lКрылья Ангела"
+    price: 2000
+    needLvl: 9
+    count: 1
+    slot: 42
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;ik give elytra %player%"
+    lore:
+      - "&7Починка"
+      - "&7Шипы I"
+      - "&7Прочность V"
+      - "&cПроклятье утраты"
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B2000 &rꐄ"
+    attributes: false
+    enchants: true
+    potions: true
+special_items:
+  randominstrument:
+    material: TRIDENT
+    name: "&b&lТрезубец Нептуна"
+    price: 1999
+    needLvl: 10
+    count: 1
+    slot: 46
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;nitems NEPTUN_TRIDENT %player%"
+    lore:
+      - "&7Громовержец"
+      - "&7Пронзание V"
+      - "&7Верность III "
+      - "&7Починка"
+      - "&7Прочность III"
+      - "&7Даёт рывок к цели, при успешном попадании трезубцем на расстоянии"
+      - ""
+      - ""
+      - "&7====================="
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B1999 &fꐃ"
+      - ""
+    attributes: false
+    enchants: true
+    potions: true
+  randominstrument1:
+    material: NETHERITE_AXE
+    name: "&c&lТопор Кратоса"
+    price: 1319
+    needLvl: 10
+    count: 1
+    slot: 46
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;nitems KRATOS_AXE %player%"
+    lore:
+      - "&7Заговор огня II"
+      - "&7Острота VI"
+      - "&7Прочность III"
+      - ""
+      - "&7Когда в руке"
+      - "&cЗамедление II"
+      - ""
+      - "&7====================="
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B1319 &fꐃ"
+      - ""
+    attributes: false
+    enchants: true
+    potions: true
+  randomkniga:
+    material: ENCHANTED_BOOK
+    name: "&x&F&8&B&E&F&BЧародейская книга"
+    price: 1999
+    needLvl: 10
+    count: 1
+    slot: 49
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;ik give kn2 %player%"
+    lore:
+      - "&x&F&8&B&E&F&BРандом книга"
+      - "&7Телепатия"
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B349 &fꐃ"
+      - ""
+    attributes: false
+    enchants: true
+    potions: true
+  randomkniga1:
+    material: ENCHANTED_BOOK
+    name: "&x&F&8&B&E&F&BЧародейская книга"
+    price: 349
+    needLvl: 10
+    count: 1
+    slot: 49
+    color: 150
+    modelData: 10001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;ik give kn3 %player%"
+    lore:
+      - "&x&F&8&B&E&F&BРандом книга"
+      - "&7Бур"
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B349 &fꐃ"
+      - ""
+    attributes: false
+    enchants: true
+    potions: true
+  randomshar:
+    material: PLAYER_HEAD
+    name: "&5&lШар Хаоса"
+    price: 649
+    needLvl: 10
+    count: 1
+    slot: 52
+    color: 150
+    modelData: 5007
+    headId: "klcxzlzcx"
+    commands:
+      - "console;ik give chaos1 %player%"
+    lore:
+      - "&cПроклятие утраты "
+      - ""
+      - "&7Когда во второй руке"
+      - "&7При нажатии SHIFT:"
+      - "&7В радиусе 8 блоков"
+      - "&7Слабость II (00:10)"
+      - ""
+      - "&7При экипировке в левой руке:"
+      - "&9 +3 Урон атаки"
+      - "&9 +0.4 Скорость атаки"
+      - "&9 -10 Макс. здоровье"
+      - "&9 +2.5 Броня"
+      - ""
+      - "&7==================="
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B649 &fꐃ"
+      - ""
+    attributes: false
+    enchants: true
+    potions: true
+  randomshar1:
+    material: PLAYER_HEAD
+    name: "&f&lШар Воздуха"
+    price: 549
+    needLvl: 10
+    count: 1
+    slot: 52
+    color: 150
+    modelData: 5001
+    headId: "klcxzlzcx"
+    commands:
+      - "console;ik give air %player%"
+    lore:
+      - "&cПроклятие утраты "
+      - ""
+      - "&7Когда во второй руке"
+      - "&7При нажатии SHIFT:"
+      - "&7Левитация II (00:08)"
+      - ""
+      - "&7При экипировке в левой руке:"
+      - "&9 +2.3 Урон атаки"
+      - "&9 +35% Скорость передвижения"
+      - "&9 +1.5 Отбрасывание атаки"
+      - ""
+      - "&7==================="
+      - ""
+      - "&fЦена: &x&F&8&B&E&F&B549 &fꐃ"
+      - ""
+    attributes: false
+    enchants: true
+    potions: true

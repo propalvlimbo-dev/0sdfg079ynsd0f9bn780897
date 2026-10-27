@@ -1,0 +1,673 @@
+reward_menu:
+  '0':
+    DataVersion: 4556
+    id: minecraft:firework_star
+    count: 2
+    components:
+      minecraft:lore: '[{extra:[{bold:0b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Проклятье
+        утраты",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Когда
+        во второй руке",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        нажатии SHIFT:",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"Запрещает
+        полеты в радиусе 16 блоков",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"dark_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Анти
+        Полет",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:anti_fly":"ANTI_FLY"}}'
+    schema_version: 1
+  '1':
+    DataVersion: 4556
+    id: minecraft:shield
+    count: 1
+    schema_version: 1
+  '2':
+    DataVersion: 4556
+    id: minecraft:totem_of_undying
+    count: 1
+    components:
+      minecraft:lore: '[{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Сохраняет
+        эффекты",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"dark_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Тотем
+        Ведьмы",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:witch_totem":"WITCH_TOTEM"}}'
+    schema_version: 1
+  '3':
+    DataVersion: 4556
+    id: minecraft:flower_banner_pattern
+    count: 1
+    components:
+      minecraft:lore: '["",{extra:["  ",{color:"gray",italic:0b,text:"||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||  "}],text:""},{extra:["  ",{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"0
+        ",underlined:0b},{color:"white",italic:0b,text:"ꐇ  "}],text:""},"","",{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"Когда
+        во второй руке:",underlined:0b}],text:""},{extra:["  ",{bold:0b,color:"yellow",italic:0b,obfuscated:0b,strikethrough:0b,text:"Собирает
+        в себя весь опыт",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"Когда
+        в основной руке:",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        нажатии ПКМ:",underlined:0b}],text:""},{extra:["  ",{bold:0b,color:"yellow",italic:0b,obfuscated:0b,strikethrough:0b,text:"Дает
+        вам 5 опыта",underlined:0b}],text:""},""]'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"yellow",italic:0b,obfuscated:0b,strikethrough:0b,text:"Свиток
+        опыта",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:scroll_of_exp":"SCROLL_OF_EXPERIENCE"}}'
+    schema_version: 1
+  '4':
+    DataVersion: 4556
+    id: minecraft:totem_of_undying
+    count: 1
+    components:
+      minecraft:lore: '[{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Срабатывает,
+        когда",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"лежит
+        в инвентаре",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Тотем
+        Драконида",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:draconid_totem":"DRACONID_TOTEM"}}'
+    schema_version: 1
+  '5':
+    DataVersion: 4556
+    id: minecraft:enchanted_golden_apple
+    count: 2
+    schema_version: 1
+  '6':
+    DataVersion: 4556
+    id: minecraft:flower_banner_pattern
+    count: 1
+    components:
+      minecraft:lore: '["",{extra:["  ",{color:"gray",italic:0b,text:"||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||  "}],text:""},{extra:["  ",{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"0
+        ",underlined:0b},{color:"white",italic:0b,text:"ꐇ  "}],text:""},"","",{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"Когда
+        во второй руке:",underlined:0b}],text:""},{extra:["  ",{bold:0b,color:"yellow",italic:0b,obfuscated:0b,strikethrough:0b,text:"Собирает
+        в себя весь опыт",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"Когда
+        в основной руке:",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        нажатии ПКМ:",underlined:0b}],text:""},{extra:["  ",{bold:0b,color:"yellow",italic:0b,obfuscated:0b,strikethrough:0b,text:"Дает
+        вам 5 опыта",underlined:0b}],text:""},""]'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"yellow",italic:0b,obfuscated:0b,strikethrough:0b,text:"Свиток
+        опыта",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:scroll_of_exp":"SCROLL_OF_EXPERIENCE"}}'
+    schema_version: 1
+  '7':
+    DataVersion: 4556
+    id: minecraft:totem_of_undying
+    count: 1
+    components:
+      minecraft:lore: '[{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Срабатывает,
+        когда",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"лежит
+        в инвентаре",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Тотем
+        Драконида",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:draconid_totem":"DRACONID_TOTEM"}}'
+    schema_version: 1
+  '8':
+    DataVersion: 4556
+    id: minecraft:firework_star
+    count: 1
+    components:
+      minecraft:lore: '[{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Когда
+        во второй руке",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        нажатии SHIFT:",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"В
+        радиусе 16 блоков",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"будут
+        ослеплены все сущности.",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"dark_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Тёмный
+        Пульс",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:dark_pulse":"DARK_PULSE"}}'
+    schema_version: 1
+  '9':
+    DataVersion: 4556
+    id: minecraft:netherite_axe
+    count: 1
+    components:
+      minecraft:custom_name: '"§d§lПА§5§lСХ§9§lАЛ§3§lЬН§b§lЫЙ ТОПОР"'
+      minecraft:enchantments: '{"minecraft:fire_aspect":2,"minecraft:sharpness":6,"minecraft:unbreaking":3}'
+      minecraft:custom_model_data: '{floats:[10001.0f]}'
+    schema_version: 1
+  '10':
+    DataVersion: 4556
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:profile: '{}'
+      minecraft:attribute_modifiers: '[{amount:0.3d,id:"minecraft:190cea8f-b757-402d-939a-452c9399fcec",operation:"add_value",slot:"offhand",type:"minecraft:attack_speed"},{amount:1.5d,id:"minecraft:1c8c802d-b7cb-4489-ae56-0ac8439933f7",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"},{amount:2.5d,id:"minecraft:03fde1b3-484f-4392-94ba-e0f637ee9212",operation:"add_value",slot:"offhand",type:"minecraft:armor"}]'
+      minecraft:custom_name: '{bold:1b,color:"dark_gray",italic:0b,text:"Голова БетМена"}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+  '11':
+    DataVersion: 4556
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:profile: '{}'
+      minecraft:attribute_modifiers: '[{amount:10.0d,id:"minecraft:e9eaec04-9e64-4a6d-8c75-f7536683270b",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:-0.25d,id:"minecraft:ed80cb62-a215-4173-819c-22d2efbcdcdd",operation:"add_multiplied_total",slot:"offhand",type:"minecraft:movement_speed"},{amount:4.0d,id:"minecraft:6e3f1f84-44c5-4405-a863-37d3d73134b5",operation:"add_value",slot:"offhand",type:"minecraft:armor"}]'
+      minecraft:custom_name: '{bold:1b,color:"yellow",italic:0b,text:"Голова Железного
+        Человека"}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+  '12':
+    DataVersion: 4556
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:profile: '{}'
+      minecraft:attribute_modifiers: '[{amount:0.15d,id:"minecraft:1e16356c-880e-4616-9e3e-58b74886132a",operation:"add_multiplied_total",slot:"head",type:"minecraft:movement_speed"},{amount:15.0d,id:"minecraft:da1296a1-c828-4d67-b347-ba7b0e6abfb5",operation:"add_value",slot:"head",type:"minecraft:max_health"},{amount:2.0d,id:"minecraft:35c261fe-4f68-4bd5-afa8-9083b17ec081",operation:"add_value",slot:"head",type:"minecraft:attack_damage"}]'
+      minecraft:custom_name: '{bold:1b,color:"aqua",italic:0b,text:"Сила СуперМена"}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+  '13':
+    DataVersion: 4556
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:profile: '{}'
+      minecraft:attribute_modifiers: '[{amount:0.3d,id:"minecraft:c1e3c763-0c90-41d1-b24b-99b05073605c",operation:"add_value",slot:"offhand",type:"minecraft:attack_speed"},{amount:-8.0d,id:"minecraft:70599da5-d90f-42a6-89d9-1c34f4f01cd6",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:0.25d,id:"minecraft:a530f815-0d27-44b7-80ac-edcad5bf09a1",operation:"add_multiplied_total",slot:"offhand",type:"minecraft:movement_speed"},{amount:2.5d,id:"minecraft:43985cba-292b-4315-b864-6dd8e769ec67",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"}]'
+      minecraft:custom_name: '{bold:1b,color:"red",italic:0b,text:"Голова Человека-Паука"}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+  '14':
+    DataVersion: 4556
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:profile: '{}'
+      minecraft:attribute_modifiers: '[{amount:0.5d,id:"minecraft:f9b36fac-2860-4db2-ad2c-8ec4de6c00aa",operation:"add_value",slot:"offhand",type:"minecraft:knockback_resistance"},{amount:15.0d,id:"minecraft:e140c595-5756-461a-bc2b-07331b52dd39",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:3.0d,id:"minecraft:5d5e6b64-7300-49ed-8c9a-9b7940b9a1ab",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"}]'
+      minecraft:custom_name: '{bold:1b,color:"green",italic:0b,text:"ГОЛОВА ХАЛКА"}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+  '15':
+    DataVersion: 4556
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:profile: '{}'
+      minecraft:attribute_modifiers: '[{amount:100.0d,id:"minecraft:8848b282-fa03-4d11-a67b-3f4f5357f98f",operation:"add_value",slot:"offhand",type:"minecraft:luck"},{amount:1.0d,id:"minecraft:9c5d6076-06f6-4ef1-9a45-bc3aed7c482d",operation:"add_value",slot:"offhand",type:"minecraft:knockback_resistance"},{amount:100.0d,id:"minecraft:783174b0-c8a8-4cbf-9741-51fc88dcf79d",operation:"add_value",slot:"offhand",type:"minecraft:flying_speed"},{amount:-10.0d,id:"minecraft:d920c9b7-c8ed-4257-9f6f-ded8e9977933",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:4.0d,id:"minecraft:17fe78b6-dcd9-4f68-aeae-5a5491761839",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"}]'
+      minecraft:custom_name: '{bold:1b,color:"aqua",italic:0b,text:"Голова Тора"}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+  '16':
+    DataVersion: 4556
+    id: minecraft:heart_of_the_sea
+    count: 1
+    components:
+      minecraft:lore: '[{extra:[{bold:0b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Проклятие
+        утраты",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        нажатии ПКМ:",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"Ставит
+        ловушку вокруг игрока",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"на
+        %duration% секунд",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Ловушка",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:trap":"TRAP"}}'
+    schema_version: 1
+  '17':
+    DataVersion: 4556
+    id: minecraft:golden_apple
+    count: 32
+    schema_version: 1
+  '18':
+    DataVersion: 4556
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:profile: '{}'
+      minecraft:attribute_modifiers: '[{amount:2.5d,id:"minecraft:1580eba8-2934-402c-843b-91a25cbf8eef",operation:"add_value",slot:"head",type:"minecraft:armor"},{amount:10.0d,id:"minecraft:cb5ca3bb-6478-40c1-b76f-0d81d53111ba",operation:"add_value",slot:"head",type:"minecraft:max_health"},{amount:0.2d,id:"minecraft:72ce5c24-1e25-4946-ae51-717aee8cca12",operation:"add_multiplied_base",slot:"head",type:"minecraft:movement_speed"}]'
+      minecraft:custom_name: '"§7§lГолова Кролика"'
+    schema_version: 1
+  '19':
+    DataVersion: 4556
+    id: minecraft:netherite_sword
+    count: 1
+    components:
+      minecraft:custom_name: '"§d§lПА§5§lСХ§9§lАЛ§3§lЬН§b§lЫЙ МЕЧ"'
+      minecraft:enchantments: '{"minecraft:fire_aspect":2,"minecraft:sharpness":7,"minecraft:unbreaking":3}'
+      minecraft:custom_model_data: '{floats:[10001.0f]}'
+    schema_version: 1
+  '20':
+    DataVersion: 4556
+    id: minecraft:potion
+    count: 2
+    components:
+      minecraft:potion_contents: '{custom_effects:[{ambient:1b,amplifier:2b,duration:900,id:"minecraft:resistance",show_icon:1b},{ambient:1b,duration:10000,id:"minecraft:fire_resistance",show_icon:1b},{ambient:1b,duration:1200,id:"minecraft:invisibility",show_icon:1b},{ambient:1b,amplifier:4b,duration:4000,id:"minecraft:luck",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"yellow",italic:0b,obfuscated:0b,strikethrough:0b,text:"Броня
+        Титанов",underlined:0b}],text:""}'
+    schema_version: 1
+  '21':
+    DataVersion: 4556
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{ambient:1b,amplifier:2b,duration:1000,id:"minecraft:strength",show_icon:1b},{ambient:1b,duration:700,id:"minecraft:jump_boost",show_icon:1b},{ambient:1b,duration:300,id:"minecraft:regeneration",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"Радиация
+        ХАЛКА",underlined:0b}],text:""}'
+    schema_version: 1
+  '22':
+    DataVersion: 4556
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{ambient:1b,duration:300,id:"minecraft:mining_fatigue",show_icon:1b},{ambient:1b,duration:1,id:"minecraft:instant_damage",show_icon:1b},{ambient:1b,duration:1800,id:"minecraft:nausea",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"dark_green",italic:0b,obfuscated:0b,strikethrough:0b,text:"Криптонит",underlined:0b}],text:""}'
+    schema_version: 1
+  '23':
+    DataVersion: 4556
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{ambient:1b,duration:1000,id:"minecraft:strength",show_icon:1b},{ambient:1b,amplifier:2b,duration:1,id:"minecraft:instant_health",show_icon:1b},{ambient:1b,duration:500,id:"minecraft:regeneration",show_icon:1b},{ambient:1b,duration:1200,id:"minecraft:health_boost",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"light_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Лечение
+        Тора",underlined:0b}],text:""}'
+    schema_version: 1
+  '24':
+    DataVersion: 4556
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{ambient:1b,amplifier:1b,duration:2400,id:"minecraft:speed",show_icon:1b},{ambient:1b,amplifier:1b,duration:2400,id:"minecraft:strength",show_icon:1b},{ambient:1b,duration:16000,id:"minecraft:fire_resistance",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Паучья
+        Сила",underlined:0b}],text:""}'
+    schema_version: 1
+  '25':
+    DataVersion: 4556
+    id: minecraft:enchanted_book
+    count: 1
+    components:
+      minecraft:lore: '[{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Лесоруб",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Чародейская
+        книга",underlined:0b}],text:""}'
+      minecraft:custom_data: '{PublicBukkitValues:{"really-enchants:woodcutter":"WOODCUTTER_BOOK"}}'
+    schema_version: 1
+  '26':
+    DataVersion: 4556
+    id: minecraft:enchanted_book
+    count: 1
+    components:
+      minecraft:lore: '[{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Бур
+        (Копает 3x3)",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Чародейская
+        книга",underlined:0b}],text:""}'
+      minecraft:custom_data: '{PublicBukkitValues:{"really-enchants:drill":"DRILL_BOOK"}}'
+    schema_version: 1
+  '27':
+    DataVersion: 4556
+    id: minecraft:shears
+    count: 1
+    components:
+      minecraft:lore: '[{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Использований:
+        3",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Этими
+        ножницами можно ",underlined:0b},{color:"gold",italic:0b,text:"ломать "},{color:"gray",italic:0b,text:"спавнера"}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Время
+        ломания: ",underlined:0b},{color:"gold",italic:0b,text:"25 секунд"}],text:""},""]'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Супер
+        Ножницы ",underlined:0b},{bold:0b,color:"gray",italic:0b,text:"- "},{color:"gold",italic:0b,text:"3
+        "},{color:"gray",italic:0b,text:"использований"}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:enchantments: '{"minecraft:efficiency":25,"minecraft:unbreaking":3}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:shears":"SHEARS"}}'
+    schema_version: 1
+  '28':
+    DataVersion: 4556
+    id: minecraft:elytra
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:6.0d,id:"minecraft:47fa394d-8fb4-4892-96b4-c0c4ca1aff4d",operation:"add_value",slot:"chest",type:"minecraft:max_health"}]'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"dark_aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Крылья
+        Ангела",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:mending":1,"minecraft:thorns":1,"minecraft:unbreaking":5}'
+    schema_version: 1
+  '29':
+    DataVersion: 4556
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:profile: '{}'
+      minecraft:attribute_modifiers: '[{amount:12.0d,id:"minecraft:43b54c10-b983-4dbf-941e-4d92c761d331",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:0.3d,id:"minecraft:0c2d7a9f-cee7-4904-b46b-8a3e64aa2848",operation:"add_multiplied_total",slot:"offhand",type:"minecraft:movement_speed"}]'
+      minecraft:lore: '[{extra:[{bold:0b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Проклятие
+        утраты ",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Когда
+        во второй руке",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        нажатии SHIFT:",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Подводное
+        дыхание (01:00)",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Грация
+        дельфина (00:10)",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        экипировке в левой руке:",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +30% Скорость передвижения",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +12 Макс. здоровье",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар
+        Воды",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:custom_model_data: '{floats:[5005.0f]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:water_ball":"WATER_BALL"}}'
+    schema_version: 1
+  '30':
+    DataVersion: 4556
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:profile: '{}'
+      minecraft:attribute_modifiers: '[{amount:2.5d,id:"minecraft:94e7c747-0a77-4044-9e51-70e9c65bacfe",operation:"add_value",slot:"offhand",type:"minecraft:armor"},{amount:-10.0d,id:"minecraft:7054667f-f4b1-4f23-9e76-ca58b7293359",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:0.4d,id:"minecraft:3d349a13-89bc-43c4-81f7-b2d0823abe11",operation:"add_value",slot:"offhand",type:"minecraft:attack_speed"},{amount:3.0d,id:"minecraft:9d7ffb94-e2a5-44fc-b726-27ecad589225",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"}]'
+      minecraft:lore: '[{extra:[{bold:0b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Проклятие
+        утраты ",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Когда
+        во второй руке",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        нажатии SHIFT:",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"В
+        радиусе 8 блоков",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Слабость
+        II (00:10)",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        экипировке в левой руке:",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +2.5 Броня",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        -10 Макс. здоровье",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +3 Урон атаки",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +0.4 Скорость атаки",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"dark_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар
+        Хаоса",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:custom_model_data: '{floats:[10001.0f]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:chaos_ball":"CHAOS_BALL"}}'
+    schema_version: 1
+  '31':
+    DataVersion: 4556
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:profile: '{}'
+      minecraft:attribute_modifiers: '[{amount:1.5d,id:"minecraft:d347a239-d0f0-48d3-a058-d5bc196dc9bf",operation:"add_value",slot:"offhand",type:"minecraft:attack_knockback"},{amount:0.35d,id:"minecraft:27908f6f-5c93-485a-8011-5c7e6e5b3656",operation:"add_multiplied_total",slot:"offhand",type:"minecraft:movement_speed"},{amount:2.3d,id:"minecraft:f227928e-f706-4aed-b2ea-ec3a1af633d7",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"}]'
+      minecraft:lore: '[{extra:[{bold:0b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Проклятие
+        утраты ",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Когда
+        во второй руке",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        нажатии SHIFT:",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Левитация
+        II (00:08)",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        экипировке в левой руке:",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +2.3 Урон атаки",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +35% Скорость передвижения",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +1.5 Отбрасывание атаки",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар
+        Воздуха",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:custom_model_data: '{floats:[5001.0f]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:air_ball":"AIR_BALL"}}'
+    schema_version: 1
+  '32':
+    DataVersion: 4556
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:profile: '{}'
+      minecraft:attribute_modifiers: '[{amount:2.0d,id:"minecraft:883f94be-8434-4723-b15c-9d873e27fb40",operation:"add_value",slot:"offhand",type:"minecraft:armor"},{amount:20.0d,id:"minecraft:956919b6-de6d-4f14-bc8d-2abb0bba90a6",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:0.15d,id:"minecraft:4fcff512-76cd-40bc-a0b7-714a2a2ce23c",operation:"add_multiplied_total",slot:"offhand",type:"minecraft:movement_speed"}]'
+      minecraft:lore: '[{extra:[{bold:0b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Проклятие
+        утраты ",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Когда
+        во второй руке",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        нажатии SHIFT:",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Регенерация
+        II (00:08)",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        экипировке в левой руке:",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +15% Скорость передвижения",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +2 Броня",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +20 Макс. здоровье",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"light_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар
+        Порядка",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:custom_model_data: '{floats:[5006.0f]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:harmony_ball":"HARMONY_BALL"}}'
+    schema_version: 1
+  '33':
+    DataVersion: 4556
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:profile: '{}'
+      minecraft:attribute_modifiers: '[{amount:3.0d,id:"minecraft:288ec783-bc7b-46bd-85cd-8f845a4c380f",operation:"add_value",slot:"offhand",type:"minecraft:armor"},{amount:3.5d,id:"minecraft:cf14d082-0445-4233-b555-9816c104e0c0",operation:"add_value",slot:"offhand",type:"minecraft:luck"},{amount:2.0d,id:"minecraft:ff000a3e-b194-4cdd-bafe-358cda3d1931",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"}]'
+      minecraft:lore: '[{extra:[{bold:0b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Проклятие
+        утраты ",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Когда
+        во второй руке",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        нажатии SHIFT:",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"В
+        радиусе 16 блоков",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Светлячок
+        (01:00)",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        экипировке в левой руке:",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +2 Урон атаки",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +3.5 Удача",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +3 Броня",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"yellow",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар
+        Света",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:custom_model_data: '{floats:[5004.0f]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:light_ball":"LIGHT_BALL"}}'
+    schema_version: 1
+  '34':
+    DataVersion: 4556
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:profile: '{}'
+      minecraft:attribute_modifiers: '[{amount:4.0d,id:"minecraft:c8d7ab40-b857-4ba2-a54c-b59c9f9595a8",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:0.3d,id:"minecraft:cc75c07d-c174-4c20-9973-d11245c8c84c",operation:"add_value",slot:"offhand",type:"minecraft:attack_speed"},{amount:2.5d,id:"minecraft:2929f1d2-5110-4412-ad61-40a855dbbafe",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"}]'
+      minecraft:lore: '[{extra:[{bold:0b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Проклятие
+        утраты ",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Когда
+        в руке",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Огнеупорность",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        экипировке в левой руке:",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +2.5 Урон атаки",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +0.3 Скорость атаки",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +4 Макс. здоровье",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар
+        Огня",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:custom_model_data: '{floats:[5003.0f]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:fire_ball":"FIRE_BALL"}}'
+    schema_version: 1
+  '35':
+    DataVersion: 4556
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:profile: '{}'
+      minecraft:attribute_modifiers: '[{amount:4.5d,id:"minecraft:52a3c192-f5c6-4736-8c16-74ad779f4b6f",operation:"add_value",slot:"offhand",type:"minecraft:armor"},{amount:4.0d,id:"minecraft:8c84deb3-7eb4-4203-87ce-cf34a7a81b1c",operation:"add_value",slot:"offhand",type:"minecraft:armor_toughness"},{amount:2.0d,id:"minecraft:4b63c29f-cfe6-49c2-adaf-e8eb9a61a5fa",operation:"add_value",slot:"offhand",type:"minecraft:knockback_resistance"}]'
+      minecraft:lore: '[{extra:[{bold:0b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Проклятие
+        утраты ",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Когда
+        во второй руке",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        нажатии SHIFT:",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Спешка
+        II (00:08)",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        экипировке в левой руке:",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +2 Сопротивление отбрасыванию",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +4 Прочность брони",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +4.5 Броня",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар
+        Земли",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:custom_model_data: '{floats:[5002.0f]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:earth_ball":"EARTH_BALL"}}'
+    schema_version: 1
+  '36':
+    DataVersion: 4556
+    id: minecraft:clay_ball
+    count: 1
+    components:
+      minecraft:lore: '[{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Уменьшает
+        входящий урон от игрока",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Аура
+        Твёрдости Брони",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments"]}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+      minecraft:custom_data: '{PublicBukkitValues:{"really-auras:damage":"aura"}}'
+    schema_version: 1
+  '37':
+    DataVersion: 4556
+    id: minecraft:bow
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:flame":1,"minecraft:infinity":1,"minecraft:mending":1,"minecraft:power":5,"minecraft:punch":5,"minecraft:unbreaking":2}'
+    schema_version: 1
+  '38':
+    DataVersion: 4556
+    id: minecraft:popped_chorus_fruit
+    count: 1
+    components:
+      minecraft:lore: '[{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Увеличивает
+        радиус",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"телепортации
+        хоруса",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"до
+        ",underlined:0b},{color:"gold",italic:0b,text:"16 блоков"}],text:""},"",{extra:[{bold:0b,color:"dark_gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Одновременно
+        работает только одна аура!",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"dark_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Аура
+        Телепортации",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments"]}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+      minecraft:custom_data: '{PublicBukkitValues:{"really-auras:teleportation":"aura"}}'
+    schema_version: 1
+  '39':
+    DataVersion: 4556
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{amplifier:2b,duration:1200,id:"minecraft:strength",show_icon:1b},{duration:1800,id:"minecraft:slowness",show_icon:1b},{duration:300,id:"minecraft:regeneration",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"dark_red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Флакон
+        Раздора",underlined:0b}],text:""}'
+    schema_version: 1
+  '40':
+    DataVersion: 4556
+    id: minecraft:netherite_sword
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Фарм
+        Меч",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:looting":5,"minecraft:unbreaking":5}'
+    schema_version: 1
+  '41':
+    DataVersion: 4556
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_color:15658476,custom_effects:[{duration:12000,id:"minecraft:fire_resistance",show_icon:1b},{duration:4800,id:"minecraft:invisibility",show_icon:1b},{amplifier:3b,duration:600,id:"minecraft:hunger",show_icon:1b},{duration:1800,id:"minecraft:strength",show_icon:1b},{duration:1800,id:"minecraft:speed",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"dark_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Зелье
+        Разлома",underlined:0b}],text:""}'
+    schema_version: 1
+  '42':
+    DataVersion: 4556
+    id: minecraft:netherite_shovel
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Лопата
+        ",underlined:0b},{bold:0b,color:"dark_gray",italic:0b,text:"Песочника"}],text:""}'
+      minecraft:enchantments: '{"minecraft:efficiency":8,"minecraft:fortune":3,"minecraft:unbreaking":3}'
+    schema_version: 1
+  '43':
+    DataVersion: 4556
+    id: minecraft:trident
+    count: 1
+    components:
+      minecraft:lore: '[{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Даёт
+        рывок к цели, при успешном попадании трезубцем на расстоянии",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Трезубец
+        Нептуна",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:enchantments: '{"minecraft:channeling":1,"minecraft:loyalty":3,"minecraft:mending":1,"minecraft:piercing":5,"minecraft:unbreaking":3}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:neptun_trident":"NEPTUN_TRIDENT"}}'
+    schema_version: 1
+  '44':
+    DataVersion: 4556
+    id: minecraft:crossbow
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Арбалет
+        Домера",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:mending":1,"minecraft:multishot":1,"minecraft:piercing":4,"minecraft:power":5,"minecraft:quick_charge":3,"minecraft:unbreaking":3}'
+    schema_version: 1
+  '45':
+    DataVersion: 4556
+    id: minecraft:netherite_axe
+    count: 1
+    components:
+      minecraft:lore: '[{extra:[{bold:0b,italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Когда
+        в руке",underlined:0b}],text:""},{extra:[{bold:0b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Замедление
+        II",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Топор
+        Кратоса",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:enchantments: '{"minecraft:fire_aspect":2,"minecraft:sharpness":6,"minecraft:unbreaking":3}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:kratos_axe":"KRATOS_AXE"}}'
+    schema_version: 1
+  '46':
+    DataVersion: 4556
+    id: minecraft:netherite_pickaxe
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Кирка
+        Каменщика",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:efficiency":10,"minecraft:unbreaking":3}'
+    schema_version: 1
+  '47':
+    DataVersion: 4556
+    id: minecraft:gold_nugget
+    count: 1
+    components:
+      minecraft:lore: '[{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Умножает
+        множитель добычи денег с мобов на ",underlined:0b},{color:"gold",italic:0b,text:"1.0"}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Аура
+        Богача",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments"]}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+      minecraft:custom_data: '{PublicBukkitValues:{"really-auras:rich":"aura"}}'
+    schema_version: 1
+  '48':
+    DataVersion: 4556
+    id: minecraft:ghast_tear
+    count: 1
+    components:
+      minecraft:lore: '[{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Уменьшает
+        урон от кристаллов на ",underlined:0b},{color:"gold",italic:0b,text:"40%"}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Аура
+        Защиты От Кристаллов",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments"]}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+      minecraft:custom_data: '{PublicBukkitValues:{"really-auras:crystal":"aura"}}'
+    schema_version: 1
+  '49':
+    DataVersion: 4556
+    id: minecraft:netherite_sword
+    count: 1
+    components:
+      minecraft:unbreakable: '{}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Фростморн",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:fire_aspect":2,"minecraft:sharpness":6,"minecraft:unbreaking":3}'
+    schema_version: 1
+  '50':
+    DataVersion: 4556
+    id: minecraft:white_dye
+    count: 1
+    components:
+      minecraft:lore: '[{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Уменьшает
+        входящий урон от падения на ",underlined:0b},{color:"gold",italic:0b,text:"80%"}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Аура
+        Защиты От Падения",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments"]}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+      minecraft:custom_data: '{PublicBukkitValues:{"really-auras:fall":"aura"}}'
+    schema_version: 1
+  '51':
+    DataVersion: 4556
+    id: minecraft:sunflower
+    count: 1
+    components:
+      minecraft:lore: '[{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Увеличивает
+        количество",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"ресурсов
+        с убитого моба",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"dark_gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Одновременно
+        работает только одна аура!",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Аура
+        Охотника",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments"]}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+      minecraft:custom_data: '{PublicBukkitValues:{"really-auras:hunter":"aura"}}'
+    schema_version: 1
+  '52':
+    DataVersion: 4556
+    id: minecraft:enchanted_book
+    count: 1
+    components:
+      minecraft:lore: '[{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Грабитель
+        (Крадет часть денег убитого игрока)",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Чародейская
+        книга",underlined:0b}],text:""}'
+      minecraft:custom_data: '{PublicBukkitValues:{"really-enchants:stealer":"STEALER_BOOK"}}'
+    schema_version: 1
+  '53':
+    DataVersion: 4556
+    id: minecraft:enchanted_book
+    count: 1
+    components:
+      minecraft:lore: '[{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Светлячок
+        (Подсвечивает игрока при ударе)",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Чародейская
+        книга",underlined:0b}],text:""}'
+      minecraft:custom_data: '{PublicBukkitValues:{"really-enchants:lightner":"LIGHTNER_BOOK"}}'
+    schema_version: 1

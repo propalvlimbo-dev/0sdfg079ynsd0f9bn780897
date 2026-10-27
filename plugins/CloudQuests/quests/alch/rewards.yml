@@ -1,0 +1,40 @@
+reward-items:
+  unlock-reward:
+    name: '&b&lНаграда:'
+    lore:
+    - '&aНажмите, чтобы получить награду'
+  already-given:
+    name: '&b&lНаграда:'
+    lore:
+    - '&aВы уже получили награду'
+  locked-reward:
+    name: '&b&lНаграда:'
+    lore:
+    - '&cПройди этап, чтобы забрать награду'
+rewards:
+  '1':
+    material: PINK_SHULKER_BOX
+    commands:
+    - si give alch_1 1 %player%
+    slot: 8
+  '2':
+    material: LIME_SHULKER_BOX
+    commands:
+    - si give alch_2 1 %player%
+    slot: 17
+  '3':
+    material: YELLOW_SHULKER_BOX
+    commands:
+    - si give alch_3 1 %player%
+    slot: 26
+  '4':
+    material: LIGHT_BLUE_SHULKER_BOX
+    commands:
+    - si give alch_4 1 %player%
+    slot: 35
+  '5':
+    material: RED_SHULKER_BOX
+    commands:
+    - cases give %player% jamshut 1
+    - lp user %player% permission set cloudcrafts.alch
+    slot: 44

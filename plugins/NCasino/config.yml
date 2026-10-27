@@ -1,0 +1,67 @@
+messages:
+  betMoreThanMax: '&x&F&8&B&E&F&BКазино &7» &cСтавка больше максимальной!'
+  notEnoughMoney: '&x&F&8&B&E&F&BКазино &7» &cНа вашем балансе недостаточно средств!'
+  playersLimit: '&x&F&8&B&E&F&BКазино &7» &cМаксимальное число ставок сделано!'
+  betNotDigit: '&x&F&8&B&E&F&BКазино &7» &cСтавка не является числом!'
+  betUsage: '&x&F&8&B&E&F&BКазино &7» &fИспользование &x&F&A&D&8&F&C/bet [Сумма]!'
+  farFromCroupier: '&x&F&8&B&E&F&BКазино &7» &cПодойди к крупье!'
+  successfullyBet: '&x&F&8&B&E&F&BКазино &7» &aСтавка принята!'
+  winPlayer: '&x&F&8&B&E&F&BКазино &7» &fИгрок &x&F&8&B&E&F&B%player% &fвыиграл &x&F&8&B&E&F&B%prize%$ &fс шансом &x&F&8&B&E&F&B%chance%% &fу крупье &x&F&8&B&E&F&B%croupier%'
+  rouletteNotMoney: '&x&F&8&B&E&F&BКазино &7» &cНедостаточно средств'
+  rouletteOccupied: '&x&F&8&B&E&F&BКазино &7» &cРулетка занята!'
+  rouletteCooldown: '&x&F&8&B&E&F&BКазино &7» &cПодождите %time% сек. перед использованием слота!'
+  rouletteWin: '&x&F&8&B&E&F&BКазино &7» &aВы выиграли &x&F&8&B&E&F&B%prize%'
+maxPlayers: 28
+playersForStart: 3
+timeForGiveaway: 60
+casino:
+  types:
+    cheap:
+      bank: 10000
+    middle:
+      bank: 1000000
+    rich:
+      bank: 10000000
+  menu:
+    title: §fꈁꀀꈂꌗꈂꀁ§0ꈃꄘ&r
+    info:
+      material: CLOCK
+      name: '&x&F&8&B&E&F&B-- ИНФОРМАЦИЯ --'
+      lore:
+      - ''
+      - '&x&F&8&B&E&F&B▪&fБанк: &x&F&8&B&E&F&B%bank%$'
+      - '&x&F&8&B&E&F&B▪&fДо розыгрыша: &x&F&8&B&E&F&B%time%'
+      - ''
+      - '&fЧтобы поставить ставку,'
+      - '&fпропишите: &x&F&8&B&E&F&B/casino bet (Сумма)'
+      slot: 4
+      modelData: 10001
+    player:
+      name: '&x&F&8&B&E&F&B%player%'
+      lore:
+      - ''
+      - '&x&F&8&B&E&F&B▪&fСтавка: &x&F&8&B&E&F&B%bet%$'
+      - '&x&F&8&B&E&F&B▪&fШанс на победу: &x&F&8&B&E&F&B~%chance%%'
+      - ''
+      startSlot: 10
+roulette:
+  buttonMaterial: BIRCH_BUTTON
+  cooldown: 0
+  firstJackpot: 10000
+  spinTime: 3
+  spinInterval: 2
+  spinSound: 'BLOCK_NOTE_BLOCK_HAT'
+  threeInRow: 10000
+  twoInRow: 500
+  win:
+    time: 1
+    interval: 5
+    sound: ENTITY_EXPERIENCE_ORB_PICKUP
+  jackpot:
+    time: 1
+    interval: 5
+    sound: ENTITY_EXPERIENCE_ORB_PICKUP
+croupies:
+  cheap_casino: 10к
+  middle_casino: 1м
+  rich_casino: 10м

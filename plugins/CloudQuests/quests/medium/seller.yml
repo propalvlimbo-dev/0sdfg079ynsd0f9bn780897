@@ -1,0 +1,177 @@
+menu:
+  title: '&fꈁꀃ'
+  size: 54
+
+items:
+  lucky_pickaxe:
+    slot: 20
+    material: NETHERITE_PICKAXE
+    ench: true
+    name: '&5&lВезунчик'
+    lore:
+      - '&7Удача V'
+      - '&7Починка'
+      - '&7Прочность III'
+      - ''
+      - '  &7Цена: &x&F&8&B&E&F&B${price}'
+      - '  &7Продано: &x&F&8&B&E&F&B{purchased}/{limit} раз'
+      - ''
+      - '&x&F&8&B&E&F&BНажмите, чтобы купить предмет'
+    price: 50000
+    limit: 4
+    command: 'si give везунчик 1 {player}'
+  
+  farm_ball:
+    slot: 21
+    material: PLAYER_HEAD
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWFmMzI4Yzg3YjA2ODUwOWFjYTk4MzRlZmFjZTE5NzcwNWZlNWQ0ZjA4NzE3MzFiN2IyMWNkOTliOWZkZGMifX19
+    name: '&a&lШар огородника'
+    lore:
+      - '&7Удача III (На растения)'
+      - ''
+      - '&7Когда во второй руке'
+      - '&7При нажатии SHIFT:'
+      - '&9Выращивает растения вокруг вас'
+      - ''
+      - '  &7Цена: &x&F&8&B&E&F&B${price}'
+      - '  &7Продано: &x&F&8&B&E&F&B{purchased}/{limit} раз'
+      - ''
+      - '&x&F&8&B&E&F&BНажмите, чтобы купить предмет'
+    price: 150000
+    limit: 2
+    command: 'si give шар_огородника 1 {player}'
+  
+  fishing_rod:
+    slot: 22
+    material: FISHING_ROD
+    ench: true
+    name: '&3&lРыбачок'
+    lore:
+      - '&7Везучий рыбак V'
+      - '&7Приманка V'
+      - '&7Починка'
+      - '&7Прочность III'
+      - ''
+      - '  &7Цена: &x&F&8&B&E&F&B${price}'
+      - '  &7Продано: &x&F&8&B&E&F&B{purchased}/{limit} раз'
+      - ''
+      - '&x&F&8&B&E&F&BНажмите, чтобы купить предмет'
+    price: 50000
+    limit: 3
+    command: 'si give рыбачок 1 {player}'
+  
+  beacon:
+    slot: 23
+    material: BEACON
+    amount: 1
+    name: '&bМаяк'
+    lore:
+      - ''
+      - '  &7Цена: &x&F&8&B&E&F&B${price}'
+      - '  &7Продано: &x&F&8&B&E&F&B{purchased}/{limit} раз'
+      - ''
+      - '&x&F&8&B&E&F&BНажмите, чтобы купить предмет'
+    price: 180000
+    limit: 2
+    command: 'give {player} beacon 1'
+  
+  golden_apple:
+    slot: 24
+    material: GOLDEN_APPLE
+    amount: 32
+    name: '&bЗолотое яблоко'
+    lore:
+      - ''
+      - '  &7Цена: &x&F&8&B&E&F&B${price}'
+      - '  &7Продано: &x&F&8&B&E&F&B{purchased}/{limit} раз'
+      - ''
+      - '&x&F&8&B&E&F&BНажмите, чтобы купить предмет'
+    price: 60000
+    limit: 4
+    command: 'give {player} golden_apple 32'
+  
+  shovel_sand:
+    slot: 29
+    material: NETHERITE_SHOVEL
+    ench: true
+    name: '&x&F&8&B&E&F&B&lЛопата &8Песочника'
+    lore:
+      - '&7Эффективность VIII'
+      - '&7Удача III'
+      - '&7Прочность III'
+      - ''
+      - '  &7Цена: &x&F&8&B&E&F&B${price}'
+      - '  &7Продано: &x&F&8&B&E&F&B{purchased}/{limit} раз'
+      - ''
+      - '&x&F&8&B&E&F&BНажмите, чтобы купить предмет'
+    price: 70000
+    limit: 2
+    command: 'si give лопата_песочника 1 {player}'
+  
+  byr:
+    slot: 30
+    material: ENCHANTED_BOOK
+    name: '&x&F&8&B&E&F&BЧародейская книга'
+    lore:
+      - '&7Бур (Копает 3х3)'
+      - ''
+      - '  &7Цена: &x&F&8&B&E&F&B${price}'
+      - '  &7Продано: &x&F&8&B&E&F&B{purchased}/{limit} раз'
+      - ''
+      - '&x&F&8&B&E&F&BНажмите, чтобы купить предмет'
+    price: 90000
+    limit: 2
+    command: 'topkaenchants DRILL_BOOK {player}'
+  
+  smoker:
+    slot: 31
+    material: SMOKER
+    ench: true
+    name: '&5Комбинированая Коптильня'
+    lore:
+      - '&7Имеет &x&F&8&B&E&F&B100% &7шанс удвоить ресурс'
+      - '&7Работает на &x&F&8&B&E&F&B30% &7быстрее'
+      - '&7Потребляет &cочень много &7топлива'
+      - ''
+      - '  &7Цена: &x&F&8&B&E&F&B${price}'
+      - '  &7Продано: &x&F&8&B&E&F&B{purchased}/{limit} раз'
+      - ''
+      - '&x&F&8&B&E&F&BНажмите, чтобы купить предмет'
+    price: 80000
+    limit: 5
+    command: 'rwfurnaces give combination_smoker {player}'
+  
+  cobweb:
+    slot: 32
+    material: COBWEB
+    amount: 32
+    name: '&fПаутина'
+    lore:
+      - ''
+      - '  &7Цена: &x&F&8&B&E&F&B${price}'
+      - '  &7Продано: &x&F&8&B&E&F&B{purchased}/{limit} раз'
+      - ''
+      - '&x&F&8&B&E&F&BНажмите, чтобы купить предмет'
+    price: 30000
+    limit: 5
+    command: 'give {player} cobweb 32'
+  
+  end_crystal:
+    slot: 33
+    material: END_CRYSTAL
+    amount: 16
+    name: '&bКристалл Энда'
+    lore:
+      - ''
+      - '  &7Цена: &x&F&8&B&E&F&B${price}'
+      - '  &7Продано: &x&F&8&B&E&F&B{purchased}/{limit} раз'
+      - ''
+      - '&x&F&8&B&E&F&BНажмите, чтобы купить предмет'
+    price: 50000
+    limit: 12
+    command: 'give {player} end_crystal 16'
+
+messages:
+  success_purchase: '&x&F&8&B&E&F&BКвесты &7» &fУспешная покупка'
+  not_enough_money: '&x&F&8&B&E&F&BКвесты &7» &fУ вас недостаточно монет'
+  limit_reached: '&x&F&8&B&E&F&BКвесты &7» &fВы достигли лимита покупок этого предмета'

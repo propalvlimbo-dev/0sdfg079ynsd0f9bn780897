@@ -1,0 +1,376 @@
+menu_title: '§fꈁꀀꈂꌰꈂꀁ§fꈃꄅ'
+open_command: itemmenu
+size: 54
+items:
+  'trident':
+    material: trident
+    slot: 13
+    display_name: '&#55FFFF&lТрезубец Нептуна'
+    lore:
+      - '&#AAAAAAГромовержец'
+      - '&#AAAAAAПронзающий V'
+      - '&#AAAAAAВерность III'
+      - '&#AAAAAAПочинка'
+      - '&#AAAAAAПрочность III'
+      - '&#AAAAAAДает рывок к цели, при успешном попадании'
+      - '&#AAAAAAтрезубцем на расстоянии'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB319 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 319'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 319'
+      - '[console] rwitems NEPTUN_TRIDENT %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'netherite_sword':
+    material: netherite_sword
+    slot: 20
+    display_name: '&#F8BEFBФарм Меч'
+    lore:
+      - '&#AAAAAAДобыча V'
+      - '&#AAAAAAПрочность V'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB222 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 222'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 222'
+      - '[console] kit farmsword %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'fishing_rod':
+    material: fishing_rod
+    slot: 21
+    display_name: '&#00AAAA&lРыбачок'
+    lore:
+      - '&#AAAAAAВезение моря V'
+      - '&#AAAAAAПриманка V'
+      - '&#AAAAAAПочинка'
+      - '&#AAAAAAПрочность III'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB119 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 119'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 119'
+      - '[console] ik give рыбачок %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'bow':
+    material: bow
+    slot: 22
+    display_name: '&#AAAAAA&lПушечка'
+    lore:
+      - '&#AAAAAAВоспламенение'
+      - '&#AAAAAAБесконечность'
+      - '&#AAAAAAПочинка'
+      - '&#AAAAAAСила V'
+      - '&#AAAAAAОтбрасывание V'
+      - '&#AAAAAAПрочность II'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB239 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 239'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 239'
+      - '[console] ik give пушечка %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'netherite_axe':
+    material: netherite_axe
+    slot: 23
+    display_name: '&#FAD8FC&lСекира'
+    lore:
+      - '&#AAAAAAЭффективность X'
+      - '&#AAAAAAУдача III'
+      - '&#AAAAAAПрочность III'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB99 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 99'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 99'
+      - '[console] ik give секира %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'netherite_pickaxe':
+    material: netherite_pickaxe
+    slot: 24
+    display_name: '&#F8BEFBКирка Каменщика'
+    lore:
+      - '&#AAAAAAЭффективность X'
+      - '&#AAAAAAПрочность III'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB129 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 129'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 129'
+      - '[console] ik give кирка_каменщика %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'netherite_sword_1':
+    material: netherite_sword
+    slot: 29
+    display_name: '&#55FFFF&lФростморн'
+    lore:
+      - '&#AAAAAAЗаговор огня II'
+      - '&#AAAAAAОстрота VI'
+      - '&#AAAAAAПрочность III'
+      - '&#5555FFНеразрушаемый'
+      - ''
+      - '&#AAAAAA=================================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB329 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 329'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 329'
+      - '[console] ik give фростморн %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'netherite_shovel':
+    material: netherite_shovel
+    slot: 30
+    display_name: '&#FAD8FC&lЛопата &#555555Песочника '
+    lore:
+      - '&#AAAAAAЭффективность VIII'
+      - '&#AAAAAAУдача III'
+      - '&#AAAAAAПрочность III'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB69 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 69'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 69'
+      - '[console] ik give лопата_песочника %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'crossbow':
+    material: crossbow
+    slot: 31
+    display_name: '&#F8BEFBАрбалет Домера'
+    lore:
+      - '&#AAAAAAПочинка'
+      - '&#AAAAAAТройной выстрел'
+      - '&#AAAAAAПробивание IV'
+      - '&#AAAAAAСила V'
+      - '&#AAAAAAБыстрая перезарядка III'
+      - '&#AAAAAAПрочность III'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB239 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 239'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 239'
+      - '[console] ik give арбалет_домера %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'netherite_axe_1':
+    material: netherite_axe
+    slot: 32
+    display_name: '&#FF5555&lТопор Кратоса'
+    lore:
+      - '&#AAAAAAЗаговор огня II'
+      - '&#AAAAAAОстрота VI'
+      - '&#AAAAAAПрочность III'
+      - ''
+      - '&#AAAAAAКогда в руке'
+      - '&#FF5555Замедление II'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB319 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 319'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 319'
+      - '[console] rwitems KRATOS_AXE %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'netherite_pickaxe_1':
+    material: netherite_pickaxe
+    slot: 33
+    display_name: '&#AA00AA&lВезунчик'
+    lore:
+      - '&#AAAAAAУдача V'
+      - '&#AAAAAAПочинка'
+      - '&#AAAAAAПрочность III'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB259 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 259'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 259'
+      - '[console] ik give кирка_везунчик %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'mace':
+    material: mace
+    slot: 39
+    display_name: '&#F8BEFBБулава'
+    lore:
+      - '&#AAAAAAПлотность V'
+      - '&#AAAAAAШустрое подкрадывание III'
+      - '&#AAAAAAПорыв ветра III'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB319 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 319'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 319'
+      - '[console] kit mace %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'netherite_sword_2':
+    material: netherite_sword
+    slot: 40
+    display_name: '&#AA0000&lАлый Лотос'
+    lore:
+      - '&#AAAAAAЗаговор огня II'
+      - '&#AAAAAAДобыча III'
+      - '&#AAAAAAОстрота VI'
+      - '&#AAAAAAПрочность III'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB179 &#FFFFFFꐃ'
+      - ''
+    model_data: 92801050
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 179'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 179'
+      - '[console] ik give lotos %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'mace_1':
+    material: mace
+    slot: 41
+    display_name: '&#5555FF&lГравиМол'
+    lore:
+      - '&#AAAAAAПролом IV'
+      - '&#AAAAAAЗаговор огня II'
+      - '&#AAAAAAПочинка'
+      - '&#AAAAAAПрочность III'
+      - '&#AAAAAAПорыв ветра III'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB399 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 399'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 399'
+      - '[console] kit mace1 %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'arrow':
+    material: arrow
+    slot: 45
+    display_name: '&#F8BEFBНазад'
+    model_data: 100020
+    click_commands:
+      - '[player] shop'
+  'clock':
+    material: clock
+    slot: 53
+    display_name: '&#F8BEFBИНФОРМАЦИЯ'
+    lore:
+      - ''
+      - '&#555555 &#FFFFFFВаш баланс: &#FAD8FC%playerpoints_points_formatted% &#FFFFFFꐃ'
+      - ''
+      - '&#AAAAAAПополнить баланс можно'
+      - '&#AAAAAAна сайте: &#FAD8FC%elytrix_site%'
+    model_data: 100020
+    

@@ -1,0 +1,1211 @@
+крылья_ангела:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:elytra
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:6.0d,id:"minecraft:47fa394d-8fb4-4892-96b4-c0c4ca1aff4d",operation:"add_value",slot:"chest",type:"minecraft:max_health"}]'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"dark_aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Крылья
+        Ангела",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:mending":1,"minecraft:thorns":1,"minecraft:unbreaking":5}'
+    schema_version: 1
+цыганский_щит:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:shield
+    count: 1
+    schema_version: 1
+шар_огня:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:4.0d,id:"minecraft:9c8d5123-5109-4ddb-beb7-1721d29f1afa",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:0.3d,id:"minecraft:6380c7c8-bf4c-4053-8c7b-264b30e4a06f",operation:"add_value",slot:"offhand",type:"minecraft:attack_speed"},{amount:2.5d,id:"minecraft:4361ae76-2474-45a6-a869-50cab53b2a92",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"}]'
+      minecraft:profile: '{id:[I;1340065723,899432587,-1371465157,-342984365],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMSJ9fX0="}]}'
+      minecraft:lore: '[{extra:[{bold:0b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Проклятие
+        утраты ",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Когда
+        в руке",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Огнеупорность",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        экипировке в левой руке:",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +2.5 Урон атаки",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +0.3 Скорость атаки",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +4 Макс. здоровье",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар
+        Огня",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:attribute_modifiers","minecraft:bees","minecraft:container_loot","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:firework_explosion","minecraft:bundle_contents","minecraft:block_entity_data","minecraft:jukebox_playable","minecraft:instrument","minecraft:painting/variant","minecraft:banner_patterns","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:written_book_content","minecraft:container","minecraft:map_id"]}'
+      minecraft:custom_model_data: '{floats:[5003.0f]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:fire_ball":"FIRE_BALL"}}'
+    schema_version: 1
+шар_света:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:3.5d,id:"minecraft:e505b0ba-5f6c-4f73-80e1-275eafe29130",operation:"add_value",slot:"offhand",type:"minecraft:luck"},{amount:3.0d,id:"minecraft:7eacef67-d28e-4327-9cc5-84a4e68fec0a",operation:"add_value",slot:"offhand",type:"minecraft:armor"},{amount:2.0d,id:"minecraft:63848cd2-83cc-46ac-9cf5-43c3123c16c0",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"}]'
+      minecraft:profile: '{id:[I;1270263881,1405242973,-1847184518,-481135512],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMSJ9fX0="}]}'
+      minecraft:lore: '[{extra:[{bold:0b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Проклятие
+        утраты ",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Когда
+        во второй руке",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        нажатии SHIFT:",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"В
+        радиусе 16 блоков",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Светлячок
+        (01:00)",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        экипировке в левой руке:",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +2 Урон атаки",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +3.5 Удача",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +3 Броня",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"yellow",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар
+        Света",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:attribute_modifiers","minecraft:bees","minecraft:container_loot","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:firework_explosion","minecraft:bundle_contents","minecraft:block_entity_data","minecraft:jukebox_playable","minecraft:instrument","minecraft:painting/variant","minecraft:banner_patterns","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:written_book_content","minecraft:container","minecraft:map_id"]}'
+      minecraft:custom_model_data: '{floats:[5004.0f]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:light_ball":"LIGHT_BALL"}}'
+    schema_version: 1
+шар_воды:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:12.0d,id:"minecraft:c1af70d5-a97b-4cb6-bec8-7144be7499bb",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:0.3d,id:"minecraft:ef52983e-e595-4faf-98e9-1cc4dff602cc",operation:"add_multiplied_base",slot:"offhand",type:"minecraft:movement_speed"}]'
+      minecraft:profile: '{id:[I;-610441499,99175617,-1533031454,-42234097],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMSJ9fX0="}]}'
+      minecraft:lore: '[{extra:[{bold:0b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Проклятие
+        утраты ",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Когда
+        во второй руке",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        нажатии SHIFT:",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Подводное
+        дыхание (01:00)",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Грация
+        дельфина (00:10)",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        экипировке в левой руке:",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +30% Скорость передвижения",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +12 Макс. здоровье",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар
+        Воды",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:attribute_modifiers","minecraft:bees","minecraft:container_loot","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:firework_explosion","minecraft:bundle_contents","minecraft:block_entity_data","minecraft:jukebox_playable","minecraft:instrument","minecraft:painting/variant","minecraft:banner_patterns","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:written_book_content","minecraft:container","minecraft:map_id"]}'
+      minecraft:custom_model_data: '{floats:[5005.0f]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:water_ball":"WATER_BALL"}}'
+    schema_version: 1
+шар_порядка:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:20.0d,id:"minecraft:79a6e812-d34a-45d4-a904-402e0835e40e",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:2.0d,id:"minecraft:f2c124c2-b309-488d-8c16-1c7f90f6ec07",operation:"add_value",slot:"offhand",type:"minecraft:armor"},{amount:0.15d,id:"minecraft:d1733fba-1720-4754-b570-a7940e8c2374",operation:"add_multiplied_base",slot:"offhand",type:"minecraft:movement_speed"}]'
+      minecraft:profile: '{id:[I;709688101,410405859,-1559529503,-168057029],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMSJ9fX0="}]}'
+      minecraft:lore: '[{extra:[{bold:0b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Проклятие
+        утраты ",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Когда
+        во второй руке",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        нажатии SHIFT:",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Регенерация
+        II (00:08)",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        экипировке в левой руке:",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +15% Скорость передвижения",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +2 Броня",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +20 Макс. здоровье",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"light_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар
+        Порядка",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:attribute_modifiers","minecraft:bees","minecraft:container_loot","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:firework_explosion","minecraft:bundle_contents","minecraft:block_entity_data","minecraft:jukebox_playable","minecraft:instrument","minecraft:painting/variant","minecraft:banner_patterns","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:written_book_content","minecraft:container","minecraft:map_id"]}'
+      minecraft:custom_model_data: '{floats:[5006.0f]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:harmony_ball":"HARMONY_BALL"}}'
+    schema_version: 1
+шар_воздуха:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:1.5d,id:"minecraft:52749fca-e22c-466b-80d6-11f80cc4de56",operation:"add_value",slot:"offhand",type:"minecraft:attack_knockback"},{amount:2.3d,id:"minecraft:9855dfbc-05fa-4874-a997-437a8843b104",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"},{amount:0.35d,id:"minecraft:fc7fc8c8-299c-409f-866d-f9347669b889",operation:"add_multiplied_base",slot:"offhand",type:"minecraft:movement_speed"}]'
+      minecraft:profile: '{id:[I;-2031304831,426593110,-1955318261,-1048336154],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMSJ9fX0="}]}'
+      minecraft:lore: '[{extra:[{bold:0b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Проклятие
+        утраты ",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Когда
+        во второй руке",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        нажатии SHIFT:",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Левитация
+        II (00:08)",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        экипировке в левой руке:",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +2.3 Урон атаки",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +35% Скорость передвижения",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +1.5 Отбрасывание атаки",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар
+        Воздуха",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:attribute_modifiers","minecraft:bees","minecraft:container_loot","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:firework_explosion","minecraft:bundle_contents","minecraft:block_entity_data","minecraft:jukebox_playable","minecraft:instrument","minecraft:painting/variant","minecraft:banner_patterns","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:written_book_content","minecraft:container","minecraft:map_id"]}'
+      minecraft:custom_model_data: '{floats:[5001.0f]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:air_ball":"AIR_BALL"}}'
+    schema_version: 1
+шар_земли:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:4.0d,id:"minecraft:933660b7-c684-4774-a168-52235b7fe3b4",operation:"add_value",slot:"offhand",type:"minecraft:armor_toughness"},{amount:0.2d,id:"minecraft:88ffa1b6-75c4-42b4-9c39-513ca24e0d63",operation:"add_value",slot:"offhand",type:"minecraft:knockback_resistance"},{amount:4.5d,id:"minecraft:4adb8222-85ed-431c-9dfd-c4e84c9c0a57",operation:"add_value",slot:"offhand",type:"minecraft:armor"}]'
+      minecraft:profile: '{id:[I;1759539730,-199868142,-1989597049,-1620985185],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMSJ9fX0="}]}'
+      minecraft:lore: '[{extra:[{bold:0b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Проклятие
+        утраты ",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Когда
+        во второй руке",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        нажатии SHIFT:",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Спешка
+        II (00:08)",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        экипировке в левой руке:",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +2 Сопротивление отбрасыванию",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +4 Прочность брони",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +4.5 Броня",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар
+        Земли",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:attribute_modifiers","minecraft:bees","minecraft:container_loot","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:firework_explosion","minecraft:bundle_contents","minecraft:block_entity_data","minecraft:jukebox_playable","minecraft:instrument","minecraft:painting/variant","minecraft:banner_patterns","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:written_book_content","minecraft:container","minecraft:map_id"]}'
+      minecraft:custom_model_data: '{floats:[5002.0f]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:earth_ball":"EARTH_BALL"}}'
+    schema_version: 1
+шар_хаоса:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:-10.0d,id:"minecraft:6c93a16e-3acf-4a70-966a-ee5d3584c81f",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:0.4d,id:"minecraft:1bf98d9b-5729-435e-b23c-383fbc50f86b",operation:"add_value",slot:"offhand",type:"minecraft:attack_speed"},{amount:2.5d,id:"minecraft:220d2d88-b6c7-49fa-9468-79a5506e1e0b",operation:"add_value",slot:"offhand",type:"minecraft:armor"},{amount:3.0d,id:"minecraft:c7ce79c7-659e-427b-a3c9-7f7eca3cd94e",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"}]'
+      minecraft:profile: '{id:[I;-902342551,-612152333,-1703804281,-1309736654],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMSJ9fX0="}]}'
+      minecraft:lore: '[{extra:[{bold:0b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Проклятие
+        утраты ",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Когда
+        во второй руке",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        нажатии SHIFT:",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"В
+        радиусе 8 блоков",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Слабость
+        II (00:10)",underlined:0b}],text:""},"",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"При
+        экипировке в левой руке:",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +2.5 Броня",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        -10 Макс. здоровье",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +3 Урон атаки",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"
+        +0.4 Скорость атаки",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"dark_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар
+        Хаоса",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:attribute_modifiers","minecraft:bees","minecraft:container_loot","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:firework_explosion","minecraft:bundle_contents","minecraft:block_entity_data","minecraft:jukebox_playable","minecraft:instrument","minecraft:painting/variant","minecraft:banner_patterns","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:written_book_content","minecraft:container","minecraft:map_id"]}'
+      minecraft:custom_model_data: '{floats:[10001.0f]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:chaos_ball":"CHAOS_BALL"}}'
+    schema_version: 1
+шар_tiger:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    schema_version: 1
+шар_bunny:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:0.21d,id:"minecraft:b12d1625-426a-4bea-8942-6fb25c0d5a9b",operation:"add_multiplied_base",slot:"offhand",type:"minecraft:movement_speed"},{amount:3.9d,id:"minecraft:39d1f589-b269-4f0a-89ec-debbf3bf9291",operation:"add_value",slot:"offhand",type:"minecraft:armor"}]'
+      minecraft:profile: '{id:[I;-1804297312,-2136653363,-1227133653,110975386],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGNhMDNmN2U2Mzg1MTJjNzBhNDRjNDI5OTQyZTc4YzM2YTNkYWY5ZDBhNTMyOThhOWU4NjYyYzJiNjMyZTEyOSJ9fX0="}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"dark_gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар
+        BUNNY",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+фарм_меч:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:netherite_sword
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Фарм
+        Меч",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:looting":5,"minecraft:unbreaking":5}'
+    schema_version: 1
+трезубец:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:trident
+    count: 1
+    schema_version: 1
+тягун_3:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:enchanted_book
+    count: 1
+    components:
+      minecraft:stored_enchantments: '{"minecraft:riptide":3}'
+    schema_version: 1
+верность_3:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:enchanted_book
+    count: 1
+    components:
+      minecraft:stored_enchantments: '{"minecraft:loyalty":3}'
+    schema_version: 1
+громовержец:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:enchanted_book
+    count: 1
+    components:
+      minecraft:stored_enchantments: '{"minecraft:channeling":1}'
+    schema_version: 1
+рыбачок:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:fishing_rod
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"dark_aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Рыбачок",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:luck_of_the_sea":5,"minecraft:lure":5,"minecraft:mending":1,"minecraft:unbreaking":3}'
+    schema_version: 1
+пушечка:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:bow
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:flame":1,"minecraft:infinity":1,"minecraft:mending":1,"minecraft:power":5,"minecraft:punch":5,"minecraft:unbreaking":2}'
+    schema_version: 1
+секира:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:netherite_axe
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Секира",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:efficiency":10,"minecraft:fortune":3,"minecraft:unbreaking":3}'
+    schema_version: 1
+кирка_каменщика:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:netherite_pickaxe
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Кирка
+        Каменщика",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:efficiency":10,"minecraft:unbreaking":3}'
+    schema_version: 1
+фростморн:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:netherite_sword
+    count: 1
+    components:
+      minecraft:unbreakable: '{}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Фростморн",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:fire_aspect":2,"minecraft:sharpness":6,"minecraft:unbreaking":3}'
+    schema_version: 1
+лопата_песочника:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:netherite_shovel
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Лопата
+        ",underlined:0b},{bold:0b,color:"dark_gray",italic:0b,text:"Песочника"}],text:""}'
+      minecraft:enchantments: '{"minecraft:efficiency":8,"minecraft:fortune":3,"minecraft:unbreaking":3}'
+    schema_version: 1
+арбалет_домера:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:crossbow
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Арбалет
+        Домера",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:mending":1,"minecraft:multishot":1,"minecraft:piercing":4,"minecraft:power":5,"minecraft:quick_charge":3,"minecraft:unbreaking":3}'
+    schema_version: 1
+кирка_везунчик:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:netherite_pickaxe
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"dark_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Везунчик",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:fortune":5,"minecraft:mending":1,"minecraft:unbreaking":3}'
+    schema_version: 1
+флакон_раздора:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{amplifier:2b,duration:1200,id:"minecraft:strength",show_icon:1b},{duration:1800,id:"minecraft:slowness",show_icon:1b},{duration:300,id:"minecraft:regeneration",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"dark_red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Флакон
+        Раздора",underlined:0b}],text:""}'
+    schema_version: 1
+зелье_бездны:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{amplifier:2b,duration:900,id:"minecraft:strength",show_icon:1b},{amplifier:2b,duration:900,id:"minecraft:speed",show_icon:1b},{amplifier:2b,duration:9600,id:"minecraft:fire_resistance",show_icon:1b},{duration:900,id:"minecraft:poison",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Зелье
+        Бездны",underlined:0b}],text:""}'
+    schema_version: 1
+зелье_целителя:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_color:10398390,custom_effects:[{amplifier:2b,duration:600,id:"minecraft:health_boost",show_icon:1b},{duration:1600,id:"minecraft:speed",show_icon:1b},{amplifier:2b,duration:300,id:"minecraft:regeneration",show_icon:1b},{amplifier:3b,duration:300,id:"minecraft:mining_fatigue",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"light_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Зелье
+        Целителя",underlined:0b}],text:""}'
+    schema_version: 1
+быстрее_ветра:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_color:15658476,custom_effects:[{amplifier:1b,duration:240,id:"minecraft:levitation",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Быстрее
+        ветра",underlined:0b}],text:""}'
+    schema_version: 1
+зелье_разлома:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_color:15658476,custom_effects:[{duration:12000,id:"minecraft:fire_resistance",show_icon:1b},{duration:4800,id:"minecraft:invisibility",show_icon:1b},{amplifier:3b,duration:600,id:"minecraft:hunger",show_icon:1b},{duration:1800,id:"minecraft:strength",show_icon:1b},{duration:1800,id:"minecraft:speed",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"dark_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Зелье
+        Разлома",underlined:0b}],text:""}'
+    schema_version: 1
+зелье_гармонии:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_color:15658476,custom_effects:[{amplifier:2b,duration:340,id:"minecraft:health_boost",show_icon:1b},{amplifier:2b,duration:340,id:"minecraft:regeneration",show_icon:1b},{duration:600,id:"minecraft:resistance",show_icon:1b},{duration:600,id:"minecraft:slow_falling",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"light_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Зелье
+        Гармонии",underlined:0b}],text:""}'
+    schema_version: 1
+гравитационная_стрела:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:tipped_arrow
+    count: 8
+    components:
+      minecraft:potion_contents: '{custom_color:13565951,custom_effects:[{amplifier:1b,duration:240,id:"minecraft:levitation",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Гравитационная
+        стрела",underlined:0b}],text:""}'
+    schema_version: 1
+стрела_мгновенный_урон:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:tipped_arrow
+    count: 32
+    components:
+      minecraft:potion_contents: '{custom_color:4393481,custom_effects:[{amplifier:1b,duration:1,id:"minecraft:instant_damage",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Обработанная
+        стрела",underlined:0b}],text:""}'
+    schema_version: 1
+стрела_обморожения:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:tipped_arrow
+    count: 8
+    components:
+      minecraft:potion_contents: '{custom_color:6188675,custom_effects:[{duration:80,id:"minecraft:blindness",show_icon:1b},{duration:80,id:"minecraft:slowness",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Стрела
+        обморожения",underlined:0b}],text:""}'
+    schema_version: 1
+стрела_бури:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:tipped_arrow
+    count: 8
+    components:
+      minecraft:potion_contents: '{custom_color:6633293,custom_effects:[{duration:240,id:"minecraft:nausea",show_icon:1b},{duration:200,id:"minecraft:regeneration",show_icon:1b},{duration:240,id:"minecraft:blindness",show_icon:1b},{duration:240,id:"minecraft:mining_fatigue",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Стрела
+        Бури",underlined:0b}],text:""}'
+    schema_version: 1
+пасхальный_топор:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:netherite_axe
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"Пасхальный
+        топор",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:fire_aspect":2,"minecraft:sharpness":6,"minecraft:unbreaking":3}'
+      minecraft:custom_model_data: '{floats:[101.0f]}'
+    schema_version: 1
+паучее_чутьё:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{amplifier:2b,duration:1200,id:"minecraft:speed",show_icon:1b},{duration:300,id:"minecraft:haste",show_icon:1b},{amplifier:2b,duration:1200,id:"minecraft:strength",show_icon:1b},{duration:800,id:"minecraft:nausea",show_icon:1b},{duration:12000,id:"minecraft:fire_resistance",show_icon:1b}],potion:"minecraft:water"}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Паучее
+        Чутьё",underlined:0b}],text:""}'
+    schema_version: 1
+зелье_грича:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:splash_potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_color:5926017,custom_effects:[{duration:700,id:"minecraft:slowness",show_icon:1b},{duration:400,id:"minecraft:mining_fatigue",show_icon:1b},{duration:700,id:"minecraft:nausea",show_icon:1b}]}'
+      minecraft:custom_name: '{bold:1b,color:"green",italic:0b,text:"Зелье Гринча"}'
+    schema_version: 1
+зелье_гнома:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_color:16262179,custom_effects:[{duration:700,id:"minecraft:regeneration",show_icon:1b},{duration:700,id:"minecraft:resistance",show_icon:1b},{duration:12000,id:"minecraft:fire_resistance",show_icon:1b},{duration:2400,id:"minecraft:invisibility",show_icon:1b},{amplifier:2b,duration:1800,id:"minecraft:health_boost",show_icon:1b}]}'
+      minecraft:custom_name: '{bold:1b,color:"light_purple",italic:0b,text:"Зелье
+        Гнома"}'
+    schema_version: 1
+зелье_ельфа:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:splash_potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_color:5926017,custom_effects:[{duration:700,id:"minecraft:slowness",show_icon:1b},{duration:400,id:"minecraft:mining_fatigue",show_icon:1b},{duration:700,id:"minecraft:nausea",show_icon:1b}]}'
+      minecraft:custom_name: '{bold:1b,color:"green",italic:0b,text:"Зелье Гринча"}'
+    schema_version: 1
+голова_пряника:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:-6.0d,id:"minecraft:94caf307-ba3c-41f1-a4d9-ecdfe2283b83",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:2.5d,id:"minecraft:328eec88-ce6e-4f01-8370-eb40f682260f",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"},{amount:0.4d,id:"minecraft:88b27595-76f7-4922-bced-912ded5749b6",operation:"add_value",slot:"offhand",type:"minecraft:attack_speed"}]'
+      minecraft:profile: '{id:[I;1166331244,879837652,-1330752244,1506989203],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2RiNTQ0MjlkZWM1YjNmN2VmNDBlOGJjM2ZmMTk5NWNlZjY5NmEzNTAyOGY3ODJmNjM5MWMyYjU1MTFiYmUifX19"}]}'
+      minecraft:custom_name: '{bold:1b,color:"gold",italic:0b,text:"Голова Пряника"}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+голова_рудольфа:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:20.0d,id:"minecraft:13c4dd73-05ab-4d2c-a50e-e2f635583c2a",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:3.5d,id:"minecraft:37fb8081-1a44-4759-a781-c596f7461b46",operation:"add_value",slot:"offhand",type:"minecraft:armor"},{amount:-0.4d,id:"minecraft:536a7591-4628-4bb4-8116-c97da6ab4d46",operation:"add_value",slot:"offhand",type:"minecraft:attack_speed"}]'
+      minecraft:profile: '{id:[I;794843048,-270317637,-1860872732,-1397774572],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2EzMDY0YWFkMjJlZWYyOWY3NWUwZWI2NzYxNzg2MDQzY2E1NDhlN2ExNWNhODVkNjUwYjU0Y2ZlZTI5ZTZkYiJ9fX0="}]}'
+      minecraft:custom_name: '{bold:1b,color:"red",italic:0b,text:"Голова Рудольфа"}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+голова_ельфа:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:10.0d,id:"minecraft:92072326-9357-4f17-ae46-f34c5a96edb0",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:1.5d,id:"minecraft:3c198644-5c08-455c-8454-143c32a84e21",operation:"add_value",slot:"offhand",type:"minecraft:armor"},{amount:0.3d,id:"minecraft:31435834-dfe9-40cf-8242-58abfa51202c",operation:"add_multiplied_base",slot:"offhand",type:"minecraft:movement_speed"}]'
+      minecraft:profile: '{id:[I;-1170518837,-847360631,-1475064291,417511136],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGIyMDUwNmJkNzUyYzA4MDFjYjZhMmJlNTc1MWUzZDZlNjIwOGNjOTMzODcwYzNhYThlMzgxM2UxMWJhZjgifX19"}]}'
+      minecraft:custom_name: '{bold:1b,color:"green",italic:0b,text:"Голова Эльфа"}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+голова_пингвина:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:3.0d,id:"minecraft:aca3e5ae-9987-4703-8ea4-3f90b54d568f",operation:"add_value",slot:"offhand",type:"minecraft:armor"},{amount:-0.3d,id:"minecraft:ae20c57c-0fd3-4c25-892f-0fb6621e05ac",operation:"add_multiplied_base",slot:"offhand",type:"minecraft:movement_speed"},{amount:3.0d,id:"minecraft:415ecd91-c856-419f-990a-9038f45ef81a",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"}]'
+      minecraft:profile: '{id:[I;2011777750,683495117,-1598155865,1616714383],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWVhNzU5Zjk3OWI5YjhlYTgzMWNhN2UyZDY2ZGYxNDgyOTNmMWE1MTQ3OTgzYjUyYzQ4ZWZlMmMzMTVlIn19fQ=="}]}'
+      minecraft:custom_name: '{bold:1b,color:"aqua",italic:0b,text:"Голова Пингвина"}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+голова_гринча:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:0.2d,id:"minecraft:a75e5c25-6c73-4eb8-a5e6-9bdb5cb4053d",operation:"add_value",slot:"offhand",type:"minecraft:attack_speed"},{amount:4.0d,id:"minecraft:7e721e89-ccba-4354-a575-a60c81fe0ac0",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:0.3d,id:"minecraft:9acbdb4d-0206-44d4-9313-e0a4fe5278fa",operation:"add_multiplied_base",slot:"offhand",type:"minecraft:movement_speed"},{amount:2.0d,id:"minecraft:db604f51-40b2-4ebf-bb1f-be0fbd72ecc4",operation:"add_value",slot:"offhand",type:"minecraft:armor"}]'
+      minecraft:profile: '{id:[I;-751459182,-771276239,-1453988683,-504468123],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDIyYjFkYWIzOWRkY2E1MGUzY2VmMTEwODlhMjdkYmJkMWFlNjNiNDhhYjdkMTJmNzNlYWVjNTZmOTNmYjJiIn19fQ=="}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"dark_green",italic:0b,text:"Голова
+        Гринча"}],text:""}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:bees","minecraft:container_loot","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:firework_explosion","minecraft:bundle_contents","minecraft:block_entity_data","minecraft:jukebox_playable","minecraft:instrument","minecraft:painting/variant","minecraft:banner_patterns","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:written_book_content","minecraft:container","minecraft:map_id"]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"deluxemenus:dm":1b}}'
+    schema_version: 1
+голова_санты:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:0.3d,id:"minecraft:1fd5f054-14ab-45c7-b971-1a6e7c585544",operation:"add_value",slot:"offhand",type:"minecraft:attack_speed"},{amount:6.0d,id:"minecraft:edce38ce-c7e9-4390-bd6e-d0e8be544779",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:4.0d,id:"minecraft:13084c9f-f8a7-4576-9cf1-283d9f065c97",operation:"add_value",slot:"offhand",type:"minecraft:armor_toughness"},{amount:0.02d,id:"minecraft:34b3dbc5-01ce-4ea3-bd63-421b47f73625",operation:"add_value",slot:"offhand",type:"minecraft:knockback_resistance"}]'
+      minecraft:profile: '{id:[I;-428182602,1432506198,-1477983649,633794752],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc2ODdmYTc4YWVlZmNhMGMwNmM1YzlkZjU1YWJlNWVmYjQ5ZmRkNmVlOTRhZWIwNjg5ZDM5ZDIxMGM2OSJ9fX0="}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"white",italic:0b,text:"Голова
+        Санты"}],text:""}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:bees","minecraft:container_loot","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:firework_explosion","minecraft:bundle_contents","minecraft:block_entity_data","minecraft:jukebox_playable","minecraft:instrument","minecraft:painting/variant","minecraft:banner_patterns","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:written_book_content","minecraft:container","minecraft:map_id"]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"deluxemenus:dm":1b}}'
+    schema_version: 1
+колокольчик:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:8.0d,id:"minecraft:b2cecdcd-9c63-4aaa-a6e7-4635d2c6d3a2",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:0.15d,id:"minecraft:8c4a135a-7991-419e-82d6-7ac0e62a0868",operation:"add_multiplied_base",slot:"offhand",type:"minecraft:movement_speed"},{amount:2.0d,id:"minecraft:fe1f3ff5-29b1-4216-add4-f5631e3f677c",operation:"add_value",slot:"offhand",type:"minecraft:armor"}]'
+      minecraft:profile: '{id:[I;-1244400270,-1585692411,-1674880585,1728262578],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDg5YzliZjFkNWVkY2NkY2ZhZmZkN2ZhODk0ZmMxMzI0MGUzZDJjN2E4Y2E4ZTUzMDAzN2U0MTNmYjExZDVhZCJ9fX0="}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"yellow",italic:0b,text:"Колокольчик"}],text:""}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:bees","minecraft:container_loot","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:firework_explosion","minecraft:bundle_contents","minecraft:block_entity_data","minecraft:jukebox_playable","minecraft:instrument","minecraft:painting/variant","minecraft:banner_patterns","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:written_book_content","minecraft:container","minecraft:map_id"]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"deluxemenus:dm":1b}}'
+    schema_version: 1
+голова_щелкунчика:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:0.3d,id:"minecraft:40ac6256-cc82-45ae-8f20-5a5b43233fb6",operation:"add_value",slot:"offhand",type:"minecraft:attack_speed"},{amount:8.0d,id:"minecraft:bdab5355-9782-4f99-8eef-1f7952c3247a",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:2.0d,id:"minecraft:15cc7efb-18c9-4dee-86f3-5c380ce09a7c",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"}]'
+      minecraft:profile: '{id:[I;297206272,749816687,-1208082125,-1584531438],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDFjOTA1ZDg3OTM1MzFhNDNkZDUzNDAyODEyYmMzYWQ2YmM5NWM1OWRjNWIzMTgxMWZiZGY5ZmEwIn19fQ=="}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"gold",italic:0b,text:"Голова
+        Щелкунчика"}],text:""}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:bees","minecraft:container_loot","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:firework_explosion","minecraft:bundle_contents","minecraft:block_entity_data","minecraft:jukebox_playable","minecraft:instrument","minecraft:painting/variant","minecraft:banner_patterns","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:written_book_content","minecraft:container","minecraft:map_id"]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"deluxemenus:dm":1b}}'
+    schema_version: 1
+голова_эльфа:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:10.0d,id:"minecraft:6d4489b5-464c-4b9f-b00b-d60e392b8747",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:0.3d,id:"minecraft:1a169abf-608b-4e7e-9d69-a51affcbad0d",operation:"add_multiplied_base",slot:"offhand",type:"minecraft:movement_speed"},{amount:1.5d,id:"minecraft:79610ebf-a861-47d9-8944-97d905e48219",operation:"add_value",slot:"offhand",type:"minecraft:armor"}]'
+      minecraft:profile: '{id:[I;-1719901458,-223918906,-2017300801,748010209],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGIyMDUwNmJkNzUyYzA4MDFjYjZhMmJlNTc1MWUzZDZlNjIwOGNjOTMzODcwYzNhYThlMzgxM2UxMWJhZjgifX19"}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"green",italic:0b,text:"Голова
+        Эльфа"}],text:""}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:bees","minecraft:container_loot","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:firework_explosion","minecraft:bundle_contents","minecraft:block_entity_data","minecraft:jukebox_playable","minecraft:instrument","minecraft:painting/variant","minecraft:banner_patterns","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:written_book_content","minecraft:container","minecraft:map_id"]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"deluxemenus:dm":1b}}'
+    schema_version: 1
+новогодний_ужас:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:splash_potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{duration:300,id:"minecraft:weakness",show_icon:1b},{duration:300,id:"minecraft:unluck",show_icon:1b},{duration:300,id:"minecraft:poison",show_icon:1b},{duration:300,id:"minecraft:nausea",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"white",italic:0b,text:"Новогодний
+        ужас"}],text:""}'
+      minecraft:custom_data: '{PublicBukkitValues:{"deluxemenus:dm":1b}}'
+    schema_version: 1
+зелье_полярной_ловкости:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{amplifier:2b,duration:900,id:"minecraft:strength",show_icon:1b},{duration:900,id:"minecraft:luck",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"dark_blue",italic:0b,text:"Зелье
+        Полярной Ловкости"}],text:""}'
+      minecraft:custom_data: '{PublicBukkitValues:{"deluxemenus:dm":1b}}'
+    schema_version: 1
+зелье_ледяной_крепости:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{duration:1000,id:"minecraft:resistance",show_icon:1b},{amplifier:3b,duration:1000,id:"minecraft:health_boost",show_icon:1b},{duration:1000,id:"minecraft:absorption",show_icon:1b},{amplifier:2b,duration:1000,id:"minecraft:slowness",show_icon:1b},{amplifier:2b,duration:610,id:"minecraft:wither",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"dark_purple",italic:0b,text:"Зелье
+        Ледяной Крепости"}],text:""}'
+      minecraft:custom_data: '{PublicBukkitValues:{"deluxemenus:dm":1b}}'
+    schema_version: 1
+снежный_вихрь:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{amplifier:2b,duration:800,id:"minecraft:slowness",show_icon:1b},{amplifier:2b,duration:800,id:"minecraft:speed",show_icon:1b},{duration:800,id:"minecraft:invisibility",show_icon:1b},{duration:800,id:"minecraft:regeneration",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,text:"Снежный
+        вихрь"}],text:""}'
+      minecraft:custom_data: '{PublicBukkitValues:{"deluxemenus:dm":1b}}'
+    schema_version: 1
+эссенция_кромешника:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:splash_potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{amplifier:2b,duration:1200,id:"minecraft:slowness",show_icon:1b},{duration:1200,id:"minecraft:nausea",show_icon:1b},{duration:900,id:"minecraft:blindness",show_icon:1b},{duration:900,id:"minecraft:wither",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"light_purple",italic:0b,text:"Эссенция
+        Кромешника"}],text:""}'
+      minecraft:custom_data: '{PublicBukkitValues:{"deluxemenus:dm":1b}}'
+    schema_version: 1
+зелье_гринча:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:splash_potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{duration:700,id:"minecraft:slowness",show_icon:1b},{duration:600,id:"minecraft:mining_fatigue",show_icon:1b},{duration:700,id:"minecraft:nausea",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"dark_green",italic:0b,text:"Зелье
+        Гринча"}],text:""}'
+      minecraft:custom_data: '{PublicBukkitValues:{"deluxemenus:dm":1b}}'
+    schema_version: 1
+зелье_эльфа:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{amplifier:2b,duration:1800,id:"minecraft:speed",show_icon:1b},{amplifier:2b,duration:1800,id:"minecraft:strength",show_icon:1b},{amplifier:2b,duration:700,id:"minecraft:resistance",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,text:"Зелье
+        Эльфа"}],text:""}'
+      minecraft:custom_data: '{PublicBukkitValues:{"deluxemenus:dm":1b}}'
+    schema_version: 1
+иронман:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:10.0d,id:"minecraft:e9eaec04-9e64-4a6d-8c75-f7536683270b",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:-0.25d,id:"minecraft:ed80cb62-a215-4173-819c-22d2efbcdcdd",operation:"add_multiplied_total",slot:"offhand",type:"minecraft:movement_speed"},{amount:4.0d,id:"minecraft:6e3f1f84-44c5-4405-a863-37d3d73134b5",operation:"add_value",slot:"offhand",type:"minecraft:armor"}]'
+      minecraft:profile: '{id:[I;2051212219,-2142024418,-1919284691,-762787693],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDA5MjFjZWJjZTE3NDFlNzg0NjQ0MGEyZmQzMmI4MjIxY2NlZmY0NTU4ZDJlN2VkMTk3ZmY0NDhkMWNhZmYzZSJ9fX0="}]}'
+      minecraft:custom_name: '{bold:1b,color:"yellow",italic:0b,text:"Голова Железного
+        Человека"}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+супермен:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:0.15d,id:"minecraft:1e16356c-880e-4616-9e3e-58b74886132a",operation:"add_multiplied_total",slot:"head",type:"minecraft:movement_speed"},{amount:15.0d,id:"minecraft:da1296a1-c828-4d67-b347-ba7b0e6abfb5",operation:"add_value",slot:"head",type:"minecraft:max_health"},{amount:2.0d,id:"minecraft:35c261fe-4f68-4bd5-afa8-9083b17ec081",operation:"add_value",slot:"head",type:"minecraft:attack_damage"}]'
+      minecraft:profile: '{id:[I;-25701306,1673872831,-1740471607,1724048001],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDU0MzVjMzdlZGFmZTE2NWM5MmFlMzczNmUxNWM0NjRhZDYyMWQ2MTIyMDQzNWQxYTM5YWRiNDcwNWZiODg2In19fQ=="}]}'
+      minecraft:custom_name: '{bold:1b,color:"aqua",italic:0b,text:"Сила СуперМена"}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+бетмен:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:0.3d,id:"minecraft:190cea8f-b757-402d-939a-452c9399fcec",operation:"add_value",slot:"offhand",type:"minecraft:attack_speed"},{amount:1.5d,id:"minecraft:1c8c802d-b7cb-4489-ae56-0ac8439933f7",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"},{amount:2.5d,id:"minecraft:03fde1b3-484f-4392-94ba-e0f637ee9212",operation:"add_value",slot:"offhand",type:"minecraft:armor"}]'
+      minecraft:profile: '{id:[I;838135568,-1703853178,-1575551274,-980046885],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjAxODdkMjE4OTU0MWJhZjQ0NjlhZDc4YTE0ZjNhZTU1Mzk3OTliNmYyN2E3ZmFhYTU2OTdkN2U0ZjcifX19"}]}'
+      minecraft:custom_name: '{bold:1b,color:"dark_gray",italic:0b,text:"Голова БетМена"}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+паук:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:0.3d,id:"minecraft:c1e3c763-0c90-41d1-b24b-99b05073605c",operation:"add_value",slot:"offhand",type:"minecraft:attack_speed"},{amount:-8.0d,id:"minecraft:70599da5-d90f-42a6-89d9-1c34f4f01cd6",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:0.25d,id:"minecraft:a530f815-0d27-44b7-80ac-edcad5bf09a1",operation:"add_multiplied_total",slot:"offhand",type:"minecraft:movement_speed"},{amount:2.5d,id:"minecraft:43985cba-292b-4315-b864-6dd8e769ec67",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"}]'
+      minecraft:profile: '{id:[I;856160041,-674279631,-1559479897,66230548],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTc0MGM5ZjkxYmM5YmFiYzYzM2JmYWQ0NWNhNWFkOWU5ZDYyZDk0YjdkNDM1OTM2OWYyNTBhOGI2NjA4In19fQ=="}]}'
+      minecraft:custom_name: '{bold:1b,color:"red",italic:0b,text:"Голова Человека-Паука"}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+халк:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:0.5d,id:"minecraft:f9b36fac-2860-4db2-ad2c-8ec4de6c00aa",operation:"add_value",slot:"offhand",type:"minecraft:knockback_resistance"},{amount:15.0d,id:"minecraft:e140c595-5756-461a-bc2b-07331b52dd39",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:3.0d,id:"minecraft:5d5e6b64-7300-49ed-8c9a-9b7940b9a1ab",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"}]'
+      minecraft:profile: '{id:[I;820894624,-520666377,-1684351269,-926256195],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2NkY2MyMzJjYTRiY2M0MjgyZWNjZDdlYzI1ODQ4ODE2ODFhNWZhNGRlZGJkNWU0YmEyYjhiNDdmMzY5ZGUifX19"}]}'
+      minecraft:custom_name: '{bold:1b,color:"green",italic:0b,text:"ГОЛОВА ХАЛКА"}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+тор:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:100.0d,id:"minecraft:8848b282-fa03-4d11-a67b-3f4f5357f98f",operation:"add_value",slot:"offhand",type:"minecraft:luck"},{amount:1.0d,id:"minecraft:9c5d6076-06f6-4ef1-9a45-bc3aed7c482d",operation:"add_value",slot:"offhand",type:"minecraft:knockback_resistance"},{amount:100.0d,id:"minecraft:783174b0-c8a8-4cbf-9741-51fc88dcf79d",operation:"add_value",slot:"offhand",type:"minecraft:flying_speed"},{amount:-10.0d,id:"minecraft:d920c9b7-c8ed-4257-9f6f-ded8e9977933",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:4.0d,id:"minecraft:17fe78b6-dcd9-4f68-aeae-5a5491761839",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"}]'
+      minecraft:profile: '{id:[I;1604797078,1236092906,-1096995327,-755643033],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmE5ZjgzMzI5YTJlNDc1YTc1MzM1YjM5NDlhYTRkMDU0ZjlkZTQxM2JmYjI4YWE2MGRlMmU1MjU5ZWNhYWQxIn19fQ=="}]}'
+      minecraft:custom_name: '{bold:1b,color:"aqua",italic:0b,text:"Голова Тора"}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+розамеч:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:netherite_sword
+    count: 1
+    components:
+      minecraft:custom_name: '{bold:1b,color:"light_purple",italic:0b,text:"Меч из
+        Розы"}'
+      minecraft:enchantments: '{"minecraft:sharpness":6,"minecraft:unbreaking":3,"minecraft:vanishing_curse":1}'
+      minecraft:custom_model_data: '{floats:[103.0f]}'
+    schema_version: 1
+бронятитанов:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{amplifier:2b,duration:900,id:"minecraft:resistance",show_icon:1b},{duration:10000,id:"minecraft:fire_resistance",show_icon:1b},{duration:1200,id:"minecraft:invisibility",show_icon:1b},{amplifier:3b,duration:4000,id:"minecraft:weakness",show_icon:1b}]}'
+      minecraft:custom_name: '{bold:1b,color:"yellow",italic:0b,text:"Броня Титанов"}'
+    schema_version: 1
+радиацияхалка:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{amplifier:2b,duration:1000,id:"minecraft:strength",show_icon:1b},{duration:700,id:"minecraft:jump_boost",show_icon:1b},{duration:300,id:"minecraft:regeneration",show_icon:1b}]}'
+      minecraft:custom_name: '{bold:1b,color:"green",italic:0b,text:"Радиация ХАЛКА"}'
+    schema_version: 1
+криптонит:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:splash_potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{duration:300,id:"minecraft:mining_fatigue",show_icon:1b},{id:"minecraft:instant_damage",show_icon:1b},{duration:1800,id:"minecraft:nausea",show_icon:1b}]}'
+      minecraft:custom_name: '{bold:1b,color:"green",italic:0b,text:"Криптонит"}'
+    schema_version: 1
+лечениетора:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{duration:1000,id:"minecraft:strength",show_icon:1b},{amplifier:2b,id:"minecraft:instant_health",show_icon:1b},{duration:500,id:"minecraft:regeneration",show_icon:1b},{duration:1200,id:"minecraft:health_boost",show_icon:1b}]}'
+      minecraft:custom_name: '{bold:1b,color:"light_purple",italic:0b,text:"Лечение
+        Тора"}'
+    schema_version: 1
+паучьясила:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{duration:2400,id:"minecraft:speed",show_icon:1b},{duration:2400,id:"minecraft:strength",show_icon:1b},{duration:16000,id:"minecraft:fire_resistance",show_icon:1b}]}'
+      minecraft:custom_name: '{bold:1b,color:"red",italic:0b,text:"Паучья Сила"}'
+    schema_version: 1
+golova_jeka:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:2.0d,id:"minecraft:77300bde-aa83-4535-8a6e-209175ebeab0",operation:"add_value",slot:"head",type:"minecraft:armor_toughness"},{amount:6.0d,id:"minecraft:33fb78af-e2e1-4eb4-9dcd-b8a6ae17ac32",operation:"add_value",slot:"head",type:"minecraft:max_health"},{amount:3.0d,id:"minecraft:4eef9f19-e5f6-4a77-b9ac-522d9fb2be1a",operation:"add_value",slot:"head",type:"minecraft:armor"}]'
+      minecraft:profile: '{id:[I;1678829538,-1157018986,-1859875226,-1476629064],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzhjNmI0ZmFhMzU0MTYyZjMzNDc2ZTZkMzQ1NDk2ZGFhM2ZmYzc2MDFiZGU3MjRmY2Q0OTcwODA3YjFmNzk1YyJ9fX0="}]}'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"dark_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Голова
+        Джека",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:protection":4,"minecraft:vanishing_curse":1}'
+      minecraft:custom_data: '{PublicBukkitValues:{"deluxemenus:dm":1b}}'
+    schema_version: 1
+redbull:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:-8.0d,id:"minecraft:60c42d52-37c6-46c6-8908-b9ee7e17e0b8",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:3.0d,id:"minecraft:a53da8c1-713d-4e56-89cd-f1781869fae2",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"},{amount:2.0d,id:"minecraft:786a48c8-0705-4383-af00-79c3208cb08d",operation:"add_value",slot:"offhand",type:"minecraft:armor"}]'
+      minecraft:profile: '{id:[I;-1509453613,-1402253637,-1769932606,-2112965200],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTBlNDVjNDI1NzU2M2FkYTYzNGM3YTdjZjE2NjQxMDk4MjljNjE1ZGZhNDFhZGM2MzE3ZWNjOWYxM2FkIn19fQ=="}]}'
+      minecraft:custom_name: '"§b§lШар Ред§4§lБулла"'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+fanta:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:10.0d,id:"minecraft:2c857e01-4c9c-4d4c-90aa-d19af7f28e5d",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:4.0d,id:"minecraft:910ce783-8f53-42de-be0f-93e44068b95b",operation:"add_value",slot:"offhand",type:"minecraft:armor"}]'
+      minecraft:profile: '{id:[I;1935704141,172968813,-1266175531,1691915968],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmJlOTUwNWEzOGExNGQxNTEyYzc4OTJmYzQ0ZDNkN2NlNjMzOGIxYmYwZjkxMjM3MjFiMTIxYTE0YjA5NWEzIn19fQ=="}]}'
+      minecraft:custom_name: '"§x§F§8§B§E§F§B§lШар Фанты"'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+sprite:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:6.0d,id:"minecraft:4cddd517-9170-48e2-b662-03444f81e343",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:2.0d,id:"minecraft:86848454-6a9d-4b66-a95c-7323bd449386",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"},{amount:0.3d,id:"minecraft:fa49e03b-e9c9-48d6-b8dd-ca069164608d",operation:"add_multiplied_base",slot:"offhand",type:"minecraft:movement_speed"}]'
+      minecraft:profile: '{id:[I;-298928166,909789509,-2012663186,105460067],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjhhMzRkODZhN2JiMTNkNDVhZmRjNTBkM2RjZTVlZWQ5NWUxODQ0ZmJkZWUwY2NhNzUzYzZkMzM0NmUzMzllIn19fQ=="}]}'
+      minecraft:custom_name: '"§a§lШар Спрайта"'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+tea:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:20.0d,id:"minecraft:1dd6f006-15b3-471c-a3b7-fbd8fdc05fde",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:10.0d,id:"minecraft:4662a5bd-9074-428e-ac29-f6a01110ec3d",operation:"add_value",slot:"offhand",type:"minecraft:luck"},{amount:0.2d,id:"minecraft:a98dd411-da52-4952-a9bf-dfce4cc48aef",operation:"add_multiplied_base",slot:"offhand",type:"minecraft:movement_speed"}]'
+      minecraft:profile: '{id:[I;-531180585,142297351,-1160966719,-1494795373],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDIxNjhkZmM1MTNjMzFiMWUxYzJkODUzZTgxNjkwMTUzODFjODM3OGVlZTIyNGFlNmRiYjFlMTI0ODVlOWE5OCJ9fX0="}]}'
+      minecraft:custom_name: '"§2§lЧашка Зелёного Чая"'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+pepsi:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:2.0d,id:"minecraft:2f5255ac-fc18-4b6b-b492-462d983b3df2",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"},{amount:0.3d,id:"minecraft:737ae88b-cf3c-496d-b7dc-8f6dbc6f1b95",operation:"add_value",slot:"offhand",type:"minecraft:attack_speed"},{amount:-0.25d,id:"minecraft:c403e28c-6956-4a96-996f-cf9532b08878",operation:"add_multiplied_base",slot:"offhand",type:"minecraft:movement_speed"}]'
+      minecraft:profile: '{id:[I;492784238,-1053539892,-1171046112,1244335968],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmJiYWU2ZGY5OWRjODJiZWFmNDlkMDY0ZGY3NGExYmJjMTVlOGUzNzY1MzMyNzY5MTJjOGM4ZmU1OWNiNGY0In19fQ=="}]}'
+      minecraft:custom_name: '"§9§lШар Пепси"'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+cola:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:1.5d,id:"minecraft:85353d6b-576e-4f9a-a9bc-f8dc22e2ea6a",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"},{amount:0.3d,id:"minecraft:d24d2c98-d000-4f12-b7d2-1a3389e35e1f",operation:"add_value",slot:"offhand",type:"minecraft:attack_speed"},{amount:-1.5d,id:"minecraft:f2d95cb4-fcc6-4733-b544-91fe2b5612d8",operation:"add_value",slot:"offhand",type:"minecraft:armor"},{amount:0.3d,id:"minecraft:4d02a162-5c7c-4cc4-bc63-82f77a160ab5",operation:"add_multiplied_base",slot:"offhand",type:"minecraft:movement_speed"}]'
+      minecraft:profile: '{id:[I;-1525267996,1019629103,-1880800485,1769601929],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjlmYTMxNjM1YTZiY2JkNjAwNjEzNTYxNTQ5YTMwYzE4ODg4ZWQ2MmZiMDViZjJkYTIzMTM5OGY4ODJlYTNkIn19fQ=="}]}'
+      minecraft:custom_name: '"§c§lШар КокаКолы"'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+    schema_version: 1
+summer:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{duration:2400,id:"minecraft:speed",show_icon:1b},{duration:2400,id:"minecraft:strength",show_icon:1b},{duration:2400,id:"minecraft:fire_resistance",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"#EC0909",italic:0b,obfuscated:0b,strikethrough:0b,text:"Летнее
+        Зелье",underlined:0b}],text:""}'
+    schema_version: 1
+lotos:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:netherite_sword
+    count: 1
+    components:
+      minecraft:custom_name: '"§4§4§lАлый Лотос"'
+      minecraft:enchantments: '{"minecraft:fire_aspect":2,"minecraft:looting":3,"minecraft:sharpness":7,"minecraft:unbreaking":3}'
+      minecraft:custom_model_data: '{floats:[10001.0f]}'
+    schema_version: 1
+oskolok:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:bubble_coral
+    count: 1
+    components:
+      minecraft:custom_name: '"§5Осколок Энда"'
+      minecraft:custom_model_data: '{floats:[1001.0f]}'
+    schema_version: 1
+zeny:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{amplifier:2b,duration:900,id:"minecraft:resistance",show_icon:1b},{amplifier:3b,duration:600,id:"minecraft:health_boost",show_icon:1b},{amplifier:2b,duration:600,id:"minecraft:blindness",show_icon:1b}]}'
+      minecraft:custom_name: '"§x§F§8§B§E§F§B§lЗелье Зени"'
+    schema_version: 1
+andreypl:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{amplifier:2b,duration:1200,id:"minecraft:speed",show_icon:1b},{duration:1800,id:"minecraft:invisibility",show_icon:1b},{duration:1200,id:"minecraft:strength",show_icon:1b},{duration:1200,id:"minecraft:health_boost",show_icon:1b}]}'
+      minecraft:custom_name: '"§c§lЗелье АндрейПЛа"'
+    schema_version: 1
+netherplay:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:splash_potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{amplifier:2b,duration:600,id:"minecraft:blindness",show_icon:1b},{amplifier:2b,duration:600,id:"minecraft:poison",show_icon:1b},{duration:600,id:"minecraft:nausea",show_icon:1b}]}'
+      minecraft:custom_name: '"§2§lЗелье НезерПлея"'
+    schema_version: 1
+domer:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{amplifier:2b,duration:1200,id:"minecraft:strength",show_icon:1b},{duration:6000,id:"minecraft:glowing",show_icon:1b},{amplifier:2b,duration:1200,id:"minecraft:speed",show_icon:1b},{duration:800,id:"minecraft:wither",show_icon:1b}]}'
+      minecraft:custom_name: '"§f§lЗелье Донера"'
+    schema_version: 1
+beff:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:splash_potion
+    count: 1
+    components:
+      minecraft:lore: '[{color:"gray",text:"Зелье разработано Беффом"}]'
+      minecraft:potion_contents: '{custom_effects:[{amplifier:2b,duration:600,id:"minecraft:health_boost",show_icon:1b},{amplifier:3b,id:"minecraft:instant_health",show_icon:1b},{amplifier:2b,duration:600,id:"minecraft:regeneration",show_icon:1b},{duration:1200,id:"minecraft:weakness",show_icon:1b}]}'
+      minecraft:custom_name: '"§d§lЗелье Беффа"'
+    schema_version: 1
+helment:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:golden_helmet
+    count: 1
+    components:
+      minecraft:lore: '[{color:"gray",italic:0b,text:"Защита V"},{color:"gray",italic:0b,text:"Подводное
+        дыхание III"},{color:"red",italic:0b,text:"Проклятие утраты"},{color:"blue",italic:0b,text:"Неразрушаемый"}]'
+      minecraft:unbreakable: '{}'
+      minecraft:custom_name: '{bold:1b,color:"yellow",italic:0b,text:"Нерушимый Шлем"}'
+      minecraft:enchantments: '{"minecraft:protection":5,"minecraft:respiration":3,"minecraft:vanishing_curse":1}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:unbreakable","minecraft:block_state","minecraft:block_entity_data","minecraft:bundle_contents","minecraft:map_id","minecraft:painting/variant","minecraft:container","minecraft:pot_decorations","minecraft:charged_projectiles","minecraft:tropical_fish/pattern","minecraft:fireworks","minecraft:potion_contents","minecraft:written_book_content","minecraft:jukebox_playable","minecraft:container_loot","minecraft:bees","minecraft:instrument","minecraft:banner_patterns","minecraft:firework_explosion"]}'
+    schema_version: 1
+фыв:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:netherite_axe
+    count: 1
+    components:
+      minecraft:lore: '[{color:"gray",italic:0b,text:"Заговор огня II"},{color:"gray",italic:0b,text:"Острота
+        VI"},{color:"gray",italic:0b,text:"Прочность III"}]'
+      minecraft:custom_name: '{bold:1b,color:"light_purple",italic:0b,text:"Эндер-Топор"}'
+      minecraft:enchantments: '{"minecraft:fire_aspect":2,"minecraft:sharpness":6,"minecraft:unbreaking":3}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:bees","minecraft:container_loot","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:firework_explosion","minecraft:bundle_contents","minecraft:block_entity_data","minecraft:jukebox_playable","minecraft:instrument","minecraft:painting/variant","minecraft:banner_patterns","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:written_book_content","minecraft:container","minecraft:map_id"]}'
+      minecraft:custom_model_data: '{floats:[102.0f]}'
+    schema_version: 1
+голова_джека:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:2.0d,id:"minecraft:4b733c7b-0c85-4f4d-bbb4-857f4892b60e",operation:"add_value",slot:"head",type:"minecraft:armor_toughness"},{amount:6.0d,id:"minecraft:1c66bee2-f3ce-4a3b-b482-dc430ad1885c",operation:"add_value",slot:"head",type:"minecraft:max_health"},{amount:3.0d,id:"minecraft:ef90f8d2-3206-4a85-bd3f-967d6ed142d6",operation:"add_value",slot:"head",type:"minecraft:armor"}]'
+      minecraft:profile: '{id:[I;555921740,105137256,-1428891614,1992635153],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6IHsiU0tJTiI6IHsidXJsIjogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzhjNmI0ZmFhMzU0MTYyZjMzNDc2ZTZkMzQ1NDk2ZGFhM2ZmYzc2MDFiZGU3MjRmY2Q0OTcwODA3YjFmNzk1YyJ9fX0="}]}'
+      minecraft:custom_name: '{color:"dark_purple",italic:0b,text:"Голова Джека"}'
+      minecraft:enchantments: '{"minecraft:protection":4,"minecraft:vanishing_curse":1}'
+    schema_version: 1
+q1:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:red_shulker_box
+    count: 1
+    schema_version: 1
+q2:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:lime_shulker_box
+    count: 1
+    schema_version: 1
+джамшут_1:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:pink_shulker_box
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Награда",underlined:0b}],text:""}'
+      minecraft:container: '[{item:{count:1,id:"minecraft:ender_pearl"},slot:0},{item:{count:1,id:"minecraft:experience_bottle"},slot:1},{item:{count:1,id:"minecraft:pink_banner"},slot:2},{item:{count:1,id:"minecraft:pink_stained_glass_pane"},slot:3},{item:{count:1,id:"minecraft:pink_tulip"},slot:4},{item:{count:1,id:"minecraft:pink_stained_glass_pane"},slot:5},{item:{count:1,id:"minecraft:pink_banner"},slot:6},{item:{count:1,id:"minecraft:experience_bottle"},slot:7},{item:{count:1,id:"minecraft:ender_pearl"},slot:8},{item:{count:1,id:"minecraft:ender_pearl"},slot:9},{item:{count:1,id:"minecraft:cyan_stained_glass_pane"},slot:10},{item:{count:1,id:"minecraft:pink_tulip"},slot:11},{item:{count:1,id:"minecraft:totem_of_undying"},slot:12},{item:{count:1,id:"minecraft:ghast_tear"},slot:13},{item:{count:1,id:"minecraft:totem_of_undying"},slot:14},{item:{count:1,id:"minecraft:pink_tulip"},slot:15},{item:{count:1,id:"minecraft:cyan_stained_glass_pane"},slot:16},{item:{count:1,id:"minecraft:ender_pearl"},slot:17},{item:{count:1,id:"minecraft:ender_pearl"},slot:18},{item:{count:1,id:"minecraft:experience_bottle"},slot:19},{item:{count:1,id:"minecraft:pink_banner"},slot:20},{item:{count:1,id:"minecraft:pink_stained_glass_pane"},slot:21},{item:{count:1,id:"minecraft:pink_tulip"},slot:22},{item:{count:1,id:"minecraft:pink_stained_glass_pane"},slot:23},{item:{count:1,id:"minecraft:pink_banner"},slot:24},{item:{count:1,id:"minecraft:experience_bottle"},slot:25},{item:{count:1,id:"minecraft:ender_pearl"},slot:26}]'
+    schema_version: 1
+джамшут_2:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:lime_shulker_box
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Награда",underlined:0b}],text:""}'
+      minecraft:container: '[{item:{count:1,id:"minecraft:lime_banner"},slot:0},{item:{count:1,id:"minecraft:lime_stained_glass_pane"},slot:1},{item:{count:1,id:"minecraft:red_tulip"},slot:2},{item:{count:1,id:"minecraft:pink_stained_glass_pane"},slot:3},{item:{count:1,id:"minecraft:netherite_pickaxe"},slot:4},{item:{count:1,id:"minecraft:pink_stained_glass_pane"},slot:5},{item:{count:1,id:"minecraft:red_tulip"},slot:6},{item:{count:1,id:"minecraft:lime_stained_glass_pane"},slot:7},{item:{count:1,id:"minecraft:lime_banner"},slot:8},{item:{count:1,id:"minecraft:experience_bottle"},slot:9},{item:{count:1,id:"minecraft:lime_banner"},slot:10},{item:{count:1,id:"minecraft:lime_stained_glass_pane"},slot:11},{item:{count:1,id:"minecraft:fishing_rod"},slot:12},{item:{count:1,id:"minecraft:pink_stained_glass_pane"},slot:13},{item:{count:1,id:"minecraft:netherite_axe"},slot:14},{item:{count:1,id:"minecraft:lime_stained_glass_pane"},slot:15},{item:{count:1,id:"minecraft:lime_banner"},slot:16},{item:{count:1,id:"minecraft:experience_bottle"},slot:17},{item:{count:1,id:"minecraft:experience_bottle"},slot:18},{item:{count:1,id:"minecraft:experience_bottle"},slot:19},{item:{count:1,id:"minecraft:lime_banner"},slot:20},{item:{count:1,id:"minecraft:lime_stained_glass_pane"},slot:21},{item:{count:1,id:"minecraft:red_tulip"},slot:22},{item:{count:1,id:"minecraft:lime_stained_glass_pane"},slot:23},{item:{count:1,id:"minecraft:lime_banner"},slot:24},{item:{count:1,id:"minecraft:experience_bottle"},slot:25},{item:{count:1,id:"minecraft:experience_bottle"},slot:26}]'
+    schema_version: 1
+джамшут_3:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:yellow_shulker_box
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Награда",underlined:0b}],text:""}'
+    schema_version: 1
+джамшут_4:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:light_blue_shulker_box
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Награда",underlined:0b}],text:""}'
+      minecraft:container: '[{item:{count:1,id:"minecraft:light_blue_dye"},slot:0},{item:{count:1,id:"minecraft:light_blue_stained_glass_pane"},slot:1},{item:{count:1,id:"minecraft:potion"},slot:2},{item:{count:1,id:"minecraft:light_blue_banner"},slot:3},{item:{count:1,id:"minecraft:potion"},slot:4},{item:{count:1,id:"minecraft:light_blue_banner"},slot:5},{item:{count:1,id:"minecraft:potion"},slot:6},{item:{count:1,id:"minecraft:light_blue_stained_glass_pane"},slot:7},{item:{count:1,id:"minecraft:light_blue_dye"},slot:8},{item:{count:1,id:"minecraft:white_tulip"},slot:9},{item:{count:1,id:"minecraft:light_blue_dye"},slot:10},{item:{count:1,id:"minecraft:light_blue_stained_glass_pane"},slot:11},{item:{count:1,id:"minecraft:potion"},slot:12},{item:{count:1,id:"minecraft:netherite_sword"},slot:13},{item:{count:1,id:"minecraft:potion"},slot:14},{item:{count:1,id:"minecraft:light_blue_stained_glass_pane"},slot:15},{item:{count:1,id:"minecraft:light_blue_dye"},slot:16},{item:{count:1,id:"minecraft:white_tulip"},slot:17},{item:{count:1,id:"minecraft:light_blue_dye"},slot:18},{item:{count:1,id:"minecraft:white_tulip"},slot:19},{item:{count:1,id:"minecraft:light_blue_stained_glass_pane"},slot:20},{item:{count:1,id:"minecraft:light_blue_banner"},slot:21},{item:{count:1,id:"minecraft:potion"},slot:22},{item:{count:1,id:"minecraft:light_blue_banner"},slot:23},{item:{count:1,id:"minecraft:light_blue_stained_glass_pane"},slot:24},{item:{count:1,id:"minecraft:white_tulip"},slot:25},{item:{count:1,id:"minecraft:light_blue_dye"},slot:26}]'
+    schema_version: 1
+джамшут_5:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:magenta_shulker_box
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Награда",underlined:0b}],text:""}'
+    schema_version: 1
+среднийджамшут_1:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:orange_shulker_box
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Награда",underlined:0b}],text:""}'
+    schema_version: 1
+среднийджамшут_2:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:cyan_shulker_box
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Награда",underlined:0b}],text:""}'
+      minecraft:container: '[{item:{count:1,id:"minecraft:cyan_stained_glass_pane"},slot:0},{item:{count:1,id:"minecraft:cyan_stained_glass_pane"},slot:1},{item:{count:1,id:"minecraft:golden_apple"},slot:2},{item:{count:1,id:"minecraft:cyan_banner"},slot:3},{item:{count:1,id:"minecraft:cyan_banner"},slot:4},{item:{count:1,id:"minecraft:cyan_banner"},slot:5},{item:{count:1,id:"minecraft:golden_apple"},slot:6},{item:{count:1,id:"minecraft:cyan_stained_glass_pane"},slot:7},{item:{count:1,id:"minecraft:cyan_stained_glass_pane"},slot:8},{item:{count:1,id:"minecraft:enchanted_golden_apple"},slot:9},{item:{count:1,id:"minecraft:heart_of_the_sea"},slot:10},{item:{count:1,id:"minecraft:cyan_stained_glass_pane"},slot:11},{item:{count:1,id:"minecraft:cyan_dye"},slot:12},{item:{count:1,id:"minecraft:cyan_dye"},slot:13},{item:{count:1,id:"minecraft:cyan_dye"},slot:14},{item:{count:1,id:"minecraft:cyan_stained_glass_pane"},slot:15},{item:{count:1,id:"minecraft:heart_of_the_sea"},slot:16},{item:{count:1,id:"minecraft:enchanted_golden_apple"},slot:17},{item:{count:1,id:"minecraft:cyan_stained_glass_pane"},slot:18},{item:{count:1,id:"minecraft:cyan_stained_glass_pane"},slot:19},{item:{count:1,id:"minecraft:golden_apple"},slot:20},{item:{count:1,id:"minecraft:cyan_banner"},slot:21},{item:{count:1,id:"minecraft:cyan_banner"},slot:22},{item:{count:1,id:"minecraft:cyan_banner"},slot:23},{item:{count:1,id:"minecraft:golden_apple"},slot:24},{item:{count:1,id:"minecraft:cyan_stained_glass_pane"},slot:25},{item:{count:1,id:"minecraft:cyan_stained_glass_pane"},slot:26}]'
+    schema_version: 1
+среднийджамшут_3:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:purple_shulker_box
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Награда",underlined:0b}],text:""}'
+      minecraft:container: '[{item:{count:1,id:"minecraft:purple_stained_glass_pane"},slot:0},{item:{count:1,id:"minecraft:purple_stained_glass_pane"},slot:1},{item:{count:1,id:"minecraft:purple_dye"},slot:2},{item:{count:1,id:"minecraft:purple_glazed_terracotta"},slot:3},{item:{count:1,id:"minecraft:purple_concrete"},slot:4},{item:{count:1,id:"minecraft:purple_glazed_terracotta"},slot:5},{item:{count:1,id:"minecraft:purple_dye"},slot:6},{item:{count:1,id:"minecraft:purple_stained_glass_pane"},slot:7},{item:{count:1,id:"minecraft:purple_stained_glass_pane"},slot:8},{item:{count:1,id:"minecraft:purple_concrete"},slot:9},{item:{count:1,id:"minecraft:purple_concrete"},slot:10},{item:{count:1,id:"minecraft:purple_stained_glass_pane"},slot:11},{item:{count:1,id:"minecraft:purple_concrete"},slot:12},{item:{count:1,id:"minecraft:clay_ball"},slot:13},{item:{count:1,id:"minecraft:purple_concrete"},slot:14},{item:{count:1,id:"minecraft:purple_stained_glass_pane"},slot:15},{item:{count:1,id:"minecraft:purple_concrete"},slot:16},{item:{count:1,id:"minecraft:purple_concrete"},slot:17},{item:{count:1,id:"minecraft:purple_stained_glass_pane"},slot:18},{item:{count:1,id:"minecraft:purple_stained_glass_pane"},slot:19},{item:{count:1,id:"minecraft:purple_dye"},slot:20},{item:{count:1,id:"minecraft:purple_glazed_terracotta"},slot:21},{item:{count:1,id:"minecraft:purple_concrete"},slot:22},{item:{count:1,id:"minecraft:purple_glazed_terracotta"},slot:23},{item:{count:1,id:"minecraft:purple_dye"},slot:24},{item:{count:1,id:"minecraft:purple_stained_glass_pane"},slot:25},{item:{count:1,id:"minecraft:purple_stained_glass_pane"},slot:26}]'
+    schema_version: 1
+среднийджамшут_4:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:blue_shulker_box
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Награда",underlined:0b}],text:""}'
+      minecraft:container: '[{item:{count:1,id:"minecraft:blue_stained_glass_pane"},slot:0},{item:{count:1,id:"minecraft:blue_stained_glass_pane"},slot:1},{item:{count:1,id:"minecraft:blue_ice"},slot:2},{item:{count:1,id:"minecraft:blue_ice"},slot:3},{item:{count:1,id:"minecraft:blue_ice"},slot:4},{item:{count:1,id:"minecraft:blue_ice"},slot:5},{item:{count:1,id:"minecraft:blue_ice"},slot:6},{item:{count:1,id:"minecraft:blue_stained_glass_pane"},slot:7},{item:{count:1,id:"minecraft:blue_stained_glass_pane"},slot:8},{item:{count:1,id:"minecraft:flower_banner_pattern"},slot:9},{item:{count:1,id:"minecraft:enchanted_book"},slot:10},{item:{count:1,id:"minecraft:blue_stained_glass_pane"},slot:11},{item:{count:1,id:"minecraft:cornflower"},slot:12},{item:{count:1,id:"minecraft:netherite_axe"},slot:13},{item:{count:1,id:"minecraft:cornflower"},slot:14},{item:{count:1,id:"minecraft:blue_stained_glass_pane"},slot:15},{item:{count:1,id:"minecraft:enchanted_book"},slot:16},{item:{count:1,id:"minecraft:flower_banner_pattern"},slot:17},{item:{count:1,id:"minecraft:blue_stained_glass_pane"},slot:18},{item:{count:1,id:"minecraft:blue_stained_glass_pane"},slot:19},{item:{count:1,id:"minecraft:blue_ice"},slot:20},{item:{count:1,id:"minecraft:blue_ice"},slot:21},{item:{count:1,id:"minecraft:blue_ice"},slot:22},{item:{count:1,id:"minecraft:blue_ice"},slot:23},{item:{count:1,id:"minecraft:blue_ice"},slot:24},{item:{count:1,id:"minecraft:blue_stained_glass_pane"},slot:25},{item:{count:1,id:"minecraft:blue_stained_glass_pane"},slot:26}]'
+    schema_version: 1
+среднийджамшут_5:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:brown_shulker_box
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Награда",underlined:0b}],text:""}'
+    schema_version: 1
+тяжелыйджамшут_1:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:pink_shulker_box
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Награда",underlined:0b}],text:""}'
+    schema_version: 1
+тяжелыйджамшут_2:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:lime_shulker_box
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Награда",underlined:0b}],text:""}'
+      minecraft:container: '[{item:{count:1,id:"minecraft:lime_stained_glass_pane"},slot:0},{item:{count:1,id:"minecraft:lime_stained_glass_pane"},slot:1},{item:{count:1,id:"minecraft:lime_concrete"},slot:2},{item:{count:1,id:"minecraft:lime_concrete"},slot:3},{item:{count:1,id:"minecraft:lime_bed"},slot:4},{item:{count:1,id:"minecraft:lime_concrete"},slot:5},{item:{count:1,id:"minecraft:lime_concrete"},slot:6},{item:{count:1,id:"minecraft:lime_stained_glass_pane"},slot:7},{item:{count:1,id:"minecraft:lime_stained_glass_pane"},slot:8},{item:{count:1,id:"minecraft:heart_of_the_sea"},slot:9},{item:{count:1,id:"minecraft:trident"},slot:10},{item:{count:1,id:"minecraft:lime_stained_glass_pane"},slot:11},{item:{count:1,id:"minecraft:lime_stained_glass_pane"},slot:15},{item:{count:1,id:"minecraft:trident"},slot:16},{item:{count:1,id:"minecraft:heart_of_the_sea"},slot:17},{item:{count:1,id:"minecraft:lime_stained_glass_pane"},slot:18},{item:{count:1,id:"minecraft:lime_stained_glass_pane"},slot:19},{item:{count:1,id:"minecraft:lime_concrete"},slot:20},{item:{count:1,id:"minecraft:lime_concrete"},slot:21},{item:{count:1,id:"minecraft:lime_bed"},slot:22},{item:{count:1,id:"minecraft:lime_concrete"},slot:23},{item:{count:1,id:"minecraft:lime_concrete"},slot:24},{item:{count:1,id:"minecraft:lime_stained_glass_pane"},slot:25},{item:{count:1,id:"minecraft:lime_stained_glass_pane"},slot:26}]'
+    schema_version: 1
+тяжелыйджамшут_3:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:yellow_shulker_box
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Награда",underlined:0b}],text:""}'
+      minecraft:container: '[{item:{count:1,id:"minecraft:yellow_stained_glass_pane"},slot:0},{item:{count:1,id:"minecraft:yellow_stained_glass_pane"},slot:1},{item:{count:1,id:"minecraft:yellow_banner"},slot:2},{item:{count:1,id:"minecraft:yellow_banner"},slot:3},{item:{count:1,id:"minecraft:yellow_dye"},slot:4},{item:{count:1,id:"minecraft:yellow_banner"},slot:5},{item:{count:1,id:"minecraft:yellow_banner"},slot:6},{item:{count:1,id:"minecraft:yellow_stained_glass_pane"},slot:7},{item:{count:1,id:"minecraft:yellow_stained_glass_pane"},slot:8},{item:{count:1,id:"minecraft:zombified_piglin_spawn_egg"},slot:9},{item:{count:1,id:"minecraft:spawner"},slot:10},{item:{count:1,id:"minecraft:yellow_stained_glass_pane"},slot:11},{item:{count:1,id:"minecraft:popped_chorus_fruit"},slot:12},{item:{count:1,id:"minecraft:creeper_spawn_egg"},slot:13},{item:{count:1,id:"minecraft:gold_nugget"},slot:14},{item:{count:1,id:"minecraft:yellow_stained_glass_pane"},slot:15},{item:{count:1,id:"minecraft:spawner"},slot:16},{item:{count:1,id:"minecraft:zombified_piglin_spawn_egg"},slot:17},{item:{count:1,id:"minecraft:yellow_stained_glass_pane"},slot:18},{item:{count:1,id:"minecraft:yellow_stained_glass_pane"},slot:19},{item:{count:1,id:"minecraft:yellow_banner"},slot:20},{item:{count:1,id:"minecraft:yellow_banner"},slot:21},{item:{count:1,id:"minecraft:yellow_dye"},slot:22},{item:{count:1,id:"minecraft:yellow_banner"},slot:23},{item:{count:1,id:"minecraft:yellow_banner"},slot:24},{item:{count:1,id:"minecraft:yellow_stained_glass_pane"},slot:25},{item:{count:1,id:"minecraft:yellow_stained_glass_pane"},slot:26}]'
+    schema_version: 1
+тяжелыйджамшут_4:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:light_blue_shulker_box
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Награда",underlined:0b}],text:""}'
+    schema_version: 1
+тяжелыйджамшут_5:
+  items:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:magenta_shulker_box
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Награда",underlined:0b}],text:""}'
+      minecraft:container: '[{item:{count:1,id:"minecraft:magenta_stained_glass_pane"},slot:0},{item:{count:1,id:"minecraft:magenta_stained_glass_pane"},slot:1},{item:{count:1,id:"minecraft:golden_apple"},slot:2},{item:{count:1,id:"minecraft:magenta_dye"},slot:3},{item:{count:1,id:"minecraft:magenta_banner"},slot:4},{item:{count:1,id:"minecraft:magenta_dye"},slot:5},{item:{count:1,id:"minecraft:golden_apple"},slot:6},{item:{count:1,id:"minecraft:magenta_stained_glass_pane"},slot:7},{item:{count:1,id:"minecraft:magenta_stained_glass_pane"},slot:8},{item:{count:1,id:"minecraft:enchanted_golden_apple"},slot:9},{item:{count:1,id:"minecraft:clay_ball"},slot:10},{item:{count:1,id:"minecraft:magenta_stained_glass_pane"},slot:11},{item:{count:1,id:"minecraft:netherite_sword"},slot:12},{item:{count:1,id:"minecraft:elytra"},slot:13},{item:{count:1,id:"minecraft:heart_of_the_sea"},slot:14},{item:{count:1,id:"minecraft:magenta_stained_glass_pane"},slot:15},{item:{count:1,id:"minecraft:spawner"},slot:16},{item:{count:1,id:"minecraft:enchanted_golden_apple"},slot:17},{item:{count:1,id:"minecraft:magenta_stained_glass_pane"},slot:18},{item:{count:1,id:"minecraft:magenta_stained_glass_pane"},slot:19},{item:{count:1,id:"minecraft:golden_apple"},slot:20},{item:{count:1,id:"minecraft:magenta_dye"},slot:21},{item:{count:1,id:"minecraft:magenta_banner"},slot:22},{item:{count:1,id:"minecraft:magenta_dye"},slot:23},{item:{count:1,id:"minecraft:golden_apple"},slot:24},{item:{count:1,id:"minecraft:magenta_stained_glass_pane"},slot:25},{item:{count:1,id:"minecraft:magenta_stained_glass_pane"},slot:26}]'
+    schema_version: 1
+mace: {}
+chiter: {}

@@ -1,0 +1,41 @@
+reward-items:
+  unlock-reward:
+    name: '&b&lНаграда:'
+    lore:
+    - '&aНажмите, чтобы получить награду'
+  already-given:
+    name: '&b&lНаграда:'
+    lore:
+    - '&aВы уже получили награду'
+  locked-reward:
+    name: '&b&lНаграда:'
+    lore:
+    - '&cПройди этап, чтобы забрать награду'
+rewards:
+  '1':
+    material: PINK_SHULKER_BOX
+    commands:
+    - ik give джамшут_1 %player%
+    slot: 8
+  '2':
+    material: LIME_SHULKER_BOX
+    commands:
+    - ik give джамшут_2 %player%
+    slot: 17
+  '3':
+    material: YELLOW_SHULKER_BOX
+    commands:
+    - ik give джамшут_3 %player%
+    slot: 26
+  '4':
+    material: LIGHT_BLUE_SHULKER_BOX
+    commands:
+    - ik give джамшут_4 %player%
+    slot: 35
+  '5':
+    material: RED_SHULKER_BOX
+    commands:
+    - cases give %player% djamshut 3
+    - ik give джамшут_5 %player%
+    - lp user %player% permission set quest.easy.complete
+    slot: 44

@@ -1,0 +1,17 @@
+groups:
+  dragon:
+    titan: 1
+    hero: 2
+weight:
+  hero: 0
+  titan: 1
+  dragon: 2
+grant commands:
+  - lp user %player% parent add %group%
+  - bc &x&F&8&B&E&F&B%granter% &fвыдал игроку&x&F&8&B&E&F&B %player% &fпривилегию &x&F&8&B&E&F&B%group%
+messages:
+  help: '&x&F&8&B&E&F&BГрант &7» &f/grant &x&F&8&B&E&F&B[ник] [группа]&f!'
+  player not found: '&cИгрок не найден!'
+  cant grant: '&cВы не можете выдавать эту группу!'
+  grant limit: '&cВы выдали максимально возможное количество этой группы!'
+  higher weight: '&cУ игрока уже есть донат лучше!'

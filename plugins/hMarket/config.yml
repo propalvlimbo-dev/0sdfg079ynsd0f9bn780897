@@ -1,0 +1,138 @@
+Menu:
+  size: 54
+  name: '&fꈁꀀꈂꌗꈂꀁꈃ&0ꄙ'
+
+next:
+  name: '&x&F&8&B&E&F&BСледующая страница'
+  material: STRUCTURE_VOID
+  model: 10003
+  slot: 53
+
+my-osnova:
+  name: '&x&F&8&B&E&F&BВаши товары'
+  material: STRUCTURE_VOID
+  lore:
+    - '&f'
+    - '&x&F&8&B&E&F&BНажмите, чтобы просмотреть свои товары'
+  model: 10004
+  slot: 49
+
+back:
+  name: '&x&F&8&B&E&F&BПредыдущая страница'
+  material: STRUCTURE_VOID
+  model: 10002
+  slot: 45
+
+min: 1
+max: 1000000
+sell-arrow: false
+sell-potions: false
+sell-enchant: false
+sell-armor: false
+sell-guns: false
+sell-eggs: false
+
+blacklist:
+  - PLAYER_HEAD
+  - TOTEM_OF_UNDYING
+  - SHIELD
+  - TRIDENT
+  - BOW
+  - CROSSBOW
+
+reload: 10
+
+primer-view-items-market-osnova-gui-ksta-plugin-by-hokokrtet:
+  lore:
+    - '&7Количество предметов на маркете: &x&F&8&B&E&F&B<skokapredmetovetogotipa>'
+    - '&f'
+    - '&7Минимальная цена: &x&F&8&B&E&F&B<minsymma>'
+    - '&7Средняя цена: &x&F&8&B&E&F&B<srednayasymma>'
+    - '&f'
+    - '&cНажмите, чтобы перейти к покупке'
+
+Menu-Buy:
+  size: 54
+  name: '&fꈁꀀꈂꌉꈂꀁꈃ&0ꄙ'
+
+back-min:
+  name: '&x&F&8&B&E&F&BКупить меньше'
+  lore:
+    - '&f'
+    - '&7ЛКМ убрать 1'
+    - '&7SHIFT+ЛКМ убрать 16'
+  material: STRUCTURE_VOID
+  model: 10002
+  slot: 20
+
+next-max:
+  name: '&x&F&8&B&E&F&BКупить больше'
+  lore:
+    - '&f'
+    - '&7ЛКМ добавить 1'
+    - '&7SHIFT+ЛКМ добавить 16'
+  material: STRUCTURE_VOID
+  model: 10003
+  slot: 24
+
+primer-buy-viev-v-etom-menu:
+  slot: 22
+  lore:
+    - '&f'
+    - '&7▪ &x&F&8&B&E&F&B<skokatovara> &7<tovarilirovara> по &x&F&8&B&E&F&B<skoka> &7= &x&F&8&B&E&F&B<skoka2>'
+    - '&f'
+    - '&7Итого: &x&F&8&B&E&F&B<skoka2>'
+    - '&f'
+    - '<proverkasrestv>'
+    - '&f'
+
+primer-zagryzka:
+  lore:
+    - '&f'
+    - '&7Загрузка...'
+    - '&f'
+
+Menu-My:
+  size: 54
+  name: '&fꈁꀀꈂꌗꈂꀁꈃ&0ꄙ'
+
+my-menu-my:
+  name: '&x&F&8&B&E&F&BРынок'
+  material: STRUCTURE_VOID
+  lore:
+    - '&f'
+    - '&x&F&8&B&E&F&BНажмите, чтобы просмотреть товары рынка'
+  model: 10004
+  slot: 49
+
+# Лор для предметов в меню Мои Товары (Сделал под твой скриншот)
+primer-view-items-my-menu:
+  lore:
+    - '&7Цена за предмет: &x&F&8&B&E&F&B<price>'
+    - '&7Количество: &x&F&8&B&E&F&B<amount>'
+    - ''
+    - '&cНажмите, чтобы снять с продажи'
+
+message:
+  message:
+    reload: '&x&F&8&B&E&F&BМаркет &8» &aКонфиг перезагружен'
+    Players-Only: '&x&F&8&B&E&F&BМаркет &8» &cИспользовать с консоли нельзя'
+    Need-More-Money: '&x&F&8&B&E&F&BМаркет &8» &cУ вас недостаточно денег для покупки!'
+    Inventory-Full: '&x&F&8&B&E&F&BМаркет &8» &cВ вашем инвентаре недостаточно места! Предметы выпали рядом с вами.'
+    Doesnt-Have-Item-In-Hand: '&x&F&8&B&E&F&BМаркет &8» &cУ вас нет предмета в руке.'
+    Error-Selling-Items: '&x&F&8&B&E&F&BМаркет &8» &cНеправильная цена'
+    back: '&x&F&8&B&E&F&BМаркет &8» &fВы сняли товары с продажи.' # нужно сделать
+    Error-Selling2-Items: '&x&F&8&B&E&F&BМаркет &8» &cНеверный формат цены. Используйте целое число.'
+    Limit-Item: '&x&F&8&B&E&F&BМаркет &8» &cНедостаточно предметов на маркете'
+    Blacklist-Items: '&x&F&8&B&E&F&BМаркет &8» &cНельзя выставлять на продажу уникальные или модифицированные предметы.'
+    Sell-Item:
+      - '&x&F&8&B&E&F&BМаркет &8» &fВаш предмет выставлен на продажу за &x&F&8&B&E&F&B<vaultsell> &fмонет за штуку.'
+      - '&x&F&8&B&E&F&BМаркет &8» &fОбщая стоимость: &x&F&8&B&E&F&B<vaultosnova> &fмонет.'
+    Buy-Item: '&x&F&8&B&E&F&BМаркет &8» &fВы успешно купили &x&F&8&B&E&F&B<skokakypil> &fпредметов за &x&F&8&B&E&F&B<skokassymma> &fмонет.'
+    You-Sell: '&x&F&8&B&E&F&BМаркет &8» &7Вы получили  &a<vaultyougive> &7монет с маркета!'
+    Ah-Usage:
+      - '&x&F&8&B&E&F&BМаркет &8» &cИспользование:'
+      - '&x&F&8&B&E&F&BМаркет &8» &x&F&8&B&E&F&B/market &7- Открыть маркет'
+      - '&x&F&8&B&E&F&BМаркет &8» &x&F&8&B&E&F&B/market my &7- Посмотреть свои товары'
+      - '&x&F&8&B&E&F&BМаркет &8» &x&F&8&B&E&F&B/market sell (цена за штуку) &7- Выставить предмет на продажу'
+      - '&x&F&8&B&E&F&BМаркет &8» &x&F&8&B&E&F&B/market search <название> &7Найти предмет'

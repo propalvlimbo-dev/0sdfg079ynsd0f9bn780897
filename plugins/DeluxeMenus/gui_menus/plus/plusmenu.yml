@@ -1,0 +1,107 @@
+menu_title: '§fꈁꀀꈂꌦꈂꀁ§fꈃꄢ'
+open_command: 
+- plus
+- plusmenu
+size: 54
+items:
+  'clock':
+    material: clock
+    slot: 4
+    display_name: '&#FAD8FC&lИнформация'
+    lore:
+      - ''
+      - ' &#FFFFFFПодписка &#F8BEFBElytrixPlus &#FFFFFF- уникальная возможность'
+      - ' &#FFFFFFматериально &#F8BEFBпомочь&#FFFFFF проекту и получить много'
+      - ' &#F8BEFBкрутых плюшек &#FFFFFFв обмен.'
+      - ''
+      - ' &#FFFFFFВсем подписчикам представляется &#F8BEFB5 уникальных'
+      - ' &#FFFFFFбонусов, каждый из которых можно &#F8BEFBдокупать по'
+      - ' &#FFFFFFцене &#F8BEFBниже&#FFFFFF, чем в магазине.'
+      - ' &#F8BEFBОзнакомиться &#FFFFFFсо списком плюшек и докупить их'
+      - ' &#FFFFFFможно по предметам ниже.'
+      - ''
+      - ' &#FFFFFFОплата за подписку &#F8BEFBежемесячная, &#FFFFFFвозможности'
+      - ' &#FFFFFFплюшек &#F8BEFBсбрасываются &#FFFFFFдо исходных &#F8BEFBкаждый вайп.'
+      - ' &#FFFFFFПриобрести подписку можно в меню &#F8BEFBза рилики'
+      - ' &#FFFFFFнажав по предмету &#F8BEFBсправа &#AAAAAA(&#FAD8FC&lОформить подписку&#AAAAAA)'
+      - ''
+    model_data: 9280100010
+    
+  'name_tag':
+    material: name_tag
+    slot: 11
+    display_name: '&#FAD8FC&lСтатус подписки'
+    lore:
+      - ''
+      - '&#FFFFFF Статус подписки: &#FF5555Неактивна'
+      - ''
+      - '&#FFFFFFОформить подписку можно за &#F8BEFBрилики,'
+      - '&#FFFFFFиспользуя иконку справа'
+    
+  'book':
+    material: book
+    slot: 15
+    display_name: '&#FAD8FC&lОформить подписку'
+    lore:
+      - ''
+      - '&#FFFFFFДействует &#F8BEFBнесколько &#FFFFFFпериодов'
+      - '&#FFFFFFподписки &#F8BEFBElytrixPlus'
+      - ''
+      - '&#F8BEFBНажмите &#FFFFFFдля просмотра &#F8BEFBподробной'
+      - '&#F8BEFBинформации &#FFFFFFи оформления подписки'
+    click_commands:
+      - '[player] plusbuys'
+  'note_block':
+    material: note_block
+    slot: 29
+    display_name: '&#FAD8FC&l 2 кейса с вещами'
+    lore:
+      - ''
+      - ' &#FFFFFFВсе подписчики &#F8BEFBElytrixPlus &#FFFFFFполучают'
+      - ' &#F8BEFB2 бесплатных &#FFFFFFкейса с вещами каждый'
+      - ' &#FFFFFFвайп &#AAAAAA(±каждый месяц)'
+      - ''
+      - ' &#FFFFFFТак же, подписчики &#F8BEFBElytrixPlus &#FFFFFFмогут'
+      - ' &#F8BEFBдокупать &#FFFFFFкейсы с вещами по более'
+      - ' &#FFFFFFнизкой цене: &#FAD8FC&l15 &#FF5555&m99&#FAD8FC рилликов'
+      - ''
+      - ' &#FF5555Вы &#FF5555&lне являетесь&#FF5555 подписчиком ElytrixPlus'
+      - ' &#FF5555и не можете получить бесплатные кейсы.'
+      - ''
+    
+  'blaze_powder':
+    material: blaze_powder
+    slot: 30
+    display_name: '&#FAD8FC&l Скидка 50% на создание клана'
+    lore:
+      - ''
+      - ' &#FFFFFFВсем подписчикам &#F8BEFBElytrixPlus &#FFFFFFдаётся'
+      - ' &#FFFFFFскидка &#F8BEFB50% &#FFFFFFна создание одного'
+      - ' &#F8BEFBсобственного клана'
+      - ''
+      - ' &#FFFFFFКоманда для создания: &#FAD8FC&l/clan create'
+      - ''
+    
+  'compass':
+    material: compass
+    slot: 32
+    display_name: '&#FAD8FC&l Создание варпов'
+    lore:
+      - ''
+      - ' &#FFFFFFВсем подписчикам &#F8BEFBElytrixPlus &#FFFFFFдаётся'
+      - ' &#FFFFFFправо на создание'
+      - ' &#F8BEFBсобственного варпа'
+      - ''
+      - ' &#FFFFFFКоманда для создания: &#FAD8FC&l/setwarp'
+      - ''
+    
+  'writable_book':
+    material: writable_book
+    slot: 33
+    display_name: '&#FAD8FC&l Дополнительные награды'
+    lore:
+      - ''
+      - ' &#FFFFFFВсем подписчикам &#F8BEFBElytrixPlus &#FFFFFFдоступны'
+      - ' &#FFFFFFдополнительные награды боевого пропуска'
+      - ''
+    

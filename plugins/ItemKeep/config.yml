@@ -1,0 +1,18 @@
+usage: |-
+  §x§F§8§B§E§F§BItemKeep §7» §fДоступные команды:
+  §7» §x§F§8§B§E§F§B/ik create §x§F§A§D§8§F§C<название>§f - создать хранилище.
+  §7» §x§F§8§B§E§F§B/ik edit §x§F§A§D§8§F§C<название>§f - редактировать хранилище.
+  §7» §x§F§8§B§E§F§B/ik give §x§F§A§D§8§F§C<название> <игрок>§f - выдать содержимое хранилища.
+  §7» §x§F§8§B§E§F§B/ik delete §x§F§A§D§8§F§C<название>§f - удалить хранилище.
+create_usage: "§x§F§8§B§E§F§BItemKeep §7» §fИспользование: §x§F§8§B§E§F§B/ik create §x§F§A§D§8§F§C<название>"
+edit_usage: "§x§F§8§B§E§F§BItemKeep §7» §fИспользование: §x§F§8§B§E§F§B/ik edit §x§F§A§D§8§F§C<название>"
+give_usage: "§x§F§8§B§E§F§BItemKeep §7» §fИспользование: §x§F§8§B§E§F§B/ik give §x§F§A§D§8§F§C<название> <игрок>"
+delete_usage: "§x§F§8§B§E§F§BItemKeep §7» §fИспользование: §x§F§8§B§E§F§B/ik delete §x§F§A§D§8§F§C<название>"
+item_exists: "§x§F§8§B§E§F§BItemKeep §7» §cПредмет с таким названием уже существует."
+item_not_exists: "§x§F§8§B§E§F§BItemKeep §7» §cПредмет с таким названием не существует."
+only_players: "§x§F§8§B§E§F§BItemKeep §7» §cТолько игроки могут использовать эту команду."
+player_not_found: "§x§F§8§B§E§F§BItemKeep §7» §cИгрок не найден."
+item_created: "§x§F§8§B§E§F§BItemKeep §7» §aПредмет {name} создан."
+item_saved: "§x§F§8§B§E§F§BItemKeep §7» §a{name} сохранен."
+item_given: "§x§F§8§B§E§F§BItemKeep §7» §aПредмет {name} выдан игроку {player}."
+item_deleted: "§x§F§8§B§E§F§BItemKeep §7» §fПредмет {name} удален."

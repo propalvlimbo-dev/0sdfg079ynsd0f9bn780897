@@ -1,0 +1,149 @@
+default-lvl-where-no-rewards: 0
+default-exp: 0
+min-lvl-for-reward: 1
+update-rewards: true
+update-every: 60 # в минутах
+
+exp-stngs:
+  time: 10
+  exp: 10
+
+exp-gived:
+  text:
+    - "&x&F&8&B&E&F&B&lГроу-Гарден &7» &fПолучен опыт: &x&F&A&D&8&F&C%exp-gived%"
+  enable: true
+
+levels-stngs:
+  lvl_1: 60
+  lvl_2: 120
+  lvl_3: 180
+  lvl_4: 240
+  lvl_5: 300
+  lvl_6: 360
+  lvl_7: 420
+  lvl_8: 480
+  lvl_9: 540
+  lvl_10: 600
+  lvl_11: 660
+  lvl_12: 720
+  lvl_13: 780
+  lvl_14: 840
+  lvl_15: 900
+  lvl_16: 960
+  lvl_17: 1020
+  lvl_18: 1080
+  lvl_19: 1140
+  lvl_20: 1200
+dzamsut-permission:
+  enable: true
+  permission: "dzamsut.yes" # Право, которое нужно получить, чтобы Гроу-Гарден работал
+  op-yes: true # Игнорировать проверку для операторов сервера
+Menus:
+  edit-menu:
+    title: "&0Меню редактора предметов"
+    size: 54
+  grougarden-menu:
+    title: "§fꈁꀀꈂꍉꈂꀁ§0ꈃꄥ&r"
+    size: 54
+
+items:
+  info:
+    name: "&x&F&8&B&E&F&B&lГроу Гарден Блок"
+    material: STRUCTURE_VOID
+    modeldata: 10001
+    slot: 4
+    lore:
+      - "&7Играя на сервере, вы получаете опыт"
+      - "&7за отыгранное время."
+      - "&7Чем больше опыта, тем лучше награда!"
+      - ""
+      - "&f✦ &aВаш опыт: &x&F&A&D&8&F&C%exp%"
+      - "&f✦ &aУровень: &x&F&8&B&E&F&B%level% &7(&x&F&A&D&8&F&C%next_lvl_exp% &7опыта)"
+      - ""
+      - "&7▸ Выберите один из трех предметов"
+      - "&7▸ После получения уровень сбрасывается"
+      - ""
+      - "&x&F&8&B&E&F&B⚡ &f&lBattlePass &x&F&8&B&E&F&Bквесты дают бонусный опыт!"
+      - ""
+      - "&d⟲ &fАссортимент обновляется каждый час"
+      - "&d⟲ &fили при достижении нового уровня"
+
+rewards:
+  no-rewards:
+    name: "&c&lНет доступных наград"
+    material: BARRIER
+    lore:
+      - ""
+      - "&7На данный момент нет подходящих"
+      - "&7наград для вашего уровня опыта"
+      - ""
+      - "&d⟲ &fНаграды обновляются каждый час"
+      - "&d⟲ &fили при достижении нового уровня"
+      - ""
+    message-no-reward: "&c&l⚠ Нет доступных наград!"
+  yes-rewards:
+    random: true
+    random-amounth: true
+    message-yes-reward:
+      text: "&a&l⚠ Вы получили награду!"
+      enable: false
+    slots-for-rewards:
+      - 30
+      - 31
+      - 32
+    lore:
+      - "&bНажмите, чтобы забрать награду"
+
+Messages:
+  dzamsut-error-msg:
+    text:
+      - "&x&F&8&B&E&F&B&lГроу-Гарден &r&7» &r&cНеобходимо пройти &r&2&lДжамшута&r"
+    enable: true
+  admin-give-exp-msg:
+    text:
+      - "&x&F&8&B&E&F&B&lВы выдали игроку %player% %amount% опыта!"
+    enable: true
+  player-got-exp-msg:
+    text:
+      - "&x&F&8&B&E&F&B&lВам выдано %amount% опыта!"
+    enable: true
+  admin-set-exp-msg:
+    text:
+      - "&x&F&8&B&E&F&B&lВы установили игроку %player% %amount% опыта!"
+    enable: true
+  player-set-exp-msg:
+    text:
+      - "&x&F&8&B&E&F&B&lВам установлено %amount% опыта!"
+    enable: true
+  player-not-found-msg:
+    text:
+      - "&cИгрок %player% не найден!"
+    enable: true
+  no-permission-msg:
+    text:
+      - "&cНет прав!"
+    enable: true
+  invalid-amount-msg:
+    text:
+      - "&cНекорректное число: %amount%"
+    enable: true
+  unknown-command-msg:
+    text:
+      - "&cНеизвестная команда!"
+    enable: true
+  dzamsut-error-msg:
+    text:
+      - "&x&F&8&B&E&F&B&lГроу-Гарден &r&7» &r&cНеобходимо пройти &r&2&lДжамшута&r"
+    enable: true
+  no-command-msg:
+    text:
+      - "&cИспользуйте: /growgarden open | admin edit | admin give exp <игрок> <кол-во> | admin set exp <игрок> <кол-во>"
+    enable: true
+  console-no-open-msg:
+    text:
+      - "&cОткрыть меню можно только игроку."
+    enable: true
+  console-no-editor-msg:
+    text:
+      - "&cМеню редактора можно открыть только игроку."
+    enable: true

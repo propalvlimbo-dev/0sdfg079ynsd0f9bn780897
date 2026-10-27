@@ -1,0 +1,147 @@
+menu_title: '§fꈁꀀꈂꍔꈂꀁ§fꈃꄀ'
+open_command: menu
+size: 54
+items:
+  'structure_void':
+    material: STRUCTURE_VOID
+    slots:
+    - 0
+    - 1
+    - 2
+    - 9
+    - 10
+    - 11
+    - 18
+    - 19
+    - 20
+    - 27
+    - 28
+    - 29
+    display_name: '&#FAD8FC&lДОНАТЫ'
+    lore:
+      - ''
+      - '&#AAAAAAВсе привилегии сервера:'
+      - '&#AAAAAAвозможности, киты и префиксы'
+      - ''
+      - '&#555555 &#FFFFFFВаш баланс: &#FAD8FC%playerpoints_points_formatted% &#FFFFFFꐃ'
+      - ''
+      - '&#F8BEFBНажми, чтобы открыть'
+    click_commands:
+      - '[player] donate'  
+  'structure_void_1':
+    material: STRUCTURE_VOID
+    slots:
+    - 3
+    - 4
+    - 5
+    - 12
+    - 13
+    - 14
+    display_name: '&#FAD8FC&lКРАФТЫ'
+    lore:
+      - ''
+      - '&#AAAAAAВсе рецепты сервера в одном'
+      - '&#AAAAAAместе: от базовых до уникальных'
+      - ''
+      - '&#F8BEFBНажми, чтобы открыть'
+    click_commands:
+      - '[player] crafts'  
+  'structure_void_2':
+    material: STRUCTURE_VOID
+    slots:
+    - 6
+    - 7
+    - 8
+    - 15
+    - 16
+    - 17
+    display_name: '&#FAD8FC&lМАРКЕТ'
+    lore:
+      - ''
+      - '&#AAAAAAТорговая площадка игроков:'
+      - '&#AAAAAAпокупай и продавай что угодно'
+      - ''
+      - '&#F8BEFBНажми, чтобы открыть'
+    click_commands:
+      - '[player] market'  
+  'structure_void_3':
+    material: structure_void
+    slots:
+    - 21
+    - 22
+    - 23
+    - 30
+    - 31
+    - 32
+    display_name: '&#FAD8FC&lДОНАТ МАГАЗИН'
+    lore:
+      - ''
+      - '&#AAAAAAКиты, спавнеры, ауры, зелья'
+      - '&#AAAAAAи всё остальное за рилики'
+      - ''
+      - '&#555555 &#FFFFFFВаш баланс: &#FAD8FC%playerpoints_points_formatted% &#FFFFFFꐃ'
+      - ''
+      - '&#F8BEFBНажми, чтобы открыть'
+    click_commands:
+      - '[player] shop'  
+  'structure_void_4':
+    material: structure_void
+    slots:
+    - 24
+    - 25
+    - 26
+    - 33
+    - 34
+    - 35
+    display_name: '&#FAD8FC&lАУКЦИОН'
+    lore:
+      - ''
+      - '&#AAAAAAВыставляй предметы на продажу'
+      - '&#AAAAAAи покупай лоты других игроков'
+      - ''
+      - '&#F8BEFBНажми, чтобы открыть'
+    click_commands:
+      - '[player] ah'  
+  'structure_void_5':
+    material: structure_void
+    slots:
+    - 36
+    - 37
+    - 38
+    - 45
+    - 46
+    - 47
+    display_name: '&#FAD8FC&lРАБОТЫ'
+    lore:
+      - ''
+      - '&#AAAAAAКопай, руби, фарми и лови рыбу'
+      - '&#AAAAAAза это платят рилики'
+      - ''
+      - '&#F8BEFBНажми, чтобы открыть'
+    click_commands:
+      - '[player] job'  
+  'structure_void_6':
+    material: structure_void
+    slots:
+    - 39
+    - 40
+    - 41
+    - 42
+    - 43
+    - 44
+    - 48
+    - 49
+    - 50
+    - 51
+    - 52
+    - 53
+    display_name: '&#FAD8FC&lПУТЕВОДИТЕЛЬ'
+    lore:
+      - ''
+      - '&#AAAAAAНе знаешь с чего начать?'
+      - '&#AAAAAAЗдесь собрано всё об устройстве'
+      - '&#AAAAAAсервера, механиках и событиях'
+      - ''
+      - '&#F8BEFBНажми, чтобы открыть'
+    click_commands:
+      - '[player] gps'  

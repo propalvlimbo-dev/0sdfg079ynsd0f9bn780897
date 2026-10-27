@@ -1,0 +1,78 @@
+menu-slot: 3
+cooldown-hours: 24
+permission: quest.alch
+chain: alch
+result:
+  ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: TIPPED_ARROW
+  amount: 2
+  meta:
+    ==: ItemMeta
+    meta-type: POTION
+    display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"white","text":"Клирик"}],"text":""}'
+    lore:
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"Очищает
+      все эффекты c врага"}],"text":""}'
+    ItemFlags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    - HIDE_DESTROYS
+    - HIDE_PLACED_ON
+    - HIDE_POTION_EFFECTS
+    - HIDE_DYE
+    PublicBukkitValues:
+      minecraft:clear_arrow: CLEAR_ARROW
+    custom-color:
+      ==: Color
+      RED: 255
+      BLUE: 255
+      GREEN: 255
+ingredients:
+  '0':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: ARROW
+  '1':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHER_STAR
+  '2':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BUBBLE_CORAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Осколок Энда"}],"text":""}'
+      custom-model-data: 1001
+  '3':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: FEATHER
+  '4':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BEACON
+  '5':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: FEATHER
+  '6':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BUBBLE_CORAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Осколок Энда"}],"text":""}'
+      custom-model-data: 1001
+  '7':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHER_STAR
+  '8':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: ARROW

@@ -1,0 +1,80 @@
+MSO_SkeletonOverlord:
+  Type: SPIDER
+  Display: '&cSkeleton Overlord'
+  Damage: 12
+  Health: 2400
+  Drops:
+  - IRON_INGOT 16to32 1
+  - DIAMOND 8to16 1
+  - ANCIENT_DEBRIS 1to3 1
+  BossBar:
+    Enabled: true
+    Title: "&c&lSkeleton Overlord"
+    Color: RED 
+    Range: 64
+    Style: SEGEMENTED_20
+  Options:
+    Despawn: false
+    Silent: true
+    ShowName: false
+    MovementSpeed: 0.24
+    KnockbackResistance: 1
+    FollowRange: 32
+    MaxCombatDistance: 64
+    PreventOtherDrops: true
+    PreventRandomEquipment: true
+    PreventItemPickup: true
+  ThreatTable:
+    Enabled: true
+  AIGoalSelectors:
+  - clear
+  - meleeattack
+  AITargetSelectors:
+  - clear
+  - player
+  - attacker
+  Skills:
+  - skill:MSO_SkeletonOverlordSpawn @self ~onSpawn
+  - skill:MSO_SkeletonOverlordEnterCombat @self ~onEnterCombat
+  - skill:MSO_SkeletonOverlordLeaveCombat @self ~onDropCombat
+  - skill:MSO_SkeletonOverlordDamaged @self ~onDamaged
+  - skill:MSO_SkeletonOverlordTick @self ~onTimer:20
+  - skill:MSO_SkeletonOverlordMelee{sync=true} @trigger ~onAttack
+  
+MSO_SkeletonOverlord-Spike:
+  Type: ARMOR_STAND
+  Options:
+    Invisible: true
+    HasGravity: false
+    Collidable: false
+  Skills:
+  - skill:MSO_SkeletonOverlord_SpikeSpawn @self ~onSpawn
+  - skill:MSO_SkeletonOverlord_SpikeTick @self ~onTimer:10
+  - skill:MSO_SkeletonOverlord_SpikeDamaged @self ~onDamaged
+  
+MSO_SkeletonOverlord_Fireball:
+  Type: ARMOR_STAND
+  Options:
+    Invisible: true
+    HasGravity: false
+    Collidable: false
+  Skills:
+  - model{m=mso_vfx_spellball;n=false} @self ~onSpawn
+  
+MSO_SkeletonOverlord_FireballBlue:
+  Type: ARMOR_STAND
+  Options:
+    Invisible: true
+    HasGravity: false
+    Collidable: false
+  Skills:
+  - model{m=mso_vfx_soulfireball;n=false} @self ~onSpawn
+  
+MSO_SkeletonOverlord_Casting:
+  Type: ARMOR_STAND
+  Options:
+    Invisible: true
+    HasGravity: false
+    Collidable: false
+  Skills:
+  - model{m=mso_vfx_vortexspell;n=false} @self ~onSpawn

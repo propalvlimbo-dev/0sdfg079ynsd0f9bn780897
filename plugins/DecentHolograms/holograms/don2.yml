@@ -1,0 +1,42 @@
+location: world_spawn:21,500:74,000:28,500
+enabled: true
+display-range: 48
+update-range: 48
+update-interval: 20
+facing: 0.0
+down-origin: false
+pages:
+- lines:
+  - content: '&fДонат на сервере &#F8BEFB&l%elytrix_nameserver%'
+    height: 0.5
+  - content: '&7Цены на донат:'
+    height: 0.3
+  - content: '&fꔄ &f&l39p'
+    height: 0.3
+  - content: '&fꔈ &f&l89p'
+    height: 0.3
+  - content: '&fꔒ &f&l129p'
+    height: 0.3
+  - content: '&fꔖ &f&l289p'
+    height: 0.3
+  - content: '&fꔠ &f&l589p'
+    height: 0.3
+  - content: '&fꔤ &f&l999p'
+    height: 0.3
+  - content: '&fꔨ &f&l1899p'
+    height: 0.3
+  - content: '&fꕠ &f&l6666p'
+    height: 0.3
+  - content: '&fꕁ &f&l4444p'
+    height: 0.3
+  - content: '&fꕉ &f&l2126p'
+    height: 0.6
+  - content: '&7[&#F8BEFB3 кейса с донатом&7]&7 - &f&l119р'
+    height: 0.3
+  - content: '&7[&#F8BEFB10 кейсов с донатом&7]&7 - &f&l249р'
+    height: 0.3
+  - content: '&7[&#F8BEFB25 кейсов с донатом&7]&7 - &f&l399р'
+    height: 0.6
+  - content: '&7Покупка на сайте: &#F8BEFB&l%elytrix_site%&#F8BEFB&l'
+    height: 0.3
+  actions: {}

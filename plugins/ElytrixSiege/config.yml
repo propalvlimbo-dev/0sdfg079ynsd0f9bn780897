@@ -1,0 +1,116 @@
+time-event:
+- '17:30'
+messages:
+  notFound: '&cИвент не найден! Выключать нечего!'
+  noPerm: '&5Защита Особняка &7» &cНедостаточно прав'
+  lootSaved: '&5Защита Особняка &7» &aЛут успешно сохранен!'
+  admUsage: '&5Защита Особняка&7» &fnsiege reload&7/&fstart&7/&fstop&7/&fadd'
+  usage: '&5Защита Особняка &7» &f/siege join&7/&fleave'
+  edit: '&cРедактирование лута'
+  start: '&5Защита Особняка &7» &cОсада запущена'
+  stop: '&5Защита Особняка &7» &cОсада завершена'
+  reload: '&5Защита Особняка &7» &aКонфиг перезагружен'
+  needArmor: '&5Защита Особняка &7» &cДля входа на ивент у вас должен быть минимум &bАлмазный сет&c!'
+  notEvent: '&5Защита Особняка &7» &cДождитесь начала ивента!'
+  randomCfgUsage: '&5Защита Особняка &7» &f/nSiege add <Количество Урона>'
+  notDigit: '&5Защита Особняка &7» &cВведите корректное число!'
+  start-forplayers:
+  - '&5Защита Особняка &7» &fНа особняк напала &d&lАрмия Гоблинов! &x&F&8&B&E&F&B/siege join'
+  - '&5Защита Особняка &7» &fОтразите атаку &d&lГоблинов &fи защитите владения, чтобы получить награды!'
+  - '&5Защита Особняка &7» &fКаждый игрок получит щедрую награду за вклад в защиту!'
+  - '&5Защита Особняка &7» &fЧем больше вы уничтожите врагов, тем больше будет ваша награда!'
+  - '&5Защита Особняка &7» &cТоп 3 клана получат &bКоины &cи &bОпыт &cза храбрость в бою!'
+exp-at-BossKill: 50
+points-at-BossKill: 50
+siege:
+  playersForStart: 140
+  timeForJoin: 180
+  endTime: 140
+  choose_items: 5
+  siegeInventoryName: '&5Защита Особняка'
+  world: world_siege
+sailorStrength: 2
+sailorResistance: 2
+level1:
+  type: SKELETON
+  mythic-mob: gp2_goblin_warrior
+  mobs-need-kill: 7
+  mobs-spawn: 7
+  location:
+    world: world_siege
+    x: 5
+    y: 64
+    z: 1990
+level2:
+  type: SKELETON
+  mythic-mob: gp2_goblin_warrior
+  mobs-need-kill: 7
+  mobs-spawn: 7
+  location:
+    world: world_siege
+    x: 5
+    y: 64
+    z: 1990
+level3:
+  type: SKELETON
+  mythic-mob: gp2_goblin_warrior
+  mobs-need-kill: 7
+  mobs-spawn: 7
+  location:
+    world: world_siege
+    x: 5
+    y: 64
+    z: 1990
+main-boss:
+  type: ZOMBIE
+  mythic-mob: gp2_goblin_king
+  mobs-need-kill: 1
+  mobs-spawn: 1
+  location:
+    world: world_siege
+    x: 5
+    y: 64
+    z: 1990
+bossStrength: 5
+bossResistance: 300
+spawnLoc:
+  world: world
+  x: 0
+  y: 67
+  z: 0
+tpLocCount: 2
+playerTpLoc1:
+  world: world_siege
+  x: 18.5
+  y: 63
+  z: 1971.5
+playerTpLoc2:
+  world: world_siege
+  x: 18.5
+  y: 63
+  z: 1971.5
+bossbar:
+  waiting:
+    name: '&5&lЗащита Особняка &8| &fНабор игроков &8(&x&F&8&B&E&F&B%players% &8/ &x&F&8&B&E&F&B140&8) &8| &5/siege join'
+    style: SOLID
+    color: PURPLE
+  level1:
+    name: '&5&lЗащита особняка &8| &fОтразите первую волну гоблинов'
+    style: SOLID
+    color: PURPLE
+  level2:
+    name: '&5&lЗащита особняка &8| &fОтразите вторую волну гоблинов'
+    style: SOLID
+    color: PURPLE
+  level3:
+    name: '&5&lЗащита особняка &8| &fОтразите третию волну гоблинов'
+    style: SOLID
+    color: PURPLE
+  main-boss:
+    name: '&5&lЗащита особняка &8| &fОдолейте Вождя гоблинов в центре'
+    style: SOLID
+    color: PURPLE
+  opened:
+    name: '&5&lЗащита особняка &8| &fПолучите свою награду &8| &5/siege'
+    style: SOLID
+    color: PURPLE

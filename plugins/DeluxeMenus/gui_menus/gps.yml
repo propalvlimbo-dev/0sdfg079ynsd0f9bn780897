@@ -1,0 +1,69 @@
+menu_title: '§fꈁꀀꈂꌆꈂꀁ§fꈃꄃ'
+open_command: 
+- gps
+- guide
+- putivoditel
+size: 54
+items:
+  'chest_minecart':
+    material: chest_minecart
+    slot: 21
+    display_name: '&#F8BEFBЕжедневные награды'
+    lore:
+      - '  '
+      - '  Получай награду за  '
+      - '  отыгранное время  '
+      - '  '
+    click_commands:
+      - '[player] free'
+  'diamond_axe':
+    material: diamond_axe
+    slot: 23
+    display_name: '&#F8BEFBРаботы'
+    lore:
+      - '  '
+      - '  Получай деньги  '
+      - '  за работу  '
+      - '  '
+    click_commands:
+      - '[player] job'
+  'emerald':
+    material: emerald
+    slot: 30
+    display_name: '&#F8BEFBДонат услуги'
+    lore:
+      - '  '
+      - '  Список донат  '
+      - '  услуг на сервере  '
+      - '  '
+    click_commands:
+      - '[player] donate'
+  'elytra':
+    material: elytra
+    slot: 31
+    display_name: '&#F8BEFBИвенты'
+    lore:
+      - '  '
+      - '  Описание всех  '
+      - '  ивентов на сервере  '
+      - '  '
+    click_commands:
+      - '[player] events'
+  'command_block':
+    material: command_block
+    slot: 32
+    display_name: '&#F8BEFBВарпы'
+    lore:
+      - '  '
+      - '  Список точек телепортации  '
+      - '  на сервере  '
+      - '  '
+    click_commands:
+      - '[player] warp'
+  'arrow':
+    material: arrow
+    slot: 45
+    display_name: '&#F8BEFBНазад'
+    model_data: 10002
+    click_commands:
+      - '[player] menu'

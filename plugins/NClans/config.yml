@@ -1,0 +1,499 @@
+# Elytrix Clans Configuration | https://elytrix.pw
+
+clan_name_min_length: 3
+clan_name_max_length: 16
+
+clan_create_price: 50000
+
+expForKill: 1
+pointsForKill: 1
+
+inviteExit: 15
+timeForKillReload: 1200
+
+blockedNames:
+  - "25565"
+  - "freedon"
+  - "dragonsgrief"
+  - "winworld"
+  - "kollyworld"
+  - "нурик"
+  - "nursultan"
+  - "селестиал"
+  - "celestial"
+  - "nurik"
+  - "catlavan"
+  - "koshka"
+  - "energy"
+  - "artygrief"
+  - "bravohvh"
+  - "rogalik"
+  - "экспенсив"
+  - "lateworld"
+  - "toolcube"
+  - "cubeworld"
+  - "metahvh"
+  - "grieftool"
+  - "wisegrief"
+  - "reallyfake"
+  - "wightgrief"
+  - "aurorix"
+  - "hovugrief"
+  - "bubblegrief"
+  - "nellgrief"
+  - "legitworld"
+  - "whitegrief"
+  - "holytime"
+  - "spookytime"
+  - "lonygrief"
+  - "legenda"
+  - "santyworld"
+  - "fakeworlds"
+  - "raidmine"
+  - "yummyland"
+  - "hellhub"
+  - "legendsgrief"
+  - "elytrix"
+  - "premworld"
+  - "unixrise"
+  - "vrhosting"
+  - "unixworld"
+  - "cakeworld"
+  - "brainmix"
+
+nameAllowedChars: "abcdefghijklmnopqrstuvwxyz1234567890_йцукенгшщзхъфывапролджэячсмитьбюQWERTYUIOPASDFGHJKLZXCVBNMЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЧЯСМИТЬБЮ"
+
+infoModelData: 10001
+infoSlot: 4
+infoName: "&#F8BEFBИнформация о клане"
+memberInvHeadLore:
+  - "&fРоль: &#F8BEFB%rank%"
+  - "&fСтатус: %status%"
+  - '&fСтатистика PVP:'
+  - '&r  &fУбийств: &#F8BEFB%kills%'
+  - '&r  &fСмертей: &#F8BEFB%deaths%'
+  - '&r  &fУ/С: &#F8BEFB%kda%'
+  - '&r'
+  - '&fЗаработано:'
+  - '&r  &fОпыта: &#F8BEFB%level%'
+  - '&r  &fКоинов: &#F8BEFB%points%'
+memberHeadLore:
+  - "&fРоль: &#F8BEFB%rank%"
+  - "&fСтатус: %status%"
+  - '&fСтатистика PVP:'
+  - '&r  &fУбийств: &#F8BEFB%kills%'
+  - '&r  &fСмертей: &#F8BEFB%deaths%'
+  - '&r  &fУ/С: &#F8BEFB%kda%'
+  - '&r'
+  - '&fЗаработано:'
+  - '&r  &fОпыта: &#F8BEFB%level%'
+  - '&r  &fКоинов: &#F8BEFB%points%'
+  - '&r'
+  - '&r'
+  - '&r  &7Нажмите, для подробной информации&r'
+  - '&r  &7 и редактирования прав'
+infoLore:
+  - "&fНазвание клана: &#F8BEFB%name%"
+  - "&fУровень: &#F8BEFBУровень %currentLvl% &f(&#F8BEFB%currentExp%&8/&#F8BEFB%needExp% &8exp&f)"
+  - "&fКоинов: &#F8BEFB%points%"
+  - "&fУчастники: &#F8BEFB%currentMembers%&f/&#F8BEFB%maxMembers% &f(&#F8BEFB%onlineMembers% &aонлайн&f)"
+
+shopInfoName: "&#F8BEFBИНФОРМАЦИЯ"
+shopInfoLore:
+  - '&r'
+  - '&r &fКоины вашего клана: &#F8BEFB%points%'
+  - '&r'
+  - '&r&7Все покупки в этом магазине осуществляются'
+  - '&r&7модераторами кланов.'
+shopInfoModelData: 10001
+shopInfoSlot: 53
+
+arrowName: "&#F8BEFBНазад"
+arrowModelData: 10002
+arrowSlot: 45
+
+shopInvName: "§fꈁꀀꈂꌄꈂꀁ§0ꈃꄅ"
+memberInvName: "§fꈁꀀꈂꌇꈂꀁ§0ꈃꄣ"
+glowInvName: "§fꈁꀀꈂꍁꈂꀁ§0ꈃꄣ"
+kitsInvName: "§fꈁꀀꈂꌧꈂꀁ§0ꈃꄅ"
+infoInvName: "§fꈁꀀꈂꍁꈂꀁ§0ꈃꄣ"
+thingsInvName: "§fꈁꀀꈂꌧꈂꀁ§0ꈃꄅ"
+thingInvName: "§fꈁꀀꈂꌗꈂꀁ§0ꈃꄅ"
+shulkerInvName: "§fꈁꀀꈂꌩꈂꀁ§0ꈃꄅ"
+spawnerInvName: "§fꈁꀀꈂꍃꈂꀁ§0ꈃꄅ"
+
+handleKitCommand: "kit %kit% %nick%"
+
+noClanPlaceholder: "&#F8BEFBБез клана"
+
+messages:
+  configReload:
+    - "&#F8BEFBКланы &7» &aКонфиг перезагружен"
+  blockedName:
+    - "&#F8BEFBКланы &7» &cЗапрещенное имя"
+  uncorrectUsage:
+    - "&#F8BEFBКланы &7» &cНеправильное использование команды"
+  targetInvited:
+    - "&#F8BEFBКланы &7» &fПриглашение клан &a%clan% &fот игрока &a%player% \n\n Чтобы принять введите &a/clan accept"
+  createdSuccessfully:
+    - "&#F8BEFBКланы &7» &aКлан успешно создан!"
+  uncorrectNumber:
+    - "&#F8BEFBКланы &7» &cНеправильное использование числа!"
+  admUsage:
+    - "Использование: /nClan remove <Клан>"
+    - "Использование: /nClan set <Клан> points/exp <Количество>"
+  usage:
+    - "&#F8BEFBКланы &7» Список доступных команд:"
+    - "&#F8BEFBКланы &7» &#F8BEFB/clan shop &fКлановый магазин:"
+    - "&#F8BEFBКланы &7» &#F8BEFB/clan pvp &fВкл/Выкл пвп между участниками клана"
+    - "&#F8BEFBКланы &7» &#F8BEFB/clan menu &fКлановое меню"
+    - "&#F8BEFBКланы &7» &#F8BEFB/clan accept &fПринять приглашение в клан"
+    - "&#F8BEFBКланы &7» &#F8BEFB/clan home &fТелепортироваться в клановый дом"
+    - "&#F8BEFBКланы &7» &#F8BEFB/clan promote <игрок> &fПовысить игрока до модератора"
+    - "&#F8BEFBКланы &7» &#F8BEFB/clan demote <игрок> &fПонизить модератора до игрока"
+    - "&#F8BEFBКланы &7» &#F8BEFB/clan kick <игрок> &fВыгнать игрока из клана"
+    - "&#F8BEFBКланы &7» &#F8BEFB/clan leave &fВыйти из клана"
+    - "&#F8BEFBКланы &7» &#F8BEFB/clan sethome &fУстановить клановый дом"
+    - "&#F8BEFBКланы &7» &#F8BEFB/clan create <название> &fСоздать клан"
+    - "&#F8BEFBКланы &7» &#F8BEFB/clan invite <игрок> &fПригласить игрока в клан"
+    - "&#F8BEFBКланы &7» &#F8BEFB/clan disband &fУдалить клан"
+    - "&#F8BEFBКланы &7» &#F8BEFB/clan glow &fПодсветка игроков"
+    - "&#F8BEFBКланы &7» &#F8BEFB/clan info [клан] &fПроверить информацию о своём или чужом клане"
+  infoUsage:
+    - "Информация /clan info <Название Клана>"
+  clanNotFound:
+    - "&#F8BEFBКланы &7» &cКлан не найден"
+  createUsage:
+    - "&#F8BEFBКланы &7» &cНеправильное использование команды \n"
+    - "&#F8BEFBКланы &7» &fИспользование: &#F8BEFB/clan create <Название>"
+  alreadyInClan:
+    - "&#F8BEFBКланы &7» &cТы уже в клане"
+  unvalidName:
+    - "&#F8BEFBКланы &7» &cНекорректное название клана"
+  unvalidLength:
+    - "&#F8BEFBКланы &7» &cНекорректное название клана"
+  alreadyCreated:
+    - "&#F8BEFBКланы &7» &cКлан с таким названием уже существует"
+  noMoney:
+    - "&#F8BEFBКланы &7» &cДля создания клана требуется &f%price% монет"
+  withoutInvite:
+    - "&#F8BEFBКланы &7» &cТебя пока не приглашали в клан "
+  clanDeleted:
+    - "&#F8BEFBКланы &7» &cПредложение неактуально. Клан удалён"
+  playersLimit:
+    - "&#F8BEFBКланы &7» В клане достигнуто максимальное количество участников"
+  newMember:
+    - "&#F8BEFBКланы &7» &fИгрок &#F8BEFB%player% &fприсоединился к клану"
+  glowRemoved:
+    - "&#F8BEFBКланы &7» &fЦвет брони удален"
+  withoutClan:
+    - "&#F8BEFBКланы &7» &cТы не состоишь в клане"
+  leaderCantLeave:
+    - "&#F8BEFBКланы &7» &cЛидер не может покинуть клан"
+  leaveClan:
+    - "&#F8BEFBКланы &7» &fИгрок &#F8BEFB%player% &fпокинул клан"
+  playerLeft:
+    - "&#F8BEFBКланы &7» &fИгрок &#F8BEFB%player% &fпокинул клан"
+  withoutHome:
+    - "&#F8BEFBКланы &7» &cКлановый дом не установлен"
+  inviteUsage:
+    - "&#F8BEFBКланы &7» &cНеправильное использование команды \n"
+    - "&#F8BEFBКланы &7» &fИспользование &#F8BEFB/clan invite <Никнейм>"
+  noPermission:
+    - "&#F8BEFBКланы &7» &cНедостаточно прав"
+  playerNotFound:
+    - "&#F8BEFBКланы &7» &cИгрок не найден"
+  notDoYourself:
+    - "&#F8BEFBКланы &7» &cТы не можешь сделать это с самим собой"
+  targetInClan:
+    - "&#F8BEFBКланы &7» &cИгрок уже в клане"
+  successInvite:
+    - "&#F8BEFBКланы &7» &aПриглашение в клан отправлено"
+  kickUsage:
+    - "&#F8BEFBКланы &7» &cНеправильное использование команды \n"
+    - "&#F8BEFBКланы &7» &fИспользование: &#F8BEFB/clan kick <Никнейм>"
+  notAccess:
+    - "&#F8BEFBКланы &7» &cНедостаточно прав"
+  youKicked:
+    - "&#F8BEFBКланы &7» &fИгрок &#F8BEFB%target% &fкикнут из клана"
+  playerKicked:
+    - "&#F8BEFBКланы &7» &fИгрок &#F8BEFB%target% &fкикнут из клана"
+  clan_pvp_disable:
+    - "&#F8BEFBКланы &7» &fВ вашем клане был &aвыключен &fPvP между соклановцами"
+  clan_pvp_enable:
+    - "&#F8BEFBКланы &7» &fВ вашем клане был &cвключен &fPvP между соклановцами"
+  homeSetted:
+    - "&#F8BEFBКланы &7» Соклановец &#F8BEFB%player% &fустановил &#F8BEFBклановый дом"
+  homeDeleted:
+    - "&#F8BEFBКланы &7» Соклановец &#F8BEFB%player% &fудалил &#F8BEFBклановый дом"
+  promoteUsage:
+    - "&#F8BEFBКланы &7» &cНеправильное использование команды \n"
+    - "&#F8BEFBКланы &7» &fИспользование: &#F8BEFB/clan <promote|demote> <Никнейм>"
+  alreadyHasPromote:
+    - "&#F8BEFBКланы &7» &cУ игрока уже нужная роль"
+  promoted:
+    - "&#F8BEFBКланы &7» &aРоль игрока в клане изменена"
+  demoteUsage:
+    - "&#F8BEFBКланы &7» &cНеправильное использование команды \n"
+    - "&#F8BEFBКланы &7» &fИспользование: &#F8BEFB/clan <promote|demote> <Никнейм>"
+  notModerator:
+    - "&#F8BEFBКланы &7» &cУ игрока уже нужная роль"
+  demoted:
+    - "&#F8BEFBКланы &7» &aРоль игрока в клане изменена"
+  noPoints:
+    - "&#F8BEFBКланы &7» &cКоинов не хватает!"
+  buyItem:
+    - "&#F8BEFBКланы &7» &aПредмет успешно куплен!"
+  notPoints:
+    - "&#F8BEFBКланы &7» &cКоинов не хватает!"
+  clanDisbanded:
+    - "&#F8BEFBКланы &7» &aКлан распущен!"
+  lvlUp:
+    - "&#F8BEFBКланы &7» &aКлан достиг %lvl% уровня!"
+  lvlDown:
+    - "&#F8BEFBКланы &7» &cКлан был понижен до %lvl% уровня!"
+  noPvp: "&#F8BEFBКланы &7» &cТы не можешь ударить соклановца!"
+
+  questComplete:
+    - "&#F8BEFBКланы &7» &aВаш клан получил &#F8BEFB%reward_exp% Опыта, %reward_points% Коинов"
+    - "&#F8BEFBКланы &7» &aЗа &#F8BEFBПрохождение квеста"
+  questProgress:
+    - ""
+
+
+quests:
+  rewards:
+    exp: 350
+    points: 600
+
+  save-interval-seconds: 60
+  progress-notify-every: 0
+
+  menu:
+    title: "§fꈁꀀꈂꍄꈂꀁ§0ꈃꄣ"
+    size: 54
+
+    quest-slots: [20,21,22,23,24, 29,30,31,32,33, 38,39,40,41,42]
+
+    filler:
+      enabled: false
+      material: "BLACK_STAINED_GLASS_PANE"
+      name: " "
+      lore: []
+
+    info:
+      enabled: true
+      slot: 4
+      material: "CLOCK"
+      model-data: 10001
+      name: "&c&lВАЖНО"
+      lore:
+        - " &fВыполнять квесты могут все участники клана"
+        - " &fЗа прохождение каждого квеста вы получаете:"
+        - " &#F8BEFB350 кланового опыта"
+        - " &#F8BEFB600 клановых коинов"
+        - ""
+        - " &fКлановые коины можно потратить в &#FAD8FC/clan shop"
+
+    state:
+      locked:
+        material: "BARRIER"
+        name: "&c&lНЕДОСТУПНО"
+        lore:
+          - "&cДля начала выполните"
+          - "&cпредыдущие задания"
+      active:
+        name-prefix: "&a"
+        name-suffix: ""
+        extra-lore:
+          - ""
+          - "&7Прогресс: &#F8BEFB%progress%&7/&#F8BEFB%target%"
+          - "&7Статус: &cНе выполнено"
+      completed:
+        name-prefix: "&#F8BEFB"
+        name-suffix: ""
+        extra-lore:
+          - ""
+          - "&7Прогресс: &#F8BEFB%progress%&7/&#F8BEFB%target%"
+          - "&7Статус: &aВыполнено"
+
+  list:
+    "1":
+      type: KILL_MOB
+      entity: SNOWMAN
+      amount: 5000
+      display:
+        material: SNOWBALL
+        name: "&#F8BEFBSNOWMAN"
+        lore:
+          - ""
+          - "&7Для выполнения данного квеста"
+          - "&7Вам нужно убить:"
+          - "&#F8BEFBSNOWMAN"
+    "2":
+      type: KILL_PLAYER
+      amount: 600
+      display:
+        material: DIAMOND_SHOVEL
+        name: "&#F8BEFBИгрок"
+        lore:
+          - ""
+          - "&7Для выполнения данного квеста"
+          - "&7Вам нужно убить:"
+          - "&#F8BEFBИгрок"
+    "3":
+      type: BREAK_BLOCK
+      blocks: [SNOW, SNOW_BLOCK]
+      amount: 500000
+      display:
+        material: SNOW
+        name: "&#F8BEFBСнег"
+        lore:
+          - ""
+          - "&7Для выполнения данного квеста"
+          - "&7Вам нужно сломать:"
+          - "&#F8BEFBСнег"
+    "4":
+      type: BREW_POTION
+      potion: SPEED
+      amount: 10000
+      display:
+        material: POTION
+        name: "&#F8BEFBЗелье стремительности"
+        lore:
+          - ""
+          - "&7Для выполнения данного квеста"
+          - "&7Вам нужно сварить:"
+          - "&#F8BEFBЗелье стремительности"
+    "5":
+      type: ENCHANT_ITEM
+      item: DIAMOND_SWORD
+      enchant: DAMAGE_ALL
+      amount: 250
+      display:
+        material: DIAMOND_SWORD
+        name: "&#F8BEFBАлмазный меч на Острота"
+        lore:
+          - ""
+          - "&7Для выполнения данного квеста"
+          - "&7Вам нужно зачаровать:"
+          - "&#F8BEFBАлмазный меч на Острота"
+    "6":
+      type: KILL_MOB
+      entity: GHAST
+      amount: 16
+      display:
+        material: GHAST_TEAR
+        name: "&#F8BEFBГаст"
+        lore:
+          - ""
+          - "&7Для выполнения данного квеста"
+          - "&7Вам нужно убить:"
+          - "&#F8BEFBГаст"
+    "7":
+      type: KILL_MOB
+      entity: WITHER_SKELETON
+      amount: 5000
+      display:
+        material: SKELETON_SKULL
+        name: "&#F8BEFBВизер-скелет"
+        lore:
+          - ""
+          - "&7Для выполнения данного квеста"
+          - "&7Вам нужно убить:"
+          - "&#F8BEFBВизер-скелет"
+    "8":
+      type: KILL_MOB
+      entity: WITHER
+      amount: 64
+      display:
+        material: WITHER_SKELETON_SKULL
+        name: "&#F8BEFBВизер"
+        lore:
+          - ""
+          - "&7Для выполнения данного квеста"
+          - "&7Вам нужно убить:"
+          - "&#F8BEFBВизер"
+    "9":
+      type: KILL_MOB
+      entity: WITCH
+      amount: 4500
+      display:
+        material: WITCH_SPAWN_EGG
+        name: "&#F8BEFBВедьма"
+        lore:
+          - ""
+          - "&7Для выполнения данного квеста"
+          - "&7Вам нужно убить:"
+          - "&#F8BEFBВедьма"
+    "10":
+      type: KILL_PLAYER
+      amount: 200
+      display:
+        material: WOODEN_SWORD
+        name: "&#F8BEFBИгрок"
+        lore:
+          - ""
+          - "&7Для выполнения данного квеста"
+          - "&7Вам нужно убить:"
+          - "&#F8BEFBИгрок"
+    "11":
+      type: KILL_MOB
+      entity: SLIME
+      amount: 5000
+      display:
+        material: SLIME_SPAWN_EGG
+        name: "&#F8BEFBСлизень"
+        lore:
+          - ""
+          - "&7Для выполнения данного квеста"
+          - "&7Вам нужно убить:"
+          - "&#F8BEFBСлизень"
+    "12":
+      type: BREW_POTION
+      potion: INSTANT_HEAL
+      amount: 7500
+      display:
+        material: POTION
+        name: "&#F8BEFBИсцеление"
+        lore:
+          - ""
+          - "&7Для выполнения данного квеста"
+          - "&7Вам нужно сварить:"
+          - "&#F8BEFBИсцеление"
+    "13":
+      type: KILL_MOB
+      entity: CREEPER
+      amount: 5500
+      display:
+        material: CREEPER_HEAD
+        name: "&#F8BEFBКрипер"
+        lore:
+          - ""
+          - "&7Для выполнения данного квеста"
+          - "&7Вам нужно убить:"
+          - "&#F8BEFBКрипер"
+    "14":
+      type: KILL_MOB
+      entity: TURTLE
+      amount: 64
+      display:
+        material: TURTLE_HELMET
+        name: "&#F8BEFBКрипер"
+        lore:
+          - ""
+          - "&7Для выполнения данного квеста"
+          - "&7Вам нужно убить:"
+          - "&#F8BEFBКрипер"
+    "15":
+      type: KILL_MOB
+      entity: ENDER_DRAGON
+      amount: 32
+      display:
+        material: DRAGON_HEAD
+        name: "&#F8BEFBЭндер-дракон"
+        lore:
+          - ""
+          - "&7Для выполнения данного квеста"
+          - "&7Вам нужно убить:"
+          - "&#F8BEFBЭндер-дракон"

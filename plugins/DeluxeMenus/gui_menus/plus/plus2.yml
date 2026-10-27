@@ -1,0 +1,39 @@
+menu_title: '§fꈁꀀꈂꌨꈂꀁ§fꈃꄢ'
+open_command: plus2
+size: 54
+items:
+  'lime_concrete':
+    material: lime_concrete
+    slots:
+    - 20
+    - 21
+    - 29
+    - 30
+    display_name: '&#55FF55&lПодтвердить'
+    lore:
+      - ''
+      - '&#FFFFFFНажмите, чтобы &#55FF55подтвердить &#FFFFFFпокупку'
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 799'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 799'
+      - '[console] cakesub give %player_name% 91'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'red_concrete':
+    material: red_concrete
+    slots:
+    - 23
+    - 24
+    - 32
+    - 33
+    display_name: '&#FF5555&lОтказаться'
+    lore:
+      - ''
+      - '&#FFFFFFНажмите, чтобы &#FF5555отказаться от &#FFFFFFпокупки'
+    click_commands:
+      - '[player] plusbuys'

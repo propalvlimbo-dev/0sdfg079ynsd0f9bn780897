@@ -1,0 +1,72 @@
+# DeluxeMenus 1.14.1-Release main configuration file
+#
+# A full wiki on how to use this plugin can be found at:
+# https://wiki.helpch.at/helpchat-plugins/deluxemenus
+
+check_updates: true
+debug: LOW
+use_admin_commands_in_menus_list: false
+menus_list_page_size: 10
+metas_list_page_size: 15
+gui_menus:
+  menu:
+    file: menu.yml
+  rtp:
+    file: rtp.yml
+  donate:
+    file: priv/donate.yml
+  casesmenu:
+    file: priv/cases.yml
+  gps:
+    file: gps.yml
+  ec:
+    file: ec.yml
+  free:
+    file: free.yml
+  events:
+    file: events.yml
+  jobs:
+    file: jobs.yml
+  warp:
+    file: warp.yml
+  warps:
+    file: warps.yml
+  kits:
+    file: kits.yml
+  shop:
+    file: shop.yml
+  plusmenu:
+    file: plus/plusmenu.yml
+  plusbuys:
+    file: plus/plusbuys.yml
+  plus1:
+    file: plus/plus1.yml
+  plus2:
+    file: plus/plus2.yml
+  plus3:
+    file: plus/plus3.yml
+  aura:
+    file: shop/aura.yml
+  endershop:
+    file: shop/endshop.yml
+  enchant:
+    file: shop/enchant.yml
+  furnace:
+    file: shop/furnace.yml
+  grief:
+    file: shop/grief.yml
+  kitsbuy:
+    file: shop/kitsbuy.yml
+  potions:
+    file: shop/potions.yml
+  spawners:
+    file: shop/spawners.yml
+  sphere:
+    file: shop/sphere.yml
+  mag:
+    file: shop/mag.yml
+  items:
+    file: shop/items.yml
+  sezon:
+    file: shop/sezon.yml
+

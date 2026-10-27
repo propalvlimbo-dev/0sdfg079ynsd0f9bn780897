@@ -1,0 +1,49 @@
+menu_title: '§fꈁꀀꈂꌧꈂꀁ§fꈃꄢ'
+open_command: plusbuys
+size: 54
+items:
+  'gold_ingot':
+    material: gold_ingot
+    slot: 20
+    display_name: '&#F8BEFB1 месяц'
+    lore:
+      - ''
+      - ' &#FFFFFFЦена: &#F8BEFB299 рилликов'
+      - ''
+      - '&#F8BEFBНажмите&#FFFFFF, чтобы оформить подписку'
+      - '&#FFFFFFсроком на &#F8BEFB1 месяц'
+      - ''
+      - '&#FFFFFFПри наличии уже &#F8BEFBактивной &#FFFFFFподписки,'
+      - '&#FFFFFFсрок добавится к &#F8BEFBуже существующему.'
+    click_commands:
+      - '[player] plus1'
+  'gold_ingot_1':
+    material: gold_ingot
+    slot: 22
+    display_name: '&#F8BEFB3 месяца'
+    lore:
+      - ''
+      - ' &#FFFFFFЦена: &#F8BEFB799 рилликов'
+      - ''
+      - '&#F8BEFBНажмите&#FFFFFF, чтобы оформить подписку'
+      - '&#FFFFFFсроком на &#F8BEFB3 месяца'
+      - ''
+      - '&#FFFFFFПри наличии уже &#F8BEFBактивной &#FFFFFFподписки,'
+      - '&#FFFFFFсрок добавится к &#F8BEFBуже существующему.'
+    click_commands:
+      - '[player] plus2'
+  'gold_ingot_2':
+    material: gold_ingot
+    slot: 24
+    display_name: '&#F8BEFB6 месяцев'
+    lore:
+      - ''
+      - ' &#FFFFFFЦена: &#F8BEFB1599 рилликов'
+      - ''
+      - '&#F8BEFBНажмите&#FFFFFF, чтобы оформить подписку'
+      - '&#FFFFFFсроком на &#F8BEFB6 месяцев'
+      - ''
+      - '&#FFFFFFПри наличии уже &#F8BEFBактивной &#FFFFFFподписки,'
+      - '&#FFFFFFсрок добавится к &#F8BEFBуже существующему.'
+    click_commands:
+      - '[player] plus3'

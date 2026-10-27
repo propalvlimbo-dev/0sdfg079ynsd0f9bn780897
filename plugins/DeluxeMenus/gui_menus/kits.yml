@@ -1,0 +1,359 @@
+menu_title: '§fꈁꀀꈂꌹꈂꀁ§fꈃꄑ'
+open_command:
+  - kits
+  - kit
+  - nabor
+  - kitnabor
+  - kitstart
+size: 54
+items:
+  'light_gray_shulker_box':
+    material: light_gray_shulker_box
+    slot: 12
+    display_name: '&#AAAAAAНачальный набор'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#55FF55Всем'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+      - '[player] kit start'
+    right_click_commands:
+      - '[player] start'
+
+  'blue_shulker_box':
+    material: blue_shulker_box
+    slot: 13
+    display_name: '&#AAAAAAНабор &#0122FC&lH&#1537FD&lE&#284CFE&lR&#3C61FF&lO'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#0122FC&lH&#1537FD&lE&#284CFE&lR&#3C61FF&lO'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+      - '[player] kit hero'
+    right_click_commands:
+      - '[player] hero'
+
+  'yellow_shulker_box':
+    material: yellow_shulker_box
+    slot: 14
+    display_name: '&#AAAAAAНабор &#FAD8FC&lT&#FAD8FC&lI&#FAD8FC&lT&#FAD8FC&lA&#D4FF00&lN'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#FAD8FC&lT&#FAD8FC&lI&#FAD8FC&lT&#FAD8FC&lA&#D4FF00&lN'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+      - '[player] kit titan'
+    right_click_commands:
+      - '[player] titan'
+
+  'lime_shulker_box':
+    material: lime_shulker_box
+    slot: 20
+    display_name: '&#AAAAAAНабор &#2CFF01&lA&#39FF1B&lV&#46FF34&lE&#53FF4E&lN&#5FFF67&lG&#6CFF81&lE&#79FF9A&lR'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#2CFF01&lA&#39FF1B&lV&#46FF34&lE&#53FF4E&lN&#5FFF67&lG&#6CFF81&lE&#79FF9A&lR'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+      - '[player] kit avenger'
+    right_click_commands:
+      - '[player] avenger'
+
+  'cyan_shulker_box':
+    material: cyan_shulker_box
+    slot: 21
+    display_name: '&#AAAAAAНабор &#41B2DD&lO&#38BCE2&lV&#2EC6E7&lE&#25D0EC&lR&#1CD9F0&lL&#13E3F5&lO&#09EDFA&lR&#00F7FF&lD'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#41B2DD&lO&#38BCE2&lV&#2EC6E7&lE&#25D0EC&lR&#1CD9F0&lL&#13E3F5&lO&#09EDFA&lR&#00F7FF&lD'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+      - '[player] kit overlord'
+    right_click_commands:
+      - '[player] overlord'
+
+  'orange_shulker_box':
+    material: orange_shulker_box
+    slot: 22
+    display_name: '&#AAAAAAНабор &#F8BEFB&lM&#F8BEFB&lA&#FAD8FC&lG&#FAD8FC&lI&#FAD8FC&lS&#FAD8FC&lT&#FAD8FC&lE&#FAD8FC&lR'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#F8BEFB&lM&#F8BEFB&lA&#FAD8FC&lG&#FAD8FC&lI&#FAD8FC&lS&#FAD8FC&lT&#FAD8FC&lE&#FAD8FC&lR'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+      - '[player] kit magister'
+    right_click_commands:
+      - '[player] magister'
+
+  'red_shulker_box':
+    material: red_shulker_box
+    slot: 23
+    display_name: '&#AAAAAAНабор &#DD2F2F&lI&#E13434&lM&#E63838&lP&#EA3D3D&lE&#EE4141&lR&#F24646&lA&#F74A4A&lT&#FB4F4F&lO&#FF5353&lR'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#DD2F2F&lI&#E13434&lM&#E63838&lP&#EA3D3D&lE&#EE4141&lR&#F24646&lA&#F74A4A&lT&#FB4F4F&lO&#FF5353&lR'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+      - '[player] kit imperator'
+    right_click_commands:
+      - '[player] imperator'
+
+  'purple_shulker_box':
+    material: purple_shulker_box
+    slot: 24
+    display_name: '&#AAAAAAНабор &#FD00E4&lD&#F107E9&lR&#E60EED&lA&#DA16F2&lG&#CF1DF6&lO&#C324FB&lN'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#FD00E4&lD&#F107E9&lR&#E60EED&lA&#DA16F2&lG&#CF1DF6&lO&#C324FB&lN'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+      - '[player] kit dragon'
+    right_click_commands:
+      - '[player] dragon'
+
+  'orange_shulker_box_1':
+    material: orange_shulker_box
+    slot: 29
+    display_name: '&#AAAAAAНабор &#FAD8FC&lPLUS'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#FAD8FC&lPLUS'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+      - '[player] kit plus'
+    right_click_commands:
+      - '[player] pluss'
+
+  'red_shulker_box_1':
+    material: red_shulker_box
+    slot: 30
+    display_name: '&#AAAAAAНабор &#AA0000&lPLUSPRO'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#AA0000&lPLUSPRO'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+      - '[player] kit pluspro'
+    right_click_commands:
+      - '[player] pluspro'
+
+  'brown_shulker_box':
+    material: brown_shulker_box
+    slot: 31
+    display_name: '&#AAAAAAНабор &#900098&lB&#B210BA&lU&#D31FDD&lL&#F52FFF&lL'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#900098&lB&#B210BA&lU&#D31FDD&lL&#F52FFF&lL'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+      - '[player] kit bull'
+    right_click_commands:
+      - '[openguimenu] bull'
+
+  'white_shulker_box':
+    material: white_shulker_box
+    slot: 32
+    display_name: '&#AAAAAAНабор &#D3D3D3&lR&#DCDCDC&lA&#E5E5E5&lB&#EDEDED&lB&#F6F6F6&lI&#FFFFFF&lT'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#D3D3D3&lR&#DCDCDC&lA&#E5E5E5&lB&#EDEDED&lB&#F6F6F6&lI&#FFFFFF&lT'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+      - '[player] kit rabbit'
+    right_click_commands:
+      - '[player] rabbit'
+
+  'orange_shulker_box_2':
+    material: orange_shulker_box
+    slot: 33
+    display_name: '&#AAAAAAНабор &#F8BEFB&lT&#F8BEFB&lI&#F8BEFB&lG&#F8BEFB&lE&#F8BEFB&lR'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#F8BEFB&lT&#F8BEFB&lI&#F8BEFB&lG&#F8BEFB&lE&#F8BEFB&lR'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+      - '[player] kit tiger'
+    right_click_commands:
+      - '[player] tiger'
+
+  'orange_shulker_box_3':
+    material: orange_shulker_box
+    slot: 37
+    display_name: '&#AAAAAAНабор &#FAD8FC&lDHELPER'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#FAD8FC&lDHELPER'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+      - '[player] kit dhelper'
+    right_click_commands:
+      - '[player] dhelper'
+
+  'black_shulker_box':
+    material: black_shulker_box
+    slot: 38
+    display_name: '&#AAAAAAНабор &#282828&lB&#383838&lU&#484848&lN&#585858&lN&#686868&lY'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#282828&lB&#383838&lU&#484848&lN&#585858&lN&#686868&lY'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+      - '[player] kit bunny'
+    right_click_commands:
+      - '[player] bunny'
+
+  'green_shulker_box':
+    material: green_shulker_box
+    slot: 39
+    display_name: '&#AAAAAAНабор &#0A6C0B&lH&#0B790C&lY&#0D850E&lD&#0E920F&lR&#0F9E10&lA'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#0A6C0B&lH&#0B790C&lY&#0D850E&lD&#0E920F&lR&#0F9E10&lA'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+      - '[player] kit hydra'
+    right_click_commands:
+      - '[player] hydra'
+
+  'lime_shulker_box_1':
+    material: lime_shulker_box
+    slot: 40
+    display_name: '&#AAAAAAНабор &#00FF00&lC&#1DFF1D&lO&#39FF39&lB&#56FF56&lR&#72FF72&lA'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#00FF00&lC&#1DFF1D&lO&#39FF39&lB&#56FF56&lR&#72FF72&lA'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+      - '[player] kit cobra'
+    right_click_commands:
+      - '[player] cobra'
+
+  'orange_shulker_box_4':
+    material: orange_shulker_box
+    slot: 41
+    display_name: '&#AAAAAAНабор &#FAD8FC&lGOD'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#FAD8FC&lGOD'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+      - '[player] kit god'
+    right_click_commands:
+      - '[player] god'
+
+  'red_shulker_box_2':
+    material: red_shulker_box
+    slot: 42
+    display_name: '&#AAAAAAНабор &#FF5555&lVAMPIRE'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#FF5555&lVAMPIRE'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+      - '[player] kit vampire'
+    right_click_commands:
+      - '[player] vampire'
+
+  'orange_shulker_box_5':
+    material: orange_shulker_box
+    slot: 43
+    display_name: '&#AAAAAAНабор &#FAD8FC&lPEGAS'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#FAD8FC&lPEGAS'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+      - '[player] kit pegas'
+    right_click_commands:
+      - '[player] pegas'
+
+  'arrow':
+    material: arrow
+    slot: 45
+    display_name: '&#F8BEFBНазад'
+    model_data: 100020
+
+  'green_shulker_box_1':
+    material: green_shulker_box
+    slot: 48
+    display_name: '&#AAAAAAНабор &#C6FF4D&lF&#93DF33&lA&#61BE1A&lR&#2E9E00&lM'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#F8BEFBза рилики в &f/shop'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#AAAAAAКупить можно только в &#FAD8FC/shop'
+    left_click_commands:
+      - '[player] kit farm'
+    right_click_commands:
+      - '[player] farmm'
+
+  'brown_shulker_box_1':
+    material: brown_shulker_box
+    slot: 49
+    display_name: '&#AAAAAAНабор &#FAD8FC&lP&#F8BEFB&lV&#F8BEFB&lE'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#F8BEFBза рилики в &f/shop'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#AAAAAAКупить можно только в &#FAD8FC/shop'
+    left_click_commands:
+      - '[player] kit pve'
+    right_click_commands:
+      - '[player] pve'
+
+  'red_shulker_box_3':
+    material: red_shulker_box
+    slot: 50
+    display_name: '&#AAAAAAНабор &#FF4D4D&lP&#C52626&lV&#8B0000&lP'
+    lore:
+      - ''
+      - '&#AAAAAA Доступен: &#F8BEFBза рилики в &f/shop'
+      - ''
+      - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+      - '&#AAAAAAКупить можно только в &#FAD8FC/shop'
+    left_click_commands:
+      - '[player] kit pvp'
+    right_click_commands:
+      - '[player] pvpp'

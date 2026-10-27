@@ -1,0 +1,28 @@
+ghost1:
+  Type: ZOMBIE
+  Display: ''
+  Health: 30
+  Damage: 10
+  AIGoalSelectors:
+  - 0 clear
+  - 1 meleeattack
+  - 2 randomstroll
+  AITargetSelectors:
+  - 0 clear
+  - 1 players
+  Options:
+    Persistent: false
+    AlwaysShowName: false
+    PreventOtherDrops: true
+    KnockbackResistance: 1
+    MovementSpeed: 0.24
+    Collidable: false
+    Silent: true
+    FollowRange: 32
+    PreventSunburn: true
+  Skills:
+  - model{mid=ghost;i=true;step=1;ride=true} @self ~onSpawn
+  - model{mid=ghost;i=true;step=1;ride=true} @self ~onLoad
+  - skill{s=CancelEventSkill;sync=true} @self ~onAttack
+  - skill{s=ghost_attack;sync=true} @target ~onTimer:15
+  - skill{s=ghost_death} @self ~onDeath

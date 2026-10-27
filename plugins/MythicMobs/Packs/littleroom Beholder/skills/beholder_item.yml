@@ -1,0 +1,59 @@
+﻿#########################################################
+## Developed by Little Room, patreon.com/littleroomdev ##
+#########################################################
+
+
+               
+LR_BEHOLDER_ITEM_SHOOT_TELEGRAPH:
+  Skills:
+  - missile{bulletType=MOB;
+               mob=LR_BEHOLDER_laser_particle;
+               oT=[ - setprojectiledirection @forward{f=0.5;sso=0.5;yo=3;lockpitch=true}];
+               v=10;
+               hr=0.25;
+               vr=0.25;
+               fromorigin=true;
+               origin=@self;
+               hitself=true;
+               mr=3;
+               byo=2;
+               tyo=3;
+               se=false;
+               sb=false;
+               fromorigin=true;
+               origin=@sphere{r=5;p=4}}
+
+LR_BEHOLDER_ITEM_SHOOT:
+  Cooldown: 1
+  Skills:
+  - skill{s=LR_BEHOLDER_ITEM_SHOOT_TELEGRAPH;repeat=15;repeati=1} @forward{f=0.5;sso=0.5;yo=3;lockpitch=true}
+  - sound{s=littleroom_beholder:beholder.laser_build;v=5;sc=HOSTILE;p=1.0} @self
+  - delay 20
+  - skill{s=LR_BEHOLDER_recoil} @self
+  - lunge{v=1} @forward{f=-1}
+  - sound{s=littleroom_beholder:beholder.laser;v=5;sc=HOSTILE;p=1.0} @self
+  - skill{s=LR_BEHOLDER_ITEM_SHOOT_PROJECTILE} @targetlocation
+
+LR_BEHOLDER_ITEM_SHOOT_PROJECTILE:
+  Skills:
+  - projectile{v=50;
+               bullettype=DISPLAY;
+               interpolation=4;
+               material=ink_sac;
+               model=13370001;
+               hr=1;
+               vr=1;
+               sE=false;
+               oT=LR_BEHOLDER_eye_laser_tick;
+               oS=LR_BEHOLDER_eye_laser_start;
+               oH=LR_BEHOLDER_eye_laser_hit;
+               ohb=LR_BEHOLDER_eye_laser_end;
+               syo=1;
+               sfo=0.5;
+               sso=0.5;
+               tyo=1;
+               hnp=true;
+               sE=true;
+               bulletbrightnessblock=15;
+               bulletbrightnesssky=15}
+  

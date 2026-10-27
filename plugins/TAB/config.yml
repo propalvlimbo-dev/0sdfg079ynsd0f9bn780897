@@ -1,0 +1,212 @@
+header-footer:
+  enabled: true
+  designs:
+    world-test:
+      display-condition: '%world%=test'
+      header:
+      - Test header in world 'test'
+      footer:
+      - Test footer in world 'test'
+    default:
+      header:
+      - ''
+      - <#F8BEFB>&lELYTRIX — ГРИФЕРСКОЕ ВЫЖИВАНИЕ</#FFFFFF>
+      - ''
+      footer:
+      - ''
+      - '&fОнлайн: &#F8BEFB%online% &8| &fIP: &#F8BEFBmc.Elytrix.pw'
+      - ''
+      - '&fНаш Сайт: <#F8BEFB>&lhttps://elytrix.pw</#FAD8FC>'
+      - '&fDiscord: &#F8BEFBdsc.gg/elytrix &8| &fTelegram: &#F8BEFBt.me/elytrix_ru'
+      - ''
+tablist-name-formatting:
+  enabled: true
+  disable-condition: '%world%=disabledworld'
+scoreboard-teams:
+  enabled: true
+  enable-collision: true
+  invisible-nametags: false
+  sorting-types:
+  - GROUPS:admin,fulladmin,mladmin,glmoder,stmoder,moderplus,moder,offdmoder,mlmoder,helper,youtube,media,pegas,god,cobra,dracula,hydra,vampire,rabbit,dhelper,bunny,tiger,bull,dragon,imperator,magister,overlord,avenger,titan,hero,default
+  - PLACEHOLDER_A_TO_Z:%player%
+  case-sensitive-sorting: true
+  can-see-friendly-invisibles: false
+  disable-condition: '%world%=disabledworld'
+playerlist-objective:
+  enabled: false
+  value: '%ping%'
+  fancy-value: '&7Ping: %ping%'
+  title: TAB
+  render-type: INTEGER
+  disable-condition: '%world%=disabledworld'
+belowname-objective:
+  enabled: true
+  value: '%health%'
+  title: '&c❤'
+  fancy-value: '&c%health%'
+  fancy-value-default: NPC
+  disable-condition: '%world%=disabledworld'
+prevent-spectator-effect:
+  enabled: false
+bossbar:
+  enabled: false
+  toggle-command: /bossbar
+  remember-toggle-choice: false
+  hidden-by-default: false
+  bars:
+    rotating:
+      style: NOTCHED_6
+      color: '%animation:barcolors%'
+      progress: '%animation:barprogress%'
+      text: '%animation:bossbartext%'
+scoreboard:
+  enabled: true
+  toggle-command: /board
+  remember-toggle-choice: false
+  hidden-by-default: false
+  delay-on-join-milliseconds: 0
+  scoreboards:
+    scoreboard:
+      title: '<#F8BEFB>&lELYTRIX — ГРИФ #1</#FFFFFF>'
+      lines:
+      - ''
+      - ' &x&F&8&B&E&F&Bꐁ &fНик: &x&F&8&B&E&F&B%player%'
+      - ' &x&F&9&C&5&F&Cꐁ &fРанг: %luckperms_prefix%&x&F&9&C&5&F&C%expirytime%'
+      - ' &x&F&A&C&C&F&Cꐁ &fКлан: &x&F&A&C&C&F&C%nClans_clan_name_board%'
+      - ' &x&F&A&D&3&F&Dꐁ &fУ/С: &x&F&A&D&3&F&D%statistic_player_kills%&7/&x&F&A&D&3&F&D%statistic_deaths%'
+      - ' &x&F&B&D&9&F&Dꐀ &fELO: &x&F&B&D&9&F&D%elytrixelo_elo%'
+      - ''
+      - ' &x&F&8&B&E&F&Bꐁ &fБаланс: &x&F&8&B&E&F&B%vault_eco_balance% &fꐂ'
+      - ' &x&F&9&C&8&F&Cꐁ &fРилликов: &x&F&9&C&8&F&C%playerpoints_points_formatted% &fꐃ'
+      - ' &x&F&A&D&2&F&Dꐀ &fРомашки: &x&F&A&D&2&F&D%mobcoinsplus_playerbalance% &fꐄ'
+      - ''
+      - ' &x&F&8&B&E&F&Bꐀ &fПинг: &x&F&8&B&E&F&B%ping% &fꐅ'
+      - ''
+      - '    <#F8BEFB>&lelytrix.pw</#FFFFFF>   '
+      - ''
+layout:
+  enabled: false
+  direction: COLUMNS
+  default-skin: mineskin:37e93c8e12cd426cb28fce31969e0674
+  enable-remaining-players-text: true
+  remaining-players-text: '... and %s more'
+  empty-slot-ping-value: 1000
+  layouts:
+    default:
+      fixed-slots:
+      - '1|&3Website&f:'
+      - 2|&belytrix.pw
+      - '3|&8&m                       '
+      - '4|&3Name&f:'
+      - 5|&b%player%
+      - '7|&3Rank&f:'
+      - '8|Rank: %group%'
+      - '10|&3World&f:'
+      - 11|&b%world%
+      - '13|&3Time&f:'
+      - 14|&b%time%
+      - '21|&3Teamspeak&f:'
+      - 22|&bts.elytrix.pw
+      - '23|&8&m                       '
+      - '41|&3Store&f:'
+      - 42|&bshop.elytrix.pw
+      - '43|&8&m                       '
+      groups:
+        staff:
+          slots:
+          - 24-40
+          display-condition: permission:tab.staff
+        players:
+          slots:
+          - 44-80
+ping-spoof:
+  enabled: false
+  value: 0
+global-playerlist:
+  enabled: false
+  display-others-as-spectators: false
+  display-vanished-players-as-spectators: true
+  isolate-unlisted-servers: false
+  update-latency: false
+  spy-servers:
+  - spyserver1
+  - spyserver2
+  server-groups:
+    lobbies:
+    - lobby1
+    - lobby2
+    group2:
+    - server1
+    - server2
+placeholders:
+  date-format: dd.MM.yyyy
+  time-format: '[HH:mm:ss / h:mm a]'
+  time-offset: 0
+  register-tab-expansion: false
+placeholder-output-replacements:
+  '%essentials_vanished%':
+    'yes': '&7| Vanished'
+    'no': ''
+conditions:
+  nick:
+    conditions:
+    - '%player%=%essentials_nickname%'
+    true: '%player%'
+    false: ~%essentials_nickname%
+placeholder-refresh-intervals:
+  default-refresh-interval: 500
+  '%server_uptime%': 1000
+  '%server_tps_1_colored%': 1000
+  '%server_unique_joins%': 5000
+  '%player_health%': 200
+  '%player_ping%': 1000
+  '%vault_prefix%': 1000
+  '%rel_factionsuuid_relation_color%': 1000
+assign-groups-by-permissions: false
+primary-group-finding-list:
+- Owner
+- Admin
+- Mod
+- Helper
+- default
+permission-refresh-interval: 1000
+debug: false
+mysql:
+  enabled: false
+  host: 127.0.0.1
+  port: 3306
+  database: tab
+  username: user
+  password: password
+  useSSL: true
+proxy-support:
+  enabled: false
+  type: PLUGIN
+  plugin:
+    name: RedisBungee
+  redis:
+    url: redis://:password@localhost:6379/0
+  rabbitmq:
+    exchange: plugin
+    url: amqp://guest:guest@localhost:5672/%2F
+  channel-name-suffix: TAB
+components:
+  minimessage-support: true
+  disable-shadow-for-heads: true
+config-version: 5
+per-world-playerlist:
+  enabled: false
+  allow-bypass-permission: false
+  ignore-effect-in-worlds:
+  - ignoredworld
+  - build
+  shared-playerlist-world-groups:
+    lobby:
+    - lobby1
+    - lobby2
+    minigames:
+    - paintball
+    - bedwars
+compensate-for-packetevents-bug: false
+use-bukkit-permissions-manager: false
+use-online-uuid-in-tablist: true

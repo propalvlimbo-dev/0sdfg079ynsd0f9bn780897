@@ -1,0 +1,293 @@
+settings:
+  generate-on-startup: true
+  regenerate-on-every-startup: false
+  reset-progress-on-generate: true
+  rows: 5
+  max-amount-per-task: 3000
+  ignore-custom-items: true
+generator:
+  amount-multiplier: 5.2
+  min-score: 3.0
+  max-score: 76.0
+  custom-pool: {}
+quests:
+  '1':
+    slot: 0
+    type: TASK
+    action: BREAK
+    material: SAND
+    amount: 272
+    name: Песок
+  '2':
+    slot: 1
+    type: TASK
+    action: CRAFT
+    material: IRON_BLOCK
+    amount: 9
+    name: Железные Блоки
+  '3':
+    slot: 2
+    type: TASK
+    action: BRING
+    material: EMERALD
+    amount: 24
+    name: Изумруды
+  '4':
+    slot: 3
+    type: TASK
+    action: BREAK
+    material: GRAVEL
+    amount: 288
+    name: Гравий
+  '5':
+    slot: 4
+    type: TASK
+    action: CRAFT
+    material: DIAMOND_BLOCK
+    amount: 3
+    name: Алмазные Блоки
+  '6':
+    slot: 5
+    type: TASK
+    action: BRING
+    material: COBBLESTONE
+    amount: 640
+    name: Булыжник
+  '7':
+    slot: 6
+    type: TASK
+    action: BREAK
+    material: REDSTONE_ORE
+    amount: 80
+    name: Редстоуновая Руда
+  '8':
+    slot: 7
+    type: TASK
+    action: BRING
+    material: COAL
+    amount: 160
+    name: Уголь
+  '10':
+    slot: 9
+    type: TASK
+    action: BRING
+    material: EMERALD
+    amount: 144
+    name: Изумруды
+  '11':
+    slot: 10
+    type: TASK
+    action: BREAK
+    material: GOLD_ORE
+    amount: 400
+    name: Золотая Руда
+  '12':
+    slot: 11
+    type: TASK
+    action: BREAK
+    material: OBSIDIAN
+    amount: 240
+    name: Обсидиан
+  '13':
+    slot: 12
+    type: TASK
+    action: BRING
+    material: IRON_INGOT
+    amount: 384
+    name: Железные Слитки
+  '14':
+    slot: 13
+    type: TASK
+    action: BREAK
+    material: LAPIS_ORE
+    amount: 368
+    name: Лазуритовая Руда
+  '15':
+    slot: 14
+    type: TASK
+    action: BREAK
+    material: NETHER_QUARTZ_ORE
+    amount: 368
+    name: Кварцевая Руда
+  '16':
+    slot: 15
+    type: TASK
+    action: CRAFT
+    material: GOLD_BLOCK
+    amount: 176
+    name: Золотые Блоки
+  '17':
+    slot: 16
+    type: TASK
+    action: BREAK
+    material: COBBLESTONE
+    amount: 1216
+    name: Булыжник
+  '19':
+    slot: 18
+    type: TASK
+    action: BRING
+    material: DIAMOND
+    amount: 256
+    name: Алмазы
+  '20':
+    slot: 19
+    type: TASK
+    action: BREAK
+    material: LAPIS_ORE
+    amount: 704
+    name: Лазуритовая Руда
+  '21':
+    slot: 20
+    type: TASK
+    action: BRING
+    material: EMERALD
+    amount: 240
+    name: Изумруды
+  '22':
+    slot: 21
+    type: TASK
+    action: CRAFT
+    material: FURNACE
+    amount: 1344
+    name: Печки
+  '23':
+    slot: 22
+    type: TASK
+    action: CRAFT
+    material: DIAMOND_BLOCK
+    amount: 160
+    name: Алмазные Блоки
+  '24':
+    slot: 23
+    type: TASK
+    action: BRING
+    material: LAPIS_LAZULI
+    amount: 768
+    name: Лазурит
+  '25':
+    slot: 24
+    type: TASK
+    action: BREAK
+    material: NETHER_QUARTZ_ORE
+    amount: 704
+    name: Кварцевая Руда
+  '26':
+    slot: 25
+    type: TASK
+    action: BREAK
+    material: GRAVEL
+    amount: 2432
+    name: Гравий
+  '28':
+    slot: 27
+    type: TASK
+    action: CRAFT
+    material: FURNACE
+    amount: 1920
+    name: Печки
+  '29':
+    slot: 28
+    type: TASK
+    action: CRAFT
+    material: DIAMOND_BLOCK
+    amount: 240
+    name: Алмазные Блоки
+  '30':
+    slot: 29
+    type: TASK
+    action: CRAFT
+    material: GOLD_BLOCK
+    amount: 464
+    name: Золотые Блоки
+  '31':
+    slot: 30
+    type: TASK
+    action: BRING
+    material: DIAMOND
+    amount: 368
+    name: Алмазы
+  '32':
+    slot: 31
+    type: TASK
+    action: BRING
+    material: GOLD_INGOT
+    amount: 896
+    name: Золотые Слитки
+  '33':
+    slot: 32
+    type: TASK
+    action: BREAK
+    material: ANCIENT_DEBRIS
+    amount: 256
+    name: Древние Обломки
+  '34':
+    slot: 33
+    type: TASK
+    action: BRING
+    material: EMERALD
+    amount: 352
+    name: Изумруды
+  '35':
+    slot: 34
+    type: TASK
+    action: BREAK
+    material: NETHER_QUARTZ_ORE
+    amount: 960
+    name: Кварцевая Руда
+  '37':
+    slot: 36
+    type: TASK
+    action: BRING
+    material: COAL
+    amount: 2432
+    name: Уголь
+  '38':
+    slot: 37
+    type: TASK
+    action: CRAFT
+    material: ANVIL
+    amount: 352
+    name: Наковальни
+  '39':
+    slot: 38
+    type: TASK
+    action: BREAK
+    material: LAPIS_ORE
+    amount: 1280
+    name: Лазуритовая Руда
+  '40':
+    slot: 39
+    type: TASK
+    action: CRAFT
+    material: DIAMOND_BLOCK
+    amount: 304
+    name: Алмазные Блоки
+  '41':
+    slot: 40
+    type: TASK
+    action: BREAK
+    material: IRON_ORE
+    amount: 1600
+    name: Железная Руда
+  '42':
+    slot: 41
+    type: TASK
+    action: CRAFT
+    material: GOLD_BLOCK
+    amount: 640
+    name: Золотые Блоки
+  '43':
+    slot: 42
+    type: TASK
+    action: BREAK
+    material: COAL_ORE
+    amount: 1984
+    name: Угольная Руда
+  '44':
+    slot: 43
+    type: TASK
+    action: BREAK
+    material: EMERALD_ORE
+    amount: 496
+    name: Изумрудная Руда

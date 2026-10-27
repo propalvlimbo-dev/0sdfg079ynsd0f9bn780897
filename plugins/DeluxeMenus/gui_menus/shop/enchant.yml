@@ -1,0 +1,77 @@
+menu_title: '§fꈁꀀꈂꌕꈂꀁ§fꈃꄅ'
+open_command: enchant
+size: 54
+items:
+  'enchanted_book':
+    material: enchanted_book
+    slot: 21
+    display_name: '&#F8BEFBЧародейская книга'
+    lore:
+      - '&#AAAAAAМудрец'
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB149 &#FFFFFFꐃ'
+    
+  'enchanted_book_1':
+    material: enchanted_book
+    slot: 22
+    display_name: '&#F8BEFBЧародейская книга'
+    lore:
+      - '&#AAAAAAБур (Копает 3х3)'
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB249 &#FFFFFFꐃ'
+    
+  'enchanted_book_2':
+    material: enchanted_book
+    slot: 23
+    display_name: '&#F8BEFBЧародейская книга'
+    lore:
+      - '&#AAAAAAЛесник'
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB119 &#FFFFFFꐃ'
+    
+  'enchanted_book_3':
+    material: enchanted_book
+    slot: 30
+    display_name: '&#F8BEFBЧародейская книга'
+    lore:
+      - '&#AAAAAAСветлячок (Подсвечивает игрока)'
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB49 &#FFFFFFꐃ'
+    
+  'enchanted_book_4':
+    material: enchanted_book
+    slot: 31
+    display_name: '&#F8BEFBЧародейская книга'
+    lore:
+      - '&#AAAAAAТелепатия'
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB29 &#FFFFFFꐃ'
+    
+  'enchanted_book_5':
+    material: enchanted_book
+    slot: 32
+    display_name: '&#F8BEFBЧародейская книга'
+    lore:
+      - '&#AAAAAAГрабитель'
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB189 &#FFFFFFꐃ'
+    
+  'arrow':
+    material: arrow
+    slot: 45
+    display_name: '&#F8BEFBНазад'
+    model_data: 100020
+    click_commands:
+      - '[player] shop'
+  'clock':
+    material: clock
+    slot: 53
+    display_name: '&#F8BEFBИНФОРМАЦИЯ'
+    lore:
+      - ''
+      - '&#555555 &#FFFFFFВаш баланс: &#FAD8FC%playerpoints_points_formatted% &#FFFFFFꐃ'
+      - ''
+      - '&#AAAAAAПополнить баланс можно'
+      - '&#AAAAAAна сайте: &#FAD8FC%elytrix_site%'
+    model_data: 100020
+    

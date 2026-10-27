@@ -1,0 +1,1314 @@
+#########################################################
+## Developed by Little Room, patreon.com/littleroomdev ##
+#########################################################
+
+### GO TO KING ###
+
+gp2_goblins_gotoking:
+  TargetConditions:
+  - distance{d=>16}
+  Conditions:
+  - incombat false
+  Skills:
+  - goto{sh=8}
+
+### GOBLIN WARRIOR BLOB AI ###
+
+gp2_goblin_warrior_blobai:
+  TargetConditions:
+  - distance{d=>16}
+  Conditions:
+  - incombat false
+  Skills:
+  - goto{sh=4}
+
+
+### GOBLIN WARRIOR ###
+
+##scriptable keyframes##
+
+gp2_goblin_stepsound:
+  Skills:
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.footstep;v=0.1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+
+
+
+
+
+
+##################
+### RANDOMIZER ###
+##################
+
+
+gp2_goblin_warrior_hide_bow_part:
+  Skills:
+  - partvis{p=bow_handle} @self
+  - partvis{p=bow_t_3} @self
+  - partvis{p=bow_t_4} @self
+  - partvis{p=bow_t_string2} @self
+  - partvis{p=bow_t_1} @self
+  - partvis{p=bow_t_2} @self
+  - partvis{p=bow_t_string} @self
+
+gp2_goblin_warrior_show_bow_part:
+  Skills:
+  - partvis{p=bow_handle;v=true} @self
+  - partvis{p=bow_t_3;v=true} @self
+  - partvis{p=bow_t_4;v=true} @self
+  - partvis{p=bow_t_string2;v=true} @self
+  - partvis{p=bow_t_1;v=true} @self
+  - partvis{p=bow_t_2;v=true} @self
+  - partvis{p=bow_t_string;v=true} @self
+
+gp2_goblin_warrior_randomize:
+  Skills:
+  - skill{s=gp2_goblin_warrior_randomize_cosmetics} @self
+  - skill{s=gp2_goblin_warrior_randomize_weapons} @self
+  
+  
+gp2_goblin_warrior_randomize_cosmetics:
+  Skills:
+  - changepart{m=gp2_goblin_warrior;p=head;nm=gp2_goblin_parts;np=head_<random.1to6>} @self .75
+  - changepart{m=gp2_goblin_warrior;p=jaw;nm=gp2_goblin_parts;np=jaw_<random.1to6>} @self .75
+  - changepart{m=gp2_goblin_warrior;p=left_forearm;nm=gp2_goblin_parts;np=left_forearm_1} @self .5
+  - changepart{m=gp2_goblin_warrior;p=right_forearm;nm=gp2_goblin_parts;np=right_forearm_1} @self .5
+  
+  
+  
+gp2_goblin_warrior_randomize_weapons:
+  Skills:
+  - randomskill{s=gp2_goblin_weapon_empty,
+                  gp2_goblin_weapon_club,
+                  gp2_goblin_weapon_frying_pan,
+                  gp2_goblin_weapon_knife,
+                  gp2_goblin_weapon_wooden_spoon,
+                  gp2_goblin_weapon_bow,
+                  gp2_goblin_weapon_broken_pitchfork} @self
+  - skill{s=gp2_goblin_no_shield} @self .5
+  
+  
+  
+gp2_goblin_no_shield:
+  Skills:
+  - delay 1
+  - partvis{p=left_weapon} @self
+  - setvariable{var=caster.shield;value="empty";type=STRING}
+  
+gp2_goblin_weapon_empty:
+  Skills:
+  - delay 1
+  - partvis{p=right_weapon} @self
+  - defaultstate{t=walk;s=walk_noweapon} @self
+  - skill{s=gp2_goblin_warrior_hide_bow_part} @self
+  - setvariable{var=caster.weapon;value="empty";type=STRING}
+  
+gp2_goblin_weapon_club:
+  Skills:
+  - skill{s=gp2_goblin_warrior_hide_bow_part} @self
+  - changepart{m=gp2_goblin_warrior;p=right_weapon;nm=gp2_goblin_warrior;np=right_weapon} @self
+  - partvis{p=right_weapon;v=true} @self
+  - defaultstate{t=walk;s=walk} @self
+  - setvariable{var=caster.weapon;value="club";type=STRING}
+  
+gp2_goblin_weapon_frying_pan:
+  Skills:
+  - skill{s=gp2_goblin_warrior_hide_bow_part} @self
+  - changepart{m=gp2_goblin_warrior;p=right_weapon;nm=gp2_goblin_parts;np=frying_pan} @self
+  - partvis{p=right_weapon;v=true} @self
+  - defaultstate{t=walk;s=walk} @self
+  - setvariable{var=caster.weapon;value="frying_pan";type=STRING}
+  
+gp2_goblin_weapon_knife:
+  Skills:
+  - skill{s=gp2_goblin_warrior_hide_bow_part} @self
+  - changepart{m=gp2_goblin_warrior;p=right_weapon;nm=gp2_goblin_parts;np=knife} @self
+  - partvis{p=right_weapon;v=true} @self
+  - defaultstate{t=walk;s=walk} @self
+  - setvariable{var=caster.weapon;value="knife";type=STRING}
+  
+gp2_goblin_weapon_wooden_spoon:
+  Skills:
+  - skill{s=gp2_goblin_warrior_hide_bow_part} @self
+  - changepart{m=gp2_goblin_warrior;p=right_weapon;nm=gp2_goblin_parts;np=wooden_spoon} @self
+  - partvis{p=right_weapon;v=true} @self
+  - defaultstate{t=walk;s=walk} @self
+  - setvariable{var=caster.weapon;value="wooden_spoon";type=STRING}
+  
+gp2_goblin_weapon_broken_pitchfork:
+  Skills:
+  - skill{s=gp2_goblin_warrior_hide_bow_part} @self
+  - changepart{m=gp2_goblin_warrior;p=right_weapon;nm=gp2_goblin_parts;np=broken_pitchfork} @self
+  - partvis{p=right_weapon;v=true} @self
+  - defaultstate{t=walk;s=walk} @self
+  - setvariable{var=caster.weapon;value="broken_pitchfork";type=STRING}
+  
+gp2_goblin_weapon_bow:
+  Skills:
+  - delay 1
+  - skill{s=gp2_goblin_warrior_show_bow_part} @self
+  - partvis{p=right_weapon} @self
+  - partvis{p=left_weapon} @self
+  - defaultstate{t=walk;s=walk} @self
+  - setvariable{var=caster.weapon;value="bow";type=STRING}
+  - setvariable{var=caster.shield;value="empty";type=STRING}
+  
+  
+
+#########################
+### GOBLIN BEHAVIOURS ###
+#########################
+
+
+
+
+
+## FIDGET ##
+
+gp2_goblin_idle_fidget:
+  Cooldown: 10
+  Conditions:
+  - incombat false
+  - moving false
+  - offgcd true
+  Skills:
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=40} @self
+  - state{s=idle_fidget} @self
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_fidget;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+
+
+
+
+
+
+## SCREAM ##
+
+gp2_goblin_scream:
+  Cooldown: 10
+  Conditions:
+  - offgcd true
+  - stance{s=shield_down} true
+  - incombat true
+  Skills:
+  - gcd{ticks=40}
+  - state{s=scream} @self
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_scream;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>";delay=10} @self
+  
+  
+  
+  
+  
+  
+## ARCHER BEHAVIOURS ##
+
+gp2_goblin_bow_stop:
+  Conditions:
+  - incombat true
+  - stance{s=flee} false
+  - targetwithin{d=13} orElseCast gp2_goblin_bow_move
+  - varEquals{var=caster.weapon;value="bow"}
+  Skills:
+  - setspeed{type=walking;speed=0} @self
+  
+gp2_goblin_bow_move:
+  Conditions:
+  - stance{s=flee} false
+  Skills:
+  - setspeed{type=walking;speed=1.5} @self
+  
+gp2_goblin_bow_runaway:
+  Cooldown: 3
+  Conditions:
+  - offgcd true
+  - varEquals{var=caster.weapon;value="bow"}
+  - playerwithin{d=3} true
+  Skills:
+  - setstance{stance=flee} @self
+  - setstance{stance=default;delay=50} @self
+  - setspeed{type=walking;speed=1.5} @self
+  - summon{t=gp2_goblin_dummy} @forward{f=-8;lockpitch=true}
+  - goto{speedModifier=1;repeat=40;repeatI=1} @children{target=armorstands}
+
+
+
+
+####################################
+### DYNAMIC AIR TIME FLAIL SYSTEM ##
+####################################
+
+
+### EXPLOSION SWEETENER ###
+
+gp2_goblin_exploded:
+  Conditions:
+  - damagecause{cause=ENTITY_EXPLOSION} true
+  Skills:
+  - skill{s=gp2_shield_break} @self
+  - setAI{ai=true} @self
+  - ignite{d=20} @self
+  - effect:particles{p=campfire_cosy_smoke;repeat=20;repeati=1;hs=.15;vs=.15;a=1} @self
+  - propel{v=1} @forward{f=<random.-10to10>;so=<random.-10to10>;yo=10;lockpitch=true}
+  
+### DETECTS VELOCITY AND APPLIES FLAILING ###
+
+gp2_goblin_toss_up:
+  Conditions:
+  - altitude{a=>1} true
+  - onground false
+  - ( directionalVelocity{y=<-0.65} || directionalVelocity{y=>0.65} )
+  - varEquals{var=caster.toss;value="true"} cancel
+  Skills:
+  - setAI{ai=true} @self
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_flail;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - skill{s=gp2_goblin_drop_weapon} @self
+  - state{s=knock_up;p=2} @self
+  - setvariable{var=caster.toss;value="true";type=STRING;delay=5}
+  - setspeed{type=walking;speed=0} @self
+
+### ENDS FLAIL ON GROUND IMPACT ###
+
+gp2_goblin_toss_up_land:
+  Cooldown: 2
+  Conditions:
+  - onground orElseCast gp2_goblin_toss_up_water
+  - varEquals{var=caster.toss;value="true"}
+  Skills:
+  - gcd{ticks=40}
+  - setvariable{var=caster.toss;value="false";type=STRING;delay=40}
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.ground_impact;v=0.5;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_land;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - state{s=land} @self
+  - state{s=knock_up;r=true;p=2} @self
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=40} @self
+
+gp2_goblin_toss_up_water:
+  Conditions:
+  - inblock{b=water} true
+  - varEquals{var=caster.toss;value="true"}
+  Skills:
+  - setvariable{var=caster.toss;value="false";type=STRING}
+  - state{s=knock_up;r=true;p=2} @self
+  - gcd{ticks=20}
+
+### DROPS WEAPON WHEN FLAIL STARTS ###
+
+gp2_goblin_drop_weapon:
+  Skills:
+  - dropitem{i="gp2_goblin_<caster.var.weapon>"} @self
+  - skill{s=gp2_goblin_weapon_empty} @self
+  - defaultstate{t=walk;s=walk_noweapon} @self
+  
+ 
+
+
+
+###############################
+### WEAPON COLLECTION SYSTEM ##
+###############################
+
+gp2_goblin_find_weapon:
+  Cooldown: 1
+  TargetConditions:
+  - ( entityitemissimilar{mm=gp2_goblin_club} ||
+      entityitemissimilar{mm=gp2_goblin_knife} ||
+      entityitemissimilar{mm=gp2_goblin_bow} ||
+      entityitemissimilar{mm=gp2_goblin_wooden_spoon} ||
+      entityitemissimilar{mm=gp2_goblin_frying_pan} ||
+      entityitemissimilar{mm=gp2_goblin_broken_pitchfork})
+  Conditions:
+  - inblock{b=water} false
+  - offgcd true
+  - varEquals{var=caster.weapon;value="empty"}
+  Skills:
+  - gcd{ticks=40}
+  #- message{m="oh look a weapon i can grab!"} @everyone
+  - summon{t=gp2_goblin_dummy}
+  - look{repeat=5;repeati=1}
+  - goto{speedmodifier=2;hs=0;vs=0;repeat=60;repeati=1} @children{target=armorstands}
+  - setspeed{type=walking;speed=1.5} @self
+  
+gp2_goblin_grab_weapon:
+  Conditions:
+  - onground true
+  - varEquals{var=caster.toss;value="true"} cancel
+  Skills:
+  - skill{s=gp2_goblin_grab_club}
+  - skill{s=gp2_goblin_grab_knife}
+  - skill{s=gp2_goblin_grab_bow}
+  - skill{s=gp2_goblin_grab_wooden_spoon}
+  - skill{s=gp2_goblin_grab_frying_pan}
+  - skill{s=gp2_goblin_grab_broken_pitchfork}
+  
+gp2_goblin_grab_club:
+  TargetConditions:
+  - entityitemissimilar{mm=gp2_goblin_club} true
+  Conditions:
+  - varEquals{var=caster.weapon;value="empty"}
+  #- offgcd true
+  Skills:
+  - gcd{ticks=20}
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_grunt;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - state{s=swing_1} @self
+  #- message{m="time to grab the club!"} @everyone
+  - skill{s=gp2_goblin_weapon_club;delay=5} @self
+  - remove
+  
+gp2_goblin_grab_knife:
+  TargetConditions:
+  - entityitemissimilar{mm=gp2_goblin_knife} true
+  Conditions:
+  - varEquals{var=caster.weapon;value="empty"}
+  #- offgcd true
+  Skills:
+  - gcd{ticks=20}
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_grunt;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - state{s=swing_1} @self
+  #- message{m="time to grab the knife!"} @everyone
+  - skill{s=gp2_goblin_weapon_knife;delay=5} @self
+  - remove
+  
+gp2_goblin_grab_bow:
+  TargetConditions:
+  - entityitemissimilar{mm=gp2_goblin_bow} true
+  Conditions:
+  - varEquals{var=caster.weapon;value="empty"}
+  #- offgcd true
+  Skills:
+  - gcd{ticks=20}
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_grunt;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - state{s=swing_1} @self
+  #- message{m="time to grab the bow!"} @everyone
+  - skill{s=gp2_goblin_weapon_bow;delay=5} @self
+  - remove
+  
+gp2_goblin_grab_wooden_spoon:
+  TargetConditions:
+  - entityitemissimilar{mm=gp2_goblin_wooden_spoon} true
+  Conditions:
+  - varEquals{var=caster.weapon;value="empty"}
+  #- offgcd true
+  Skills:
+  - gcd{ticks=20}
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_grunt;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - state{s=swing_1} @self
+  #- message{m="time to grab the wooden_spoon!"} @everyone
+  - skill{s=gp2_goblin_weapon_wooden_spoon;delay=5} @self
+  - remove
+  
+gp2_goblin_grab_frying_pan:
+  TargetConditions:
+  - entityitemissimilar{mm=gp2_goblin_frying_pan} true
+  Conditions:
+  - varEquals{var=caster.weapon;value="empty"}
+  #- offgcd true
+  Skills:
+  - gcd{ticks=20}
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_grunt;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - state{s=swing_1} @self
+  #- message{m="time to grab the frying_pan!"} @everyone
+  - skill{s=gp2_goblin_weapon_frying_pan;delay=5} @self
+  - remove
+  
+gp2_goblin_grab_broken_pitchfork:
+  TargetConditions:
+  - entityitemissimilar{mm=gp2_goblin_broken_pitchfork} true
+  Conditions:
+  - varEquals{var=caster.weapon;value="empty"}
+  #- offgcd true
+  Skills:
+  - gcd{ticks=20}
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_grunt;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - state{s=swing_1} @self
+  #- message{m="time to grab the broken_pitchfork!"} @everyone
+  - skill{s=gp2_goblin_weapon_broken_pitchfork;delay=5} @self
+  - remove
+
+
+### SHIELD STUFF ###
+
+gp2_shield_armor:
+  Conditions:
+  - varEquals{var=caster.shield;value="true"}
+  Skills:
+  - potion{type=DAMAGE_RESISTANCE;duration=20;level=4}
+
+gp2_shield_proximity:
+  Conditions:
+  - inblock{b=water} false
+  - incombat true
+  - targetwithin{d=8} orElseCast gp2_shield_proximity_disable
+  - varEquals{var=caster.shield;value="true"}
+  Skills:
+  - skill{s=gp2_shield_proximity_defaultstate} @self
+  ##- message{m="hey its shield time!"} @everyone
+  - setspeed{type=walking;speed=1} @self
+  
+gp2_shield_proximity_defaultstate:
+  Conditions:
+  - inblock{b=water} false
+  - stance{s=shield_down} true
+  Skills:
+  - defaultstate{t=walk;s=shield_walk;li=5;lo=5} @self
+  - defaultstate{t=idle;s=shield_idle;li=5;lo=5} @self
+  - setstance{stance=shield_up} @self
+  
+gp2_shield_proximity_disable:
+  Skills:
+  ##- message{m="hey its not shield time!"} @everyone
+  - setspeed{type=walking;speed=1.5} @self
+  - skill{s=gp2_shield_proximity_disable_defaultstate} @self
+  
+gp2_shield_proximity_disable_defaultstate:
+  Conditions:
+  - stance{s=shield_up} true
+  Skills:
+  - defaultstate{t=walk;s=walk;li=5;lo=5} @self
+  - defaultstate{t=idle;s=idle;li=5;lo=5} @self
+  - setstance{stance=shield_down} @self
+  
+gp2_shield_hit:
+  Conditions:
+  - stance{s=shield_up} true
+  - variableInRange{var=caster.shieldhealth;value=<1} castinstead gp2_shield_break
+  Skills:
+  ##- message{m="<skill.var.damage-amount>"} @everyone
+  - effect:particles{p=block;m=oak_planks;a=15;hs=.15;vs=.15} @modelpart{pid=left_weapon}
+  #- state{s=shield_block} @self
+  - variablesubtract{var=caster.shieldhealth;amount=<skill.var.damage-amount>} ~onInteract
+  
+gp2_shield_break:
+  Conditions:
+  - variableEquals{var=caster.shield;value="empty"} cancel
+  Skills:
+  - setspeed{type=walking;speed=1.5} @self
+  - effect:particles{p=block;m=oak_planks;a=25;hs=.25;vs=.25} @modelpart{pid=left_weapon}
+  - setvariable{var=caster.shield;value="empty";type=STRING} @self
+  - potion{type=DAMAGE_RESISTANCE;duration=1;level=4}
+  - partvis{p=left_weapon} @self
+  - skill{s=gp2_shield_break_defaultstate_empty} @self
+  - skill{s=gp2_shield_break_defaultstate_weapon} @self
+  
+  
+gp2_shield_break_defaultstate_empty:
+  Conditions:
+  - varEquals{var=caster.weapon;value="empty"}
+  Skills:
+  - defaultstate{t=walk;s=walk_noweapon;li=5;lo=5} @self
+  - defaultstate{t=idle;s=idle;li=5;lo=5} @self
+  
+gp2_shield_break_defaultstate_weapon:
+  Conditions:
+  - (varEquals{var=caster.weapon;value="club"} || 
+     varEquals{var=caster.weapon;value="frying_pan"} ||
+     varEquals{var=caster.weapon;value="knife"} ||
+     varEquals{var=caster.weapon;value="wooden_spoon"} ||
+     varEquals{var=caster.weapon;value="broken_pitchfork"} ||
+     )
+  Skills:
+  - defaultstate{t=walk;s=walk;li=5;lo=5} @self
+  - defaultstate{t=idle;s=idle;li=5;lo=5} @self
+  
+gp2_shield_bash_sync:
+  Skills:
+  - CancelEvent
+  - skill{s=gp2_shield_bash} @self
+  
+gp2_shield_bash:
+  Conditions:
+  - offgcd true
+  - stance{s=shield_up} true
+  Skills:
+  - gcd{ticks=40}
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.swing;v=0.5;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_grunt;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - delay 4
+  - propel{v=.25} @target ?targetnotwithin{d=2}
+  - state{s=shield_push} @self
+  - totem{hnp=true;md=2;hr=1;vr=1;oH=gp2_goblin_shield_damage;drawhitbox=false} @forward{f=1;lockpitch=true}
+  
+  
+  
+#####################
+### GOBLIN COMBAT ###
+#####################
+
+### DAMAGE AMOUNT ###
+
+gp2_goblin_empty_damage:
+  Cooldown: 1
+  TargetConditions:
+  - faction{faction=GOBLIN} false
+  Skills:
+  - basedamage{m=0.25}
+  - throw{v=1;vy=1}
+
+gp2_goblin_knife_damage:
+  Cooldown: 1
+  TargetConditions:
+  - faction{faction=GOBLIN} false
+  Skills:
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.knife_impact;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>";delay=3} @self
+  - basedamage{m=1}
+  - throw{v=1;vy=1}
+
+gp2_goblin_wooden_spoon_damage:
+  Cooldown: 1
+  TargetConditions:
+  - faction{faction=GOBLIN} false
+  Skills:
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.shield_impact;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>";delay=3} @self
+  - basedamage{m=0.75}
+  - throw{v=1;vy=1}
+
+gp2_goblin_broken_pitchfork_damage:
+  Cooldown: 1
+  TargetConditions:
+  - faction{faction=GOBLIN} false
+  Skills:
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.knife_impact;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>";delay=3} @self
+  - basedamage{m=0.75}
+  - throw{v=1;vy=1}
+
+gp2_goblin_club_damage:
+  Cooldown: 1
+  TargetConditions:
+  - faction{faction=GOBLIN} false
+  Skills:
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.shield_impact;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>";delay=3} @self
+  - basedamage{m=1}
+  - throw{v=1;vy=1}
+
+gp2_goblin_frying_pan_damage:
+  Cooldown: 1
+  TargetConditions:
+  - faction{faction=GOBLIN} false
+  Skills:
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.frying_pan_impact;v=0.5;sc=HOSTILE;p="<random.float.0.8to1.2>";delay=3} @self
+  - basedamage{m=1}
+  - throw{v=1;vy=1}
+
+gp2_goblin_kick_damage:
+  Cooldown: 1
+  TargetConditions:
+  - faction{faction=GOBLIN} false
+  Skills:
+  - basedamage{m=0.5}
+  - throw{v=5;vy=1}
+  
+gp2_goblin_shield_damage:
+  Cooldown: 1
+  TargetConditions:
+  - faction{faction=GOBLIN} false
+  Skills:
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.shield_impact;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>";delay=3} @self
+  - basedamage{m=0.5}
+  - throw{v=8;vy=1}
+
+gp2_goblin_throw_rock_damage:
+  Cooldown: 1
+  TargetConditions:
+  - faction{faction=GOBLIN} false
+  Skills:
+  - basedamage{m=0.25}
+  - throw{v=1;vy=1}
+
+gp2_goblin_shoot_arrow_damage:
+  Cooldown: 1
+  TargetConditions:
+  - faction{faction=GOBLIN} false
+  Skills:
+  - basedamage{m=0.75}
+  - throw{v=1;vy=1}
+
+### SWING 1 ###
+
+gp2_goblin_swing_1_sync:
+  Skills:
+  - CancelEvent
+  - skill{s=gp2_goblin_swing_1} @self
+  
+gp2_goblin_swing_1:
+  Conditions:
+  - offgcd true
+  - (varEquals{var=caster.weapon;value="club"} || 
+     varEquals{var=caster.weapon;value="empty"} ||
+     varEquals{var=caster.weapon;value="frying_pan"} ||
+     varEquals{var=caster.weapon;value="knife"} ||
+     varEquals{var=caster.weapon;value="wooden_spoon"} ||
+     varEquals{var=caster.weapon;value="broken_pitchfork"} ||
+     )
+  Skills:
+  - gcd{ticks=20}
+  - state{s=swing_1} @self
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_swing;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.swing;v=0.1;sc=HOSTILE;p="<random.float.0.8to1.2>";delay=3} @self
+  - propel{v=.5} @forward{f=1;lockpitch=true} ?targetnotwithin{d=2}
+  - skill{s=gp2_goblin_swing_totem} @forward{f=1;lockpitch=true}
+  
+gp2_goblin_swing_totem:
+  Skills:
+  - skill{s=gp2_goblin_empty_totem}
+  - skill{s=gp2_goblin_knife_totem}
+  - skill{s=gp2_goblin_wooden_spoon_totem}
+  - skill{s=gp2_goblin_frying_pan_totem}
+  - skill{s=gp2_goblin_broken_pitchfork_totem}
+  - skill{s=gp2_goblin_club_totem}
+  
+gp2_goblin_empty_totem:
+  Conditions:
+  - varEquals{var=caster.weapon;value="empty"}
+  Skills:
+  - totem{hnp=true;md=2;hr=1.5;vr=1.5;oH=gp2_goblin_empty_damage;repeat=2;repeatI=1;delay=5;drawhitbox=false}
+  
+gp2_goblin_knife_totem:
+  Conditions:
+  - varEquals{var=caster.weapon;value="knife"}
+  Skills:
+  - totem{hnp=true;md=2;hr=1.5;vr=1.5;oH=gp2_goblin_knife_damage;repeat=2;repeatI=1;delay=5;drawhitbox=false}
+  
+gp2_goblin_wooden_spoon_totem:
+  Conditions:
+  - varEquals{var=caster.weapon;value="wooden_spoon"}
+  Skills:
+  - totem{hnp=true;md=2;hr=1.5;vr=1.5;oH=gp2_goblin_wooden_spoon_damage;repeat=2;repeatI=1;delay=5;drawhitbox=false}
+  
+gp2_goblin_frying_pan_totem:
+  Conditions:
+  - varEquals{var=caster.weapon;value="frying_pan"}
+  Skills:
+  - totem{hnp=true;md=2;hr=1.5;vr=1.5;oH=gp2_goblin_frying_pan_damage;repeat=2;repeatI=1;delay=5;drawhitbox=false}
+  
+gp2_goblin_broken_pitchfork_totem:
+  Conditions:
+  - varEquals{var=caster.weapon;value="broken_pitchfork"}
+  Skills:
+  - totem{hnp=true;md=2;hr=1.5;vr=1.5;oH=gp2_goblin_broken_pitchfork_damage;repeat=2;repeatI=1;delay=5;drawhitbox=false}
+  
+gp2_goblin_club_totem:
+  Conditions:
+  - varEquals{var=caster.weapon;value="club"}
+  Skills:
+  - totem{hnp=true;md=2;hr=1.5;vr=1.5;oH=gp2_goblin_club_damage;repeat=2;repeatI=1;delay=5;drawhitbox=false}
+  
+  
+  
+  
+### SWING 2 ###
+
+gp2_goblin_swing_2_sync:
+  Skills:
+  - CancelEvent
+  - skill{s=gp2_goblin_swing_2} @self
+  
+gp2_goblin_swing_2:
+  Conditions:
+  - offgcd true
+  - (varEquals{var=caster.weapon;value="club"} || 
+     varEquals{var=caster.weapon;value="frying_pan"} ||
+     varEquals{var=caster.weapon;value="knife"} ||
+     varEquals{var=caster.weapon;value="wooden_spoon"} ||
+     varEquals{var=caster.weapon;value="broken_pitchfork"} ||
+     )
+  Skills:
+  - gcd{ticks=20}
+  - state{s=swing_2} @self
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_swing;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.swing;v=0.1;sc=HOSTILE;p="<random.float.0.8to1.2>";delay=3} @self
+  - propel{v=.5} @forward{f=1;lockpitch=true} ?targetnotwithin{d=2}
+  - skill{s=gp2_goblin_swing_totem} @forward{f=1;lockpitch=true}
+  
+  
+  
+  
+### SWING 3 ###
+
+gp2_goblin_swing_3_sync:
+  Skills:
+  - CancelEvent
+  - skill{s=gp2_goblin_swing_3} @self
+  
+gp2_goblin_swing_3:
+  Conditions:
+  - offgcd true
+  - (varEquals{var=caster.weapon;value="club"} || 
+     varEquals{var=caster.weapon;value="frying_pan"} ||
+     varEquals{var=caster.weapon;value="knife"} ||
+     varEquals{var=caster.weapon;value="wooden_spoon"} ||
+     varEquals{var=caster.weapon;value="broken_pitchfork"} ||
+     )
+  Skills:
+  - gcd{ticks=20}
+  - state{s=swing_3} @self
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_swing;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.swing;v=0.1;sc=HOSTILE;p="<random.float.0.8to1.2>";delay=3} @self
+  - propel{v=.5} @forward{f=1;lockpitch=true} ?targetnotwithin{d=2}
+  - skill{s=gp2_goblin_swing_totem} @forward{f=1;lockpitch=true}
+  
+  
+### KICK ###
+
+gp2_goblin_kick_sync:
+  Skills:
+  - CancelEvent
+  - skill{s=gp2_goblin_kick} @self
+  
+gp2_goblin_kick:
+  Cooldown: 5
+  Conditions:
+  - offgcd true
+  - (varEquals{var=caster.weapon;value="club"} || 
+     varEquals{var=caster.weapon;value="empty"} ||
+     varEquals{var=caster.weapon;value="bow"} ||
+     varEquals{var=caster.weapon;value="frying_pan"} ||
+     varEquals{var=caster.weapon;value="knife"} ||
+     varEquals{var=caster.weapon;value="wooden_spoon"} ||
+     varEquals{var=caster.weapon;value="broken_pitchfork"} ||
+     )
+     
+  Skills:
+  - gcd{ticks=20}
+  - setspeed{type=walking;speed=0} @self
+  - setspeed{type=walking;speed=1.5;delay=15} @self
+  - state{s=kick} @self
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_swing;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.swing;v=0.5;sc=HOSTILE;p="<random.float.0.8to1.2>";delay=3} @self
+  - propel{v=.5} @forward{f=1;lockpitch=true} ?targetnotwithin{d=2}
+  - totem{hnp=true;md=2;hr=1;vr=1;oH=gp2_goblin_kick_damage;repeat=5;repeatI=1;delay=5;drawhitbox_false} @forward{f=1;lockpitch=true}
+  
+  
+### SHOOT ARROW ###
+
+gp2_goblin_shoot_arrow:
+  Cooldown: 4
+  Conditions:
+  - targetwithin{d=14} true
+  - offgcd true
+  - incombat true
+  - onground true
+  - stance{s=flee} false
+  - (varEquals{var=caster.weapon;value="bow"} || varEquals{var=caster.toss;value="true"})
+  Skills:
+  - gcd{ticks=50}
+  - stun{d=40} @self
+  - look{repeat=40;repeati=1} @target
+  - state{s=shoot_arrow} @self
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.bow_pull;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>";delay=5} @self
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.bow_shoot;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>";delay=20} @self
+  - projectile{g=.8;v=35;bulletType=ARROW;arrowType=NORMAL;delay=20;tyo=1;hnp=true;oH=gp2_goblin_shoot_arrow_damage} @target
+  #- shoot{velocity=.8;hs=0.1;vs=0.1;delay=20} @target
+  
+### THROW ROCK ###
+
+gp2_goblin_throw_rock:
+  Cooldown: 5
+  TargetConditions:
+  - distance{d=3to12} true
+  Conditions:
+  - offgcd true
+  - onground true
+  - varEquals{var=caster.weapon;value="empty"}
+  Skills:
+  - gcd{ticks=40}
+  - setai{ai=false} @self
+  - setai{ai=true;delay=50} @self
+  #- stun{d=50;ai=true} @self
+  - state{s=throw_rock} @self
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_swing;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>";delay=35} @self
+  - projectile{g=.8;v=15;bulletType=TRACKING;mat=INK_SAC;model=1;delay=35;tyo=1;hr=.25;vr=.25;drawhitbox=false;oH=gp2_goblin_throw_rock_damage;oE=gp2_goblin_throw_rock_fx;hnp=true} @target
+
+gp2_goblin_throw_rock_fx:
+  Skills:
+  - effect:particles{p=block;m=cobblestone;a=10;hs=.25;vs=.25}
+  
+
+
+#############
+### DEATH ###
+#############
+
+gp2_goblin_death:
+  Skills:
+  - partvis{p=right_weapon} @self
+  - skill{s=gp2_goblin_warrior_hide_bow_part} @self
+  - dropitem{i="gp2_goblin_<caster.var.weapon>"} @self
+  - delay 40
+  - effect:particles{p=poof;a=15;hs=.25;vs=.25} @modelpart{pid=torso}
+  - effect:particles{p=poof;a=15;hs=.25;vs=.25} @modelpart{pid=head}
+  - effect:particles{p=poof;a=15;hs=.25;vs=.25} @modelpart{pid=right_forearm}
+  - effect:particles{p=poof;a=15;hs=.25;vs=.25} @modelpart{pid=left_forearm}
+  
+
+
+
+
+
+### GOBLIN KING ###
+
+##################
+### BEHAVIOURS ###
+##################
+
+
+## FIDGET ##
+
+gp2_goblinking_idle_fidget:
+  Cooldown: 10
+  Conditions:
+  - incombat false
+  - moving false
+  - offgcd true
+  Skills:
+  - setAI{ai=false} @self
+  - setAI{ai=true;delay=40} @self
+  - state{s=fidget} @self
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_king_fidget;v=2;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+
+##### BOSS BAR DAMAGE FLASH FX ####
+# this handles the bossbar flash and the model flash when damaged #
+
+gp2_goblin_king_bossbar_damage:
+  Skills: 
+  - barSet{name="gp2_goblin_king";display="<caster.name>";value="<caster.hp>/<caster.mhp>";color=WHITE;style=SEGMENTED_6} @self
+  - delay 2
+  - barSet{name="gp2_goblin_king";display="<caster.name>";value="<caster.hp>/<caster.mhp>";color=RED;style=SEGMENTED_6} @self
+  - delay 2
+  - barSet{name="gp2_goblin_king";display="<caster.name>";value="<caster.hp>/<caster.mhp>";color=WHITE;style=SEGMENTED_6} @self
+  - delay 2
+  - barSet{name="gp2_goblin_king";display="<caster.name>";value="<caster.hp>/<caster.mhp>";color=RED;style=SEGMENTED_6} @self
+  
+###########################
+### GOBLIN KING ATTACKS ###
+###########################
+
+### ATTACK THROW AMOUNT ###
+
+gp2_goblinking_throw_goblins:
+  TargetConditions:
+  - faction{faction=GOBLIN} orElseCast gp2_goblinking_throw_players
+  Skills:
+  - throw{v=8;vy=8} 
+  
+gp2_goblinking_throw_players:
+  Skills:
+  - throw{v=7;vy=4} 
+
+
+
+### DAMAGE AMOUNT ###
+
+gp2_goblinking_shoulder_damage:
+  Cooldown: 1
+  Skills:
+  - basedamage{m=1} 
+  - skill{s=gp2_goblinking_throw_goblins}
+
+gp2_goblinking_swing_damage:
+  Cooldown: 1
+  Skills:
+  - basedamage{m=1} 
+  - skill{s=gp2_goblinking_throw_goblins}
+
+gp2_goblinking_slam_damage:
+  Cooldown: 1
+  Skills:
+  - basedamage{m=1} 
+  - skill{s=gp2_goblinking_throw_goblins}
+
+### SHOULDER ###
+
+  
+gp2_goblinking_shoulder:
+  Cooldown: 5
+  TargetConditions:
+  - distance{d=3to8} true
+  Conditions:
+  - offgcd true
+  Skills:
+  - gcd{ticks=20}
+  - lockmodel{l=true} @self
+  - lockmodel{l=false;delay=20} @self
+  - state{s=shoulder;li=2} @self
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_king_swing;v=2;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - summon{t=gp2_goblin_dummy} @forward{f=12;lockpitch=true}
+  - propel{v=1;repeat=5;repeati=1} @children{target=armorstands}
+  - totem{hnp=true;md=2;hr=1;vr=1;oH=gp2_goblinking_shoulder_damage;repeat=10;repeatI=1;drawhitbox=false} @forward{f=1;lockpitch=true}
+  
+  
+
+
+### SWING 1 ###
+
+
+gp2_goblinking_swing_1_sync:
+  Skills:
+  - CancelEvent
+  - skill{s=gp2_goblinking_swing_1} @self
+  
+gp2_goblinking_swing_1:
+  Cooldown: 5
+  Conditions:
+  - offgcd true
+  Skills:
+  - gcd{ticks=100}
+  - setspeed{type=walking;speed=0} @self
+  - setspeed{type=walking;speed=1;delay=100} @self
+  - lockmodel{l=true;delay=25} @self
+  - lockmodel{l=false;delay=40} @self
+  - lockmodel{l=true;delay=50} @self
+  - lockmodel{l=false;delay=65} @self
+  - state{s=swing_1} @self
+  - propel{v=1;delay=30} @forward
+  - propel{v=1;delay=55} @forward
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_king_swing;v=2;sc=HOSTILE;p="<random.float.0.8to1.2>";delay=30} @self
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_king_swing;v=2;sc=HOSTILE;p="<random.float.0.8to1.2>";delay=55} @self
+  - totem{hnp=true;md=2;hr=1.5;vr=1.5;oH=gp2_goblinking_swing_damage;repeat=10;repeatI=1;drawhitbox=false;delay=30} @modelpart{pid=weapon_hitbox}
+  - totem{hnp=true;md=2;hr=1.5;vr=1.5;oH=gp2_goblinking_swing_damage;repeat=10;repeatI=1;drawhitbox=false;delay=55} @modelpart{pid=weapon_hitbox}
+  
+  
+
+### AIRTIME SLAM ###
+  
+gp2_goblinking_slam:
+  Cooldown: 15
+  TargetConditions:
+  - distance{d=8to12} true
+  Conditions:
+  - offgcd true
+  Skills:
+  - gcd{ticks=100}
+  - setspeed{type=walking;speed=0} @self
+  - setspeed{type=walking;speed=1;delay=60} @self
+  - state{s=jump_attack} @self
+  - potion{type=SLOW_FALLING;duration=200;level=4} @self
+  - lockmodel{l=true;delay=10} @self
+  - lockmodel{l=false;delay=60} @self
+  #- summon{t=gp2_goblin_dummy;delay=20} @targetlocation
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.king_leap;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>";delay=10} @self
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_king_grunt;v=2;sc=HOSTILE;p="<random.float.0.8to1.2>";delay=10} @self
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_king_grunt;v=2;sc=HOSTILE;p="<random.float.0.8to1.2>";delay=40} @self
+  - propel{v=1.5;delay=10} @forward{f=16;yo=16;lockpitch=true}
+  - propel{v=2;delay=40} @selflocation{y=-10}
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.king_land;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>";delay=45} @self
+  - totem{hnp=true;md=2;hr=3;vr=3;oH=gp2_goblinking_slam_damage;repeat=2;repeatI=1;drawhitbox=false;delay=45} @modelpart{pid=weapon_hitbox}
+  
+  
+  
+## DEATH ##
+
+gp2_goblinking_death:
+  Skills:
+  - dropitem{i=gp2_goblin_king_axe} @modelpart{pid=weapon}
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.king_death;v=2;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - partvis{p=weapon} @self
+  - delay 60
+  - effect:particles{p=poof;a=15;hs=.25;vs=.25} @modelpart{pid=torso}
+  - effect:particles{p=poof;a=15;hs=.25;vs=.25} @modelpart{pid=head}
+  - effect:particles{p=poof;a=15;hs=.25;vs=.25} @modelpart{pid=right_forearm}
+  - effect:particles{p=poof;a=15;hs=.25;vs=.25} @modelpart{pid=left_forearm}
+  
+  
+#####################
+### GOBLIN SHAMAN ###
+#####################
+
+
+
+
+  
+## SHAMAN BEHAVIOURS ##
+
+gp2_goblinshaman_distance:
+  Conditions:
+  - incombat true
+  - targetwithin{d=13} orElseCast gp2_goblinshaman_distance_move
+  Skills:
+  - setspeed{type=walking;speed=0} @self
+  
+gp2_goblinshaman_distance_move:
+  Skills:
+  - setspeed{type=walking;speed=0.75} @self
+  
+## SHAMAN TELEPORT ##
+
+gp2_goblinshaman_teleport:
+  Cooldown: 5
+  Conditions:
+  - incombat true
+  - playerwithin{d=4} true
+  Skills:
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.shaman_teleport;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - effect:particles{p=portal;a=250;hs=.5;vs=.6;y=1} @self
+  - effect:particles{p=large_smoke;a=75;hs=.5;vs=.6;y=1} @self
+  - effect:particles{p=ash;a=125;hs=.5;vs=.6;y=1} @self
+  - potion{type=CONFUSION;duration=120;level=1} @pir{r=5}
+  - potion{type=BLINDNESS;duration=10;level=1} @pir{r=5}
+  - teleport @rlnt{a=1;r=16;minr=8;s=5}
+  - delay 1
+  - effect:particles{p=portal;a=250;hs=.5;vs=.6;y=1} @self
+  - effect:particles{p=large_smoke;a=75;hs=.5;vs=.6;y=1} @self
+  - effect:particles{p=ash;a=125;hs=.5;vs=.6;y=1} @self
+
+gp2_goblinshaman_teleport_closegap:
+  Cooldown: 5
+  Conditions:
+  - incombat true
+  - targetwithin{d=25} false
+  Skills:
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.shaman_teleport;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - effect:particles{p=portal;a=250;hs=.5;vs=.6;y=1} @self
+  - effect:particles{p=large_smoke;a=75;hs=.5;vs=.6;y=1} @self
+  - effect:particles{p=ash;a=125;hs=.5;vs=.6;y=1} @self
+  - teleport @rlnt{a=1;r=16;minr=8;s=5}
+  - delay 1
+  - effect:particles{p=portal;a=250;hs=.5;vs=.6;y=1} @self
+  - effect:particles{p=large_smoke;a=75;hs=.5;vs=.6;y=1} @self
+  - effect:particles{p=ash;a=125;hs=.5;vs=.6;y=1} @self
+  
+## SHAMAN PROJECTILE ##
+
+gp2_goblinshaman_projectile:
+  Cooldown: 5
+  Conditions:
+  - incombat true
+  - offgcd true
+  Skills:
+  - gcd{ticks=60}
+  - setspeed{type=walking;speed=0} @self
+  - setspeed{type=walking;speed=0.75;delay=60} @self
+  - state{s=spell_2} @self
+  - delay 30
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.shaman_projectile;v=0.5;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - missile{oT=gp2_goblinshaman_projectile_fx;oH=gp2_goblinshaman_projectile_damage;v=15;hr=.25;vr=.25;drawhitbox=false;in=10;sfo=3}
+  
+gp2_goblinshaman_projectile_item:
+  Cooldown: 2
+  Skills:
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.shaman_projectile;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - projectile{oT=gp2_goblinshaman_projectile_fx;oH=gp2_goblinshaman_projectile_item_damage;v=15;hr=.25;vr=.25;drawhitbox=false;in=10;sfo=3;hnp=true;g=.1}
+  
+gp2_goblinshaman_projectile_fx:
+  Skills:
+  - effect:particles{p=reddust;color=#ba1dd4;a=1;hs=.15;vs=.15;size=5}
+  - effect:particles{p=portal;a=5;hs=.15;vs=.15}
+  
+gp2_goblinshaman_projectile_item_damage:
+  Skills:
+  - damage{a=5}
+  - potion{type=SLOW;duration=60;level=1}
+  - potion{type=CONFUSION;duration=120;level=1}
+  
+  
+gp2_goblinshaman_projectile_damage:
+  Cooldown: 1
+  TargetConditions:
+  - faction{faction=GOBLIN} false
+  Skills:
+  - basedamage{m=1}
+  - potion{type=SLOW;duration=60;level=1}
+  - potion{type=CONFUSION;duration=120;level=1}
+  
+gp2_goblinshaman_heal_king:
+  Cooldown: 15
+  TargetConditions:
+  - mythicmobtype{t=gp2_goblin_king} true
+  Conditions:
+  - incombat true
+  - offgcd true
+  Skills:
+  - gcd{ticks=60}
+  - setspeed{type=walking;speed=0} @self
+  - setspeed{type=walking;speed=0.75;delay=60} @self
+  - state{s=spell_1} @self
+  - look{repeat=40;repeati=1}
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.vox_shaman_spell;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.shaman_heal;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - delay 20
+  - healpercent{m=0.01;repeat=30;repeati=1}
+  - effect:particles{p=reddust;color=#ba1dd4;a=1;hs=.15;vs=.15;size=5;repeat=30;repeati=1;y=1.5}
+  - effect:particles{p=portal;a=5;hs=.15;vs=.15;repeat=30;repeati=1;y=1.5}
+  - sudoskill{s=gp2_goblin_king_bossbar_damage;cat=true;repeat=30;repeati=1}
+
+##################################
+### GOBLIN SHAMAN DOPPELGANGER ###
+##################################
+
+gp2_goblinshaman_doppelganger_summon:
+  Cooldown: 999
+  Conditions:
+  - varEquals{var=caster.doppelganger;value="true"} cancel
+  Skills:
+  - sound{s=littleroom_goblin_pack_vol2:littleroom.goblinpackvol2.shaman_doppelganger;v=1;sc=HOSTILE;p="<random.float.0.8to1.2>"} @self
+  - summon{t=gp2_goblin_doppelganger} @ring{r=5;p=3}
+  - teleport @ring{r=5;p=1}
+  - setvariable{var=caster.doppelganger;value="true";type=STRING} @self
+  - remapmodel{m=gp2_goblin_shaman;n=gp2_goblin_shaman_doppelganger} @self
+
+gp2_goblinshaman_doppelganger_death:
+  Skills:
+  - effect:particles{p=reddust;color=#ba1dd4;a=15;hs=.5;vs=.5;size=5;y=1} @self
+  - effect:particles{p=portal;a=15;hs=.5;vs=.5;y=1} @self
+  - remove{delay=1} @self ~onDamaged
+
+gp2_goblinshaman_end_doppelganger:
+  Conditions:
+  - varEquals{var=caster.doppelganger;value="true"}
+  Skills:
+  - effect:particles{p=reddust;color=#ba1dd4;a=15;hs=.5;vs=.5;size=5;y=1} @self ~onDamaged
+  - effect:particles{p=portal;a=15;hs=.5;vs=.5;y=1} @self ~onDamaged
+  - setvariable{var=caster.doppelganger;value="false";type=STRING} @self
+  - remapmodel{m=gp2_goblin_shaman;n=gp2_goblin_shaman} @self
+  - effect:particles{p=reddust;color=#ba1dd4;a=15;hs=.5;vs=.5;size=5;y=1} @children
+  - effect:particles{p=portal;a=15;hs=.5;vs=.5;y=1} @children
+  - remove @children
+  
+
+
+
+## DEATH ##
+
+gp2_goblinshaman_death:
+  Skills:
+  - lockmodel{l=true} @self
+  - delay 50
+  - effect:particles{p=poof;a=15;hs=.25;vs=.25} @modelpart{pid=torso}
+  - effect:particles{p=poof;a=15;hs=.25;vs=.25} @modelpart{pid=head}
+  - effect:particles{p=poof;a=15;hs=.25;vs=.25} @modelpart{pid=right_forearm}
+  - effect:particles{p=poof;a=15;hs=.25;vs=.25} @modelpart{pid=left_forearm}
+  - dropitem{i="gp2_goblin_shaman_mask"} @modelpart{pid=mask}
+  - dropitem{i="gp2_goblin_shaman_staff"} @modelpart{pid=mask}
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+#############
+### PROPS ###
+#############
+  
+### NEW DISPLAY SKILLS ###
+  
+gp2_decor_rotate:
+  Cooldown: 1
+  TriggerConditions:
+  - crouching true
+  Conditions:
+  - variableInRange{var=caster.rotate;value=">4"} castinstead gp2_decor_rotate_reset
+  Skills:
+  - speak{offset=1.6f;radius=30;maxlinelength=22;lineprefix="&f";message="ROTATING...";chatprefix="";duration=20;chat=false} @self
+  - variableadd{var=caster.rotate;amount=1}
+  
+gp2_decor_rotate_reset:
+  Skills:
+  - setvariable{var=caster.rotate;value="1";type=INTEGER}
+  
+gp2_decor_rotatecheck:
+  Skills:
+  - skill{s=gp2_decor_north} @self
+  - skill{s=gp2_decor_east} @self
+  - skill{s=gp2_decor_south} @self
+  - skill{s=gp2_decor_west} @self
+  
+gp2_decor_north:
+  Conditions:
+  - variableEquals{var=caster.rotate;value="1"}
+  Skills:
+  - delay 1
+  - setrotation{relative=false;yaw=0;pitch=0} @Self
+  
+gp2_decor_east:
+  Conditions:
+  - variableEquals{var=caster.rotate;value="2"}
+  Skills:
+  - delay 1
+  - setrotation{relative=false;yaw=-90;pitch=0} @Self
+  
+gp2_decor_south:
+  Conditions:
+  - variableEquals{var=caster.rotate;value="3"}
+  Skills:
+  - delay 1
+  - setrotation{relative=false;yaw=180;pitch=0} @Self
+  
+gp2_decor_west:
+  Conditions:
+  - variableEquals{var=caster.rotate;value="4"}
+  Skills:
+  - delay 1
+  - setrotation{relative=false;yaw=90;pitch=0} @Self
+  
+  
+### TORCH ###
+
+gp2_decor_torch:
+  TargetConditions:
+  - blocktype{type=LIGHT} true
+  Skills:
+  - effect:particles{p=flame;a=1}
+  - effect:particles{p=flame;a=1;hs=.15;vs=.15}
+  - effect:particles{p=large_smoke;a=1;hs=.15;vs=.15}
+  
+### WEAPON RACK ###
+
+gp2_decor_weapon_rack_1_randomize:
+  Skills:
+  - randomskill{s=gp2_decor_weapon_rack_1_club,
+                  gp2_decor_weapon_rack_1_knife,
+                  gp2_decor_weapon_rack_1_broken_pitchfork,
+                  gp2_decor_weapon_rack_1_broken_frying_pan
+                  } @self
+  
+gp2_decor_weapon_rack_1_club:
+  Skills:
+  - setvariable{var=caster.weapon_1;value="club";type=STRING}
+  - meg:setitemmodel{mid=gp2_decor_weapon_rack;bone=weapon_1;i=gp2_goblin_club} @self
+  
+gp2_decor_weapon_rack_1_knife:
+  Skills:
+  - setvariable{var=caster.weapon_1;value="knife";type=STRING}
+  - meg:setitemmodel{mid=gp2_decor_weapon_rack;bone=weapon_1;i=gp2_goblin_knife} @self
+  
+gp2_decor_weapon_rack_1_broken_pitchfork:
+  Skills:
+  - setvariable{var=caster.weapon_1;value="broken_pitchfork";type=STRING}
+  - meg:setitemmodel{mid=gp2_decor_weapon_rack;bone=weapon_1;i=gp2_goblin_broken_pitchfork} @self
+  
+gp2_decor_weapon_rack_1_broken_frying_pan:
+  Skills:
+  - setvariable{var=caster.weapon_1;value="frying_pan";type=STRING}
+  - meg:setitemmodel{mid=gp2_decor_weapon_rack;bone=weapon_1;i=gp2_goblin_frying_pan} @self
+
+
+gp2_decor_weapon_rack_2_randomize:
+  Skills:
+  - randomskill{s=gp2_decor_weapon_rack_2_club,gp2_decor_weapon_rack_2_knife,gp2_decor_weapon_rack_2_broken_pitchfork,gp2_decor_weapon_rack_2_broken_frying_pan} @self
+  
+gp2_decor_weapon_rack_2_club:
+  Skills:
+  - setvariable{var=caster.weapon_2;value="club";type=STRING}
+  - meg:setitemmodel{mid=gp2_decor_weapon_rack;bone=weapon_2;i=gp2_goblin_club} @self
+  
+gp2_decor_weapon_rack_2_knife:
+  Skills:
+  - setvariable{var=caster.weapon_2;value="knife";type=STRING}
+  - meg:setitemmodel{mid=gp2_decor_weapon_rack;bone=weapon_2;i=gp2_goblin_knife} @self
+  
+gp2_decor_weapon_rack_2_broken_pitchfork:
+  Skills:
+  - setvariable{var=caster.weapon_2;value="broken_pitchfork";type=STRING}
+  - meg:setitemmodel{mid=gp2_decor_weapon_rack;bone=weapon_2;i=gp2_goblin_broken_pitchfork} @self
+  
+gp2_decor_weapon_rack_2_broken_frying_pan:
+  Skills:
+  - setvariable{var=caster.weapon_2;value="frying_pan";type=STRING}
+  - meg:setitemmodel{mid=gp2_decor_weapon_rack;bone=weapon_2;i=gp2_goblin_frying_pan} @self

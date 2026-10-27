@@ -1,0 +1,65 @@
+Name: malifesint
+Cooldown: 0
+Permission: nKits.kits.malifesint
+Order: 0
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:enchantment_glint_override: 1b
+      minecraft:potion_contents: '{custom_color:78368,custom_effects:[{amplifier:2b,duration:600,id:"minecraft:absorption",show_icon:1b},{amplifier:1b,duration:600,id:"minecraft:poison",show_icon:1b},{duration:400,id:"minecraft:blindness",show_icon:1b},{duration:300,id:"minecraft:wither",show_icon:1b},{duration:400,id:"minecraft:nausea",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"dark_red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Проклятие
+        Малефисенты",underlined:0b}],text:""}'
+    schema_version: 1
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  Armor:
+  - null
+  - null
+  - null
+  - null

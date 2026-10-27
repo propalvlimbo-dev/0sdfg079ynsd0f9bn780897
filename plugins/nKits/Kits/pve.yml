@@ -1,0 +1,224 @@
+Name: pve
+Cooldown: 0
+Permission: nKits.kits.pve
+Order: 0
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: STONE_HOE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        minecraft:efficiency: 5
+        minecraft:fortune: 3
+        minecraft:unbreaking: 3
+      repair-cost: 7
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: FURNACE
+    meta:
+      ==: ItemMeta
+      meta-type: TILE_ENTITY
+      display-name: '{"text":"","extra":[{"text":"Везучая Печь","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"dark_purple","bold":false}]}'
+      lore:
+      - '{"text":"","extra":[{"text":"Имеет ","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false},{"text":"100%","italic":false,"color":"gold"},{"text":"
+        шанс удвоить ресурс","italic":false,"color":"gray"}]}'
+      - '{"text":"","extra":[{"text":"Работает на ","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false},{"text":"50%","italic":false,"color":"red"},{"text":"
+        медленнее","italic":false,"color":"gray"}]}'
+      enchants:
+        minecraft:unbreaking: 1
+      ItemFlags:
+      - HIDE_ENCHANTS
+      PublicBukkitValues: |-
+        {
+            "nfurnace:nfurnace-block": "LUCKY",
+            "nfurnace:nfurnace-level": 1
+        }
+      blockMaterial: FURNACE
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: BREWING_STAND
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: FISHING_ROD
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        minecraft:luck_of_the_sea: 3
+        minecraft:lure: 3
+        minecraft:mending: 1
+        minecraft:unbreaking: 3
+        minecraft:vanishing_curse: 1
+      repair-cost: 31
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: MELON_SLICE
+    amount: 48
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: APPLE
+    amount: 8
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: GLOW_BERRIES
+    amount: 32
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: POTATO
+    amount: 16
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: CARROT
+    amount: 24
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: HONEY_BOTTLE
+    amount: 2
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: BEETROOT_SEEDS
+    amount: 4
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: WHEAT_SEEDS
+    amount: 32
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: PUMPKIN_SEEDS
+    amount: 16
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: MELON_SEEDS
+    amount: 8
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: MANGROVE_PROPAGULE
+    amount: 2
+  - null
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: BONE_MEAL
+    amount: 64
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: WHITE_DYE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"text":"","extra":[{"text":"Аура Защиты От Падения","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"aqua","bold":false}]}'
+      lore:
+      - '{"text":"","extra":[{"text":"Уменьшает входящий урон от падения на ","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false},{"text":"80%","italic":false,"color":"gold"}]}'
+      - '""'
+      - '{"text":"","extra":[{"text":"Одновременно работает только одна аура!","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"dark_gray","bold":false}]}'
+      enchants:
+        minecraft:vanishing_curse: 1
+      PublicBukkitValues: |-
+        {
+            "nauras:fall": "aura"
+        }
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: PLAYER_HEAD
+    meta:
+      ==: ItemMeta
+      meta-type: SKULL
+      display-name: '{"text":"","extra":[{"text":"Шар огородника","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"green","bold":false}]}'
+      lore:
+      - '{"text":"","extra":[{"text":"Проклятье утраты","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"red","bold":false}]}'
+      - '{"text":"","extra":[{"text":"Удача III (На растения)","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
+      - '""'
+      - '{"text":"","extra":[{"text":"Когда во второй руке:","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
+      - '{"text":"","extra":[{"text":"При нажатии SHIFT:","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"gray","bold":false}]}'
+      - '{"text":"","extra":[{"text":"Выращивает растения вокруг вас","obfuscated":false,"italic":false,"underlined":false,"strikethrough":false,"color":"blue","bold":false}]}'
+      - '""'
+      PublicBukkitValues: |-
+        {
+            "minecraft:farm_ball": "FARM_BALL"
+        }
+      skull-owner:
+        ==: PlayerProfile
+        uniqueId: 58bb795f-1e76-43a6-95a7-dd6622412e9b
+        name: textures
+        properties:
+        - name: textures
+          value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWFmMzI4Yzg3YjA2ODUwOWFjYTk4MzRlZmFjZTE5NzcwNWZlNWQ0ZjA4NzE3MzFiN2IyMWNkOTliOWZkZGMifX19
+  Armor:
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: LEATHER_BOOTS
+    meta:
+      ==: ItemMeta
+      meta-type: COLORABLE_ARMOR
+      enchants:
+        minecraft:protection: 1
+      color:
+        ==: Color
+        ALPHA: 255
+        RED: 249
+        BLUE: 254
+        GREEN: 255
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: LEATHER_LEGGINGS
+    meta:
+      ==: ItemMeta
+      meta-type: COLORABLE_ARMOR
+      color:
+        ==: Color
+        ALPHA: 255
+        RED: 249
+        BLUE: 254
+        GREEN: 255
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: LEATHER_CHESTPLATE
+    meta:
+      ==: ItemMeta
+      meta-type: COLORABLE_ARMOR
+      enchants:
+        minecraft:protection: 1
+      color:
+        ==: Color
+        ALPHA: 255
+        RED: 249
+        BLUE: 254
+        GREEN: 255
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: LEATHER_HELMET
+    meta:
+      ==: ItemMeta
+      meta-type: COLORABLE_ARMOR
+      color:
+        ==: Color
+        ALPHA: 255
+        RED: 249
+        BLUE: 254
+        GREEN: 255

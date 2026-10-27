@@ -1,0 +1,87 @@
+itemsDatabase: "SQLite"
+playersDatabase: "SQLite"
+
+host: "localhost"
+port: 3306
+username: "1"
+password: "1"
+database: "1"
+
+shopMenuName: "&fꈁꀀꈂꌄꈂꀁ&0ꈃꄆ"
+enderMenuName: "Эндер-Сундук Игрока %player%"
+shopRowsName: "&fꈁꀀꈂꌄꈂꀁ&0ꈃꄆ"
+
+buyPreviousRow: "&x&F&8&B&E&F&BЭндерчест &7» &cКупите предыдущую строку"
+unlockedRow: "&x&F&8&B&E&F&BЭндерчест &7» &cЭта строка уже разблокирована"
+clearedSuccessfully: "&x&F&8&B&E&F&BЭндерчест &7» &cБазы данных плагина ПОЛНОСТЬЮ были очищены!"
+withoutPermission: "&x&F&8&B&E&F&BЭндерчест &7» &cНедостаточно прав"
+giveUsage: "&x&F&8&B&E&F&BЭндерчест &7» &fИспользуйте: /nenderchest give <Ник> <Время>"
+playerDontOnline: "&x&F&8&B&E&F&BЭндерчест &7» &cИгрок не в сети!"
+enderChestLimit: "&x&F&8&B&E&F&BЭндерчест &7» &cУ игрока максимальный уровень эндер-сундука!"
+possibleTypes: "&x&F&8&B&E&F&BЭндерчест &7» &cДоступные типы: WIPE, FOREVER!"
+givedSuccessfully: "&x&F&8&B&E&F&BЭндерчест &7» &fВы расширили Эндер-Сундук игрока &x&F&8&B&E&F&B%target%&f! Теперь его размер: &x&F&8&B&E&F&B%size%"
+wipedSuccessfully: "&x&F&8&B&E&F&BЭндерчест &7» &aБазы данных были вайпнуты!"
+checkUsage: "&x&F&8&B&E&F&BЭндерчест &7» &fИспользуйте: /nenderchest check <Ник>"
+withoutEnderChest: "&x&F&8&B&E&F&BЭндерчест &7» &cУ игрока не обнаружен эндер-сундук"
+notEnoughMoney: "&x&F&8&B&E&F&BРиллики &7» &cНедостаточно рилликов\n&x&F&8&B&E&F&BРиллики &7» &fПополнить баланс можно на сайте: &x&F&8&B&E&F&Bhttps://elytrix.pw"
+reloaded: "&x&F&8&B&E&F&BЭндерчест &7» &aКонфиг успешно перезагружен!"
+buyedSuccessfully: "&x&F&8&B&E&F&BЭндерчест &7» &fУспешная покупка!"
+
+interactCommand: "nenderchest open"
+backCommand: "nenderchest buy"
+backItemModelData: 10002
+backItemName: "&x&F&8&B&E&F&BНазад"
+backItemLore:
+  - ""
+backItemSlot: 45
+backMaterial: "ARROW"
+forWipeMaterial: "REDSTONE"
+buyForWipeName: "&cУлучшить до след. вайпа"
+buyForeverName: "&cУлучшить навсегда"
+foreverMaterial: "EMERALD"
+buyForWipeSlot: 21
+
+buyForeverSlot: 23
+buyForWipeLore:
+  - "&f"
+  - "&f   Покупаемая строка будет доступна"
+  - "&f   до &cследующего вайпа"
+  - "&f"
+  - "&f   Цена улучшения: &c10 риликов"
+  - "&f"
+  - "&aНажмите, чтобы улучшить эндерчест"
+buyForeverLore:
+  - "&f"
+  - "&f   Покупаемая строка &cНЕ БУДЕТ"
+  - "&f   пропадать после вайпа"
+  - "&f"
+  - "&f   Цена улучшения: &c100 риликов"
+  - "&f"
+  - "&aНажмите, чтобы улучшить эндерчест"
+buyForWipePrice: 10 
+buyForeverPrice: 100
+
+buyedItemName: "&c%row% строка"
+buyedItemLore:
+    - '&f'
+    - '&f  Данная строка &aразблокирована'
+    - '&f'
+    - '&f  Истечение: &c%time%'
+    - '&f'
+    - '&f  Вернитесь в &x&F&A&D&8&F&CЭндер-сундук&f,'
+    - '&f  чтобы положить туда предметы.'
+    - '&f'
+unbuyedItemName: "&c%row% Строка"
+unbuyedItemLore:
+    - '&f'
+    - '&f  Данная строка &f&cзаблокирована'
+    - '&f'
+    - '&f  Цены разблокировки &c+9 слотов:'
+    - '&f  До след. вайпа &8- &c10 рилликов'
+    - '&f  Навсегда &f&8- &f&c100 рилликов'
+    - '&f'
+    - '&f  &cНажмите&f, чтобы увеличить'
+    - '&f  количество строк в сундуке'
+    - '&f'
+leftForever: "&cНикогда"
+leftWipe: "&fВ следующем вайпе"

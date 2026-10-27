@@ -1,0 +1,1193 @@
+menu_title: '§fꈁꀀꈂꌒꈂꀁ§fꈃꄅ'
+size: 54
+open_command: spawners
+items:
+  'info':
+    material: CLOCK
+    model_data: 10001
+    slot: 53
+    display_name: '&#F8BEFBИНФОРМАЦИЯ'
+    lore:
+    - ''
+    - ' &fВаш баланс: &#F8BEFB%playerpoints_points_formatted% &fꐃ'
+    - ''
+    - '&7Пополнить баланс можно'
+    - '&7на сайте: &#F8BEFB%elytrix_site%'
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+
+  'back':
+    material: ARROW
+    model_data: 10002
+    slot: 45
+    display_name: '&#F8BEFBНазад'
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_commands:
+    - '[player] shop'
+
+  'spawner_1':
+    material: SPAWNER
+    slot: 2
+    amount: 1
+    display_name: '&#F8BEFBРассадник'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB139 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 139
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 139'
+    - '[console] give %player_name% spawner 1'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 139'
+    - '[refresh]'
+
+  'spawner_3':
+    material: SPAWNER
+    slot: 3
+    amount: 3
+    display_name: '&#F8BEFBРассадник'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB379 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 379
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 379'
+    - '[console] give %player_name% spawner 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 379'
+    - '[refresh]'
+
+  'spawner_6':
+    material: SPAWNER
+    slot: 4
+    amount: 6
+    display_name: '&#F8BEFBРассадник'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB649 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 649
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 649'
+    - '[console] give %player_name% spawner 6'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 649'
+    - '[refresh]'
+
+  'spawner_9':
+    material: SPAWNER
+    slot: 5
+    amount: 9
+    display_name: '&#F8BEFBРассадник'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB899 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 899
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 899'
+    - '[console] give %player_name% spawner 9'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 899'
+    - '[refresh]'
+
+  'spawner_12':
+    material: SPAWNER
+    slot: 6
+    amount: 12
+    display_name: '&#F8BEFBРассадник'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB1099 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 1099
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 1099'
+    - '[console] give %player_name% spawner 12'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 1099'
+    - '[refresh]'
+
+  'chicken':
+    material: CHICKEN_SPAWN_EGG
+    slot: 9
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва курицы'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB89 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 89
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 89'
+    - '[console] give %player_name% chicken_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 89'
+    - '[refresh]'
+
+  'stray_10':
+    material: STRAY_SPAWN_EGG
+    slot: 10
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва зимогора'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB119 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 119
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 119'
+    - '[console] give %player_name% stray_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 119'
+    - '[refresh]'
+
+  'cow':
+    material: COW_SPAWN_EGG
+    slot: 11
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва коровы'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB149 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 149
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 149'
+    - '[console] give %player_name% cow_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 149'
+    - '[refresh]'
+
+  'horse':
+    material: HORSE_SPAWN_EGG
+    slot: 12
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва лошади'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB149 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 149
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 149'
+    - '[console] give %player_name% horse_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 149'
+    - '[refresh]'
+
+  'sheep':
+    material: SHEEP_SPAWN_EGG
+    slot: 13
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва овцы'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB149 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 149
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 149'
+    - '[console] give %player_name% sheep_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 149'
+    - '[refresh]'
+
+  'spider':
+    material: SPIDER_SPAWN_EGG
+    slot: 14
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва паука'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB149 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 149
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 149'
+    - '[console] give %player_name% spider_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 149'
+    - '[refresh]'
+
+  'hoglin':
+    material: HOGLIN_SPAWN_EGG
+    slot: 15
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва хоглина'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB179 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 179
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 179'
+    - '[console] give %player_name% hoglin_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 179'
+    - '[refresh]'
+
+  'phantom_16':
+    material: PHANTOM_SPAWN_EGG
+    slot: 16
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва фантома'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB179 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 179
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 179'
+    - '[console] give %player_name% phantom_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 179'
+    - '[refresh]'
+
+  'slime':
+    material: SLIME_SPAWN_EGG
+    slot: 17
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва слизня'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB179 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 179
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 179'
+    - '[console] give %player_name% slime_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 179'
+    - '[refresh]'
+
+  'tropical_fish':
+    material: TROPICAL_FISH_SPAWN_EGG
+    slot: 18
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва тропической рыбы'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB179 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 179
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 179'
+    - '[console] give %player_name% tropical_fish_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 179'
+    - '[refresh]'
+
+  'blaze':
+    material: BLAZE_SPAWN_EGG
+    slot: 19
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва всполоха'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB199 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 199
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 199'
+    - '[console] give %player_name% blaze_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 199'
+    - '[refresh]'
+
+  'cave_spider':
+    material: CAVE_SPIDER_SPAWN_EGG
+    slot: 20
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва пещерного паука'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB199 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 199
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 199'
+    - '[console] give %player_name% cave_spider_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 199'
+    - '[refresh]'
+
+  'husk':
+    material: HUSK_SPAWN_EGG
+    slot: 21
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва кадавра'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB199 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 199
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 199'
+    - '[console] give %player_name% husk_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 199'
+    - '[refresh]'
+
+  'stray_22':
+    material: STRAY_SPAWN_EGG
+    slot: 22
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва зимогора'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB199 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 199
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 199'
+    - '[console] give %player_name% stray_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 199'
+    - '[refresh]'
+
+  'turtle':
+    material: TURTLE_SPAWN_EGG
+    slot: 23
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва черепахи'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB199 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 199
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 199'
+    - '[console] give %player_name% turtle_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 199'
+    - '[refresh]'
+
+  'creeper':
+    material: CREEPER_SPAWN_EGG
+    slot: 24
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва крипера'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB219 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 219
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 219'
+    - '[console] give %player_name% creeper_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 219'
+    - '[refresh]'
+
+  'pillager_25':
+    material: PILLAGER_SPAWN_EGG
+    slot: 25
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва разбойника'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB219 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 219
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 219'
+    - '[console] give %player_name% pillager_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 219'
+    - '[refresh]'
+
+  'zombie_horse':
+    material: ZOMBIE_HORSE_SPAWN_EGG
+    slot: 26
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва лошади-зомби'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB240 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 240
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 240'
+    - '[console] give %player_name% zombie_horse_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 240'
+    - '[refresh]'
+
+  'zombified_piglin':
+    material: ZOMBIFIED_PIGLIN_SPAWN_EGG
+    slot: 27
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва зомбифицированного пиглина'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB240 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 240
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 240'
+    - '[console] give %player_name% zombified_piglin_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 240'
+    - '[refresh]'
+
+  'armadillo':
+    material: ARMADILLO_SPAWN_EGG
+    slot: 28
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призывания броненосца'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB249 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 249
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 249'
+    - '[console] give %player_name% armadillo_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 249'
+    - '[refresh]'
+
+  'magma_cube':
+    material: MAGMA_CUBE_SPAWN_EGG
+    slot: 29
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва магмового куба'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB249 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 249
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 249'
+    - '[console] give %player_name% magma_cube_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 249'
+    - '[refresh]'
+
+  'phantom_30':
+    material: PHANTOM_SPAWN_EGG
+    slot: 30
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва фантома'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB249 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 249
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 249'
+    - '[console] give %player_name% phantom_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 249'
+    - '[refresh]'
+
+  'pillager_31':
+    material: PILLAGER_SPAWN_EGG
+    slot: 31
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва разбойника'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB249 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 249
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 249'
+    - '[console] give %player_name% pillager_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 249'
+    - '[refresh]'
+
+  'rabbit':
+    material: RABBIT_SPAWN_EGG
+    slot: 32
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва кролика'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB249 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 249
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 249'
+    - '[console] give %player_name% rabbit_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 189'
+    - '[refresh]'
+
+  'zombie_villager':
+    material: ZOMBIE_VILLAGER_SPAWN_EGG
+    slot: 33
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва зомби-крестьянина'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB299 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 299
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 299'
+    - '[console] give %player_name% zombie_villager_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 299'
+    - '[refresh]'
+
+  'sniffer':
+    material: SNIFFER_SPAWN_EGG
+    slot: 34
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призывания нюхача'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB349 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 349
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 349'
+    - '[console] give %player_name% sniffer_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 349'
+    - '[refresh]'
+
+  'enderman':
+    material: ENDERMAN_SPAWN_EGG
+    slot: 35
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва эндермена'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB379 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 379
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 379'
+    - '[console] give %player_name% enderman_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 379'
+    - '[refresh]'
+
+  'breeze':
+    material: BREEZE_SPAWN_EGG
+    slot: 37
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призывания вихря'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB399 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 399
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 399'
+    - '[console] give %player_name% breeze_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 399'
+    - '[refresh]'
+
+  'piglin_brute':
+    material: PIGLIN_BRUTE_SPAWN_EGG
+    slot: 38
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва брутального пиглина'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB399 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 399
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 399'
+    - '[console] give %player_name% piglin_brute_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 399'
+    - '[refresh]'
+
+  'witch':
+    material: WITCH_SPAWN_EGG
+    slot: 39
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва ведьмы'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB429 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 429
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 429'
+    - '[console] give %player_name% witch_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 429'
+    - '[refresh]'
+
+  'iron_golem':
+    material: IRON_GOLEM_SPAWN_EGG
+    slot: 40
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва железного голема'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB499 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 499
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 499'
+    - '[console] give %player_name% iron_golem_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 499'
+    - '[refresh]'
+
+  'shulker':
+    material: SHULKER_SPAWN_EGG
+    slot: 41
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва шалкера'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB699 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 699
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 699'
+    - '[console] give %player_name% shulker_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 699'
+    - '[refresh]'
+
+  'wither_skeleton':
+    material: WITHER_SKELETON_SPAWN_EGG
+    slot: 42
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва визер-скелета'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB699 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 699
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 699'
+    - '[console] give %player_name% wither_skeleton_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 699'
+    - '[refresh]'
+
+  'vindicator':
+    material: VINDICATOR_SPAWN_EGG
+    slot: 43
+    amount: 3
+    display_name: '&#F8BEFBЯйцо призыва поборника'
+    lore:
+    - ''
+    - '&fЦена: &#F8BEFB1499 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 1499
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 1499'
+    - '[console] give %player_name% vindicator_spawn_egg 3'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 1499'
+    - '[refresh]'
+
+  'random_egg':
+    material: PIG_SPAWN_EGG
+    slot: 49
+    amount: 3
+    display_name: '&b&lРандомное яйцо'
+    lore:
+    - ''
+    - '  &9Призывает: &k1234567'
+    - ''
+    - '&fЦена: &#F8BEFB119 &fꐃ'
+    - ''
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    click_requirement:
+      requirements:
+        money_requirement:
+          type: '>='
+          input: '%playerpoints_points%'
+          output: 119
+          deny_commands:
+          - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
+          - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFB%elytrix_site%'
+    click_commands:
+    - '[console] points take %player_name% 119'
+    - '[console] randomegg %player_name%'
+    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
+    - '[console] cashback give %player_name% 119'
+    - '[refresh]'

@@ -1,0 +1,310 @@
+menu_title: '§fꈁꀀꈂꍆꈂꀁ§fꈃꄅ'
+open_command: grief
+size: 54
+items:
+  'shield':
+    material: shield
+    slot: 12
+    display_name: '&#F8BEFBЦыганский щит'
+    lore:
+      - '&#AAAAAAШипы X'
+      - '&#5555FFНеразрушаемый'
+      - ''
+      - '&#AAAAAA========================================'
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB149 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 149'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 149'
+      - '[console] kit shield %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'elytra':
+    material: elytra
+    slot: 13
+    display_name: '&#00AAAA&lКрылья Ангела'
+    lore:
+      - '&#AAAAAAПочинка'
+      - '&#AAAAAAШипы'
+      - '&#AAAAAAПрочность V'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB409 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 409'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 409'
+      - '[console] kit angel %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'firework_star':
+    material: firework_star
+    slot: 14
+    display_name: '&#AA00AAАнти Полет'
+    lore:
+      - ''
+      - '&#AAAAAAКогда во второй руке'
+      - '&#AAAAAAПри нажатии SHIFT:'
+      - '&#5555FFЗапрещает полеты в радиусе 16 блоков'
+      - ''
+      - '&#AAAAAA===================================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB400 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 400'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 400'
+      - '[console] rwitems ANTI_FLY %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'shears':
+    material: shears
+    slot: 21
+    display_name: '&#FAD8FC&lСупер Ножницы &#AAAAAA- &#F8BEFB3 &#AAAAAAиспользований'
+    lore:
+      - '&#AAAAAAЭффективность 25'
+      - '&#AAAAAAЭтими ножницами можно &#F8BEFBломать &#AAAAAAспавнера'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB199 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 199'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 199'
+      - '[console] rwitems SHEARS %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'flower_banner_pattern':
+    material: flower_banner_pattern
+    slot: 22
+    display_name: '&#F8BEFBСвиток опыта'
+    lore:
+      - ''
+      - '&#AAAAAA  &#AAAAAA||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||  '
+      - '&#AAAAAA  &#AAAAAA0 &#FFFFFFꐇ  '
+      - ''
+      - ''
+      - '&#5555FFКогда во второй руке:'
+      - '&#AAAAAA  &#F8BEFBСобирает в себя весь опыт'
+      - ''
+      - '&#5555FFКогда в основной руке'
+      - '&#5555FFПри нажатии ПКМ:'
+      - '&#AAAAAA  &#F8BEFBДает вам 5 опыта'
+      - ''
+      - ''
+      - '&#AAAAAA====================================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB199 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 199'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 199'
+      - '[console] rwitems SCROLL_OF_EXPERIENCE %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'heart_of_the_sea':
+    material: heart_of_the_sea
+    slot: 23
+    display_name: '&#55FFFF&lЛовушка'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - ''
+      - '&#AAAAAAПри нажатии ПКМ:'
+      - '&#5555FFСтавит ловушку вокруг игрока'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB49 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 49'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 49'
+      - '[console] rwitems TRAP %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'totem_of_undying':
+    material: totem_of_undying
+    slot: 30
+    display_name: '&#AA00AAТотем Ведьмы'
+    lore:
+      - ''
+      - '&#AAAAAAСохраняет эффекты'
+      - ''
+      - '&#AAAAAA============================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB99 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 99'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 99'
+      - '[console] rwitems WITCH_TOTEM %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'firework_star_1':
+    material: firework_star
+    slot: 31
+    display_name: '&#AA00AA&lТёмный Пульс'
+    lore:
+      - ''
+      - '&#AAAAAAКогда во второй руке'
+      - '&#AAAAAAПри нажатии SHIFT:'
+      - '&#5555FFВ радиусе 16 блоков'
+      - '&#5555FFбудут ослеплены все сущности.'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB199 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 199'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 199'
+      - '[console] rwitems DARK_PULSE %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'totem_of_undying_1':
+    material: totem_of_undying
+    slot: 32
+    display_name: '&#F8BEFBТотем Драконида'
+    lore:
+      - ''
+      - '&#AAAAAAСрабатывает, когда'
+      - '&#AAAAAAлежит в инвентаре'
+      - ''
+      - '&#AAAAAA============================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB129 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 129'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 129'
+      - '[console] rwitems DRACONID_TOTEM %player_name%'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'golden_apple':
+    material: golden_apple
+    slot: 39
+    display_name: '&#55FFFFЗолотое яблоко'
+    lore:
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB129 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 129'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 129'
+      - '[console] minecraft:give %player_name% minecraft:golden_apple 1'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'enchanted_golden_apple':
+    material: enchanted_golden_apple
+    slot: 40
+    display_name: '&#F8BEFBЗачарованное золотое яблоко'
+    lore:
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB129 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 129'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 129'
+      - '[console] minecraft:give %player_name% minecraft:enchanted_golden_apple 1'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'bubble_coral':
+    material: bubble_coral
+    slot: 41
+    display_name: '&#AA00AAОсколок Энда'
+    lore:
+      - ''
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB7 &#FFFFFFꐃ'
+      - ''
+    model_data: 100020
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 7'
+      deny_commands:
+        - '[message] &#F8BEFB%elytrix_nameserver% &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 7'
+      - '[console] smileoskolki give %player_name% 1'
+      - '[message] &#F8BEFB%elytrix_site% &8> &aПокупка успешно совершена!'
+  'arrow':
+    material: arrow
+    slot: 45
+    display_name: '&#F8BEFBНазад'
+    model_data: 100020
+    click_commands:
+      - '[player] shop'
+  'clock':
+    material: clock
+    slot: 53
+    display_name: '&#F8BEFBИНФОРМАЦИЯ'
+    lore:
+      - ''
+      - '&#555555 &#FFFFFFВаш баланс: &#FAD8FC%playerpoints_points_formatted% &#FFFFFFꐃ'
+      - ''
+      - '&#AAAAAAПополнить баланс можно'
+      - '&#AAAAAAна сайте: &#FAD8FC%elytrix_site%'
+    model_data: 100020
+    

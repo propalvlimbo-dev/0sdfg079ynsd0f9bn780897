@@ -1,0 +1,65 @@
+Name: angel
+Cooldown: 0
+Permission: nKits.kits.angel
+Order: 0
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:elytra
+    count: 1
+    components:
+      minecraft:repair_cost: '7'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"dark_aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Крилья
+        Ангела",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:mending":1,"minecraft:thorns":3,"minecraft:unbreaking":5}'
+    schema_version: 1
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  Armor:
+  - null
+  - null
+  - null
+  - null

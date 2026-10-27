@@ -1,0 +1,64 @@
+Name: bura
+Cooldown: 0
+Permission: nKits.kits.bura
+Order: 0
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4671
+    id: minecraft:tipped_arrow
+    count: 8
+    components:
+      minecraft:potion_contents: '{custom_color:6633293,custom_effects:[{duration:240,id:"minecraft:nausea",show_icon:1b},{duration:200,id:"minecraft:regeneration",show_icon:1b},{duration:240,id:"minecraft:blindness",show_icon:1b},{duration:240,id:"minecraft:mining_fatigue",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Стрела
+        Бури",underlined:0b}],text:""}'
+    schema_version: 1
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  Armor:
+  - null
+  - null
+  - null
+  - null
