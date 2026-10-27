@@ -1,0 +1,40 @@
+EntityLimiter:
+  enabled: true
+  worlds:
+    - world
+    - world_nether
+    - world_the_end
+  values:
+    whitelist:
+      - ARMOR_STAND
+      - VILLAGER
+      - ZOMBIE_VILLAGER
+      - ENDER_DRAGON
+      - WITHER
+      - WARDEN
+      - WOLF
+      - CAT
+      - ALLAY
+      - IRON_GOLEM
+      - HORSE
+    ignore_models: true
+    creatures: 20
+    items: 64
+    vehicles: 5
+    projectiles: 12
+    reasons:
+      - DEFAULT
+      - EGG
+      - NATURAL
+      - SPAWNER
+      - SPAWNER_EGG
+    overflow_purge:
+      enabled: true
+      interval: 45
+      limit_multiplier: 1.5
+      types:
+        creatures: true
+        items: false
+        vehicles: true
+        projectiles: true
+        named: false

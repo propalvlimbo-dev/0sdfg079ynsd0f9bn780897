@@ -37,18 +37,18 @@ kinds:
     name: 'Редкая (50 Рилликов + Кейс с валютой)'
     commands:
       - 'p give {player} 50'
-      - 'cases give {player} money 1'
+      - 'bcases give {player} money 1'
   epic:
     min: 11
     max: 20
     name: 'Эпическая (85 Рилликов + Кейс с Рилликами)'
     commands:
       - 'p give {player} 85'
-      - 'cases give {player} rilik 1'
+      - 'bcases give {player} rilik 1'
   legendary:
     min: 1
     max: 10
     name: 'Легендарная (150 Рилликов + Кейс с Донатом)'
     commands:
       - 'p give {player} 150'
-      - 'cases give {player} donate 1'
+      - 'bcases give {player} donate 1'

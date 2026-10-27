@@ -1,0 +1,28 @@
+title: '&fꈁꀀꈂꍅꈂꀁ&fꈃꄖ'
+size: 54
+items:
+  open_case:
+    slots:
+    - 12
+    - 13
+    - 14
+    - 21
+    - 22
+    - 23
+    - 30
+    - 31
+    - 32
+    material: STRUCTURE_VOID
+    model_data: 10000
+    display_name: <#F8BEFB>&lЛегендарный Кейс</#FFFFFF>
+    lore:
+    - '&7Тип: &#F8BEFB&lСУПЕР КЕЙС С ДОНАТОМ'
+    - '&7Количество ключей: &f&l%bcases_keys_count_of_type_legendary%'
+    - ''
+    - '&7Гарантированно выпадает только'
+    - '&fДОНАТ &7от &#FD00E4DRAGON &7до &#FBBF24GOD&7!'
+    - '&7Никаких дешёвых привилегий — только жирный лут.'
+    - ''
+    - '&fЦена за 1 шт.: &#55FF5589 руб.'
+    - '&fПокупка &7» &#F8BEFBhttps://elytrix.pw'
+    action: OPEN_CASE

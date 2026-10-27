@@ -11,7 +11,7 @@ async:
     queue-size: 4096
     reject-policy: CALLER_RUNS
   async-playerdata-save:
-    enabled: true
+    enabled: false
   async-entity-tracker:
     enabled: false
     threads: 0

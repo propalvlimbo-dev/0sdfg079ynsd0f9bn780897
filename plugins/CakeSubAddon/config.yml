@@ -1,5 +1,5 @@
 global:
-  case-give: "ncase give %player_name% ditems {amount}"
+  case-give: "bcases give %player_name% ditems {amount}"
 
 messages:
   limit:

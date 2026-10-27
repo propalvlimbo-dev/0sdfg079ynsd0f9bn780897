@@ -108,8 +108,14 @@ disable-for-target:
 - FLY
 - WALKSPEED
 kill-on-leave: true
-kill-on-kick: true
-kick-messages: []
+kill-on-kick: false
+kick-messages:
+- Server closed
+- Restart
+- Перезагрузка
+- Рестарт
+- Выключение
+- Timed out
 commands:
   type: WHITELIST
   change-tabcomplete: true

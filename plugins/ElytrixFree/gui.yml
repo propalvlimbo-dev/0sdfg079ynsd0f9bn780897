@@ -3,7 +3,7 @@
 # =============================================================
 
 menu:
-  title: '&fꈁꀀꈂꌗꈂꀁ&fꈃꄈ'
+  title: '&fꈁꀀꈂꍘꈂꀁ&fꈃꄦ'
   size: 54
 
 design:
@@ -101,7 +101,7 @@ rewards:
       - '{status}'
     items: []
     commands:
-      - 'cases give {player} money 1'
+      - 'bcases give {player} money 1'
 
   free3:
     slot: 12
@@ -155,7 +155,7 @@ rewards:
       - '{status}'
     items: []
     commands:
-      - 'cases give {player} rilik 1'
+      - 'bcases give {player} rilik 1'
 
   free6:
     slot: 15
@@ -192,7 +192,7 @@ rewards:
       - '{status}'
     items: []
     commands:
-      - 'cases give {player} money 2'
+      - 'bcases give {player} money 2'
       - 'p give {player} 50'
 
   free8:
@@ -230,7 +230,7 @@ rewards:
       - '{status}'
     items: []
     commands:
-      - 'cases give {player} rilik 1'
+      - 'bcases give {player} rilik 1'
       - 'p give {player} 75'
 
   free10:
@@ -268,7 +268,7 @@ rewards:
       - '{status}'
     items: []
     commands:
-      - 'cases give {player} money 3'
+      - 'bcases give {player} money 3'
       - 'p give {player} 100'
 
   free12:
@@ -306,7 +306,7 @@ rewards:
       - '{status}'
     items: []
     commands:
-      - 'cases give {player} rilik 2'
+      - 'bcases give {player} rilik 2'
       - 'p give {player} 150'
 
   free14:
@@ -329,6 +329,6 @@ rewards:
     items: []
     commands:
       - 'kit god {player}'
-      - 'cases give {player} rilik 2'
-      - 'cases give {player} money 3'
+      - 'bcases give {player} rilik 2'
+      - 'bcases give {player} money 3'
       - 'p give {player} 250'

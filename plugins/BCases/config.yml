@@ -1,0 +1,28 @@
+# =============================================================
+# BCases — Кейсы сервера Elytrix (1.21.10)
+# Круговая анимация без меча + перенесённые кастомные меню всех кейсов
+# =============================================================
+
+database:
+  type: sqlite
+  file: database.db
+
+messages:
+  reloaded:
+    - "&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &fКонфигурация кейсов &#F8BEFBBCases &fуспешно перезагружена!"
+  case_busy:
+    - "&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &cЭтот кейс сейчас открывает другой игрок!"
+  no_keys:
+    - "&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &cУ вас нет ключей от этого кейса! &7Покупка: &#F8BEFBhttps://elytrix.pw"
+  no_permission:
+    - "&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &cУ вас недостаточно прав для выполнения этой команды!"
+  give_sender:
+    - "&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &fВы выдали игроку &#F8BEFB%player% &fключи от кейса &#F8BEFB%case% &7(x%amount%)"
+  give_target:
+    - "&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &fВы получили &#F8BEFB%amount% &fключ(ей) от кейса &#F8BEFB%case%&f!"
+  set_sender:
+    - "&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &fИгроку &#F8BEFB%player% &fустановлено &#F8BEFB%amount% &fключей от кейса &#F8BEFB%case%"
+  take_sender:
+    - "&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &fУ игрока &#F8BEFB%player% &fзабрано &#F8BEFB%amount% &fключей от кейса &#F8BEFB%case%"
+  look_keys:
+    - "&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &fУ игрока &#F8BEFB%player% &fключей типа &#F8BEFB%case%&f: &#F8BEFB%amount%"

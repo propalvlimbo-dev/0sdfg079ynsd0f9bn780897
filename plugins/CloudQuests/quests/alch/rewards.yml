@@ -35,6 +35,6 @@ rewards:
   '5':
     material: RED_SHULKER_BOX
     commands:
-    - cases give %player% jamshut 1
+    - bcases give %player% zhamshut 1
     - lp user %player% permission set cloudcrafts.alch
     slot: 44

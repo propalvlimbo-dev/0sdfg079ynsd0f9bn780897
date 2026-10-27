@@ -1,0 +1,17 @@
+provider: default:wheel
+id: wheel_xy
+
+settings:
+  prize_count: 8
+  radius: 1.65
+  offsets:
+    x: 0.0
+    y: 0.35
+    z: 0.0
+  max_speed: 15.0
+  speed_fade: 0.08
+  min_speed: 2.0
+  remove_speed: 6.0
+  fake_prize_exponent: 0.5
+  type: Z
+  sword: false

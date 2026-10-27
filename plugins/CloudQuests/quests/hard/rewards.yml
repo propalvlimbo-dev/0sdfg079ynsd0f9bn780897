@@ -35,7 +35,7 @@ rewards:
   '5':
     material: RED_SHULKER_BOX
     commands:
-    - cases give %player% djamshut 5
+    - bcases give %player% zhamshut 5
     - ik give джамшут_5 %player%
     - lp user %player% permission set quest.easy.complete
     slot: 44
