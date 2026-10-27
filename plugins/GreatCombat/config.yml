@@ -23,11 +23,12 @@ time:
 server-manager: Essentials
 scoreboard-manager: TAB
 pvp-time: 30
-region-manager: none
+region-manager: WorldGuard
 region-worlds:
 - world
 - world_nether
 - world_the_end
+- world_spawn
 tick-interval: 20
 time-to-stop: 1
 ignored-projectile:
