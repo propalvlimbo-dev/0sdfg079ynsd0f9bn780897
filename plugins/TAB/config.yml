@@ -27,7 +27,7 @@ scoreboard-teams:
   enable-collision: true
   invisible-nametags: false
   sorting-types:
-  - GROUPS:admin,fulladmin,mladmin,glmoder,stmoder,moderplus,moder,offdmoder,mlmoder,helper,youtube,media,dadmin,angel,dhelper,pegas,vampire,god,cobra,hydra,rabbit,dracula,bunny,tiger,bull,dragon,imperator,magister,overlord,avenger,titan,hero,default
+  - GROUPS:owner,admin,fulladmin,mladmin,glmoder,stmoder,moderplus,moder,offdmoder,mlmoder,helper,youtube,media,dadmin,angel,dhelper,pegas,vampire,god,cobra,hydra,rabbit,dracula,bunny,tiger,bull,dragon,imperator,magister,overlord,avenger,titan,hero,default
   - PLACEHOLDER_A_TO_Z:%player%
   case-sensitive-sorting: true
   can-see-friendly-invisibles: false

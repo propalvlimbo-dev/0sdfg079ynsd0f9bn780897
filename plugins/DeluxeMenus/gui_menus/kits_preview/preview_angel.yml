@@ -78,6 +78,7 @@ items:
   loot_0:
     slot: 2
     amount: 1
+    model_data: 5012
     material: NETHERITE_SWORD
     display_name: '&f&lКлинок ANGEL'
     enchantments:

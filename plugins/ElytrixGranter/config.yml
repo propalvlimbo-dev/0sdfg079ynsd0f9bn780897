@@ -10,6 +10,21 @@ groups:
     dragon: 2
     imperator: 2
     magister: 3
+  owner:
+    dragon: 999
+    bull: 999
+    dracula: 999
+    bunny: 999
+    tiger: 999
+    rabbit: 999
+    hydra: 999
+    cobra: 999
+    god: 999
+    vampire: 999
+    pegas: 999
+    dhelper: 999
+    angel: 999
+    dadmin: 999
   dadmin:
     cobra: 1
     hydra: 2
@@ -33,6 +48,7 @@ weight:
   angel: 14
   dhelper: 13
   dadmin: 15
+  owner: 16
 grant commands:
 - lp user %player% parent add %group%
 - bc &x&F&8&B&E&F&B%granter% &fвыдал игроку &x&F&8&B&E&F&B%player% &fпривилегию &x&F&8&B&E&F&B%group%

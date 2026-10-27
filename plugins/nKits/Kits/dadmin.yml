@@ -13,6 +13,7 @@ Inventory:
     components:
       minecraft:custom_name: '{extra:[{bold:1b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Каратель D.ADMIN",underlined:0b}],text:""}'
       minecraft:enchantments: '{"minecraft:fire_aspect":2,"minecraft:looting":4,"minecraft:mending":1,"minecraft:sharpness":6,"minecraft:sweeping_edge":3,"minecraft:unbreaking":5}'
+      minecraft:custom_model_data: '{floats:[5013.0f]}'
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
     DataVersion: 4671

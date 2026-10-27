@@ -25,6 +25,7 @@ donatePlaceholders:
   dmladmin: '&x&2&1&C&5&E&9&l'
   fulladmin: '&x&F&F&0&0&0&0&l'
   admin: '&x&F&B&0&8&0&8&l'
+  owner: '&x&F&8&B&E&F&B&l'
 
 hoverText:
   enable: false

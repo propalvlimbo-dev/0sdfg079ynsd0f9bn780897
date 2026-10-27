@@ -83,6 +83,7 @@ items:
   loot_0:
     slot: 2
     amount: 1
+    model_data: 5013
     material: NETHERITE_SWORD
     display_name: '&c&lКаратель D.ADMIN'
     enchantments:

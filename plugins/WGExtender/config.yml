@@ -47,6 +47,7 @@ claim:
       glmoder: 2147483647
       mladmin: 2147483647
       admin: 2147483647   # Админ - Бог
+      owner: 2147483647   # Владелец
 
 regionprotect:
   flow:

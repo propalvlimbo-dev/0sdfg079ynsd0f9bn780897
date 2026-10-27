@@ -217,7 +217,7 @@ items:
       - ''
       - '&#FFFFFFЦена: &#F8BEFB149 &#FFFFFFꐃ'
       - ''
-    model_data: 5110
+    model_data: 5011
     click_requirement:
       requirements:
         points_check:

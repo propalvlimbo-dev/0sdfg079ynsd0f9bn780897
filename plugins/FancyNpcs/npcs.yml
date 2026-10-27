@@ -819,3 +819,33 @@ npcs:
         '1':
           action: player_command
           value: ah
+  npc_30:
+    name: npc_30
+    creator: cca2c101-aa7e-3ddb-8d6d-aef6d9170cba
+    displayName: <reset><#F8BEFB><b>ХАЛЯВА
+    type: PLAYER
+    location:
+      world: world_spawn
+      x: 7.5
+      y: 69.0
+      z: -3.5
+      yaw: 60.0
+      pitch: 0.0
+    showInTab: false
+    spawnEntity: true
+    collidable: false
+    glowing: false
+    glowingColor: white
+    turnToPlayer: true
+    turnToPlayerDistance: 10
+    interactionCooldown: 0.5
+    scale: 1.0
+    visibility_distance: 64
+    visibility: ALL
+    skin:
+      mirrorSkin: true
+    actions:
+      ANY_CLICK:
+        '1':
+          action: player_command
+          value: free

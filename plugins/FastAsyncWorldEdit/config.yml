@@ -1,0 +1,54 @@
+# Конфигурация FastAsyncWorldEdit (Elytrix 1.21.10)
+enabled-components:
+  commands: true
+  release-update-notifications: false
+  snapshot-update-notifications: false
+  notify-we-incompatible: false
+  bstats: false
+  tips: false
+clipboard:
+  use-disk: true
+  compression-level: 1
+  delete-after-days: 7
+lighting:
+  mode: 2
+  delay-packet-sending: true
+  async: true
+region-restrictions: true
+region-restrictions-options:
+  mode: MEMBER
+  allow-ando-on-non-member-regions: false
+extent:
+  allowed-plugins: []
+  debug: false
+limits:
+  default:
+    max-actions: 1
+    max-changes: 50000000
+    max-checks: 50000000
+    max-fails: 50000000
+    max-iterations: 1000
+    max-entities: 1337
+    max-blockstates: 1337
+    max-radius: 250
+    max-super-pickaxe-size: 5
+    max-brush-radius: 60
+    confirm-large: true
+    disallowed-blocks: []
+    remap-properties: []
+    strip-nbt: []
+    universal-disallowed-blocks: true
+    speed-reduction: 0
+    fast-placement: false
+    restrict-history-to-regions: true
+    inventory-mode: 0
+history:
+  use-disk: true
+  use-database: false
+  combine-stages: true
+  send-before-history: true
+  delete-after-days: 7
+paths:
+  history: history
+  clipboard: clipboard
+  schematics: schematics

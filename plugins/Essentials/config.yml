@@ -424,7 +424,7 @@ per-warp-permission: false
 list:
     # To merge groups, list the groups you wish to merge
     #Staff: admin
-    Admins: admin
+    Admins: owner, admin
     # To limit groups, set a max user limit
     #builder: 20
     # To hide groups, set the group as hidden
@@ -793,6 +793,7 @@ sethome-multiple:
   angel: 999
   dhelper: 999
   dadmin: 999
+  owner: 999
 
 # In this example someone with 'essentials.sethome.multiple' and 'essentials.sethome.multiple.vip' will have 5 homes.
 # Remember, they MUST have both permission nodes in order to be able to set multiple homes.
