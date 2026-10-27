@@ -10,59 +10,6 @@
 # REMEMBER TO KEEP PERIODICAL BACKUPS.
 #
 regions:
-    airdrop_3:
-        min: {x: 1094, y: 65, z: 611}
-        max: {x: 1194, y: 100, z: 711}
-        members: {}
-        flags: {use: allow, block-break: deny, interact: allow, block-place: deny}
-        owners: {}
-        type: cuboid
-        priority: 100
-    tower_1:
-        min: {x: 1133, y: 49, z: -1449}
-        max: {x: 1173, y: 189, z: -1409}
-        members: {}
-        flags: {build: deny, use: deny, passthrough: deny, interact: deny, chest-access: deny,
-            mob-spawning: deny}
-        owners: {}
-        type: cuboid
-        priority: 0
-    airdrop_1:
-        min: {x: 1070, y: 61, z: 740}
-        max: {x: 1170, y: 96, z: 840}
-        members: {}
-        flags: {use: allow, block-break: deny, interact: allow, block-place: deny}
-        owners: {}
-        type: cuboid
-        priority: 100
-    tower_3:
-        min: {x: -216, y: 84, z: 60}
-        max: {x: -176, y: 224, z: 100}
-        members: {}
-        flags: {build: deny, use: deny, passthrough: deny, interact: deny, chest-access: deny,
-            mob-spawning: deny}
-        owners: {}
-        type: cuboid
-        priority: 0
-    tower_2:
-        min: {x: -20, y: 75, z: -20}
-        max: {x: 20, y: 215, z: 20}
-        members: {}
-        flags: {build: deny, use: deny, passthrough: deny, interact: deny, chest-access: deny,
-            mob-spawning: deny}
-        owners: {}
-        type: cuboid
-        priority: 0
-    dworfmine_fab31d3f:
-        min: {x: 376, y: 20, z: 2178}
-        max: {x: 476, y: 50, z: 2278}
-        members: {}
-        flags: {other-explosion: deny, creeper-explosion: deny, lava-fire: deny, use: allow,
-            mob-damage: allow, block-break: deny, interact: allow, damage-animals: allow,
-            tnt: deny, pvp: allow, block-place: deny, fire-spread: deny}
-        owners: {}
-        type: cuboid
-        priority: 0
     __global__:
         members: {}
         flags: {creeper-explosion: deny, pvp: allow}

@@ -31,3 +31,19 @@ portals:
     x2: 70
     y2: 60
     z2: -39
+
+world-borders:
+  enabled: true
+  worlds:
+    world:
+      center-x: 0.0
+      center-z: 0.0
+      size: 2000.0
+    world_nether:
+      center-x: 0.0
+      center-z: 0.0
+      size: 1000.0
+    world_the_end:
+      center-x: 0.0
+      center-z: 0.0
+      size: 1000.0

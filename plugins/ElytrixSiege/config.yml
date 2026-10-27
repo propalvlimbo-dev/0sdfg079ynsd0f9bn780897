@@ -74,10 +74,10 @@ main-boss:
 bossStrength: 5
 bossResistance: 300
 spawnLoc:
-  world: world
-  x: 0
-  y: 67
-  z: 0
+  world: world_spawn
+  x: 0.5
+  y: 69
+  z: 0.5
 tpLocCount: 2
 playerTpLoc1:
   world: world_siege

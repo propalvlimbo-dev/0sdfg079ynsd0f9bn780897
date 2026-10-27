@@ -127,9 +127,9 @@ worlds:
     keepSpawnInMemory: 'false'
     spawnLocation:
       ==: MVSpawnLocation
-      x: 352.0
-      y: 64.0
-      z: 208.0
+      x: 0.0
+      y: 70.0
+      z: 0.0
       pitch: 0.0
       yaw: 0.0
     autoLoad: 'true'
@@ -194,7 +194,7 @@ worlds:
     color: WHITE
     style: NORMAL
     pvp: 'true'
-    scale: '8.0'
+    scale: '2.0'
     respawnWorld: ''
     allowWeather: 'true'
     difficulty: NORMAL
