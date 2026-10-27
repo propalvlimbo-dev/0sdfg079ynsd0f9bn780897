@@ -153,6 +153,12 @@ overridden-commands:
 disabled-commands:
   - setwarp
   - delwarp
+  - kit
+  - kits
+  - ekit
+  - ekits
+  - showkit
+  - eshowkit
 
 # Whether or not Essentials should show detailed command usages.
 # If set to false, Essentials will collapse all usages in to one single usage message.
