@@ -95,7 +95,7 @@ world-settings:
       villagers-active-for-panic: true
       tick-inactive-villagers: false
       ignore-spectators: true
-    mob-spawn-range: 5
+    mob-spawn-range: 3
     growth:
       cactus-modifier: 100
       cane-modifier: 100
