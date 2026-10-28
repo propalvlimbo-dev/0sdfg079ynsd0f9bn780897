@@ -91,26 +91,26 @@ playerTpLoc2:
   z: 1971.5
 bossbar:
   waiting:
-    name: '&5&lЗащита Особняка &8| &fНабор игроков &8(&x&F&8&B&E&F&B%players% &8/ &x&F&8&B&E&F&B140&8) &8| &5/siege join'
+    name: '&5&lЗащита Особняка &8| &fНабор игроков &8(&#F8BEFB%players% &8/ &#F8BEFB140&8) &8| &fСтарт: &#F8BEFB%time%с &8| &5/siege join'
     style: SOLID
     color: PURPLE
   level1:
-    name: '&5&lЗащита особняка &8| &fОтразите первую волну гоблинов'
+    name: '&5&lЗащита Особняка &8| &f1 волна гоблинов &8(&#F8BEFB%killed%&8/&#F8BEFB%total%&8)'
     style: SOLID
     color: PURPLE
   level2:
-    name: '&5&lЗащита особняка &8| &fОтразите вторую волну гоблинов'
+    name: '&5&lЗащита Особняка &8| &f2 волна гоблинов &8(&#F8BEFB%killed%&8/&#F8BEFB%total%&8)'
     style: SOLID
     color: PURPLE
   level3:
-    name: '&5&lЗащита особняка &8| &fОтразите третию волну гоблинов'
+    name: '&5&lЗащита Особняка &8| &f3 волна гоблинов &8(&#F8BEFB%killed%&8/&#F8BEFB%total%&8)'
     style: SOLID
     color: PURPLE
   main-boss:
-    name: '&5&lЗащита особняка &8| &fОдолейте Вождя гоблинов в центре'
+    name: '&5&lЗащита Особняка &8| &fОдолейте Вождя Гоблинов &8(&#F8BEFB%killed%&8/&#F8BEFB%total%&8)'
     style: SOLID
     color: PURPLE
   opened:
-    name: '&5&lЗащита особняка &8| &fПолучите свою награду &8| &5/siege'
+    name: '&5&lЗащита Особняка &8| &fПолучите награду: &5/siege &8(&#F8BEFB%time%с&8)'
     style: SOLID
     color: PURPLE

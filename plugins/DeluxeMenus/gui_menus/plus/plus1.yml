@@ -5,35 +5,37 @@ items:
   'lime_concrete':
     material: lime_concrete
     slots:
-    - 20
-    - 21
-    - 29
-    - 30
+      - 20
+      - 21
+      - 29
+      - 30
     display_name: '&#55FF55&lПодтвердить'
     lore:
       - ''
       - '&#FFFFFFНажмите, чтобы &#55FF55подтвердить &#FFFFFFпокупку'
+      - '&#FFFFFFподписки &#F8BEFBElytrixPlus &#FFFFFFна &#F8BEFB31 день'
     click_requirement:
       requirements:
         points_check:
           type: javascript
           expression: '%playerpoints_points% >= 299'
       deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8» &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 299'
       - '[console] cakesub give %player_name% 31'
-      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+      - '[message] &#F8BEFBElytrixPlus &8» &aПодписка успешно активирована на &#F8BEFB31 день&a!'
+      - '[openguimenu] plusmenu'
   'red_concrete':
     material: red_concrete
     slots:
-    - 23
-    - 24
-    - 32
-    - 33
+      - 23
+      - 24
+      - 32
+      - 33
     display_name: '&#FF5555&lОтказаться'
     lore:
       - ''
-      - '&#FFFFFFНажмите, чтобы &#FF5555отказаться от &#FFFFFFпокупки'
+      - '&#FFFFFFНажмите, чтобы &#FF5555отказаться &#FFFFFFот покупки'
     click_commands:
-      - '[player] plusbuys'
+      - '[openguimenu] plusbuys'

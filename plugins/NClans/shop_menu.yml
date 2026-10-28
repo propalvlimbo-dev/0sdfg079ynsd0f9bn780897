@@ -33,7 +33,7 @@ spawner:
     name: "&fЯйцо призыва крестьянина"
     material: "VILLAGER_SPAWN_EGG"
     slot: 13
-    price: 349
+    price: 394
     count: 3
     lore:
       - '&r'
@@ -228,13 +228,13 @@ things:
     count: 1
     lore:
       - '&r'
-      - '&r  &fЦена: &#F8BEFB339 &7коинов&r'
+      - '&r  &fЦена: &#F8BEFB399 &7коинов&r'
       - '&r'
   arrow_damage_32:
     name: "&fСтрела вреда"
     material: "TIPPED_ARROW"
     slot: 14
-    price: 1000
+    price: 69
     count: 32
     effect: "HARM"
     amplifier: 2

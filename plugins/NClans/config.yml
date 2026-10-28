@@ -106,22 +106,27 @@ shopInfoLore:
   - '&r&7Все покупки в этом магазине осуществляются'
   - '&r&7модераторами кланов.'
 shopInfoModelData: 10001
-shopInfoSlot: 53
+shopInfoSlot: 4
 
-arrowName: "&#F8BEFBНазад"
+arrowMaterial: "STRUCTURE_VOID"
+arrowName: "&#F8BEFB⬅ Назад"
 arrowModelData: 10002
 arrowSlot: 45
 
-shopInvName: "§fꈁꀀꈂꌄꈂꀁ§0ꈃꄅ"
-memberInvName: "§fꈁꀀꈂꌇꈂꀁ§0ꈃꄣ"
-glowInvName: "§fꈁꀀꈂꍁꈂꀁ§0ꈃꄣ"
-kitsInvName: "§fꈁꀀꈂꌧꈂꀁ§0ꈃꄅ"
-infoInvName: "§fꈁꀀꈂꍁꈂꀁ§0ꈃꄣ"
-thingsInvName: "§fꈁꀀꈂꌧꈂꀁ§0ꈃꄅ"
-thingInvName: "§fꈁꀀꈂꌗꈂꀁ§0ꈃꄅ"
-shulkerInvName: "§fꈁꀀꈂꌩꈂꀁ§0ꈃꄅ"
-spawnerInvName: "§fꈁꀀꈂꍃꈂꀁ§0ꈃꄅ"
+hubInvName: "§fꈁꀀꈂꍛꈂꀁ§fꈃꄣ"
+noClanInvName: "§fꈁꀀꈂꍜꈂꀁ§fꈃꄣ"
+shopInvName: "§fꈁꀀꈂꌄꈂꀁ§fꈃꄅ"
+memberInvName: "§fꈁꀀꈂꍝꈂꀁ§fꈃꄣ"
+glowInvName: "§fꈁꀀꈂꍁꈂꀁ§fꈃꄣ"
+kitsInvName: "§fꈁꀀꈂꌧꈂꀁ§fꈃꄅ"
+infoInvName: "§fꈁꀀꈂꍁꈂꀁ§fꈃꄣ"
+thingsInvName: "§fꈁꀀꈂꌧꈂꀁ§fꈃꄅ"
+thingInvName: "§fꈁꀀꈂꍠꈂꀁ§fꈃꄅ"
+shulkerInvName: "§fꈁꀀꈂꍟꈂꀁ§fꈃꄅ"
+spawnerInvName: "§fꈁꀀꈂꍡꈂꀁ§fꈃꄅ"
 
+clanNameFormat: "&8[%clan%&8]"
+clanChatPrefix: "&#F8BEFB[Клан] "
 handleKitCommand: "kit %kit% %nick%"
 
 noClanPlaceholder: "&#F8BEFBБез клана"
@@ -136,7 +141,13 @@ messages:
   targetInvited:
     - "&#F8BEFBКланы &7» &fПриглашение клан &a%clan% &fот игрока &a%player% \n\n Чтобы принять введите &a/clan accept"
   createdSuccessfully:
-    - "&#F8BEFBКланы &7» &aКлан успешно создан!"
+    - "&#F8BEFBКланы &7» &aКлан «%clan%&a» успешно создан!"
+  teleportedHome:
+    - "&#F8BEFBКланы &7» &fВы телепортировались в &#F8BEFBклановый дом&f!"
+  chatUsage:
+    - "&#F8BEFBКланы &7» &fИспользование: &#F8BEFB/clan chat <Сообщение>"
+  alreadyInvited:
+    - "&#F8BEFBКланы &7» &cПодождите перед отправкой следующего приглашения!"
   uncorrectNumber:
     - "&#F8BEFBКланы &7» &cНеправильное использование числа!"
   admUsage:
@@ -270,7 +281,7 @@ quests:
   progress-notify-every: 0
 
   menu:
-    title: "§fꈁꀀꈂꍄꈂꀁ§0ꈃꄣ"
+    title: "§fꈁꀀꈂꍞꈂꀁ§fꈃꄣ"
     size: 54
 
     quest-slots: [20,21,22,23,24, 29,30,31,32,33, 38,39,40,41,42]
@@ -284,7 +295,7 @@ quests:
     info:
       enabled: true
       slot: 4
-      material: "CLOCK"
+      material: "STRUCTURE_VOID"
       model-data: 10001
       name: "&c&lВАЖНО"
       lore:

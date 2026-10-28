@@ -1,32 +1,42 @@
 settings:
-  symbol: "" # Настройка символа, который будет писаться после доната игрока. В конце поставьте пробел и цветовой код, чтобы никнейм игрока с подпиской отображался корректно
-  prefix-1: "&#F8BEFB&l+&7" # Префикс игрока с подпиской
-  prefix-2: "" # Префикс игрока без подписки
+  symbol: " &#F8BEFB&l+" # Символ после ника игрока с подпиской ElytrixPlus
+  prefix-1: " &#F8BEFB&l+" # Суффикс игрока с подпиской
+  prefix-2: "" # Суффикс игрока без подписки
   commands-on-give: # Команды при выдаче подписки
     - "cakesub-addon memory %player% 2"
-    - "lp user %player% permission set essentials.setwarp"
-    - "lp user %player% permission set user.plus"
-    - "lp user %player% permission set nClans.discount"
+    - "lp user %player% permission set user.plus true"
+    - "lp user %player% permission set hwarps.setwarp true"
+    - "lp user %player% permission set hwarps.delwarp true"
+    - "lp user %player% permission set nbattlepass.subscribe true"
+    - "lp user %player% permission set nClans.discount true"
+    - "lp user %player% permission set nKits.kits.plus true"
+    - "lp user %player% permission set cakesubaddon.use true"
   commands-on-take: # Команды при снятии подписки
-    - "lp user %player% permission unset essentials.setwarp"
     - "lp user %player% permission unset user.plus"
+    - "lp user %player% permission unset hwarps.setwarp"
+    - "lp user %player% permission unset hwarps.delwarp"
+    - "lp user %player% permission unset nbattlepass.subscribe"
     - "lp user %player% permission unset nClans.discount"
+    - "lp user %player% permission unset nKits.kits.plus"
+    - "lp user %player% permission unset cakesubaddon.use"
 placeholders:
   has:
-    yes-sub: "&aАктивная" # Когда есть подписка у игрока
-    no-sub: "&cНеактивная" # Когда нет подписки у игрока
+    yes-sub: "&aАктивна"
+    no-sub: "&cНеактивна"
   end:
-    forever: "&#F8BEFB∞" # Когда подписка игрока бесконечная
-    remainder: "&#F8BEFB%days%дн" # Когда до снятия подписки осталось N дней
-    no-sub: "&cНету" # Когда подписки нет
+    forever: "&#F8BEFBНавсегда (∞)"
+    remainder: "&#F8BEFB%days%дн"
+    no-sub: "&cНет"
 messages:
-  no-permission: "&fУ Вас &c&nнедостаточно&f &fправ!" # Сообщение, когда у игрока не хватает прав
-  reload: "&fВы &aуспешно &fперезагрузили плагин!" # Сообщение, когда плагин перезагружен
-  null-player: "&fИгрок не найден." # Сообщение, когда игрок не найден
-  no-exists: "&fУ игрока нет подписки!" # Сообщение, когда у игрока нет подписки
-  give-duration: "&fВы выдали подписку игроку &#F8BEFB%player% &fна &a%duration%дн&7!" # Сообщение, когда вы выдали игроку подписку на время
-  give-forever: "&fВы выдали подписку игроку &#F8BEFB%player% &fнавсегда&7!" # Сообщение, когда вы выдали игроку подписку навсегда
-  take: "&fВы забрали подписку у игрока &#F8BEFB%player%&f!" # Сообщение, когда вы сняли у игрока подписку
-  incorrect-date: "&fВы ввели некорректную дату!" # Сообщение, когда вы ввели некорректную дату
-  no-sub: "&fУ игрока нет подписки!" # Сообщение, когда у игрока нет подписки
-  yes-sub: "&fУ игрока есть подписка!" # Сообщение, когда у игрока есть подписка
+  no-args:
+    - "&#F8BEFBElytrixPlus &8» &fИспользование: &#F8BEFB/cakesub <give|take|check|reload>"
+  no-permission: "&#F8BEFBElytrixPlus &8» &fУ Вас &c&nнедостаточно&f прав!"
+  reload: "&#F8BEFBElytrixPlus &8» &fВы &aуспешно &fперезагрузили плагин!"
+  null-player: "&#F8BEFBElytrixPlus &8» &fИгрок не найден."
+  no-exists: "&#F8BEFBElytrixPlus &8» &fУ игрока нет подписки!"
+  give-duration: "&#F8BEFBElytrixPlus &8» &fВы выдали подписку игроку &#F8BEFB%player% &fна &#F8BEFB%duration% дн.&f!"
+  give-forever: "&#F8BEFBElytrixPlus &8» &fВы выдали подписку игроку &#F8BEFB%player% &f&#F8BEFBнавсегда&f!"
+  take: "&#F8BEFBElytrixPlus &8» &fВы забрали подписку у игрока &#F8BEFB%player%&f!"
+  incorrect-date: "&#F8BEFBElytrixPlus &8» &fВы ввели некорректную длительность!"
+  no-sub: "&#F8BEFBElytrixPlus &8» &fУ игрока &cнет &fактивной подписки!"
+  yes-sub: "&#F8BEFBElytrixPlus &8» &fУ игрока &aактивна &fподписка &#F8BEFBElytrixPlus&f!"

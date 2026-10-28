@@ -1,7 +1,7 @@
 menu_title: '§fꈁꀀꈂꌦꈂꀁ§fꈃꄢ'
-open_command: 
-- plus
-- plusmenu
+open_command:
+  - plus
+  - plusmenu
 size: 54
 items:
   'clock':
@@ -10,69 +10,159 @@ items:
     display_name: '&#FAD8FC&lИнформация'
     lore:
       - ''
-      - ' &#FFFFFFПодписка &#F8BEFBElytrixPlus &#FFFFFF- уникальная возможность'
-      - ' &#FFFFFFматериально &#F8BEFBпомочь&#FFFFFF проекту и получить много'
-      - ' &#F8BEFBкрутых плюшек &#FFFFFFв обмен.'
+      - ' &#FFFFFFПодписка &#F8BEFBElytrixPlus &#FFFFFF— уникальная возможность'
+      - ' &#FFFFFFподдержать проект и получить &#F8BEFBкрутые бонусы:'
       - ''
-      - ' &#FFFFFFВсем подписчикам представляется &#F8BEFB5 уникальных'
-      - ' &#FFFFFFбонусов, каждый из которых можно &#F8BEFBдокупать по'
-      - ' &#FFFFFFцене &#F8BEFBниже&#FFFFFF, чем в магазине.'
-      - ' &#F8BEFBОзнакомиться &#FFFFFFсо списком плюшек и докупить их'
-      - ' &#FFFFFFможно по предметам ниже.'
-      - ''
-      - ' &#FFFFFFОплата за подписку &#F8BEFBежемесячная, &#FFFFFFвозможности'
-      - ' &#FFFFFFплюшек &#F8BEFBсбрасываются &#FFFFFFдо исходных &#F8BEFBкаждый вайп.'
-      - ' &#FFFFFFПриобрести подписку можно в меню &#F8BEFBза рилики'
-      - ' &#FFFFFFнажав по предмету &#F8BEFBсправа &#AAAAAA(&#FAD8FC&lОформить подписку&#AAAAAA)'
+      - ' &#F8BEFB• &#FFFFFFЗначок &#F8BEFB&l+ &#FFFFFFпосле ника в чате и ТАБе'
+      - ' &#F8BEFB• &#FFFFFFЭксклюзивный набор &#F8BEFB/kit plus'
+      - ' &#F8BEFB• &#F8BEFB2 бесплатных &#FFFFFFкейса с вещами + докупка за &#F8BEFB15 рилликов'
+      - ' &#F8BEFB• &#FFFFFFСкидка &#F8BEFB50% &#FFFFFFна создание клана &#AAAAAA(/clan create)'
+      - ' &#F8BEFB• &#FFFFFFСоздание варпов &#F8BEFB/setwarp &#FFFFFFи награды &#F8BEFB/bp'
       - ''
     model_data: 9280100010
-    
-  'name_tag':
+
+  'status_active':
     material: name_tag
     slot: 11
+    priority: 1
+    view_requirement:
+      requirements:
+        has_sub:
+          type: has permission
+          permission: user.plus
     display_name: '&#FAD8FC&lСтатус подписки'
     lore:
       - ''
-      - '&#FFFFFF Статус подписки: &#FF5555Неактивна'
+      - ' &#FFFFFFСтатус подписки: &aАктивна &#F8BEFB(ElytrixPlus)'
+      - ' &#FFFFFFОсталось времени: %cakesub_timeleft%'
+      - ' &#FFFFFFБесплатных кейсов: &#F8BEFB%cakesubaddon_memory% шт.'
       - ''
-      - '&#FFFFFFОформить подписку можно за &#F8BEFBрилики,'
-      - '&#FFFFFFиспользуя иконку справа'
-    
+      - ' &#F8BEFBЛКМ &#AAAAAA— получить набор &#FAD8FC/kit plus'
+      - ' &#F8BEFBПКМ &#AAAAAA— продлить подписку'
+      - ''
+    left_click_commands:
+      - '[close]'
+      - '[player] kit plus'
+    right_click_commands:
+      - '[openguimenu] plusbuys'
+
+  'status_inactive':
+    material: name_tag
+    slot: 11
+    priority: 2
+    display_name: '&#FAD8FC&lСтатус подписки'
+    lore:
+      - ''
+      - ' &#FFFFFFСтатус подписки: &#FF5555Неактивна'
+      - ''
+      - ' &#FFFFFFОформить подписку можно за &#F8BEFBриллики,'
+      - ' &#FFFFFFнажав по книге справа!'
+      - ''
+    click_commands:
+      - '[openguimenu] plusbuys'
+
   'book':
     material: book
     slot: 15
-    display_name: '&#FAD8FC&lОформить подписку'
+    display_name: '&#FAD8FC&lОформить / Продлить подписку'
     lore:
       - ''
-      - '&#FFFFFFДействует &#F8BEFBнесколько &#FFFFFFпериодов'
-      - '&#FFFFFFподписки &#F8BEFBElytrixPlus'
+      - ' &#FFFFFFДействует &#F8BEFBнесколько &#FFFFFFпериодов'
+      - ' &#FFFFFFподписки &#F8BEFBElytrixPlus'
       - ''
-      - '&#F8BEFBНажмите &#FFFFFFдля просмотра &#F8BEFBподробной'
-      - '&#F8BEFBинформации &#FFFFFFи оформления подписки'
+      - ' &#F8BEFBНажмите &#FFFFFFдля выбора тарифа'
+      - ' &#FFFFFFи оформления подписки'
+      - ''
     click_commands:
-      - '[player] plusbuys'
-  'note_block':
+      - '[openguimenu] plusbuys'
+
+  'cases_active':
     material: note_block
     slot: 29
-    display_name: '&#FAD8FC&l 2 кейса с вещами'
+    priority: 1
+    view_requirement:
+      requirements:
+        has_sub:
+          type: has permission
+          permission: user.plus
+    display_name: '&#FAD8FC&l2 кейса с вещами'
+    lore:
+      - ''
+      - ' &#FFFFFFВсе подписчики &#F8BEFBElytrixPlus &#FFFFFFполучают'
+      - ' &#F8BEFB2 бесплатных &#FFFFFFкейса с вещами при оформлении!'
+      - ''
+      - ' &#FFFFFFДоступно бесплатных кейсов: &#F8BEFB&l%cakesubaddon_memory% шт.'
+      - ' &#FFFFFFДокупка кейса по скидке: &#FAD8FC&l15 &#FF5555&m99&#FAD8FC рилликов'
+      - ''
+      - ' &#55FF55✔ Бонус активен!'
+      - ' &#F8BEFBЛКМ &#AAAAAA— забрать бесплатный кейс (/getitemcase)'
+      - ' &#F8BEFBПКМ &#AAAAAA— докупить 1 кейс за &#F8BEFB15 рилликов'
+      - ''
+    left_click_commands:
+      - '[player] getitemcase'
+      - '[refresh]'
+    right_click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 15'
+      deny_commands:
+        - '[message] &#F8BEFBElytrixPlus &8» &cНедостаточно рилликов! Нужно &#F8BEFB15 рилликов&c.'
+    right_click_commands:
+      - '[console] p take %player_name% 15'
+      - '[console] bcases give %player_name% ditems 1'
+      - '[message] &#F8BEFBElytrixPlus &8» &aВы приобрели кейс с вещами по скидке за &#F8BEFB15 рилликов&a!'
+      - '[refresh]'
+
+  'cases_inactive':
+    material: note_block
+    slot: 29
+    priority: 2
+    display_name: '&#FAD8FC&l2 кейса с вещами'
     lore:
       - ''
       - ' &#FFFFFFВсе подписчики &#F8BEFBElytrixPlus &#FFFFFFполучают'
       - ' &#F8BEFB2 бесплатных &#FFFFFFкейса с вещами каждый'
       - ' &#FFFFFFвайп &#AAAAAA(±каждый месяц)'
       - ''
-      - ' &#FFFFFFТак же, подписчики &#F8BEFBElytrixPlus &#FFFFFFмогут'
+      - ' &#FFFFFFТакже подписчики &#F8BEFBElytrixPlus &#FFFFFFмогут'
       - ' &#F8BEFBдокупать &#FFFFFFкейсы с вещами по более'
       - ' &#FFFFFFнизкой цене: &#FAD8FC&l15 &#FF5555&m99&#FAD8FC рилликов'
       - ''
-      - ' &#FF5555Вы &#FF5555&lне являетесь&#FF5555 подписчиком ElytrixPlus'
-      - ' &#FF5555и не можете получить бесплатные кейсы.'
+      - ' &#FF5555Вы &#FF5555&lне являетесь&#FF5555 подписчиком ElytrixPlus.'
+      - ' &#F8BEFBНажмите&#FFFFFF, чтобы оформить подписку!'
       - ''
-    
-  'blaze_powder':
+    click_commands:
+      - '[openguimenu] plusbuys'
+
+  'clan_active':
     material: blaze_powder
     slot: 30
-    display_name: '&#FAD8FC&l Скидка 50% на создание клана'
+    priority: 1
+    view_requirement:
+      requirements:
+        has_sub:
+          type: has permission
+          permission: user.plus
+    display_name: '&#FAD8FC&lСкидка 50% на создание клана'
+    lore:
+      - ''
+      - ' &#FFFFFFВсем подписчикам &#F8BEFBElytrixPlus &#FFFFFFдаётся'
+      - ' &#FFFFFFскидка &#F8BEFB50% &#FFFFFFна создание собственного клана!'
+      - ''
+      - ' &#55FF55✔ Бонус активен!'
+      - ' &#FFFFFFКоманда для создания: &#FAD8FC&l/clan create <имя>'
+      - ' &#F8BEFBНажмите&#AAAAAA, чтобы открыть меню кланов'
+      - ''
+    click_commands:
+      - '[close]'
+      - '[player] clan'
+
+  'clan_inactive':
+    material: blaze_powder
+    slot: 30
+    priority: 2
+    display_name: '&#FAD8FC&lСкидка 50% на создание клана'
     lore:
       - ''
       - ' &#FFFFFFВсем подписчикам &#F8BEFBElytrixPlus &#FFFFFFдаётся'
@@ -81,11 +171,38 @@ items:
       - ''
       - ' &#FFFFFFКоманда для создания: &#FAD8FC&l/clan create'
       - ''
-    
-  'compass':
+    click_commands:
+      - '[openguimenu] plusbuys'
+
+  'warp_active':
     material: compass
     slot: 32
-    display_name: '&#FAD8FC&l Создание варпов'
+    priority: 1
+    view_requirement:
+      requirements:
+        has_sub:
+          type: has permission
+          permission: user.plus
+    display_name: '&#FAD8FC&lСоздание варпов'
+    lore:
+      - ''
+      - ' &#FFFFFFВсем подписчикам &#F8BEFBElytrixPlus &#FFFFFFдоступно'
+      - ' &#FFFFFFсоздание собственного варпа!'
+      - ''
+      - ' &#55FF55✔ Бонус активен!'
+      - ' &#FFFFFFСоздать варп: &#FAD8FC&l/setwarp <имя>'
+      - ' &#FFFFFFУдалить варп: &#FAD8FC&l/delwarp <имя>'
+      - ' &#F8BEFBНажмите&#AAAAAA, чтобы открыть меню варпов'
+      - ''
+    click_commands:
+      - '[close]'
+      - '[player] warp'
+
+  'warp_inactive':
+    material: compass
+    slot: 32
+    priority: 2
+    display_name: '&#FAD8FC&lСоздание варпов'
     lore:
       - ''
       - ' &#FFFFFFВсем подписчикам &#F8BEFBElytrixPlus &#FFFFFFдаётся'
@@ -94,14 +211,46 @@ items:
       - ''
       - ' &#FFFFFFКоманда для создания: &#FAD8FC&l/setwarp'
       - ''
-    
-  'writable_book':
+    click_commands:
+      - '[openguimenu] plusbuys'
+
+  'rewards_active':
     material: writable_book
     slot: 33
-    display_name: '&#FAD8FC&l Дополнительные награды'
+    priority: 1
+    view_requirement:
+      requirements:
+        has_sub:
+          type: has permission
+          permission: user.plus
+    display_name: '&#FAD8FC&lНабор PLUS и Боевой Пропуск'
+    lore:
+      - ''
+      - ' &#FFFFFFПодписчикам &#F8BEFBElytrixPlus &#FFFFFFдоступны'
+      - ' &#FFFFFFдополнительные награды &#F8BEFBБоевого Пропуска'
+      - ' &#FFFFFFи эксклюзивный набор &#F8BEFB/kit plus&#FFFFFF!'
+      - ''
+      - ' &#55FF55✔ Бонус активен!'
+      - ' &#F8BEFBЛКМ &#AAAAAA— получить набор &#FAD8FC/kit plus'
+      - ' &#F8BEFBПКМ &#AAAAAA— открыть Боевой Пропуск &#FAD8FC(/bp)'
+      - ''
+    left_click_commands:
+      - '[close]'
+      - '[player] kit plus'
+    right_click_commands:
+      - '[close]'
+      - '[player] bp'
+
+  'rewards_inactive':
+    material: writable_book
+    slot: 33
+    priority: 2
+    display_name: '&#FAD8FC&lНабор PLUS и Боевой Пропуск'
     lore:
       - ''
       - ' &#FFFFFFВсем подписчикам &#F8BEFBElytrixPlus &#FFFFFFдоступны'
       - ' &#FFFFFFдополнительные награды боевого пропуска'
+      - ' &#FFFFFFи особый набор &#F8BEFB/kit plus'
       - ''
-    
+    click_commands:
+      - '[openguimenu] plusbuys'

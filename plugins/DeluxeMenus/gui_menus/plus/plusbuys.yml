@@ -10,13 +10,13 @@ items:
       - ''
       - ' &#FFFFFFЦена: &#F8BEFB299 рилликов'
       - ''
-      - '&#F8BEFBНажмите&#FFFFFF, чтобы оформить подписку'
-      - '&#FFFFFFсроком на &#F8BEFB1 месяц'
+      - ' &#F8BEFBНажмите&#FFFFFF, чтобы оформить подписку'
+      - ' &#FFFFFFсроком на &#F8BEFB1 месяц (31 день)'
       - ''
-      - '&#FFFFFFПри наличии уже &#F8BEFBактивной &#FFFFFFподписки,'
-      - '&#FFFFFFсрок добавится к &#F8BEFBуже существующему.'
+      - ' &#FFFFFFПри наличии уже &#F8BEFBактивной &#FFFFFFподписки,'
+      - ' &#FFFFFFсрок добавится к &#F8BEFBуже существующему.'
     click_commands:
-      - '[player] plus1'
+      - '[openguimenu] plus1'
   'gold_ingot_1':
     material: gold_ingot
     slot: 22
@@ -25,13 +25,13 @@ items:
       - ''
       - ' &#FFFFFFЦена: &#F8BEFB799 рилликов'
       - ''
-      - '&#F8BEFBНажмите&#FFFFFF, чтобы оформить подписку'
-      - '&#FFFFFFсроком на &#F8BEFB3 месяца'
+      - ' &#F8BEFBНажмите&#FFFFFF, чтобы оформить подписку'
+      - ' &#FFFFFFсроком на &#F8BEFB3 месяца (91 день)'
       - ''
-      - '&#FFFFFFПри наличии уже &#F8BEFBактивной &#FFFFFFподписки,'
-      - '&#FFFFFFсрок добавится к &#F8BEFBуже существующему.'
+      - ' &#FFFFFFПри наличии уже &#F8BEFBактивной &#FFFFFFподписки,'
+      - ' &#FFFFFFсрок добавится к &#F8BEFBуже существующему.'
     click_commands:
-      - '[player] plus2'
+      - '[openguimenu] plus2'
   'gold_ingot_2':
     material: gold_ingot
     slot: 24
@@ -40,10 +40,19 @@ items:
       - ''
       - ' &#FFFFFFЦена: &#F8BEFB1599 рилликов'
       - ''
-      - '&#F8BEFBНажмите&#FFFFFF, чтобы оформить подписку'
-      - '&#FFFFFFсроком на &#F8BEFB6 месяцев'
+      - ' &#F8BEFBНажмите&#FFFFFF, чтобы оформить подписку'
+      - ' &#FFFFFFсроком на &#F8BEFB6 месяцев (181 день)'
       - ''
-      - '&#FFFFFFПри наличии уже &#F8BEFBактивной &#FFFFFFподписки,'
-      - '&#FFFFFFсрок добавится к &#F8BEFBуже существующему.'
+      - ' &#FFFFFFПри наличии уже &#F8BEFBактивной &#FFFFFFподписки,'
+      - ' &#FFFFFFсрок добавится к &#F8BEFBуже существующему.'
     click_commands:
-      - '[player] plus3'
+      - '[openguimenu] plus3'
+  'back':
+    material: structure_void
+    model_data: 10002
+    slot: 49
+    display_name: '&#F8BEFB⬅ Назад'
+    lore:
+      - '&7Вернуться в меню подписки'
+    click_commands:
+      - '[openguimenu] plusmenu'

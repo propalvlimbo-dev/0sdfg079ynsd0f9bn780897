@@ -1,5 +1,5 @@
 Menu:
-  name: '&fꈁꀀꈂꌅꈂꀁ&0ꈃꄂ'
+  name: '&fꈁꀀꈂꌅꈂꀁ&fꈃꄂ'
   size: 54
 limit: 1
 Primer-warpov-v-menu-EBLAN:
@@ -54,7 +54,7 @@ lines:
   - 42
   - 43
 Menu-Confirm:
-  name: '&fꈁꀀꈂꌄꈂꀁ&0ꈃꄂ'
+  name: '&fꈁꀀꈂꌄꈂꀁ&fꈃꄂ'
   size: 54
 
 tp: # телепортирует на варп
