@@ -22,7 +22,7 @@ messages:
       - "3=<white>Очистка мира через <color:#F8BEFB>3<white>..."
       - "2=<white>Очистка мира через <color:#F8BEFB>2<white>..."
       - "1=<white>Очистка мира через <color:#F8BEFB>1<white>..."
-      - "0=<white>Очистка завершена! Удалено: <color:#F8BEFB><items> <white>предм., <color:#F8BEFB><creatures> <white>мобов и <color:#F8BEFB><projectiles> <white>снарядов. <gray>(Вернуть вещи: <color:#F8BEFB>/abyss<gray>)"
+      - "0=<white>Очистка завершена! Удалено: <color:#F8BEFB><items> <white>предм., <color:#F8BEFB><creatures> <white>мобов и <color:#F8BEFB><projectiles> <white>снарядов."
     items:
       abyss:
         close: "<white>Бездна <color:#F8BEFB>/abyss <white>была закрыта!"

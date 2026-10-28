@@ -9,17 +9,17 @@ expansion:
   delimiter: ', '
 time:
   seconds:
-    form1: секунда
-    form3: секунды
-    form5: секунд
+    form1: сек.
+    form3: сек.
+    form5: сек.
   minutes:
-    form1: минута
-    form3: минуты
-    form5: минут
+    form1: мин.
+    form3: мин.
+    form5: мин.
   hours:
-    form1: час
-    form3: часа
-    form5: часов
+    form1: ч.
+    form3: ч.
+    form5: ч.
 server-manager: Essentials
 scoreboard-manager: TAB
 pvp-time: 30
@@ -91,6 +91,7 @@ ignored-worlds:
 - world1
 - world2
 - duels
+- world_duels
 prevent-start-if-damager:
 - GAMEMODE
 - VANISH

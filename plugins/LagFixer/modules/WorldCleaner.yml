@@ -53,7 +53,7 @@ WorldCleaner:
         - RED_SHULKER_BOX
         - BLACK_SHULKER_BOX
       abyss:
-        enabled: true
+        enabled: false
         alerts: false
         permission: ""
         item_despawn: false
