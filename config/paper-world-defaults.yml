@@ -41,7 +41,7 @@ anticheat:
       hide-itemmeta: false
       hide-itemmeta-with-visual-effects: false
 chunks:
-  auto-save-interval: default
+  auto-save-interval: 18000
   delay-chunk-unloads-by: 15s
   entity-per-chunk-save-limit:
     arrow: 16
@@ -52,7 +52,7 @@ chunks:
     snowball: 8
   fixed-chunk-inhabited-time: -1
   flush-regions-on-save: false
-  max-auto-save-chunks-per-tick: 8
+  max-auto-save-chunks-per-tick: 6
   prevent-moving-into-unloaded-chunks: true
 collisions:
   allow-player-cramming-damage: false
