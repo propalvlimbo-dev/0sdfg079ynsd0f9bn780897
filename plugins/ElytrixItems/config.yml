@@ -79,9 +79,9 @@ ice_ball:
   material: PLAYER_HEAD
   modelData: 5008
   texture: ''
-  name: '&b&lШар Льда'
+  name: '&#F8BEFB&lШар Роузи'
   cooldown: 60
-  cooldownMessage: '&b&lШар Льда &7» &fПерезарядка &b%time% &fсек'
+  cooldownMessage: '&#F8BEFB&lШар Роузи &7» &fПерезарядка &#F8BEFB%time% &fсек'
   lore:
   - '&cПроклятие утраты'
   - '&7'
@@ -89,11 +89,14 @@ ice_ball:
   - '&a+10 &7к максимальному здоровью'
   - '&a+2.5 &7к броне'
   - '&7'
+  - '&7При нажатии SHIFT:'
+  - '&#F8BEFBВихрь лепестков Роузи &7в радиусе 8 бл.'
+  - '&aРегенерация II &7владельцу на 4 сек.'
   notification:
     sound: true
-    soundType: BLOCK_GLASS_BREAK
+    soundType: BLOCK_AMETHYST_BLOCK_CHIME
     message: true
-    messageText: '&b&lШар Льда &7» &fВы использовали Шар Льда!'
+    messageText: '&#F8BEFB&lШар Роузи &7» &fВы активировали вихрь лепестков &#F8BEFBElytrix&f!'
     title: false
     titleName: ''
     titleText: ''

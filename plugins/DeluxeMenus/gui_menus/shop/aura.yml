@@ -154,7 +154,7 @@ items:
     material: arrow
     slot: 45
     display_name: '&#F8BEFBНазад'
-    model_data: 100020
+    model_data: 10002
     click_commands:
       - '[player] shop'
   'clock':

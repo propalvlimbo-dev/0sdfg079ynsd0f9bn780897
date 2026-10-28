@@ -326,7 +326,7 @@ items:
   'player_head_10':
     material: player_head
     slot: 33
-    display_name: '&#55FFFF&lШар Льда'
+    display_name: '&#F8BEFB&lШар Роузи'
     lore:
       - '&#FF5555Проклятие утраты'
       - ''
@@ -336,7 +336,8 @@ items:
       - ''
       - '&#AAAAAAПри нажатии SHIFT:'
       - '&#AAAAAAВ радиусе &#F8BEFB8 &#AAAAAAблоков'
-      - '&#FF5555Заморозка (00:04)'
+      - '&#F8BEFBВихрь лепестков Роузи (00:04)'
+      - '&#55FF55Регенерация II владельцу (00:04)'
       - ''
       - '&#AAAAAA==================='
       - ''
@@ -352,7 +353,7 @@ items:
         - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
       - '[console] p take %player_name% 179'
-      - '[console] rwitems ICE_BALL %player_name%'
+      - '[console] rwitems ROSY_BALL %player_name%'
       - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'player_head_11':
     material: player_head
@@ -516,7 +517,7 @@ items:
     material: arrow
     slot: 45
     display_name: '&#F8BEFBНазад'
-    model_data: 100020
+    model_data: 10002
     click_commands:
       - '[player] shop'
   'clock':
