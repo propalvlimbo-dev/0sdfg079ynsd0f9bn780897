@@ -7,13 +7,13 @@ npcs:
     location:
       world: world_spawn
       x: 44.5
-      y: 65.0
+      y: 64.0
       z: 0.5
       yaw: -90.0
       pitch: 0.0
     attributes:
-      width: '1.5'
-      height: '1.8'
+      width: '1.6'
+      height: '2.0'
     showInTab: false
     spawnEntity: true
     collidable: false
