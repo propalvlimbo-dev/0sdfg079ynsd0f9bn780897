@@ -496,6 +496,12 @@ groups:
   - /bot
   - //motd
   - //md
+  - /priora
+  - /elytrixpriora:priora
+  - /freakmodel
+  - /fm
+  - /elytrixfreakmodel:freakmodel
+  - /elytrixfreakmodel:fm
   owner:
   - /powertool
   - /kickall
@@ -612,6 +618,9 @@ hidden_commands:
   - /secret
   - /shatter
   - /tpsbar
+  - /priora
+  - /freakmodel
+  - /fm
   dragon:
   - /griefrestart
   - /griefgive
@@ -622,3 +631,6 @@ hidden_commands:
   - /secret
   - /shatter
   - /tpsbar
+  - /priora
+  - /freakmodel
+  - /fm

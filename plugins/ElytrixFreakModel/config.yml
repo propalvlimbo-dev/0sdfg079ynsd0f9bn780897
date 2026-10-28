@@ -1,0 +1,150 @@
+# ═══════════════════════════════════════════════════════════════════════
+# ElytrixFreakModel — Хаб кастомных 3D-моделек вне тематики сервера
+# Сюда добавляются машины, мемы, необычный транспорт и декорации (VEHICLE / PROP)
+# ═══════════════════════════════════════════════════════════════════════
+
+defaults:
+  max-active-per-player: 2
+  interpolation-ticks: 2
+  max-speed: 0.94
+  reverse-speed: 0.36
+  acceleration: 0.042
+  braking: 0.085
+  rolling-friction: 0.962
+  turn-rate: 5.2
+  kmh-multiplier: 92.0
+
+messages:
+  unknown-command: '&#F8BEFBElytrix &7» &fКоманда не найдена'
+  # Минималистичный экшн-бар для водителя (только скорость)
+  actionbar: '&#F8BEFB⚡ &f{speed} км/ч'
+
+# ═══════════════════════════════════════════════════════════════════════
+# Реестр моделек (/fm list, /fm give <игрок> <id>)
+# kind: VEHICLE (управляемый транспорт, 1–2 места) или PROP (декорация/сиденье)
+# ═══════════════════════════════════════════════════════════════════════
+models:
+  priora_black:
+    kind: VEHICLE
+    aliases:
+      - priora
+      - black
+      - чёрная
+      - черная
+    material: DIAMOND_HORSE_ARMOR
+    cmd: 30
+    name: '&#F8BEFB&lЛада Приора &8«Чёрный Космос»'
+    lore:
+      - ''
+      - ' &fКастомный 3D автомобиль &#F8BEFBВАЗ-2170'
+      - ' &fМест в салоне: &#F8BEFB2'
+      - ''
+      - ' &#F8BEFB• &fПКМ по блоку &8— &fпоставить'
+      - ' &#F8BEFB• &fПКМ по машине &8— &fсесть'
+      - ' &#F8BEFB• &fShift + ПКМ &8— &fзабрать'
+      - ''
+    scale: 1.4
+    yaw-offset: 0.0
+    model-y-offset: 0.5
+    hitbox-width: 2.2
+    hitbox-height: 1.5
+    interpolation-ticks: 2
+    seats: 2
+    seat-x-offset: 0.36
+    seat-y-offset: 0.10
+    seat-z-offset: 0.12
+    max-speed: 0.94
+    reverse-speed: 0.36
+    acceleration: 0.042
+    braking: 0.085
+    rolling-friction: 0.962
+    turn-rate: 5.2
+    kmh-multiplier: 92.0
+    horn-enabled: true
+    exhaust-particles: true
+
+  priora_white:
+    kind: VEHICLE
+    aliases:
+      - white
+      - белая
+      - облако
+    material: DIAMOND_HORSE_ARMOR
+    cmd: 31
+    name: '&#F8BEFB&lЛада Приора &f«Белое Облако»'
+    lore:
+      - ''
+      - ' &fКастомный 3D автомобиль &#F8BEFBВАЗ-2170'
+      - ' &fМест в салоне: &#F8BEFB2'
+      - ''
+      - ' &#F8BEFB• &fПКМ по блоку &8— &fпоставить'
+      - ' &#F8BEFB• &fПКМ по машине &8— &fсесть'
+      - ' &#F8BEFB• &fShift + ПКМ &8— &fзабрать'
+      - ''
+    scale: 1.4
+    yaw-offset: 0.0
+    model-y-offset: 0.5
+    hitbox-width: 2.2
+    hitbox-height: 1.5
+    interpolation-ticks: 2
+    seats: 2
+    seat-x-offset: 0.36
+    seat-y-offset: 0.10
+    seat-z-offset: 0.12
+    max-speed: 0.94
+    reverse-speed: 0.36
+    acceleration: 0.042
+    braking: 0.085
+    rolling-friction: 0.962
+    turn-rate: 5.2
+    kmh-multiplier: 92.0
+    horn-enabled: true
+    exhaust-particles: true
+
+  priora_pink:
+    kind: VEHICLE
+    aliases:
+      - pink
+      - elytrix
+      - розовая
+    material: DIAMOND_HORSE_ARMOR
+    cmd: 32
+    name: '&#F8BEFB&lЛада Приора &d«Elytrix Edition»'
+    lore:
+      - ''
+      - ' &fКастомный 3D автомобиль &#F8BEFBВАЗ-2170'
+      - ' &fМест в салоне: &#F8BEFB2'
+      - ''
+      - ' &#F8BEFB• &fПКМ по блоку &8— &fпоставить'
+      - ' &#F8BEFB• &fПКМ по машине &8— &fсесть'
+      - ' &#F8BEFB• &fShift + ПКМ &8— &fзабрать'
+      - ''
+    scale: 1.4
+    yaw-offset: 0.0
+    model-y-offset: 0.5
+    hitbox-width: 2.2
+    hitbox-height: 1.5
+    interpolation-ticks: 2
+    seats: 2
+    seat-x-offset: 0.36
+    seat-y-offset: 0.10
+    seat-z-offset: 0.12
+    max-speed: 0.94
+    reverse-speed: 0.36
+    acceleration: 0.042
+    braking: 0.085
+    rolling-friction: 0.962
+    turn-rate: 5.2
+    kmh-multiplier: 92.0
+    horn-enabled: true
+    exhaust-particles: true
+
+# Пример добавления новой нестандартной модельки (транспорт или декор):
+#  shopping_cart:
+#    kind: VEHICLE
+#    material: DIAMOND_HORSE_ARMOR
+#    cmd: 33
+#    name: '&#F8BEFB&lТележка из супермаркета'
+#    seats: 1
+#    scale: 1.1
+#    max-speed: 0.78
