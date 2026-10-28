@@ -218,7 +218,13 @@ damage_1:
     - HIDE_PLACED_ON
     - HIDE_POTION_EFFECTS
     - HIDE_DYE
-    internal: H4sIAAAAAAACA02Ky26CQBhG/zZtQmkfo1sS7urCRVtNHCJQFRlndlx+KzBjDULj8Fx9wLLs6pyT79MBdHjZNb0Qn+33sRKogz7aBduuwusTaB3eur7Fqw4Adxo8ppnoEX5RBSY/nMzyEIhCEX/sZGeKmNSXCTmnKv8gPpHjvnrz12r27+t1GfUEc4ITP2/6XKbm2tkKXG2tQu5/QjttQvpesaQYeM2GmDKTydAM66CJFl+3OOF1NCytMGkcJvdqdMWGqIoTNrJxOA1kTPcepxuXU34KF8QiZ2t23MznABrckxJe0S7948TODfRsNFx0p8Z04vlG6blFkVt+VkxnGjxEmUR4XgrVtdVthVkJ8AfgLkO8MAEAAA==
+    skull-owner:
+      ==: PlayerProfile
+      uniqueId: e2d6f72b-e52e-4e48-8756-d54ccb16ac89
+      name: ElytrixHead
+      properties:
+      - name: textures
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWBiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
     PublicBukkitValues:
       minecraft:light_ball: LIGHT_BALL
 - ==: org.bukkit.inventory.ItemStack
@@ -254,7 +260,13 @@ damage_1:
     - HIDE_PLACED_ON
     - HIDE_POTION_EFFECTS
     - HIDE_DYE
-    internal: H4sIAAAAAAACA02KzW6CQBhFvzZtQmkfo1uS4U9x4aKtJg4RqIqMM7sBxgrMWIPQODxXH7Asuzrn5F4TwISXXdNL+dl+HyspTDBHu4i2q8T1CYxO3Lq+FVcTAO4MeMy47AX8Ch0idjih8hDKQuPJ2OkOyQTXlyk+Zzr/wBOsxn31Nlnr2b+v33HiS+qGJ3be9LnK0NrdSrHa2oXa/0RO1kTkvaJpMbCaDgmhiKoIRXXYxIuvW5KyOh6WdpQ2LlV7PbqmQ1wlKR3ZuIyEKiF7n5GNxwg7RQts47M9O27mcwAD7nEJr9PCFiUKAisICs/yZo5jcdfhloeC3At4bvscGfAQcyXgeSl111a3leAlwB9OnReuMAEAAA==
+    skull-owner:
+      ==: PlayerProfile
+      uniqueId: 7c1ed088-88c4-4922-a32a-408b48ab15a0
+      name: ElytrixHead
+      properties:
+      - name: textures
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWBiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
     PublicBukkitValues:
       minecraft:fire_ball: FIRE_BALL
 - ==: org.bukkit.inventory.ItemStack
@@ -293,7 +305,13 @@ damage_1:
     - HIDE_PLACED_ON
     - HIDE_POTION_EFFECTS
     - HIDE_DYE
-    internal: H4sIAAAAAAACA02KzW6CQBhFvzZtQmkfo1uSoeAoCxdtNXGIQFVknNnxM1RgxhoE4/BcfcCy7Oqck3tNABNedk0v5Vf7U1ZSmGCOdhZtV4nLExiduHV9Ky4mANwZ8JikshfwK7SP+OGIioMvc03w2PEOyYjU5yk5JTr7JJiocV+947X2/n0nXUonkjn+kZ82faYStHa2Uqy2dq721+AtaQL6UbE4H3jNhogyxFSAgtpvwsX3LYp5HQ5LO4gbh6m9Hl2zIayimI1sHE59FdH9hNONyyk/Bgtik5PtlZv5HMCAe1LA69QukItxbiFUZpY7K2dWVqSFhV1vNsXYcT3hGvAQpkrA81Lqrq1uK5EWAH/ZTWnYMAEAAA==
+    skull-owner:
+      ==: PlayerProfile
+      uniqueId: 71d0466c-00fb-48f8-bdad-6498766349e4
+      name: ElytrixHead
+      properties:
+      - name: textures
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWBiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
     PublicBukkitValues:
       minecraft:water_ball: WATER_BALL
 - ==: org.bukkit.inventory.ItemStack
@@ -332,7 +350,13 @@ damage_1:
     - HIDE_PLACED_ON
     - HIDE_POTION_EFFECTS
     - HIDE_DYE
-    internal: H4sIAAAAAAACA02KzU6DQBhFP40miD6GW5Kh/MmiC7VNOqSAbSl0ZjcDgwWG2lBoOjyXDyhLV+ec3KsD6PCyawYpv7qfspJCB32ys+j6SlyeQOvFrR86cdEB4E6Dx5TJQcCvUAGihyMqDoHMFXanTnZIxrg+e/iUKv6JXdxO++rdXSv/39fpWeZIYgVHetoMvE3R2tpKsdqaebu/hrO0CbOPiiT5SGsyxhlBpA1RWAdNtPi+xQmto3FphkljkXavJldkjKo4IRMbi2ZBG2d7h2Ybm2b0GC6wiU+mX27mcwAN7nEBryW3bO4XbwYzPc+wUTkzmOdzI3ddZnscce4IDR4i1gp4XkrVd9VtJVgB8AdvVOreMAEAAA==
+    skull-owner:
+      ==: PlayerProfile
+      uniqueId: fb34b9d8-a177-40f2-a79b-c66a47b0bb5e
+      name: ElytrixHead
+      properties:
+      - name: textures
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWBiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
     PublicBukkitValues:
       minecraft:earth_ball: EARTH_BALL
 - ==: org.bukkit.inventory.ItemStack
@@ -375,7 +399,13 @@ damage_1:
     - HIDE_PLACED_ON
     - HIDE_POTION_EFFECTS
     - HIDE_DYE
-    internal: H4sIAAAAAAACA02K0W6CMBhG/y1bwtgeY7ckrUiNF15s08QSgalIbe8K1AkUZxAWynPtAcflrs45+T4bwIaXfdVp/dl8nwqtbLBHu6qmLdTtCaxW9W3XqJsNAHcWPCZSdwp+lfGROJ5RfvR1ZigZO94jHdHyOqOXxKQflNB63NdvZGPm/75eK5mnueufxWXbpXWCNu5Oq/UOZ/XhJ5gkVcDeCx5ngyj5EDGOeB2goPSrcPnVR7Eow2GFg7hyeX0woxs+hEUU85GVK5hfR+zgCbadCibOwZJiesHz03axALDgnubwKlGaoznyHJIS7EwxcR05m6XO5DRJVS5dTDJkwUMoawXPK23apujXSuYAf2BnmNkwAQAA
+    skull-owner:
+      ==: PlayerProfile
+      uniqueId: a0bd0905-6b61-4163-a77b-2f2beda316c0
+      name: ElytrixHead
+      properties:
+      - name: textures
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWBiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
     PublicBukkitValues:
       minecraft:chaos_ball: CHAOS_BALL
 - ==: org.bukkit.inventory.ItemStack
@@ -414,7 +444,13 @@ damage_1:
     - HIDE_PLACED_ON
     - HIDE_POTION_EFFECTS
     - HIDE_DYE
-    internal: H4sIAAAAAAACA02Ky06DQBhGf40miD6GW5IZLjUsulDbpEMK2JYyndlxGSwwUxsKTYfn8gFl6eqck+8zAUx42bWDlF/dT1VLYYI52Vl0fS0uT2D04tYPnbiYAHBnwGOayUHAr9AB4ocjKg+BLDSZTZ3skIxJc34jp1Tnn2RG1LSv3mdr7f/7en1GPcmc4MhPmyFXKVo7WylWW1yo/TW00zakHzVLipE3bIwpQ0yFKGyCNlp83+KEN9G4xGHSOkzt9eSajVEdJ2xi63AaqJjuPU43Lqf8GC4IJifsV5v5HMCAe1LCK86dvPJs38rtqrRc5CLLz9zcKl2By8pDDrYLAx6iTAl4Xkrdd/VtJbIS4A8iu4nDMAEAAA==
+    skull-owner:
+      ==: PlayerProfile
+      uniqueId: 1b3bf529-b2fd-4040-9a4b-d4e1df50312c
+      name: ElytrixHead
+      properties:
+      - name: textures
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWBiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
     PublicBukkitValues:
       minecraft:harmony_ball: HARMONY_BALL
 - ==: org.bukkit.inventory.ItemStack
@@ -453,7 +489,13 @@ damage_1:
     - HIDE_PLACED_ON
     - HIDE_POTION_EFFECTS
     - HIDE_DYE
-    internal: H4sIAAAAAAACA02Ky06DQBhGf40miD6GWxIoF2HRhdomHVLAtsB0ZsdlkMtMbSg0HZ7LB5Slq3NOvk8FUOHl0I2cf/U/VcOZCupsZ9YPDbs8gTKw2zD27KICwJ0Cj2nGRwa/TPo6PdZ6efR5IZEzd3zQeYTa8xs6pTL/RA4S8755d7bS+/e1hwzbnJh+TU+7MRepvjX3nG32RiGSa7BIuwB/NCQuJtqSKcJEJyLQg9bvwtX3LYppG05rI4g7k4hEzi7JFDZRTGZ2JsW+iHBiU7yzKKZ1sEIGOhletVsuARS4RyW8Vt6itE3X1Qzb8jTLZZmWMcPTFk6VW17u2rlZKPAQZoLB85rLoW9uG5aVAH9D34SMMAEAAA==
+    skull-owner:
+      ==: PlayerProfile
+      uniqueId: f92d5388-1549-48ea-ae19-26fb49b85b3c
+      name: ElytrixHead
+      properties:
+      - name: textures
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWBiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
     PublicBukkitValues:
       minecraft:air_ball: AIR_BALL
 damage_100:
@@ -489,4 +531,10 @@ damage_100:
         slot: HEAD
         uuid: ef90f8d2-3206-4a85-bd3f-967d6ed142d6
         operation: 0
-    internal: H4sIAAAAAAACA02Ky07CQBRAr0aTWv0Mt03mQQssiRWYhhaBgszs+hjSxwyS0irT3/IH7dLdOTnHBrDhZVd3Sn00X6dSSRvsgS6yaUt5fQKrlbe2a+TVBoA7Cx4Pieok/EoTIHEsUH4MVGaYN3i8Q2rNqsuYnQ8mfWMe00NfzryVmf573Tb5dBWnQSHOmy7VB7SiWyWXW5zp/TfviyrSDAk9L8J+j8KYG1GFfeRnRMSiDvsNjvyaiMXQidC8z0joz0ux2NOw2mpONmgdZz9rf0Z5NddRX2NugunpiAAsuGc5vFIX4TQliYNxNnaoh3NnSkcjx3UJTdBocsLjiQUPUaIlPL8r0zblbSmTHOAPIDk2Ui8BAAA=
+    skull-owner:
+      ==: PlayerProfile
+      uniqueId: 3501bb2a-11c7-361d-9344-5523a048f178
+      name: ElytrixHead
+      properties:
+      - name: textures
+        value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzhjNmI0ZmFhMzU0MTYyZjMzNDc2ZTZkMzQ1NDk2ZGFhM2ZmYzc2MDFiZGU3MjRmY2Q0OTcwODA3YjFmNzk1YyJ9fX0

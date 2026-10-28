@@ -1,5 +1,6 @@
 menu_title: '§fꈁꀀꈂꍆꈂꀁ§fꈃꄅ'
 open_command: furnace
+register_command: true
 size: 54
 items:
   'player_head':

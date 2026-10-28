@@ -1,5 +1,6 @@
 menu_title: §fꈁꀀꈂꍗꈂꀁ§fꈃꄑ
 open_command: kitpreview_dragon
+register_command: true
 size: 54
 items:
   armor_0:

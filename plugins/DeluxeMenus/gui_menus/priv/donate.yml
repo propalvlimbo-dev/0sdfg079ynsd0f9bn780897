@@ -1,5 +1,6 @@
 menu_title: §fꈁꀀꈂꍖꈂꀁ§fꈃꄁ
 open_command: donate
+register_command: true
 size: 54
 items:
   donate_dragon:

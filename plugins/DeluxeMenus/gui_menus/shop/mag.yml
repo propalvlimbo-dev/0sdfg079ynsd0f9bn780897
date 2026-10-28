@@ -1,5 +1,6 @@
 menu_title: '§fꈁꀀꈂꌕꈂꀁ§fꈃꄅ'
 open_command: mag
+register_command: true
 size: 54
 items:
   'enchanted_book':

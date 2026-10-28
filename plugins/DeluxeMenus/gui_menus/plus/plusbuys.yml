@@ -1,5 +1,6 @@
 menu_title: '§fꈁꀀꈂꌧꈂꀁ§fꈃꄢ'
 open_command: plusbuys
+register_command: true
 size: 54
 items:
   'gold_ingot':

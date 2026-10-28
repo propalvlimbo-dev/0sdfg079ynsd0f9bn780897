@@ -7,7 +7,7 @@ OneTimeUse: false
 Inventory:
   Main:
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:mace
     count: 1
     components:

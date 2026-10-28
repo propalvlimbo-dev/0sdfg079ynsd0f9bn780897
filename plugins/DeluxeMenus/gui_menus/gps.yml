@@ -3,6 +3,7 @@ open_command:
 - gps
 - guide
 - putivoditel
+register_command: true
 size: 54
 items:
   'chest_minecart':

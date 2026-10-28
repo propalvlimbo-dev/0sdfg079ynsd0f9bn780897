@@ -2,6 +2,7 @@ menu_title: '§fꈁꀀꈂꌀꈂꀁ§fꈃꄅ'
 open_command: 
 - shopmenu
 - shop
+register_command: true
 size: 54
 items:
   'diamond_sword':

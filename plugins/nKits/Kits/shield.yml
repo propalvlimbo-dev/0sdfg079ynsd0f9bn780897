@@ -8,7 +8,7 @@ Inventory:
   Main:
   - null
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:shield
     count: 1
     components:

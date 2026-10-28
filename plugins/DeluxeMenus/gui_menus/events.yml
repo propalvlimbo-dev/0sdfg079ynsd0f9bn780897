@@ -2,6 +2,7 @@ menu_title: '§fꈁꀀꈂꌇꈂꀁ§fꈃꄃ'
 open_command: 
 - events
 - event
+register_command: true
 size: 54
 items:
   'gold_nugget':

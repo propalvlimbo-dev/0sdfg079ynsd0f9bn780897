@@ -238,7 +238,13 @@ legendary:
       - HIDE_PLACED_ON
       - HIDE_POTION_EFFECTS
       - HIDE_DYE
-      internal: H4sIAAAAAAAA/02PTU6DQBiGP40mFTVx7xlMhrSgTXTRWGOHMINtBwqz689UfobaUCgMBzEewCN4ABeexlM43bl7nzzP5jUADLiYZpWUL8XbOpHCAEOvrSjKROzOoFOKpqwKsTMA4KgDp8FcVgK+hHIQD2O0Ch25VNjWzKZIejjd3uJNoBaP2Ma59qOB7ar+v9Yq5zNLRl0n5ptxtcgD5HYnUowm5jL3995zpCLmN7QlPdpmNR0S5bFBQ/OnHmfYpDlBUeqbhGW646k3w7rFNWdjK0qDmA7H9cHR9uCI4rmTEOX01yF6ADiHY7zSR06+f67v1Y378Xl19/v+al4C/AE/Ne0xCgEAAA==
+      skull-owner:
+        ==: PlayerProfile
+        uniqueId: c0c41b3c-792d-4c98-a410-38ea9667310d
+        name: ElytrixHead
+        properties:
+        - name: textures
+          value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGYyYTUxNzM4NzkwNDMyOTAxNmE4ZTI1NmM0YjU1MTkyYTZjOWIxNzIwZTQ5YjVhNDQwMTkyNzZjOWMyZmJiMyJ9fX0=
       PublicBukkitValues:
         score:usage: 1i
         executableitems:ei-id: '998'
@@ -274,4 +280,10 @@ legendary:
           slot: OFF_HAND
           uuid: c612b0a3-8518-4821-ae24-737df44d2d3f
           operation: 0
-      internal: H4sIAAAAAAAA/61SS47aMBh2R600pbPtPUwGqtJdSEJwym8aSGLs3YRkiBNnoLxCfIbes7coNQyq2n0Xlix/0vd0B6EOephXB6W+bdfPUuUd1DG3Tb7dy3z3Ht3v89P+sM13HYTQm3v0LnlSh/xukTfrFXEC/MS6avk4K9KFLYm7XkHEMbiAaRQ3EFV9mDdfiWPL5Tg4ilrtRKwqIu1PxCEW1IGkpd2K0sNUV+YIyUtVQR1iYEJSd4mpa3f5nOwcaa/Iy7BNLbFJ/WTKje4rTxClFt1wdtosre6RyJuepV7SeoSzRaDiOjllTLWChVeP2TjoipuvzE962ThpxQKu2Gsuo6XoZB73/n0zOQzf7qa7zsazZio/H//iOKRMHQSjLWcCT+q+ypwBFovi6mOig9L003LtWSKyT9QFzUta8YhbVM8qWoYGo4ozgnkd90UkKqpHCsphARpa06lFfcDCtTWPVicoeUNrT167cYaDiX3ZxHiv6DD24v/snWjqDkvwza7WrIJyVkA0khAlxdQnGixoeZSpKYs11COzI2noBS/DHrCw4bX3KPykFq5JyGhBLa9vMv3xfsnwHG4GCH1AdyQzn+3t+dfHBKGHLwjh7+fzzx8I/QYgyjyErgIAAA==
+      skull-owner:
+        ==: PlayerProfile
+        uniqueId: fffe1556-0000-0c3a-0000-3071ffffe78c
+        name: ElytrixHead
+        properties:
+        - name: textures
+          value: ewogICJ0aW1lc3RhbXAiIDogMTY0MDM0NTUwMTk5MSwKICAicHJvZmlsZUlkIiA6ICI2MmJiNjAyZjE0Nzk0NzZiYjlkMmQ0MWZiNDc0NDA1YSIsCiAgInByb2ZpbGVOYW1lIiA6ICJTb2NpYWxpc21vIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzJjMTYyYzE2ZTAxNDMzYjNkYTY2NzRkNjQyYzNlYWI0YmU5ZTZkNzFlMjBhMzMyNTU2NGM0ZDAzYTgxMjYwNmEiCiAgICB9LAogICAgIkNBUEUiIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzIzNDBjMGUwM2RkMjRhMTFiMTVhOGIzM2MyYTdlOWUzMmFiYjIwNTFiMjQ4MWQwYmE3ZGVmZDYzNWNhN2E5MzMiCiAgICB9CiAgfQp9

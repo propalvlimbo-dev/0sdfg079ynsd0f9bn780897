@@ -1,5 +1,6 @@
 menu_title: §fꈁꀀꈂꍗꈂꀁ§fꈃꄑ
 open_command: kitpreview_pluspro
+register_command: true
 size: 54
 items:
   offhand_item:

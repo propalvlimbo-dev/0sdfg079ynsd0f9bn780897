@@ -1,5 +1,6 @@
 menu_title: '§fꈁꀀꈂꌑꈂꀁ§fꈃꄅ'
 open_command: sphere
+register_command: true
 size: 54
 items:
   'player_head':

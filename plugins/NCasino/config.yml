@@ -23,7 +23,7 @@ casino:
     rich:
       bank: 10000000
   menu:
-    title: §fꈁꀀꈂꌗꈂꀁ§0ꈃꄘ&r
+    title: §fꈁꀀꈂꌗꈂꀁ§fꈃꄘ&r
     info:
       material: CLOCK
       name: '&x&F&8&B&E&F&B-- ИНФОРМАЦИЯ --'

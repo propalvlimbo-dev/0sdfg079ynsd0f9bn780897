@@ -1,5 +1,6 @@
 menu_title: '§fꈁꀀꈂꍆꈂꀁ§fꈃꄅ'
 open_command: grief
+register_command: true
 size: 54
 items:
   'shield':

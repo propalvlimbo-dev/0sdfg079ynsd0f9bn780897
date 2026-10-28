@@ -7,7 +7,7 @@ OneTimeUse: false
 Inventory:
   Main:
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:netherite_sword
     count: 1
     components:
@@ -19,22 +19,22 @@ Inventory:
       minecraft:custom_data: '{PublicBukkitValues:{"executableitems:ei-id":"god_sword","score:usage":0}}'
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:golden_apple
     count: 40
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:enchanted_golden_apple
     count: 6
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:ender_pearl
     count: 16
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:netherite_shovel
     count: 1
     components:
@@ -44,7 +44,7 @@ Inventory:
       minecraft:custom_data: '{PublicBukkitValues:{"executableitems:ei-id":"shovel_sandbox","score:usage":1}}'
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:netherite_axe
     count: 1
     components:
@@ -53,7 +53,7 @@ Inventory:
       minecraft:custom_data: '{PublicBukkitValues:{"executableitems:ei-id":"axe_sekira","score:usage":1}}'
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:netherite_pickaxe
     count: 1
     components:
@@ -62,62 +62,62 @@ Inventory:
       minecraft:custom_data: '{PublicBukkitValues:{"executableitems:ei-id":"pickaxe_lucky","score:usage":1}}'
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:totem_of_undying
     count: 1
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:totem_of_undying
     count: 1
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:totem_of_undying
     count: 1
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:totem_of_undying
     count: 1
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:totem_of_undying
     count: 1
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:arrow
     count: 64
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:experience_bottle
     count: 64
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:diamond_block
     count: 48
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:gold_block
     count: 48
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:end_crystal
     count: 32
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:chorus_fruit
     count: 64
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:bow
     count: 1
     components:
@@ -125,37 +125,37 @@ Inventory:
       minecraft:enchantments: '{"minecraft:flame":1,"minecraft:infinity":1,"minecraft:mending":1,"minecraft:power":5,"minecraft:punch":2,"minecraft:unbreaking":2}'
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:ender_pearl
     count: 16
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:experience_bottle
     count: 64
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:iron_block
     count: 48
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:lapis_block
     count: 48
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:obsidian
     count: 64
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:golden_carrot
     count: 64
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:cooked_beef
     count: 64
     schema_version: 1
@@ -170,7 +170,7 @@ Inventory:
   - null
   - null
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:netherite_boots
     count: 1
     components:
@@ -180,7 +180,7 @@ Inventory:
       minecraft:enchantments: '{"minecraft:depth_strider":3,"minecraft:feather_falling":2,"minecraft:mending":1,"minecraft:protection":4,"minecraft:unbreaking":3}'
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:netherite_leggings
     count: 1
     components:
@@ -195,7 +195,7 @@ Inventory:
   - null
   Armor:
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:netherite_boots
     count: 1
     components:
@@ -205,7 +205,7 @@ Inventory:
         БОГА",underlined:0b}],text:""}'
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:netherite_leggings
     count: 1
     components:
@@ -214,7 +214,7 @@ Inventory:
         БОГА",underlined:0b}],text:""}'
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:netherite_chestplate
     count: 1
     components:
@@ -223,7 +223,7 @@ Inventory:
         БОГА",underlined:0b}],text:""}'
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:netherite_helmet
     count: 1
     components:

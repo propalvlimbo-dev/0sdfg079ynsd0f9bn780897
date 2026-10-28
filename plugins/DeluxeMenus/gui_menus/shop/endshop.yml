@@ -1,6 +1,7 @@
-menu_title: '§fꈁꀀꈂꍓꈂꀁ§0ꈃꄅ'
+menu_title: '§fꈁꀀꈂꍓꈂꀁ§fꈃꄅ'
 open_command: endshop
-size: 53
+register_command: true
+size: 54
 items:
   'информация':
     display_name: '&r&#F8BEFBИнформация&r'

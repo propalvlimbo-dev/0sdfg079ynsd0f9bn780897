@@ -155,7 +155,13 @@ Inventory:
       ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
-      internal: H4sIAAAAAAAA/02PMU7DMBhGfxCVSmDgKEalQRkYKAHVVp3QpE1iM7WNW8e1S5UmlJhzMLMyMiIkbsBxOAAZ2b6n95bPAXDgNF7XWt+Xj8tCCwecdm1FWRVidwzdSjxXdSl2DgAcdKGTzHQt4EM0BPFMojwjetFgt+VJjHSI1fYSb5JmfoNdbFo/vHZHjfev7VeztK9Zj0i+Gddzk6BRL9JiGJ0vzPSJqykK08hQi1FguAwU2zM7tqF/uw/SqKD+ClHDmsCuLDd3BTWJZApfhBOiApWvQz+R1A4Us3lBFSl4TLxlhq4ATuAQ5+2Jo5eHzveX9F7fBr/vP59nFcAfAiwGHQYBAAA=
+      skull-owner:
+        ==: PlayerProfile
+        uniqueId: 7b5b05bd-ba68-3995-9f42-f4a8ccb81074
+        name: ElytrixHead
+        properties:
+        - name: textures
+          value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjU0OWRmMzI0NmZhNjYwYzQzODEwNWRiMDg0MmYyNzgzZmFiMmVhYjI4OTJjNjdkODVhMzBjYzdiMjJiZSJ9fX0=
   Armor:
   - ==: org.bukkit.inventory.ItemStack
     v: 2586

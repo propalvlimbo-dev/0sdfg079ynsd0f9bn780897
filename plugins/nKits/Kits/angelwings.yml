@@ -15,7 +15,7 @@ Inventory:
   - null
   - null
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:elytra
     count: 1
     components:

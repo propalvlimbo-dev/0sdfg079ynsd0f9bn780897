@@ -2,6 +2,7 @@ menu_title: '§fꈁꀀꈂꌦꈂꀁ§fꈃꄢ'
 open_command:
   - plus
   - plusmenu
+register_command: true
 size: 54
 items:
   'clock':

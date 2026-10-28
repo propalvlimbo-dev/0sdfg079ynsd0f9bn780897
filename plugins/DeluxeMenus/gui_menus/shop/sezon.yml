@@ -1,5 +1,6 @@
 menu_title: '§fꈁꀀꈂꍑꈂꀁ§fꈃꄅ'
 open_command: sezon
+register_command: true
 size: 54
 items:
   'player_head':
@@ -184,7 +185,6 @@ items:
       - '&#FFFFFFЦена: &#F8BEFB49 &#FFFFFFꐃ'
       - ''
     rgb: '75, 0, 130'
-    nbt_int: 'CustomPotionColor:4915330'
     click_requirement:
       requirements:
         points_check:
@@ -210,7 +210,6 @@ items:
       - '&#FFFFFFЦена: &#F8BEFB49 &#FFFFFFꐃ'
       - ''
     rgb: '255, 215, 0'
-    nbt_int: 'CustomPotionColor:16766720'
     click_requirement:
       requirements:
         points_check:
@@ -236,7 +235,6 @@ items:
       - '&#FFFFFFЦена: &#F8BEFB59 &#FFFFFFꐃ'
       - ''
     rgb: '1, 50, 32'
-    nbt_int: 'CustomPotionColor:78368'
     hide_effects: true
     click_requirement:
       requirements:
@@ -262,7 +260,6 @@ items:
       - '&#FFFFFFЦена: &#F8BEFB69 &#FFFFFFꐃ'
       - ''
     rgb: '107, 142, 35'
-    nbt_int: 'CustomPotionColor:7048739'
     hide_effects: true
     click_requirement:
       requirements:
@@ -286,7 +283,6 @@ items:
       - '&#FFFFFFЦена: &#F8BEFB79 &#FFFFFFꐃ'
       - ''
     rgb: '255, 20, 147'
-    nbt_int: 'CustomPotionColor:16716947'
     hide_effects: true
     click_requirement:
       requirements:
@@ -312,7 +308,6 @@ items:
       - '&#FFFFFFЦена: &#F8BEFB119 &#FFFFFFꐃ'
       - ''
     rgb: '102, 204, 255'
-    nbt_int: 'CustomPotionColor:6737151'
     hide_effects: true
     click_requirement:
       requirements:

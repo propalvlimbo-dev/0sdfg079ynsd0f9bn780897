@@ -249,7 +249,13 @@ Inventory:
           slot: OFF_HAND
           uuid: 9830deb7-a414-49cf-a6e4-e6f4e8742a80
           operation: 1
-      internal: H4sIAAAAAAAA/02PvU7DMBzE/yCQimHnEVjdlAQ6IkCpo9ahab7srR9uG8cuVZpQh1fhCdh4AR6lGxsbEyMeGU660/100iEABBeTslHqqXpeFkogQNZtRVUXYncGnVqYuqnEDgHAUQdO06lqBHyINsA8X+NFHqh5Szyb4wlWIZHbG7JJ29k98Yi2/eDOG7b9f6xbTzNXsV6w5ptxM9MpHvYiJQZRd66TFx6vXKs9zYKSamaoTiV7JZjGlvfHJvSTay5XDouJoU6kqOSayahgToJHcbmnD1yPMuJS+WiY3Qh9Vizzbh/gHI7Jwp44uToQIS5vv95+fr8/37MDwB9ArQc0BgEAAA==
+      skull-owner:
+        ==: PlayerProfile
+        uniqueId: 27dd4965-6517-38e4-9bf2-f8ebbda957dd
+        name: ElytrixHead
+        properties:
+        - name: textures
+          value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTg5ZTgwNWJkNmYxNmVjYzI0NTJhZGQxOGU4Zjg2YTIxN2RlNjZmYjRiY2U0MTkwNDZmMWI5NjExYWJkOGYifX19
   Armor:
   - ==: org.bukkit.inventory.ItemStack
     v: 2586

@@ -1,5 +1,6 @@
 menu_title: '§fꈁꀀꈂꌰꈂꀁ§fꈃꄅ'
 open_command: itemmenu
+register_command: true
 size: 54
 items:
   'trident':

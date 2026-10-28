@@ -1,19 +1,19 @@
 items:
   '0':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:dark_oak_log
     count: 64
     schema_version: 1
   '1':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:gray_stained_glass
     count: 64
     schema_version: 1
   '2':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:tipped_arrow
     count: 32
     components:
@@ -21,13 +21,13 @@ items:
     schema_version: 1
   '3':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:ender_pearl
     count: 16
     schema_version: 1
   '4':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:tipped_arrow
     count: 8
     components:
@@ -39,25 +39,25 @@ items:
     schema_version: 1
   '5':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:totem_of_undying
     count: 1
     schema_version: 1
   '6':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:totem_of_undying
     count: 1
     schema_version: 1
   '7':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:chorus_fruit
     count: 64
     schema_version: 1
   '8':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:elytra
     count: 1
     components:
@@ -69,97 +69,97 @@ items:
     schema_version: 1
   '9':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:enchanted_golden_apple
     count: 5
     schema_version: 1
   '10':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:firework_rocket
     count: 64
     schema_version: 1
   '11':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:brown_concrete
     count: 64
     schema_version: 1
   '12':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:diamond_block
     count: 32
     schema_version: 1
   '13':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:brown_terracotta
     count: 64
     schema_version: 1
   '14':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:gold_block
     count: 32
     schema_version: 1
   '15':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:brown_wool
     count: 64
     schema_version: 1
   '16':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:iron_block
     count: 32
     schema_version: 1
   '17':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:end_crystal
     count: 22
     schema_version: 1
   '18':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:obsidian
     count: 64
     schema_version: 1
   '19':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:brown_shulker_box
     count: 1
     schema_version: 1
   '20':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:arrow
     count: 64
     schema_version: 1
   '21':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:lapis_block
     count: 32
     schema_version: 1
   '22':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:ender_pearl
     count: 16
     schema_version: 1
   '23':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:totem_of_undying
     count: 1
     schema_version: 1
   '24':
     ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:stone_sword
     count: 1
     components:

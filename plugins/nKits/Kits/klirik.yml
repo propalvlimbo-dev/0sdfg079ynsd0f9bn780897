@@ -7,7 +7,7 @@ OneTimeUse: false
 Inventory:
   Main:
   - ==: org.bukkit.inventory.ItemStack
-    DataVersion: 4671
+    DataVersion: 4556
     id: minecraft:tipped_arrow
     count: 2
     components:

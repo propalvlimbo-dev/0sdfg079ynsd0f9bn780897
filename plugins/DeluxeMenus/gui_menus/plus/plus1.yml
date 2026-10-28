@@ -1,5 +1,6 @@
 menu_title: '§fꈁꀀꈂꌨꈂꀁ§fꈃꄢ'
 open_command: plus1
+register_command: true
 size: 54
 items:
   'lime_concrete':

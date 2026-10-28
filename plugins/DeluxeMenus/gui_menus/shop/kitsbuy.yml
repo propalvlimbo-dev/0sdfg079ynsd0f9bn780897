@@ -1,5 +1,6 @@
 menu_title: '§fꈁꀀꈂꌶꈂꀁ§fꈃꄅ'
 open_command: kitsbuy
+register_command: true
 size: 54
 items:
   kit_dragon:

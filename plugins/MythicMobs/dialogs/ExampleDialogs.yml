@@ -40,11 +40,9 @@ QuestOffer:
     - Label: "<green>Accept"
       Tooltip: "Accept this quest"
       Width: 150
-      Skill: ExampleQuestAccepted
     - Label: "<red>Decline"
       Tooltip: "Decline this quest"
       Width: 150
-      Skill: ExampleQuestDeclined
 
 # A multi-action dialog with inputs and conditional buttons.
 # Demonstrates all input types and condition-based visibility.
@@ -84,7 +82,6 @@ CharacterSetup:
     - Label: "<green>Confirm"
       Tooltip: "Save your settings"
       Width: 150
-      Skill: ExampleCharacterConfirmed
     - Label: "<red>Cancel"
       Width: 150
   ExitButton:

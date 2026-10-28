@@ -203,7 +203,14 @@ Inventory:
           operation: 1
       ItemFlags:
       - HIDE_ATTRIBUTES
-      internal: H4sIAAAAAAAA/02PP1LCQBxGf4rMYLT0GBbhT+IwjoUSBzZDNgILycbCCWFxEzaBIRvHTWFj44Gw9BjeAisvYOjs3jfvNZ8GoMH5ZFUI8bBdL2PBNNAq2rCtjFl+Cg3JXmWxZbkGAEcNqM9CUTDYMWXrgc/1hW+LSCGz2mSiCxclmyuUzdS8h0yUVn5waw5V919ryNAzBG3bPMhGxTyd6cP2WLDBuBml0xe3j7lj4RS3pi2nfG46xE5wecexNU6whQyXjFRAog4tnRYleEU9agRW5YmjXMK56007OKGKlnaME6dq75U7sbtLX78BOINjtKiOnPx8Xn79vvX9j+/e437/voMaXITsiWURDzOZskxeb+J8FR5O16Cei7XMDwx/2HqBAzEBAAA=
+      skull-owner:
+        ==: PlayerProfile
+        uniqueId: edb52cbd-f37e-4758-88d5-435becec83b4
+        name: ElytrixHead
+        properties:
+        - name: textures
+          value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGNhMDNmN2U2Mzg1MTJjNzBhNDRjNDI5OTQyZTc4YzM2YTNkYWY5ZDBhNTMyOThhOWU4NjYyYzJiNjMyZTEyOSJ9fX0=
+      internal: H4sIAAAAAAACA+NiYGBmEElMjU/NS85IzCvJTc0rsS7ILM5OZGBgYGRmYC3OyS8pBrEZAHRqhLIrAAAA
   Armor:
   - ==: org.bukkit.inventory.ItemStack
     v: 2586

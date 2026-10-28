@@ -1,5 +1,6 @@
 menu_title: '§fꈁꀀꈂꍔꈂꀁ§fꈃꄀ'
 open_command: menu
+register_command: true
 size: 54
 items:
   'structure_void':
