@@ -153,7 +153,7 @@ models:
     item-model: 'reallyworld:angel_halo'
     cmd: 37
     halo-cmd: 37
-    halo-scale: 0.95
+    halo-scale: 0.90
     name: '&#FFF3B0&lАнгельский Нимб'
     lore:
       - ''
