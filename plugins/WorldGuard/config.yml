@@ -36,11 +36,44 @@ regions:
     high-frequency-flags: false
     protect-against-liquid-flow: false
     wand: minecraft:leather
-    max-claim-volume: 30000
+    max-claim-volume: 2000000000
     claim-only-inside-existing-regions: false
     location-flags-only-inside-regions: false
     max-region-count-per-player:
         default: 7
+        hero: 8
+        titan: 10
+        avenger: 12
+        overlord: 14
+        magister: 16
+        imperator: 20
+        dragon: 10
+        bull: 16
+        rabbit: 24
+        tiger: 32
+        dracula: 40
+        hydra: 48
+        bunny: 56
+        cobra: 64
+        vampire: 80
+        god: 96
+        pegas: 1000
+        dhelper: 1000
+        angel: 1000
+        dadmin: -1
+        yt: 128
+        youtube: 128
+        media: 128
+        helper: 128
+        mlmoder: 256
+        moder: -1
+        moderplus: -1
+        stmoder: -1
+        glmoder: -1
+        mladmin: -1
+        fulladmin: -1
+        admin: -1
+        owner: -1
     set-parent-on-claim: ''
 auto-invincible: false
 auto-invincible-group: false
