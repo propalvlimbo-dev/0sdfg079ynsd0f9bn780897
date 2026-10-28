@@ -502,6 +502,12 @@ groups:
   - /fm
   - /elytrixfreakmodel:freakmodel
   - /elytrixfreakmodel:fm
+  - /clearpriora
+  - /delpriora
+  - /removepriora
+  - /elytrixfreakmodel:clearpriora
+  - /elytrixfreakmodel:delpriora
+  - /elytrixfreakmodel:removepriora
   owner:
   - /powertool
   - /kickall
@@ -621,6 +627,9 @@ hidden_commands:
   - /priora
   - /freakmodel
   - /fm
+  - /clearpriora
+  - /delpriora
+  - /removepriora
   dragon:
   - /griefrestart
   - /griefgive
@@ -634,3 +643,6 @@ hidden_commands:
   - /priora
   - /freakmodel
   - /fm
+  - /clearpriora
+  - /delpriora
+  - /removepriora
