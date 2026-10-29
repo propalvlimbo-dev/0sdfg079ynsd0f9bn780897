@@ -48,3 +48,17 @@ generated model files and RP using `adjust_wings.py`; it expects unmodified
 3.2.3 assets and is intentionally not idempotent. Check the SHA-1 in the RP
 config after generating. On deployment do not overwrite the server's live
 ModelEngine config/cache or unrelated assets.
+
+## Server-generated wing asset sync
+
+The live ModelEngine 4.1.0 output for the current blueprint was supplied by the
+server operator. The two inner-wing JSONs are now the exact generated files,
+including the omission of zero-width-UV faces. The generator reorders elements,
+so asset validation matches cubes by geometry rather than array index. Existing
+item definitions, textures, atlas and other pack contents are unchanged.
+
+This is a targeted resource synchronization, not a proven fix for the missing
+model cubes. Neither client loading nor the rotation and fit have been verified
+in game; a real client test is still necessary. The server's generated feather
+models differ only by rounding and GUI display transforms, so they were not
+replaced. Runtime ModelEngine config and cache must not be shipped or overwritten.

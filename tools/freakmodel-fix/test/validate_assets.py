@@ -25,17 +25,26 @@ with zipfile.ZipFile(pack) as z:
         assert raw==(root/'plugins/ModelEngine/resource pack'/path).read_bytes()
         baked=json.loads(raw)
         assert baked['textures']['0']=='modelengine:entity/models/elytrix_archangel_wings'
-        for model_element,i in zip(baked['elements'],indices,strict=True):
+        # ModelEngine may emit cubes in a different order on each import.
+        remaining=list(baked['elements'])
+        assert len(remaining)==len(indices)
+        for i in indices:
             src=elements[f'wing_{i}']
-            for field in ('from','to'):
-                for axis in range(3):
-                    origin=[0,20.4,0][axis]
-                    expected=(src[field][axis]-origin)/2+8
-                    assert abs(model_element[field][axis]-expected)<.001,(side,i,field,axis,model_element[field][axis],expected)
+            def matches(model_element):
+                return all(abs(model_element[field][axis] -
+                    ((src[field][axis]-[0,20.4,0][axis])/2+8)) < .001
+                    for field in ('from','to') for axis in range(3))
+            candidates=[e for e in remaining if matches(e)]
+            assert len(candidates)==1,(side,i,len(candidates))
+            model_element=candidates[0]
+            remaining.remove(model_element)
             if 'rotation' in model_element:
                 for axis in range(3):
                     expected=(src['origin'][axis]-[0,20.4,0][axis])/2+8
                     assert abs(model_element['rotation']['origin'][axis]-expected)<.001
+            for face in model_element['faces'].values():
+                uv=face.get('uv')
+                assert uv is None or (uv[0]!=uv[2] and uv[1]!=uv[3]), (side,i,uv)
     for bone in blueprint['outliner'][0]['children']:
         if bone['name'].startswith('feather_'):
             key='elytrix_angel_wings/'+bone['name']
