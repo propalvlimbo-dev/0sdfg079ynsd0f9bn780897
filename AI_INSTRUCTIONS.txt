@@ -1,0 +1,245 @@
+================================================================================
+ИНСТРУКЦИЯ ДЛЯ ИИ-АГЕНТА ПО ПРОЕКТУ ELYTRIX (MINECRAFT 1.21.10 GRIEF)
+================================================================================
+Прочитай этот файл ПОЛНОСТЬЮ перед выполнением любой задачи в репозитории
+`propalvlimbo-dev/0sdfg079ynsd0f9bn780897`.
+
+Актуальное базовое состояние на момент создания инструкции:
+- Ветка-источник актуальной сборки: `arena/4c55e5a6-0sdfg079ynsd0f9bn780897` (PR #1)
+- Версия `ElytrixFreakModel`: `v3.2.3`
+- Версия `ElytrixRP`: `v2.5.0`
+- Актуальный `SHA-1` `rp/Elytrix-RP-1.21.zip`: `1ed05ba549ae1789aa82ce5463c7ba203f585e49`
+
+--------------------------------------------------------------------------------
+1. КРИТИЧЕСКИЕ ПРАВИЛА GIT И СТАРТА НОВОГО ЧАТА
+--------------------------------------------------------------------------------
+1. НИКОГДА НЕ МЕРЖИТЬ `origin/main` (`e37c5ba`)!
+   В ветке `origin/main` лежит старый одиночный коммит `Duel.rar` без общей истории
+   со сборкой сервера. Попытка слить `origin/main` сломает дерево файлов.
+
+2. Если в новом чате рабочая ветка создана от `main` и в корне нет папки `plugins/`:
+   - НЕ переключайся на другую ветку (`git checkout <чужая_ветка>` запрещён в Arena,
+     всегда оставайся на текущей ветке сессии `arena/...`).
+   - Подтяни актуальные файлы сборки в текущую рабочую ветку командами:
+     git fetch origin arena/4c55e5a6-0sdfg079ynsd0f9bn780897
+     git rm -rf --ignore-unmatch Duel.rar "РП.rar"
+     git checkout FETCH_HEAD -- .
+   - (Если были ещё более свежие ветки/PR — проверь `git ls-remote origin` и возьми
+     самую свежую рабочую ветку сборки).
+
+3. Все изменения коммить и пушь ТОЛЬКО в текущую рабочую ветку сессии:
+   git push origin <имя_текущей_ветки_сессии>
+
+4. В командах скачивания для VDS ВСЕГДА используй ПОЛНЫЙ 40-символьный SHA коммита
+   (`git rev-parse HEAD`), а НЕ имя ветки!
+   Причина: `raw.githubusercontent.com` кеширует файлы по имени ветки на 5+ минут,
+   из-за чего VDS скачивает старый архив. По полному `COMMIT_SHA` всегда скачивается
+   свежая версия мгновенно.
+
+--------------------------------------------------------------------------------
+2. СЕРВЕР VDS (`SH-VM4492`) И ЧТО КАТЕГОРИЧЕСКИ НЕЛЬЗЯ ДЕЛАТЬ НА НЁМ
+--------------------------------------------------------------------------------
+- Ядро на VDS: Pufferfish `1.21.10` (`1.21.10-39-b98b265`, Java 21, Mojang-mapped NMS).
+- Путь к сборке сервера на VDS: `/root/RW_GRIEF/`
+- Путь к раздаваемому ресурспаку на VDS: `/root/RP/Elytrix-RP-1.21.zip`
+
+СТРОЖАЙШИЕ ЗАПРЕТЫ:
+1. НИКОГДА НЕ УБИВАЙ И НЕ ТРОГАЙ ПОРТ `:8085`!
+   Запрещено писать в командах `fuser -k 8085/tcp`, `kill`, `lsof -ti:8085` и т.п.!
+   На порту `:8085` работает сайт проекта `https://elytrix.pw` и раздача ресурспака
+   `/root/RP/Elytrix-RP-1.21.zip`. Плагин `ElytrixRP` сам проверяет `:8085` и мирно
+   использует внешний веб-сервер.
+
+2. НИКОГДА НЕ КЛАДИ В ДЕПЛОЙ-АРХИВЫ LIVE-ДАННЫЕ И ЧУЖИЕ КЕШИ:
+   - НЕ включать `plugins/ModelEngine/config.yml` (чтобы не сбросить боевой конфиг).
+   - НЕ включать `plugins/ModelEngine/.data/` и `.data/cache.json`.
+   - При упаковке `plugins/ModelEngine/resource pack/` включать ТОЛЬКО `pack.mcmeta`
+     и файлы, содержащие `/elytrix_` (НЕ упаковывать 354 чужих файла `MythicMobs`!).
+   - НЕ перезаписывать живые базы игроков (`LiteBans`, `PlayerPoints`, базы привязки,
+     `LuckPerms` H2 БД), если пользователь прямо не просил поменять именно их.
+
+3. При любом изменении `rp/Elytrix-RP-1.21.zip`:
+   - Обязательно вычислить `sha1sum rp/Elytrix-RP-1.21.zip`.
+   - Обязательно прописать этот точный `sha1` в `plugins/ElytrixRP/config.yml`.
+   - В команде деплоя для VDS обязательно скопировать RP также в `/root/RP/Elytrix-RP-1.21.zip`,
+     выставить `chmod 644 /root/RP/Elytrix-RP-1.21.zip` и вывести `sha1sum` в конце
+     для визуальной проверки пользователем.
+
+--------------------------------------------------------------------------------
+3. КАКИЕ КОМАНДЫ ОБЯЗАТЕЛЬНО ДАВАТЬ ПОЛЬЗОВАТЕЛЮ ПОСЛЕ ВЫПОЛНЕНИЯ ЗАДАЧИ
+--------------------------------------------------------------------------------
+После выполнения ЛЮБОЙ задачи по плагинам, конфигам или ресурспаку ты ОБЯЗАН:
+1) Упаковать обновлённые файлы в соответствующий ZIP-архив в корне репозитория.
+2) Закоммитить и запушить изменения в текущую ветку на GitHub (`git push`).
+3) Получить точный полный хеш коммита через `git rev-parse HEAD`.
+4) Показать готовый архив пользователю через инструмент `present_file`.
+5) В тексте ответа ОБЯЗАТЕЛЬНО дать готовую однострочную SSH-команду для VDS!
+
+ШАБЛОН А — Если обновлялись `ElytrixFreakModel`, модели `ModelEngine` или ресурспак
+(архив `elytrix-freakmodel.zip`, подставь реальный `<COMMIT_SHA>`):
+
+curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/<COMMIT_SHA>/elytrix-freakmodel.zip" -o /tmp/elytrix-freakmodel.zip && rm -rf "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_angel_halo" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_angel_halo" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_angel_wings" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_angel_wings" && unzip -oq /tmp/elytrix-freakmodel.zip -d /root/RW_GRIEF && mkdir -p /root/RP && cp -f /root/RW_GRIEF/rp/Elytrix-RP-1.21.zip /root/RP/Elytrix-RP-1.21.zip && chmod 644 /root/RP/Elytrix-RP-1.21.zip && rm -f /tmp/elytrix-freakmodel.zip && sha1sum /root/RP/Elytrix-RP-1.21.zip
+
+После выполнения этой команды напомни пользователю сверить выведенный `SHA-1`
+и ввести в консоли сервера: `restart`.
+
+ШАБЛОН Б — Если обновлялся большой пакет `elytrix-update.zip` (плагины + конфиги + RP):
+
+curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/<COMMIT_SHA>/elytrix-update.zip" -o /tmp/elytrix-update.zip && unzip -oq /tmp/elytrix-update.zip -d /root/RW_GRIEF && mkdir -p /root/RP && cp -f /root/RW_GRIEF/rp/Elytrix-RP-1.21.zip /root/RP/Elytrix-RP-1.21.zip && chmod 644 /root/RP/Elytrix-RP-1.21.zip && rm -f /tmp/elytrix-update.zip && sha1sum /root/RP/Elytrix-RP-1.21.zip
+
+После выполнения — `restart` в консоли сервера.
+
+ШАБЛОН В — Если обновлялись ТОЛЬКО конкретные конфиги/плагины БЕЗ ресурспака
+(например, дельта-архив `elytrix-patch.zip` или прямое скачивание одного файла):
+
+curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/<COMMIT_SHA>/<ARCHIVE_NAME>.zip" -o /tmp/elytrix-patch.zip && unzip -oq /tmp/elytrix-patch.zip -d /root/RW_GRIEF && rm -f /tmp/elytrix-patch.zip
+
+После выполнения:
+- если менялся `.jar` плагина — написать ввести `restart` в консоли сервера;
+- если менялся только конфиг меню/голограмм — указать точную команду перезагрузки
+  (например, `dm reload` для DeluxeMenus, `dh reload` для DecentHolograms, `tab reload` для TAB).
+
+--------------------------------------------------------------------------------
+4. ЧТО НЕЛЬЗЯ ДЕЛАТЬ В РЕСУРСПАКЕ (`rp/Elytrix-RP-1.21.zip`) И АРТЕ
+--------------------------------------------------------------------------------
+1. БЕЗ НЕЙРОСЛОПА (`без нейрослопа`)!
+   Строго запрещено использовать ИИ-генераторы изображений (`generate_image`) для
+   `server-icon.png`, логотипа `ELYTRIX`, GUI-меню, префиксов и текстур ресурспака!
+   Любая графика рисуется только чистым пиксель-артом / программно (Python Pillow)
+   без артефактов нейросетей. Префикс `owner` (`ꕢ`) должен оставаться тонким под стать
+   остальным донат-префиксам.
+
+2. НИКОГДА НЕ ЗАТИРАЙ СИСТЕМНЫЕ ФАЙЛЫ `Elytrix-RP-1.21.zip` файлами из `ModelEngine`:
+   - `pack.png` (оригинальная иконка ресурспака Elytrix)
+   - `assets/minecraft/items/leather_horse_armor.json` (там 365+ моделей сервера!)
+   - `assets/minecraft/models/item/leather_horse_armor.json`
+   - `assets/minecraft/atlases/blocks.json` (обязаны сохраняться источники `entity`,
+     `archangel_set_texture` и `entity/models`)
+   - `assets/minecraft/shaders/core/rendertype_entity_translucent.json`
+   Также НИКОГДА не копируй в корень `Elytrix-RP-1.21.zip` папки `modelengine_1_*`
+   и `modelengine_26_*` — переносятся только нужные файлы внутри `assets/modelengine/...`.
+
+3. Проверяй валидность каждого JSON и `.mcmeta` внутри `Elytrix-RP-1.21.zip`, чтобы
+   клиент Minecraft `1.21.10` не отваливался с ошибкой `FAILED_RELOAD`.
+
+4. Для шлема нимба (`angel_halo`) обязательно сохранять:
+   - `EquippableComponent#setModel("reallyworld:invisible")` на предмете;
+   - `"head": {"scale": [0, 0, 0]}` в `assets/reallyworld/models/item/freak/angel_halo_icon.json`
+     (чтобы плоская иконка предмета не рендерилась на голове вместе с 3D-нимбом).
+
+--------------------------------------------------------------------------------
+5. ЧТО НЕЛЬЗЯ ДЕЛАТЬ В `ElytrixFreakModel` И `ModelEngine 4.1.0`
+--------------------------------------------------------------------------------
+Плагин `ElytrixFreakModel.jar` отвечает за кастомные нестандартные 3D-модели:
+1) Броня Ангела: шлем `angel_halo` (Божественный Нимб) и нагрудник `angel_wings` (Крылья).
+2) Машина `Lada Priora` (`priora_black`, `priora_white`, `priora_pink`).
+
+ЖЁСТКИЕ ТЕХНИЧЕСКИЕ ЗАПРЕТЫ (ЧТОБЫ НЕ ВЕРНУТЬ СТАРЫЕ БАГИ):
+1. Крылья и нимб ОБЯЗАНЫ быть полноценными 3D-моделями `ModelEngine` (плоская элитра /
+   `CustomHeadLayer` из `v3.1.0` и крылатая корона `h_halo_root` из `v3.2.0` отвергнуты!).
+   Характеристики незеритовой брони и скрытие своих крыльев от 1-го лица сохранять.
+
+2. НИКОГДА НЕ ВЫЗЫВАЙ `activeModel.setModelRotationLocked(...)` ДО вызова
+   `modeledEntity.addModel(activeModel, false)`!
+   В `ModelEngine 4.1.0` поле `activeModel.modeledEntity` равно `null` до `addModel`,
+   поэтому вызов раньше `addModel` бросает `NullPointerException`, и нимб/крылья
+   становятся невидимыми!
+   Правильный порядок:
+   - сначала `modeledEntity.addModel(am, false)`;
+   - затем для нимба: `am.setModelRotationLocked(true)` (нимб строго горизонтален
+     и НЕ наклоняется за головой игрока; корень `halo_root` БЕЗ префикса `h_`);
+   - для крыльев: `am.setModelRotationLocked(false)` (крылья поворачиваются за спиной,
+     но НЕ наклоняются вверх/вниз за pitch камеры).
+
+3. НИКОГДА НЕ СТАВЬ `lodTracker.getTickDuration().set(0)` или `bone.setStep(true)`
+   при поворотах игрока — это выключает клиентскую SLERP-интерполяцию `ItemDisplay`,
+   и крылья начинают телепортироваться рывками!
+   Держи `AnimationLODHandler.setEnabled(false)`, `BasicCulling` выключенным и
+   постоянный `tickDuration = 2`.
+
+4. НИКОГДА НЕ ВЫНОСИ pivot основных костей крыльев (`right_wing_inner`, `left_wing_inner`)
+   вбок от центра спины (`X != 0` или `Z != 0`)!
+   При резких разворотах смещённый pivot интерполирует `translation` по хорде сквозь
+   тело игрока. Кости `wings_root`, `right_wing_inner`, `left_wing_inner` должны иметь
+   единый осевой центр `[0.0, 20.4, 0.0]`, а вот падающие перья (`feather_r1..3`,
+   `feather_l1..3`) обязаны сохранять собственные локальные центры `[fx, fy, fz]`
+   и падать вразнобой (асинхронно, а не все одновременно!).
+
+5. Не прижимай крылья слишком плотно к спине (держать безопасный отступ назад по `+Z`
+   минимум `z >= 3.9` с учётом поворотов кубов, чтобы при взмахе крылья не входили
+   в скин/плащ игрока; в системе координат Blockbench `+Z` — назад за спину, `-Z` — в грудь).
+
+6. Помни про `JavaItemModel.scaleToFit()` в `ModelEngine 4.1.0`:
+   Если кубы кости отстоят от её `origin` дальше чем на `24.0` единиц (у слитых крыльев
+   `scale = 2`), координаты `from`/`to` и `rotation.origin` в RP JSON обязаны быть
+   масштабированы по формуле `(coord - 8.0) / scale + 8.0` (проверяй через реальный
+   `BlockbenchParser.populateBlueprint` из `ModelEngine-4.1.0.jar`).
+
+7. В `PlayerAuraAttachment` (наследник `BukkitPlayer`):
+   - Возвращай родные `super.getUUID()` и `super.getEntityId()` игрока (случайный UUID
+     ломает `PlayerListener.onChangedWorld` при телепортах между мирами и `sendPivotOverrides`).
+   - Методы `isWalking()`, `isStrafing()`, `isJumping()`, `isFlying()` должны возвращать
+     `false`, чтобы `ModeledEntityImpl.tick()` не включал 3-тиковый лаг `rotLerp`.
+
+8. В `LadaPrioraVehicle`:
+   - Не ломать плавное движение через `ItemDisplay` (`vehicleAnchor` + `ItemDisplay`
+     seat carriers с `teleportDuration = 2`, `updateInterval = 1`) и 2 места на `ArmorStand`
+     (`setCanTick(true)`, `setCanMove(false)`).
+   - Сохранять крутящиеся и поворачивающиеся колёса, только скорость в ActionBar,
+     запрет выдачи машины обычным игрокам через `/priora` и админ-команду `/clearpriora`.
+
+--------------------------------------------------------------------------------
+6. ЗАКРЕПЛЁННЫЕ ТРЕБОВАНИЯ ПО ИГРОВОМУ РЕЖИМУ, МЕНЮ И ПЛАГИНАМ (НЕ ЛОМАТЬ!)
+--------------------------------------------------------------------------------
+- Брендинг: только `Elytrix` (никаких `Smile`, `ReallyWorld`, `FAWE`, `Duel` в видимых
+  игрокам сообщениях). Цвета: розовый `&#F8BEFB` и белый `&f` с лёгкими градиентами.
+  Ссылки: `https://elytrix.pw`, IP `mc.Elytrix.pw`, Discord `dsc.gg/elytrix`, TG `t.me/elytrix_ru`.
+- Валюта: `риллики` и основную экономику НЕ менять (технический неймспейс `reallyworld:`
+  внутри существующих путей ресурспака тоже НЕ переименовывать, чтобы не сломать модели).
+- Донат-лестница: `ANGEL` (`899р`, `ꕓ`) стоит между `D.HELPER` (`499р`, `ꕠ`) и `D.ADMIN`
+  (`3000р`, `ꕡ`); у `owner` есть `*` и тонкий префикс `ꕢ`; в `/donate` у `D.ADMIN`
+  отображается префикс `ꕡ`.
+- Скорборд и `TAB`: `ElytrixPlaceholders` удалён; в строке `Ранг:` нет `%expirytime%`;
+  в шапке скорборда компактное лого `ꕤ`; в футере `TAB` — только онлайн.
+- Кейсы: работает официальная связка `BCases.jar` + `BLib.jar` + `VirtualEntityApi.jar`
+  + `BMenu.jar` (`NCases` удалён навсегда!). Обычный донат-кейс выдаёт до `RABBIT`,
+  легендарный (`89р`) — `DRAGON`..`GOD`. На голограммах `don1.yml` (`74,100`) и
+  `don2.yml` (`73,100`) нет паков по 3 и 10 кейсов, высота голограмм занижена.
+- Киты и оружие: киты `PVE, FARM, MAGISTER, OVERLORD, AVENGER, TITAN, HERO` удалены;
+  `PVP` кит (`DRAGON`+) без зелья исцеления и арбалета; в `kitsbuy` продаются только
+  `dragon`..`god`; `/kit` и `preview_<kit>` открываются у всех игроков и без чёрных
+  стеклянных панелей; 3D-мечи у `god` (`CMD 100`), `angel` (`CMD 5012`), `dadmin` (`CMD 5013`).
+- Шары (`PLAYER_HEAD`): Angel (`5012`, 3D с крыльями), D.Admin (`5013`, 3D шар с вылетающим
+  `BAN`), Rosy (`5008`, чистый шар с вылетающим `YT`), Blood (`5011`). Любые шары на базе
+  `PLAYER_HEAD` никогда не должны изыматься анти-нелегал проверками!
+- `/free` (`ElytrixFree.jar`): кастомное RP-меню (`ꍘ`/`ꍙ`), кнопка «Назад» как в `DeluxeMenus`,
+  награды ТОЛЬКО риллики + киты до `GOD` + кейсы `rilik`/`money`, обязательная привязка
+  аккаунта включена (`auth.http.enabled: true`, логику привязки НЕ трогать!), NPC `ХАЛЯВА`
+  стоит на `world_spawn` (`7.5, 69, -3.5`).
+- `/shop` (`plugins/DeluxeMenus/gui_menus/shop/grief.yml`): в категории «Всё для грифа»
+  добавлен `Заряд ветра` (`wind_charge`) `32 шт.` за `399` рилликов (`slot: 4`) — сохранять!
+- Прочие меню и механики:
+  - `NClans` и `/repairexp` (`ElytrixRepairExp`) без стеклянных панелей-заполнителей, с HEX.
+  - `/potion` (`hPotions`): стакание зелий без дюпов.
+  - `CakeSub` / `CakeSubAddon` и `ElytrixSiege` исправлены и работают без зависаний.
+  - Границы миров: обычный мир `4000` (`±2000`), Ад `2000` (`±1000`); `WGExtender-fork.jar`
+    (`max-claim-volume: 5000000`) и лимиты приватов по донатам настроены.
+  - В `LagFixer` отключена `/abyss`.
+  - В `GreatCombat` убраны `actionbar` и всплывающие `[TITLE]` кулдаунов, настроен PvP-скорборд.
+
+--------------------------------------------------------------------------------
+7. КАК КОМПИЛИРОВАТЬ ПЛАГИНЫ В ПЕСОЧНИЦЕ ARENA (ТЕХНИЧЕСКАЯ СПРАВКА)
+--------------------------------------------------------------------------------
+- Сервер работает на Paper/Pufferfish `1.21.10` с Mojang-mapped runtime — НЕ перемапливай
+  NMS-классы в старые Spigot-обфусцированные имена (`tiny-remapper` под Spigot не нужен).
+- Если в контейнере нет системного `javac`:
+  1) Установи `jdk4py` и `pillow` в `/tmp/venv`:
+     python3 -m venv /tmp/venv && /tmp/venv/bin/pip install jdk4py pillow
+  2) Скачай компилятор Eclipse `ecj` из npm (`https://registry.npmjs.org/exoproc-jjit/-/exoproc-jjit-0.6.5.tgz` -> `package/deps/ecj-3.46.100.jar`).
+  3) Запускай `ecj` через `/tmp/venv/.../bin/java -jar ecj-3.46.100.jar -21 -proc:none`
+     с явным перечислением `.jar` в `-cp` (без `*` wildcards):
+     - `plugins/ModelEngine-4.1.0.jar` — API и внутренности ModelEngine
+     - `plugins/BLib.jar` — JOML (`org.joml.*`) и Guava
+     - `plugins/FancyNpcs-2.10.0.jar` — Gson (`com.google.gson.*`)
+- Временные сборочные файлы и тесты всегда держи в `/tmp/...`, не засоряя Git-репозиторий.
+================================================================================
