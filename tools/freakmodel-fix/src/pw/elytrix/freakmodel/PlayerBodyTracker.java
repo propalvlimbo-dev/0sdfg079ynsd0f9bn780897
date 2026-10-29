@@ -17,8 +17,11 @@ public final class PlayerBodyTracker {
     private boolean initialized;
     private String worldName;
     private double previousX, previousZ, speed;
+    private static final float MAX_VISUAL_LEAD_DEGREES = 12.0f;
+    private static final float VISUAL_LEAD_FACTOR = 0.5f;
     private float bodyYaw, headYaw, turnSpeed;
-    // An event-time visual preview must not alter the tick simulation's state.
+    // Render targets are independent from the state of the body simulation.
+    private float renderBodyYaw;
     private float packetBodyYaw;
     private boolean hasPacketBodyYaw;
     private int movingHoldTicks, airborneHoldTicks, swingTicks;
@@ -36,10 +39,36 @@ public final class PlayerBodyTracker {
     private static float clamp(float value, float low, float high) {
         return Math.max(low, Math.min(high, value));
     }
+    /** One body simulation step; usable for a packet preview without mutating state. */
+    private static float simulateBody(float body, float yaw, double dx, double dz, int swing) {
+        float target = body;
+        if (dx * dx + dz * dz > 0.0025000002) {
+            float movementYaw = (float)Math.toDegrees(Math.atan2(dz, dx)) - 90.0f;
+            float difference = Math.abs(wrapDegrees(yaw) - movementYaw);
+            target = difference > 95.0f && difference < 265.0f ? movementYaw - 180.0f : movementYaw;
+        }
+        if (swing > 0) target = yaw;
+        float next = body + wrapDegrees(target - body) * 0.3f;
+        return yaw - clamp(wrapDegrees(yaw - next), -50.0f, 50.0f);
+    }
+    /** Bounded visual lead for the two-tick display interpolation. */
+    private static float visualTarget(float body, float previous, float yaw, boolean eligible) {
+        if (!eligible) return body;
+        float delta = wrapDegrees(body - previous);
+        float lead = clamp(delta * VISUAL_LEAD_FACTOR,
+                -MAX_VISUAL_LEAD_DEGREES, MAX_VISUAL_LEAD_DEGREES);
+        float result = body + lead;
+        // Never predict outside the same head/body range used by the estimate.
+        return yaw - clamp(wrapDegrees(yaw - result), -50.0f, 50.0f);
+    }
+    private static boolean canLead(Player player) {
+        return !player.isInsideVehicle() && !player.isFlying() && !player.isGliding()
+                && !player.isSwimming();
+    }
     public synchronized void resetToYaw(float yaw) {
         if (!Float.isFinite(yaw)) return;
         bodyYaw = headYaw = yaw;
-        packetBodyYaw = yaw;
+        renderBodyYaw = packetBodyYaw = yaw;
         hasPacketBodyYaw = false;
         turnSpeed = 0;
         initialized = false;
@@ -61,14 +90,19 @@ public final class PlayerBodyTracker {
     }
     public synchronized void stepFromPacket(Player player, Location to) {
         if (player == null || to == null || to.getWorld() == null) return;
-        // Show a bounded correction immediately, but leave the last completed
-        // tick's bodyYaw unchanged. Otherwise the next tick applies its movement
-        // smoothing on top of the packet correction and rotates the body twice.
+        // Use the cumulative movement since the last tick to preview one body
+        // step as soon as a move arrives. Never advance the committed state here:
+        // multiple packets in the same tick must not add multiple rotations.
         headYaw = validYaw(to.getYaw(), headYaw);
         hasPacketBodyYaw = false;
         if (initialized && to.getWorld().getName().equals(worldName) && !player.isInsideVehicle()) {
-            float delta = wrapDegrees(headYaw - bodyYaw);
-            packetBodyYaw = bodyYaw + delta - clamp(delta, -50.0f, 50.0f);
+            double dx = to.getX() - previousX, dz = to.getZ() - previousZ;
+            if (dx * dx + dz * dz > 64.0) {
+                packetBodyYaw = headYaw;
+            } else {
+                float preview = simulateBody(bodyYaw, headYaw, dx, dz, swingTicks);
+                packetBodyYaw = visualTarget(preview, bodyYaw, headYaw, canLead(player));
+            }
             hasPacketBodyYaw = true;
         }
     }
@@ -103,18 +137,12 @@ public final class PlayerBodyTracker {
             bodyYaw = yaw - relative;
             if (relative * relative > 2500.0f) bodyYaw += relative * 0.2f;
         } else {
-            float target = bodyYaw;
-            if (distanceSquared > 0.0025000002) {
-                float movementYaw = (float)Math.toDegrees(Math.atan2(dz, dx)) - 90.0f;
-                float difference = Math.abs(wrapDegrees(yaw) - movementYaw);
-                target = difference > 95.0f && difference < 265.0f ? movementYaw - 180.0f : movementYaw;
-            }
-            if (swingTicks > 0) target = yaw;
-            bodyYaw += wrapDegrees(target - bodyYaw) * 0.3f;
-            // Limit the body's angle relative to the head, without forcing the
-            // body to follow small head-only movements while standing still.
-            bodyYaw = yaw - clamp(wrapDegrees(yaw - bodyYaw), -50.0f, 50.0f);
+            bodyYaw = simulateBody(bodyYaw, yaw, dx, dz, swingTicks);
         }
+        // Apply only to what is rendered, not to the client's-body estimate.
+        // The short lead partially compensates the retained two-tick SLERP;
+        // it disappears immediately when the estimated body stops turning.
+        renderBodyYaw = visualTarget(bodyYaw, previousBody, yaw, canLead(player));
         turnSpeed = Math.abs(wrapDegrees(bodyYaw - previousBody));
         if (swingTicks > 0) --swingTicks;
         boolean inputMoving = false;
@@ -138,7 +166,9 @@ public final class PlayerBodyTracker {
     public synchronized void notifyArmSwing() { swingTicks = 6; }
     // Preserved for compatibility; swing time is advanced exactly once per tick.
     public synchronized void decayArmSwing() { }
-    public synchronized float getBodyYaw() { return hasPacketBodyYaw ? packetBodyYaw : bodyYaw; }
+    public synchronized float getBodyYaw() { return hasPacketBodyYaw ? packetBodyYaw : renderBodyYaw; }
+    /** Body estimate before visual lead; exposed for diagnostics and tests. */
+    public synchronized float getEstimatedBodyYaw() { return bodyYaw; }
     public synchronized float getRawHeadYaw() { return headYaw; }
     public synchronized float getLastTickTurnSpeed() { return turnSpeed; }
     public synchronized MovementMode getMode() { return mode; }

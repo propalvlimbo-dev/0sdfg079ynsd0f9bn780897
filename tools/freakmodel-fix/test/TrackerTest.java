@@ -18,37 +18,39 @@ public class TrackerTest {
         for (float facing : new float[]{0, 90, 180, -90}) {
             FakePlayer cardinal = new FakePlayer(); cardinal.head=facing; cardinal.staleBody=0;
             PlayerBodyTracker c = new PlayerBodyTracker(); c.resetToPlayer(cardinal);
-            near(c.getBodyYaw(), facing, "spawn facing " + facing);
+            near(c.getEstimatedBodyYaw(), facing, "spawn facing " + facing);
             double angle = Math.toRadians(facing);
             cardinal.x = Math.sin(angle) * 0.2; cardinal.z = -Math.cos(angle) * 0.2;
-            c.stepServerTick(cardinal); near(c.getBodyYaw(), facing, "backward at " + facing);
+            c.stepServerTick(cardinal); near(c.getEstimatedBodyYaw(), facing, "backward at " + facing);
         }
         FakePlayer p=new FakePlayer(); p.head=90; p.staleBody=0;
         PlayerBodyTracker t=new PlayerBodyTracker(); t.resetToPlayer(p);
-        near(t.getBodyYaw(),90,"reset uses facing, not stale server body");
-        p.head=120; t.stepServerTick(p); near(t.getBodyYaw(),90,"small head-only turn");
-        p.head=180; t.stepServerTick(p); near(t.getBodyYaw(),130,"large stationary turn follows without stale server body");
-        Location event=new Location(A,0,0,0); event.set(A,1,0,0,180);
+        near(t.getEstimatedBodyYaw(),90,"reset uses facing, not stale server body");
+        p.head=120; t.stepServerTick(p); near(t.getEstimatedBodyYaw(),90,"small head-only turn");
+        p.head=180; t.stepServerTick(p); near(t.getEstimatedBodyYaw(),130,"large stationary turn follows without stale server body");
+        Location event=new Location(A,0,0,0); event.set(A,0,0,0,180);
         for(int i=0;i<25;i++) t.stepFromPacket(p,event);
-        near(t.getBodyYaw(),130,"duplicate packets do not advance body");
-        event.set(A,1,0,0,-60); t.stepFromPacket(p,event);
-        near(t.getBodyYaw(),-110,"sharp turn responds before server tick");
+        near(t.getEstimatedBodyYaw(),130,"duplicate packets do not advance body");
+        event.set(A,0,0,0,-60); t.stepFromPacket(p,event);
+        near(t.getEstimatedBodyYaw(),130,"preview does not commit simulated yaw");
+        near(t.getBodyYaw(),-98,"sharp turn preview with bounded visual lead");
         for(int i=0;i<25;i++) t.stepFromPacket(p,event);
-        near(t.getBodyYaw(),-110,"duplicate sharp-turn packets remain stable");
+        near(t.getBodyYaw(),-98,"duplicate sharp-turn packets remain stable");
         p.head=0; p.x=0; p.z=0; t.resetToPlayer(p);
-        p.z=-0.2; t.stepServerTick(p); near(t.getBodyYaw(),0,"walking backwards faces forward");
-        p.x=0.2; t.stepServerTick(p); check(Math.abs(t.getBodyYaw())>1,"strafing turns body");
-        check(Math.abs(PlayerBodyTracker.wrapDegrees(p.head-t.getBodyYaw()))<=50,"head/body bound");
+        p.z=-0.2; t.stepServerTick(p); near(t.getEstimatedBodyYaw(),0,"walking backwards faces forward");
+        p.x=0.2; t.stepServerTick(p); check(Math.abs(t.getEstimatedBodyYaw())>1,"strafing turns body");
+        check(Math.abs(PlayerBodyTracker.wrapDegrees(p.head-t.getEstimatedBodyYaw()))<=50,"head/body bound");
         p.forward=true; t.stepServerTick(p); check(t.getMode()==PlayerBodyTracker.MovementMode.WALK,"walk mode");
         p.flying=true; t.stepServerTick(p); check(t.getMode()==PlayerBodyTracker.MovementMode.FLY,"flight mode");
-        p.flying=false; p.head=179; t.resetToPlayer(p); p.head=-179; t.stepServerTick(p); near(t.getBodyYaw(),179,"wrap through 180");
+        p.flying=false; p.head=179; t.resetToPlayer(p); p.head=-179; t.stepServerTick(p); near(t.getEstimatedBodyYaw(),179,"wrap through 180");
         check(t.getLastTickTurnSpeed()<1,"no full-turn wrap jump");
         p.world=B; p.x=1000; p.z=1000; p.head=60; t.stepServerTick(p);
-        near(t.getBodyYaw(),60,"world change reset"); check(t.getHorizSpeedBlocksPerTick()==0,"world change speed reset");
-        p.x+=100; p.head=-100; t.stepServerTick(p); near(t.getBodyYaw(),-100,"teleport reset");
-        p.head=30; t.resetToPlayer(p); p.head=80; t.notifyArmSwing(); t.stepServerTick(p); near(t.getBodyYaw(),45,"arm swing turns body");
-        p.vehicle=true; p.vehicleYaw=120; p.head=120; t.stepServerTick(p); near(t.getBodyYaw(),120,"vehicle facing");
-        p.vehicle=false; p.head=Float.NaN; t.stepServerTick(p); check(Float.isFinite(t.getBodyYaw()),"non-finite yaw");
+        near(t.getEstimatedBodyYaw(),60,"world change reset"); check(t.getHorizSpeedBlocksPerTick()==0,"world change speed reset");
+        p.x+=100; p.head=-100; t.stepServerTick(p); near(t.getEstimatedBodyYaw(),-100,"teleport reset");
+        p.head=30; t.resetToPlayer(p); p.head=80; t.notifyArmSwing(); t.stepServerTick(p); near(t.getEstimatedBodyYaw(),45,"arm swing turns body");
+        p.vehicle=true; p.vehicleYaw=120; p.head=120; t.stepServerTick(p); near(t.getEstimatedBodyYaw(),120,"vehicle facing");
+        near(t.getBodyYaw(),t.getEstimatedBodyYaw(),"no extrapolation in vehicle");
+        p.vehicle=false; p.head=Float.NaN; t.stepServerTick(p); check(Float.isFinite(t.getEstimatedBodyYaw()),"non-finite yaw");
 
         // Packet previews are visible immediately but must not change the once-
         // per-tick simulation, even when there are many packets in one tick.
@@ -58,10 +60,18 @@ public class TrackerTest {
         move.head=90; move.x=-0.2;
         Location sharp=new Location(A,0,0,0); sharp.set(A,move.x,0,move.z,move.head);
         for(int i=0;i<25;i++) withPackets.stepFromPacket(move,sharp);
-        near(withPackets.getBodyYaw(),40,"sharp turn preview");
+        near(withPackets.getEstimatedBodyYaw(),0,"preview does not change the tick state");
+        near(withPackets.getBodyYaw(),52,"sharp turn preview with bounded lead");
         withPackets.stepServerTick(move); tickOnly.stepServerTick(move);
-        near(withPackets.getBodyYaw(),40,"sharp walking turn must not be double-counted");
-        near(withPackets.getBodyYaw(),tickOnly.getBodyYaw(),"packet preview vs tick-only turn");
+        near(withPackets.getEstimatedBodyYaw(),40,"sharp walking turn must not be double-counted");
+        near(withPackets.getEstimatedBodyYaw(),tickOnly.getEstimatedBodyYaw(),"packet preview vs tick-only turn");
+        near(withPackets.getBodyYaw(),52,"tick render target has same bounded lead");
+        // A simple one-axis, two-tick interpolation example. This is not a
+        // client integration test or a guarantee for other packet timings.
+        float oldHalfway = 40f * 0.5f;
+        float newHalfway = withPackets.getBodyYaw() * 0.5f;
+        check(Math.abs(40f-newHalfway) < Math.abs(40f-oldHalfway),
+                "bounded lead reduces first-tick lag in the idealized example");
         check(withPackets.getMode()==PlayerBodyTracker.MovementMode.WALK,"W+A+D remains forward walking");
         for (int i=0;i<80;i++) {
             move.head=(i%4==0 ? 179 : i%4==1 ? -179 : i%4==2 ? 35 : -85);
@@ -70,8 +80,33 @@ public class TrackerTest {
             sharp.set(A,move.x,0,move.z,move.head);
             for (int j=0;j<5;j++) withPackets.stepFromPacket(move,sharp);
             withPackets.stepServerTick(move); tickOnly.stepServerTick(move);
-            near(withPackets.getBodyYaw(),tickOnly.getBodyYaw(),"packet independent tick " + i);
+            near(withPackets.getEstimatedBodyYaw(),tickOnly.getEstimatedBodyYaw(),"packet independent tick " + i);
+            near(withPackets.getBodyYaw(),tickOnly.getBodyYaw(),"packet independent visual tick " + i);
+            check(Math.abs(PlayerBodyTracker.wrapDegrees(withPackets.getBodyYaw()-withPackets.getEstimatedBodyYaw())) <= 12.001f,
+                    "visual lead capped tick " + i);
+            check(Math.abs(PlayerBodyTracker.wrapDegrees(move.head-withPackets.getBodyYaw())) <= 50.001f,
+                    "visual target stays within head/body bound tick " + i);
         }
+        FakePlayer strafe=new FakePlayer();
+        PlayerBodyTracker strafing=new PlayerBodyTracker(); strafing.resetToPlayer(strafe);
+        Location strafeEvent=new Location(A,0,0,0); strafeEvent.set(A,0.2,0,0,0);
+        strafing.stepFromPacket(strafe,strafeEvent);
+        near(strafing.getEstimatedBodyYaw(),0,"strafing preview must not advance tick state");
+        near(strafing.getBodyYaw(),-39,"movement-aware strafing preview");
+        for(int i=0;i<25;i++) strafing.stepFromPacket(strafe,strafeEvent);
+        near(strafing.getBodyYaw(),-39,"duplicate strafe previews remain stable");
+        strafeEvent.set(A,-0.2,0,0,0); strafing.stepFromPacket(strafe,strafeEvent);
+        strafeEvent.set(A,0.2,0,0,0); strafing.stepFromPacket(strafe,strafeEvent);
+        near(strafing.getBodyYaw(),-39,"preview depends on final position, not packet count");
+        strafe.x=0.2; strafing.stepServerTick(strafe);
+        near(strafing.getEstimatedBodyYaw(),-27,"strafe simulation at tick");
+        near(strafing.getBodyYaw(),-39,"strafe render target at tick");
+        strafing.stepServerTick(strafe);
+        near(strafing.getBodyYaw(),-27,"visual lead clears immediately on stop");
+        strafe.head=120; strafe.flying=true; strafe.x=0.4; strafing.stepServerTick(strafe);
+        near(strafing.getBodyYaw(),strafing.getEstimatedBodyYaw(),"no extrapolation in flight");
+        strafe.world=B; strafe.head=-30; strafing.stepServerTick(strafe);
+        near(strafing.getBodyYaw(),-30,"world change clears visual lead");
         FakePlayer keys=new FakePlayer(); keys.left=true; keys.right=true;
         PlayerBodyTracker cancelled=new PlayerBodyTracker(); cancelled.resetToPlayer(keys);
         for(int i=0;i<10;i++) cancelled.stepServerTick(keys);
