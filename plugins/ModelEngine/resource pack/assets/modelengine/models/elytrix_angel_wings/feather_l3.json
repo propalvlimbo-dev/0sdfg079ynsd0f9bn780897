@@ -1,0 +1,101 @@
+{
+  "textures": {
+    "0": "modelengine:entity/models/elytrix_archangel_wings",
+    "particle": "modelengine:entity/models/elytrix_archangel_wings"
+  },
+  "elements": [
+    {
+      "from": [
+        6.9,
+        5.4,
+        7.98
+      ],
+      "to": [
+        9.1,
+        10.6,
+        8.02
+      ],
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            14.0,
+            13.0625,
+            15.0,
+            14.6875
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        },
+        "south": {
+          "uv": [
+            15.0,
+            13.0625,
+            14.0,
+            14.6875
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        },
+        "east": {
+          "uv": [
+            14.45,
+            13.2,
+            14.55,
+            14.5
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [
+            14.45,
+            13.2,
+            14.55,
+            14.5
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        },
+        "up": {
+          "uv": [
+            14.45,
+            13.2,
+            14.55,
+            13.3
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        },
+        "down": {
+          "uv": [
+            14.45,
+            14.4,
+            14.55,
+            14.5
+          ],
+          "texture": "#0",
+          "tintindex": 0
+        }
+      },
+      "rotation": {
+        "angle": -22.5,
+        "axis": "z",
+        "origin": [
+          8.0,
+          8.0,
+          8.0
+        ]
+      }
+    }
+  ],
+  "display": {
+    "gui": {
+      "rotation": [
+        -150.0,
+        -45.0,
+        180.0
+      ]
+    }
+  }
+}
