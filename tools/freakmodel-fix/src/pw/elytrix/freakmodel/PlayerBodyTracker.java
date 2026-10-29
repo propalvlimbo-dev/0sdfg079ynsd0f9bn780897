@@ -2,21 +2,23 @@ package pw.elytrix.freakmodel;
 
 import org.bukkit.Input;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-/** Compatibility replacement for the mismatched tracker shipped in 3.2.3.
- * Body rotation comes from the server's player entity, not a second independent
- * approximation of the vanilla body-turn algorithm.
+/** Tracks the likely client-rendered player body yaw, separately from head yaw.
+ * Paper's server-side getBodyYaw is not a reliable representation of the body
+ * rendered by each client. Run the approximation once per server tick, not once
+ * per movement packet: packet frequency varies even when the game tick does not.
  */
 public final class PlayerBodyTracker {
     public enum MovementMode { IDLE, WALK, FLY }
     private final Location scratch = new Location(null, 0, 0, 0);
+    private final Location vehicleScratch = new Location(null, 0, 0, 0);
     private boolean initialized;
     private String worldName;
     private double previousX, previousZ, speed;
     private float bodyYaw, headYaw, turnSpeed;
-    private int movingHoldTicks, airborneHoldTicks;
-    private long lastMovementNanos;
+    private int movingHoldTicks, airborneHoldTicks, swingTicks;
     private MovementMode mode = MovementMode.IDLE;
 
     public static float wrapDegrees(float angle) {
@@ -28,70 +30,80 @@ public final class PlayerBodyTracker {
     private static float validYaw(float candidate, float fallback) {
         return Float.isFinite(candidate) ? candidate : (Float.isFinite(fallback) ? fallback : 0.0f);
     }
+    private static float clamp(float value, float low, float high) {
+        return Math.max(low, Math.min(high, value));
+    }
     public synchronized void resetToYaw(float yaw) {
         if (!Float.isFinite(yaw)) return;
         bodyYaw = headYaw = yaw;
         turnSpeed = 0;
-        // Re-baseline position after a teleport, even within the same world.
         initialized = false;
         speed = 0;
-        movingHoldTicks = airborneHoldTicks = 0;
+        movingHoldTicks = airborneHoldTicks = swingTicks = 0;
         mode = MovementMode.IDLE;
     }
     public synchronized void resetToPlayer(Player player) {
         if (player == null) return;
         Location loc = player.getLocation(scratch);
-        headYaw = validYaw(loc.getYaw(), 0);
-        bodyYaw = validYaw(player.getBodyYaw(), headYaw);
-        turnSpeed = 0;
-        speed = 0;
-        movingHoldTicks = airborneHoldTicks = 0;
-        mode = MovementMode.IDLE;
-        initialized = loc.getWorld() != null;
-        worldName = initialized ? loc.getWorld().getName() : null;
-        previousX = loc.getX();
-        previousZ = loc.getZ();
-        lastMovementNanos = System.nanoTime();
-    }
-    private void sampleBody(Player player, float fallbackYaw) {
-        float next = validYaw(player.getBodyYaw(), fallbackYaw);
-        turnSpeed = Math.abs(wrapDegrees(next - bodyYaw));
-        bodyYaw = next;
+        float yaw = validYaw(loc.getYaw(), headYaw);
+        resetToYaw(yaw);
+        if (loc.getWorld() != null) {
+            worldName = loc.getWorld().getName();
+            previousX = loc.getX();
+            previousZ = loc.getZ();
+            initialized = true;
+        }
     }
     public synchronized void stepFromPacket(Player player, Location to) {
         if (player == null || to == null || to.getWorld() == null) return;
-        String world = to.getWorld().getName();
-        double x = to.getX(), z = to.getZ();
+        // Capture the newest input but never step rotation here. A duplicate or
+        // burst of packets must not make the body turn multiple times in a tick.
         headYaw = validYaw(to.getYaw(), headYaw);
-        if (!initialized || !world.equals(worldName)) {
-            initialized = true;
-            worldName = world;
-            previousX = x;
-            previousZ = z;
-            speed = 0;
-        } else {
-            double dx = x - previousX, dz = z - previousZ;
-            double distanceSquared = dx * dx + dz * dz;
-            previousX = x;
-            previousZ = z;
-            if (distanceSquared > 64.0) speed = 0;
-            else if (distanceSquared > 1.0e-9) {
-                speed = speed * 0.45 + Math.sqrt(distanceSquared) * 0.55;
-                lastMovementNanos = System.nanoTime();
-            }
-        }
-        // PlayerMoveEvent can precede the server's body-turn update. Never
-        // advance a second simulation per packet; sample the real body instead.
-        sampleBody(player, headYaw);
     }
     public synchronized void stepServerTick(Player player) {
         if (player == null) return;
         Location loc = player.getLocation(scratch);
         if (loc.getWorld() == null) return;
-        if (!initialized || !loc.getWorld().getName().equals(worldName)) resetToPlayer(player);
-        headYaw = validYaw(loc.getYaw(), headYaw);
-        sampleBody(player, headYaw);
-        if (System.nanoTime() - lastMovementNanos >= 75000000L) speed *= 0.55;
+        float yaw = validYaw(loc.getYaw(), headYaw);
+        String world = loc.getWorld().getName();
+        if (!initialized || !world.equals(worldName)) {
+            resetToPlayer(player);
+            return;
+        }
+        double x = loc.getX(), z = loc.getZ();
+        double dx = x - previousX, dz = z - previousZ;
+        double distanceSquared = dx * dx + dz * dz;
+        previousX = x;
+        previousZ = z;
+        headYaw = yaw;
+        if (distanceSquared > 64.0) {
+            // Large teleports are not a direction of walking.
+            resetToPlayer(player);
+            return;
+        }
+        speed = speed * 0.45 + Math.sqrt(distanceSquared) * 0.55;
+        float previousBody = bodyYaw;
+        if (player.isInsideVehicle()) {
+            Entity vehicle = player.getVehicle();
+            float vehicleYaw = vehicle == null ? yaw : validYaw(vehicle.getLocation(vehicleScratch).getYaw(), yaw);
+            float relative = clamp(wrapDegrees(yaw - vehicleYaw), -85.0f, 85.0f);
+            bodyYaw = yaw - relative;
+            if (relative * relative > 2500.0f) bodyYaw += relative * 0.2f;
+        } else {
+            float target = bodyYaw;
+            if (distanceSquared > 0.0025000002) {
+                float movementYaw = (float)Math.toDegrees(Math.atan2(dz, dx)) - 90.0f;
+                float difference = Math.abs(wrapDegrees(yaw) - movementYaw);
+                target = difference > 95.0f && difference < 265.0f ? movementYaw - 180.0f : movementYaw;
+            }
+            if (swingTicks > 0) target = yaw;
+            bodyYaw += wrapDegrees(target - bodyYaw) * 0.3f;
+            // Limit the body's angle relative to the head, without forcing the
+            // body to follow small head-only movements while standing still.
+            bodyYaw = yaw - clamp(wrapDegrees(yaw - bodyYaw), -50.0f, 50.0f);
+        }
+        turnSpeed = Math.abs(wrapDegrees(bodyYaw - previousBody));
+        if (swingTicks > 0) --swingTicks;
         boolean inputMoving = false;
         try {
             Input input = player.getCurrentInput();
@@ -107,8 +119,8 @@ public final class PlayerBodyTracker {
         else if (movingHoldTicks > 0) --movingHoldTicks;
         mode = flying || airborneHoldTicks >= 3 ? MovementMode.FLY : movingHoldTicks > 0 ? MovementMode.WALK : MovementMode.IDLE;
     }
-    // Kept for binary compatibility with the original caller.
-    public synchronized void notifyArmSwing() { }
+    public synchronized void notifyArmSwing() { swingTicks = 6; }
+    // Preserved for compatibility; swing time is advanced exactly once per tick.
     public synchronized void decayArmSwing() { }
     public synchronized float getBodyYaw() { return bodyYaw; }
     public synchronized float getRawHeadYaw() { return headYaw; }

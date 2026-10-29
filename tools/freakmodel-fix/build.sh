@@ -16,6 +16,6 @@ mkdir -p "$tmp/classes" "$tmp/patch" "$tmp/jar"
 cp "$tmp/classes"/pw/elytrix/freakmodel/PlayerBodyTracker*.class "$tmp/jar/pw/elytrix/freakmodel/"
 "$JAVA" -cp "$tmp/patch:$root/plugins/BLib.jar" PatchRig "$tmp/jar/pw/elytrix/freakmodel/WornAngelRig.class"
 "$JAVA" -cp "$tmp/patch:$root/plugins/BLib.jar" LinkTest "$tmp/jar"
-sed -i 's/^version: 3\.2\.3$/version: 3.2.4/' "$tmp/jar/plugin.yml"
+sed -i 's/^version: 3\.2\.3$/version: 3.2.5/' "$tmp/jar/plugin.yml"
 rm -f "$output"
 (cd "$tmp/jar" && zip -qr "$output" .)

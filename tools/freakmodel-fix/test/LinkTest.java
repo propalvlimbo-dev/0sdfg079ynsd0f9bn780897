@@ -14,6 +14,16 @@ public class LinkTest implements Opcodes {
                 }
             }, ClassReader.SKIP_CODE);
         }
+        new ClassReader(Files.readAllBytes(root.resolve(prefix+"PlayerBodyTracker.class"))).accept(new ClassVisitor(ASM9) {
+            @Override public MethodVisitor visitMethod(int access, String name, String desc, String sig, String[] ex) {
+                return new MethodVisitor(ASM9) {
+                    @Override public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
+                        if (name.equals("getBodyYaw") && owner.equals("org/bukkit/entity/Player"))
+                            throw new AssertionError("Stale server-side body yaw must not be used");
+                    }
+                };
+            }
+        }, 0);
         Set<String> refs=new HashSet<>();
         try (var files=Files.list(root.resolve(prefix))) {
             for (Path file: files.filter(p -> p.toString().endsWith(".class")).toList()) {

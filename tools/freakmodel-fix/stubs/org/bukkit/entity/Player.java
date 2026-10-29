@@ -1,3 +1,3 @@
 package org.bukkit.entity;
-import org.bukkit.Input; import org.bukkit.Location; import org.bukkit.util.Vector;
-public interface Player { Location getLocation(Location location); float getBodyYaw(); Input getCurrentInput(); boolean isFlying(); boolean isGliding(); boolean isOnGround(); boolean isInsideVehicle(); boolean isSwimming(); boolean isSprinting(); Vector getVelocity(); }
+import org.bukkit.Input; import org.bukkit.util.Vector;
+public interface Player extends Entity { float getBodyYaw(); Input getCurrentInput(); boolean isFlying(); boolean isGliding(); boolean isOnGround(); boolean isInsideVehicle(); Entity getVehicle(); boolean isSwimming(); boolean isSprinting(); Vector getVelocity(); }
