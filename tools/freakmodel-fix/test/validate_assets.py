@@ -27,24 +27,36 @@ with zipfile.ZipFile(pack) as z:
         assert baked['textures']['0']=='modelengine:entity/models/elytrix_archangel_wings'
         # ModelEngine may emit cubes in a different order on each import.
         remaining=list(baked['elements'])
-        assert len(remaining)==len(indices)
-        for i in indices:
-            src=elements[f'wing_{i}']
+        names=[f'wing_{i}' for i in indices]+[f'shoulder_root_{side}_{p}' for p in ('joint','upper','lower')]
+        assert len(remaining)==len(names)
+        bone=next(x for x in blueprint['outliner'][0]['children'] if x['name']==f'{side}_wing_inner')
+        assert bone['origin']==[0.0,20.4,0.0]
+        for name in names:
+            src=elements[name]
+            assert src['uuid'] in bone['children']
             def matches(model_element):
                 return all(abs(model_element[field][axis] -
                     ((src[field][axis]-[0,20.4,0][axis])/2+8)) < .001
                     for field in ('from','to') for axis in range(3))
             candidates=[e for e in remaining if matches(e)]
-            assert len(candidates)==1,(side,i,len(candidates))
+            assert len(candidates)==1,(side,name,len(candidates))
             model_element=candidates[0]
             remaining.remove(model_element)
+            for field in ('from','to'):
+                assert all(-16 <= v <= 32 for v in model_element[field]),(name,field)
             if 'rotation' in model_element:
-                for axis in range(3):
-                    expected=(src['origin'][axis]-[0,20.4,0][axis])/2+8
-                    assert abs(model_element['rotation']['origin'][axis]-expected)<.001
-            for face in model_element['faces'].values():
+                rotation=model_element['rotation']
+                axis='xyz'.index(rotation['axis'])
+                assert abs(rotation['angle']-src['rotation'][axis])<.001
+                assert rotation['angle'] in (-45,-22.5,0,22.5,45)
+                for i in range(3):
+                    expected=(src['origin'][i]-[0,20.4,0][i])/2+8
+                    assert abs(rotation['origin'][i]-expected)<.001
+            for direction,face in model_element['faces'].items():
                 uv=face.get('uv')
-                assert uv is None or (uv[0]!=uv[2] and uv[1]!=uv[3]), (side,i,uv)
+                assert uv is None or (uv[0]!=uv[2] and uv[1]!=uv[3]), (side,name,uv)
+                assert face['texture']=='#0'
+                assert all(abs(x-y)<.001 for x,y in zip(uv,src['faces'][direction]['uv']))
     for bone in blueprint['outliner'][0]['children']:
         if bone['name'].startswith('feather_'):
             key='elytrix_angel_wings/'+bone['name']

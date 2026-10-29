@@ -87,6 +87,23 @@ public class TrackerTest {
             check(Math.abs(PlayerBodyTracker.wrapDegrees(move.head-withPackets.getBodyYaw())) <= 50.001f,
                     "visual target stays within head/body bound tick " + i);
         }
+        FakePlayer turn=new FakePlayer();
+        PlayerBodyTracker reversing=new PlayerBodyTracker(); reversing.resetToPlayer(turn);
+        turn.head=90; reversing.stepServerTick(turn);
+        near(reversing.getEstimatedBodyYaw(),40,"first sharp turn body estimate");
+        near(reversing.getBodyYaw(),52,"first sharp turn keeps normal lead");
+        Location reverseEvent=new Location(A,0,0,0); reverseEvent.set(A,0,0,0,-90);
+        for(int i=0;i<25;i++) reversing.stepFromPacket(turn,reverseEvent);
+        near(reversing.getBodyYaw(),-44,"reverse preview is limited without packet accumulation");
+        near(reversing.getEstimatedBodyYaw(),40,"reverse preview does not alter tick state");
+        turn.head=-90; reversing.stepServerTick(turn);
+        near(reversing.getEstimatedBodyYaw(),-40,"reverse tick body estimate");
+        near(reversing.getBodyYaw(),-44,"reverse visual lead capped at four degrees");
+        reversing.stepServerTick(turn);
+        near(reversing.getBodyYaw(),-40,"reverse lead clears after stopping");
+        reversing.resetToYaw(0); turn.head=0; reversing.stepServerTick(turn);
+        turn.head=90; reversing.stepServerTick(turn);
+        near(reversing.getBodyYaw(),52,"reset clears reversal history");
         FakePlayer strafe=new FakePlayer();
         PlayerBodyTracker strafing=new PlayerBodyTracker(); strafing.resetToPlayer(strafe);
         Location strafeEvent=new Location(A,0,0,0); strafeEvent.set(A,0.2,0,0,0);

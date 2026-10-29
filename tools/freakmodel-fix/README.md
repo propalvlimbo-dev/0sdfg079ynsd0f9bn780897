@@ -1,4 +1,4 @@
-# ElytrixFreakModel 3.2.8 compatibility patch
+# ElytrixFreakModel 3.2.9 compatibility patch
 
 The repository contained a binary-only 3.2.3 jar. Its main plugin class was
 compiled against a different `PlayerBodyTracker` and `WornAngelRig` than those
@@ -34,14 +34,21 @@ interpolation is unchanged. The lead is a prediction, not the client's actual
 body position: it may overshoot or look worse with some movements or packet
 latency. It is an experimental server-only trade-off and needs live verification.
 
+Version 3.2.9 limits that lead to four degrees on a confirmed reversal of the
+estimated body turn (ordinary turns retain the 12-degree limit), with a one-degree
+noise threshold. Packet previews do not advance the history, and resets clear it.
+This reduces predictive overcorrection in the covered reversal test; it does not
+eliminate network delay or prove correct behaviour at every +/-180 degree turn.
 The 1.21.10 live client and ModelEngine interpolation were not available for
 verification, so no claim of perfect tracking is made.
 
 ModelEngine attaches its display pivots to the player. In 3.2.6 the wing
-surfaces are shifted closer without moving the shared bone pivots; the atlas
-and two generated wing model JSONs are packaged with the matching blueprint.
-The resource pack is shipped along with these assets so the player receives
-the matching version. Animation, culling and two-tick interpolation remain.
+surfaces are shifted closer without moving the shared bone pivots. In 3.2.9,
+three small symmetric feathered shoulder-root elements per side overlap the
+existing main wing geometry and extend towards the back. They reuse the existing
+wing texture and are children of the existing animated bones, with no new bone
+or item-model IDs. Their two scale-2 JSONs and the blueprint are packaged with
+the updated resource pack. Animation, culling and two-tick interpolation remain.
 This server-side estimate is not guaranteed to match every viewer's actual
 client-side animation/interpolation, particularly with latency, flying, swimming,
 riding or very fast turns. An actual client/server test is required.
@@ -52,7 +59,7 @@ To reproduce, use the unmodified jar from commit
 
 ```
 git show 20e2fa0364e2369316897f19a2d44ed47d0b8d31:plugins/ElytrixFreakModel.jar > /tmp/freakmodel-3.2.3.jar
-JAVA=/path/to/java ECJ=/path/to/ecj.jar tools/freakmodel-fix/build.sh /tmp/freakmodel-3.2.3.jar /tmp/freakmodel-3.2.8.jar
+JAVA=/path/to/java ECJ=/path/to/ecj.jar tools/freakmodel-fix/build.sh /tmp/freakmodel-3.2.3.jar /tmp/freakmodel-3.2.9.jar
 ```
 
 The script tests the tracker with minimal Bukkit stubs and checks plugin method
@@ -61,20 +68,34 @@ replace in-game testing on Pufferfish 1.21.10 with ModelEngine 4.1.0: check
 first- and third-person from the wearer and another player, stationary turns,
 forward/backward/sideways movement, flight, mounting, teleports and respawn.
 
-Resource-pack checks: `python3 tools/freakmodel-fix/test/validate_assets.py`.
-The geometry transformation can be reproduced from the original blueprint,
-generated model files and RP using `adjust_wings.py`; it expects unmodified
-3.2.3 assets and is intentionally not idempotent. Check the SHA-1 in the RP
-config after generating. On deployment do not overwrite the server's live
-ModelEngine config/cache or unrelated assets.
+Resource-pack checks: `python3 tools/freakmodel-fix/test/validate_assets.py` and
+`python3 tools/freakmodel-fix/test/validate_roots.py`. The 3.2.6 geometry
+transformation can be reproduced from the original assets using
+`adjust_wings.py`; it is intentionally not idempotent. The 3.2.9 shoulder
+additions can be reproduced from the pre-3.2.9 assets with `add_wing_roots.py`;
+it is also intentionally not idempotent. The scale/UV checks are offline;
+ModelEngine's real parser and a Minecraft client were not run here. Check the
+SHA-1 in the RP config after generating. On deployment do not overwrite the
+server's live ModelEngine config/cache or unrelated assets.
+
+The narrow `elytrix-freakmodel-patch.zip` contains the plugin, blueprint, two
+inner-wing models, resource pack and `deploy/install_wing_patch.sh`, but no live
+configuration. The installer verifies payload checksums, backs up the live
+files under `/root/elytrix-backups`, changes only the `sha1` field in the live
+ElytrixRP config, and leaves ModelEngine's config/cache and other assets alone.
+It targets `/root/RW_GRIEF` and `/root/RP` by default. A full server restart is
+required. `python3 tools/freakmodel-fix/test/test_install.py` tests installation
+in an isolated fixture; it does not exercise a real server.
 
 ## Server-generated wing asset sync
 
-The live ModelEngine 4.1.0 output for the current blueprint was supplied by the
-server operator. The two inner-wing JSONs are now the exact generated files,
-including the omission of zero-width-UV faces. The generator reorders elements,
-so asset validation matches cubes by geometry rather than array index. Existing
-item definitions, textures, atlas and other pack contents are unchanged.
+The live ModelEngine 4.1.0 output for the pre-3.2.9 blueprint was supplied by
+the server operator. The existing portions of the inner-wing JSONs retain that
+output, including the omission of zero-width-UV faces. The 3.2.9 root elements
+were appended using the same observed scale/UV convention, but have not been
+checked with the real generator. The generator reorders elements, so validation
+matches cubes by geometry rather than array index. Existing item definitions,
+textures, atlas and other pack contents are unchanged.
 
 This is a targeted resource synchronization, not a proven fix for the missing
 model cubes. Neither client loading nor the rotation and fit have been verified

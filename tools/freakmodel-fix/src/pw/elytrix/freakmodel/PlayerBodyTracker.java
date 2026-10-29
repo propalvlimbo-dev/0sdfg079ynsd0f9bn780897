@@ -18,8 +18,9 @@ public final class PlayerBodyTracker {
     private String worldName;
     private double previousX, previousZ, speed;
     private static final float MAX_VISUAL_LEAD_DEGREES = 12.0f;
+    private static final float MAX_REVERSAL_LEAD_DEGREES = 4.0f;
     private static final float VISUAL_LEAD_FACTOR = 0.5f;
-    private float bodyYaw, headYaw, turnSpeed;
+    private float bodyYaw, headYaw, turnSpeed, previousBodyStep;
     // Render targets are independent from the state of the body simulation.
     private float renderBodyYaw;
     private float packetBodyYaw;
@@ -52,11 +53,16 @@ public final class PlayerBodyTracker {
         return yaw - clamp(wrapDegrees(yaw - next), -50.0f, 50.0f);
     }
     /** Bounded visual lead for the two-tick display interpolation. */
-    private static float visualTarget(float body, float previous, float yaw, boolean eligible) {
+    private static float visualTarget(float body, float previous, float yaw,
+                                      float lastStep, boolean eligible) {
         if (!eligible) return body;
         float delta = wrapDegrees(body - previous);
-        float lead = clamp(delta * VISUAL_LEAD_FACTOR,
-                -MAX_VISUAL_LEAD_DEGREES, MAX_VISUAL_LEAD_DEGREES);
+        // Don't compound the predictive overshoot on an abrupt direction
+        // reversal. A small deadband ignores packet/position jitter.
+        boolean reversal = Math.abs(delta) > 1.0f && Math.abs(lastStep) > 1.0f
+                && delta * lastStep < 0.0f;
+        float limit = reversal ? MAX_REVERSAL_LEAD_DEGREES : MAX_VISUAL_LEAD_DEGREES;
+        float lead = clamp(delta * VISUAL_LEAD_FACTOR, -limit, limit);
         float result = body + lead;
         // Never predict outside the same head/body range used by the estimate.
         return yaw - clamp(wrapDegrees(yaw - result), -50.0f, 50.0f);
@@ -71,6 +77,7 @@ public final class PlayerBodyTracker {
         renderBodyYaw = packetBodyYaw = yaw;
         hasPacketBodyYaw = false;
         turnSpeed = 0;
+        previousBodyStep = 0;
         initialized = false;
         speed = 0;
         movingHoldTicks = airborneHoldTicks = swingTicks = 0;
@@ -101,7 +108,7 @@ public final class PlayerBodyTracker {
                 packetBodyYaw = headYaw;
             } else {
                 float preview = simulateBody(bodyYaw, headYaw, dx, dz, swingTicks);
-                packetBodyYaw = visualTarget(preview, bodyYaw, headYaw, canLead(player));
+                packetBodyYaw = visualTarget(preview, bodyYaw, headYaw, previousBodyStep, canLead(player));
             }
             hasPacketBodyYaw = true;
         }
@@ -142,8 +149,11 @@ public final class PlayerBodyTracker {
         // Apply only to what is rendered, not to the client's-body estimate.
         // The short lead partially compensates the retained two-tick SLERP;
         // it disappears immediately when the estimated body stops turning.
-        renderBodyYaw = visualTarget(bodyYaw, previousBody, yaw, canLead(player));
-        turnSpeed = Math.abs(wrapDegrees(bodyYaw - previousBody));
+        boolean eligibleForLead = canLead(player);
+        renderBodyYaw = visualTarget(bodyYaw, previousBody, yaw, previousBodyStep, eligibleForLead);
+        float bodyStep = wrapDegrees(bodyYaw - previousBody);
+        turnSpeed = Math.abs(bodyStep);
+        previousBodyStep = eligibleForLead ? bodyStep : 0;
         if (swingTicks > 0) --swingTicks;
         boolean inputMoving = false;
         try {
