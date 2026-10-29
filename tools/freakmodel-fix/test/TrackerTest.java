@@ -4,10 +4,10 @@ import pw.elytrix.freakmodel.PlayerBodyTracker;
 public class TrackerTest {
     static final World A = () -> "world", B = () -> "nether";
     static class FakePlayer implements Player {
-        World world=A; double x, z, vertical; float head, staleBody; boolean forward, flying, ground=true, vehicle; float vehicleYaw;
+        World world=A; double x, z, vertical; float head, staleBody; boolean forward, backward, left, right, flying, ground=true, vehicle; float vehicleYaw;
         public Location getLocation(Location l) { l.set(world,x,0,z,head); return l; }
         public float getBodyYaw(){return staleBody;}
-        public Input getCurrentInput(){return new Input(){ public boolean isForward(){return forward;} public boolean isBackward(){return false;} public boolean isLeft(){return false;} public boolean isRight(){return false;} };}
+        public Input getCurrentInput(){return new Input(){ public boolean isForward(){return forward;} public boolean isBackward(){return backward;} public boolean isLeft(){return left;} public boolean isRight(){return right;} };}
         public boolean isFlying(){return flying;} public boolean isGliding(){return false;} public boolean isOnGround(){return ground;} public boolean isInsideVehicle(){return vehicle;}
         public Entity getVehicle() { return vehicle ? l -> {l.set(world,x,0,z,vehicleYaw); return l;} : null; }
         public boolean isSwimming(){return false;} public boolean isSprinting(){return false;} public Vector getVelocity(){return new Vector(vertical);}
@@ -49,6 +49,39 @@ public class TrackerTest {
         p.head=30; t.resetToPlayer(p); p.head=80; t.notifyArmSwing(); t.stepServerTick(p); near(t.getBodyYaw(),45,"arm swing turns body");
         p.vehicle=true; p.vehicleYaw=120; p.head=120; t.stepServerTick(p); near(t.getBodyYaw(),120,"vehicle facing");
         p.vehicle=false; p.head=Float.NaN; t.stepServerTick(p); check(Float.isFinite(t.getBodyYaw()),"non-finite yaw");
+
+        // Packet previews are visible immediately but must not change the once-
+        // per-tick simulation, even when there are many packets in one tick.
+        FakePlayer move = new FakePlayer(); move.forward=true; move.left=true; move.right=true;
+        PlayerBodyTracker withPackets=new PlayerBodyTracker(), tickOnly=new PlayerBodyTracker();
+        withPackets.resetToPlayer(move); tickOnly.resetToPlayer(move);
+        move.head=90; move.x=-0.2;
+        Location sharp=new Location(A,0,0,0); sharp.set(A,move.x,0,move.z,move.head);
+        for(int i=0;i<25;i++) withPackets.stepFromPacket(move,sharp);
+        near(withPackets.getBodyYaw(),40,"sharp turn preview");
+        withPackets.stepServerTick(move); tickOnly.stepServerTick(move);
+        near(withPackets.getBodyYaw(),40,"sharp walking turn must not be double-counted");
+        near(withPackets.getBodyYaw(),tickOnly.getBodyYaw(),"packet preview vs tick-only turn");
+        check(withPackets.getMode()==PlayerBodyTracker.MovementMode.WALK,"W+A+D remains forward walking");
+        for (int i=0;i<80;i++) {
+            move.head=(i%4==0 ? 179 : i%4==1 ? -179 : i%4==2 ? 35 : -85);
+            move.x += i%3==0 ? 0.11 : -0.08;
+            move.z += i%2==0 ? 0.12 : -0.07;
+            sharp.set(A,move.x,0,move.z,move.head);
+            for (int j=0;j<5;j++) withPackets.stepFromPacket(move,sharp);
+            withPackets.stepServerTick(move); tickOnly.stepServerTick(move);
+            near(withPackets.getBodyYaw(),tickOnly.getBodyYaw(),"packet independent tick " + i);
+        }
+        FakePlayer keys=new FakePlayer(); keys.left=true; keys.right=true;
+        PlayerBodyTracker cancelled=new PlayerBodyTracker(); cancelled.resetToPlayer(keys);
+        for(int i=0;i<10;i++) cancelled.stepServerTick(keys);
+        check(cancelled.getMode()==PlayerBodyTracker.MovementMode.IDLE,"A+D alone cancel");
+        keys.left=false; keys.right=false; keys.forward=true; keys.backward=true;
+        for(int i=0;i<10;i++) cancelled.stepServerTick(keys);
+        check(cancelled.getMode()==PlayerBodyTracker.MovementMode.IDLE,"W+S alone cancel");
+        keys.backward=false; keys.left=true; keys.right=true;
+        cancelled.stepServerTick(keys);
+        check(cancelled.getMode()==PlayerBodyTracker.MovementMode.WALK,"W+A+D is forward");
         System.out.println("Tracker tests passed");
     }
 }

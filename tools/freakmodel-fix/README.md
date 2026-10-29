@@ -1,4 +1,4 @@
-# ElytrixFreakModel 3.2.6 compatibility patch
+# ElytrixFreakModel 3.2.7 compatibility patch
 
 The repository contained a binary-only 3.2.3 jar. Its main plugin class was
 compiled against a different `PlayerBodyTracker` and `WornAngelRig` than those
@@ -16,7 +16,17 @@ motion and arm swing, and resets the estimate on world changes and teleports.
 Small head-only turns do not immediately rotate the body. Version 3.2.6 also
 applies the bounded body correction directly on sharp move events, rather than
 waiting for the next server tick; duplicate packets cannot repeatedly advance
-it. The 3.2.4 binary compatibility fixes remain in place.
+it. In 3.2.6 that correction incorrectly mutated the previous tick's simulation
+state: on a turn from 0 to 90 degrees while moving forward, the packet correction
+made the next tick report 55 degrees instead of the tick-only result of 40.
+Version 3.2.7 keeps the immediate packet-time preview separate from the committed
+body yaw, so any number of packets cannot double-advance the simulation. Opposite
+input keys cancel for walking-animation detection (W+A+D is still forward). The
+3.2.4 binary compatibility fixes remain in place.
+
+This reduces a demonstrated estimation error, not the inherent viewer/client or
+network latency. The 1.21.10 live client and ModelEngine interpolation were not
+available for verification, so no claim of perfect tracking is made.
 
 ModelEngine attaches its display pivots to the player. In 3.2.6 the wing
 surfaces are shifted closer without moving the shared bone pivots; the atlas
@@ -33,7 +43,7 @@ To reproduce, use the unmodified jar from commit
 
 ```
 git show 20e2fa0364e2369316897f19a2d44ed47d0b8d31:plugins/ElytrixFreakModel.jar > /tmp/freakmodel-3.2.3.jar
-JAVA=/path/to/java ECJ=/path/to/ecj.jar tools/freakmodel-fix/build.sh /tmp/freakmodel-3.2.3.jar /tmp/freakmodel-3.2.6.jar
+JAVA=/path/to/java ECJ=/path/to/ecj.jar tools/freakmodel-fix/build.sh /tmp/freakmodel-3.2.3.jar /tmp/freakmodel-3.2.7.jar
 ```
 
 The script tests the tracker with minimal Bukkit stubs and checks plugin method

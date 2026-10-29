@@ -18,6 +18,9 @@ public final class PlayerBodyTracker {
     private String worldName;
     private double previousX, previousZ, speed;
     private float bodyYaw, headYaw, turnSpeed;
+    // An event-time visual preview must not alter the tick simulation's state.
+    private float packetBodyYaw;
+    private boolean hasPacketBodyYaw;
     private int movingHoldTicks, airborneHoldTicks, swingTicks;
     private MovementMode mode = MovementMode.IDLE;
 
@@ -36,6 +39,8 @@ public final class PlayerBodyTracker {
     public synchronized void resetToYaw(float yaw) {
         if (!Float.isFinite(yaw)) return;
         bodyYaw = headYaw = yaw;
+        packetBodyYaw = yaw;
+        hasPacketBodyYaw = false;
         turnSpeed = 0;
         initialized = false;
         speed = 0;
@@ -56,17 +61,15 @@ public final class PlayerBodyTracker {
     }
     public synchronized void stepFromPacket(Player player, Location to) {
         if (player == null || to == null || to.getWorld() == null) return;
-        // React immediately to the portion of a sharp look turn that the
-        // client's body cannot absorb as head rotation. This is a bounded
-        // correction, not a second simulation step per movement packet.
+        // Show a bounded correction immediately, but leave the last completed
+        // tick's bodyYaw unchanged. Otherwise the next tick applies its movement
+        // smoothing on top of the packet correction and rotates the body twice.
         headYaw = validYaw(to.getYaw(), headYaw);
+        hasPacketBodyYaw = false;
         if (initialized && to.getWorld().getName().equals(worldName) && !player.isInsideVehicle()) {
             float delta = wrapDegrees(headYaw - bodyYaw);
-            float correction = delta - clamp(delta, -50.0f, 50.0f);
-            if (correction != 0.0f) {
-                bodyYaw += correction;
-                turnSpeed = Math.abs(correction);
-            }
+            packetBodyYaw = bodyYaw + delta - clamp(delta, -50.0f, 50.0f);
+            hasPacketBodyYaw = true;
         }
     }
     public synchronized void stepServerTick(Player player) {
@@ -75,6 +78,7 @@ public final class PlayerBodyTracker {
         if (loc.getWorld() == null) return;
         float yaw = validYaw(loc.getYaw(), headYaw);
         String world = loc.getWorld().getName();
+        hasPacketBodyYaw = false;
         if (!initialized || !world.equals(worldName)) {
             resetToPlayer(player);
             return;
@@ -116,7 +120,10 @@ public final class PlayerBodyTracker {
         boolean inputMoving = false;
         try {
             Input input = player.getCurrentInput();
-            inputMoving = input != null && (input.isForward() || input.isBackward() || input.isLeft() || input.isRight());
+            // Opposing keys cancel on the same axis. W+A+D is still forward,
+            // while A+D (or W+S) alone must not start a walking animation.
+            inputMoving = input != null && ((input.isForward() != input.isBackward())
+                    || (input.isLeft() != input.isRight()));
         } catch (LinkageError ignored) { /* API compatibility */ }
         boolean flying = player.isFlying() || player.isGliding();
         boolean airborne = !player.isOnGround() && !player.isInsideVehicle() && !player.isSwimming()
@@ -131,7 +138,7 @@ public final class PlayerBodyTracker {
     public synchronized void notifyArmSwing() { swingTicks = 6; }
     // Preserved for compatibility; swing time is advanced exactly once per tick.
     public synchronized void decayArmSwing() { }
-    public synchronized float getBodyYaw() { return bodyYaw; }
+    public synchronized float getBodyYaw() { return hasPacketBodyYaw ? packetBodyYaw : bodyYaw; }
     public synchronized float getRawHeadYaw() { return headYaw; }
     public synchronized float getLastTickTurnSpeed() { return turnSpeed; }
     public synchronized MovementMode getMode() { return mode; }
