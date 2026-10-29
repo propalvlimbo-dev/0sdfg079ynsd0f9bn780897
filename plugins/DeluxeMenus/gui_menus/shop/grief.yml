@@ -3,6 +3,32 @@ open_command: grief
 register_command: true
 size: 54
 items:
+  'wind_charge':
+    material: wind_charge
+    amount: 32
+    slot: 4
+    display_name: '&#F8BEFBЗаряд ветра &#AAAAAA(x32)'
+    lore:
+      - ''
+      - '&#AAAAAAПри нажатии ПКМ:'
+      - '&#5555FFВыпускает мощный поток ветра,'
+      - '&#5555FFподбрасывающий вас и врагов'
+      - ''
+      - '&#AAAAAA===================================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB399 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 399'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 399'
+      - '[console] minecraft:give %player_name% minecraft:wind_charge 32'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'shield':
     material: shield
     slot: 12
