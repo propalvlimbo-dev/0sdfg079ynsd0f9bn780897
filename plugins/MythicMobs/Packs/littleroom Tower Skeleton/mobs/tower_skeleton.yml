@@ -1,0 +1,241 @@
+﻿#########################################################
+## Developed by Little Room, patreon.com/littleroomdev ##
+#########################################################
+
+TOWER_SKELETON: 
+  Type: IRON_GOLEM
+  Display: "Tower Skeleton"
+  Health: 750
+  Damage: 2
+  AITargetSelectors:
+  - player
+  AIGoalSelectors:
+  #- clear
+  Modules:
+    ThreatTable: true
+  Options:
+    Silent: true
+    PreventOtherDrops: true
+    KnockbackResistance: 1
+    FollowRange: 64
+    Despawn: NEVER
+  Skills:
+  - CancelEvent{sync=true} @self ~onInteract
+  - CancelEvent{sync=true} @self ~onAttack
+  - model{m=tower_skeleton;d=false;lp=true;step=1;ride=true;usm=true} @self ~onSpawn
+  - model{m=tower_skeleton;d=false;lp=true;step=1;ride=true;usm=true} @self ~onLoad
+  - skill{s=[
+    - segment{m=tower_skeleton;p=cape_4;bounded=true;angle=50;extend=0.01}
+    - segment{m=tower_skeleton;p=cape_1;bounded=true;angle=50;extend=0.01}
+    - bodyrotation{mh=30;mb=30;rde=40;rdu=60}
+    - setspeed{t=walking;s=1}
+    - state{s=passive;p=2}
+    - partvis{m=tower_skeleton;p=hand_souls;em=false}
+    - partvis{m=tower_skeleton;p=shard;em=false;child=true}
+    - partvis{m=tower_skeleton;p=shield_debris;child=true}
+    - partvis{m=tower_skeleton;p=right_hand_shield}
+    - partvis{m=tower_skeleton;p=sword}
+    - partvis{m=tower_skeleton;p=shield}
+    - partvis{m=tower_skeleton;p=death_sword_prop}
+    - brightness{p=shard;em=false;b=15;s=15}
+    - brightness{p=hand_souls;em=false;b=15;s=15}
+    - setvar{var=caster.shieldup;val=false;type=STRING}
+    - setvar{var=caster.shieldhp;val=500}
+    - setvar{var=caster.shieldstate;val=1}
+    ]} @self ~onSpawn
+  - skill{s=[
+    - segment{m=tower_skeleton;p=cape_4;bounded=true;angle=50;extend=0.01}
+    - segment{m=tower_skeleton;p=cape_1;bounded=true;angle=50;extend=0.01}
+    - partvis{m=tower_skeleton;p=hand_souls;em=false} ?!varequals{var=caster.soul_hand;val=true}
+    - partvis{m=tower_skeleton;p=shard;em=false;child=true} ?!varequals{var=caster.soul_sword;val=true}
+    - partvis{m=tower_skeleton;p=shield;em=false;child=true} ?varequals{var=caster.shieldstate;val=5}
+    - partvis{m=tower_skeleton;p=right_hand_shield;em=false} !?varequals{var=caster.awaken;val=true}
+    - partvis{m=tower_skeleton;p=sword} !?varequals{var=caster.awaken;val=true}
+    - partvis{m=tower_skeleton;p=shield} !?varequals{var=caster.awaken;val=true}
+    - partvis{m=tower_skeleton;p=shield_debris;child=true}
+    - partvis{m=tower_skeleton;p=death_sword_prop}
+    - barSet{name="TOWERSKELETON";display="<caster.name>";value=<caster.hp>/<caster.mhp>;color=PURPLE;style=SOLID} ?varequals{var=caster.awake;val=true}
+    - bodyrotation{mh=30;mb=30;rde=40;rdu=60}
+    - setspeed{t=walking;s=1}
+    - state{s=passive;p=2}
+    - brightness{p=shard;em=false;b=15;s=15}
+    - brightness{p=hand_souls;em=false;b=15;s=15}
+    - defaultstate{t=idle;s=idle_no_shield} ?varequals{var=caster.shieldstate;val=5}
+    - defaultstate{t=walk;s=walk_no_shield} ?varequals{var=caster.shieldstate;val=5}
+    ]} @self ~onLoad
+  - throw{v=3;vy=-1} @eir{r=24;conditions=[ - boundingboxesoverlap]} ~onTimer:1
+  - e:p{p=sneeze;a=1;hs=.25;vs=.25;y=0} @modelpart{pid=left_hand_finger_1_3} ~onTimer:1 ?varequals{var=caster.soul_hand;val=true}
+  - e:p{p=sneeze;a=1;hs=.25;vs=.25;y=0} @modelpart{pid=shard;em=false} ~onTimer:1 ?varequals{var=caster.soul_sword;val=true}
+  - skill{s=TOWERSKELETON_spawn} @self ~onSpawn
+  - skill{s=TOWERSKELETON_invulnerable_pre_awaken} @self ~onTimer:10
+  - skill{s=TOWERSKELETON_awaken} @self ~onTimer:10
+  - skill{s=TOWERSKELETON_damage} @self ~onDamaged
+  - skill{s=TOWERSKELETON_attack_from_behind_shield} @self ~onDamaged
+  - skill{s=TOWERSKELETON_put_up_shield} @self ~onTimer:20
+  - skill{s=TOWERSKELETON_absord_damage_shield} @self ~onTimer:10
+  - skill{s=TOWERSKELETON_put_down_shield} @self ~onTimer:20 >75%
+  - skill{s=TOWERSKELETON_damage_shield} @trigger ~onDamaged
+  - skill{s=TOWERSKELETON_shield_flamethrower} @target ~onTimer:20
+  - skill{s=TOWERSKELETON_bash_shield} @target ~onTimer:20
+  - skill{s=TOWERSKELETON_combo_shield} @target ~onTimer:20 <75%
+  - skill{s=TOWERSKELETON_slam_shield} @target ~onTimer:20
+  - skill{s=TOWERSKELETON_stomp} @target ~onTimer:20
+  - skill{s=TOWERSKELETON_stab_sweep} @target ~onTimer:20
+  - skill{s=TOWERSKELETON_scream} @target ~onTimer:20
+  - skill{s=TOWERSKELETON_charge_shield} @target ~onTimer:20
+  - skill{s=TOWERSKELETON_charge_shield_stop} @target ~onTimer:1
+  - skill{s=TOWERSKELETON_stun_hit} @self ~onDamaged
+  - skill{s=TOWERSKELETON_no_shield_combo} @target ~onTimer:20
+  - skill{s=TOWERSKELETON_no_shield_combo_2} @target ~onTimer:20
+  - skill{s=TOWERSKELETON_grab_player} @target ~onTimer:20
+  - skill{s=TOWERSKELETON_imbue_sword} @self ~onTimer:1 <35%
+  - skill{s=TOWERSKELETON_soul_sword_combo_1} @target ~onTimer:20
+  - skill{s=TOWERSKELETON_soul_sword_combo_2} @target ~onTimer:20
+  - skill{s=TOWERSKELETON_soul_sword_combo_3} @target ~onTimer:20
+  - skill{s=TOWERSKELETON_soul_sword_grab_player} @target ~onTimer:20
+  - skill{s=TOWERSKELETON_soul_sword_stomp} @target ~onTimer:20
+  - skill{s=TOWERSKELETON_death} @self ~onDeath
+  
+TOWER_SKELETON_MINION:
+  Type: HUSK
+  Health: 10
+  Damage: 1
+  AITargetSelectors:
+  - player
+  Options:
+    Silent: true
+    PreventOtherDrops: true
+    KnockbackResistance: 1
+    FollowRange: 64
+    Despawn: NEVER
+  Skills:
+  - CancelEvent{sync=true} @self ~onInteract
+  - CancelEvent{sync=true} @self ~onAttack
+  - model{m=tower_skeleton_minion;d=false;lp=true;step=1;ride=true;usm=true} @self ~onSpawn
+  - model{m=tower_skeleton_minion;d=false;lp=true;step=1;ride=true;usm=true} @self ~onLoad
+  - brightness{b=15;s=15} @self ~onSpawn
+  - skill{s=TOWERSKELETON_minion_attack} @target ~onTimer:10
+  - skill{s=TOWERSKELETON_minion_toss_up} @self ~onTimer:1
+  - skill{s=TOWERSKELETON_minion_toss_up_land} @self ~onTimer:1
+  - e:p{p=soul;a=15;hs=.25;vs=.25;y=1} @self ~onDeath
+  - e:p{p=flash;a=1;y=1} @self ~onDeath
+  
+  
+TOWER_SKELETON_THRONE: 
+  Type: ARMOR_STAND
+  Display: "Tower Skeleton Throne"
+  Options:
+    Invincible: true
+    Despawn: NEVER
+    Marker: true
+  Skills:
+  - CancelEvent{sync=true} @self ~onInteract
+  - model{m=tower_skeleton_throne;d=false;lp=true;step=1} @self ~onSpawn
+  - e:p{p=sneeze;a=200;hs=3;vs=.25;y=0} @modelpart{pid=maw} ~onTimer:5
+  - brightness{b=6;s=6} @self ~onSpawn
+
+  
+TOWER_SKELETON_BROKEN_SHIELD: 
+  Type: ARMOR_STAND
+  Display: "Tower Skeleton Shield"
+  Options:
+    Invincible: true
+    Despawn: NEVER
+  Skills:
+  - CancelEvent{sync=true} @self ~onInteract
+  - skill{s=[
+    - model{m=tower_skeleton_shield_break;init=false;d=false;lp=true;step=1}
+    - renderinit{m=tower_skeleton_shield_break}
+    - brightness{p=explosion;em=false;b=15;s=15}
+    - blockmask{m=LIGHT;d=3;r=2;na=false;oa=true} @modelpart{pid=shield_broken}
+    - particle{p=dust_color_transition;color=#48feae;color2=#000000;size=1;hs=.25;vs=.25;repeat=<random.20to30>;repeati=1} @modelpart{pid=piece;em=false}
+    - e:p{p=flash;a=1} @modelpart{pid=shield_broken}
+    - remapmodel{m=tower_skeleton_shield_break;n=tower_skeleton_parts;delay=25}
+    - remapmodel{m=tower_skeleton_shield_break;n=tower_skeleton_shield_break;delay=30}
+    - remapmodel{m=tower_skeleton_shield_break;n=tower_skeleton_parts;delay=35}
+    - remapmodel{m=tower_skeleton_shield_break;n=tower_skeleton_shield_break;delay=40}
+    - remapmodel{m=tower_skeleton_shield_break;n=tower_skeleton_parts;delay=43}
+    - remove{delay=70}
+    ]} @self ~onSpawn
+
+  
+TOWERSKELETON_flamethrower_fx:
+  Type: TEXT_DISPLAY
+  Display: "PARTICLE"
+  Options:
+    Collidable: false
+  DisplayOptions:
+    Text: "⛿"
+    BackgroundColor: 0000000000
+    BlockLight: 15
+    SkyLight: 15
+    Billboard: CENTER
+    Scale: 4,4,4
+  Skills:
+  - displaytransformation{action=set;transformation=translation;value=<random.float.-0.15to0.15>,<random.float.-0.15to0.15>,<random.float.-0.15to0.15>} @self ~onSpawn
+  - settextdisplay{text="⛾";delay=2} @self ~onSpawn
+  - settextdisplay{text="⛽";delay=4} @self ~onSpawn
+  - settextdisplay{text="⛼";delay=6} @self ~onSpawn
+  - settextdisplay{text="⛻";delay=8} @self ~onSpawn
+  - settextdisplay{text="⛺";delay=10} @self ~onSpawn
+  - settextdisplay{text="⛹";delay=12} @self ~onSpawn
+  - settextdisplay{text="⛸";delay=14} @self ~onSpawn
+  - settextdisplay{text="🁉";delay=16} @self ~onSpawn
+  - settextdisplay{text="🁊";delay=18} @self ~onSpawn
+  - settextdisplay{text=" ";delay=20} @self ~onSpawn
+  - remove{delay=20} @self ~onSpawn
+  
+  
+TOWER_SKELETON_SLASH_FX:
+  Type: ARMOR_STAND
+  Display: "Tower Skeleton Slash"
+  Options:
+    Marker: true
+    Collidable: false
+  Skills:
+  - model{m=tower_skeleton_slash_fx;usm=true;d=false;scale=1} @self ~onSpawn
+  - model{m=tower_skeleton_slash_fx;usm=true;d=false;scale=1} @self ~onLoad
+  - brightness{b=15;s=15} @self ~onSpawn
+  - effect:blockmask{m=LIGHT;r=2;d=10;oa=true;na=false} @self ~onSpawn
+  - BodyRotation{mh=0;mb=0;rdu=0;rde=0} @self ~onSpawn
+  - remove{delay=30} @self ~onSpawn
+  
+  
+TOWER_SKELETON_SPAWNER_HOLE: 
+  Type: ARMOR_STAND
+  Display: "Tower Skeleton Spawner Hole"
+  Options:
+    Marker: true
+    Invincible: true
+    Despawn: NEVER
+  Skills:
+  - CancelEvent{sync=true} @self ~onInteract
+  - model{m=tower_skeleton_summon_hole;d=false;lp=true;step=1} @self ~onSpawn
+  - e:p{p=sneeze;a=10;hs=0.5;vs=.1;y=0} @self ~onTimer:5
+  - brightness{b=15;s=15} @self ~onSpawn
+  - remove{delay=100} @self ~onSpawn
+  - summon{t=TOWER_SKELETON_MINION;delay=<random.30to60>} @self ~onSpawn
+  
+  
+TOWERSKELETON_marker:
+  Type: MARKER
+  Display: "Tower Skeleton Marker"
+
+  
+TOWER_SKELETON_CHEST: 
+  Type: ARMOR_STAND
+  Display: "Tower Skeleton Chest"
+  Options:
+    Invincible: true
+    Despawn: NEVER
+  Skills:
+  - CancelEvent{sync=true} @self ~onInteract
+  - model{m=tower_skeleton_chest;d=false;lp=true;step=1} @self ~onSpawn
+  - brightness{b=15;s=15} @self ~onSpawn
+  - blockmask{m=LIGHT;d=3;r=2;na=false;oa=true} @modelpart{pid=base} @self ~onSpawn
+  - throw{v=1;vy=1} @IIR{r=24;conditions=[ - boundingboxesoverlap]} ~onTimer:1
+  - dropitem{i=TOWERSKELETON_sword;delay=40} @self ~onSpawn
+  - dropitem{i=TOWERSKELETON_shield;delay=50} @self ~onSpawn
+  - dropitem{i=TOWERSKELETON_helmet;delay=60} @self ~onSpawn
+  - remove{delay=80} @self ~onSpawn
+   

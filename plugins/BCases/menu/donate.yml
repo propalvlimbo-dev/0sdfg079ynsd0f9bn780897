@@ -1,0 +1,44 @@
+id: bcases:donate
+provider: bcases:case
+type: CHEST
+size: 54
+title: '&fꈁꀀꈂꍅꈂꀁ&fꈃꄖ'
+items:
+  open_case:
+    slots:
+    - 12-14
+    - 21-23
+    - 30-32
+    material: STRUCTURE_VOID
+    model_data: 10000
+    display_name: '&#F8BEFBОткрыть кейс'
+    ticking: true
+    tick-speed: 20
+    lore:
+    - '&7Количество кейсов: &f&l%bcases_keys_count_of_type_donate%'
+    - '&7Открыв этот кейс, вы &fгарантированно получите'
+    - '&7случайный &fдонат &7на сервере. У нас'
+    - '&7Нет подкрутки, только &fчестный рандом'
+    - ''
+    - '&f&lВнимание! &7Шансы в кейсах увеличены.'
+    - '&7У вас есть &fвозможность &7получить крутой'
+    - '&7донат за сущие копейки!'
+    - ''
+    - '&fПокупка &7> &#F8BEFBhttps://elytrix.pw'
+    on_click:
+      requirements:
+      - check: '%bcases_keys_count_of_type_donate% < 1'
+        commands:
+        - '[MESSAGE] &7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &cУ вас нет ключей от этого кейса! &7Покупка: &#F8BEFBhttps://elytrix.pw'
+        - '[SOUND] BLOCK_NOTE_BLOCK_BASS 1.0 1.0'
+        - '[CLOSE]'
+        - '[BREAK]'
+      - check: '{playing} == true'
+        commands:
+        - '[MESSAGE] &7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &cЭтот кейс сейчас открывает другой игрок!'
+        - '[CLOSE]'
+        - '[BREAK]'
+        deny_commands:
+        - '[TAKE_KEY] donate'
+        - '[PLAY] wheel_yz donate'
+        - '[CLOSE]'

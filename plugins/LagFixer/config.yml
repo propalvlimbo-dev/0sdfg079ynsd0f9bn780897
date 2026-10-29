@@ -1,0 +1,26 @@
+# =============================================================
+# LagFixer — Оптимизация TPS и авто-очистка сервера Elytrix (1.21.10)
+# Замена устаревшего ClearLag | https://elytrix.pw
+# =============================================================
+
+main:
+  prefix: "&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &f"
+  prefix_hover: false
+  threads: 1
+  monitor_interval: 5
+  errors_reporter: false
+  updater: false
+  warnings: false
+  bStats: false
+
+  command:
+    permission: "lagfixer.command"
+    aliases:
+      - lf
+      - antilag
+      - clearlag
+      - lag
+
+  map:
+    enabled: false
+    interval: 5

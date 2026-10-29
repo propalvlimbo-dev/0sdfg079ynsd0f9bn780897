@@ -1,0 +1,159 @@
+wolfmob41spawn:
+  Type: ARMOR_STAND
+  Display: '&6Graceless Omen spawn'
+  AITargetSelectors:
+  - 0 clear
+  AIGoalSelectors:
+  - 0 clear
+  Options:
+    NoAI: true
+    Marker: true
+    ApplyInvisibility: true
+    Invisible: true
+  Skills:
+  - skill{s=wolfmob41spawn} @self ~onTimer:20
+  - setrotation{y=90} @self ~onSpawn
+
+
+wolfmob41:
+  Type: husk
+  Display: '&6Graceless Omen'
+  Health: 1500
+  Damage: 6
+  AIGoalSelectors:
+  - 0 clear
+  - 1 meleeattack
+  - 2 randomstroll
+  AITargetSelectors:
+  - 0 clear
+  - 1 player
+  Modules:
+    ThreatTable: true
+  Options:
+    AlwaysShowName: false
+    PreventOtherDrops: true
+    Silent: true
+    FollowRange: 50
+    PreventItemPickup: true
+    PreventRandomEquipment: true
+    MovementSpeed: 0.23
+    KnockbackResistance: 1
+    PreventJockeyMounts: true
+    NoAI: true
+  BossBar:
+    Enabled: false
+    Title: '&6Graceless Omen'
+    Range: 40
+    Color: RED
+    Style: SEGMENTED_10
+  Skills:
+  - setAI{ai=true;delay=80} @self ~onSpawn
+  - gcd{ticks=100} @self ~onSpawn
+  - potion{type=DAMAGE_RESISTANCE;duration=100;level=100;p=false} @self ~onSpawn
+  - sound{s=entity.player.attack.sweep;p=1.2;v=1.8;delay=67} @self ~onSpawn
+  - model{mid=wolfmob41} @self ~onSpawn
+  - bodyclamp{m=wolfmob41;c=0} @self ~onSpawn
+  - CancelEvent{sync=true} @self ~onAttack
+  - partvisibility{m=wolfmob41;p=light_dagger;v=false;delay=1} @self ~onSpawn
+  - partvisibility{m=wolfmob41;p=light_hammer;v=false;delay=1} @self ~onSpawn
+  - partvisibility{m=wolfmob41;p=light_sword;v=false;delay=1} @self ~onSpawn
+  - partvisibility{m=wolfmob41;p=light_spear;v=false;delay=1} @self ~onSpawn
+  - skill{s=wolfmob41sword_swing_thrust} @target ~onTimer:40 0.7
+  - skill{s=wolfmob41attack} @target ~onTimer:10 
+  - skill{s=wolfmob41range} @target ~onTimer:10 
+  - skill{s=wolfmob41death} @self ~onDeath
+
+wolfmob41_surround:
+  Type: ARMOR_STAND
+  Display: '&6wolfmob41_surround'
+  AITargetSelectors:
+  - 0 clear
+  AIGoalSelectors:
+  - 0 clear
+  Options:
+    NoAI: true
+    Marker: true
+    ApplyInvisibility: true
+    Invisible: true
+  Skills:
+  - model{mid=wolfmob41_surround} @self ~onSpawn
+  - bodyclamp{m=wolfmob41_surround;c=0} @self ~onSpawn
+  - remove{delay=66} @self ~onSpawn
+  - effect:particles{particle=reddust;color=#56336e;amount=40;hs=0.7;vs=0.2;y=0.1} @self ~onTimer:5
+  - effect:particles{particle=reddust;color=#56336e;amount=80;hs=0.9;vs=0.6;y=0.7;s=0.2} @self ~onDeath
+  - effect:particles{particle=smoke;amount=10;hs=0.7;vs=0.2;y=0.1;s=0.1} @self ~onTimer:3
+  
+wolfmob41dagger:
+  Type: ARMOR_STAND
+  Display: '&6wolfmob41_dagger'
+  AITargetSelectors:
+  - 0 clear
+  AIGoalSelectors:
+  - 0 clear
+  Options:
+    NoAI: true
+    Marker: true
+    ApplyInvisibility: true
+    Invisible: true
+  Skills:
+  - model{mid=wolfmob41dagger} @self ~onSpawn
+  - bodyclamp{m=wolfmob41dagger;c=0} @self ~onSpawn
+
+wolfmob41spear:
+  Type: ARMOR_STAND
+  Display: '&6wolfmob41spear'
+  AITargetSelectors:
+  - 0 clear
+  AIGoalSelectors:
+  - 0 clear
+  Options:
+    NoAI: true
+    Marker: true
+    ApplyInvisibility: true
+    Invisible: true
+  Skills:
+  - model{mid=wolfmob41spear} @self ~onSpawn
+  - bodyclamp{m=wolfmob41spear;c=0} @self ~onSpawn
+  
+wolfmob41spearvfx:
+  Type: ARMOR_STAND
+  Display: '&6wolfmob41spearvfx'
+  AITargetSelectors:
+  - 0 clear
+  AIGoalSelectors:
+  - 0 clear
+  Options:
+    NoAI: true
+    Marker: true
+    ApplyInvisibility: true
+    Invisible: true
+  Skills:
+  - model{mid=wolfmob41spearvfx} @self ~onSpawn
+  - bodyclamp{m=wolfmob41spearvfx;c=0} @self ~onSpawn
+  - effect:particles{particle=reddust;color=#e7c660;amount=10;hs=0.5;vs=0.1;y=0.1} @self ~onSpawn
+  - remove{delay=50} @self ~onSpawn
+  
+wolfmob41swordfall:
+  Type: ARMOR_STAND
+  Display: '&6swordfall'
+  AITargetSelectors:
+  - 0 clear
+  AIGoalSelectors:
+  - 0 clear
+  Options:
+    NoAI: true
+    Marker: true
+    ApplyInvisibility: true
+    Invisible: true
+  Skills:
+  - model{mid=wolfmob41swordfall} @self ~onSpawn
+  - bodyclamp{m=wolfmob41swordfall;c=0} @self ~onSpawn
+  - changepart{m=wolfmob41swordfall;pid=bone;nm=wolfmob41swordfallvfx;npid=bone;delay=8} @self ~onSpawn
+  - changepart{m=wolfmob41swordfall;pid=bone;nm=wolfmob41swordfallvfx;npid=bone2;delay=9} @self ~onSpawn
+  - changepart{m=wolfmob41swordfall;pid=bone;nm=wolfmob41swordfallvfx;npid=bone3;delay=10} @self ~onSpawn
+  - changepart{m=wolfmob41swordfall;pid=bone;nm=wolfmob41swordfallvfx;npid=bone4;delay=11} @self ~onSpawn
+  - changepart{m=wolfmob41swordfall;pid=bone;nm=wolfmob41swordfallvfx;npid=bone5;delay=12} @self ~onSpawn
+  - remove{delay=13} @self ~onSpawn
+  - effect:spin{duration=1;velocity=30} @self ~onSpawn 0.3
+  - effect:spin{duration=1;velocity=50} @self ~onSpawn 0.3
+  - skill{s=wolfmob41_lightsword_fall;delay=8} @self ~onSpawn

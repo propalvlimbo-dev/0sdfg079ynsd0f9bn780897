@@ -1,0 +1,87 @@
+menu-slot: 10
+cooldown-hours: 24
+permission: quest.fish
+chain: fish
+result:
+  ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: FIREWORK_STAR
+  meta:
+    ==: ItemMeta
+    meta-type: FIREWORK_EFFECT
+    display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Анти
+      Полет"}],"text":""}'
+    lore:
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"red","text":"Проклятье
+      утраты"}],"text":""}'
+    - '{"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Когда
+      во второй руке"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"При
+      нажатии SHIFT:"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"Запрещает
+      полеты в радиусе 16 блоков"}],"text":""}'
+    enchants:
+      VANISHING_CURSE: 1
+    ItemFlags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    - HIDE_DESTROYS
+    - HIDE_PLACED_ON
+    - HIDE_POTION_EFFECTS
+    - HIDE_DYE
+    PublicBukkitValues:
+      minecraft:anti_fly: ANTI_FLY
+ingredients:
+  '0':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHER_STAR
+  '1':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: ENCHANTED_GOLDEN_APPLE
+  '2':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BUBBLE_CORAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Осколок Энда"}],"text":""}'
+      custom-model-data: 1001
+  '3':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: FIREWORK_ROCKET
+  '4':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BUBBLE_CORAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Осколок Энда"}],"text":""}'
+      custom-model-data: 1001
+  '5':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: FIREWORK_ROCKET
+  '6':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BUBBLE_CORAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Осколок Энда"}],"text":""}'
+      custom-model-data: 1001
+  '7':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: ENCHANTED_GOLDEN_APPLE
+  '8':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHER_STAR

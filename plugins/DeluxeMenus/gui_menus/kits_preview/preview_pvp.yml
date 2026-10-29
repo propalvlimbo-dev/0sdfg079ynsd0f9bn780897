@@ -1,0 +1,174 @@
+menu_title: §fꈁꀀꈂꍗꈂꀁ§fꈃꄑ
+open_command: kitpreview_pvp
+register_command: true
+size: 54
+items:
+  armor_0:
+    slot: 27
+    amount: 1
+    material: DIAMOND_BOOTS
+    display_name: '&#F8BEFB&lБотинки PvP'
+    enchantments:
+    - PROTECTION;4
+    - FEATHER_FALLING;4
+    - DEPTH_STRIDER;3
+    - UNBREAKING;3
+  armor_1:
+    slot: 18
+    amount: 1
+    material: DIAMOND_LEGGINGS
+    display_name: '&#F8BEFB&lПоножи PvP'
+    enchantments:
+    - PROTECTION;4
+    - UNBREAKING;3
+  armor_2:
+    slot: 9
+    amount: 1
+    material: DIAMOND_CHESTPLATE
+    display_name: '&#F8BEFB&lНагрудник PvP'
+    enchantments:
+    - PROTECTION;4
+    - UNBREAKING;3
+  armor_3:
+    slot: 0
+    amount: 1
+    material: DIAMOND_HELMET
+    display_name: '&#F8BEFB&lШлем PvP'
+    enchantments:
+    - PROTECTION;4
+    - RESPIRATION;3
+    - AQUA_AFFINITY;1
+    - UNBREAKING;3
+  offhand_item:
+    slot: 36
+    amount: 1
+    material: SHIELD
+    enchantments:
+    - UNBREAKING;3
+  kit_badge:
+    material: cyan_shulker_box
+    slot: 45
+    display_name: '&#AAAAAAНабор &#F8BEFB&lP&#FAD8FC&lV&#FFFFFF&lP'
+    lore:
+    - '&8Предпросмотр набора'
+    - ''
+    - '&7Слева отображается броня и'
+    - '&7предмет второй руки (щит/тотем).'
+    - '&7Справа — всё содержимое набора!'
+  loot_0:
+    slot: 2
+    amount: 1
+    material: DIAMOND_SWORD
+    display_name: '&#F8BEFB&lБоевой Меч PvP'
+    enchantments:
+    - SHARPNESS;4
+    - SWEEPING_EDGE;3
+    - UNBREAKING;3
+  loot_1:
+    slot: 3
+    amount: 1
+    material: BOW
+    display_name: '&#F8BEFB&lБоевой Лук PvP'
+    enchantments:
+    - POWER;4
+    - PUNCH;1
+    - UNBREAKING;3
+  loot_2:
+    slot: 4
+    amount: 16
+    material: GOLDEN_APPLE
+  loot_3:
+    slot: 5
+    amount: 16
+    material: ENDER_PEARL
+  loot_4:
+    slot: 6
+    amount: 16
+    material: CHORUS_FRUIT
+  loot_5:
+    slot: 7
+    amount: 32
+    material: GOLDEN_CARROT
+  loot_6:
+    slot: 8
+    amount: 1
+    material: TOTEM_OF_UNDYING
+  loot_7:
+    slot: 11
+    amount: 1
+    material: TOTEM_OF_UNDYING
+  loot_8:
+    slot: 12
+    amount: 1
+    material: TOTEM_OF_UNDYING
+  loot_9:
+    slot: 13
+    amount: 1
+    material: TOTEM_OF_UNDYING
+  loot_10:
+    slot: 14
+    amount: 1
+    material: POTION
+    display_name: '&cЗелье Силы II &7(1:30)'
+    lore:
+    - '&9Сила II (1:30)'
+  loot_11:
+    slot: 15
+    amount: 1
+    material: POTION
+    display_name: '&cЗелье Силы II &7(1:30)'
+    lore:
+    - '&9Сила II (1:30)'
+  loot_12:
+    slot: 16
+    amount: 1
+    material: POTION
+    display_name: '&bЗелье Скорости II &7(1:30)'
+    lore:
+    - '&9Скорость II (1:30)'
+  loot_13:
+    slot: 17
+    amount: 1
+    material: POTION
+    display_name: '&bЗелье Скорости II &7(1:30)'
+    lore:
+    - '&9Скорость II (1:30)'
+  loot_14:
+    slot: 20
+    amount: 1
+    material: POTION
+    display_name: '&6Зелье Огнестойкости &7(8:00)'
+    lore:
+    - '&9Огнестойкость (8:00)'
+  loot_15:
+    slot: 21
+    amount: 1
+    material: POTION
+    display_name: '&6Зелье Огнестойкости &7(8:00)'
+    lore:
+    - '&9Огнестойкость (8:00)'
+  loot_16:
+    slot: 22
+    amount: 64
+    material: ARROW
+  btn_back:
+    material: structure_void
+    slots:
+    - 47
+    - 48
+    display_name: '&#F8BEFB◄ Назад к списку наборов'
+    lore:
+    - '&7Нажмите, чтобы вернуться в &f/kits'
+    click_commands:
+    - '[openguimenu] kits'
+  btn_claim:
+    material: structure_void
+    slots:
+    - 50
+    - 51
+    display_name: '&#55FF55✔ Получить этот набор'
+    lore:
+    - '&7Нажмите, чтобы взять набор'
+    click_commands:
+    - '[close]'
+    - '[player] kit pvp'

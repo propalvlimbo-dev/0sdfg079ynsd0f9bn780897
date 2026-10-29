@@ -1,0 +1,84 @@
+claim:
+  # Авто-расширение привата от бедрока (-64) до неба (319) = 384 блока по высоте
+  vertexpand: true
+
+  # Лимиты объёма 1 региона по группам (Объём = Ширина * Длина * 384)
+  blocklimits:
+    enabled: true
+    limits:
+      # --- ИГРОКИ ---
+      default: 500000      # ~36x36
+      hero: 600000         # ~39x39
+      titan: 700000        # ~42x42
+      avenger: 800000      # ~45x45
+      overlord: 900000     # ~48x48
+      magister: 1000000    # ~51x51
+      imperator: 1150000   # ~54x54
+
+      # --- ДОНАТ ПРИВИЛЕГИИ ---
+      dragon: 900000       # ~48x48
+      bull: 1300000        # ~58x58
+      rabbit: 1700000      # ~66x66
+      tiger: 1950000       # ~71x71
+      dracula: 2100000     # ~74x74
+      hydra: 2200000       # ~75x75
+      bunny: 2450000       # ~80x80
+      cobra: 2700000       # ~84x84
+      vampire: 3000000     # ~88x88
+      god: 3300000         # ~92x92
+      pegas: 3800000       # ~99x99
+      dhelper: 4300000     # ~105x105
+      angel: 4700000       # ~110×110
+      dadmin: 5000000      # ~114x114
+
+      # --- МЕДИА ---
+      yt: 3500000          # ~95x95
+      youtube: 3500000     # ~95x95
+      media: 4000000       # ~102x102
+
+      # --- ПЕРСОНАЛ ---
+      helper: 3500000
+      mlmoder: 4500000
+      moder: 5000000
+      moderplus: 5000000
+      stmoder: 5000000
+      glmoder: 2147483647
+      mladmin: 2147483647
+      fulladmin: 2147483647
+      admin: 2147483647
+      owner: 2147483647
+
+regionprotect:
+  flow:
+    lava: false    # Запрещает лаве течь ВНУТРЬ региона снаружи (защита от залива)
+    water: false   # Запрещает воде течь ВНУТРЬ региона (защита от затопления)
+    other: false
+  fire:
+    spread:
+      toregion: true
+      inregion: true
+    burn: true
+  explosion:
+    block: false
+    entity: true
+
+autoflags:
+  enabled: true
+  flags:
+    tnt: deny
+    pvp: allow
+
+restrictcommands:
+  enabled: false
+  commands:
+    - sethome
+    - esethome
+    - createhome
+    - ecreatehome
+    - setwarp
+    - tpaccept
+
+extendedwewand: false
+
+misc:
+  pvpmode: default

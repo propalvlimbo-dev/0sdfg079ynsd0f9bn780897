@@ -1,0 +1,174 @@
+menu_title: '§fꈁꀀꈂꌀꈂꀁ§fꈃꄅ'
+open_command: 
+- shopmenu
+- shop
+register_command: true
+size: 54
+items:
+  'diamond_sword':
+    material: diamond_sword
+    slot: 12
+    display_name: '&#FAD8FC&lВсё для грифа'
+    lore:
+      - ''
+      - '&#AAAAAAТут всё самое необходимое'
+      - '&#AAAAAAДля успешного грифа'
+      - ''
+      - '&#F8BEFBНажми, чтобы открыть'
+    model_data: 100020
+    click_commands:
+      - '[player] grief'
+  'ender_eye':
+    material: ender_eye
+    slot: 13
+    display_name: '&#FAD8FC&lШары'
+    lore:
+      - ''
+      - '&#AAAAAAХочешь быть сильнее в ПВП?'
+      - '&#AAAAAAЭффекты данных шаров'
+      - '&#AAAAAAтебе несомненно помогут'
+      - ''
+      - '&#F8BEFBНажми, чтобы открыть'
+    model_data: 100020
+    click_commands:
+      - '[player] sphere'
+  'egg':
+    material: egg
+    slot: 14
+    display_name: '&#FAD8FC&lСпавнеры'
+    lore:
+      - ''
+      - '&#AAAAAAНужна фармилка с мобов?'
+      - '&#AAAAAAСпавнеры продаются'
+      - '&#AAAAAAздесь'
+      - ''
+      - '&#F8BEFBНажми, чтобы открыть'
+    model_data: 100020
+    click_commands:
+      - '[player] spawners'
+  'wheat':
+    material: wheat
+    slot: 20
+    display_name: '&#FAD8FC&lВсе для PVE'
+    lore:
+      - ''
+      - '&#AAAAAAПечки, зельеварки и шары'
+      - '&#AAAAAAКоторые помогут вам с'
+      - '&#AAAAAAРазвитием на сервере'
+      - ''
+      - '&#F8BEFBНажми, чтобы открыть'
+    model_data: 100020
+    click_commands:
+      - '[player] furnace'
+  'paper':
+    material: paper
+    slot: 21
+    display_name: '&#FAD8FC&lОружие и инструменты'
+    lore:
+      - ''
+      - '&#AAAAAAЗдесь вы можете купить'
+      - '&#AAAAAAУникальное оружие и инструменты'
+      - ''
+      - '&#F8BEFBНажми, чтобы открыть'
+    model_data: 100020
+    click_commands:
+      - '[player] itemmenu'
+  'tube_coral':
+    material: tube_coral
+    slot: 22
+    display_name: '&#FAD8FC&lСезонные предметы'
+    lore:
+      - ''
+      - '&#AAAAAAВ этом разделе ты сможешь купить уникальные'
+      - '&#AAAAAAсезонные предметы для успешного пвп'
+      - ''
+      - '&#F8BEFBНажми, чтобы открыть'
+    click_commands:
+      - '[player] sezon'
+  'book':
+    material: book
+    slot: 23
+    display_name: '&#FAD8FC&lТёмный маг'
+    lore:
+      - ''
+      - '&#AAAAAAХочешь улучшить предмет на особое зачарование?'
+      - '&#AAAAAAТут ты сможешь его себе купить'
+      - ''
+      - '&#F8BEFBНажми, чтобы открыть'
+    model_data: 100020
+    click_commands:
+      - '[player] mag'
+  'clay_ball':
+    material: clay_ball
+    slot: 24
+    display_name: '&#FAD8FC&lАуры'
+    lore:
+      - ''
+      - '&#AAAAAAХочешь купить себе ауры?'
+      - '&#AAAAAAТут ты сможешь их себе купить'
+      - ''
+      - '&#F8BEFBНажми, чтобы открыть'
+    model_data: 100020
+    click_commands:
+      - '[player] aura'
+  'end_portal_frame':
+    material: end_portal_frame
+    slot: 30
+    display_name: '&#FAD8FC&lПрокачка Эндерчеста'
+    lore:
+      - ''
+      - '&#AAAAAAНе хватает слотов в эндерчесте?'
+      - '&#AAAAAAЗдесь можно прокачать кол-во'
+      - '&#AAAAAAстрок в сундуке'
+      - ''
+      - '&#F8BEFBНажми, чтобы открыть'
+    model_data: 100020
+    click_commands:
+      - '[player] nenderchest buy'
+  'glass_bottle':
+    material: glass_bottle
+    slot: 31
+    display_name: '&#FAD8FC&lДонат зелья'
+    lore:
+      - ''
+      - '&#AAAAAAХочешь получить преимущество'
+      - '&#AAAAAAв PvP и PvE?'
+      - '&#AAAAAAТут ты можешь купить самые полезные'
+      - '&#AAAAAAзелья и стрелы'
+      - ''
+      - '&#F8BEFBНажми, чтобы открыть'
+    model_data: 100020
+    click_commands:
+      - '[player] potions'
+  'shulker_shell':
+    material: shulker_shell
+    slot: 32
+    display_name: '&#FAD8FC&lКиты'
+    lore:
+      - ''
+      - '&#AAAAAAЗдесь можно приобрести'
+      - '&#AAAAAAлюбой кит с сервера'
+      - ''
+      - '&#F8BEFBНажми, чтобы открыть'
+    model_data: 100050
+    click_commands:
+      - '[player] kitsbuy'
+  'arrow':
+    material: arrow
+    slot: 45
+    display_name: '&#F8BEFBНазад'
+    model_data: 10002
+    click_commands:
+      - '[player] menu'
+  'clock':
+    material: clock
+    slot: 53
+    display_name: '&#F8BEFBИНФОРМАЦИЯ'
+    lore:
+      - ''
+      - '&#555555 &#FFFFFFВаш баланс: &#FAD8FC%playerpoints_points_formatted% &#FFFFFFꐃ'
+      - ''
+      - '&#AAAAAAПополнить баланс можно'
+      - '&#AAAAAAна сайте: &#FAD8FChttps://elytrix.pw'
+    model_data: 100010
+    

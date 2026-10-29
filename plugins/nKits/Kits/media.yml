@@ -1,0 +1,346 @@
+Name: media
+Cooldown: 172800
+Permission: nKits.kits.media
+Order: 0
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_SWORD
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"aqua","text":"Фростморн"}],"text":""}'
+      lore:
+      - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Заговор
+        Огня X"}],"text":""}'
+      - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Острота
+        VI"}],"text":""}'
+      - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Прочность
+        III"}],"text":""}'
+      - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"red","text":"Проклятье
+        утраты"}],"text":""}'
+      - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gold","text":"Неразрушимый"}],"text":""}'
+      enchants:
+        FIRE_ASPECT: 10
+        DAMAGE_ALL: 6
+        DURABILITY: 3
+        VANISHING_CURSE: 1
+      repair-cost: 1
+      ItemFlags:
+      - HIDE_ENCHANTS
+      - HIDE_UNBREAKABLE
+      Unbreakable: true
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: GOLDEN_APPLE
+    amount: 64
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: GOLDEN_CARROT
+    amount: 64
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: ENCHANTED_GOLDEN_APPLE
+    amount: 5
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: TOTEM_OF_UNDYING
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: TOTEM_OF_UNDYING
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: POTION
+    amount: 7
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      custom-model-data: 1645
+      potion-type: minecraft:strong_swiftness
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: POTION
+    amount: 7
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      custom-model-data: 755
+      potion-type: minecraft:strong_strength
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: POTION
+    amount: 7
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      custom-model-data: 755
+      potion-type: minecraft:strong_strength
+  - null
+  - null
+  - null
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: PLAYER_HEAD
+    meta:
+      ==: ItemMeta
+      meta-type: SKULL
+      display-name: '{"extra":[{"bold":true,"italic":false,"color":"blue","text":"Шар
+        Воды"}],"text":""}'
+      lore:
+      - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"red","text":"Проклятие
+        утраты "}],"text":""}'
+      - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":""}],"text":""}'
+      - '{"extra":[{"italic":false,"color":"gray","text":"Когда во второй руке"}],"text":""}'
+      - '{"extra":[{"italic":false,"color":"gray","text":"При нажатии SHIFT:"}],"text":""}'
+      - '{"extra":[{"italic":false,"color":"gray","text":"Подводное дыхание (01:00)"}],"text":""}'
+      - '{"extra":[{"italic":false,"color":"gray","text":"Грация дельфина (00:10)"}],"text":""}'
+      - '{"text":""}'
+      - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"При
+        экипировке в левой руке:"}],"text":""}'
+      - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+        +30% Скорость передвижения"}],"text":""}'
+      - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"
+        +12 Макс. здоровье"}],"text":""}'
+      - '{"text":""}'
+      custom-model-data: 5005
+      attribute-modifiers:
+        GENERIC_MOVEMENT_SPEED:
+        - ==: org.bukkit.attribute.AttributeModifier
+          amount: 0.3
+          name: ResourceKey[minecraft:attribute / minecraft:generic.movement_speed]
+          slot: OFF_HAND
+          uuid: 6016f59f-0050-47ce-a5e9-3a17fcfa3dcd
+          operation: 1
+        GENERIC_FLYING_SPEED:
+        - ==: org.bukkit.attribute.AttributeModifier
+          amount: 0.3
+          name: ResourceKey[minecraft:attribute / minecraft:generic.flying_speed]
+          slot: OFF_HAND
+          uuid: f3968c93-9b3f-4dfb-a162-1302114eeaea
+          operation: 1
+        GENERIC_MAX_HEALTH:
+        - ==: org.bukkit.attribute.AttributeModifier
+          amount: 12.0
+          name: ResourceKey[minecraft:attribute / minecraft:generic.max_health]
+          slot: OFF_HAND
+          uuid: 02133611-77df-462c-b12d-ba22068f67ef
+          operation: 0
+      ItemFlags:
+      - HIDE_ATTRIBUTES
+      PublicBukkitValues:
+        simsummerutils:orb_type: water
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: TOTEM_OF_UNDYING
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: TOTEM_OF_UNDYING
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: TOTEM_OF_UNDYING
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: TOTEM_OF_UNDYING
+  - null
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: ENDER_PEARL
+    amount: 16
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_AXE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gold","text":"Секира"}],"text":""}'
+      enchants:
+        DIG_SPEED: 10
+        LOOT_BONUS_BLOCKS: 3
+        DURABILITY: 3
+        VANISHING_CURSE: 1
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_PICKAXE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gold","text":"Кирка
+        Каменщика"}],"text":""}'
+      enchants:
+        DIG_SPEED: 10
+        DURABILITY: 3
+        VANISHING_CURSE: 1
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: TIPPED_ARROW
+    amount: 4
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"white","text":"Клирик"}],"text":""}'
+      lore:
+      - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"Очищает
+        все эффекты врага"}],"text":""}'
+      PublicBukkitValues:
+        minecraft:clear_arrow: CLEAR_ARROW
+      custom-color:
+        ==: Color
+        RED: 255
+        BLUE: 255
+        GREEN: 255
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: TIPPED_ARROW
+    amount: 64
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:strong_harming
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BOW
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Пушечка"}],"text":""}'
+      enchants:
+        ARROW_FIRE: 1
+        ARROW_INFINITE: 1
+        MENDING: 1
+        ARROW_DAMAGE: 5
+        ARROW_KNOCKBACK: 5
+        DURABILITY: 2
+        VANISHING_CURSE: 1
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: TOTEM_OF_UNDYING
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: TOTEM_OF_UNDYING
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: POTION
+    amount: 7
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      custom-model-data: 1055
+      potion-type: minecraft:long_fire_resistance
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: POTION
+    amount: 7
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      custom-model-data: 1645
+      potion-type: minecraft:strong_swiftness
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: POTION
+    amount: 7
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      custom-model-data: 1055
+      potion-type: minecraft:long_fire_resistance
+  - null
+  - null
+  - null
+  - null
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: PLAYER_HEAD
+    meta:
+      ==: ItemMeta
+      meta-type: SKULL
+      display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"green","text":"Голова
+        Гидры"}],"text":""}'
+      enchants:
+        VANISHING_CURSE: 1
+      attribute-modifiers:
+        GENERIC_ARMOR:
+        - ==: org.bukkit.attribute.AttributeModifier
+          amount: 5.0
+          name: ResourceKey[minecraft:attribute / minecraft:generic.armor]
+          slot: OFF_HAND
+          uuid: 93a5b610-ebad-4d62-8c30-6b5189234e10
+          operation: 0
+        GENERIC_MAX_HEALTH:
+        - ==: org.bukkit.attribute.AttributeModifier
+          amount: 10.0
+          name: ResourceKey[minecraft:attribute / minecraft:generic.max_health]
+          slot: OFF_HAND
+          uuid: 69f23fa3-ebce-4c26-82fa-589b9f774028
+          operation: 0
+        GENERIC_MOVEMENT_SPEED:
+        - ==: org.bukkit.attribute.AttributeModifier
+          amount: 0.2
+          name: ResourceKey[minecraft:attribute / minecraft:generic.movement_speed]
+          slot: OFF_HAND
+          uuid: 6f8b73a8-6bbc-4783-8c37-739151fc61c7
+          operation: 1
+      skull-owner:
+        ==: PlayerProfile
+        uniqueId: 27dd4965-6517-38e4-9bf2-f8ebbda957dd
+        name: ElytrixHead
+        properties:
+        - name: textures
+          value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTg5ZTgwNWJkNmYxNmVjYzI0NTJhZGQxOGU4Zjg2YTIxN2RlNjZmYjRiY2U0MTkwNDZmMWI5NjExYWJkOGYifX19
+  Armor:
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_BOOTS
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        DEPTH_STRIDER: 3
+        PROTECTION_FALL: 2
+        MENDING: 1
+        PROTECTION_ENVIRONMENTAL: 4
+        DURABILITY: 3
+      repair-cost: 3
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_LEGGINGS
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        MENDING: 1
+        PROTECTION_ENVIRONMENTAL: 4
+        DURABILITY: 3
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_CHESTPLATE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        MENDING: 1
+        PROTECTION_ENVIRONMENTAL: 4
+        DURABILITY: 3
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_HELMET
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        WATER_WORKER: 1
+        MENDING: 1
+        PROTECTION_ENVIRONMENTAL: 4
+        OXYGEN: 3
+        DURABILITY: 3
+      repair-cost: 1

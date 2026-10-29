@@ -1,0 +1,331 @@
+# =============================================================
+# gui.yml — меню /free (чистое RP-меню без стеклянных панелей)
+# =============================================================
+
+menu:
+  title: '&fꈁꀀꈂꍘꈂꀁ&fꈃꄦ'
+  size: 54
+
+design:
+  fill: 'none'
+  panes: {}
+
+info:
+  enabled: true
+  slot: 49
+  material: 'clock'
+  name: '&7« &#F8BEFBТвоё время &7»'
+  lore:
+    - '&#F8BEFB&l┃ '
+    - '&#F8BEFB&l┃ &fНаигранное время: &#F8BEFB{time}'
+    - '&#F8BEFB&l┃ &fПривязка к боту: &aактивна'
+    - '&#F8BEFB&l┃ '
+    - '&7● &fВремя копится, пока ты играешь'
+
+close:
+  enabled: true
+  slot: 45
+  material: 'arrow'
+  name: '&#F8BEFBНазад'
+  lore: []
+  command: 'menu'
+
+locked:
+  slot: 22
+  material: 'barrier'
+  name: '&c&lВы не привязали аккаунт'
+  lore:
+    - '&#F8BEFB&l┃ '
+    - '&#F8BEFB&l┃ &fЧтобы получить награды — привяжи'
+    - '&#F8BEFB&l┃ &fаккаунт к Telegram-боту.'
+    - '&#F8BEFB&l┃ '
+    - '&7● &fНажмите — выполнится &#F8BEFB/addtg'
+  command: 'addtg'
+
+messages:
+  status:
+    claimed: '&a● Вы уже получили эту награду'
+    ready: '&#F8BEFB● Нажмите, чтобы забрать награду!'
+    wait: '&c● Требуется наиграть: &f{need}'
+  chat:
+    already-claimed:
+      - '&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &cВы уже забирали награду {reward}&c!'
+    not-enough-time:
+      - '&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &fДля награды {reward} &fнужно наиграть &#F8BEFB{need} &7(сейчас: &f{time}&7).'
+    inventory-full:
+      - '&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &cОсвободите место в инвентаре!'
+    not-linked:
+      - '&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &cСначала привяжите аккаунт через &#F8BEFB/addtg&c!'
+    link-failed:
+      - '&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &cНе удалось проверить привязку. Попробуйте чуть позже.'
+    success:
+      - '&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &fВы успешно получили {reward}&f!'
+    locked-run:
+      - '&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &fВыполняем команду &#F8BEFB/{cmd}&f...'
+
+rewards:
+  free1:
+    slot: 10
+    minutes: 10
+    material: 'head:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWZkMTA4MzgzZGZhNWIwMmU4NjYzNTYwOTU0MTUyMGU0ZTE1ODk1MmQ2OGMxYzhmOGYyMDBlYzdlODg2NDJkIn19fQ=='
+    claimed-material: 'gray_dye'
+    name: '&7« &#F8BEFBНаграда #1 &7»'
+    lore:
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fСодержимое:'
+      - '&#F8BEFB&l┃  &7• &#F8BEFB15 рилликов &fꐃ'
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
+      - '&#F8BEFB&l┃ '
+      - '{status}'
+    items: []
+    commands:
+      - 'p give {player} 15'
+
+  free2:
+    slot: 11
+    minutes: 25
+    material: 'head:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDVjNmRjMmJiZjUxYzM2Y2ZjNzcxNDU4NWE2YTU2ODNlZjJiMTRkNDdkOGZmNzE0NjU0YTg5M2Y1ZGE2MjIifX19'
+    claimed-material: 'gray_dye'
+    name: '&7« &#F8BEFBНаграда #2 &7»'
+    lore:
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fСодержимое:'
+      - '&#F8BEFB&l┃  &7• &fКейс с валютой &7(x1)'
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
+      - '&#F8BEFB&l┃ '
+      - '{status}'
+    items: []
+    commands:
+      - 'bcases give {player} money 1'
+
+  free3:
+    slot: 12
+    minutes: 45
+    material: 'purple_shulker_box'
+    claimed-material: 'gray_dye'
+    name: '&7« &#F8BEFBНаграда #3 &7»'
+    lore:
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fСодержимое:'
+      - '&#F8BEFB&l┃  &7• &fНабор &#FD00E4&lDRAGON'
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
+      - '&#F8BEFB&l┃ '
+      - '{status}'
+    items: []
+    commands:
+      - 'kit dragon {player}'
+
+  free4:
+    slot: 13
+    minutes: 75
+    material: 'head:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWZkMTA4MzgzZGZhNWIwMmU4NjYzNTYwOTU0MTUyMGU0ZTE1ODk1MmQ2OGMxYzhmOGYyMDBlYzdlODg2NDJkIn19fQ=='
+    claimed-material: 'gray_dye'
+    name: '&7« &#F8BEFBНаграда #4 &7»'
+    lore:
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fСодержимое:'
+      - '&#F8BEFB&l┃  &7• &#F8BEFB35 рилликов &fꐃ'
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
+      - '&#F8BEFB&l┃ '
+      - '{status}'
+    items: []
+    commands:
+      - 'p give {player} 35'
+
+  free5:
+    slot: 14
+    minutes: 120
+    material: 'head:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWFiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ=='
+    claimed-material: 'gray_dye'
+    name: '&7« &#F8BEFBНаграда #5 &7»'
+    lore:
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fСодержимое:'
+      - '&#F8BEFB&l┃  &7• &fКейс с рилликами &7(x1)'
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
+      - '&#F8BEFB&l┃ '
+      - '{status}'
+    items: []
+    commands:
+      - 'bcases give {player} rilik 1'
+
+  free6:
+    slot: 15
+    minutes: 180
+    material: 'brown_shulker_box'
+    claimed-material: 'gray_dye'
+    name: '&7« &#F8BEFBНаграда #6 &7»'
+    lore:
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fСодержимое:'
+      - '&#F8BEFB&l┃  &7• &fНабор &#B210BA&lBULL'
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
+      - '&#F8BEFB&l┃ '
+      - '{status}'
+    items: []
+    commands:
+      - 'kit bull {player}'
+
+  free7:
+    slot: 16
+    minutes: 240
+    material: 'head:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDVjNmRjMmJiZjUxYzM2Y2ZjNzcxNDU4NWE2YTU2ODNlZjJiMTRkNDdkOGZmNzE0NjU0YTg5M2Y1ZGE2MjIifX19'
+    claimed-material: 'gray_dye'
+    name: '&7« &#F8BEFBНаграда #7 &7»'
+    lore:
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fСодержимое:'
+      - '&#F8BEFB&l┃  &7• &fКейс с валютой &7(x2)'
+      - '&#F8BEFB&l┃  &7• &#F8BEFB50 рилликов &fꐃ'
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
+      - '&#F8BEFB&l┃ '
+      - '{status}'
+    items: []
+    commands:
+      - 'bcases give {player} money 2'
+      - 'p give {player} 50'
+
+  free8:
+    slot: 19
+    minutes: 360
+    material: 'white_shulker_box'
+    claimed-material: 'gray_dye'
+    name: '&7« &#F8BEFBНаграда #8 &7»'
+    lore:
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fСодержимое:'
+      - '&#F8BEFB&l┃  &7• &fНабор &#E5E5E5&lRABBIT'
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
+      - '&#F8BEFB&l┃ '
+      - '{status}'
+    items: []
+    commands:
+      - 'kit rabbit {player}'
+
+  free9:
+    slot: 20
+    minutes: 480
+    material: 'head:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWFiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ=='
+    claimed-material: 'gray_dye'
+    name: '&7« &#F8BEFBНаграда #9 &7»'
+    lore:
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fСодержимое:'
+      - '&#F8BEFB&l┃  &7• &fКейс с рилликами &7(x1)'
+      - '&#F8BEFB&l┃  &7• &#F8BEFB75 рилликов &fꐃ'
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
+      - '&#F8BEFB&l┃ '
+      - '{status}'
+    items: []
+    commands:
+      - 'bcases give {player} rilik 1'
+      - 'p give {player} 75'
+
+  free10:
+    slot: 21
+    minutes: 720
+    material: 'green_shulker_box'
+    claimed-material: 'gray_dye'
+    name: '&7« &#F8BEFBНаграда #10 &7»'
+    lore:
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fСодержимое:'
+      - '&#F8BEFB&l┃  &7• &fНабор &#0F9E10&lHYDRA'
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
+      - '&#F8BEFB&l┃ '
+      - '{status}'
+    items: []
+    commands:
+      - 'kit hydra {player}'
+
+  free11:
+    slot: 23
+    minutes: 960
+    material: 'head:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDVjNmRjMmJiZjUxYzM2Y2ZjNzcxNDU4NWE2YTU2ODNlZjJiMTRkNDdkOGZmNzE0NjU0YTg5M2Y1ZGE2MjIifX19'
+    claimed-material: 'gray_dye'
+    name: '&7« &#F8BEFBНаграда #11 &7»'
+    lore:
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fСодержимое:'
+      - '&#F8BEFB&l┃  &7• &fКейс с валютой &7(x3)'
+      - '&#F8BEFB&l┃  &7• &#F8BEFB100 рилликов &fꐃ'
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
+      - '&#F8BEFB&l┃ '
+      - '{status}'
+    items: []
+    commands:
+      - 'bcases give {player} money 3'
+      - 'p give {player} 100'
+
+  free12:
+    slot: 24
+    minutes: 1200
+    material: 'lime_shulker_box'
+    claimed-material: 'gray_dye'
+    name: '&7« &#F8BEFBНаграда #12 &7»'
+    lore:
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fСодержимое:'
+      - '&#F8BEFB&l┃  &7• &fНабор &#39FF39&lCOBRA'
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
+      - '&#F8BEFB&l┃ '
+      - '{status}'
+    items: []
+    commands:
+      - 'kit cobra {player}'
+
+  free13:
+    slot: 25
+    minutes: 1560
+    material: 'head:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWFiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ=='
+    claimed-material: 'gray_dye'
+    name: '&7« &#F8BEFBНаграда #13 &7»'
+    lore:
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fСодержимое:'
+      - '&#F8BEFB&l┃  &7• &fКейс с рилликами &7(x2)'
+      - '&#F8BEFB&l┃  &7• &#F8BEFB150 рилликов &fꐃ'
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
+      - '&#F8BEFB&l┃ '
+      - '{status}'
+    items: []
+    commands:
+      - 'bcases give {player} rilik 2'
+      - 'p give {player} 150'
+
+  free14:
+    slot: 31
+    minutes: 2160
+    material: 'yellow_shulker_box'
+    claimed-material: 'gray_dye'
+    name: '&7« &#F8BEFBГранд-Награда #14 &7»'
+    lore:
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fСодержимое:'
+      - '&#F8BEFB&l┃  &7• &fНабор &#FBBF24&lGOD'
+      - '&#F8BEFB&l┃  &7• &fКейс с рилликами &7(x2)'
+      - '&#F8BEFB&l┃  &7• &fКейс с валютой &7(x3)'
+      - '&#F8BEFB&l┃  &7• &#F8BEFB250 рилликов &fꐃ'
+      - '&#F8BEFB&l┃ '
+      - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
+      - '&#F8BEFB&l┃ '
+      - '{status}'
+    items: []
+    commands:
+      - 'kit god {player}'
+      - 'bcases give {player} rilik 2'
+      - 'bcases give {player} money 3'
+      - 'p give {player} 250'

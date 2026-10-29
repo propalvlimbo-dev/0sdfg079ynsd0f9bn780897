@@ -1,0 +1,667 @@
+prizes:
+  donate:
+  - chance: 50.0
+    display_name: ꔨ
+    enchanted: false
+    material: PURPLE_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] lp user %player_name% parent add dragon'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл ꔨ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &#F8BEFBКейс с донатом'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 32.0
+    display_name: ꔲ
+    enchanted: false
+    material: BROWN_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] lp user %player_name% parent add bull'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл ꔲ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &#F8BEFBКейс с донатом'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 18.0
+    display_name: ꕒ
+    enchanted: false
+    material: WHITE_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] lp user %player_name% parent add rabbit'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл ꕒ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &#F8BEFBКейс с донатом'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  money:
+  - chance: 30.0
+    display_name: '&#FAD8FC&l15.000 &fꐂ'
+    enchanted: false
+    material: GOLD_INGOT
+    give_commands:
+    - '[CONSOLE] eco give %player_name% 15000'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &#FAD8FC&l15.000 &fꐂ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с валютой'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 20.0
+    display_name: '&a&l25.000 &fꐂ'
+    enchanted: false
+    material: GOLD_INGOT
+    give_commands:
+    - '[CONSOLE] eco give %player_name% 25000'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &a&l25.000 &fꐂ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с валютой'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 10.0
+    display_name: '&a&l50.000 &fꐂ'
+    enchanted: false
+    material: GOLD_INGOT
+    give_commands:
+    - '[CONSOLE] eco give %player_name% 50000'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &a&l50.000 &fꐂ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с валютой'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 10.0
+    display_name: '&a&l75.000 &fꐂ'
+    enchanted: false
+    material: GOLD_INGOT
+    give_commands:
+    - '[CONSOLE] eco give %player_name% 75000'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &a&l75.000 &fꐂ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с валютой'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 10.0
+    display_name: '&#F8BEFB&l150.000 &fꐂ'
+    enchanted: false
+    material: GOLD_INGOT
+    give_commands:
+    - '[CONSOLE] eco give %player_name% 150000'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &#F8BEFB&l150.000 &fꐂ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с валютой'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 10.0
+    display_name: '&c&l250.000 &fꐂ'
+    enchanted: false
+    material: GOLD_INGOT
+    give_commands:
+    - '[CONSOLE] eco give %player_name% 250000'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &c&l250.000 &fꐂ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с валютой'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 10.0
+    display_name: '&c&l500.000 &fꐂ'
+    enchanted: false
+    material: GOLD_INGOT
+    give_commands:
+    - '[CONSOLE] eco give %player_name% 500000'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &c&l500.000 &fꐂ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с валютой'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 0.0
+    display_name: '&d&l1.000.000 &fꐂ'
+    enchanted: false
+    material: GOLD_INGOT
+    give_commands:
+    - '[CONSOLE] eco give %player_name% 1000000'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &d&l1.000.000 &fꐂ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с валютой'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  rilik:
+  - chance: 10.0
+    display_name: '&a&l10 &fꐃ'
+    enchanted: false
+    material: GOLD_NUGGET
+    give_commands:
+    - '[CONSOLE] p give %player_name% 10'
+  - chance: 11.0
+    display_name: '&a&l30 &fꐃ'
+    enchanted: false
+    material: GOLD_NUGGET
+    give_commands:
+    - '[CONSOLE] p give %player_name% 30'
+  - chance: 11.0
+    display_name: '&a&l45 &fꐃ'
+    enchanted: false
+    material: GOLD_NUGGET
+    give_commands:
+    - '[CONSOLE] p give %player_name% 45'
+  - chance: 13.0
+    display_name: '&#F8BEFB&l60 &fꐃ'
+    enchanted: false
+    material: GOLD_NUGGET
+    give_commands:
+    - '[CONSOLE] p give %player_name% 60'
+  - chance: 11.0
+    display_name: '&#F8BEFB&l80 &fꐃ'
+    enchanted: false
+    material: GOLD_NUGGET
+    give_commands:
+    - '[CONSOLE] p give %player_name% 80'
+  - chance: 11.0
+    display_name: '&#F8BEFB&l100 &fꐃ'
+    enchanted: false
+    material: GOLD_NUGGET
+    give_commands:
+    - '[CONSOLE] p give %player_name% 100'
+  - chance: 14.0
+    display_name: '&#F8BEFB&l150 &fꐃ'
+    enchanted: false
+    material: GOLD_NUGGET
+    give_commands:
+    - '[CONSOLE] p give %player_name% 150'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &#F8BEFB&l150 &fꐃ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с рилликами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 11.0
+    display_name: '&c&l300 &fꐃ'
+    enchanted: false
+    material: GOLD_NUGGET
+    give_commands:
+    - '[CONSOLE] p give %player_name% 300'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &c&l300 &fꐃ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с рилликами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 9.0
+    display_name: '&c&l500 &fꐃ'
+    enchanted: false
+    material: GOLD_NUGGET
+    give_commands:
+    - '[CONSOLE] p give %player_name% 500'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &c&l500 &fꐃ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с рилликами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 8.0
+    display_name: '&c&l1000 &fꐃ'
+    enchanted: false
+    material: GOLD_NUGGET
+    give_commands:
+    - '[CONSOLE] p give %player_name% 1000'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &c&l1000 &fꐃ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с рилликами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 1.0
+    display_name: '&4&l3000 &fꐃ'
+    enchanted: false
+    material: GOLD_NUGGET
+    give_commands:
+    - '[CONSOLE] p give %player_name% 3000'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &4&l3000 &fꐃ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с рилликами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 0.0
+    display_name: '&4&l6000 &fꐃ'
+    enchanted: false
+    material: GOLD_NUGGET
+    give_commands:
+    - '[CONSOLE] p give %player_name% 6000'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &4&l6000 &fꐃ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с рилликами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 0.0
+    display_name: '&4&l15000 &fꐃ'
+    enchanted: false
+    material: GOLD_NUGGET
+    give_commands:
+    - '[CONSOLE] p give %player_name% 15000'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &4&l15000 &fꐃ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с рилликами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  vsoilinichigo:
+  - chance: 95.0
+    display_name: ꔨ
+    enchanted: false
+    material: MAGENTA_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] lp user %player_name% parent add dragon'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл ꔨ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &cВСЕ ИЛИ НИЧЕГО'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 5.0
+    display_name: ꔷ
+    enchanted: false
+    material: RED_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] lp user %player_name% parent add fulladmin'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл ꔷ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &cВСЕ ИЛИ НИЧЕГО'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  legendary:
+  - chance: 30.0
+    display_name: ꔨ
+    enchanted: false
+    material: PURPLE_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] lp user %player_name% parent add dragon'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл ꔨ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв <#F8BEFB>&lЛЕГЕНДАРНЫЙ КЕЙС</#FFFFFF> &7(Супер кейс с донатом)'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейса &#55FF55(89р) &fна сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 24.0
+    display_name: ꔲ
+    enchanted: false
+    material: BROWN_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] lp user %player_name% parent add bull'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл ꔲ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв <#F8BEFB>&lЛЕГЕНДАРНЫЙ КЕЙС</#FFFFFF> &7(Супер кейс с донатом)'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейса &#55FF55(89р) &fна сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 18.0
+    display_name: ꕒ
+    enchanted: false
+    material: WHITE_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] lp user %player_name% parent add rabbit'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл ꕒ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв <#F8BEFB>&lЛЕГЕНДАРНЫЙ КЕЙС</#FFFFFF> &7(Супер кейс с донатом)'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейса &#55FF55(89р) &fна сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 13.0
+    display_name: ꕀ
+    enchanted: false
+    material: GREEN_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] lp user %player_name% parent add hydra'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл ꕀ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв <#F8BEFB>&lЛЕГЕНДАРНЫЙ КЕЙС</#FFFFFF> &7(Супер кейс с донатом)'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейса &#55FF55(89р) &fна сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 9.0
+    display_name: ꕈ
+    enchanted: false
+    material: LIME_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] lp user %player_name% parent add cobra'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл ꕈ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв <#F8BEFB>&lЛЕГЕНДАРНЫЙ КЕЙС</#FFFFFF> &7(Супер кейс с донатом)'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейса &#55FF55(89р) &fна сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 6.0
+    display_name: ꕁ
+    enchanted: false
+    material: YELLOW_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] lp user %player_name% parent add god'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл ꕁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв <#F8BEFB>&lЛЕГЕНДАРНЫЙ КЕЙС</#FFFFFF> &7(Супер кейс с донатом)'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейса &#55FF55(89р) &fна сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  kits:
+  - chance: 24.0
+    display_name: '&7Набор &fꔶ'
+    enchanted: false
+    material: ORANGE_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] kit tiger %player_name%'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &7Набор &fꔶ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с китами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 18.0
+    display_name: '&7Набор &fꕖ'
+    enchanted: false
+    material: GRAY_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] kit bunny %player_name%'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &7Набор &fꕖ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с китами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 15.0
+    display_name: '&7Набор &fꕀ'
+    enchanted: false
+    material: GREEN_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] kit hydra %player_name%'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &7Набор &fꕀ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с китами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 17.0
+    display_name: '&7Набор &fꕄ'
+    enchanted: false
+    material: RED_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] kit dracula %player_name%'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &7Набор &fꕄ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с китами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 10.0
+    display_name: '&7Набор &fꕈ'
+    enchanted: false
+    material: LIME_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] kit cobra %player_name%'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &7Набор &fꕈ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с китами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 10.0
+    display_name: '&7Набор &fꕒ'
+    enchanted: false
+    material: WHITE_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] kit rabbit %player_name%'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &7Набор &fꕒ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с китами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 6.0
+    display_name: '&7Набор &fꕓ'
+    enchanted: false
+    material: WHITE_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] kit angel %player_name%'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &7Набор &fꕓ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &4Кейс с китами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 2.0
+    display_name: '&7Набор &fꕡ'
+    enchanted: false
+    material: RED_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] kit dadmin %player_name%'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &7Набор &fꕡ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &4Кейс с китами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 5.0
+    display_name: '&7Набор &fꕠ'
+    enchanted: false
+    material: YELLOW_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] kit dhelper %player_name%'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &7Набор &fꕠ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с китами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  zhamshut:
+  - chance: 30.0
+    display_name: ꔶ &f(30д)
+    enchanted: false
+    material: ORANGE_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] lp user %player_name% parent addtemp tiger 30d'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл ꔶ &#FAD8FC(30д)'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс Джамшута'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 15.0
+    display_name: ꕒ &f(30д)
+    enchanted: false
+    material: WHITE_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] lp user %player_name% parent addtemp rabbit 30d'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл ꕒ &#FAD8FC(30д)'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс Джамшута'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 10.0
+    display_name: ꕖ &f(30д)
+    enchanted: false
+    material: GRAY_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] lp user %player_name% parent addtemp bunny 30d'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл ꕖ &#FAD8FC(30д)'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс Джамшута'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 5.0
+    display_name: ꕠ &f(30д)
+    enchanted: false
+    material: ORANGE_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] lp user %player_name% parent addtemp dhelper 30d'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл ꕠ &#FAD8FC(30д)'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс Джамшута'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 3.0
+    display_name: ꕀ &f(30д)
+    enchanted: false
+    material: GREEN_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] lp user %player_name% parent addtemp hydra 30d'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл ꕀ &#FAD8FC(30д)'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс Джамшута'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 1.0
+    display_name: ꕓ &f(30д)
+    enchanted: false
+    material: WHITE_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] lp user %player_name% parent addtemp angel 30d'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл ꕓ &#FAD8FC(30д)'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс Джамшута'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 2.0
+    display_name: ꕈ &f(30д)
+    enchanted: false
+    material: LIME_SHULKER_BOX
+    give_commands:
+    - '[CONSOLE] lp user %player_name% parent addtemp cobra 30d'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл ꕈ &#FAD8FC(30д)'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс Джамшута'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  ditems:
+  - chance: 0.01
+    display_name: '&c&lЗачарованные Яблоки &7(32 шт)'
+    enchanted: false
+    material: ENCHANTED_GOLDEN_APPLE
+    give_commands:
+    - '[CONSOLE] give %player_name% enchanted_golden_apple 32'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#F8BEFB%player_name% &fвыиграл &c&lЗачарованные Яблоки (32 шт)'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 15.0
+    display_name: '&f&lЗолотые Яблоки &7(64 шт)'
+    enchanted: false
+    material: GOLDEN_APPLE
+    give_commands:
+    - '[CONSOLE] give %player_name% golden_apple 64'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#F8BEFB%player_name% &fвыиграл &#FAD8FC&lЗолотые Яблоки (64 шт)'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 7.0
+    display_name: '&c&lТопор Кратоса'
+    enchanted: false
+    material: NETHERITE_AXE
+    give_commands:
+    - '[CONSOLE] nitems KRATOS_AXE %player_name%'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#F8BEFB%player_name% &fвыиграл &c&lТопор Кратоса'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 7.0
+    display_name: '&b&lТрезубец Нептуна'
+    enchanted: false
+    material: TRIDENT
+    give_commands:
+    - '[CONSOLE] nitems NEPTUN_TRIDENT %player_name%'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#F8BEFB%player_name% &fвыиграл &b&lТрезубец Нептуна'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 10.0
+    display_name: '&#F8BEFB&lСупер Ножницы'
+    enchanted: false
+    material: SHEARS
+    give_commands:
+    - '[CONSOLE] nitems SHEARS %player_name%'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#F8BEFB%player_name% &fвыиграл &#F8BEFB&lСупер Ножницы'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 10.0
+    display_name: '&b&lЛовушка'
+    enchanted: false
+    material: HEART_OF_THE_SEA
+    give_commands:
+    - '[CONSOLE] nitems TRAP %player_name%'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#F8BEFB%player_name% &fвыиграл &b&lЛовушку'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 15.99
+    display_name: '&#F8BEFB&lНезеритовая Кирка'
+    enchanted: false
+    material: NETHERITE_PICKAXE
+    give_commands:
+    - '[CONSOLE] give %player_name% netherite_pickaxe 1'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#F8BEFB%player_name% &fвыиграл &#F8BEFB&lНезеритовую Кирку'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+  - chance: 5.0
+    display_name: '&c&lШар Огня'
+    enchanted: false
+    material: basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWBiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
+    give_commands:
+    - '[CONSOLE] nitems FIRE_BALL %player_name%'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#F8BEFB%player_name% &fвыиграл &c&lШар Огня'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+    model_data: 5003
+  - chance: 5.0
+    display_name: '&9&lШар Воды'
+    enchanted: false
+    material: basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWBiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
+    give_commands:
+    - '[CONSOLE] nitems WATER_BALL %player_name%'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#F8BEFB%player_name% &fвыиграл &9&lШар Воды'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+    model_data: 5005
+  - chance: 5.0
+    display_name: '&#F8BEFB&lШар Земли'
+    enchanted: false
+    material: basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWBiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
+    give_commands:
+    - '[CONSOLE] nitems EARTH_BALL %player_name%'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#F8BEFB%player_name% &fвыиграл &#F8BEFB&lШар Земли'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+    model_data: 5002
+  - chance: 5.0
+    display_name: '&f&lШар Света'
+    enchanted: false
+    material: basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWBiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
+    give_commands:
+    - '[CONSOLE] nitems LIGHT_BALL %player_name%'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#F8BEFB%player_name% &fвыиграл &#FAD8FC&lШар Света'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+    model_data: 5004
+  - chance: 5.0
+    display_name: '&d&lШар Порядка'
+    enchanted: false
+    material: basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWBiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
+    give_commands:
+    - '[CONSOLE] nitems HARMONY_BALL %player_name%'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#F8BEFB%player_name% &fвыиграл &d&lШар Порядка'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+    model_data: 5006
+  - chance: 5.0
+    display_name: '&5&lШар Хаоса'
+    enchanted: false
+    material: basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWBiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
+    give_commands:
+    - '[CONSOLE] nitems CHAOS_BALL %player_name%'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#F8BEFB%player_name% &fвыиграл &5&lШар Хаоса'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'
+    model_data: 5007
+  - chance: 5.0
+    display_name: '&a&lШар Огородника'
+    enchanted: false
+    material: basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWFmMzI4Yzg3YjA2ODUwOWFjYTk4MzRlZmFjZTE5NzcwNWZlNWQ0ZjA4NzE3MzFiN2IyMWNkOTliOWZkZGMifX19
+    give_commands:
+    - '[CONSOLE] nitems FARM_BALL %player_name%'
+    - '[BROADCAST] &#F8BEFB ꐁ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#F8BEFB%player_name% &fвыиграл &a&lШар Огородника'
+    - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с донат вещами'
+    - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
+    - '[BROADCAST] &#F8BEFB ꐀ'

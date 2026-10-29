@@ -1,0 +1,71 @@
+Name: moder
+Cooldown: 0
+Permission: nKits.kits.moder
+Order: 0
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:3.5d,id:"menudumper:armor_0",operation:"add_value",type:"minecraft:armor"},{amount:10.0d,id:"menudumper:max_health_1",operation:"add_value",type:"minecraft:max_health"},{amount:-0.15d,id:"menudumper:movement_speed_2",operation:"add_multiplied_base",type:"minecraft:movement_speed"},{amount:-0.15d,id:"menudumper:movement_speed_3",operation:"add_multiplied_base",slot:"offhand",type:"minecraft:movement_speed"},{amount:3.5d,id:"menudumper:armor_4",operation:"add_value",slot:"offhand",type:"minecraft:armor"},{amount:10.0d,id:"menudumper:max_health_5",operation:"add_value",slot:"offhand",type:"minecraft:max_health"}]'
+      minecraft:profile: '{id:[I;987031972,-865120843,-1078750494,-2051081369],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzVhNzY2Njg3ZmQyZWI1ZGViNmMxZDdiMmI2ODkyNmFkOGMzYjJhYjQ1OWJiMmQyZWY2MGYyNDY1NjExNzdlOCJ9fX0="}]}'
+      minecraft:lore: '[{extra:[{color:"#FF5555",italic:0b,text:"Проклятие утраты"}],italic:0b,text:""},{extra:[{bold:1b,color:"#55FF55",italic:0b,text:"+3.5
+        к Броне"}],italic:0b,text:""},{extra:[{bold:1b,color:"#55FF55",italic:0b,text:"+10
+        к Здоровью"}],italic:0b,text:""},{extra:[{bold:1b,color:"#FF5555",italic:0b,text:"-15%
+        к Скорости передвижения"}],italic:0b,text:""}]'
+      minecraft:enchantments: '{"minecraft:sharpness":1,"minecraft:vanishing_curse":1}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers"]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"#55FFFF",italic:0b,text:"Шар
+        Модера"}],italic:0b,text:""}'
+    schema_version: 1
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  Armor:
+  - null
+  - null
+  - null
+  - null

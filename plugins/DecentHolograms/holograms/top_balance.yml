@@ -1,0 +1,34 @@
+location: world_spawn:21.500:72.000:-27.500
+enabled: true
+display-range: 24
+update-range: 24
+update-interval: 20
+facing: 0.0
+down-origin: false
+pages:
+- lines:
+  - content: '&fТоп богачей на сервере <#F8BEFB>&lГРИФ #1</#FAD8FC>'
+    height: 0.3
+  - content: ''
+    height: 0.3
+  - content: '%elytrixtops_vault_1%'
+    height: 0.3
+  - content: '%elytrixtops_vault_2%'
+    height: 0.3
+  - content: '%elytrixtops_vault_3%'
+    height: 0.3
+  - content: '%elytrixtops_vault_4%'
+    height: 0.3
+  - content: '%elytrixtops_vault_5%'
+    height: 0.3
+  - content: '%elytrixtops_vault_6%'
+    height: 0.3
+  - content: '%elytrixtops_vault_7%'
+    height: 0.3
+  - content: '%elytrixtops_vault_8%'
+    height: 0.3
+  - content: '%elytrixtops_vault_9%'
+    height: 0.3
+  - content: '%elytrixtops_vault_10%'
+    height: 0.3
+  actions: {}

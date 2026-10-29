@@ -1,0 +1,18 @@
+location: world_spawn:-29.513:74.100:-4.483
+enabled: true
+display-range: 48
+update-range: 48
+update-interval: 20
+facing: 0.0
+down-origin: false
+pages:
+- lines:
+  - content: '&#F8BEFB&lБитва с Боссом'
+    height: 0.3
+  - content: '&fПн, Ср, Пт в &#F8BEFB17:30'
+    height: 0.3
+  - content: '&7Одолейте босса и получите награду!'
+    height: 0.3
+  - content: '&#F8BEFBНажмите на NPC &fили &7/boss join'
+    height: 0.3
+  actions: {}

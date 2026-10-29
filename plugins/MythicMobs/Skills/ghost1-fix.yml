@@ -1,0 +1,9 @@
+CancelEventSkill:
+  Skills:
+  - cancelEvent
+ghost_attack:
+  Skills:
+  - damage{amount=10}
+ghost_death:
+  Skills:
+  - remove @self

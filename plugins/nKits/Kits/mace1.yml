@@ -1,0 +1,64 @@
+Name: mace1
+Cooldown: 0
+Permission: nKits.kits.mace1
+Order: 0
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:mace
+    count: 1
+    components:
+      minecraft:repair_cost: '31'
+      minecraft:enchantments: '{"minecraft:breach":4,"minecraft:fire_aspect":2,"minecraft:mending":1,"minecraft:unbreaking":3,"minecraft:wind_burst":3}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"ГравиМол",underlined:0b}],text:""}'
+    schema_version: 1
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  Armor:
+  - null
+  - null
+  - null
+  - null

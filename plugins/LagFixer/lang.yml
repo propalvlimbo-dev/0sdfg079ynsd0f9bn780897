@@ -1,0 +1,36 @@
+# =============================================================
+# LagFixer — Сообщения в фирменном стиле Elytrix (&#F8BEFB + &f)
+# =============================================================
+
+messages:
+  Main:
+    no_access: "<white>У вас недостаточно прав: <color:#F8BEFB><permission>"
+    disabled_module: "<white>Модуль <color:#F8BEFB><module> <white>сейчас отключён администрацией."
+    player_only: "<white>Эту команду может использовать только игрок!"
+
+  RedstoneLimiter:
+    alert: "<white>Ограничена нагрузка редстоуна (<color:#F8BEFB><ticks> тиков<white>) в чанке <color:#F8BEFB><location><white>!"
+    cooldown: "<white>Подождите <color:#F8BEFB><cooldown> мс <white>перед повторным нажатием <color:#F8BEFB><material><white>."
+
+  WorldCleaner:
+    countingdown:
+      - "60=<white>Очистка выпавших предметов через <color:#F8BEFB>60 сек.<white>! Подберите ценные ресурсы."
+      - "30=<white>Очистка выпавших предметов через <color:#F8BEFB>30 сек.<white>!"
+      - "10=<white>Очистка выпавших предметов через <color:#F8BEFB>10 сек.<white>!"
+      - "5=<white>Очистка мира через <color:#F8BEFB>5<white>..."
+      - "4=<white>Очистка мира через <color:#F8BEFB>4<white>..."
+      - "3=<white>Очистка мира через <color:#F8BEFB>3<white>..."
+      - "2=<white>Очистка мира через <color:#F8BEFB>2<white>..."
+      - "1=<white>Очистка мира через <color:#F8BEFB>1<white>..."
+      - "0=<white>Очистка завершена! Удалено: <color:#F8BEFB><items> <white>предм., <color:#F8BEFB><creatures> <white>мобов и <color:#F8BEFB><projectiles> <white>снарядов."
+    items:
+      abyss:
+        close: "<white>Бездна <color:#F8BEFB>/abyss <white>была закрыта!"
+        open: "<white>Случайно потеряли предмет при очистке? Заберите его в <color:#F8BEFB>/abyss <gray>(открыта 60 сек.)"
+        empty: "<white>Бездна пуста — дождитесь следующей очистки!"
+        closed: "<white>Бездна сейчас закрыта — она открывается сразу после авто-очистки!"
+        opened: "<white>Вы открыли хранилище удалённых предметов <color:#F8BEFB>Бездна<white>!"
+        gui:
+          name: "<color:#F8BEFB><b>БЕЗДНА</b> <dark_gray>(<gray>стр. <page><dark_gray>)"
+          previous: "<dark_gray>← <color:#F8BEFB><b>ПРЕДЫДУЩАЯ СТРАНИЦА</b>"
+          next: "<dark_gray>→ <color:#F8BEFB><b>СЛЕДУЮЩАЯ СТРАНИЦА</b>"

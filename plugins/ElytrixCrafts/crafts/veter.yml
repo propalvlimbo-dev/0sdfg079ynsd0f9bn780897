@@ -1,0 +1,63 @@
+menu-slot: 2
+cooldown-hours: 24
+permission: quest.alch
+chain: alch
+result:
+  ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: POTION
+  meta:
+    ==: ItemMeta
+    meta-type: POTION
+    display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gold","text":"Быстрее
+      ветра"}],"text":""}'
+    custom-color:
+      ==: Color
+      RED: 238
+      BLUE: 236
+      GREEN: 237
+    custom-effects:
+    - ==: PotionEffect
+      effect: 25
+      duration: 240
+      amplifier: 1
+      ambient: false
+      has-particles: true
+      has-icon: true
+ingredients:
+  '0':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: FEATHER
+  '1':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: ENDER_PEARL
+  '2':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: FEATHER
+  '3':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: GHAST_TEAR
+  '4':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: GLASS_BOTTLE
+  '5':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: GHAST_TEAR
+  '6':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: DIAMOND_BOOTS
+  '7':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHER_STAR
+  '8':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: DIAMOND_BOOTS

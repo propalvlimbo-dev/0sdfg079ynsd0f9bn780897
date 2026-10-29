@@ -1,0 +1,38 @@
+location: world_spawn:11,500:74,100:0,500
+enabled: true
+display-range: 48
+update-range: 48
+update-interval: 20
+facing: 0.0
+down-origin: false
+pages:
+- lines:
+  - content: '&fДонат на сервере &#F8BEFB&lElytrix'
+    height: 0.5
+  - content: '&7Цены на донат:'
+    height: 0.3
+  - content: '&fꔨ &f— &#F8BEFB&l39р'
+    height: 0.3
+  - content: '&fꔲ &f— &#F8BEFB&l69р'
+    height: 0.3
+  - content: '&fꕒ &f— &#F8BEFB&l109р'
+    height: 0.3
+  - content: '&fꕀ &f— &#F8BEFB&l159р'
+    height: 0.3
+  - content: '&fꕈ &f— &#F8BEFB&l219р'
+    height: 0.3
+  - content: '&fꕁ &f— &#F8BEFB&l289р'
+    height: 0.3
+  - content: '&fꕉ &f— &#F8BEFB&l379р'
+    height: 0.3
+  - content: '&fꕠ &f— &#F8BEFB&l499р'
+    height: 0.3
+  - content: '&fꕓ &f— &f&l899р'
+    height: 0.3
+  - content: '&fꕡ &f— &#FF3B4E&l3000р'
+    height: 0.5
+  - content: '&7[<#F8BEFB>&lЛегендарный кейс</#FFFFFF>&7] &7- &#55FF55&l89р'
+    height: 0.5
+  - content: '&7Покупка на сайте: &#F8BEFB&lhttps://elytrix.pw'
+    height: 0.3
+  actions: {}

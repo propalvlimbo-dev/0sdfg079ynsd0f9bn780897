@@ -1,0 +1,360 @@
+######## created by samus2002 #########
+
+# Dwarf Knight #
+
+Dwarf_Knight:
+  Type: ZOMBIE
+  Display: '&fDwarf Knight'
+  Health: 200
+  Damage: 2
+  Faction: Dwarf
+  Options:
+    MovementSpeed: 0.25
+    ShowHealth: false
+    PreventRandomEquipment: true
+    AlwaysShowName: false
+    Persistent: false
+    Despawn: true
+    PreventOtherDrops: true
+    FollowRange: 20
+    Silent: true
+    KnockbackResistance: 1
+    PreventSunburn: true
+  Modules:
+    ThreatTable: true
+  AIGoalSelectors:
+  - 0 clear
+  - 1 meleeattack
+  - 2 movetowardstarget
+  AITargetSelectors:
+  - 0 clear
+  - 1 attacker
+  - 2 players{r=8} #
+  Skills:
+  - model{mid=dwarf_knight;n=false;step=1} @self ~onSpawn
+  - effect:sound{s=entity.pillager.ambient;volume=0.7;pitch=0.9} @self ~onTimer:140 0.35
+  - effect:sound{s=entity.pillager.death;volume=0.7;pitch=0.9} @self ~onDeath
+  - skill{s=Changetarget} ~onTimer:160 <99%
+  - skill{s=Cancelattack;sync=true} ~onAttack
+  - skill{s=Dwarf_Knight_Attack} ~onTimer:20 0.7
+  - skill{s=Dwarf_Knight_Call} ~onTimer:40 0.7
+  - skill{s=Dwarf_Hit} ~onDamaged
+  - skill{s=Dwarf_Knight_Tame} ~onInteract
+  - skill{s=DwarfImmobilize} ~onSpawn
+  - skill{s=DwarfImmobilize} ~onTimer:20 
+Dwarf_Knight_Friendly:
+  Type: WOLF
+  Display: '&fDwarf Knight'
+  Health: 50
+  Damage: 2
+  Faction: Dwarf
+  Options:
+    MovementSpeed: 0.25
+    ShowHealth: false
+    PreventRandomEquipment: true
+    AlwaysShowName: false
+    Persistent: false
+    Despawn: true
+    PreventOtherDrops: true
+    FollowRange: 20
+    Silent: true
+    KnockbackResistance: 1
+    PreventSunburn: true
+  Modules:
+    ThreatTable: true
+  AIGoalSelectors:
+  - 0 clear
+  - 1 meleeattack
+  - 2 movetowardstarget
+  - 3 randomstroll
+  Drops:
+  - dwarf_axe 1 1
+  - dwarf_horn 1 1
+  AITargetSelectors:
+  - 0 clear
+  - 1 ownertarget
+  - 2 ownerattacker
+  AIGoalSelectors:
+  - 0 clear
+  - 1 meleeattack
+  - 2 movetowardstarget
+  - 3 randomstroll
+  - 4 gotoowner
+  Skills:
+  - setowner{delay=1} @NearestPlayer ~onSpawn
+  - model{mid=dwarf_knight;n=false;step=1} @self ~onSpawn
+  - effect:sound{s=entity.pillager.ambient;volume=0.7;pitch=0.9} @self ~onTimer:140 0.35
+  - effect:sound{s=entity.pillager.death;volume=0.7;pitch=0.9} @self ~onDeath
+  - skill{s=Cancelattack;sync=true} ~onAttack
+  - skill{s=Dwarf_Knight_Friendly_Attack} ~onTimer:20 0.7
+  - skill{s=Dwarf_Hit} ~onDamaged
+  
+# Dwarf Huntsman #
+
+Dwarf_Huntsman:
+  Type: SKELETON
+  Display: '&fDwarf Huntsman'
+  Health: 40
+  Damage: 2
+  Faction: Dwarf
+  Options:
+    MovementSpeed: 0.25
+    ShowHealth: false
+    PreventRandomEquipment: true
+    AlwaysShowName: false
+    Persistent: false
+    Despawn: true
+    PreventOtherDrops: true
+    FollowRange: 20
+    Silent: true
+    KnockbackResistance: 1
+    PreventSunburn: true
+  Equipment:
+  - bow:HAND
+  Modules:
+    ThreatTable: true
+  Drops:
+  - dwarf_crossbow 1 1
+  - dwarf_arrow 3 1
+  AITargetSelectors:
+  - 0 clear
+  - 1 attacker
+  Skills:
+  - model{mid=dwarf_huntsman;n=false;step=1} @self ~onSpawn
+  - effect:sound{s=entity.pillager.ambient;volume=0.7;pitch=0.9} @self ~onTimer:140 0.35
+  - effect:sound{s=entity.pillager.death;volume=0.7;pitch=0.9} @self ~onDeath
+  - skill{s=Changetarget} ~onTimer:160 <99%
+  - bodyclamp{c=30} @self ~onSpawn
+  - skill{s=Cancelattack;sync=true} ~onShoot
+  - skill{s=Dwarf_Huntsman_Attack} ~onTimer:60 0.7
+  - skill{s=Dwarf_Huntsman_Attack} ~onTimer:40 0.3
+  - skill{s=Dwarf_Hit} ~onDamaged
+  
+  - skill{s=Dwarf_Huntsman_Tame} ~onInteract
+  
+  
+dwarf_arrow:
+  Type: ARMOR_STAND
+  Pose:
+      Head: 0,0,0
+  ItemHead: dwarf_arrow
+  Options:
+    Marker: true
+    Small: false
+    HasArms: true
+    Invisible: true
+    Invincible: true
+  Skills:
+  - equip{item=dwarf_arrow:4;delay=2} ~onSpawn
+  
+Dwarf_Huntsman_Friendly:
+  Type: WOLF
+  Display: '&fDwarf Huntsman'
+  Health: 40
+  Damage: 2
+  Faction: Dwarf
+  Options:
+    MovementSpeed: 0.25
+    ShowHealth: false
+    PreventRandomEquipment: true
+    AlwaysShowName: false
+    Persistent: false
+    Despawn: true
+    PreventOtherDrops: true
+    FollowRange: 20
+    Silent: true
+    KnockbackResistance: 1
+    PreventSunburn: true
+  Equipment:
+  - bow:HAND
+  Modules:
+    ThreatTable: true
+  Drops:
+  - dwarf_crossbow 1 1
+  - dwarf_arrow 3 1
+  AITargetSelectors:
+  - 0 clear
+  - 1 ownertarget
+  - 2 ownerattacker
+  AIGoalSelectors:
+  - 0 clear
+  - 1 meleeattack
+  - 2 movetowardstarget
+  - 3 randomstroll
+  - 4 gotoowner
+  Skills:
+  - setowner{delay=1} @NearestPlayer ~onSpawn
+  - model{mid=dwarf_huntsman;n=false;step=1} @self ~onSpawn
+  - effect:sound{s=entity.pillager.ambient;volume=0.7;pitch=0.9} @self ~onTimer:140 0.35
+  - effect:sound{s=entity.pillager.death;volume=0.7;pitch=0.9} @self ~onDeath
+  - bodyclamp{c=30} @self ~onSpawn
+  - skill{s=Cancelattack;sync=true} ~onShoot
+  - skill{s=Dwarf_Huntsman_Attack} ~onTimer:60 0.7
+  - skill{s=Dwarf_Huntsman_Attack} ~onTimer:40 0.3
+  - skill{s=Dwarf_Hit} ~onDamaged
+  
+# Dwarf Cleric #
+
+Dwarf_Cleric:
+  Type: SKELETON
+  Display: '&fDwarf Cleric'
+  Health: 45
+  Damage: 2
+  Faction: Dwarf
+  Options:
+    MovementSpeed: 0.25
+    ShowHealth: false
+    PreventRandomEquipment: true
+    AlwaysShowName: false
+    Persistent: true
+    Despawn: false
+    PreventOtherDrops: true
+    FollowRange: 20
+    Silent: true
+    KnockbackResistance: 1
+    PreventSunburn: true
+  Equipment:
+  - bow:HAND
+  Drops:
+  - dwarf_tome 1 1
+  - dwarf_mace 1 1
+  Modules:
+    ThreatTable: true
+  AITargetSelectors:
+  - 0 clear
+  - 1 attacker
+  Skills:
+  - model{mid=dwarf_cleric;n=false;step=1} @self ~onSpawn
+  - effect:sound{s=entity.pillager.ambient;volume=0.7;pitch=0.9} @self ~onTimer:140 0.35
+  - effect:sound{s=entity.pillager.death;volume=0.7;pitch=0.9} @self ~onDeath
+  - skill{s=Changetarget} ~onTimer:160 <99%
+  - skill{s=Cancelattack;sync=true} ~onShoot
+  - skill{s=Dwarf_Cleric_Attack} ~onTimer:50 0.7
+  - skill{s=Dwarf_Cleric_Heal} ~onTimer:40 0.4
+  - skill{s=Dwarf_Hit} ~onDamaged
+  
+  - skill{s=Dwarf_Cleric_Tame} ~onInteract
+  
+Dwarf_Cleric_Friendly:
+  Type: WOLF
+  Display: '&fDwarf Cleric'
+  Health: 45
+  Damage: 2
+  Faction: Dwarf
+  Options:
+    MovementSpeed: 0.25
+    ShowHealth: false
+    PreventRandomEquipment: true
+    AlwaysShowName: false
+    Persistent: false
+    Despawn: true
+    PreventOtherDrops: true
+    FollowRange: 20
+    Silent: true
+    KnockbackResistance: 1
+    PreventSunburn: true
+  Drops:
+  - dwarf_tome 1 1
+  - dwarf_mace 1 1
+  Modules:
+    ThreatTable: true
+  AITargetSelectors:
+  - 0 clear
+  - 1 ownertarget
+  - 2 ownerattacker
+  AIGoalSelectors:
+  - 0 clear
+  - 1 meleeattack
+  - 2 movetowardstarget
+  - 3 randomstroll
+  - 4 gotoowner
+  Skills:
+  - setowner{delay=1} @NearestPlayer ~onSpawn
+  - model{mid=dwarf_cleric;n=false;step=1} @self ~onSpawn
+  - effect:sound{s=entity.pillager.ambient;volume=0.7;pitch=0.9} @self ~onTimer:140 0.35
+  - effect:sound{s=entity.pillager.death;volume=0.7;pitch=0.9} @self ~onDeath
+  - skill{s=Cancelattack;sync=true} ~onShoot
+  - skill{s=Dwarf_Cleric_Attack_Friendly} ~onTimer:50 0.7
+  - skill{s=Dwarf_Cleric_Heal_Friendly} ~onTimer:40 0.4
+  - skill{s=Dwarf_Hit} ~onDamaged
+  
+# Dwarf Blacksmith #
+
+Dwarf_Blacksmith:
+  Type: ZOMBIE
+  Display: '&4Dwarf Blacksmith'
+  Health: 400
+  Damage: 6
+  BossBar:
+    Enabled: true
+    Title: '&4Dwarf Blacksmith'
+    Range: 25
+    Color: RED
+    Style: SEGMENTED_12
+    DarkenSky: false
+  Options:
+    MovementSpeed: 0.27
+    ShowHealth: false
+    PreventRandomEquipment: true
+    AlwaysShowName: false
+    Persistent: false
+    Despawn: true
+    PreventOtherDrops: true
+    FollowRange: 50
+    Silent: true
+    KnockbackResistance: 1
+    PreventSunburn: true
+  Modules:
+    ThreatTable: true
+  Drops:
+  - blacksmith_hammer 1 1
+  - blacksmith_spear 1 1
+  - blacksmith_sword 1 1
+  - blacksmith_shield 1 1
+  DamageModifiers:
+  - FALL 0
+  AIGoalSelectors:
+  - 0 clear
+  - 1 meleeattack
+  - 2 movetowardstarget
+  - 3 randomstroll
+  AITargetSelectors:
+  - 0 clear
+  - 1 players
+  Skills:
+  - model{mid=dwarf_blacksmith;n=false;step=1} @self ~onSpawn
+  - effect:sound{s=entity.pillager.ambient;volume=0.9;pitch=0.8} @self ~onTimer:140 0.35
+  - effect:sound{s=entity.pillager.death;volume=0.9;pitch=0.8} @self ~onDeath
+  - skill{s=Changetarget} ~onTimer:160 <99%
+  - skill{s=Cancelattack;sync=true} ~onAttack
+  - skill{s=Dwarf_Blacksmith_Attack} ~onTimer:30 0.7
+  - skill{s=Dwarf_Blacksmith_Skill} ~onTimer:10
+  - skill{s=Dwarf_Blacksmith_Hit} @self ~onDamaged
+  - skill{s=Dwarf_Blacksmith_Parry} ~onDamaged 0.4
+  
+  - partvisibility{p=anvil;v=false;delay=1} @self ~onSpawn
+  - partvisibility{p=sword;v=false;delay=1} @self ~onSpawn
+  - partvisibility{p=spear;v=false;delay=1} @self ~onSpawn
+  - partvisibility{p=shield;v=false;delay=1} @self ~onSpawn
+  - partvisibility{p=iron;v=false;delay=1} @self ~onSpawn
+  
+  - effect:particles{particle=smoke_large;amount=2;hS=0.1;vS=0.1;y=0.2;speed=0;forwardOffset=0;sideOffset=0} @ModelPart{p=smoke_left} ~onTimer:10
+  - effect:particles{particle=smoke_large;amount=2;hS=0.1;vS=0.1;y=0.2;speed=0;forwardOffset=0;sideOffset=0} @ModelPart{p=smoke_right} ~onTimer:10
+  - effect:particles{particle=flame;amount=2;hS=0.1;vS=0.1;y=0.2;speed=0;forwardOffset=0;sideOffset=0} @ModelPart{p=smoke_left} ~onTimer:10
+  - effect:particles{particle=flame;amount=2;hS=0.1;vS=0.1;y=0.2;speed=0;forwardOffset=0;sideOffset=0} @ModelPart{p=smoke_right} ~onTimer:10
+  
+  
+blacksmith_spear:
+  Type: ARMOR_STAND
+  Pose:
+      Head: 0,0,0
+  ItemHead: blacksmith_spear
+  Options:
+    Marker: true
+    Small: false
+    HasArms: true
+    Invisible: true
+    Invincible: true
+  Skills:
+  - equip{item=blacksmith_spear:4;delay=2} ~onSpawn
+#IDWy9EMEVVUJB3Qpt0R49WNJZUV6dGVNNzZq1UNjRlTwsmRXZWUoNXYxEXYxVjcQh0d2EXO

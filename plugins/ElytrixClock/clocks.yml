@@ -1,0 +1,16 @@
+'1':
+  world: world_spawn
+  x: 68
+  y: 91
+  z: -7
+  direction: EAST
+  material: SMOOTH_QUARTZ
+  filling: AIR
+  depth: 1
+  add: 0
+  seconds: false
+  blinking: true
+  cdt: 0
+  swt: 0
+  mode: NORMAL
+  lastWidth: 16

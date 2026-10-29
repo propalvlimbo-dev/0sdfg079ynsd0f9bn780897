@@ -1,0 +1,86 @@
+hub:
+  command: /hub
+  type: BUNGEE_TP
+  server_name: lobby
+  permission-required: false
+
+onlinemax:
+  command: /onlinemax
+  type: TEXT
+  permission-required: false
+  register: true
+  text:
+    - "&x&F&8&B&E&F&BElytrix &7» &fОбщий онлайн: &x&F&8&B&E&F&B%server_online%"
+    - "&x&F&8&B&E&F&BElytrix &7» &fОнлайн лобби: &x&F&8&B&E&F&B%bungee_lobby%"
+
+oskolki:
+  command: /oskolki
+  type: TEXT
+  permission-required: false
+  register: true
+  text:
+    - "&x&F&8&B&E&F&BОсколки &7» &fУ тебя сейчас: &x&F&8&B&E&F&B%anrubles_balance_осколки% &fосколков"
+
+site:
+  command: /site
+  type: TEXT
+  permission-required: false
+  register: true
+  text:
+    - "&x&F&8&B&E&F&BElytrix &7» &fНаш официальный сайт: &x&F&8&B&E&F&Bhttps://elytrix.pw"
+
+discord_cmd:
+  command: /ds
+  type: TEXT
+  permission-required: false
+  register: true
+  text:
+    - "&x&F&8&B&E&F&BElytrix &7» &fНаш Discord: &x&F&8&B&E&F&Bdsc.gg/elytrix"
+
+tg_cmd:
+  command: /tg
+  type: TEXT
+  permission-required: false
+  register: true
+  text:
+    - "&x&F&8&B&E&F&BElytrix &7» &fНаш Telegram: &x&F&8&B&E&F&Bt.me/elytrix_ru"
+
+quest1:
+  command: /quest1
+  type: RUN_COMMAND
+  runcmd:
+    - "/quest easy"
+  permission-required: false
+  register: true
+
+quest2:
+  command: /quest2
+  type: RUN_COMMAND
+  runcmd:
+    - "/quest medium"
+  permission-required: false
+  register: true
+
+quest3:
+  command: /quest3
+  type: RUN_COMMAND
+  runcmd:
+    - "/quest hard"
+  permission-required: false
+  register: true
+
+quest4:
+  command: /quest4
+  type: RUN_COMMAND
+  runcmd:
+    - "/quest alch"
+  permission-required: false
+  register: true
+
+quests_menu:
+  command: /quests
+  type: RUN_COMMAND
+  runcmd:
+    - "/quest easy"
+  permission-required: false
+  register: true

@@ -1,0 +1,266 @@
+menu_title: §fꈁꀀꈂꍗꈂꀁ§fꈃꄑ
+open_command: kitpreview_angel
+register_command: true
+size: 54
+items:
+  armor_0:
+    slot: 27
+    amount: 1
+    material: NETHERITE_BOOTS
+    display_name: '&f&lБотинки ANGEL'
+    enchantments:
+    - DEPTH_STRIDER;3
+    - FEATHER_FALLING;4
+    - MENDING;1
+    - PROTECTION;5
+    - UNBREAKING;4
+  armor_1:
+    slot: 18
+    amount: 1
+    material: NETHERITE_LEGGINGS
+    display_name: '&f&lПоножи ANGEL'
+    enchantments:
+    - MENDING;1
+    - PROTECTION;5
+    - SWIFT_SNEAK;3
+    - UNBREAKING;4
+  armor_2:
+    slot: 9
+    amount: 1
+    material: NETHERITE_CHESTPLATE
+    display_name: '&f&lНагрудник ANGEL'
+    enchantments:
+    - MENDING;1
+    - PROTECTION;5
+    - UNBREAKING;4
+  armor_3:
+    slot: 0
+    amount: 1
+    material: NETHERITE_HELMET
+    display_name: '&f&lШлем ANGEL'
+    enchantments:
+    - AQUA_AFFINITY;1
+    - MENDING;1
+    - PROTECTION;5
+    - RESPIRATION;3
+    - UNBREAKING;4
+  offhand_item:
+    slot: 36
+    amount: 1
+    model_data: 5012
+    material: PLAYER_HEAD
+    display_name: '&#F8BEFB&lШар Ангела'
+    lore:
+    - '&#FF5555Проклятие утраты'
+    - ''
+    - '&#AAAAAAКогда во второй руке:'
+    - '&#55FF55&l +3 к Броне'
+    - '&#55FF55&l +6 к Здоровью'
+    - '&#55FF55&l +2.5 к Урону'
+    - '&#55FF55&l +15% к Скорости'
+    - ''
+    - '&#AAAAAAПри нажатии SHIFT:'
+    - '&#F8BEFB&l Сопротивление II (0:08)'
+    enchantments:
+    - VANISHING_CURSE;1
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+  kit_badge:
+    material: white_shulker_box
+    slot: 45
+    display_name: '&#AAAAAAНабор &#FFFFFF&lA&#F9FAFB&lN&#F3F4F6&lG&#FAECFD&lE&#F8BEFB&lL'
+    lore:
+    - '&8Предпросмотр набора'
+    - ''
+    - '&7Слева отображается броня и'
+    - '&7предмет второй руки (шар/тотем).'
+    - '&7Справа — всё содержимое набора!'
+  loot_0:
+    slot: 2
+    amount: 1
+    model_data: 5012
+    material: NETHERITE_SWORD
+    display_name: '&f&lКлинок ANGEL'
+    enchantments:
+    - FIRE_ASPECT;2
+    - LOOTING;3
+    - MENDING;1
+    - SHARPNESS;6
+    - SWEEPING_EDGE;3
+    - UNBREAKING;4
+  loot_1:
+    slot: 3
+    amount: 1
+    material: NETHERITE_PICKAXE
+    display_name: '&f&lКирка ANGEL'
+    enchantments:
+    - EFFICIENCY;8
+    - FORTUNE;4
+    - MENDING;1
+    - UNBREAKING;4
+  loot_2:
+    slot: 4
+    amount: 1
+    material: NETHERITE_AXE
+    display_name: '&f&lСекира ANGEL'
+    enchantments:
+    - EFFICIENCY;8
+    - MENDING;1
+    - SHARPNESS;5
+    - UNBREAKING;4
+  loot_3:
+    slot: 5
+    amount: 1
+    material: NETHERITE_SHOVEL
+    display_name: '&f&lЛопата ANGEL'
+    enchantments:
+    - EFFICIENCY;8
+    - MENDING;1
+    - UNBREAKING;4
+  loot_4:
+    slot: 6
+    amount: 1
+    material: BOW
+    display_name: '&f&lЛук ANGEL'
+    enchantments:
+    - FLAME;1
+    - INFINITY;1
+    - MENDING;1
+    - POWER;7
+    - PUNCH;2
+    - UNBREAKING;4
+  loot_5:
+    slot: 7
+    amount: 1
+    material: CROSSBOW
+    display_name: '&f&lАрбалет ANGEL'
+    enchantments:
+    - MENDING;1
+    - MULTISHOT;1
+    - QUICK_CHARGE;3
+    - UNBREAKING;4
+  loot_6:
+    slot: 8
+    amount: 1
+    material: ELYTRA
+    display_name: '&f&lКрылья ANGEL'
+    enchantments:
+    - MENDING;1
+    - UNBREAKING;5
+  loot_7:
+    slot: 11
+    amount: 64
+    material: FIREWORK_ROCKET
+  loot_8:
+    slot: 12
+    amount: 4
+    material: ENCHANTED_GOLDEN_APPLE
+  loot_9:
+    slot: 13
+    amount: 64
+    material: GOLDEN_APPLE
+  loot_10:
+    slot: 14
+    amount: 64
+    material: GOLDEN_CARROT
+  loot_11:
+    slot: 15
+    amount: 16
+    material: ENDER_PEARL
+  loot_12:
+    slot: 16
+    amount: 16
+    material: ENDER_PEARL
+  loot_13:
+    slot: 17
+    amount: 1
+    material: TOTEM_OF_UNDYING
+  loot_14:
+    slot: 20
+    amount: 1
+    material: TOTEM_OF_UNDYING
+  loot_15:
+    slot: 21
+    amount: 1
+    material: TOTEM_OF_UNDYING
+  loot_16:
+    slot: 22
+    amount: 64
+    material: EXPERIENCE_BOTTLE
+  loot_17:
+    slot: 23
+    amount: 64
+    material: CHORUS_FRUIT
+  loot_18:
+    slot: 24
+    amount: 32
+    material: TIPPED_ARROW
+  loot_19:
+    slot: 25
+    amount: 32
+    material: TIPPED_ARROW
+  loot_20:
+    slot: 26
+    amount: 1
+    material: SPLASH_POTION
+  loot_21:
+    slot: 29
+    amount: 1
+    material: SPLASH_POTION
+  loot_22:
+    slot: 30
+    amount: 1
+    material: SPLASH_POTION
+  loot_23:
+    slot: 31
+    amount: 64
+    material: ARROW
+  loot_24:
+    slot: 32
+    amount: 64
+    material: OBSIDIAN
+  loot_25:
+    slot: 33
+    amount: 64
+    material: QUARTZ_BLOCK
+  loot_26:
+    slot: 34
+    amount: 64
+    material: WHITE_CONCRETE
+  loot_27:
+    slot: 35
+    amount: 16
+    material: END_CRYSTAL
+  loot_28:
+    slot: 38
+    amount: 16
+    material: RESPAWN_ANCHOR
+  loot_29:
+    slot: 39
+    amount: 64
+    material: GLOWSTONE
+  btn_back:
+    material: structure_void
+    slots:
+    - 47
+    - 48
+    display_name: '&#F8BEFB◄ Назад к списку наборов'
+    lore:
+    - '&7Нажмите, чтобы вернуться в &f/kits'
+    click_commands:
+    - '[openguimenu] kits'
+  btn_claim:
+    material: structure_void
+    slots:
+    - 51
+    - 52
+    - 53
+    display_name: '&#55FF55&l✚ ПОЛУЧИТЬ НАБОР &7(&#AAAAAAНабор &#FFFFFF&lA&#F9FAFB&lN&#F3F4F6&lG&#FAECFD&lE&#F8BEFB&lL&7)'
+    lore:
+    - ''
+    - '&7Нажмите, чтобы сразу забрать'
+    - '&7набор &f/kit angel &7в инвентарь!'
+    click_commands:
+    - '[close]'
+    - '[player] kit angel'

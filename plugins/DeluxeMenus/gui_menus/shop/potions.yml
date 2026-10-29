@@ -1,0 +1,331 @@
+menu_title: '§fꈁꀀꈂꌘꈂꀁ§fꈃꄅ'
+open_command: potions
+register_command: true
+size: 54
+items:
+  'potion':
+    material: potion
+    slot: 13
+    display_name: '&#AA0000&lФлакон Раздора'
+    lore:
+      - '&#5555FFСила III (01:00)'
+      - '&#5555FFМедлительность (01:30)'
+      - '&#5555FFРегенерация (00:15)'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB59 &#FFFFFFꐃ'
+      - ''
+    rgb: '0, 0, 3'
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 59'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 59'
+      - '[console] kit razdor %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+    hide_effects: true
+  'potion_1':
+    material: potion
+    slot: 21
+    display_name: '&#FF5555&lЗелье Бездны'
+    lore:
+      - '&#5555FFСила III (00:45)'
+      - '&#5555FFСкорость III (00:45)'
+      - '&#5555FFОгнестойкость III (08:00)'
+      - '&#5555FFОтравление (00:45)'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB89 &#FFFFFFꐃ'
+      - ''
+    rgb: '0, 0, 3'
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 89'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 89'
+      - '[console] kit bezdna %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+    hide_effects: true
+  'potion_2':
+    material: potion
+    slot: 22
+    display_name: '&#FF55FF&lЗелье Целителя '
+    lore:
+      - '&#5555FFПрибавка здоровья III (00:30)'
+      - '&#5555FFСкорость (01:20)'
+      - '&#5555FFРегенерация III (00:15)'
+      - '&#5555FFУсталость IV (00:15)'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB69 &#FFFFFFꐃ'
+      - ''
+    rgb: '158, 170, 182'
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 69'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 69'
+      - '[console] kit celitel %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+    hide_effects: true
+  'potion_3':
+    material: potion
+    slot: 23
+    display_name: '&#55FFFF&lРандомное зелье'
+    lore:
+      - '&#5555FF&kРандомное зелье'
+      - '&#5555FFДает 3 случайных эффекта'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB49 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 49'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 49'
+      - '[console] kit random %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+    hide_effects: true
+  'tipped_arrow':
+    material: tipped_arrow
+    slot: 29
+    display_name: '&#F8BEFBОбработанная стрела'
+    lore:
+      - '&#5555FFЗелье мгновенного урона II'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB49 &#FFFFFFꐃ'
+      - ''
+    rgb: '105, 37, 37'
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 49'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 49'
+      - '[console] kit strela %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+    hide_effects: true
+  'potion_4':
+    material: potion
+    slot: 30
+    display_name: '&#F8BEFBБыстрее ветра'
+    lore:
+      - '&#5555FFЛевитация II (00:12)'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB49 &#FFFFFFꐃ'
+      - ''
+    rgb: '238, 237, 236'
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 49'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 49'
+      - '[console] kit vetra %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+    hide_effects: true
+  'potion_5':
+    material: potion
+    slot: 31
+    display_name: '&#AA00AA&lЗелье Разлома'
+    lore:
+      - '&#5555FFОгнестойкость (10:00)'
+      - '&#5555FFНевидимость (04:00)'
+      - '&#5555FFГолод IV (00:30)'
+      - '&#5555FFСила (01:30)'
+      - '&#5555FFСкорость (01:30)'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB69 &#FFFFFFꐃ'
+      - ''
+    rgb: '238, 237, 236'
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 69'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 69'
+      - '[console] kit razlom %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+    hide_effects: true
+  'potion_6':
+    material: potion
+    slot: 32
+    display_name: '&#FF55FF&lЗелье Гармонии'
+    lore:
+      - '&#5555FFПрибавка здоровья III (00:17)'
+      - '&#5555FFРегенерация III (00:17)'
+      - '&#5555FFСопротивление (00:30)'
+      - '&#5555FFМедленное падение (00:30)'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB79 &#FFFFFFꐃ'
+      - ''
+    rgb: '238, 237, 236'
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 79'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 79'
+      - '[console] kit garmon %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+    hide_effects: true
+  'tipped_arrow_1':
+    material: tipped_arrow
+    slot: 33
+    display_name: '&#F8BEFBГравитационная стрела'
+    lore:
+      - '&#5555FFЛевитация II (00:12)'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB99 &#FFFFFFꐃ'
+      - ''
+    rgb: '255, 255, 255'
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 99'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 99'
+      - '[console] kit grav %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+    hide_effects: true
+  'tipped_arrow_2':
+    material: tipped_arrow
+    slot: 39
+    display_name: '&#55FFFFСтрела обморожения'
+    lore:
+      - '&#5555FFСлепота (0:04)'
+      - '&#5555FFСтан (0:04)'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB109 &#FFFFFFꐃ'
+      - ''
+    rgb: '140, 142, 145'
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 109'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 109'
+      - '[console] kit lice %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+    hide_effects: true
+  'tipped_arrow_3':
+    material: tipped_arrow
+    slot: 40
+    display_name: '&#55FFFF&lСтрела Бури'
+    lore:
+      - '&#AA0000Тошнота &#AAAAAA(00:12)'
+      - '&#AA0000Регенирация &#AAAAAA(00:10)'
+      - '&#AA0000Слепота &#AAAAAA(00:12)'
+      - '&#AA0000Утомление &#AAAAAA(00:12)'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB99 &#FFFFFFꐃ'
+      - ''
+    rgb: '140, 142, 145'
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 99'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 99'
+      - '[console] kit bura %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+    hide_effects: true
+  'tipped_arrow_4':
+    material: tipped_arrow
+    slot: 41
+    display_name: '&#FFFFFF&lКлирик'
+    lore:
+      - '&#5555FFОчищает все эффекты c врага'
+      - ''
+      - '&#AAAAAA====================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB49 &#FFFFFFꐃ'
+      - ''
+    rgb: '230, 230, 250'
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 49'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 49'
+      - '[console] kit klirik %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+    hide_effects: true
+  'arrow':
+    material: arrow
+    slot: 45
+    display_name: '&#F8BEFBНазад'
+    model_data: 10002
+    click_commands:
+      - '[player] shop'
+  'clock':
+    material: clock
+    slot: 53
+    display_name: '&#F8BEFBИНФОРМАЦИЯ'
+    lore:
+      - ''
+      - '&#555555 &#FFFFFFВаш баланс: &#FAD8FC%playerpoints_points_formatted% &#FFFFFFꐃ'
+      - ''
+      - '&#AAAAAAПополнить баланс можно'
+      - '&#AAAAAAна сайте: &#FAD8FChttps://elytrix.pw'
+    model_data: 100020
+    

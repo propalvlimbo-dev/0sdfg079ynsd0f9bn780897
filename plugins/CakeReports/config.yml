@@ -1,0 +1,124 @@
+
+notify-moderators: true
+report-message: "&x&F&8&B&E&F&BРепорты &7» &fИгрок &x&F&8&B&E&F&B{reporter} &fнаписал жалобу на &x&F&8&B&E&F&B{target} &fс причиной: &x&F&8&B&E&F&B{reason}"
+usage-message: "&x&F&8&B&E&F&BРепорты &7» &fИспользование: &x&F&8&B&E&F&B/report <Нарушитель> <Причина...>"
+reporter-message: "&x&F&8&B&E&F&BРепорты &7» &fЖалоба на игрока &x&F&8&B&E&F&B{target} &fуспешно подана"
+player-not-found-message: "&x&F&8&B&E&F&BРепорты &7» &cИгрок не найден"
+reload-message: "&x&F&8&B&E&F&BРепорты &7» &aКонфиг был перезагружен"
+console-error-message: "&x&F&8&B&E&F&BРепорты &7» &cКоманду можно вводить только из игры"
+no-permission-message: "&x&F&8&B&E&F&BРепорты &7» &cНедостаточно прав"
+remove-report-message: "&x&F&8&B&E&F&BРепорты &7» &fРепорт на &x&F&8&B&E&F&B{target} &fбыл удален"
+no-report-found-message: "&x&F&8&B&E&F&BРепорты &7» &cНа {target} нет репортов"
+max-reports-message: "&x&F&8&B&E&F&BРепорты &7» &cДостигнут лимит репортов. Подождите и попробуйте снова..."
+
+menu-title: "&8Репорты"
+menu-slots: 54
+report-item: "BOOK"
+report-item-name: "&0{target}" # ВАЖНО!!! НЕ МЕНЯТЬ!!!
+report-item-lore:
+  - "&fЖалоба на &x&F&8&B&E&F&B{target}"
+  - ""
+  - "&fПоследняя жалоба:"
+  - "&f{time}"
+  - ""
+  - "&fВсего жалоб: &c{count}"
+  - ""
+  - "&fПоследний репорт:"
+  - "&x&F&A&D&8&F&C   {reporter}&x&F&8&B&E&F&B: &f[{reason}]"
+  - ""
+  - "&aНажмите для управления жалобой:"
+report-menu-slots:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 19
+  - 20
+  - 21
+  - 22
+  - 23
+  - 24
+  - 25
+  - 28
+  - 29
+  - 30
+  - 31
+  - 32
+  - 33
+  - 34
+  - 37
+  - 38
+  - 39
+  - 40
+  - 41
+  - 42
+  - 43
+  - 46
+  - 47
+  - 48
+  - 49
+  - 50
+  - 51
+  - 52
+
+second-menu-title: "&8Управление жалобой"
+second-menu-slots: 27
+second-menu-items:
+  - material: "WHITE_WOOL"
+    name: "&aТелепортироваться"
+    lore:
+      - ""
+      - "&fНажмите, чтобы телепортироватся"
+      - "&fк нарушителю"
+    command: "tp {target}"
+    slot: 11
+  - material: "LIME_WOOL"
+    name: "&aТелепортировать к себе"
+    lore:
+      - ""
+      - "&fНажмите, чтобы телепортировать"
+      - "&fнарушителя к себе"
+    command: "s {target}"
+    slot: 13
+  - material: "RED_WOOL"
+    name: "&cУдалить репорт"
+    lore:
+      - ""
+      - "&fНажмите, чтобы удалить"
+      - "&fрепорт на этого игрока"
+    command: "reports remove {target}"
+    slot: 15
+
+custom-items:
+  - material: "PINK_STAINED_GLASS_PANE"
+    name: " "
+    slots:
+      - 0
+      - 8
+      - 9
+      - 17
+      - 36
+      - 44
+      - 45
+      - 53
+
+time-units:
+  day: "день"
+  days: "дней"
+  hour: "час"
+  hours: "часов"
+  minute: "минута"
+  minutes: "минуты"
+  second: "секунд"
+  seconds: "секунды"
+  ago: "назад"

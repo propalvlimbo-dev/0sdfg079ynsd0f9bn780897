@@ -1,0 +1,871 @@
+roulettes:
+  roulette_1:
+    bet: 1000
+    jackpot: 15000
+    jackpotBanner:
+      ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"red",pattern:"minecraft:half_vertical"},{color:"red",pattern:"minecraft:half_vertical_right"},{color:"orange",pattern:"minecraft:gradient"},{color:"yellow",pattern:"minecraft:gradient_up"},{color:"red",pattern:"minecraft:stripe_top"},{color:"red",pattern:"minecraft:stripe_downleft"},{color:"red",pattern:"minecraft:square_bottom_left"},{color:"white",pattern:"minecraft:border"}]'
+      schema_version: 1
+    defaultBanners:
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"red",pattern:"minecraft:half_vertical"},{color:"red",pattern:"minecraft:half_vertical_right"},{color:"green",pattern:"minecraft:mojang"},{color:"red",pattern:"minecraft:half_horizontal_bottom"},{color:"yellow",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"red",pattern:"half_vertical"},{color:"red",pattern:"half_vertical_right"},{color:"green",pattern:"mojang"},{color:"red",pattern:"half_horizontal_bottom"},{color:"yellow",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:14,Pattern:"vh"},{Color:14,Pattern:"vhr"},{Color:13,Pattern:"moj"},{Color:14,Pattern:"hhb"},{Color:4,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"light_blue",pattern:"minecraft:half_vertical"},{color:"light_blue",pattern:"minecraft:half_vertical_right"},{color:"green",pattern:"minecraft:curly_border"},{color:"green",pattern:"minecraft:stripe_bottom"},{color:"light_blue",pattern:"minecraft:rhombus"},{color:"green",pattern:"minecraft:stripe_top"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"light_blue",pattern:"half_vertical"},{color:"light_blue",pattern:"half_vertical_right"},{color:"green",pattern:"curly_border"},{color:"green",pattern:"stripe_bottom"},{color:"light_blue",pattern:"rhombus"},{color:"green",pattern:"stripe_top"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:3,Pattern:"vh"},{Color:3,Pattern:"vhr"},{Color:13,Pattern:"cbo"},{Color:13,Pattern:"bs"},{Color:3,Pattern:"mr"},{Color:13,Pattern:"ts"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"purple",pattern:"minecraft:half_vertical"},{color:"purple",pattern:"minecraft:half_vertical_right"},{color:"lime",pattern:"minecraft:circle"},{color:"brown",pattern:"minecraft:triangle_top"},{color:"purple",pattern:"minecraft:stripe_top"},{color:"purple",pattern:"minecraft:mojang"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"purple",pattern:"half_vertical"},{color:"purple",pattern:"half_vertical_right"},{color:"lime",pattern:"circle"},{color:"brown",pattern:"triangle_top"},{color:"purple",pattern:"stripe_top"},{color:"purple",pattern:"mojang"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:10,Pattern:"vh"},{Color:10,Pattern:"vhr"},{Color:5,Pattern:"mc"},{Color:12,Pattern:"tt"},{Color:10,Pattern:"ts"},{Color:10,Pattern:"moj"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"light_blue",pattern:"minecraft:half_vertical"},{color:"light_blue",pattern:"minecraft:half_vertical_right"},{color:"yellow",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"light_blue",pattern:"half_vertical"},{color:"light_blue",pattern:"half_vertical_right"},{color:"yellow",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:3,Pattern:"vh"},{Color:3,Pattern:"vhr"},{Color:4,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"white",pattern:"minecraft:half_vertical"},{color:"white",pattern:"minecraft:half_vertical_right"},{color:"lime",pattern:"minecraft:flower"},{color:"white",pattern:"minecraft:half_horizontal_bottom"},{color:"white",pattern:"minecraft:creeper"},{color:"red",pattern:"minecraft:circle"},{color:"red",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"white",pattern:"half_vertical"},{color:"white",pattern:"half_vertical_right"},{color:"lime",pattern:"flower"},{color:"white",pattern:"half_horizontal_bottom"},{color:"white",pattern:"creeper"},{color:"red",pattern:"circle"},{color:"red",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:0,Pattern:"vh"},{Color:0,Pattern:"vhr"},{Color:5,Pattern:"flo"},{Color:0,Pattern:"hhb"},{Color:0,Pattern:"cre"},{Color:14,Pattern:"mc"},{Color:14,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    location:
+      ==: org.bukkit.Location
+      world: world_spawn
+      x: 132.0
+      y: 65.0
+      z: -6.0
+      pitch: 0.0
+      yaw: 0.0
+    bannerLocations:
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 132.0
+      y: 66.0
+      z: -7.0
+      pitch: 0.0
+      yaw: 0.0
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 132.0
+      y: 66.0
+      z: -6.0
+      pitch: 0.0
+      yaw: 0.0
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 132.0
+      y: 66.0
+      z: -5.0
+      pitch: 0.0
+      yaw: 0.0
+  roulette_2:
+    bet: 1000
+    jackpot: 14000
+    jackpotBanner:
+      ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"red",pattern:"minecraft:half_vertical"},{color:"red",pattern:"minecraft:half_vertical_right"},{color:"orange",pattern:"minecraft:gradient"},{color:"yellow",pattern:"minecraft:gradient_up"},{color:"red",pattern:"minecraft:stripe_top"},{color:"red",pattern:"minecraft:stripe_downleft"},{color:"red",pattern:"minecraft:square_bottom_left"},{color:"white",pattern:"minecraft:border"}]'
+      schema_version: 1
+    defaultBanners:
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"red",pattern:"minecraft:half_vertical"},{color:"red",pattern:"minecraft:half_vertical_right"},{color:"green",pattern:"minecraft:mojang"},{color:"red",pattern:"minecraft:half_horizontal_bottom"},{color:"yellow",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"red",pattern:"half_vertical"},{color:"red",pattern:"half_vertical_right"},{color:"green",pattern:"mojang"},{color:"red",pattern:"half_horizontal_bottom"},{color:"yellow",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:14,Pattern:"vh"},{Color:14,Pattern:"vhr"},{Color:13,Pattern:"moj"},{Color:14,Pattern:"hhb"},{Color:4,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"light_blue",pattern:"minecraft:half_vertical"},{color:"light_blue",pattern:"minecraft:half_vertical_right"},{color:"green",pattern:"minecraft:curly_border"},{color:"green",pattern:"minecraft:stripe_bottom"},{color:"light_blue",pattern:"minecraft:rhombus"},{color:"green",pattern:"minecraft:stripe_top"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"light_blue",pattern:"half_vertical"},{color:"light_blue",pattern:"half_vertical_right"},{color:"green",pattern:"curly_border"},{color:"green",pattern:"stripe_bottom"},{color:"light_blue",pattern:"rhombus"},{color:"green",pattern:"stripe_top"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:3,Pattern:"vh"},{Color:3,Pattern:"vhr"},{Color:13,Pattern:"cbo"},{Color:13,Pattern:"bs"},{Color:3,Pattern:"mr"},{Color:13,Pattern:"ts"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"purple",pattern:"minecraft:half_vertical"},{color:"purple",pattern:"minecraft:half_vertical_right"},{color:"lime",pattern:"minecraft:circle"},{color:"brown",pattern:"minecraft:triangle_top"},{color:"purple",pattern:"minecraft:stripe_top"},{color:"purple",pattern:"minecraft:mojang"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"purple",pattern:"half_vertical"},{color:"purple",pattern:"half_vertical_right"},{color:"lime",pattern:"circle"},{color:"brown",pattern:"triangle_top"},{color:"purple",pattern:"stripe_top"},{color:"purple",pattern:"mojang"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:10,Pattern:"vh"},{Color:10,Pattern:"vhr"},{Color:5,Pattern:"mc"},{Color:12,Pattern:"tt"},{Color:10,Pattern:"ts"},{Color:10,Pattern:"moj"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"light_blue",pattern:"minecraft:half_vertical"},{color:"light_blue",pattern:"minecraft:half_vertical_right"},{color:"yellow",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"light_blue",pattern:"half_vertical"},{color:"light_blue",pattern:"half_vertical_right"},{color:"yellow",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:3,Pattern:"vh"},{Color:3,Pattern:"vhr"},{Color:4,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"white",pattern:"minecraft:half_vertical"},{color:"white",pattern:"minecraft:half_vertical_right"},{color:"lime",pattern:"minecraft:flower"},{color:"white",pattern:"minecraft:half_horizontal_bottom"},{color:"white",pattern:"minecraft:creeper"},{color:"red",pattern:"minecraft:circle"},{color:"red",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"white",pattern:"half_vertical"},{color:"white",pattern:"half_vertical_right"},{color:"lime",pattern:"flower"},{color:"white",pattern:"half_horizontal_bottom"},{color:"white",pattern:"creeper"},{color:"red",pattern:"circle"},{color:"red",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:0,Pattern:"vh"},{Color:0,Pattern:"vhr"},{Color:5,Pattern:"flo"},{Color:0,Pattern:"hhb"},{Color:0,Pattern:"cre"},{Color:14,Pattern:"mc"},{Color:14,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    location:
+      ==: org.bukkit.Location
+      world: world_spawn
+      x: 132.0
+      y: 65.0
+      z: -10.0
+      pitch: 0.0
+      yaw: 0.0
+    bannerLocations:
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 132.0
+      y: 66.0
+      z: -11.0
+      pitch: 0.0
+      yaw: 0.0
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 132.0
+      y: 66.0
+      z: -10.0
+      pitch: 0.0
+      yaw: 0.0
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 132.0
+      y: 66.0
+      z: -9.0
+      pitch: 0.0
+      yaw: 0.0
+  roulette_3:
+    bet: 1000
+    jackpot: 23000
+    jackpotBanner:
+      ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"red",pattern:"minecraft:half_vertical"},{color:"red",pattern:"minecraft:half_vertical_right"},{color:"orange",pattern:"minecraft:gradient"},{color:"yellow",pattern:"minecraft:gradient_up"},{color:"red",pattern:"minecraft:stripe_top"},{color:"red",pattern:"minecraft:stripe_downleft"},{color:"red",pattern:"minecraft:square_bottom_left"},{color:"white",pattern:"minecraft:border"}]'
+      schema_version: 1
+    defaultBanners:
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"red",pattern:"minecraft:half_vertical"},{color:"red",pattern:"minecraft:half_vertical_right"},{color:"green",pattern:"minecraft:mojang"},{color:"red",pattern:"minecraft:half_horizontal_bottom"},{color:"yellow",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"red",pattern:"half_vertical"},{color:"red",pattern:"half_vertical_right"},{color:"green",pattern:"mojang"},{color:"red",pattern:"half_horizontal_bottom"},{color:"yellow",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:14,Pattern:"vh"},{Color:14,Pattern:"vhr"},{Color:13,Pattern:"moj"},{Color:14,Pattern:"hhb"},{Color:4,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"light_blue",pattern:"minecraft:half_vertical"},{color:"light_blue",pattern:"minecraft:half_vertical_right"},{color:"green",pattern:"minecraft:curly_border"},{color:"green",pattern:"minecraft:stripe_bottom"},{color:"light_blue",pattern:"minecraft:rhombus"},{color:"green",pattern:"minecraft:stripe_top"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"light_blue",pattern:"half_vertical"},{color:"light_blue",pattern:"half_vertical_right"},{color:"green",pattern:"curly_border"},{color:"green",pattern:"stripe_bottom"},{color:"light_blue",pattern:"rhombus"},{color:"green",pattern:"stripe_top"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:3,Pattern:"vh"},{Color:3,Pattern:"vhr"},{Color:13,Pattern:"cbo"},{Color:13,Pattern:"bs"},{Color:3,Pattern:"mr"},{Color:13,Pattern:"ts"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"purple",pattern:"minecraft:half_vertical"},{color:"purple",pattern:"minecraft:half_vertical_right"},{color:"lime",pattern:"minecraft:circle"},{color:"brown",pattern:"minecraft:triangle_top"},{color:"purple",pattern:"minecraft:stripe_top"},{color:"purple",pattern:"minecraft:mojang"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"purple",pattern:"half_vertical"},{color:"purple",pattern:"half_vertical_right"},{color:"lime",pattern:"circle"},{color:"brown",pattern:"triangle_top"},{color:"purple",pattern:"stripe_top"},{color:"purple",pattern:"mojang"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:10,Pattern:"vh"},{Color:10,Pattern:"vhr"},{Color:5,Pattern:"mc"},{Color:12,Pattern:"tt"},{Color:10,Pattern:"ts"},{Color:10,Pattern:"moj"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"light_blue",pattern:"minecraft:half_vertical"},{color:"light_blue",pattern:"minecraft:half_vertical_right"},{color:"yellow",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"light_blue",pattern:"half_vertical"},{color:"light_blue",pattern:"half_vertical_right"},{color:"yellow",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:3,Pattern:"vh"},{Color:3,Pattern:"vhr"},{Color:4,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"white",pattern:"minecraft:half_vertical"},{color:"white",pattern:"minecraft:half_vertical_right"},{color:"lime",pattern:"minecraft:flower"},{color:"white",pattern:"minecraft:half_horizontal_bottom"},{color:"white",pattern:"minecraft:creeper"},{color:"red",pattern:"minecraft:circle"},{color:"red",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"white",pattern:"half_vertical"},{color:"white",pattern:"half_vertical_right"},{color:"lime",pattern:"flower"},{color:"white",pattern:"half_horizontal_bottom"},{color:"white",pattern:"creeper"},{color:"red",pattern:"circle"},{color:"red",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:0,Pattern:"vh"},{Color:0,Pattern:"vhr"},{Color:5,Pattern:"flo"},{Color:0,Pattern:"hhb"},{Color:0,Pattern:"cre"},{Color:14,Pattern:"mc"},{Color:14,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    location:
+      ==: org.bukkit.Location
+      world: world_spawn
+      x: 127.0
+      y: 65.0
+      z: -15.0
+      pitch: 0.0
+      yaw: 0.0
+    bannerLocations:
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 126.0
+      y: 66.0
+      z: -15.0
+      pitch: 0.0
+      yaw: 0.0
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 127.0
+      y: 66.0
+      z: -15.0
+      pitch: 0.0
+      yaw: 0.0
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 128.0
+      y: 66.0
+      z: -15.0
+      pitch: 0.0
+      yaw: 0.0
+  roulette_4:
+    bet: 1000
+    jackpot: 25000
+    jackpotBanner:
+      ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"red",pattern:"minecraft:half_vertical"},{color:"red",pattern:"minecraft:half_vertical_right"},{color:"orange",pattern:"minecraft:gradient"},{color:"yellow",pattern:"minecraft:gradient_up"},{color:"red",pattern:"minecraft:stripe_top"},{color:"red",pattern:"minecraft:stripe_downleft"},{color:"red",pattern:"minecraft:square_bottom_left"},{color:"white",pattern:"minecraft:border"}]'
+      schema_version: 1
+    defaultBanners:
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"red",pattern:"minecraft:half_vertical"},{color:"red",pattern:"minecraft:half_vertical_right"},{color:"green",pattern:"minecraft:mojang"},{color:"red",pattern:"minecraft:half_horizontal_bottom"},{color:"yellow",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"red",pattern:"half_vertical"},{color:"red",pattern:"half_vertical_right"},{color:"green",pattern:"mojang"},{color:"red",pattern:"half_horizontal_bottom"},{color:"yellow",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:14,Pattern:"vh"},{Color:14,Pattern:"vhr"},{Color:13,Pattern:"moj"},{Color:14,Pattern:"hhb"},{Color:4,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"light_blue",pattern:"minecraft:half_vertical"},{color:"light_blue",pattern:"minecraft:half_vertical_right"},{color:"green",pattern:"minecraft:curly_border"},{color:"green",pattern:"minecraft:stripe_bottom"},{color:"light_blue",pattern:"minecraft:rhombus"},{color:"green",pattern:"minecraft:stripe_top"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"light_blue",pattern:"half_vertical"},{color:"light_blue",pattern:"half_vertical_right"},{color:"green",pattern:"curly_border"},{color:"green",pattern:"stripe_bottom"},{color:"light_blue",pattern:"rhombus"},{color:"green",pattern:"stripe_top"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:3,Pattern:"vh"},{Color:3,Pattern:"vhr"},{Color:13,Pattern:"cbo"},{Color:13,Pattern:"bs"},{Color:3,Pattern:"mr"},{Color:13,Pattern:"ts"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"purple",pattern:"minecraft:half_vertical"},{color:"purple",pattern:"minecraft:half_vertical_right"},{color:"lime",pattern:"minecraft:circle"},{color:"brown",pattern:"minecraft:triangle_top"},{color:"purple",pattern:"minecraft:stripe_top"},{color:"purple",pattern:"minecraft:mojang"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"purple",pattern:"half_vertical"},{color:"purple",pattern:"half_vertical_right"},{color:"lime",pattern:"circle"},{color:"brown",pattern:"triangle_top"},{color:"purple",pattern:"stripe_top"},{color:"purple",pattern:"mojang"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:10,Pattern:"vh"},{Color:10,Pattern:"vhr"},{Color:5,Pattern:"mc"},{Color:12,Pattern:"tt"},{Color:10,Pattern:"ts"},{Color:10,Pattern:"moj"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"light_blue",pattern:"minecraft:half_vertical"},{color:"light_blue",pattern:"minecraft:half_vertical_right"},{color:"yellow",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"light_blue",pattern:"half_vertical"},{color:"light_blue",pattern:"half_vertical_right"},{color:"yellow",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:3,Pattern:"vh"},{Color:3,Pattern:"vhr"},{Color:4,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"white",pattern:"minecraft:half_vertical"},{color:"white",pattern:"minecraft:half_vertical_right"},{color:"lime",pattern:"minecraft:flower"},{color:"white",pattern:"minecraft:half_horizontal_bottom"},{color:"white",pattern:"minecraft:creeper"},{color:"red",pattern:"minecraft:circle"},{color:"red",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"white",pattern:"half_vertical"},{color:"white",pattern:"half_vertical_right"},{color:"lime",pattern:"flower"},{color:"white",pattern:"half_horizontal_bottom"},{color:"white",pattern:"creeper"},{color:"red",pattern:"circle"},{color:"red",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:0,Pattern:"vh"},{Color:0,Pattern:"vhr"},{Color:5,Pattern:"flo"},{Color:0,Pattern:"hhb"},{Color:0,Pattern:"cre"},{Color:14,Pattern:"mc"},{Color:14,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    location:
+      ==: org.bukkit.Location
+      world: world_spawn
+      x: 123.0
+      y: 65.0
+      z: -15.0
+      pitch: 0.0
+      yaw: 0.0
+    bannerLocations:
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 122.0
+      y: 66.0
+      z: -15.0
+      pitch: 0.0
+      yaw: 0.0
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 123.0
+      y: 66.0
+      z: -15.0
+      pitch: 0.0
+      yaw: 0.0
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 124.0
+      y: 66.0
+      z: -15.0
+      pitch: 0.0
+      yaw: 0.0
+  roulette_5:
+    bet: 1000
+    jackpot: 24000
+    jackpotBanner:
+      ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"red",pattern:"minecraft:half_vertical"},{color:"red",pattern:"minecraft:half_vertical_right"},{color:"orange",pattern:"minecraft:gradient"},{color:"yellow",pattern:"minecraft:gradient_up"},{color:"red",pattern:"minecraft:stripe_top"},{color:"red",pattern:"minecraft:stripe_downleft"},{color:"red",pattern:"minecraft:square_bottom_left"},{color:"white",pattern:"minecraft:border"}]'
+      schema_version: 1
+    defaultBanners:
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"red",pattern:"minecraft:half_vertical"},{color:"red",pattern:"minecraft:half_vertical_right"},{color:"green",pattern:"minecraft:mojang"},{color:"red",pattern:"minecraft:half_horizontal_bottom"},{color:"yellow",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"red",pattern:"half_vertical"},{color:"red",pattern:"half_vertical_right"},{color:"green",pattern:"mojang"},{color:"red",pattern:"half_horizontal_bottom"},{color:"yellow",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:14,Pattern:"vh"},{Color:14,Pattern:"vhr"},{Color:13,Pattern:"moj"},{Color:14,Pattern:"hhb"},{Color:4,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"light_blue",pattern:"minecraft:half_vertical"},{color:"light_blue",pattern:"minecraft:half_vertical_right"},{color:"green",pattern:"minecraft:curly_border"},{color:"green",pattern:"minecraft:stripe_bottom"},{color:"light_blue",pattern:"minecraft:rhombus"},{color:"green",pattern:"minecraft:stripe_top"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"light_blue",pattern:"half_vertical"},{color:"light_blue",pattern:"half_vertical_right"},{color:"green",pattern:"curly_border"},{color:"green",pattern:"stripe_bottom"},{color:"light_blue",pattern:"rhombus"},{color:"green",pattern:"stripe_top"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:3,Pattern:"vh"},{Color:3,Pattern:"vhr"},{Color:13,Pattern:"cbo"},{Color:13,Pattern:"bs"},{Color:3,Pattern:"mr"},{Color:13,Pattern:"ts"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"purple",pattern:"minecraft:half_vertical"},{color:"purple",pattern:"minecraft:half_vertical_right"},{color:"lime",pattern:"minecraft:circle"},{color:"brown",pattern:"minecraft:triangle_top"},{color:"purple",pattern:"minecraft:stripe_top"},{color:"purple",pattern:"minecraft:mojang"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"purple",pattern:"half_vertical"},{color:"purple",pattern:"half_vertical_right"},{color:"lime",pattern:"circle"},{color:"brown",pattern:"triangle_top"},{color:"purple",pattern:"stripe_top"},{color:"purple",pattern:"mojang"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:10,Pattern:"vh"},{Color:10,Pattern:"vhr"},{Color:5,Pattern:"mc"},{Color:12,Pattern:"tt"},{Color:10,Pattern:"ts"},{Color:10,Pattern:"moj"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"light_blue",pattern:"minecraft:half_vertical"},{color:"light_blue",pattern:"minecraft:half_vertical_right"},{color:"yellow",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"light_blue",pattern:"half_vertical"},{color:"light_blue",pattern:"half_vertical_right"},{color:"yellow",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:3,Pattern:"vh"},{Color:3,Pattern:"vhr"},{Color:4,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"white",pattern:"minecraft:half_vertical"},{color:"white",pattern:"minecraft:half_vertical_right"},{color:"lime",pattern:"minecraft:flower"},{color:"white",pattern:"minecraft:half_horizontal_bottom"},{color:"white",pattern:"minecraft:creeper"},{color:"red",pattern:"minecraft:circle"},{color:"red",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"white",pattern:"half_vertical"},{color:"white",pattern:"half_vertical_right"},{color:"lime",pattern:"flower"},{color:"white",pattern:"half_horizontal_bottom"},{color:"white",pattern:"creeper"},{color:"red",pattern:"circle"},{color:"red",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:0,Pattern:"vh"},{Color:0,Pattern:"vhr"},{Color:5,Pattern:"flo"},{Color:0,Pattern:"hhb"},{Color:0,Pattern:"cre"},{Color:14,Pattern:"mc"},{Color:14,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    location:
+      ==: org.bukkit.Location
+      world: world_spawn
+      x: 119.0
+      y: 65.0
+      z: -15.0
+      pitch: 0.0
+      yaw: 0.0
+    bannerLocations:
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 120.0
+      y: 66.0
+      z: -15.0
+      pitch: 0.0
+      yaw: 0.0
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 119.0
+      y: 66.0
+      z: -15.0
+      pitch: 0.0
+      yaw: 0.0
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 118.0
+      y: 66.0
+      z: -15.0
+      pitch: 0.0
+      yaw: 0.0
+  roulette_6:
+    bet: 1000
+    jackpot: 20000
+    jackpotBanner:
+      ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"red",pattern:"minecraft:half_vertical"},{color:"red",pattern:"minecraft:half_vertical_right"},{color:"orange",pattern:"minecraft:gradient"},{color:"yellow",pattern:"minecraft:gradient_up"},{color:"red",pattern:"minecraft:stripe_top"},{color:"red",pattern:"minecraft:stripe_downleft"},{color:"red",pattern:"minecraft:square_bottom_left"},{color:"white",pattern:"minecraft:border"}]'
+      schema_version: 1
+    defaultBanners:
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"red",pattern:"minecraft:half_vertical"},{color:"red",pattern:"minecraft:half_vertical_right"},{color:"green",pattern:"minecraft:mojang"},{color:"red",pattern:"minecraft:half_horizontal_bottom"},{color:"yellow",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"red",pattern:"half_vertical"},{color:"red",pattern:"half_vertical_right"},{color:"green",pattern:"mojang"},{color:"red",pattern:"half_horizontal_bottom"},{color:"yellow",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:14,Pattern:"vh"},{Color:14,Pattern:"vhr"},{Color:13,Pattern:"moj"},{Color:14,Pattern:"hhb"},{Color:4,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"light_blue",pattern:"minecraft:half_vertical"},{color:"light_blue",pattern:"minecraft:half_vertical_right"},{color:"green",pattern:"minecraft:curly_border"},{color:"green",pattern:"minecraft:stripe_bottom"},{color:"light_blue",pattern:"minecraft:rhombus"},{color:"green",pattern:"minecraft:stripe_top"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"light_blue",pattern:"half_vertical"},{color:"light_blue",pattern:"half_vertical_right"},{color:"green",pattern:"curly_border"},{color:"green",pattern:"stripe_bottom"},{color:"light_blue",pattern:"rhombus"},{color:"green",pattern:"stripe_top"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:3,Pattern:"vh"},{Color:3,Pattern:"vhr"},{Color:13,Pattern:"cbo"},{Color:13,Pattern:"bs"},{Color:3,Pattern:"mr"},{Color:13,Pattern:"ts"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"purple",pattern:"minecraft:half_vertical"},{color:"purple",pattern:"minecraft:half_vertical_right"},{color:"lime",pattern:"minecraft:circle"},{color:"brown",pattern:"minecraft:triangle_top"},{color:"purple",pattern:"minecraft:stripe_top"},{color:"purple",pattern:"minecraft:mojang"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"purple",pattern:"half_vertical"},{color:"purple",pattern:"half_vertical_right"},{color:"lime",pattern:"circle"},{color:"brown",pattern:"triangle_top"},{color:"purple",pattern:"stripe_top"},{color:"purple",pattern:"mojang"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:10,Pattern:"vh"},{Color:10,Pattern:"vhr"},{Color:5,Pattern:"mc"},{Color:12,Pattern:"tt"},{Color:10,Pattern:"ts"},{Color:10,Pattern:"moj"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"light_blue",pattern:"minecraft:half_vertical"},{color:"light_blue",pattern:"minecraft:half_vertical_right"},{color:"yellow",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"light_blue",pattern:"half_vertical"},{color:"light_blue",pattern:"half_vertical_right"},{color:"yellow",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:3,Pattern:"vh"},{Color:3,Pattern:"vhr"},{Color:4,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"white",pattern:"minecraft:half_vertical"},{color:"white",pattern:"minecraft:half_vertical_right"},{color:"lime",pattern:"minecraft:flower"},{color:"white",pattern:"minecraft:half_horizontal_bottom"},{color:"white",pattern:"minecraft:creeper"},{color:"red",pattern:"minecraft:circle"},{color:"red",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"white",pattern:"half_vertical"},{color:"white",pattern:"half_vertical_right"},{color:"lime",pattern:"flower"},{color:"white",pattern:"half_horizontal_bottom"},{color:"white",pattern:"creeper"},{color:"red",pattern:"circle"},{color:"red",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:0,Pattern:"vh"},{Color:0,Pattern:"vhr"},{Color:5,Pattern:"flo"},{Color:0,Pattern:"hhb"},{Color:0,Pattern:"cre"},{Color:14,Pattern:"mc"},{Color:14,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    location:
+      ==: org.bukkit.Location
+      world: world_spawn
+      x: 119.0
+      y: 65.0
+      z: 15.0
+      pitch: 0.0
+      yaw: 0.0
+    bannerLocations:
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 120.0
+      y: 66.0
+      z: 15.0
+      pitch: 0.0
+      yaw: 0.0
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 119.0
+      y: 66.0
+      z: 15.0
+      pitch: 0.0
+      yaw: 0.0
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 118.0
+      y: 66.0
+      z: 15.0
+      pitch: 0.0
+      yaw: 0.0
+  roulette_7:
+    bet: 1000
+    jackpot: 18000
+    jackpotBanner:
+      ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"red",pattern:"minecraft:half_vertical"},{color:"red",pattern:"minecraft:half_vertical_right"},{color:"orange",pattern:"minecraft:gradient"},{color:"yellow",pattern:"minecraft:gradient_up"},{color:"red",pattern:"minecraft:stripe_top"},{color:"red",pattern:"minecraft:stripe_downleft"},{color:"red",pattern:"minecraft:square_bottom_left"},{color:"white",pattern:"minecraft:border"}]'
+      schema_version: 1
+    defaultBanners:
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"red",pattern:"minecraft:half_vertical"},{color:"red",pattern:"minecraft:half_vertical_right"},{color:"green",pattern:"minecraft:mojang"},{color:"red",pattern:"minecraft:half_horizontal_bottom"},{color:"yellow",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"red",pattern:"half_vertical"},{color:"red",pattern:"half_vertical_right"},{color:"green",pattern:"mojang"},{color:"red",pattern:"half_horizontal_bottom"},{color:"yellow",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:14,Pattern:"vh"},{Color:14,Pattern:"vhr"},{Color:13,Pattern:"moj"},{Color:14,Pattern:"hhb"},{Color:4,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"light_blue",pattern:"minecraft:half_vertical"},{color:"light_blue",pattern:"minecraft:half_vertical_right"},{color:"green",pattern:"minecraft:curly_border"},{color:"green",pattern:"minecraft:stripe_bottom"},{color:"light_blue",pattern:"minecraft:rhombus"},{color:"green",pattern:"minecraft:stripe_top"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"light_blue",pattern:"half_vertical"},{color:"light_blue",pattern:"half_vertical_right"},{color:"green",pattern:"curly_border"},{color:"green",pattern:"stripe_bottom"},{color:"light_blue",pattern:"rhombus"},{color:"green",pattern:"stripe_top"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:3,Pattern:"vh"},{Color:3,Pattern:"vhr"},{Color:13,Pattern:"cbo"},{Color:13,Pattern:"bs"},{Color:3,Pattern:"mr"},{Color:13,Pattern:"ts"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"purple",pattern:"minecraft:half_vertical"},{color:"purple",pattern:"minecraft:half_vertical_right"},{color:"lime",pattern:"minecraft:circle"},{color:"brown",pattern:"minecraft:triangle_top"},{color:"purple",pattern:"minecraft:stripe_top"},{color:"purple",pattern:"minecraft:mojang"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"purple",pattern:"half_vertical"},{color:"purple",pattern:"half_vertical_right"},{color:"lime",pattern:"circle"},{color:"brown",pattern:"triangle_top"},{color:"purple",pattern:"stripe_top"},{color:"purple",pattern:"mojang"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:10,Pattern:"vh"},{Color:10,Pattern:"vhr"},{Color:5,Pattern:"mc"},{Color:12,Pattern:"tt"},{Color:10,Pattern:"ts"},{Color:10,Pattern:"moj"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"light_blue",pattern:"minecraft:half_vertical"},{color:"light_blue",pattern:"minecraft:half_vertical_right"},{color:"yellow",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"light_blue",pattern:"half_vertical"},{color:"light_blue",pattern:"half_vertical_right"},{color:"yellow",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:3,Pattern:"vh"},{Color:3,Pattern:"vhr"},{Color:4,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"white",pattern:"minecraft:half_vertical"},{color:"white",pattern:"minecraft:half_vertical_right"},{color:"lime",pattern:"minecraft:flower"},{color:"white",pattern:"minecraft:half_horizontal_bottom"},{color:"white",pattern:"minecraft:creeper"},{color:"red",pattern:"minecraft:circle"},{color:"red",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"white",pattern:"half_vertical"},{color:"white",pattern:"half_vertical_right"},{color:"lime",pattern:"flower"},{color:"white",pattern:"half_horizontal_bottom"},{color:"white",pattern:"creeper"},{color:"red",pattern:"circle"},{color:"red",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:0,Pattern:"vh"},{Color:0,Pattern:"vhr"},{Color:5,Pattern:"flo"},{Color:0,Pattern:"hhb"},{Color:0,Pattern:"cre"},{Color:14,Pattern:"mc"},{Color:14,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    location:
+      ==: org.bukkit.Location
+      world: world_spawn
+      x: 123.0
+      y: 65.0
+      z: 15.0
+      pitch: 0.0
+      yaw: 0.0
+    bannerLocations:
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 124.0
+      y: 66.0
+      z: 15.0
+      pitch: 0.0
+      yaw: 0.0
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 123.0
+      y: 66.0
+      z: 15.0
+      pitch: 0.0
+      yaw: 0.0
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 122.0
+      y: 66.0
+      z: 15.0
+      pitch: 0.0
+      yaw: 0.0
+  roulette_8:
+    bet: 1000
+    jackpot: 17000
+    jackpotBanner:
+      ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"red",pattern:"minecraft:half_vertical"},{color:"red",pattern:"minecraft:half_vertical_right"},{color:"orange",pattern:"minecraft:gradient"},{color:"yellow",pattern:"minecraft:gradient_up"},{color:"red",pattern:"minecraft:stripe_top"},{color:"red",pattern:"minecraft:stripe_downleft"},{color:"red",pattern:"minecraft:square_bottom_left"},{color:"white",pattern:"minecraft:border"}]'
+      schema_version: 1
+    defaultBanners:
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"red",pattern:"minecraft:half_vertical"},{color:"red",pattern:"minecraft:half_vertical_right"},{color:"green",pattern:"minecraft:mojang"},{color:"red",pattern:"minecraft:half_horizontal_bottom"},{color:"yellow",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"red",pattern:"half_vertical"},{color:"red",pattern:"half_vertical_right"},{color:"green",pattern:"mojang"},{color:"red",pattern:"half_horizontal_bottom"},{color:"yellow",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:14,Pattern:"vh"},{Color:14,Pattern:"vhr"},{Color:13,Pattern:"moj"},{Color:14,Pattern:"hhb"},{Color:4,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"light_blue",pattern:"minecraft:half_vertical"},{color:"light_blue",pattern:"minecraft:half_vertical_right"},{color:"green",pattern:"minecraft:curly_border"},{color:"green",pattern:"minecraft:stripe_bottom"},{color:"light_blue",pattern:"minecraft:rhombus"},{color:"green",pattern:"minecraft:stripe_top"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"light_blue",pattern:"half_vertical"},{color:"light_blue",pattern:"half_vertical_right"},{color:"green",pattern:"curly_border"},{color:"green",pattern:"stripe_bottom"},{color:"light_blue",pattern:"rhombus"},{color:"green",pattern:"stripe_top"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:3,Pattern:"vh"},{Color:3,Pattern:"vhr"},{Color:13,Pattern:"cbo"},{Color:13,Pattern:"bs"},{Color:3,Pattern:"mr"},{Color:13,Pattern:"ts"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"purple",pattern:"minecraft:half_vertical"},{color:"purple",pattern:"minecraft:half_vertical_right"},{color:"lime",pattern:"minecraft:circle"},{color:"brown",pattern:"minecraft:triangle_top"},{color:"purple",pattern:"minecraft:stripe_top"},{color:"purple",pattern:"minecraft:mojang"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"purple",pattern:"half_vertical"},{color:"purple",pattern:"half_vertical_right"},{color:"lime",pattern:"circle"},{color:"brown",pattern:"triangle_top"},{color:"purple",pattern:"stripe_top"},{color:"purple",pattern:"mojang"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:10,Pattern:"vh"},{Color:10,Pattern:"vhr"},{Color:5,Pattern:"mc"},{Color:12,Pattern:"tt"},{Color:10,Pattern:"ts"},{Color:10,Pattern:"moj"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"light_blue",pattern:"minecraft:half_vertical"},{color:"light_blue",pattern:"minecraft:half_vertical_right"},{color:"yellow",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"light_blue",pattern:"half_vertical"},{color:"light_blue",pattern:"half_vertical_right"},{color:"yellow",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:3,Pattern:"vh"},{Color:3,Pattern:"vhr"},{Color:4,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"white",pattern:"minecraft:half_vertical"},{color:"white",pattern:"minecraft:half_vertical_right"},{color:"lime",pattern:"minecraft:flower"},{color:"white",pattern:"minecraft:half_horizontal_bottom"},{color:"white",pattern:"minecraft:creeper"},{color:"red",pattern:"minecraft:circle"},{color:"red",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"white",pattern:"half_vertical"},{color:"white",pattern:"half_vertical_right"},{color:"lime",pattern:"flower"},{color:"white",pattern:"half_horizontal_bottom"},{color:"white",pattern:"creeper"},{color:"red",pattern:"circle"},{color:"red",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:0,Pattern:"vh"},{Color:0,Pattern:"vhr"},{Color:5,Pattern:"flo"},{Color:0,Pattern:"hhb"},{Color:0,Pattern:"cre"},{Color:14,Pattern:"mc"},{Color:14,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    location:
+      ==: org.bukkit.Location
+      world: world_spawn
+      x: 127.0
+      y: 65.0
+      z: 15.0
+      pitch: 0.0
+      yaw: 0.0
+    bannerLocations:
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 128.0
+      y: 66.0
+      z: 15.0
+      pitch: 0.0
+      yaw: 0.0
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 127.0
+      y: 66.0
+      z: 15.0
+      pitch: 0.0
+      yaw: 0.0
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 126.0
+      y: 66.0
+      z: 15.0
+      pitch: 0.0
+      yaw: 0.0
+  roulette_9:
+    bet: 1000
+    jackpot: 11000
+    jackpotBanner:
+      ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"red",pattern:"minecraft:half_vertical"},{color:"red",pattern:"minecraft:half_vertical_right"},{color:"orange",pattern:"minecraft:gradient"},{color:"yellow",pattern:"minecraft:gradient_up"},{color:"red",pattern:"minecraft:stripe_top"},{color:"red",pattern:"minecraft:stripe_downleft"},{color:"red",pattern:"minecraft:square_bottom_left"},{color:"white",pattern:"minecraft:border"}]'
+      schema_version: 1
+    defaultBanners:
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"red",pattern:"minecraft:half_vertical"},{color:"red",pattern:"minecraft:half_vertical_right"},{color:"green",pattern:"minecraft:mojang"},{color:"red",pattern:"minecraft:half_horizontal_bottom"},{color:"yellow",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"red",pattern:"half_vertical"},{color:"red",pattern:"half_vertical_right"},{color:"green",pattern:"mojang"},{color:"red",pattern:"half_horizontal_bottom"},{color:"yellow",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:14,Pattern:"vh"},{Color:14,Pattern:"vhr"},{Color:13,Pattern:"moj"},{Color:14,Pattern:"hhb"},{Color:4,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"light_blue",pattern:"minecraft:half_vertical"},{color:"light_blue",pattern:"minecraft:half_vertical_right"},{color:"green",pattern:"minecraft:curly_border"},{color:"green",pattern:"minecraft:stripe_bottom"},{color:"light_blue",pattern:"minecraft:rhombus"},{color:"green",pattern:"minecraft:stripe_top"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"light_blue",pattern:"half_vertical"},{color:"light_blue",pattern:"half_vertical_right"},{color:"green",pattern:"curly_border"},{color:"green",pattern:"stripe_bottom"},{color:"light_blue",pattern:"rhombus"},{color:"green",pattern:"stripe_top"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:3,Pattern:"vh"},{Color:3,Pattern:"vhr"},{Color:13,Pattern:"cbo"},{Color:13,Pattern:"bs"},{Color:3,Pattern:"mr"},{Color:13,Pattern:"ts"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"purple",pattern:"minecraft:half_vertical"},{color:"purple",pattern:"minecraft:half_vertical_right"},{color:"lime",pattern:"minecraft:circle"},{color:"brown",pattern:"minecraft:triangle_top"},{color:"purple",pattern:"minecraft:stripe_top"},{color:"purple",pattern:"minecraft:mojang"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"purple",pattern:"half_vertical"},{color:"purple",pattern:"half_vertical_right"},{color:"lime",pattern:"circle"},{color:"brown",pattern:"triangle_top"},{color:"purple",pattern:"stripe_top"},{color:"purple",pattern:"mojang"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:10,Pattern:"vh"},{Color:10,Pattern:"vhr"},{Color:5,Pattern:"mc"},{Color:12,Pattern:"tt"},{Color:10,Pattern:"ts"},{Color:10,Pattern:"moj"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"light_blue",pattern:"minecraft:half_vertical"},{color:"light_blue",pattern:"minecraft:half_vertical_right"},{color:"yellow",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"light_blue",pattern:"half_vertical"},{color:"light_blue",pattern:"half_vertical_right"},{color:"yellow",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:3,Pattern:"vh"},{Color:3,Pattern:"vhr"},{Color:4,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"white",pattern:"minecraft:half_vertical"},{color:"white",pattern:"minecraft:half_vertical_right"},{color:"lime",pattern:"minecraft:flower"},{color:"white",pattern:"minecraft:half_horizontal_bottom"},{color:"white",pattern:"minecraft:creeper"},{color:"red",pattern:"minecraft:circle"},{color:"red",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"white",pattern:"half_vertical"},{color:"white",pattern:"half_vertical_right"},{color:"lime",pattern:"flower"},{color:"white",pattern:"half_horizontal_bottom"},{color:"white",pattern:"creeper"},{color:"red",pattern:"circle"},{color:"red",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:0,Pattern:"vh"},{Color:0,Pattern:"vhr"},{Color:5,Pattern:"flo"},{Color:0,Pattern:"hhb"},{Color:0,Pattern:"cre"},{Color:14,Pattern:"mc"},{Color:14,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    location:
+      ==: org.bukkit.Location
+      world: world_spawn
+      x: 132.0
+      y: 65.0
+      z: 10.0
+      pitch: 0.0
+      yaw: 0.0
+    bannerLocations:
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 132.0
+      y: 66.0
+      z: 9.0
+      pitch: 0.0
+      yaw: 0.0
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 132.0
+      y: 66.0
+      z: 10.0
+      pitch: 0.0
+      yaw: 0.0
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 132.0
+      y: 66.0
+      z: 11.0
+      pitch: 0.0
+      yaw: 0.0
+  roulette_10:
+    bet: 1000
+    jackpot: 11000
+    jackpotBanner:
+      ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"red",pattern:"minecraft:half_vertical"},{color:"red",pattern:"minecraft:half_vertical_right"},{color:"orange",pattern:"minecraft:gradient"},{color:"yellow",pattern:"minecraft:gradient_up"},{color:"red",pattern:"minecraft:stripe_top"},{color:"red",pattern:"minecraft:stripe_downleft"},{color:"red",pattern:"minecraft:square_bottom_left"},{color:"white",pattern:"minecraft:border"}]'
+      schema_version: 1
+    defaultBanners:
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"red",pattern:"minecraft:half_vertical"},{color:"red",pattern:"minecraft:half_vertical_right"},{color:"green",pattern:"minecraft:mojang"},{color:"red",pattern:"minecraft:half_horizontal_bottom"},{color:"yellow",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"red",pattern:"half_vertical"},{color:"red",pattern:"half_vertical_right"},{color:"green",pattern:"mojang"},{color:"red",pattern:"half_horizontal_bottom"},{color:"yellow",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:14,Pattern:"vh"},{Color:14,Pattern:"vhr"},{Color:13,Pattern:"moj"},{Color:14,Pattern:"hhb"},{Color:4,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"light_blue",pattern:"minecraft:half_vertical"},{color:"light_blue",pattern:"minecraft:half_vertical_right"},{color:"green",pattern:"minecraft:curly_border"},{color:"green",pattern:"minecraft:stripe_bottom"},{color:"light_blue",pattern:"minecraft:rhombus"},{color:"green",pattern:"minecraft:stripe_top"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"light_blue",pattern:"half_vertical"},{color:"light_blue",pattern:"half_vertical_right"},{color:"green",pattern:"curly_border"},{color:"green",pattern:"stripe_bottom"},{color:"light_blue",pattern:"rhombus"},{color:"green",pattern:"stripe_top"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:3,Pattern:"vh"},{Color:3,Pattern:"vhr"},{Color:13,Pattern:"cbo"},{Color:13,Pattern:"bs"},{Color:3,Pattern:"mr"},{Color:13,Pattern:"ts"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"purple",pattern:"minecraft:half_vertical"},{color:"purple",pattern:"minecraft:half_vertical_right"},{color:"lime",pattern:"minecraft:circle"},{color:"brown",pattern:"minecraft:triangle_top"},{color:"purple",pattern:"minecraft:stripe_top"},{color:"purple",pattern:"minecraft:mojang"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"purple",pattern:"half_vertical"},{color:"purple",pattern:"half_vertical_right"},{color:"lime",pattern:"circle"},{color:"brown",pattern:"triangle_top"},{color:"purple",pattern:"stripe_top"},{color:"purple",pattern:"mojang"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:10,Pattern:"vh"},{Color:10,Pattern:"vhr"},{Color:5,Pattern:"mc"},{Color:12,Pattern:"tt"},{Color:10,Pattern:"ts"},{Color:10,Pattern:"moj"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"light_blue",pattern:"minecraft:half_vertical"},{color:"light_blue",pattern:"minecraft:half_vertical_right"},{color:"yellow",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"light_blue",pattern:"half_vertical"},{color:"light_blue",pattern:"half_vertical_right"},{color:"yellow",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:3,Pattern:"vh"},{Color:3,Pattern:"vhr"},{Color:4,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    - ==: org.bukkit.inventory.ItemStack
+      DataVersion: 4556
+      id: minecraft:white_banner
+      count: 1
+      components:
+        minecraft:banner_patterns: '[{color:"white",pattern:"minecraft:half_vertical"},{color:"white",pattern:"minecraft:half_vertical_right"},{color:"lime",pattern:"minecraft:flower"},{color:"white",pattern:"minecraft:half_horizontal_bottom"},{color:"white",pattern:"minecraft:creeper"},{color:"red",pattern:"minecraft:circle"},{color:"red",pattern:"minecraft:circle"}]'
+        minecraft:block_entity_data: '{id:"minecraft:banner",patterns:[{color:"white",pattern:"half_vertical"},{color:"white",pattern:"half_vertical_right"},{color:"lime",pattern:"flower"},{color:"white",pattern:"half_horizontal_bottom"},{color:"white",pattern:"creeper"},{color:"red",pattern:"circle"},{color:"red",pattern:"circle"}]}'
+        minecraft:custom_data: '{BlockEntityTag:{Patterns:[{Color:0,Pattern:"vh"},{Color:0,Pattern:"vhr"},{Color:5,Pattern:"flo"},{Color:0,Pattern:"hhb"},{Color:0,Pattern:"cre"},{Color:14,Pattern:"mc"},{Color:14,Pattern:"mc"}]},"VV|Protocol1_20_3To1_20_5":1b}'
+      schema_version: 1
+    location:
+      ==: org.bukkit.Location
+      world: world_spawn
+      x: 132.0
+      y: 65.0
+      z: 6.0
+      pitch: 0.0
+      yaw: 0.0
+    bannerLocations:
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 132.0
+      y: 66.0
+      z: 5.0
+      pitch: 0.0
+      yaw: 0.0
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 132.0
+      y: 66.0
+      z: 6.0
+      pitch: 0.0
+      yaw: 0.0
+    - ==: org.bukkit.Location
+      world: world_spawn
+      x: 132.0
+      y: 66.0
+      z: 7.0
+      pitch: 0.0
+      yaw: 0.0

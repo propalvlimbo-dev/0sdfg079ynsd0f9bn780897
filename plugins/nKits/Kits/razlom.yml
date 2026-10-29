@@ -1,0 +1,64 @@
+Name: razlom
+Cooldown: 0
+Permission: nKits.kits.razlom
+Order: 0
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_color:15658476,custom_effects:[{duration:12000,id:"minecraft:fire_resistance",show_icon:1b},{duration:4800,id:"minecraft:invisibility",show_icon:1b},{amplifier:3b,duration:600,id:"minecraft:hunger",show_icon:1b},{duration:1800,id:"minecraft:strength",show_icon:1b},{duration:1800,id:"minecraft:speed",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"dark_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Зелье
+        Разлома",underlined:0b}],text:""}'
+    schema_version: 1
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  Armor:
+  - null
+  - null
+  - null
+  - null

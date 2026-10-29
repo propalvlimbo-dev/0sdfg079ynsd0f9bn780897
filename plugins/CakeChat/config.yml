@@ -1,0 +1,106 @@
+# Формат чатов. Поддерживается PlaceholderAPI
+format:
+  local: "&3▣ %nclans_clan_name% &r<prefix>&7<player>%vault_suffix%&r &8» &7<dph><message>"
+  localRadius: 200
+  forceGlobal: false
+  global: "&#F8BEFB▣ %nclans_clan_name% &r<prefix>&7<player>%vault_suffix%&r &8» &f<dph><message>"
+
+donatePlaceholders:
+  default: ""
+  angel: "&f&l"
+  dhelper: "&x&F&8&B&E&F&B&l"
+  dadmin: "&x&F&F&3&B&4&E&l"
+  winner: "&x&F&8&B&E&F&B&l"
+  offsponsor: "&x&6&4&F&B&0&8&l"
+  sponsor: "&x&6&4&F&B&0&8&l"
+  helper: "&x&F&8&B&E&F&B&l"
+  sthelper: "&x&F&8&B&E&F&B&l"
+  moder: '&x&0&0&7&b&f&b&l'
+  dmoder: '&x&0&0&7&b&f&b&l'
+  dstmoder: '&x&2&A&2&2&E&1&l'
+  stmoder: '&x&0&0&7&b&f&b&l'
+  glmoder: '&x&4&9&0&0&f&b&l'
+  dglmoder: '&x&5&8&0&D&A&5&l'
+  mladmin: '&x&0&0&d&7&f&d&l'
+  dmladmin: '&x&2&1&C&5&E&9&l'
+  fulladmin: '&x&F&F&0&0&0&0&l'
+  admin: '&x&F&B&0&8&0&8&l'
+  owner: '&x&F&8&B&E&F&B&l'
+
+hoverText:
+  enable: false
+  format: |-
+    &fИнформация об игроке &#F8BEFB<player>
+    &fРанг: &#F8BEFB%vault_group%
+    &fХП: &#F8BEFB%player_health%
+    &fОпыт: &#F8BEFB%player_exp%
+
+cooldown:
+  localCooldown: 2000
+  globalCooldown: 5000
+  cooldownMessage: "&#F8BEFBЧат &8» &fПодождите &#F8BEFB%time% &fперед отправкой сообщения."
+
+newbieChat:
+  enable: true
+  newbieCooldown: 600
+  newbieChatMessage: "&#F8BEFBЧат &8» &fВам необходимо отыграть еще &#F8BEFB%time%&f, чтобы пользоваться данным чатом."
+  newbieCommandMessage: "&#F8BEFBЧат &8» &fВам необходимо отыграть еще &#F8BEFB%time%&f, чтобы пользоваться данным чатом."
+  newbieCommands:
+    - "/m"
+    - "/pm"
+    - "/msg"
+    - "/t"
+    - "/tell"
+    - "/w"
+    - "/whisper"
+    - "/bc"
+    - "/r"
+    - "/rtp"
+
+autoMessage:
+  enable: true
+  random: false
+  messageInterval: 60
+  messages:
+    1:
+      - ""
+      - "&#F8BEFB ꐁ&f Хотите быть в курсе последних новостей"
+      - "&#F9C8FC ꐁ&f и обновлений сервера &#F8BEFB&lElytrix&f?"
+      - "&#FAD2FD ꐁ&f Подписывайтесь на наш &#F8BEFB&lTelegram&f канал:"
+      - "&#FBDCFE ꐀ&f &#F8BEFBt.me/elytrix_ru"
+      - ""
+    2:
+      - ""
+      - "&#F8BEFB ꐁ&f Хотите &#F8BEFB&lподдержать сервер&f и получить доступ"
+      - "&#F9C8FC ꐁ&f к привилегиям, кейсам и &#F8BEFB&lрилликам&f?"
+      - "&#FAD2FD ꐁ&f Покупайте донатные услуги на нашем &#F8BEFB&lсайте&f:"
+      - "&#FBDCFE ꐀ&f &#F8BEFBhttps://elytrix.pw"
+      - ""
+    3:
+      - ""
+      - "&#F8BEFB ꐁ&f Ищете тиммейтов для игры или хотите"
+      - "&#F9C8FC ꐁ&f пообщаться с игроками &#F8BEFB&lElytrix&f?"
+      - "&#FAD2FD ꐁ&f Заходите на наш официальный &#F8BEFB&lDiscord&f сервер:"
+      - "&#FBDCFE ꐀ&f &#F8BEFBdsc.gg/elytrix"
+      - ""
+    4:
+      - ""
+      - "&#F8BEFB ꐁ&f Хочешь &#F8BEFB&lресурсов&f? А может &#F8BEFB&lрилликов&f?"
+      - "&#F9C8FC ꐁ&f В нашем &#F8BEFB&lTelegram&f канале мы проводим"
+      - "&#FAD2FD ꐁ&f раздачи и публикуем промокоды:"
+      - "&#FBDCFE ꐀ&f &#F8BEFBt.me/elytrix_ru"
+      - ""
+    5:
+      - ""
+      - "&#F8BEFB ꐁ&f Нашли &#F8BEFB&lбаг&f или возник &#F8BEFB&lвопрос&f по игре?"
+      - "&#F9C8FC ꐁ&f Обратитесь в поддержку или оставьте заявку"
+      - "&#FAD2FD ꐁ&f в команду проекта в нашем &#F8BEFB&lDiscord&f:"
+      - "&#FBDCFE ꐀ&f &#F8BEFBdsc.gg/elytrix"
+      - ""
+    6:
+      - ""
+      - "&#F8BEFB ꐁ&f &#F8BEFB&lВнимание!&f Защитите свой аккаунт от взлома:"
+      - "&#F9C8FC ꐁ&f Используйте сложный пароль и не передавайте"
+      - "&#FAD2FD ꐁ&f свои данные третьим лицам! Наш IP:"
+      - "&#FBDCFE ꐀ&f &#F8BEFBmc.Elytrix.pw"
+      - ""

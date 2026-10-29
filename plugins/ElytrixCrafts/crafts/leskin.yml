@@ -1,0 +1,64 @@
+menu-slot: 16
+cooldown-hours: 24
+permission: quest.wood
+chain: wood
+result:
+  ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: ENCHANTED_BOOK
+  meta:
+    ==: ItemMeta
+    meta-type: ENCHANTED
+    display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gold","text":"Чародейская
+      книга"}],"text":""}'
+    lore:
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Лесоруб"}],"text":""}'
+    PublicBukkitValues:
+      really-enchants:woodcutter: WOODCUTTER_BOOK
+ingredients:
+  '0':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BUBBLE_CORAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Осколок Энда"}],"text":""}'
+      custom-model-data: 1001
+  '1':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHER_STAR
+  '2':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: ENCHANTING_TABLE
+  '3':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_AXE
+  '4':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BEACON
+  '5':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_AXE
+  '6':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: ENCHANTING_TABLE
+  '7':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BOOK
+  '8':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BUBBLE_CORAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Осколок Энда"}],"text":""}'
+      custom-model-data: 1001

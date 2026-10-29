@@ -1,0 +1,1354 @@
+﻿#########################################################
+## Developed by Little Room, patreon.com/littleroomdev ##
+#########################################################
+
+############
+## RECOIL ##
+############
+
+TOWERSKELETON_recoil_step:
+  Conditions:
+  - varequals{var=caster.combo;val=true} false
+  Skills:
+  - sound{s=littleroom_towerskeleton:step;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>} @self
+  - sound{s=littleroom_towerskeleton:chain;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>} @self
+  - sound{s=littleroom_towerskeleton:armor_step;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>} @self
+  - recoil{r=10;pitch=-.4} @pir{r=24}
+  - delay 1
+  - recoil{r=10;pitch=.3} @pir{r=24}
+  - delay 1
+  - recoil{r=10;pitch=-.2} @pir{r=24}
+  - delay 1
+  - recoil{r=10;pitch=.1} @pir{r=24}
+
+TOWERSKELETON_recoil:
+  Skills:
+  - recoil{r=10;pitch=-.4}
+  - delay 1
+  - recoil{r=10;pitch=.3}
+  - delay 1
+  - recoil{r=10;pitch=-.2}
+  - delay 1
+  - recoil{r=10;pitch=.1}
+
+TOWERSKELETON_recoil_big:
+  Skills:
+  - recoil{r=20;pitch=-.8}
+  - delay 1
+  - recoil{r=20;pitch=.6}
+  - delay 1
+  - recoil{r=20;pitch=-.4}
+  - delay 1
+  - recoil{r=20;pitch=.2}
+
+###########
+## SPAWN ##
+###########
+
+TOWERSKELETON_invulnerable_pre_awaken:
+  Conditions:
+  - varequals{var=caster.awaken;val=false}
+  Skills:
+  - potion{type=DAMAGE_RESISTANCE;duration=15;level=4}
+
+
+TOWERSKELETON_spawn:
+  Skills:
+  - setrotation{yaw=90} @self
+  - delay 1
+  - setvar{var=caster.awaken;val=false;type=STRING} @self
+  - summon{t=TOWER_SKELETON_THRONE} @selflocation
+  - setAI{ai=false} @self
+  - state{s=sleep} @self
+  
+TOWERSKELETON_awaken:
+  Cooldown: 10
+  Conditions:
+  - varequals{var=caster.awaken;val=true} false
+  - playerwithin{d=20} true
+  Skills:
+  - gcd{ticks=250} @self
+  - sound{s=littleroom_towerskeleton:awaken_laugh;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=80} @self
+  - setvar{var=caster.awaken;val=true;type=STRING} @self
+  - state{s=awaken} @self
+  - skill{s=TOWERSKELETON_bossbar_set;delay=200} self
+  - setAI{ai=true;delay=200} @self
+  - partvis{m=tower_skeleton;p=scene_shield;delay=70}
+  - partvis{m=tower_skeleton;p=right_hand_shield;v=true;delay=70}
+  - partvis{m=tower_skeleton;p=right_hand_shield;delay=150}
+  - partvis{m=tower_skeleton;p=shield;v=true;delay=150}
+  - partvis{m=tower_skeleton;p=back_sword;delay=180}
+  - partvis{m=tower_skeleton;p=sword;v=true;delay=180}
+  - setskillcooldown{skill=TOWERSKELETON_put_up_shield;seconds=10;delay=250} @self
+
+TOWERSKELETON_bossbar_set:
+  Skills:
+  - setvar{var=caster.awake;val=true;type=STRING} @self
+  - barCreate{
+    name="TOWERSKELETON";
+    display="<caster.name>";
+    value=1.0;color=PURPLE;
+    style=SEGMENTED_6
+    } @self
+
+
+###################
+## DAMAGE EFFECT ##
+###################
+
+
+TOWERSKELETON_damage:
+  Conditions:
+  - varequals{var=caster.shieldup;val=true} false
+  Skills:
+  - brightness{b=15;s=15} @self
+  - barSet{name="TOWERSKELETON";display="<caster.name>";value=<caster.hp>/<caster.mhp>;color=WHITE;style=SOLID} @self
+  - delay 2
+  - brightness{b=-1;s=-1} @self
+  - brightness{b=15;s=15;pid=shard;em=false} @self
+  - barSet{name="TOWERSKELETON";display="<caster.name>";value=<caster.hp>/<caster.mhp>;color=PURPLE;style=SOLID} @self
+  - delay 2
+  - barSet{name="TOWERSKELETON";display="<caster.name>";value=<caster.hp>/<caster.mhp>;color=WHITE;style=SOLID} @self
+  - delay 2
+  - barSet{name="TOWERSKELETON";display="<caster.name>";value=<caster.hp>/<caster.mhp>;color=PURPLE;style=SOLID} @self
+
+
+############
+## SHIELD ##
+############
+
+# shield up #
+
+TOWERSKELETON_put_up_shield:
+  Cooldown: 5
+  Conditions:
+  - incombat true
+  - offgcd true
+  - variableInRange{var=caster.shieldhp;val=>0} true 
+  - varequals{var=caster.awaken;val=true} true
+  - varequals{var=caster.shieldup;val=false} true
+  - varequals{var=caster.shieldstate;val=5} false
+  Skills:
+  - gcd{ticks=60}
+  - setspeed{type=walking;speed=0.75} @self
+  - bodyrotation{mh=0;mb=0;rde=0;rdu=0}
+  - setSkillCooldown{skill=TOWERSKELETON_put_down_shield;seconds=20} @self
+  #- message{m="PUTTING SHIELD UP"} @everyone
+  #- message{m="SHIELD HP <caster.var.shieldhp>"} @everyone
+  - setvar{var=caster.shieldup;val=true;type=STRING} @self
+  - defaultstate{t=idle;s=idle_shield} @self
+  - defaultstate{t=walk;s=walk_shield} @self
+  - state{s=put_up_shield;p=3} @self
+  
+# shield down #
+  
+TOWERSKELETON_put_down_shield:
+  Cooldown: 5
+  Conditions:
+  - offgcd true
+  - varequals{var=caster.shieldup;val=true} true
+  Skills:
+  - gcd{ticks=60}
+  - setspeed{type=walking;speed=1} @self
+  - bodyrotation{mh=30;mb=30;rde=40;rdu=60}
+  - setSkillCooldown{skill=TOWERSKELETON_put_up_shield;seconds=15} @self
+  #- message{m="PUTTING SHIELD DOWN"} @everyone
+  #- message{m="SHIELD HP <caster.var.shieldhp>"} @everyone
+  - setvar{var=caster.shieldup;val=false;type=STRING} @self
+  - defaultstate{t=idle;s=idle} @self
+  - defaultstate{t=walk;s=walk} @self
+  - state{s=put_down_shield;p=3} @self
+  
+# shield effect on skeleton #
+
+TOWERSKELETON_absord_damage_shield:
+  Conditions:
+  - varequals{var=caster.shieldup;val=true}
+  Skills:
+  - potion{type=DAMAGE_RESISTANCE;duration=15;level=4}
+  
+TOWERSKELETON_attack_from_behind_shield:
+  Conditions:
+  - varequals{var=caster.shieldup;val=true}
+  TriggerConditions:
+  - fieldofview{a=180;r=180} true
+  Skills:
+  #- message{m=TOWERSKELETON_attack_from_behind_shield} @everyone
+  - damage{a=<skill.var.damage-amount>;ir=true;ii=true} @self
+  - brightness{b=15;s=15} @self
+  - barSet{name="TOWERSKELETON";display="<caster.name>";value=<caster.hp>/<caster.mhp>;color=WHITE;style=SOLID} @self
+  - delay 2
+  - brightness{b=-1;s=-1} @self
+  - brightness{b=15;s=15;pid=shard;em=false} @self
+  - barSet{name="TOWERSKELETON";display="<caster.name>";value=<caster.hp>/<caster.mhp>;color=PURPLE;style=SOLID} @self
+  - delay 2
+  - barSet{name="TOWERSKELETON";display="<caster.name>";value=<caster.hp>/<caster.mhp>;color=WHITE;style=SOLID} @self
+  - delay 2
+  - barSet{name="TOWERSKELETON";display="<caster.name>";value=<caster.hp>/<caster.mhp>;color=PURPLE;style=SOLID} @self
+  
+# damage shield #
+  
+TOWERSKELETON_damage_shield:
+  TriggerConditions:
+  - fieldofview{a=180;r=0} true
+  Conditions:
+  - varequals{var=caster.shieldup;val=true}
+  - variableInRange{var=caster.shieldhp;val=>0}
+  Skills:
+  - sound{s=littleroom_towerskeleton:shield_hit;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>} @self
+  - brightness{p=shield;em=false;b=15;s=15} @self
+  - brightness{p=shield;em=false;b=-1;s=-1;delay=2} @self
+  - variablesubtract{var=caster.shieldhp;amount=<skill.var.damage-amount>} @self
+  - state{s=shield_hit;p=4} @self
+  - skill{s=[
+    - skill{s=TOWERSKELETON_shield_damaged_2}
+    - skill{s=TOWERSKELETON_shield_damaged_3}
+    - skill{s=TOWERSKELETON_shield_damaged_4}
+    - skill{s=TOWERSKELETON_shield_break}
+    ]} @self
+  
+
+  
+# shield states #
+  
+TOWERSKELETON_shield_damaged_2:
+  Conditions:
+  - varequals{var=caster.shieldstate;val=1} true
+  - variableInRange{var=caster.shieldhp;val=<375}
+  Skills:
+  - gcd{ticks=50}
+  - sound{s=littleroom_towerskeleton:shield_break;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>} @self
+  #- message{m="TOWERSKELETON_shield_damaged_2"} @everyone
+  - defaultstate{t=idle;s=idle} @self
+  - defaultstate{t=walk;s=walk} @self
+  - partvis{m=tower_skeleton;p=shield_debris;child=true;v=true}
+  - partvis{m=tower_skeleton;p=shield_debris;child=true;delay=20}
+  - propel{v=0.25} @forward{f=-4;lp=true}
+  - skill{s=TOWERSKELETON_recoil} @pir{r=16}
+  - setvar{var=caster.shieldstate;val=2} @self
+  - setSkillCooldown{skill=TOWERSKELETON_put_up_shield;seconds=10} @self
+  - state{s=shield_flamethrower;p=3;r=true} @self
+  - state{s=shield_break_state;p=4;lo=5} @self
+  - setspeed{type=walking;speed=0} @self
+  - setspeed{type=walking;speed=1;delay=30} @self
+  - e:p{p=flash;a=1} @modelpart{pid=shield}
+  - e:p{p=block;m=cobblestone;a=100;hs=2;vs=2} @modelpart{pid=shield}
+  - e:p{p=soul;a=25;hs=1;vs=1} @modelpart{pid=shield}
+  - changepart{mid=tower_skeleton;pid=shield;nmid=tower_skeleton_parts;npid=shield_2} @self
+  - setvar{var=caster.shieldup;val=false;type=STRING} @self
+  
+TOWERSKELETON_shield_damaged_3:
+  Conditions:
+  - varequals{var=caster.shieldstate;val=2} true
+  - variableInRange{var=caster.shieldhp;val=<250}
+  Skills:
+  - gcd{ticks=50}
+  - sound{s=littleroom_towerskeleton:shield_break;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>} @self
+  #- message{m="TOWERSKELETON_shield_damaged_3"} @everyone
+  - defaultstate{t=idle;s=idle} @self
+  - defaultstate{t=walk;s=walk} @self
+  - partvis{m=tower_skeleton;p=shield_debris;child=true;v=true}
+  - partvis{m=tower_skeleton;p=shield_debris;child=true;delay=20}
+  - propel{v=0.25} @forward{f=-4;lp=true}
+  - skill{s=TOWERSKELETON_recoil} @pir{r=16}
+  - setvar{var=caster.shieldstate;val=3} @self
+  - setSkillCooldown{skill=TOWERSKELETON_put_up_shield;seconds=10} @self
+  - state{s=shield_flamethrower;p=3;r=true} @self
+  - state{s=shield_break_state;p=4;lo=5} @self
+  - setspeed{type=walking;speed=0} @self
+  - setspeed{type=walking;speed=1;delay=30} @self
+  - e:p{p=flash;a=1} @modelpart{pid=shield}
+  - e:p{p=block;m=cobblestone;a=100;hs=2;vs=2} @modelpart{pid=shield}
+  - e:p{p=soul;a=25;hs=1;vs=1} @modelpart{pid=shield}
+  - changepart{mid=tower_skeleton;pid=shield;nmid=tower_skeleton_parts;npid=shield_3} @self
+  - setvar{var=caster.shieldup;val=false;type=STRING} @self
+  
+TOWERSKELETON_shield_damaged_4:
+  Conditions:
+  - varequals{var=caster.shieldstate;val=3} true
+  - variableInRange{var=caster.shieldhp;val=<125}
+  Skills:
+  - gcd{ticks=50}
+  - sound{s=littleroom_towerskeleton:shield_break;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>} @self
+  #- message{m="TOWERSKELETON_shield_damaged_4"} @everyone
+  - defaultstate{t=idle;s=idle} @self
+  - defaultstate{t=walk;s=walk} @self
+  - partvis{m=tower_skeleton;p=shield_debris;child=true;v=true}
+  - partvis{m=tower_skeleton;p=shield_debris;child=true;delay=20}
+  - propel{v=0.25} @forward{f=-4;lp=true}
+  - skill{s=TOWERSKELETON_recoil} @pir{r=16}
+  - setvar{var=caster.shieldstate;val=4} @self
+  - setSkillCooldown{skill=TOWERSKELETON_put_up_shield;seconds=10} @self
+  - state{s=shield_flamethrower;p=3;r=true} @self
+  - state{s=shield_break_state;p=4;lo=5} @self
+  - setspeed{type=walking;speed=0} @self
+  - setspeed{type=walking;speed=1;delay=30} @self
+  - e:p{p=flash;a=1} @modelpart{pid=shield}
+  - e:p{p=block;m=cobblestone;a=100;hs=2;vs=2} @modelpart{pid=shield}
+  - e:p{p=soul;a=25;hs=1;vs=1} @modelpart{pid=shield}
+  - e:p{p=soul;a=25;hs=1;vs=1} @modelpart{pid=shield}
+  - changepart{mid=tower_skeleton;pid=shield;nmid=tower_skeleton_parts;npid=shield_4} @self
+  - setvar{var=caster.shieldup;val=false;type=STRING} @self
+  
+TOWERSKELETON_shield_break:
+  Conditions:
+  - varequals{var=caster.shieldstate;val=4} true
+  - variableInRange{var=caster.shieldhp;val=<1}
+  Skills:
+  - gcd{ticks=160}
+  - sound{s=littleroom_towerskeleton:shield_break_final;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>} @self
+  #- message{m="TOWERSKELETON_shield_break"} @everyone
+  - partvis{m=tower_skeleton;p=hand_souls;em=false;v=true}
+  - partvis{m=tower_skeleton;p=shield_debris;child=true;v=true}
+  - partvis{m=tower_skeleton;p=shield_debris;child=true;delay=20}
+  - lockmodel{l=true} @self
+  - lockmodel{l=false;delay=150} @self
+  - defaultstate{t=idle;s=idle_no_shield} @self
+  - defaultstate{t=walk;s=walk_no_shield} @self
+  - propel{v=0.25} @forward{f=-4;lp=true}
+  - throw{v=10;v=2} @pir{r=12}
+  - skill{s=TOWERSKELETON_recoil_big} @pir{r=32}
+  - summon{t=TOWER_SKELETON_BROKEN_SHIELD} @modelpart{pid=shield;offset=LOCAL;y=-3}
+  - setvar{var=caster.shieldstate;val=5} @self
+  - state{s=shield_flamethrower;p=3;r=true} @self
+  - state{s=shield_break_final;p=4;lo=5} @self
+  - setspeed{type=walking;speed=0;repeat=130;repeati=1} @self
+  - setspeed{type=walking;speed=1.25;delay=160} @self
+  - partvis{m=tower_skeleton;p=shield;em=false;child=true}
+  - setvar{var=caster.soul_hand;val=true;type=STRING} @self
+  - setvar{var=caster.shieldup;val=false;type=STRING} @self
+  - setvar{var=caster.stun;val=true;type=STRING;duration=80;delay=40} @self
+  - throw{v=8;delay=140} @pir{r=12}
+  - skill{s=TOWERSKELETON_recoil;delay=140} @pir{r=24}
+  
+TOWERSKELETON_shield_break_death:
+  Conditions:
+  - varequals{var=caster.shieldstate;val=5} false
+  Skills:
+  - gcd{ticks=160}
+  - sound{s=littleroom_towerskeleton:shield_break_final;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>} @self
+  - partvis{m=tower_skeleton;p=shield_debris;child=true;v=true}
+  - partvis{m=tower_skeleton;p=shield_debris;child=true;delay=20}
+  - lockmodel{l=true} @self
+  - throw{v=10;v=2} @pir{r=12}
+  - skill{s=TOWERSKELETON_recoil_big} @pir{r=32}
+  - summon{t=TOWER_SKELETON_BROKEN_SHIELD} @modelpart{pid=shield;offset=LOCAL;y=-3}
+  - partvis{m=tower_skeleton;p=shield;em=false;child=true}
+  
+TOWERSKELETON_stun_hit:
+  Conditions:
+  - varequals{var=caster.stun;val=true} true
+  Skills:
+  - state{s=stun_hit} @self
+  
+
+###############
+### ATTACKS ###
+###############
+
+##### SHIELD #####
+
+TOWERSKELETON_shield_flamethrower:
+  Cooldown: 20
+  TargetConditions:
+  - distance{d=7to16} true
+  - fieldofview{angle=120} true
+  Conditions:
+  - offgcd true
+  - varequals{var=caster.charge;val=true} false
+  - varequals{var=caster.shieldup;val=true}
+  Skills:
+  - gcd{ticks=180}
+  - sound{s=littleroom_towerskeleton:swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=15} @self
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=15} @self
+  - sound{s=littleroom_towerskeleton:shield_impact;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=20} @self
+  - sound{s=littleroom_towerskeleton:slam;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=20} @self
+  #- message{m="TOWERSKELETON_shield_flamethrower"} @everyone
+  - state{s=shield_flamethrower;p=3} @self
+  - setspeed{type=walking;speed=0} @self
+  - setspeed{type=walking;speed=0.75;delay=150} @self
+  - skill{s=TOWERSKELETON_recoil_big;delay=20} @pir{r=32}
+  - throw{v=5;vy=2;delay=20} @eir{r=10}
+  - skill{s=TOWERSKELETON_shield_flamethrower_projectile;repeat=100;repeati=1;delay=25} @modelpart{pid=flamethower_target}
+  
+TOWERSKELETON_shield_flamethrower_projectile:
+  Conditions:
+  - varequals{var=caster.shieldup;val=true}
+  Skills:
+  - sound{s=littleroom_towerskeleton:shield_flamethrower_loop;v=0.75;sc=HOSTILE;cd=1;pitch=<random.float.1.0to1.1>} @self
+  - projectile{bulletType=MOB;
+               oS=[ - e:p{p=lava;a=1;hs=.15;vs=.15;cd=0.5}];
+               oH=TOWERSKELETON_flamethrower_hit;
+               interpolation=4;
+               mob=TOWERSKELETON_flamethrower_fx;
+               v=15;
+               i=1;
+               hR=1;
+               vR=1;
+               md=20;
+               ac=.98;
+               hnp=true;
+               origin=@modelpart{pid=flamethrower_origin};
+               fromorigin=true;
+               syo=0;
+               sfo=0;
+               sso=0;
+               sE=false;
+               g=-.02;
+               byo=0;
+               bounce=true;
+               bv=0.5;
+               eso=<random.float.-1to1>}
+
+  
+TOWERSKELETON_flamethrower_hit:
+  Skills:
+  - hit{a=1}
+  - ignite{d=60}  
+
+
+## BASH ##
+
+TOWERSKELETON_bash_shield:
+  Cooldown: 5
+  TargetConditions:
+  - distance{d=<8} true
+  - fieldofview{angle=90} true
+  Conditions:
+  - offgcd true
+  - varequals{var=caster.shieldup;val=true}
+  - varequals{var=caster.charge;val=true} false
+  Skills:
+  - gcd{ticks=60}
+  #- message{m="TOWERSKELETON_bash_shield"} @everyone
+  - sound{s=littleroom_towerskeleton:swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=20} @self
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=20} @self
+  - state{s=shield_bash} @self
+  - totem{md=2;oH=TOWERSKELETON_bash_shield_damage;hr=3;vr=4;drawhitbox=false;delay=23;repeat=5;repeati=1} @modelpart{pid=shield}
+  
+TOWERSKELETON_bash_shield_damage:
+  Skills:
+  - sound{s=littleroom_towerskeleton:shield_impact;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>} @self
+  - skill{s=TOWERSKELETON_recoil_big}
+  - basedamage{m=1}
+  - throw{v=10;vy=4}
+
+
+## BASH ##
+
+TOWERSKELETON_combo_shield:
+  Cooldown: 15
+  TargetConditions:
+  - distance{d=<10} true
+  - fieldofview{angle=90} true
+  Conditions:
+  - offgcd true
+  - varequals{var=caster.shieldstate;val=5} false
+  - varequals{var=caster.shieldup;val=false}
+  - varequals{var=caster.awaken;val=true} true
+  - varequals{var=caster.charge;val=true} false
+  Skills:
+  - gcd{ticks=120}
+  #- message{m="TOWERSKELETON_combo_shield"} @everyone
+  - state{s=shield_combo} @self
+  - sound{s=littleroom_towerskeleton:swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=20} @self
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=20} @self
+  - skill{s=TOWERSKELETON_recoil_big;delay=25} @pir{r=12}
+  - sound{s=littleroom_towerskeleton:shield_impact;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=25} @self
+  - sound{s=littleroom_towerskeleton:slam;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=25} @self
+  - totem{md=2;oH=TOWERSKELETON_combo_shield_damage;hr=3;vr=4;drawhitbox=false;delay=25} @modelpart{pid=shield;offset=LOCAL;y=-2}
+  - sound{s=littleroom_towerskeleton:swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=40} @self
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=40} @self
+  - skill{s=TOWERSKELETON_recoil_big;delay=45} @pir{r=12}
+  - sound{s=littleroom_towerskeleton:shield_impact;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=45} @self
+  - sound{s=littleroom_towerskeleton:slam;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=45} @self
+  - totem{md=2;oH=TOWERSKELETON_combo_shield_damage;hr=3;vr=4;drawhitbox=false;delay=45} @modelpart{pid=shield;offset=LOCAL;y=-2}
+  - sound{s=littleroom_towerskeleton:swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=70} @self
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=70} @self
+  - skill{s=TOWERSKELETON_recoil_big;delay=75} @pir{r=12}
+  - sound{s=littleroom_towerskeleton:shield_impact;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=75} @self
+  - sound{s=littleroom_towerskeleton:slam;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=75} @self
+  - totem{md=2;oH=TOWERSKELETON_combo_shield_damage;hr=3;vr=4;drawhitbox=false;delay=75} @modelpart{pid=shield;offset=LOCAL;y=-2}
+  
+TOWERSKELETON_combo_shield_damage:
+  Skills:
+  - sound{s=littleroom_towerskeleton:hit;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>} @self
+  - skill{s=TOWERSKELETON_recoil_big}
+  - basedamage{m=1}
+  - throw{v=10;vy=4}
+
+
+## SLAM ##
+
+TOWERSKELETON_slam_shield:
+  Cooldown: 5
+  TargetConditions:
+  - distance{d=<8} true
+  - fieldofview{angle=90} true
+  Conditions:
+  - offgcd true
+  - varequals{var=caster.shieldup;val=true}
+  - varequals{var=caster.charge;val=true} false
+  Skills:
+  - gcd{ticks=60}
+  #- message{m="TOWERSKELETON_slam_shield"} @everyone
+  - state{s=shield_slam} @self
+  - sound{s=littleroom_towerskeleton:swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=15} @self
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=15} @self
+  - sound{s=littleroom_towerskeleton:shield_impact;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=20} @self
+  - sound{s=littleroom_towerskeleton:slam;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=20} @self
+  - totem{md=2;oH=TOWERSKELETON_slam_shield_damage;hr=3;vr=4;drawhitbox=false;delay=20;repeat=5;repeati=1} @modelpart{pid=shield}
+  
+TOWERSKELETON_slam_shield_damage:
+  Skills:
+  - skill{s=TOWERSKELETON_recoil_big}
+  - sound{s=littleroom_towerskeleton:hit;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=20} @self
+  - basedamage{m=1}
+  - throw{v=10;vy=4}
+  
+  
+## CHARGE ##
+
+TOWERSKELETON_charge_shield:
+  Conditions:
+  - offgcd true
+  - varequals{var=caster.shieldup;val=true}
+  - varequals{var=caster.charge;val=true} false
+  TargetConditions:
+  - ydiff{diff=-3to3}
+  - distance{d=>14}
+  Cooldown: 10
+  Skills:
+  - gcd{ticks=60}
+  - setvar{var=caster.charge;val=true;type=STRING} @self
+  - look{l=force;repeat=60;repeati=1} @children{target=markers}
+  - sound{s=littleroom_towerskeleton:swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=15} @self
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=15} @self
+  - sound{s=littleroom_towerskeleton:shield_impact;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=20} @self
+  - sound{s=littleroom_towerskeleton:slam;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=20} @self
+  #- message{m="TOWERSKELETON_charge_shield"} @everyone
+  - state{s=shield_charge} @self
+  - state{s=shield_charge_run;delay=60} @self
+  - delay 40
+  - setspeed{type=walking;speed=2.5} @self
+  
+TOWERSKELETON_charge_shield_stop:
+  Cooldown: 10
+  TargetConditions:
+  - ydiff{diff=-3to3}
+  - distance{d=<10}
+  Conditions:
+  - varequals{var=caster.charge;val=true}
+  Skills:
+  - gcd{ticks=60}
+  - defaultstate{t=idle;s=idle} @self
+  - defaultstate{t=walk;s=walk} @self
+  - sound{s=littleroom_towerskeleton:swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=10} @self
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=10} @self
+  #- message{m="TOWERSKELETON_charge_shield_stop"} @everyone
+  - state{s=shield_charge_run;r=true} @self
+  - state{s=shield_charge_stop;p=6} @self
+  - lockmodel{l=true} @self
+  - lockmodel{l=false;delay=30} @self
+  - setvar{var=caster.charge;val=false;type=STRING} @self
+  - setspeed{type=walking;speed=1;delay=10} @self
+  - lunge{v=2;delay=10} @target
+  - totem{md=2;oH=TOWERSKELETON_bash_shield_damage;hr=3;vr=4;drawhitbox=false;delay=10;repeat=5;repeati=1} @modelpart{pid=shield}
+  - bodyrotation{mh=30;mb=30;rde=40;rdu=60}
+  - setSkillCooldown{skill=TOWERSKELETON_put_up_shield;seconds=15} @self
+  - setvar{var=caster.shieldup;val=false;type=STRING} @self
+  
+### STOMP ###
+
+TOWERSKELETON_stomp:
+  Cooldown: 10
+  TargetConditions:
+  - distance{d=<8} true
+  - fieldofview{angle=120} true
+  Conditions:
+  - offgcd true
+  - varequals{var=caster.shieldstate;val=5} false
+  - varequals{var=caster.shieldup;val=true} false
+  - varequals{var=caster.awaken;val=true} true
+  Skills:
+  - gcd{ticks=80}
+  #- message{m="TOWERSKELETON_stomp"} @everyone
+  - bodyrotation{mh=0;mb=0;rde=0;rdu=0}
+  - bodyrotation{mh=30;mb=30;rde=40;rdu=60;delay=60}
+  - setspeed{type=walking;speed=0} @self
+  - setspeed{type=walking;speed=1;delay=80} @self
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=10} @self
+  - sound{s=littleroom_towerskeleton:swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=20} @self
+  - sound{s=littleroom_towerskeleton:slam;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=25} @self
+  - lockmodel{l=true;delay=20} @self
+  - lockmodel{l=false;delay=60} @self
+  - state{s=stomp} @self
+  - skill{s=TOWERSKELETON_recoil;delay=25} @pir{r=12}
+  - totem{md=2;oH=TOWERSKELETON_stomp_damage;hr=2;vr=2;drawhitbox=false;delay=25} @modelpart{pid=right_boot_strap;offset=GLOBAL;y=-2}
+  
+TOWERSKELETON_stomp_damage:
+  Skills:
+  - skill{s=TOWERSKELETON_recoil_big}
+  - basedamage{m=1}
+  - throw{v=10;vy=4}
+  
+### STAB SWEEP ###
+
+TOWERSKELETON_stab_sweep:
+  Cooldown: 15
+  TargetConditions:
+  - distance{d=<14} true
+  - fieldofview{angle=120} true
+  Conditions:
+  - offgcd true
+  - varequals{var=caster.shieldstate;val=5} false
+  - varequals{var=caster.shieldup;val=true} false
+  - varequals{var=caster.awaken;val=true} true
+  Skills:
+  - gcd{ticks=100}
+  #- message{m="TOWERSKELETON_stab_sweep"} @everyone
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=15} @self
+  - sound{s=littleroom_towerskeleton:swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=25} @self
+  - sound{s=littleroom_towerskeleton:slam;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=30} @self
+  - sound{s=littleroom_towerskeleton:sword_swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=55} @self
+  - bodyrotation{mh=0;mb=0;rde=0;rdu=0}
+  - bodyrotation{mh=30;mb=30;rde=40;rdu=60;delay=100}
+  - setspeed{type=walking;speed=0} @self
+  - setspeed{type=walking;speed=1;delay=100} @self
+  - lockmodel{l=true;delay=20} @self
+  - lockmodel{l=false;delay=100} @self
+  - state{s=stab_slash} @self
+  - skill{s=TOWERSKELETON_recoil_big;delay=30} @pir{r=24}
+  - skill{s=TOWERSKELETON_recoil;delay=55;repeat=2;repeati=3} @pir{r=24}
+  - totem{md=2;oH=TOWERSKELETON_stab_sweep_damage;hr=2;vr=2;drawhitbox=false;delay=32} @modelpart{pid=sword;offset=GLOBAL;y=-2}
+  - totem{md=2;oH=TOWERSKELETON_stab_sweep_damage;hr=2;vr=2;drawhitbox=false;delay=55;repeat=5;repeati=1} @modelpart{pid=sword;offset=GLOBAL;y=-2}
+  - skill{s=TOWERSKELETON_stab_sweep_projectile;repeat=5;repeati=2;delay=55} @self
+  
+TOWERSKELETON_stab_sweep_projectile:
+  Skills:
+  - projectile{v=20;
+               i=2;
+               oT=TOWERSKELETON_stab_sweep_projectile_tick;
+               oH=TOWERSKELETON_stab_sweep_projectile_damage;
+               sso=0;
+               syo=0;
+               sfo=0;
+               hs=true;
+               hfs=0;
+               se=false;
+               drawhitbox=false;
+               hr=2;
+               vr=4;
+               origin=@modelpart{pid=sword};
+               fromorigin=true} @modelpart{pid=slash_target}
+  
+TOWERSKELETON_stab_sweep_projectile_tick:
+  Skills:
+  - summon{t=TOWER_SKELETON_SLASH_FX}
+  - particle{p=dust_color_transition;color=#48feae;color2=#000000;size=1;a=2;hs=0.5;vs=.25}
+
+TOWERSKELETON_stab_sweep_projectile_damage:
+  Skills:
+  - skill{s=TOWERSKELETON_recoil_big}
+  - basedamage{m=1}
+  - throw{v=10;vy=4}
+  
+TOWERSKELETON_stab_sweep_damage:
+  Skills:
+  - skill{s=TOWERSKELETON_recoil_big}
+  - basedamage{m=1}
+  - throw{v=10;vy=4}
+  
+### SCREAM ###
+
+TOWERSKELETON_scream:
+  Cooldown: 25
+  TargetConditions:
+  - distance{d=<16} true
+  Conditions:
+  - offgcd true
+  - incombat true
+  - varequals{var=caster.shieldstate;val=5} false
+  - varequals{var=caster.shieldup;val=true} false
+  Skills:
+  - gcd{ticks=100}
+  - state{s=scream} @self
+  - delay 25
+  - sound{s=littleroom_towerskeleton:scream;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>} @self
+  - potion{type=SLOW;duration=120;level=1} @pir{r=32}
+  #- potion{type=WEAKNESS;duration=120;level=1} @pir{r=32}
+  - skill{s=TOWERSKELETON_recoil_big} @pir{r=32}
+  - skill{s=TOWERSKELETON_recoil;repeat=5;repeati=4} @pir{r=32}
+  
+
+### NO SHIELD COMBO ATTACK ###
+
+TOWERSKELETON_no_shield_combo:
+  Cooldown: 25
+  TargetConditions:
+  - distance{d=<12} true
+  Conditions:
+  - offgcd true
+  - incombat true
+  - varequals{var=caster.soul_sword;val=true} false
+  - varequals{var=caster.shieldstate;val=5} true
+  Skills:
+  - gcd{ticks=160}
+  - setvar{var=caster.combo;val=true;type=STRING;duration=160} @self
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=25} @self
+  - sound{s=littleroom_towerskeleton:swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=25} @self
+  - sound{s=littleroom_towerskeleton:step;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=30} @self
+  - sound{s=littleroom_towerskeleton:chain;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=30} @self
+  - sound{s=littleroom_towerskeleton:armor_step;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=30} @self
+  - sound{s=littleroom_towerskeleton:swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=50} @self
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=70} @self
+  - sound{s=littleroom_towerskeleton:sword_swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=80} @self
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=110} @self
+  - sound{s=littleroom_towerskeleton:swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=120} @self
+  - state{s=combo_no_shield;lo=10} @self
+  - bodyrotation{mh=0;mb=0;rde=0;rdu=0}
+  - bodyrotation{mh=30;mb=30;rde=40;rdu=60;delay=140}
+  - setspeed{speed=0} @self
+  - setspeed{speed=1.25;delay=35} @self
+  - setspeed{speed=0;delay=130} @self
+  - setspeed{type=walking;speed=1.25;delay=140} @self
+  - skill{s=TOWERSKELETON_recoil_big;delay=30} @pir{r=32}
+  - totem{md=2;oH=TOWERSKELETON_no_shield_combo_damage;hr=2;vr=2;drawhitbox=false;delay=30} @modelpart{pid=left_boot_strap}
+  - totem{md=2;oH=TOWERSKELETON_no_shield_combo_damage;hr=2;vr=2;drawhitbox=false;delay=50;repeat=6;repeati=1} @modelpart{pid=left_hand}
+  - totem{md=2;oH=TOWERSKELETON_no_shield_combo_damage;hr=2;vr=2;drawhitbox=false;delay=80;repeat=15;repeati=1} @modelpart{pid=sword;offset=LOCAL;z=-2}
+  - totem{md=2;oH=TOWERSKELETON_no_shield_combo_damage;hr=2;vr=2;drawhitbox=false;delay=80;repeat=15;repeati=1} @modelpart{pid=sword;offset=LOCAL;z=-4}
+  - totem{md=2;oH=TOWERSKELETON_no_shield_combo_damage;hr=2;vr=2;drawhitbox=false;delay=120;repeat=6;repeati=1} @modelpart{pid=left_hand}
+
+TOWERSKELETON_no_shield_combo_damage:
+  Skills:
+  - skill{s=TOWERSKELETON_recoil_big}
+  - basedamage{m=1}
+  - throw{v=10;vy=4}
+
+### NO SHIELD COMBO ATTACK ###
+
+TOWERSKELETON_no_shield_combo_2:
+  Cooldown: 25
+  TargetConditions:
+  - distance{d=<8} true
+  Conditions:
+  - offgcd true
+  - incombat true
+  - varequals{var=caster.soul_sword;val=true} false
+  - varequals{var=caster.shieldstate;val=5} true
+  Skills:
+  - gcd{ticks=160}
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=20} @self
+  - sound{s=littleroom_towerskeleton:swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=20} @self
+  - sound{s=littleroom_towerskeleton:step;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=25} @self
+  - sound{s=littleroom_towerskeleton:chain;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=25} @self
+  - sound{s=littleroom_towerskeleton:armor_step;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=25} @self
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=40} @self
+  - sound{s=littleroom_towerskeleton:swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=40} @self
+  - sound{s=littleroom_towerskeleton:step;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=45} @self
+  - sound{s=littleroom_towerskeleton:chain;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=45} @self
+  - sound{s=littleroom_towerskeleton:armor_step;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=45} @self
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=55} @self
+  - sound{s=littleroom_towerskeleton:swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=55} @self
+  - sound{s=littleroom_towerskeleton:step;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=60} @self
+  - sound{s=littleroom_towerskeleton:chain;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=60} @self
+  - sound{s=littleroom_towerskeleton:armor_step;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=60} @self
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=70} @self
+  - sound{s=littleroom_towerskeleton:swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=70} @self
+  - sound{s=littleroom_towerskeleton:step;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=95} @self
+  - sound{s=littleroom_towerskeleton:chain;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=95} @self
+  - sound{s=littleroom_towerskeleton:armor_step;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=95} @self
+  - setvar{var=caster.combo;val=true;type=STRING;duration=160} @self
+  - state{s=combo_2_no_shield;lo=10} @self
+  - bodyrotation{mh=0;mb=0;rde=0;rdu=0}
+  - bodyrotation{mh=30;mb=30;rde=40;rdu=60;delay=140}
+  - setspeed{speed=0} @self
+  - setspeed{speed=1.25;delay=25} @self
+  - setspeed{speed=0;delay=50} @self
+  - setspeed{type=walking;speed=1.25;delay=130} @self
+  - skill{s=TOWERSKELETON_recoil_big;delay=25} @pir{r=32}
+  - skill{s=TOWERSKELETON_recoil_big;delay=45} @pir{r=32}
+  - skill{s=TOWERSKELETON_recoil_big;delay=60} @pir{r=32}
+  - skill{s=TOWERSKELETON_recoil_big;delay=95} @pir{r=32}
+  - totem{md=2;oH=TOWERSKELETON_no_shield_combo_2_damage;hr=2;vr=2;drawhitbox=false;delay=25} @modelpart{pid=right_boot_strap}
+  - totem{md=2;oH=TOWERSKELETON_no_shield_combo_2_damage;hr=2;vr=2;drawhitbox=false;delay=45} @modelpart{pid=left_boot_strap}
+  - totem{md=2;oH=TOWERSKELETON_no_shield_combo_2_damage;hr=2;vr=2;drawhitbox=false;delay=60} @modelpart{pid=left_boot_strap}
+  - totem{md=2;oH=TOWERSKELETON_no_shield_combo_2_damage;hr=2;vr=2;drawhitbox=false;delay=70;repeat=10;repeati=1} @modelpart{pid=right_boot_strap}
+  - totem{md=2;oH=TOWERSKELETON_no_shield_combo_2_damage;hr=2;vr=2;drawhitbox=false;delay=95} @modelpart{pid=right_boot_strap}
+
+TOWERSKELETON_no_shield_combo_2_damage:
+  Skills:
+  - skill{s=TOWERSKELETON_recoil_big}
+  - basedamage{m=1}
+  - throw{v=10;vy=4}
+  
+### GRAB PLAYER ###
+
+TOWERSKELETON_grab_player:
+  Cooldown: 10
+  TargetConditions:
+  - distance{d=<8} true
+  Conditions:
+  - offgcd true
+  - incombat true
+  - varequals{var=caster.soul_sword;val=true} false
+  - varequals{var=caster.shieldstate;val=5} true
+  Skills:
+  - gcd{ticks=40}
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=15} @self
+  - sound{s=littleroom_towerskeleton:swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=20} @self
+  - state{s=grab_player} @self
+  - lockmodel{l=true} @self
+  - setspeed{speed=0} @self
+  - totem{md=2;oH=TOWERSKELETON_grab_player_totem;hr=1;vr=1;drawhitbox=false;delay=20;repeat=8;repeati=1} @modelpart{pid=grabbed}
+  - skill{s=TOWERSKELETON_grab_player_fail;delay=29} @self
+  
+TOWERSKELETON_grab_player_totem:
+  Skills:
+  - MountModel{mid=tower_skeleton;driver=false;p=grabbed;dmg=true;ad=false;f=true;mode=walking}
+  
+  
+TOWERSKELETON_grab_player_fail:
+  Conditions:
+  - modelhaspassengers{m=tower_skeleton;p=grabbed} castInstead TOWERSKELETON_grab_player_success
+  Skills:
+  #- message{m="FAILED TO GRAB PLAYER!"} @everyone
+  - gcd{ticks=40}
+  - state{s=grab_miss;li=4} @self
+  - lockmodel{l=false;delay=45} @self
+  - setspeed{speed=1.25;delay=45} @self
+  
+TOWERSKELETON_grab_player_success:
+  Skills:
+  - setSkillCooldown{skill=TOWERSKELETON_grab_player;seconds=20} @self
+  - potion{type=WITHER;duration=87;level=4} @ModelPassengers{mid=tower_skeleton;p=grabbed}
+  #- message{m="SUCCESFULLY GRABBED PLAYER!"} @everyone
+  - skill{s=TOWERSKELETON_life_siphon;repeat=4;repeati=20} @self
+  - gcd{ticks=130}
+  - skill{s=TOWERSKELETON_recoil_big;delay=50} @pir{r=32}
+  - skill{s=TOWERSKELETON_recoil;delay=50;repeat=6;repeati=4} @pir{r=32}
+  - lockmodel{l=false;delay=130} @self
+  - setspeed{speed=1.25;delay=45;delay=130} @self
+  - DismountAll{mid=tower_skeleton;p=grabbed;delay=87} @self
+  - totem{md=2;oH=[ - throw{v=10;vy=-4}];hr=3;vr=3;drawhitbox=false;delay=87;repeat=2;repeati=1} @modelpart{pid=grabbed}
+  - sound{s=littleroom_towerskeleton:scream;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=45} @self
+  - skill{s=TOWERSKELETON_grab_flamethrower_projectile;repeat=25;repeati=1;delay=50} @modelpart{pid=grabbed}
+
+TOWERSKELETON_life_siphon:
+  Skills:
+  - healpercent{m=0.025} @self
+  - barSet{name="TOWERSKELETON";display="<caster.name>";value=<caster.hp>/<caster.mhp>;color=PURPLE;style=SOLID} @self
+
+
+TOWERSKELETON_grab_flamethrower_projectile:
+  Skills:
+  - sound{s=littleroom_towerskeleton:shield_flamethrower_loop;v=0.75;sc=HOSTILE;cd=1;pitch=<random.float.1.0to1.1>} @self
+  - projectile{bulletType=MOB;
+               oS=[ - e:p{p=lava;a=1;hs=.15;vs=.15;cd=0.5}];
+               oH=TOWERSKELETON_flamethrower_hit;
+               interpolation=4;
+               mob=TOWERSKELETON_flamethrower_fx;
+               v=10;
+               i=1;
+               hR=1;
+               vR=1;
+               md=20;
+               ac=.98;
+               hnp=true;
+               origin=@modelpart{pid=jaw};
+               fromorigin=true;
+               syo=0;
+               sfo=-1;
+               sso=0;
+               sE=false;
+               g=-.02;
+               byo=0;
+               bounce=true;
+               bv=0.5;
+               eso=<random.float.-1to1>}
+               
+               
+TOWERSKELETON_imbue_sword:
+  Cooldown: 10
+  Conditions:
+  - offgcd true
+  - incombat true
+  - varequals{var=caster.shieldstate;val=5} true
+  - varequals{var=caster.soul_sword;val=true} false
+  Skills:
+  - gcd{ticks=200}
+  - sound{s=littleroom_towerskeleton:imbue_sword;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=40} @self
+  - defaultstate{t=idle;s=idle_soul_sword} @self
+  - defaultstate{t=walk;s=walk_soul_sword} @self
+  - state{s=imbue_sword} @self
+  - lockmodel{l=true} @self
+  - setspeed{speed=0;repeat=20;repeati=1} @self
+  - setvar{var=caster.soul_hand;val=false;type=STRING;delay=155} @self
+  - setvar{var=caster.soul_sword;val=true;type=STRING;delay=155} @self
+  - particle{p=dust_color_transition;color=#48feae;color2=#000000;size=1;hs=.25;vs=.25;repeat=110;repeati=1;delay=50} @modelpart{pid=left_hand_finger_1_3}
+
+  # Shard 3 #
+  - sound{s=littleroom_towerskeleton:imbue_sword_shard;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=140} @self
+  - partvis{m=tower_skeleton;p=sword_shard_3;v=true;child=true;delay=140}
+  - skill{s=TOWERSKELETON_recoil_big;delay=140} @pir{r=32}
+  - e:p{p=flash;a=1;delay=140} @modelpart{pid=sword_shard_2}
+  - partvis{m=tower_skeleton;p=hand_souls;delay=140}
+  
+  # Shard 2 #
+  - sound{s=littleroom_towerskeleton:imbue_sword_shard;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=150} @self
+  - partvis{m=tower_skeleton;p=sword_shard_2;v=true;child=true;delay=150}
+  - skill{s=TOWERSKELETON_recoil_big;delay=150} @pir{r=32}
+  - e:p{p=flash;a=1;delay=150} @modelpart{pid=sword_shard_2}
+  - partvis{m=tower_skeleton;p=hand_souls_2;delay=140}
+  
+  # Shard 1 #
+  - sound{s=littleroom_towerskeleton:imbue_sword_shard;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=155} @self
+  - partvis{m=tower_skeleton;p=sword_shard_1;v=true;child=true;delay=155}
+  - skill{s=TOWERSKELETON_recoil_big;delay=155} @pir{r=32}
+  - e:p{p=flash;a=1;delay=155} @modelpart{pid=sword_shard_1}
+  - partvis{m=tower_skeleton;p=hand_souls_3;delay=155}
+  
+  # reset #
+  - lockmodel{l=false;delay=200} @self
+  - setspeed{speed=1.25;delay=200} @self
+  #- setvar{var=caster.soul_hand;val=true;type=STRING;delay=200} @self
+  #- partvis{m=tower_skeleton;p=hand_souls;delay=200;v=true;em=false}
+  #- setvar{var=caster.soul_sword;val=false;type=STRING;delay=200} @self
+  #- partvis{m=tower_skeleton;p=shard;v=false;em=false;child=true;delay=200}
+  
+  
+### SOUL SWORD ATTACKS ###
+
+# combo 1 #
+
+TOWERSKELETON_soul_sword_combo_1:
+  Cooldown: 25
+  TargetConditions:
+  - distance{d=<8} true
+  - fieldofview{angle=100} true
+  Conditions:
+  - offgcd true
+  - incombat true
+  - varequals{var=caster.soul_sword;val=true}
+  Skills:
+  - gcd{ticks=120}
+  - setvar{var=caster.combo;val=true;type=STRING;duration=120} @self
+  - state{s=soul_sword_attack_1;lo=10} @self
+  - bodyrotation{mh=0;mb=0;rde=0;rdu=0}
+  - bodyrotation{mh=30;mb=30;rde=40;rdu=60;delay=100}
+  - setspeed{speed=0} @self
+  - setspeed{speed=1.25;delay=100} @self
+  - lockmodel{l=true;delay=30} @self
+  - lockmodel{l=false;delay=45} @self
+  - propel{v=2;delay=30} @FOT
+  - lockmodel{l=true;delay=55} @self
+  - lockmodel{l=false;delay=65} @self
+  - propel{v=3;delay=55} @FOT
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=30} @self
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=55} @self
+  - sound{s=littleroom_towerskeleton:sword_swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=35} @self
+  - sound{s=littleroom_towerskeleton:sword_swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=55} @self
+  - totem{md=2;oH=TOWERSKELETON_soul_sword_combo_1_damage;hr=2;vr=2;drawhitbox=false;delay=30;repeat=15;repeati=1;hnp=true} @modelpart{pid=sword;offset=LOCAL;z=-2}
+  - totem{md=2;oH=TOWERSKELETON_soul_sword_combo_1_damage;hr=2;vr=2;drawhitbox=false;delay=30;repeat=15;repeati=1;hnp=true} @modelpart{pid=sword_shard_2}
+  - totem{md=2;oH=TOWERSKELETON_soul_sword_combo_1_damage;hr=2;vr=2;drawhitbox=false;delay=55;repeat=10;repeati=1;hnp=true} @modelpart{pid=sword;offset=LOCAL;z=-2}
+  - totem{md=2;oH=TOWERSKELETON_soul_sword_combo_1_damage;hr=2;vr=2;drawhitbox=false;delay=55;repeat=10;repeati=1;hnp=true} @modelpart{pid=sword_shard_2}
+  
+  
+TOWERSKELETON_soul_sword_combo_1_damage:
+  TargetConditions:
+  - mythicmobtype{t=TOWER_SKELETON_THRONE} false
+  Skills:
+  - sound{s=littleroom_towerskeleton:sword_hit;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>}
+  - skill{s=TOWERSKELETON_recoil_big}
+  - basedamage{m=1}
+  - throw{v=4;vy=10}
+  
+# combo 2 #
+
+TOWERSKELETON_soul_sword_combo_2:
+  Cooldown: 25
+  TargetConditions:
+  - distance{d=<7} true
+  - fieldofview{angle=100} true
+  Conditions:
+  - offgcd true
+  - incombat true
+  - varequals{var=caster.soul_sword;val=true}
+  Skills:
+  - gcd{ticks=150}
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=20} @self
+  - sound{s=littleroom_towerskeleton:sword_swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=30} @self
+  - sound{s=littleroom_towerskeleton:slam;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=37} @self
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=45} @self
+  - sound{s=littleroom_towerskeleton:swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=50} @self
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=60} @self
+  - sound{s=littleroom_towerskeleton:sword_swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=60} @self
+  - sound{s=littleroom_towerskeleton:slam;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=65} @self
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=80} @self
+  - sound{s=littleroom_towerskeleton:jump;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=90} @self
+  - sound{s=littleroom_towerskeleton:sword_swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=110} @self
+  - sound{s=littleroom_towerskeleton:slam;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=115} @self
+  - setvar{var=caster.combo;val=true;type=STRING;duration=150} @self
+  - state{s=soul_sword_attack_2;lo=10} @self
+  - bodyrotation{mh=0;mb=0;rde=0;rdu=0}
+  - bodyrotation{mh=30;mb=30;rde=40;rdu=60;delay=150}
+  - skill{s=TOWERSKELETON_recoil_big;delay=35} @pir{r=24}
+  - skill{s=TOWERSKELETON_recoil_big;delay=65} @pir{r=24}
+  - skill{s=TOWERSKELETON_recoil_big;delay=120} @pir{r=24}
+  - setspeed{speed=0} @self
+  - setspeed{speed=1.25;delay=150} @self
+  - lockmodel{l=true;delay=60} @self
+  - lockmodel{l=false;delay=70} @self
+  - propel{v=2;delay=60} @FOT
+  - lockmodel{l=true;delay=94} @self
+  - lockmodel{l=false;delay=140} @self
+  - projectile{v=100;hs=true;oE=[ - summon{t=TOWERSKELETON_marker}];md=16;delay=90} @target
+  - remove{delay=120} @children{target=markers}
+  - lunge{v=1;vy=1.25;delay=94} @children{target=markers}
+  - lunge{v=1;vy=-5;delay=115} @children{target=markers}
+  - totem{md=2;oH=TOWERSKELETON_soul_sword_combo_2_damage;hr=2;vr=2;drawhitbox=false;delay=30;repeat=10;repeati=1;hnp=true} @modelpart{pid=sword;offset=LOCAL;z=-2}
+  - totem{md=2;oH=TOWERSKELETON_soul_sword_combo_2_damage;hr=2;vr=2;drawhitbox=false;delay=30;repeat=10;repeati=1;hnp=true} @modelpart{pid=sword_shard_2}
+  - totem{md=2;oH=TOWERSKELETON_soul_sword_combo_2_damage;hr=2;vr=2;drawhitbox=false;delay=60;repeat=10;repeati=1;hnp=true} @modelpart{pid=sword;offset=LOCAL;z=-2}
+  - totem{md=2;oH=TOWERSKELETON_soul_sword_combo_2_damage;hr=2;vr=2;drawhitbox=false;delay=60;repeat=10;repeati=1;hnp=true} @modelpart{pid=sword_shard_2}
+  - totem{md=2;oH=TOWERSKELETON_soul_sword_combo_2_damage;hr=2;vr=2;drawhitbox=false;delay=110;repeat=10;repeati=1;hnp=true} @modelpart{pid=sword;offset=LOCAL;z=-2}
+  - totem{md=2;oH=TOWERSKELETON_soul_sword_combo_2_damage;hr=2;vr=2;drawhitbox=false;delay=110;repeat=10;repeati=1;hnp=true} @modelpart{pid=sword_shard_2}
+  - skill{s=TOWERSKELETON_soul_sword_combo_2_projectile;delay=118}
+  
+TOWERSKELETON_soul_sword_combo_2_projectile:
+  Skills:
+  - projectile{v=20;
+               i=2;
+               oT=TOWERSKELETON_stab_sweep_projectile_tick;
+               oH=TOWERSKELETON_stab_sweep_projectile_damage;
+               sso=0;
+               syo=0;
+               sfo=0;
+               hs=true;
+               hfs=0;
+               se=false;
+               mch=5;
+               drawhitbox=false;
+               hr=2;
+               vr=4;
+               origin=@modelpart{pid=sword_shard_3};
+               fromorigin=true} @ring{r=16;p=10}
+  
+TOWERSKELETON_soul_sword_combo_2_damage:
+  TargetConditions:
+  - mythicmobtype{t=TOWER_SKELETON_THRONE} false
+  Skills:
+  - sound{s=littleroom_towerskeleton:sword_hit;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>}
+  - skill{s=TOWERSKELETON_recoil_big}
+  - basedamage{m=1}
+  - throw{v=4;vy=10}
+  
+# combo 3 #
+
+TOWERSKELETON_soul_sword_combo_3:
+  Cooldown: 25
+  TargetConditions:
+  - distance{d=10to20} true
+  - fieldofview{angle=100} true
+  Conditions:
+  - offgcd true
+  - incombat true
+  - varequals{var=caster.soul_sword;val=true}
+  Skills:
+  - gcd{ticks=100}
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=30} @self
+  - sound{s=littleroom_towerskeleton:sword_swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=30} @self
+  - sound{s=littleroom_towerskeleton:sword_swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=40} @self
+  - setvar{var=caster.combo;val=true;type=STRING;duration=100} @self
+  - state{s=soul_sword_attack_3;lo=10} @self
+  - lockmodel{l=true} @self
+  - lockmodel{l=false;delay=100} @self
+  - projectile{v=100;hs=true;oE=[ - summon{t=TOWERSKELETON_marker}];md=16;delay=25} @target
+  - remove{delay=60} @children{target=markers}
+  - lunge{v=0.5;delay=30;repeat=25;repeati=1} @children{target=markers}
+  - setspeed{speed=0} @self
+  - setspeed{speed=1.25;delay=100} @self
+  - totem{md=2;oH=TOWERSKELETON_soul_sword_combo_3_damage;hr=2;vr=3;drawhitbox=false;delay=30;repeat=25;repeati=1;hnp=true} @modelpart{pid=sword;offset=LOCAL;z=-2}
+  - totem{md=2;oH=TOWERSKELETON_soul_sword_combo_3_damage;hr=2;vr=3;drawhitbox=false;delay=30;repeat=25;repeati=1;hnp=true} @modelpart{pid=sword_shard_2}
+
+  
+TOWERSKELETON_soul_sword_combo_3_damage:
+  TargetConditions:
+  - mythicmobtype{t=TOWER_SKELETON_THRONE} false
+  Skills:
+  - sound{s=littleroom_towerskeleton:sword_hit;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>}
+  - skill{s=TOWERSKELETON_recoil_big}
+  - basedamage{m=1}
+  - throw{v=10;vy=10}
+  
+  
+### SOUL SWORD GRAB PLAYER ###
+
+TOWERSKELETON_soul_sword_grab_player:
+  Cooldown: 50
+  TargetConditions:
+  - distance{d=<6} true
+  Conditions:
+  - offgcd true
+  - incombat true
+  - varequals{var=caster.soul_sword;val=true}
+  Skills:
+  - gcd{ticks=40}
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=15} @self
+  - sound{s=littleroom_towerskeleton:swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=20} @self
+  - state{s=soul_sword_grab_player} @self
+  - lockmodel{l=true} @self
+  - setspeed{speed=0} @self
+  - totem{md=2;oH=TOWERSKELETON_grab_player_totem;hr=1;vr=1;drawhitbox=false;delay=20;repeat=8;repeati=1} @modelpart{pid=grabbed}
+  - skill{s=TOWERSKELETON_soul_sword_grab_player_fail;delay=29} @self
+  
+TOWERSKELETON_soul_sword_grab_player_fail:
+  Conditions:
+  - modelhaspassengers{m=tower_skeleton;p=grabbed} castInstead TOWERSKELETON_grab_player_success
+  Skills:
+  #- message{m="FAILED TO GRAB PLAYER!"} @everyone
+  - gcd{ticks=40}
+  - state{s=soul_sword_grab_miss;li=4} @self
+  - lockmodel{l=false;delay=45} @self
+  - setspeed{speed=1.25;delay=45} @self
+  
+### SOUL SWORD STOMP ###
+
+TOWERSKELETON_soul_sword_stomp:
+  Cooldown: 50
+  TargetConditions:
+  - distance{d=<16} true
+  Conditions:
+  - offgcd true
+  - incombat true
+  - varequals{var=caster.soul_sword;val=true}
+  Skills:
+  - gcd{ticks=80}
+  - sound{s=littleroom_towerskeleton:summoning_chant;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=25} @self
+  - sound{s=littleroom_towerskeleton:imbue_sword;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=25} @self
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=10} @self
+  - sound{s=littleroom_towerskeleton:swing;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=20} @self
+  - sound{s=littleroom_towerskeleton:slam;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=25} @self
+  - state{s=soul_sword_stomp} @self
+  - setspeed{speed=0} @self
+  - setspeed{speed=1.25;delay=80} @self
+  - lockmodel{l=true} @self
+  - lockmodel{l=false;delay=80} @self
+  - skill{s=TOWERSKELETON_recoil_big;delay=25} @pir{r=24}
+  - summon{t=TOWER_SKELETON_SPAWNER_HOLE;delay=25} @ring{r=12;p=6}
+  
+### MINION STUFF ###
+
+## SPAWN ##
+
+TOWERSKELETON_minion_spawn:
+  Skills:
+  - setspeed{speed=0} @self
+  - setspeed{speed=1.5;delay=40} @self
+
+## ATTACK ##
+
+TOWERSKELETON_minion_attack:
+  Cooldown: 2
+  TargetConditions:
+  - distance{d=<3} true
+  Conditions:
+  - onground true
+  - offgcd true
+  - incombat true
+  Skills:
+  - gcd{ticks=20}
+  - state{s=attack_1} @self
+  - propel{v=2} @fot
+  - setspeed{speed=0} @self
+  - setspeed{speed=1.5;delay=20} @self
+  - lockmodel{l=true} @self
+  - lockmodel{l=false;delay=20} @self
+  - totem{md=2;oH=TOWERSKELETON_minion_attack_damage;hr=1;vr=1;drawhitbox=false;repeat=3;repeati=1} @forward{f=1}
+  
+TOWERSKELETON_minion_attack_damage:
+  Skills:
+  - damage{a=1}
+  
+### DETECTS VELOCITY AND APPLIES FLAILING ###
+
+TOWERSKELETON_minion_toss_up:
+  Conditions:
+  - altitude{a=>1} true
+  - onground false
+  - ( directionalVelocity{y=<-0.65} || directionalVelocity{y=>0.65} )
+  - varEquals{var=caster.toss;value="true"} cancel
+  Skills:
+  - state{s=in_air} @self
+  - setvariable{var=caster.toss;value="true";type=STRING;delay=10}
+  - setspeed{type=walking;speed=0} @self
+
+### ENDS FLAIL ON GROUND IMPACT ###
+
+TOWERSKELETON_minion_toss_up_land:
+  Cooldown: 2
+  Conditions:
+  - onground true
+  - varEquals{var=caster.toss;value="true"}
+  Skills:
+  - gcd{ticks=40}
+  - setvariable{var=caster.toss;value="false";type=STRING;delay=40}
+  - setspeed{speed=1.5;delay=30} @self
+  - state{s=land;p=2} @self
+  - state{s=in_air;r=true} @self
+  
+#### DEATH ####
+
+TOWERSKELETON_death:
+  Skills:
+  #- damage{a=100} @MobsInRadius{r=48;types=TOWER_SKELETON_MINION}
+  - sound{s=littleroom_towerskeleton:imbue_sword;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>} @self
+  - sound{s=littleroom_towerskeleton:death;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>} @self
+  - sound{s=littleroom_towerskeleton:step;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=25} @self
+  - sound{s=littleroom_towerskeleton:chain;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=25} @self
+  - sound{s=littleroom_towerskeleton:armor_step;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=25} @self
+  - sound{s=littleroom_towerskeleton:death_sizzle;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=30} @self
+  - sound{s=littleroom_towerskeleton:grunt;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=100} @self
+  - sound{s=littleroom_towerskeleton:slam;v=5;sc=HOSTILE;pitch=<random.float.0.9to1.1>;delay=110} @self
+  - brightness{b=-1;s=-1} @self
+  - skill{s=TOWERSKELETON_shield_break_death} @self
+  - partvis{m=tower_skeleton;p=sword;child=true} @self
+  - partvis{m=tower_skeleton;p=death_sword_prop;v=true} @self
+  - skill{s=TOWERSKELETON_recoil_big;delay=25} @pir{r=24}
+  - skill{s=TOWERSKELETON_recoil_big;delay=110} @pir{r=24}
+  - e:p{p=poof;hs=1;vs=1;a=50;delay=160} @modelpart{pid=head}
+  - e:p{p=poof;hs=1;vs=1;a=50;delay=160} @modelpart{pid=chest}
+  - e:p{p=poof;hs=1;vs=1;a=50;delay=160} @modelpart{pid=waist}
+  - e:p{p=poof;hs=1;vs=1;a=50;delay=160} @modelpart{pid=death_sword_prop}
+  - delay 30
+  - brightness{b=15;s=15;pid=right_hand_finger_1_2} @self
+  - brightness{b=15;s=15;pid=right_hand_finger_1_4} @self
+  - brightness{b=15;s=15;pid=right_hand_finger_1_6} @self
+  - brightness{b=15;s=15;pid=right_hand_thumb_2} @self
+  - brightness{b=15;s=15;pid=left_hand_finger_1_2} @self
+  - brightness{b=15;s=15;pid=left_hand_finger_1_4} @self
+  - brightness{b=15;s=15;pid=left_hand_finger_1_6} @self
+  - brightness{b=15;s=15;pid=left_hand_thumb_2} @self
+  - particle{p=dust_color_transition;color=#48feae;color2=#000000;size=2;a=2;hs=0.5;vs=0.5;repeat=200;repeati=1} @modelpart{pid=right_hand}
+  - particle{p=dust_color_transition;color=#48feae;color2=#000000;size=2;a=2;hs=0.5;vs=0.5;repeat=200;repeati=1} @modelpart{pid=left_hand}
+  - changepart{m=tower_skeleton;p=right_hand_finger_1_2;nm=tower_skeleton_parts;np=right_hand_finger_1_2_skeleton} @self
+  - changepart{m=tower_skeleton;p=right_hand_finger_1_4;nm=tower_skeleton_parts;np=right_hand_finger_1_4_skeleton} @self
+  - changepart{m=tower_skeleton;p=right_hand_finger_1_6;nm=tower_skeleton_parts;np=right_hand_finger_1_6_skeleton} @self
+  - changepart{m=tower_skeleton;p=right_hand_thumb_2;nm=tower_skeleton_parts;np=right_hand_thumb_2_skeleton} @self
+  - changepart{m=tower_skeleton;p=left_hand_finger_1_2;nm=tower_skeleton_parts;np=left_hand_finger_1_2_skeleton} @self
+  - changepart{m=tower_skeleton;p=left_hand_finger_1_4;nm=tower_skeleton_parts;np=left_hand_finger_1_4_skeleton} @self
+  - changepart{m=tower_skeleton;p=left_hand_finger_1_6;nm=tower_skeleton_parts;np=left_hand_finger_1_6_skeleton} @self
+  - changepart{m=tower_skeleton;p=left_hand_thumb_2;nm=tower_skeleton_parts;np=left_hand_thumb_2_skeleton} @self
+  - delay 5
+  - brightness{b=15;s=15;pid=right_hand_finger_1_1} @self
+  - brightness{b=15;s=15;pid=right_hand_finger_1_3} @self
+  - brightness{b=15;s=15;pid=right_hand_finger_1_5} @self
+  - brightness{b=15;s=15;pid=right_hand_thumb_1} @self
+  - brightness{b=15;s=15;pid=left_hand_finger_1_1} @self
+  - brightness{b=15;s=15;pid=left_hand_finger_1_3} @self
+  - brightness{b=15;s=15;pid=left_hand_finger_1_5} @self
+  - brightness{b=15;s=15;pid=left_hand_thumb_1} @self
+  - changepart{m=tower_skeleton;p=right_hand_finger_1_1;nm=tower_skeleton_parts;np=right_hand_finger_1_1_skeleton} @self
+  - changepart{m=tower_skeleton;p=right_hand_finger_1_3;nm=tower_skeleton_parts;np=right_hand_finger_1_3_skeleton} @self
+  - changepart{m=tower_skeleton;p=right_hand_finger_1_5;nm=tower_skeleton_parts;np=right_hand_finger_1_5_skeleton} @self
+  - changepart{m=tower_skeleton;p=right_hand_thumb_1;nm=tower_skeleton_parts;np=right_hand_thumb_1_skeleton} @self
+  - changepart{m=tower_skeleton;p=left_hand_finger_1_1;nm=tower_skeleton_parts;np=left_hand_finger_1_1_skeleton} @self
+  - changepart{m=tower_skeleton;p=left_hand_finger_1_3;nm=tower_skeleton_parts;np=left_hand_finger_1_3_skeleton} @self
+  - changepart{m=tower_skeleton;p=left_hand_finger_1_5;nm=tower_skeleton_parts;np=left_hand_finger_1_5_skeleton} @self
+  - changepart{m=tower_skeleton;p=left_hand_thumb_1;nm=tower_skeleton_parts;np=left_hand_thumb_1_skeleton} @self
+  - delay 15
+  - brightness{b=15;s=15;pid=right_hand} @self
+  - brightness{b=15;s=15;pid=left_hand} @self
+  - changepart{m=tower_skeleton;p=right_hand;nm=tower_skeleton_parts;np=right_hand_skeleton} @self
+  - changepart{m=tower_skeleton;p=left_hand;nm=tower_skeleton_parts;np=left_hand_skeleton} @self
+  - delay 15
+  - brightness{b=15;s=15;pid=right_forearm} @self
+  - brightness{b=15;s=15;pid=left_forearm} @self
+  - changepart{m=tower_skeleton;p=right_forearm;nm=tower_skeleton_parts;np=right_forearm_skeleton} @self
+  - changepart{m=tower_skeleton;p=left_forearm;nm=tower_skeleton_parts;np=left_forearm_skeleton} @self
+  - particle{p=dust_color_transition;color=#48feae;color2=#000000;size=2;a=2;hs=0.5;vs=0.5;repeat=200;repeati=1} @modelpart{pid=right_forearm}
+  - particle{p=dust_color_transition;color=#48feae;color2=#000000;size=2;a=2;hs=0.5;vs=0.5;repeat=200;repeati=1} @modelpart{pid=left_forearm}
+  - delay 15
+  - brightness{b=15;s=15;pid=right_bicep} @self
+  - brightness{b=15;s=15;pid=left_bicep} @self
+  - changepart{m=tower_skeleton;p=right_bicep;nm=tower_skeleton_parts;np=right_bicep_skeleton} @self
+  - changepart{m=tower_skeleton;p=left_bicep;nm=tower_skeleton_parts;np=left_bicep_skeleton} @self
+  - particle{p=dust_color_transition;color=#48feae;color2=#000000;size=2;a=2;hs=0.5;vs=0.5;repeat=200;repeati=1} @modelpart{pid=right_bicep}
+  - particle{p=dust_color_transition;color=#48feae;color2=#000000;size=2;a=2;hs=0.5;vs=0.5;repeat=200;repeati=1} @modelpart{pid=left_bicep}
+  - summon{t=TOWER_SKELETON_CHEST;delay=160} @self
+  
+  
+  
+#############
+### ITEMS ###
+#############
+
+### SWORD ###
+
+TOWERSKELETON_sword_item_special:
+  Cooldown: 2
+  Skills:
+  - projectile{v=20;
+               i=2;
+               oT=TOWERSKELETON_sword_item_special_projectile_tick;
+               oH=TOWERSKELETON_sword_item_special_projectile_damage;
+               sso=0;
+               syo=0;
+               sfo=0;
+               hs=true;
+               hfs=0;
+               hnp=true;
+               se=false;
+               drawhitbox=false;
+               hr=2;
+               vr=4} @targetlocation
+               
+TOWERSKELETON_sword_item_special_projectile_tick:
+  Skills:
+  - summon{t=TOWER_SKELETON_SLASH_FX}
+  - particle{p=dust_color_transition;color=#48feae;color2=#000000;size=1;a=2;hs=0.5;vs=.25}
+
+TOWERSKELETON_sword_item_special_projectile_damage:
+  Skills:
+  - damage{a=20}
+  - throw{v=10;vy=10}
+  
+TOWERSKELETON_shield_item_special_flamethrower:
+  Skills:
+  - skill{s=TOWERSKELETON_shield_item_special_flamethrower_projectile;repeat=100;repeati=1;delay=25} @modelpart{pid=flamethower_target}
+  
+  
+### SHIELD ###
+  
+TOWERSKELETON_shield_item_special_flamethrower_projectile:
+  Conditions:
+  - blocking true
+  Skills:
+  - sound{s=littleroom_towerskeleton:shield_flamethrower_loop;v=0.25;sc=HOSTILE;cd=1;pitch=<random.float.1.0to1.1>} @self
+  - projectile{bulletType=MOB;
+               oS=[ - e:p{p=lava;a=1;hs=.15;vs=.15;cd=0.5}];
+               oH=TOWERSKELETON_shield_item_special_flamethrower_hit;
+               interpolation=4;
+               mob=TOWERSKELETON_flamethrower_fx;
+               v=25;
+               i=1;
+               hR=1;
+               vR=1;
+               md=20;
+               ac=.98;
+               hnp=true;
+               syo=1;
+               sfo=1;
+               sso=0;
+               sE=false;
+               g=-.01;
+               byo=0;
+               bounce=true;
+               bv=0.5;
+               eso=<random.float.-1to1>}
+
+  
+TOWERSKELETON_shield_item_special_flamethrower_hit:
+  Skills:
+  - hit{a=1}
+  - ignite{d=60}
+# yPyrIPow2GqOG+mxUj27rpjDvDY3HcQF+usuAoFFISioz8K3TVJa3TKJ7hZRMPtAvDhiD/KMgU68eIAxucjOoiXXWjUoByIP4BBr/AV5D04=

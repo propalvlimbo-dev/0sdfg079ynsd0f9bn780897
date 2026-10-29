@@ -1,0 +1,29 @@
+death:
+  random: "1-35"
+
+kill:
+  random: "1-35"
+
+titles:
+  1:
+    name: "&fНовичок"
+    elo_need: "0-1199"
+  2:
+    name: "&fЗолото"
+    elo_need: "1200-1499"
+  3:
+    name: "&bПлатина"
+    elo_need: "1500-1999"
+  4:
+    name: "&bДиамант"
+    elo_need: "2000-199999"
+
+messages:
+  set: "&x&F&8&B&E&F&BElytrix &7» &fВы установили игроку &x&F&8&B&E&F&B{player} &fELO на &x&F&8&B&E&F&B{amount}&f!"
+  reload: "&x&F&8&B&E&F&BElytrix &7» &fКонфиг перезагружен"
+  not_found: "&x&F&8&B&E&F&BVWElo &7» &cИгрок &f{player} &cне найден"
+  elo_stats:
+    - "&x&F&8&B&E&F&B=== ELO: &f{player} &x&F&8&B&E&F&B==="
+    - "&7Рейтинг: &a{elo} {title}"
+    - "&7Позиция: &f#{position}"
+    - "&7Убийств: &a{kills} &7/ Смертей: &c{death} &7/ K/D: &f{kd}"

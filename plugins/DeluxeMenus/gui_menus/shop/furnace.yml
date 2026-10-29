@@ -1,0 +1,329 @@
+menu_title: '§fꈁꀀꈂꍆꈂꀁ§fꈃꄅ'
+open_command: furnace
+register_command: true
+size: 54
+items:
+  'player_head':
+    material: player_head
+    slot: 4
+    display_name: '&#55FF55Шар огородника'
+    lore:
+      - '&#AAAAAAУдача III (На растения)'
+      - ''
+      - '&#AAAAAAКогда во второй руке'
+      - '&#AAAAAAПри нажатии SHIFT:'
+      - '&#5555FFВыращивает растения вокруг вас'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB319 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 319'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 319'
+      - '[console] rwitems FARM_BALL %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'brewing_stand':
+    material: brewing_stand
+    slot: 12
+    display_name: '&#FFFFFFЗельеварка ведьмы &#F8BEFB2 уровня'
+    lore:
+      - '&#AAAAAAСкорость варки &#F8BEFB15 сек'
+      - '&#AAAAAAТратит в &#F8BEFB2 раза больше порошка'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB119 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 119'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 119'
+      - '[console] nfurnace %player_name% BREWING_STAND 2'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'brewing_stand_1':
+    material: brewing_stand
+    slot: 13
+    display_name: '&#FFFFFFЗельеварка ведьмы &#F8BEFB3 уровня'
+    lore:
+      - '&#AAAAAAСкорость варки &#F8BEFB10 сек'
+      - '&#AAAAAAТратит в &#F8BEFB3 раза больше порошка'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB174 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 174'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 174'
+      - '[console] nfurnace %player_name% BREWING_STAND 3'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'brewing_stand_2':
+    material: brewing_stand
+    slot: 14
+    display_name: '&#FFFFFFЗельеварка ведьмы &#F8BEFB4 уровня'
+    lore:
+      - '&#AAAAAAСкорость варки &#F8BEFB5 сек'
+      - '&#AAAAAAТратит в &#F8BEFB4 раза больше порошка'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB289 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 289'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 289'
+      - '[console] nfurnace %player_name% BREWING_STAND 4'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'furnace':
+    material: furnace
+    slot: 21
+    display_name: '&#AA00AAСкоростная Печь'
+    lore:
+      - '&#AAAAAAРаботает на &#F8BEFB75% &#AAAAAAбыстрее'
+      - '&#AAAAAAПотребляет на &#FF555575% &#AAAAAAбольше топлива'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB139 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 139'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 139'
+      - '[console] nfurnace %player_name% FURNACE SPEED'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'furnace_1':
+    material: furnace
+    slot: 22
+    display_name: '&#AA00AAВезучая Печь'
+    lore:
+      - '&#AAAAAAИмеет &#F8BEFB100% &#AAAAAAшанс удвоить ресурс'
+      - '&#AAAAAAРаботает на &#FF555550% &#AAAAAAмедленнее'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB149 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 149'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 149'
+      - '[console] nfurnace %player_name% FURNACE LUCKY'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'furnace_2':
+    material: furnace
+    slot: 23
+    display_name: '&#AA00AAКомбинированая Печь'
+    lore:
+      - '&#AAAAAAИмеет &#F8BEFB100% &#AAAAAAшанс удвоить ресурс'
+      - '&#AAAAAAРаботает на &#F8BEFB30% &#AAAAAAбыстрее'
+      - '&#AAAAAAПотребляет &#FF5555очень много &#AAAAAAтоплива'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB339 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 339'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 339'
+      - '[console] nfurnace %player_name% FURNACE COMBINATION'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'smoker':
+    material: smoker
+    slot: 30
+    display_name: '&#AA00AAСкоростная Коптильня'
+    lore:
+      - '&#AAAAAAРаботает на &#F8BEFB75% &#AAAAAAбыстрее'
+      - '&#AAAAAAПотребляет на &#FF555575% &#AAAAAAбольше топлива'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB139 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 139'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 139'
+      - '[console] nfurnace %player_name% SMOKER SPEED'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'smoker_1':
+    material: smoker
+    slot: 31
+    display_name: '&#AA00AAВезучая Коптильня'
+    lore:
+      - '&#AAAAAAИмеет &#F8BEFB100% &#AAAAAAшанс удвоить ресурс'
+      - '&#AAAAAAРаботает на &#FF555550% &#AAAAAAмедленнее'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB149 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 149'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 149'
+      - '[console] nfurnace %player_name% SMOKER LUCKY'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'smoker_2':
+    material: smoker
+    slot: 32
+    display_name: '&#AA00AAКомбинированая Коптильня'
+    lore:
+      - '&#AAAAAAИмеет &#F8BEFB100% &#AAAAAAшанс удвоить ресурс'
+      - '&#AAAAAAРаботает на &#F8BEFB30% &#AAAAAAбыстрее'
+      - '&#AAAAAAПотребляет &#FF5555очень много &#AAAAAAтоплива'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB339 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 339'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 339'
+      - '[console] nfurnace %player_name% SMOKER COMBINATION'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'blast_furnace':
+    material: blast_furnace
+    slot: 39
+    display_name: '&#AA00AAСкоростная Плавильня'
+    lore:
+      - '&#AAAAAAРаботает на &#F8BEFB75% &#AAAAAAбыстрее'
+      - '&#AAAAAAПотребляет на &#FF555575% &#AAAAAAбольше топлива'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB139 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 139'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 139'
+      - '[console] nfurnace %player_name% BLAST_FURNACE SPEED'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'blast_furnace_1':
+    material: blast_furnace
+    slot: 40
+    display_name: '&#AA00AAВезучая Плавильня'
+    lore:
+      - '&#AAAAAAИмеет &#F8BEFB100% &#AAAAAAшанс удвоить ресурс'
+      - '&#AAAAAAРаботает на &#FF555550% &#AAAAAAмедленнее'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB149 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 149'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 149'
+      - '[console] nfurnace %player_name% BLAST_FURNACE LUCKY'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'blast_furnace_2':
+    material: blast_furnace
+    slot: 41
+    display_name: '&#AA00AAКомбинированая Плавильня'
+    lore:
+      - '&#AAAAAAИмеет &#F8BEFB100% &#AAAAAAшанс удвоить ресурс'
+      - '&#AAAAAAРаботает на &#F8BEFB30% &#AAAAAAбыстрее'
+      - '&#AAAAAAПотребляет &#FF5555очень много &#AAAAAAтоплива'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB339 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 339'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 339'
+      - '[console] nfurnace %player_name% BLAST_FURNACE COMBINATION'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'arrow':
+    material: arrow
+    slot: 45
+    display_name: '&#F8BEFBНазад'
+    model_data: 10002
+    click_commands:
+      - '[player] shop'
+  'clock':
+    material: clock
+    slot: 53
+    display_name: '&#F8BEFBИНФОРМАЦИЯ'
+    lore:
+      - ''
+      - '&#555555 &#FFFFFFВаш баланс: &#FAD8FC%playerpoints_points_formatted% &#FFFFFFꐃ'
+      - ''
+      - '&#AAAAAAПополнить баланс можно'
+      - '&#AAAAAAна сайте: &#FAD8FChttps://elytrix.pw'
+    model_data: 100020
+    

@@ -1,0 +1,251 @@
+Name: dhelper
+Cooldown: 432000
+Permission: nKits.kits.dhelper
+Order: 0
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_SWORD
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        FIRE_ASPECT: 2
+        DAMAGE_ALL: 5
+        DURABILITY: 3
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: SHIELD
+    meta:
+      ==: ItemMeta
+      meta-type: TILE_ENTITY
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gold","text":"Цыганский
+        щит"}],"text":""}'
+      enchants:
+        THORNS: 10
+        VANISHING_CURSE: 1
+      Unbreakable: true
+      blockMaterial: SHIELD
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_PICKAXE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        DIG_SPEED: 5
+        DURABILITY: 3
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_SHOVEL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        DIG_SPEED: 4
+        DURABILITY: 3
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_AXE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        DIG_SPEED: 5
+        DAMAGE_ALL: 5
+        DURABILITY: 3
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: ENDER_PEARL
+    amount: 16
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: GOLDEN_APPLE
+    amount: 24
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: TOTEM_OF_UNDYING
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: POTION
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gold","text":"Быстрее
+        ветра"}],"text":""}'
+      custom-color:
+        ==: Color
+        RED: 255
+        BLUE: 255
+        GREEN: 255
+      custom-effects:
+      - ==: PotionEffect
+        effect: 25
+        duration: 240
+        amplifier: 0
+        ambient: false
+        has-particles: true
+        has-icon: true
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: TOTEM_OF_UNDYING
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: TOTEM_OF_UNDYING
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: TOTEM_OF_UNDYING
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: TOTEM_OF_UNDYING
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: END_CRYSTAL
+    amount: 9
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: OBSIDIAN
+    amount: 32
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: ENDER_PEARL
+    amount: 16
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: IRON_BLOCK
+    amount: 28
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: GOLD_BLOCK
+    amount: 24
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: YELLOW_CONCRETE
+    amount: 64
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: DIAMOND_BLOCK
+    amount: 16
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: GOLDEN_CARROT
+    amount: 64
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: ORANGE_CONCRETE
+    amount: 64
+  - null
+  - null
+  - null
+  - null
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: PLAYER_HEAD
+    meta:
+      ==: ItemMeta
+      meta-type: SKULL
+      display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gold","text":"Шар
+        Д.Хелпера"}],"text":""}'
+      lore:
+      - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"+7.0
+        к здоровью"}],"text":""}'
+      - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"+0.6
+        к скорости атаки"}],"text":""}'
+      - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"+3
+        к стойкости"}],"text":""}'
+      enchants:
+        VANISHING_CURSE: 1
+      attribute-modifiers:
+        GENERIC_ATTACK_SPEED:
+        - ==: org.bukkit.attribute.AttributeModifier
+          amount: 0.599
+          name: generic.attackSpeed
+          slot: OFF_HAND
+          uuid: 0d9066bf-b90a-4143-b18f-0b7fcd406f40
+          operation: 0
+        GENERIC_MAX_HEALTH:
+        - ==: org.bukkit.attribute.AttributeModifier
+          amount: 7.0
+          name: ResourceKey[minecraft:attribute / minecraft:generic.max_health]
+          slot: OFF_HAND
+          uuid: e2acdfbe-d656-441e-b5f5-8f12fec0ecd6
+          operation: 0
+        GENERIC_ARMOR:
+        - ==: org.bukkit.attribute.AttributeModifier
+          amount: 3.0
+          name: ResourceKey[minecraft:attribute / minecraft:generic.armor]
+          slot: OFF_HAND
+          uuid: 26ed3cd9-3459-46f4-a1d0-089aae1a010c
+          operation: 0
+      ItemFlags:
+      - HIDE_ATTRIBUTES
+      skull-owner:
+        ==: PlayerProfile
+        uniqueId: 94234b33-d11c-3b31-baf7-c9f925e7ff73
+        name: bloxmaster2000
+        properties:
+        - name: textures
+          value: ewogICJ0aW1lc3RhbXAiIDogMTY1OTg5MTQyNjYxMiwKICAicHJvZmlsZUlkIiA6ICJlMTI0Zjg0ZWExY2Y0YzBmYjUyOTUwMWNmZTYyNzM4ZCIsCiAgInByb2ZpbGVOYW1lIiA6ICJibG94bWFzdGVyMjAwMCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kMDY1YjQ5NTc3N2JhODQyZDIyZGNhNjYzZTlmNzk2MTdkOGJkOWI5ODNkNDI0ZTM2ZGQ3ZDk5MzA0YmEyNTA4IgogICAgfQogIH0KfQ==
+          signature: NaIApUWIv8V4h35yrf7SZamju1QtacIDNZUoae2Oqt0e0vnUFV/6HAmseQumxATCUH9vEM5sjjMduJstzrvRFQ56u+mUU2P2mQkdQJEua6GXZT99glm60/kcbFkzYNcJ0wfdnZaB2Gfcl8zZGIHlFFmScZ8+fN8V+SQth0p6wOrQU9nTqlLEfoy7Zm5rPL+wpVi94zV80DyzkMaf2TxR3Un0ILfH574fTG0AVwz5FHQFpNJt/TUEpeyI8OTEY+9qF8cr1ZJoVi8U1n4ObLkysfB+0icT/7mNDuu0bjjJqxIGiVBWjuXT8nTpBCCxleRv8FtX8M1QIIRcSWXy9lEKoINeRLQCvXdj0b8BBnpKf/1vTVRT+K/up52Xjh9KJ+0cEf3zcAvgLMbNlXlGArzx1AxUO5PzRNOCsbOybv4biinB5vKDjR6rt9BkiftgrZfs5MpRmq8TokOunw7/oJ9bURGXixoAq3Rxuw1MS12YgTlyh9XZigFY9UA3VfEx1JbF7VuHdOe7pE+rF4TM5V1TxTZ4Cs+dWIlDDYDKb6uCL9GP+ySgwb7UYZbRIjBGLKlg1OQSIzZZTv5nLYxrefyCDJnkjzJlDgsWlcni5mnxmUgo5YIBd4FCZwgMxXy32PUtjtOoss3TMsrsBl9J6KFLcepv+wrHLrr+brChzWw1FbQ=
+      skull-owner: bloxmaster2000
+  Armor:
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_BOOTS
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        DEPTH_STRIDER: 3
+        PROTECTION_FALL: 4
+        MENDING: 1
+        PROTECTION_ENVIRONMENTAL: 4
+        DURABILITY: 3
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_LEGGINGS
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        PROTECTION_ENVIRONMENTAL: 4
+        DURABILITY: 3
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_CHESTPLATE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        PROTECTION_ENVIRONMENTAL: 4
+        DURABILITY: 3
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_HELMET
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        WATER_WORKER: 1
+        MENDING: 1
+        PROTECTION_ENVIRONMENTAL: 4
+        OXYGEN: 3
+        DURABILITY: 3
+      repair-cost: 1

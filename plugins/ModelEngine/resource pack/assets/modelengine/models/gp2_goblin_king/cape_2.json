@@ -1,0 +1,1 @@
+{"textures":{"0":"modelengine:entity/models/gp2_goblin_king","particle":"#0"},"elements":[{"from":[4.5,8.0,8.0],"to":[15.5,8.0,14.0],"faces":{"up":{"uv":[8.8675,5.6175,7.5075,4.8825],"tintindex":0,"rotation":0,"texture":"#0"},"down":{"uv":[8.9925,0.0075,7.6325,0.7425],"tintindex":0,"rotation":0,"texture":"#0"}}}],"display":{"gui":{"rotation":[-150.0,-45.0,180.0]}}}

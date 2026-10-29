@@ -1,0 +1,225 @@
+Name: vampire
+Cooldown: 2592000
+Permission: nKits.kits.vampire
+Order: 11
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:netherite_sword
+    count: 1
+    components:
+      minecraft:unbreakable: '{}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Окрававленный Дзангэцу",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:fire_aspect":2,"minecraft:sharpness":6,"minecraft:unbreaking":3}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:netherite_pickaxe
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:efficiency":7,"minecraft:fortune":3,"minecraft:unbreaking":3}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:netherite_axe
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:efficiency":7,"minecraft:fortune":3,"minecraft:unbreaking":3}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:netherite_shovel
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:efficiency":4,"minecraft:unbreaking":3}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:golden_apple
+    count: 32
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:ender_pearl
+    count: 16
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:ender_pearl
+    count: 16
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:ender_pearl
+    count: 16
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:bow
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:flame":1,"minecraft:infinity":1,"minecraft:mending":1,"minecraft:power":5,"minecraft:punch":2,"minecraft:unbreaking":2}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:golden_carrot
+    count: 64
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:obsidian
+    count: 64
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:totem_of_undying
+    count: 1
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:totem_of_undying
+    count: 1
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:chorus_fruit
+    count: 64
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:end_crystal
+    count: 16
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:enchanted_golden_apple
+    count: 3
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:totem_of_undying
+    count: 1
+    components:
+      minecraft:lore: '["",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Срабатывает, когда",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"лежит в инвентаре",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Тотем Драконида",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:draconid_totem":"DRACONID_TOTEM"}}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:totem_of_undying
+    count: 1
+    components:
+      minecraft:lore: '["",{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Срабатывает, когда",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"лежит в инвентаре",underlined:0b}],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Тотем Драконида",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:draconid_totem":"DRACONID_TOTEM"}}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:tipped_arrow
+    count: 64
+    components:
+      minecraft:potion_contents: '{potion:"minecraft:strong_harming"}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:tipped_arrow
+    count: 64
+    components:
+      minecraft:potion_contents: '{potion:"minecraft:strong_harming"}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:tipped_arrow
+    count: 48
+    components:
+      minecraft:potion_contents: '{potion:"minecraft:strong_healing"}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:arrow
+    count: 64
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:red_shulker_box
+    count: 1
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:red_concrete
+    count: 64
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:red_terracotta
+    count: 64
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:red_wool
+    count: 64
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:red_stained_glass
+    count: 64
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_color:16164608,custom_effects:[{amplifier:2b,duration:3000,id:"minecraft:speed",show_icon:1b},{amplifier:2b,duration:3000,id:"minecraft:strength",show_icon:1b},{duration:300,id:"minecraft:regeneration",show_icon:1b},{duration:11200,id:"minecraft:fire_resistance",show_icon:1b},{duration:900,id:"minecraft:blindness",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"red",italic:0b,text:"Зелье Алукарда"}],text:""}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_color:10007997,custom_effects:[{duration:2400,id:"minecraft:invisibility",show_icon:1b},{duration:10000,id:"minecraft:fire_resistance",show_icon:1b},{duration:1600,id:"minecraft:regeneration",show_icon:1b},{duration:1600,id:"minecraft:health_boost",show_icon:1b},{duration:1600,id:"minecraft:resistance",show_icon:1b},{duration:1600,id:"minecraft:poison",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"Чесночное Зелье",underlined:0b}],text:""}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{duration:250,id:"minecraft:levitation",show_icon:1b}],potion:"minecraft:water"}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"Быстрее ветра",underlined:0b}],text:""}'
+      minecraft:custom_data: '{PublicBukkitValues:{"reallyworld:owner":"imilpro1234","reallyworld:uuid":"a6e76da5-6e25-4a56-a012-04e80b634043"}}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:enchanted_book
+    count: 1
+    components:
+      minecraft:lore: '[{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Светлячок (Подсвечивает игрока)",underlined:0b}],text:""}]'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:lightner":"LIGHTNER_BOOK"}}'
+    schema_version: 1
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:totem_of_undying
+    count: 1
+    schema_version: 1
+  - null
+  - null
+  Armor:
+  - null
+  - null
+  - null
+  - null

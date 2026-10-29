@@ -1,0 +1,18 @@
+enable: true
+title: '&fꕤ'
+lines:
+- ''
+- ' &#F8BEFBꐁ &fСтатус: &#FF6B8AВ бою ⚔'
+- ' &#FAD2FDꐀ &fОсталось: &#F8BEFB{time}'
+- ''
+- ' &#F8BEFBꐁ &fПротивник:'
+- '{opponents}'
+- ''
+- ' &#F8BEFBꐁ &fПинг: &#F8BEFB%ping% &fꐅ'
+- ' &#FAD2FDꐀ &fВыход: &#FF6B8Aпотеря вещей'
+- ''
+- '    &#F8BEFB&le&#F9C5FC&ll&#FACCFC&ly&#FBD3FD&lt&#FCDAFD&lr&#FDDFFE&li&#FEE6FE&lx&#FEEDFE&l.&#FFF4FF&lp&#FFFFFF&lw   '
+- ''
+opponent: ' &#FAD2FDꐀ &#F8BEFB{player} &f• &#FF6B8A{health}❤ &8(&7{ping}ms&8)'
+empty: ' &#FAD2FDꐀ &7Нет данных'
+config-version: 1

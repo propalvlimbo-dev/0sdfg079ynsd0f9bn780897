@@ -1,0 +1,133 @@
+
+main_menu:
+  title: '&fꈁꀀꈂꌲꈂꀁ&0ꈃꀐ&r'
+  size: 54
+  remove_prefix_slot: 49
+  remove_prefix_item:
+    material: 'BARRIER'
+    name: '&cОчистить префикс'
+    lore: []
+  info_item_slot: 4
+  info_item:
+    material: 'STRUCTURE_VOID'
+    name: '&#F8BEFB&lКастомные Префиксы'
+    model_data: 10001
+    lore:
+      - '&fВ данном разделе вы можете'
+      - '&fкупить свой личный префикс'
+      - '&r&#aaaaaa&r'
+      - '&fПримеры:'
+      - '&f/prefix buy &aОкрошка'
+      - '&f/prefix buy &#F8BEFB&lОливье'
+      - '&f/prefix buy &4&lRw&2&lTop'
+      - '&r'
+
+confirm_menu:
+  title: '&fꈁꀀꈂꌉꈂꀁ&0ꈃꀐ&r'
+  size: 54
+  confirm_paper_slot: 22
+
+messages:
+  invalid_characters: '&#F8BEFBПрефиксы &7» &cПрефикс содержит недопустимые символы!'
+  prefix_length_error: "&#F8BEFBПрефиксы &7» &cПрефикс должен быть от &#F8BEFB{min_length} &cдо &#F8BEFB{max_length} &cсимволов."
+  max_prefixes_reached: "&#F8BEFBПрефиксы &7» &cВы достигли лимита. Для удаления ненужного префикса сообщите администратору."
+  already_purchased: "&#F8BEFBПрефиксы &7» &cВы уже купили данный префикс."
+  prefix_purchased: '&#F8BEFBПрефиксы &7» &fВы купили префикс: &r{prefix}'
+  prefix_set: '&#F8BEFBПрефиксы &7» &fВаш префикс установлен на: &r{prefix}'
+  no_arguments: '&#F8BEFBПрефиксы &7» &cИспользуйте: /prefix buy <префикс>'
+  already_owned: '&#F8BEFBПрефиксы &7» &cВы уже купили этот префикс!'
+  insufficient_points: '&#F8BEFBПрефиксы &7» &cНедостаточно риликов для покупки!'
+  prefix_removed: '&#F8BEFBПрефиксы &7» &cВаш префикс был удален.'
+  admin_give_success: '&#F8BEFBПрефиксы &7» &fВы выдали префикс {prefix} игроку &#F8BEFB{player}.'
+  admin_remove_success: '&#F8BEFBПрефиксы &7» &fВы удалили префикс {prefix} у игрока &#F8BEFB{player}.'
+  admin_give_failure: '&#F8BEFBПрефиксы &7» &cИгрок &#F8BEFB{player} &cуже имеет префикс {prefix}.'
+  admin_remove_failure: '&#F8BEFBПрефиксы &7» &cИгрок &#F8BEFB{player} &cне имеет префикс {prefix}.'
+  no_permission: '&#F8BEFBПрефиксы &7» &cУ вас нет прав на использование этой команды.'
+
+prefix_settings:
+  max_prefixes: 28
+  min_length: 3
+  max_length: 16
+  allowed_characters: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&абвгдежзийклмнопрстуфхцчшщъыьэюяёАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯЁ"
+  price: 499
+  price_per_char: 0
+  fallback_placeholder: "%luckperms_prefix%"
+  color_prices:
+    '&0': 50
+    '&1': 50
+    '&2': 50
+    '&3': 50
+    '&4': 50
+    '&5': 50
+    '&#F8BEFB': 50
+    '&7': 50
+    '&8': 50
+    '&9': 50
+    '&a': 50
+    '&b': 50
+    '&c': 50
+    '&d': 50
+    '&f': 50
+    '&f': 50
+    '&l': 400
+    '&o': 400
+  slots:
+    - 10
+    - 11
+    - 12
+    - 13
+    - 14
+    - 15
+    - 16
+    - 19
+    - 20
+    - 21
+    - 22
+    - 23
+    - 24
+    - 25
+    - 28
+    - 29
+    - 30
+    - 31
+    - 32
+    - 33
+    - 35
+    - 36
+    - 37
+    - 38
+    - 40
+    - 41
+    - 42
+
+
+items:
+  prefix_head:
+    material: 'PLAYER_HEAD'
+    name: '{prefix}'
+    lore:
+      - ''
+      - ' &7Нажмите, чтобы установить данный префикс'
+      - ''
+  confirm_paper:
+    material: 'PAPER'
+    name: '%logprefix_prefix%'
+    lore:
+      - '&r &r'
+      - ' &7Стоимость:'
+      - '  &7Префикс: &#F8BEFB499'
+      - '  &7Доп.цвета: &#F8BEFB%logprefix_price_color%'
+      - '&r &r'
+      - ' &7Итого: &#F8BEFB%logprefix_global_price%'
+      - '&r &r'
+      - ' &#F8BEFBНажмите, чтобы купить префикс.'
+      - '&r &r'
+      - '&r &r'
+      - ' &4&lВНИМАНИЕ!'
+      - '&r &r'
+      - ' &cВсе префиксы должны следовать регламенту'
+      - ' &cкоторый указан на https://elytrix.pw'
+      - '&r &r'
+      - ' &7Обработка префикса может длиться'
+      - ' &7от 30 минут до 2-х рабочих дней.'
+      - '&r &r'

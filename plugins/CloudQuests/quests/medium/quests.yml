@@ -1,0 +1,297 @@
+settings:
+  generate-on-startup: true
+  regenerate-on-every-startup: false
+  reset-progress-on-generate: true
+  rows: 5
+  max-amount-per-task: 3000
+  ignore-custom-items: true
+generator:
+  amount-multiplier: 6.5
+  min-score: 4.0
+  max-score: 48.0
+  custom-pool: {}
+quests:
+  '1':
+    slot: 0
+    type: TASK
+    action: BREAK
+    material: CARROT
+    amount: 384
+    name: Морковь
+  '2':
+    slot: 1
+    type: TASK
+    action: BRING
+    material: OAK_PLANKS
+    amount: 336
+    name: Дубовые Доски
+  '3':
+    slot: 2
+    type: TASK
+    action: BRING
+    material: IRON_INGOT
+    amount: 104
+    name: Железные Слитки
+  '4':
+    slot: 3
+    type: TASK
+    action: KILL
+    material: SKELETON_SKULL
+    amount: 104
+    name: Убить Скелетов
+    entity: SKELETON
+  '5':
+    slot: 4
+    type: TASK
+    action: BRING
+    material: LAPIS_LAZULI
+    amount: 144
+    name: Лазурит
+  '6':
+    slot: 5
+    type: TASK
+    action: CRAFT
+    material: HAY_BLOCK
+    amount: 144
+    name: Блоки Сена
+  '7':
+    slot: 6
+    type: TASK
+    action: BREAK
+    material: OBSIDIAN
+    amount: 48
+    name: Обсидиан
+  '8':
+    slot: 7
+    type: TASK
+    action: CRAFT
+    material: GOLDEN_CARROT
+    amount: 48
+    name: Золотая Морковь
+  '10':
+    slot: 9
+    type: TASK
+    action: BRING
+    material: BEETROOT
+    amount: 768
+    name: Свёкла
+  '11':
+    slot: 10
+    type: TASK
+    action: BRING
+    material: REDSTONE
+    amount: 480
+    name: Редстоун
+  '12':
+    slot: 11
+    type: TASK
+    action: KILL
+    material: BLAZE_ROD
+    amount: 144
+    name: Убить Ифритов
+    entity: BLAZE
+  '13':
+    slot: 12
+    type: TASK
+    action: CRAFT
+    material: GOLD_BLOCK
+    amount: 144
+    name: Золотые Блоки
+  '14':
+    slot: 13
+    type: TASK
+    action: BRING
+    material: COAL
+    amount: 576
+    name: Уголь
+  '15':
+    slot: 14
+    type: TASK
+    action: BREAK
+    material: WARPED_STEM
+    amount: 640
+    name: Искажённые Стебли
+  '16':
+    slot: 15
+    type: TASK
+    action: BRING
+    material: POTATO
+    amount: 832
+    name: Картошка
+  '17':
+    slot: 16
+    type: TASK
+    action: CRAFT
+    material: HAY_BLOCK
+    amount: 400
+    name: Блоки Сена
+  '19':
+    slot: 18
+    type: TASK
+    action: CRAFT
+    material: COOKIE
+    amount: 704
+    name: Печенье
+  '20':
+    slot: 19
+    type: TASK
+    action: CRAFT
+    material: GOLD_BLOCK
+    amount: 224
+    name: Золотые Блоки
+  '21':
+    slot: 20
+    type: TASK
+    action: BRING
+    material: NETHER_WART
+    amount: 1024
+    name: Незер Нарост
+  '22':
+    slot: 21
+    type: TASK
+    action: CRAFT
+    material: GLASS
+    amount: 832
+    name: Стекло
+  '23':
+    slot: 22
+    type: TASK
+    action: BREAK
+    material: STONE
+    amount: 2048
+    name: Камень
+  '24':
+    slot: 23
+    type: TASK
+    action: BREAK
+    material: OAK_LOG
+    amount: 1472
+    name: Дубовые Брёвна
+  '25':
+    slot: 24
+    type: TASK
+    action: CRAFT
+    material: IRON_BLOCK
+    amount: 256
+    name: Железные Блоки
+  '26':
+    slot: 25
+    type: TASK
+    action: BRING
+    material: SUGAR_CANE
+    amount: 1408
+    name: Сахарный Тростник
+  '28':
+    slot: 27
+    type: TASK
+    action: BRING
+    material: COBBLESTONE
+    amount: 2560
+    name: Булыжник
+  '29':
+    slot: 28
+    type: TASK
+    action: BREAK
+    material: JUNGLE_LOG
+    amount: 1856
+    name: Тропические Брёвна
+  '30':
+    slot: 29
+    type: TASK
+    action: CRAFT
+    material: STICK
+    amount: 1984
+    name: Палки
+  '31':
+    slot: 30
+    type: TASK
+    action: BRING
+    material: IRON_INGOT
+    amount: 704
+    name: Железные Слитки
+  '32':
+    slot: 31
+    type: TASK
+    action: BRING
+    material: CARROT
+    amount: 1920
+    name: Морковь
+  '33':
+    slot: 32
+    type: TASK
+    action: BREAK
+    material: CRIMSON_STEM
+    amount: 1472
+    name: Багровые Стебли
+  '34':
+    slot: 33
+    type: TASK
+    action: BREAK
+    material: REDSTONE_ORE
+    amount: 704
+    name: Редстоуновая Руда
+  '35':
+    slot: 34
+    type: TASK
+    action: BRING
+    material: BEETROOT
+    amount: 1728
+    name: Свёкла
+  '37':
+    slot: 36
+    type: TASK
+    action: BREAK
+    material: NETHER_QUARTZ_ORE
+    amount: 832
+    name: Кварцевая Руда
+  '38':
+    slot: 37
+    type: TASK
+    action: BRING
+    material: LAPIS_LAZULI
+    amount: 960
+    name: Лазурит
+  '39':
+    slot: 38
+    type: TASK
+    action: CRAFT
+    material: PAPER
+    amount: 1792
+    name: Бумага
+  '40':
+    slot: 39
+    type: TASK
+    action: BREAK
+    material: WARPED_STEM
+    amount: 1856
+    name: Искажённые Стебли
+  '41':
+    slot: 40
+    type: TASK
+    action: KILL
+    material: ENDER_PEARL
+    amount: 384
+    name: Убить Эндерменов
+    entity: ENDERMAN
+  '42':
+    slot: 41
+    type: TASK
+    action: KILL
+    material: SKELETON_SKULL
+    amount: 896
+    name: Убить Скелетов
+    entity: SKELETON
+  '43':
+    slot: 42
+    type: TASK
+    action: BREAK
+    material: SPRUCE_LOG
+    amount: 2560
+    name: Еловые Брёвна
+  '44':
+    slot: 43
+    type: TASK
+    action: BRING
+    material: MELON_SLICE
+    amount: 2816
+    name: Ломтики Арбуза

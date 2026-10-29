@@ -1,0 +1,243 @@
+Name: pvp2
+Cooldown: 0
+Permission: nKits.kits.pvp2
+Order: 0
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_SWORD
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        FIRE_ASPECT: 2
+        DAMAGE_ALL: 5
+        DURABILITY: 3
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: ENDER_PEARL
+    amount: 16
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: GOLDEN_APPLE
+    amount: 24
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: GOLDEN_CARROT
+    amount: 64
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: POTION
+    amount: 7
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:strong_strength
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: POTION
+    amount: 7
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:strong_swiftness
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: POTION
+    amount: 7
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:long_fire_resistance
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BOW
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        ARROW_FIRE: 1
+        ARROW_INFINITE: 1
+        MENDING: 1
+        ARROW_DAMAGE: 5
+        ARROW_KNOCKBACK: 2
+        DURABILITY: 3
+      repair-cost: 7
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: TOTEM_OF_UNDYING
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: ARROW
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: TOTEM_OF_UNDYING
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: TOTEM_OF_UNDYING
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_PICKAXE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        DIG_SPEED: 5
+        DURABILITY: 3
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: ENDER_PEARL
+    amount: 16
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: ENCHANTED_GOLDEN_APPLE
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: CHORUS_FRUIT
+    amount: 64
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: POTION
+    amount: 7
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:strong_strength
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: POTION
+    amount: 7
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:strong_swiftness
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: POTION
+    amount: 7
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:long_fire_resistance
+  - null
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: TOTEM_OF_UNDYING
+  - null
+  - null
+  - null
+  - null
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: PLAYER_HEAD
+    meta:
+      ==: ItemMeta
+      meta-type: SKULL
+      display-name: '{"italic":false,"extra":[{"text":""},{"bold":true,"color":"gold","text":"Голова
+        Лироза"}],"text":""}'
+      lore:
+      - '{"text":""}'
+      - '{"italic":false,"color":"white","extra":[{"text":""},{"color":"gray","text":"Когда
+        во второстепенной руке:"}],"text":""}'
+      - '{"italic":false,"color":"white","extra":[{"text":""},{"color":"blue","text":"+4
+        Урон"}],"text":""}'
+      - '{"italic":false,"color":"white","extra":[{"text":""},{"color":"red","text":"-15%
+        Скорость"}],"text":""}'
+      - '{"italic":false,"color":"white","extra":[{"text":""},{"color":"red","text":"-3
+        Броня"}],"text":""}'
+      enchants:
+        VANISHING_CURSE: 1
+      attribute-modifiers:
+        GENERIC_ATTACK_DAMAGE:
+        - ==: org.bukkit.attribute.AttributeModifier
+          amount: 4.0
+          name: ''
+          slot: OFF_HAND
+          uuid: b948aa4d-dc3e-42a7-83a9-21c560a6661a
+          operation: 0
+        GENERIC_ARMOR:
+        - ==: org.bukkit.attribute.AttributeModifier
+          amount: -3.0
+          name: ''
+          slot: OFF_HAND
+          uuid: e56085dd-3eb2-49fb-8ef6-4daaa5127647
+          operation: 0
+        GENERIC_MOVEMENT_SPEED:
+        - ==: org.bukkit.attribute.AttributeModifier
+          amount: -0.15
+          name: ''
+          slot: OFF_HAND
+          uuid: 841aad05-fbb2-4901-808e-c5b5eec977c1
+          operation: 1
+      ItemFlags:
+      - HIDE_ATTRIBUTES
+      skull-owner:
+        ==: PlayerProfile
+        uniqueId: ccfb1415-c9af-3e06-b750-713b7096ce7f
+        name: xDeadForSaRd0NeR
+        properties:
+        - name: textures
+          value: ewogICJ0aW1lc3RhbXAiIDogMTcwNTkzNDQxNjIwNywKICAicHJvZmlsZUlkIiA6ICIxYjlhY2VlZDJjNmE0MzFjYjAyNWRmYjkwZWE4ODBjYSIsCiAgInByb2ZpbGVOYW1lIiA6ICJBcXVhIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzMzOGI3YzQzZmU0OGQwMzAxZjk0NmExZjAwMThiMTA5ZmY1YzAxYmFmMzlhZDY1YjVmYTY4MTc4YTM2YzYzYTAiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ==
+          signature: wTh8HmQqX2L1BgxI9F3u84rVQweYkNto+ht2JCrQToQyrCnJ3znohxrs7Cm+Qp31QXsJTQxsRDro6byV5lTCPKJBgulsRtnidLkkXr1C7HwTuqNy3S7uHaa8h775XuPPvlUxzI9htLvdFjPP76BrcJlIGZdlEOFxw3FDnQowe6PQazF7HSU3rkpWjGQaiGih0KwNOmOZNJN4yMZhWAqVjJxRnIucIJzxjNiVi1G0hq/QxVwbO8CHZdsyBiMW3/smCn+TLbdTwo1BdmbyEDVTesqspawLQtH+UKB5apI6S6lLYbLQPCzfomw+Hg9mpVsqDuSyiBFhvzGlfI1APpKiM9JzCtH5ZvrIRZptqvjjmXE3+qXfEsWfaMQwEoozmSZrYOHS62HFFUVwlJUadcG6/qMvHG1O/Sw08gE9H9bKXcv3r09ECtJnGkKbLzOQiwzlYsDDoRy81M1QRY/lPs8RgTcjEXnh4eyJb/HAAV9IKI5xSP6Rpqjv3jPaw/z2mP08Dc/cRyF5jg7nzelhuti7RDElvLbwaATHH8pHHhkYTFHzrI1G+67AJKiAlmKZJrs6k4237YjC1ApEIMTpYlqxSPqaKIDCfqfq6yyyPEk5iU7lu1iLoq9n/IWljcJRQeR83fTTFf3PYrzVdnMlYu3u5TGthz0Oxh64cnOc5Ky2SHo=
+      skull-owner: xDeadForSaRd0NeR
+  Armor:
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_BOOTS
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        DEPTH_STRIDER: 3
+        PROTECTION_FALL: 3
+        PROTECTION_ENVIRONMENTAL: 4
+        DURABILITY: 3
+      repair-cost: 3
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: DIAMOND_LEGGINGS
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        PROTECTION_ENVIRONMENTAL: 4
+        DURABILITY: 3
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: DIAMOND_CHESTPLATE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        PROTECTION_ENVIRONMENTAL: 4
+        DURABILITY: 3
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_HELMET
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        WATER_WORKER: 1
+        PROTECTION_ENVIRONMENTAL: 4
+        OXYGEN: 3
+        DURABILITY: 3
+      repair-cost: 1

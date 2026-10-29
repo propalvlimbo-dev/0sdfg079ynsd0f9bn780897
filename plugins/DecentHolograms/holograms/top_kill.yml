@@ -1,0 +1,32 @@
+location: world_spawn:-13.500:75.000:6.500
+enabled: true
+display-range: 24
+update-range: 24
+update-interval: 20
+facing: 0.0
+down-origin: false
+pages:
+- lines:
+  - content: '&fТоп убийц на сервере <#F8BEFB>&lГРИФ #1</#FAD8FC>'
+    height: 0.5
+  - content: '%elytrixtops_kills_1%'
+    height: 0.3
+  - content: '%elytrixtops_kills_2%'
+    height: 0.3
+  - content: '%elytrixtops_kills_3%'
+    height: 0.3
+  - content: '%elytrixtops_kills_4%'
+    height: 0.3
+  - content: '%elytrixtops_kills_5%'
+    height: 0.3
+  - content: '%elytrixtops_kills_6%'
+    height: 0.3
+  - content: '%elytrixtops_kills_7%'
+    height: 0.3
+  - content: '%elytrixtops_kills_8%'
+    height: 0.3
+  - content: '%elytrixtops_kills_9%'
+    height: 0.3
+  - content: '%elytrixtops_kills_10%'
+    height: 0.3
+  actions: {}

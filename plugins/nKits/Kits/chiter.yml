@@ -1,0 +1,71 @@
+Name: chiter
+Cooldown: 0
+Permission: nKits.kits.chiter
+Order: 0
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:attribute_modifiers: '[{amount:1.0d,id:"menudumper:attack_damage_0",operation:"add_value",type:"minecraft:attack_damage"},{amount:-1.0d,id:"menudumper:armor_1",operation:"add_value",type:"minecraft:armor"},{amount:6.0d,id:"menudumper:max_health_2",operation:"add_value",type:"minecraft:max_health"},{amount:1.0d,id:"menudumper:attack_damage_3",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"},{amount:-1.0d,id:"menudumper:armor_4",operation:"add_value",slot:"offhand",type:"minecraft:armor"},{amount:6.0d,id:"menudumper:max_health_5",operation:"add_value",slot:"offhand",type:"minecraft:max_health"}]'
+      minecraft:profile: '{id:[I;-1268415000,464798677,-1207738256,-1251203730],name:"",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDM3ZGUwY2M4NGZhMGNmMDAwZjdiZGY1ZjJkODYxZjY3Y2VkZmMxMjBhNWNiYTFiZDg4ODU2NGE5NGY0NGM4OSJ9fX0="}]}'
+      minecraft:lore: '[{extra:[{color:"#FF5555",italic:0b,text:"Проклятие утраты"}],italic:0b,text:""},{extra:[{bold:1b,color:"#55FF55",italic:0b,text:"+1
+        к Урону"}],italic:0b,text:""},{extra:[{bold:1b,color:"#FF5555",italic:0b,text:"-1
+        к Броне"}],italic:0b,text:""},{extra:[{bold:1b,color:"#55FF55",italic:0b,text:"+6
+        к Здоровью"}],italic:0b,text:""},{extra:[{italic:0b,text:""}],italic:0b,text:""}]'
+      minecraft:enchantments: '{"minecraft:sharpness":1,"minecraft:vanishing_curse":1}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers"]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"#55FF55",italic:0b,text:"Шар
+        Читера"}],italic:0b,text:""}'
+    schema_version: 1
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  Armor:
+  - null
+  - null
+  - null
+  - null

@@ -1,0 +1,341 @@
+menu_title: '§fꈁꀀꈂꍑꈂꀁ§fꈃꄅ'
+open_command: sezon
+register_command: true
+size: 54
+items:
+  'player_head':
+    material: player_head
+    slot: 12
+    display_name: '&#55FF55&lШар Читера'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - '&#55FF55&l+1 к Урону'
+      - '&#FF5555&l-1 к Броне'
+      - '&#55FF55&l+6 к Здоровью'
+      - ''
+      - '&#AAAAAAПри экипировке в левой руке:'
+      - '&#5555FF +1 Урон атаки'
+      - '&#5555FF -1 Броня'
+      - '&#5555FF +6 Макс. здоровье'
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB99 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 99'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 99'
+      - '[console] kit chiter %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'player_head_1':
+    material: player_head
+    slot: 13
+    display_name: '&f&lШар Школьника'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - '&#55FF55&l+15% к Скорости передвижения'
+      - '&#55FF55&l+1.5 к Урону'
+      - '&#FF5555&l-3 к Здоровью'
+      - ''
+      - '&#AAAAAAПри экипировке в левой руке:'
+      - '&#5555FF +15% Скорость передвижения'
+      - '&#5555FF +1.5 Урон атаки'
+      - '&#5555FF -3 Макс. здоровье'
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB159 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 159'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 159'
+      - '[console] kit shkola %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'player_head_2':
+    material: player_head
+    slot: 14
+    display_name: '&#5555FF&lШар Учителя'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - '&#55FF55&l+8 к Здоровью'
+      - '&#55FF55&l+3 к Броне'
+      - '&#FF5555&l-1 к Урону'
+      - ''
+      - '&#AAAAAAПри экипировке в левой руке:'
+      - '&#5555FF +8 Макс. здоровье'
+      - '&#5555FF +3 Броня'
+      - '&#5555FF -1 Урон атаки'
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB169 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 169'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 169'
+      - '[console] kit teacher %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'player_head_3':
+    material: player_head
+    slot: 21
+    display_name: '&#55FFFF&lШар Модера'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - '&#55FF55&l+3.5 к Броне'
+      - '&#55FF55&l+10 к Здоровью'
+      - '&#FF5555&l-15% к Скорости передвижения'
+      - ''
+      - '&#AAAAAAПри экипировке в левой руке:'
+      - '&#5555FF -15% Скорость передвижения'
+      - '&#5555FF +3.5 Броня'
+      - '&#5555FF +10 Макс. здоровье'
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB189 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 189'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 189'
+      - '[console] kit moder %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'player_head_4':
+    material: player_head
+    slot: 22
+    display_name: '&#00AAAA&lШар Вардена'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - '&#55FF55&l+14 к Здоровью'
+      - '&#55FF55&l+2 к Урону'
+      - '&#55FF55&l+2 к Броне'
+      - '&#FF5555&l-30% Скорости передвижения'
+      - ''
+      - '&#AAAAAAПри экипировке в левой руке:'
+      - '&#5555FF +14 Макс. здоровье'
+      - '&#5555FF +2 Броня'
+      - '&#5555FF -30% Скорость передвижения'
+      - '&#5555FF +2 Урон атаки'
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB209 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 209'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 209'
+      - '[console] kit varden %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'player_head_5':
+    material: player_head
+    slot: 23
+    display_name: '&#FAD8FC&lШар Админа'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - '&#55FF55&l+3 к Броне'
+      - '&#55FF55&l+10 к Здоровью'
+      - '&#55FF55&l+2 к Урону'
+      - ''
+      - '&#AAAAAAПри экипировке в левой руке:'
+      - '&#5555FF +10 Макс. здоровье'
+      - '&#5555FF +2 Урон атаки'
+      - '&#5555FF +3 Броня'
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB219 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 219'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 219'
+      - '[console] kit admin %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'potion':
+    material: potion
+    slot: 30
+    display_name: '&#AA00AA&lЗелье Грю'
+    lore:
+      - '&#5555FFМедлительность II (00:30)'
+      - '&#5555FFСлабость II (00:30)'
+      - '&#5555FFУсталость (00:20)'
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB49 &#FFFFFFꐃ'
+      - ''
+    rgb: '75, 0, 130'
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 49'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 49'
+      - '[console] kit gru %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+    hide_effects: true
+  'potion_1':
+    material: potion
+    slot: 31
+    display_name: '&#FAD8FC&lФеликс Фелицис'
+    lore:
+      - '&#5555FFУдача II (03:00)'
+      - '&#5555FFСпешка II (03:00)'
+      - '&#5555FFНевидимость (01:30)'
+      - '&#5555FFРегенерация II (01:00)'
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB49 &#FFFFFFꐃ'
+      - ''
+    rgb: '255, 215, 0'
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 49'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 49'
+      - '[console] kit felix %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+    hide_effects: true
+  'potion_2':
+    material: potion
+    slot: 32
+    display_name: '&#AA0000&lПроклятие Малефисенты'
+    lore:
+      - '&#5555FFОтравление II (00:30)'
+      - '&#5555FFСлепота (00:20)'
+      - '&#5555FFИссушение (00:15)'
+      - '&#5555FFТошнота (00:20)'
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB59 &#FFFFFFꐃ'
+      - ''
+    rgb: '1, 50, 32'
+    hide_effects: true
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 59'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 59'
+      - '[console] kit malifesint %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'potion_3':
+    material: potion
+    slot: 39
+    display_name: '&#00AA00&lМутаген Черепашек-Ниндзя'
+    lore:
+      - '&#5555FFСопротивление II (02:00)'
+      - '&#5555FFПрибавка здоровья II (02:00)'
+      - '&#5555FFПоглощение (01:00)'
+      - '&#5555FFОгнестойкость (02:00)'
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB69 &#FFFFFFꐃ'
+      - ''
+    rgb: '107, 142, 35'
+    hide_effects: true
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 69'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 69'
+      - '[console] kit ninja %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'potion_4':
+    material: potion
+    slot: 40
+    display_name: '&#FF55FF&lФормула Икс'
+    lore:
+      - '&#5555FFСила III (01:30)'
+      - '&#5555FFСкорость II (01:30)'
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB79 &#FFFFFFꐃ'
+      - ''
+    rgb: '255, 20, 147'
+    hide_effects: true
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 79'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 79'
+      - '[console] kit iks %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'potion_5':
+    material: potion
+    slot: 41
+    display_name: '&#55FFFF&lАватарское Состояние'
+    lore:
+      - '&#5555FFСила III (01:30)'
+      - '&#5555FFСкорость II (01:30)'
+      - '&#5555FFРегенерация II (01:00)'
+      - '&#5555FFОгнестойкость (01:30)'
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB119 &#FFFFFFꐃ'
+      - ''
+    rgb: '102, 204, 255'
+    hide_effects: true
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 119'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 119'
+      - '[console] kit avatar %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'arrow':
+    material: arrow
+    slot: 45
+    display_name: '&#F8BEFBНазад'
+    model_data: 10002
+    click_commands:
+      - '[player] shop'
+  'clock':
+    material: clock
+    slot: 53
+    display_name: '&#F8BEFBИНФОРМАЦИЯ'
+    lore:
+      - ''
+      - '&#555555 &#FFFFFFВаш баланс: &#FAD8FC%playerpoints_points_formatted% &#FFFFFFꐃ'
+      - ''
+      - '&#AAAAAAПополнить баланс можно'
+      - '&#AAAAAAна сайте: &#FAD8FChttps://elytrix.pw'
+    model_data: 100010
+    

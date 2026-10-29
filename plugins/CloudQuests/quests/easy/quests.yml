@@ -1,0 +1,300 @@
+settings:
+  generate-on-startup: true
+  regenerate-on-every-startup: false
+  reset-progress-on-generate: true
+  rows: 5
+  max-amount-per-task: 3000
+  ignore-custom-items: true
+generator:
+  amount-multiplier: 1.0
+  min-score: 0.0
+  max-score: 14.0
+  custom-pool: {}
+quests:
+  '1':
+    slot: 0
+    type: TASK
+    action: KILL
+    material: ZOMBIE_HEAD
+    amount: 10
+    name: Убить Зомби
+    entity: ZOMBIE
+  '2':
+    slot: 1
+    type: TASK
+    action: CRAFT
+    material: PAPER
+    amount: 32
+    name: Бумага
+  '3':
+    slot: 2
+    type: TASK
+    action: CRAFT
+    material: BREAD
+    amount: 13
+    name: Хлеб
+  '4':
+    slot: 3
+    type: TASK
+    action: BREAK
+    material: STONE
+    amount: 112
+    name: Камень
+  '5':
+    slot: 4
+    type: TASK
+    action: BRING
+    material: CARROT
+    amount: 48
+    name: Морковь
+  '6':
+    slot: 5
+    type: TASK
+    action: BREAK
+    material: COBBLESTONE
+    amount: 112
+    name: Булыжник
+  '7':
+    slot: 6
+    type: TASK
+    action: KILL
+    material: SKELETON_SKULL
+    amount: 11
+    name: Убить Скелетов
+    entity: SKELETON
+  '8':
+    slot: 7
+    type: TASK
+    action: BREAK
+    material: IRON_ORE
+    amount: 15
+    name: Железная Руда
+  '10':
+    slot: 9
+    type: TASK
+    action: KILL
+    material: ZOMBIE_HEAD
+    amount: 72
+    name: Убить Зомби
+    entity: ZOMBIE
+  '11':
+    slot: 10
+    type: TASK
+    action: BREAK
+    material: OAK_LOG
+    amount: 192
+    name: Дубовые Брёвна
+  '12':
+    slot: 11
+    type: TASK
+    action: BRING
+    material: PUMPKIN
+    amount: 144
+    name: Тыквы
+  '13':
+    slot: 12
+    type: TASK
+    action: BRING
+    material: WHEAT
+    amount: 176
+    name: Пшеница
+  '14':
+    slot: 13
+    type: TASK
+    action: CRAFT
+    material: CRAFTING_TABLE
+    amount: 160
+    name: Верстаки
+  '15':
+    slot: 14
+    type: TASK
+    action: BREAK
+    material: COAL_ORE
+    amount: 96
+    name: Угольная Руда
+  '16':
+    slot: 15
+    type: TASK
+    action: BREAK
+    material: COBBLESTONE
+    amount: 224
+    name: Булыжник
+  '17':
+    slot: 16
+    type: TASK
+    action: BRING
+    material: COAL
+    amount: 112
+    name: Уголь
+  '19':
+    slot: 18
+    type: TASK
+    action: KILL
+    material: SPIDER_EYE
+    amount: 144
+    name: Убить Пауков
+    entity: SPIDER
+  '20':
+    slot: 19
+    type: TASK
+    action: BRING
+    material: APPLE
+    amount: 160
+    name: Яблоки
+  '21':
+    slot: 20
+    type: TASK
+    action: BRING
+    material: COBBLESTONE
+    amount: 320
+    name: Булыжник
+  '22':
+    slot: 21
+    type: TASK
+    action: BREAK
+    material: IRON_ORE
+    amount: 144
+    name: Железная Руда
+  '23':
+    slot: 22
+    type: TASK
+    action: BREAK
+    material: WHEAT
+    amount: 448
+    name: Пшеница
+  '24':
+    slot: 23
+    type: TASK
+    action: BRING
+    material: CARROT
+    amount: 352
+    name: Морковь
+  '25':
+    slot: 24
+    type: TASK
+    action: BREAK
+    material: GRAVEL
+    amount: 400
+    name: Гравий
+  '26':
+    slot: 25
+    type: TASK
+    action: BRING
+    material: MELON_SLICE
+    amount: 384
+    name: Ломтики Арбуза
+  '28':
+    slot: 27
+    type: TASK
+    action: CRAFT
+    material: CHEST
+    amount: 336
+    name: Сундуки
+  '29':
+    slot: 28
+    type: TASK
+    action: KILL
+    material: SPIDER_EYE
+    amount: 208
+    name: Убить Пауков
+    entity: SPIDER
+  '30':
+    slot: 29
+    type: TASK
+    action: BRING
+    material: APPLE
+    amount: 240
+    name: Яблоки
+  '31':
+    slot: 30
+    type: TASK
+    action: CRAFT
+    material: CRAFTING_TABLE
+    amount: 464
+    name: Верстаки
+  '32':
+    slot: 31
+    type: TASK
+    action: KILL
+    material: SKELETON_SKULL
+    amount: 192
+    name: Убить Скелетов
+    entity: SKELETON
+  '33':
+    slot: 32
+    type: TASK
+    action: CRAFT
+    material: PAPER
+    amount: 368
+    name: Бумага
+  '34':
+    slot: 33
+    type: TASK
+    action: BRING
+    material: MELON_SLICE
+    amount: 576
+    name: Ломтики Арбуза
+  '35':
+    slot: 34
+    type: TASK
+    action: KILL
+    material: CREEPER_HEAD
+    amount: 128
+    name: Убить Криперов
+    entity: CREEPER
+  '37':
+    slot: 36
+    type: TASK
+    action: BREAK
+    material: WHEAT
+    amount: 896
+    name: Пшеница
+  '38':
+    slot: 37
+    type: TASK
+    action: CRAFT
+    material: STICK
+    amount: 704
+    name: Палки
+  '39':
+    slot: 38
+    type: TASK
+    action: BREAK
+    material: SAND
+    amount: 832
+    name: Песок
+  '40':
+    slot: 39
+    type: TASK
+    action: BREAK
+    material: OAK_LOG
+    amount: 768
+    name: Дубовые Брёвна
+  '41':
+    slot: 40
+    type: TASK
+    action: BRING
+    material: SUGAR_CANE
+    amount: 704
+    name: Сахарный Тростник
+  '42':
+    slot: 41
+    type: TASK
+    action: CRAFT
+    material: TORCH
+    amount: 640
+    name: Факелы
+  '43':
+    slot: 42
+    type: TASK
+    action: BREAK
+    material: POTATO
+    amount: 896
+    name: Картошка
+  '44':
+    slot: 43
+    type: TASK
+    action: BREAK
+    material: CARROT
+    amount: 896
+    name: Морковь

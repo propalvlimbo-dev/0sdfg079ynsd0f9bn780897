@@ -1,0 +1,17 @@
+﻿#########################################################
+## Developed by Little Room, patreon.com/littleroomdev ##
+#########################################################
+
+
+LR_BEHOLDER_LASER_PARTICLE:
+  Id: INK_SAC
+  Model: 13370003
+  
+LR_BEHOLDER_EYE:
+  Id: INK_SAC
+  Model: 13370004
+  Display: "Eye of the Beholder"
+  Lore:
+    - "&5Did it just blink?"
+  Skills:
+  - skill{s=LR_BEHOLDER_ITEM_SHOOT} @self ~onUse

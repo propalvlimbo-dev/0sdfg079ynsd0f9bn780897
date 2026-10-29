@@ -1,0 +1,226 @@
+Name: dracula
+Cooldown: 432000
+Permission: nKits.kits.dracula
+Order: 0
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:netherite_helmet
+    count: 1
+    components:
+      minecraft:repair_cost: '1'
+      minecraft:enchantments: '{"minecraft:aqua_affinity":1,"minecraft:protection":4,"minecraft:respiration":3,"minecraft:unbreaking":3}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:netherite_sword
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:fire_aspect":2,"minecraft:sharpness":5,"minecraft:unbreaking":3}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:bow
+    count: 1
+    components:
+      minecraft:repair_cost: '7'
+      minecraft:enchantments: '{"minecraft:flame":1,"minecraft:infinity":1,"minecraft:mending":1,"minecraft:power":5,"minecraft:unbreaking":2}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:netherite_pickaxe
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:efficiency":5,"minecraft:unbreaking":3}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:netherite_axe
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:efficiency":5,"minecraft:sharpness":5,"minecraft:unbreaking":3}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:netherite_shovel
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:efficiency":4,"minecraft:unbreaking":3}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:totem_of_undying
+    count: 1
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:ender_pearl
+    count: 16
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:enchanted_golden_apple
+    count: 3
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:end_crystal
+    count: 14
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:totem_of_undying
+    count: 1
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:totem_of_undying
+    count: 1
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:totem_of_undying
+    count: 1
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:gold_block
+    count: 15
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:iron_block
+    count: 15
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:diamond_block
+    count: 15
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:chorus_fruit
+    count: 64
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:tipped_arrow
+    count: 16
+    components:
+      minecraft:potion_contents: '{potion:"minecraft:strong_healing"}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:ender_pearl
+    count: 16
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:ender_pearl
+    count: 16
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:ender_pearl
+    count: 16
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:golden_carrot
+    count: 64
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:golden_apple
+    count: 32
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:obsidian
+    count: 64
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:lapis_block
+    count: 15
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:shulker_box
+    count: 1
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:arrow
+    count: 64
+    schema_version: 1
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:netherite_boots
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:depth_strider":3,"minecraft:feather_falling":2,"minecraft:protection":4,"minecraft:unbreaking":3}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:netherite_leggings
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:protection":4,"minecraft:unbreaking":3}'
+    schema_version: 1
+  - null
+  - null
+  - null
+  - null
+  - null
+  Armor:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:netherite_boots
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:depth_strider":3,"minecraft:feather_falling":2,"minecraft:protection":4,"minecraft:unbreaking":3}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:netherite_leggings
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:protection":4,"minecraft:unbreaking":3}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:netherite_chestplate
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:protection":4,"minecraft:unbreaking":3}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:profile: '{id:[I;-827782841,-1465302662,-1361278027,-1565106005],name:"head",properties:[{name:"textures",value:"ewogICJ0aW1lc3RhbXAiIDogMTY2NzAwNTExMDk4MCwKICAicHJvZmlsZUlkIiA6ICI1YjcyYmU5MGZiYjg0OGNiODFiZTNhMGVlNmNlOGUzZCIsCiAgInByb2ZpbGVOYW1lIiA6ICJHb3JuZSIsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8yZTlhYzBjYzA1ZjUyODA1MTBmOTE2NzIxZDc4ODI5NTVjNjgzMTRjODkxNzBkZTgzNWQzZDMxNjQwNjAzZTliIgogICAgfQogIH0KfQ=="}]}'
+      minecraft:attribute_modifiers: '[{amount:2.0d,id:"minecraft:71701e57-2771-457c-8611-d35a9f370159",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"},{amount:8.0d,id:"minecraft:715260b0-a3f7-45ed-af4e-f5727e1c0e00",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:4.5d,id:"minecraft:4e7d9fa0-2210-4964-9332-643ffa8c5914",operation:"add_value",slot:"offhand",type:"minecraft:armor"}]'
+      minecraft:lore: '[{extra:[{bold:0b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Проклятие
+        утраты",underlined:0b}],text:""},{extra:[{bold:0b,italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Вампиризм",underlined:0b}],text:""},{extra:[{bold:0b,italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Когда
+        надето на голову:",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"+19%
+        Скорость",underlined:0b}],text:""}]'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:banner_patterns","minecraft:written_book_content","minecraft:map_id","minecraft:block_entity_data","minecraft:charged_projectiles","minecraft:painting/variant","minecraft:container","minecraft:tropical_fish/pattern","minecraft:jukebox_playable","minecraft:pot_decorations","minecraft:fireworks","minecraft:firework_explosion","minecraft:potion_contents","minecraft:bundle_contents","minecraft:bees","minecraft:container_loot","minecraft:instrument","minecraft:block_state","minecraft:dyed_color","minecraft:trim","minecraft:stored_enchantments"]}'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Голова
+        Люцифера",underlined:0b}],text:""}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:dracula_head":"DRACULA_HEAD"}}'
+    schema_version: 1

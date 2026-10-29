@@ -1,0 +1,17 @@
+menu:
+  size: 54
+  title: "§fꈁꀀꈂꍈꈂꀁ§0ꈃꄅ&r"
+info:
+  slot: 4
+  name: "&x&F&8&B&E&F&BИнформация"
+  lore:
+    - "&7Вы можете получить ромашки"
+    - "&7участвуя в ивентах"
+    - ""
+    - "&x&F&8&B&E&F&BРомашки: &f%balance% &fꐄ"
+  modelData: 10001
+notEnoughExp:
+  - "&x&F&8&B&E&F&BElytrix &7» &cУ вас маленький уровень БП!"
+  - "&x&F&8&B&E&F&Bhttps://elytrix.pw &7» &cДля покупки нужен %needLvl% уровень!"
+notEnoughMoney:
+  - "&x&F&8&B&E&F&BElytrix &7» &cУ вас мало денег!"

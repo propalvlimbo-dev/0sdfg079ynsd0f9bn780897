@@ -1,0 +1,293 @@
+settings:
+  generate-on-startup: true
+  regenerate-on-every-startup: false
+  reset-progress-on-generate: true
+  rows: 5
+  max-amount-per-task: 3000
+  ignore-custom-items: true
+generator:
+  amount-multiplier: 3.4
+  min-score: 3.0
+  max-score: 60.0
+  custom-pool: {}
+quests:
+  '1':
+    slot: 0
+    type: TASK
+    action: BRING
+    material: NETHER_WART
+    amount: 176
+    name: Незер Нарост
+  '2':
+    slot: 1
+    type: TASK
+    action: BRING
+    material: BEETROOT
+    amount: 192
+    name: Свёкла
+  '3':
+    slot: 2
+    type: TASK
+    action: BRING
+    material: MELON_SLICE
+    amount: 240
+    name: Ломтики Арбуза
+  '4':
+    slot: 3
+    type: TASK
+    action: BRING
+    material: CARROT
+    amount: 224
+    name: Морковь
+  '5':
+    slot: 4
+    type: TASK
+    action: BRING
+    material: PUMPKIN
+    amount: 176
+    name: Тыквы
+  '6':
+    slot: 5
+    type: TASK
+    action: BRING
+    material: SUGAR_CANE
+    amount: 224
+    name: Сахарный Тростник
+  '7':
+    slot: 6
+    type: TASK
+    action: CRAFT
+    material: HAY_BLOCK
+    amount: 104
+    name: Блоки Сена
+  '8':
+    slot: 7
+    type: TASK
+    action: BREAK
+    material: WHEAT
+    amount: 288
+    name: Пшеница
+  '10':
+    slot: 9
+    type: TASK
+    action: BRING
+    material: MELON_SLICE
+    amount: 1024
+    name: Ломтики Арбуза
+  '11':
+    slot: 10
+    type: TASK
+    action: BRING
+    material: CARROT
+    amount: 960
+    name: Морковь
+  '12':
+    slot: 11
+    type: TASK
+    action: CRAFT
+    material: CAKE
+    amount: 192
+    name: Торты
+  '13':
+    slot: 12
+    type: TASK
+    action: CRAFT
+    material: BREAD
+    amount: 640
+    name: Хлеб
+  '14':
+    slot: 13
+    type: TASK
+    action: BREAK
+    material: CARROT
+    amount: 1216
+    name: Морковь
+  '15':
+    slot: 14
+    type: TASK
+    action: CRAFT
+    material: GOLDEN_CARROT
+    amount: 176
+    name: Золотая Морковь
+  '16':
+    slot: 15
+    type: TASK
+    action: BRING
+    material: POTATO
+    amount: 960
+    name: Картошка
+  '17':
+    slot: 16
+    type: TASK
+    action: CRAFT
+    material: HAY_BLOCK
+    amount: 448
+    name: Блоки Сена
+  '19':
+    slot: 18
+    type: TASK
+    action: BRING
+    material: MELON_SLICE
+    amount: 1792
+    name: Ломтики Арбуза
+  '20':
+    slot: 19
+    type: TASK
+    action: BRING
+    material: BAMBOO
+    amount: 1600
+    name: Бамбук
+  '21':
+    slot: 20
+    type: TASK
+    action: BRING
+    material: WHEAT
+    amount: 1600
+    name: Пшеница
+  '22':
+    slot: 21
+    type: TASK
+    action: BREAK
+    material: POTATO
+    amount: 2176
+    name: Картошка
+  '23':
+    slot: 22
+    type: TASK
+    action: BRING
+    material: CARROT
+    amount: 1600
+    name: Морковь
+  '24':
+    slot: 23
+    type: TASK
+    action: BRING
+    material: PUMPKIN
+    amount: 1344
+    name: Тыквы
+  '25':
+    slot: 24
+    type: TASK
+    action: CRAFT
+    material: GOLDEN_CARROT
+    amount: 288
+    name: Золотая Морковь
+  '26':
+    slot: 25
+    type: TASK
+    action: CRAFT
+    material: HAY_BLOCK
+    amount: 768
+    name: Блоки Сена
+  '28':
+    slot: 27
+    type: TASK
+    action: BRING
+    material: NETHER_WART
+    amount: 1472
+    name: Незер Нарост
+  '29':
+    slot: 28
+    type: TASK
+    action: CRAFT
+    material: BREAD
+    amount: 1536
+    name: Хлеб
+  '30':
+    slot: 29
+    type: TASK
+    action: BRING
+    material: BEETROOT
+    amount: 2176
+    name: Свёкла
+  '31':
+    slot: 30
+    type: TASK
+    action: BRING
+    material: POTATO
+    amount: 2304
+    name: Картошка
+  '32':
+    slot: 31
+    type: TASK
+    action: CRAFT
+    material: CAKE
+    amount: 480
+    name: Торты
+  '33':
+    slot: 32
+    type: TASK
+    action: CRAFT
+    material: HAY_BLOCK
+    amount: 1152
+    name: Блоки Сена
+  '34':
+    slot: 33
+    type: TASK
+    action: BRING
+    material: CACTUS
+    amount: 1728
+    name: Кактусы
+  '35':
+    slot: 34
+    type: TASK
+    action: BRING
+    material: SUGAR_CANE
+    amount: 2304
+    name: Сахарный Тростник
+  '37':
+    slot: 36
+    type: TASK
+    action: CRAFT
+    material: COOKIE
+    amount: 1536
+    name: Печенье
+  '38':
+    slot: 37
+    type: TASK
+    action: BRING
+    material: BEETROOT
+    amount: 2688
+    name: Свёкла
+  '39':
+    slot: 38
+    type: TASK
+    action: BRING
+    material: NETHER_WART
+    amount: 1920
+    name: Незер Нарост
+  '40':
+    slot: 39
+    type: TASK
+    action: BRING
+    material: POTATO
+    amount: 3000
+    name: Картошка
+  '41':
+    slot: 40
+    type: TASK
+    action: BRING
+    material: PUMPKIN
+    amount: 2432
+    name: Тыквы
+  '42':
+    slot: 41
+    type: TASK
+    action: CRAFT
+    material: HAY_BLOCK
+    amount: 1472
+    name: Блоки Сена
+  '43':
+    slot: 42
+    type: TASK
+    action: BRING
+    material: CACTUS
+    amount: 2304
+    name: Кактусы
+  '44':
+    slot: 43
+    type: TASK
+    action: BRING
+    material: SUGAR_CANE
+    amount: 3000
+    name: Сахарный Тростник

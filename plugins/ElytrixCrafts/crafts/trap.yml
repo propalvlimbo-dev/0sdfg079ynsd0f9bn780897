@@ -1,0 +1,69 @@
+menu-slot: 7
+cooldown-hours: 24
+permission: quest.fish
+chain: fish
+result:
+  ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: HEART_OF_THE_SEA
+  meta:
+    ==: ItemMeta
+    meta-type: UNSPECIFIC
+    display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"aqua","text":"Ловушка"}],"text":""}'
+    lore:
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"red","text":"Проклятие
+      утраты"}],"text":""}'
+    - '{"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"При
+      нажатии ПКМ:"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"Ставит
+      ловушку вокруг игрока"}],"text":""}'
+    enchants:
+      VANISHING_CURSE: 1
+    ItemFlags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    - HIDE_DESTROYS
+    - HIDE_PLACED_ON
+    - HIDE_POTION_EFFECTS
+    - HIDE_DYE
+    PublicBukkitValues:
+      minecraft:trap: TRAP
+ingredients:
+  '0':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BLUE_STAINED_GLASS
+  '1':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHER_STAR
+  '2':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BLUE_STAINED_GLASS
+  '3':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: CHORUS_FLOWER
+  '4':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: HEART_OF_THE_SEA
+  '5':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: CHORUS_FLOWER
+  '6':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BLUE_STAINED_GLASS
+  '7':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: CHORUS_FLOWER
+  '8':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BLUE_STAINED_GLASS

@@ -1,0 +1,24 @@
+info:
+  version: '1.0'
+allow-end-crystal-respawn: true
+tps-catchup: true
+enable-books: true
+dab:
+  enabled: true
+  start-distance: 8
+  max-tick-freq: 20
+  activation-dist-mod: 7
+  blacklisted-entities: []
+web-services:
+  token: ''
+enable-suffocation-optimization: true
+inactive-goal-selector-throttle: true
+projectile:
+  max-loads-per-tick: 6
+  max-loads-per-projectile: 6
+misc:
+  disable-method-profiler: true
+flare:
+  url: https://flare.airplane.gg
+enable-async-mob-spawning: true
+sentry-dsn: ''

@@ -1,0 +1,72 @@
+#########################################################
+## Developed by Little Room, patreon.com/littleroomdev ##
+#########################################################
+
+
+  
+gp2_goblin_bow:
+  Id: BOW
+  Display: 'Goblin Bow'
+  Model: 1
+  
+gp2_goblin_club:
+  Id: CARROT_ON_A_STICK
+  Display: 'Goblin Club'
+  Model: 11342
+  
+gp2_goblin_frying_pan:
+  Id: CARROT_ON_A_STICK
+  Display: 'Frying Pan'
+  Model: 11343
+  
+gp2_goblin_knife:
+  Id: CARROT_ON_A_STICK
+  Display: 'Knife'
+  Model: 11344
+  
+gp2_goblin_wooden_spoon:
+  Id: CARROT_ON_A_STICK
+  Display: 'Wooden Spoon'
+  Model: 11345
+  
+gp2_goblin_broken_pitchfork:
+  Id: CARROT_ON_A_STICK
+  Display: 'Broken Pitchfork'
+  Model: 11346
+  
+gp2_goblin_king_axe:
+  Id: CARROT_ON_A_STICK
+  Display: 'Goblin King Axe'
+  Model: 11348
+    
+gp2_goblin_shield:
+  Id: shield
+  Display: 'Goblin Shield'
+  Model: 1
+  
+gp2_goblin_shaman_staff:
+  Id: CARROT_ON_A_STICK
+  Display: 'Goblin Shaman Staff'
+  Model: 11347
+  Skills:
+  - skill{s=gp2_goblinshaman_projectile_item} @targetlocation ~onUse
+  
+gp2_goblin_shaman_mask:
+  Id: INK_SAC
+  Display: 'Goblin Shaman Mask'
+  Model: 2
+  
+gp2_decor_torch:
+  Id: PIG_SPAWN_EGG
+  Display: 'Goblin Torch'
+  Model: 1
+  NBT:
+    MYTHIC_EGG: gp2_decor_torch
+  
+gp2_decor_weapon_rack:
+  Id: PIG_SPAWN_EGG
+  Display: 'Goblin Weapon Rack'
+  Model: 2
+  NBT:
+    MYTHIC_EGG: gp2_decor_weapon_rack
+# W5Okhqm588NUhhtRT3kHxKn4Ccbf0WOegHfqzhVddUZYS+LfO8Cd5F6uK6lzHsT077KDo7Gt+wszCglAh22ZK2TD/mrLhZ+5UyFwytxbeZU=

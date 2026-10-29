@@ -1,0 +1,129 @@
+settings:
+  spawn-world: "world_spawn"
+  stealer:
+    percent: 50
+    max-money: 45000.0
+
+messages:
+  no-perm: '&#F8BEFBКниги &7» &cУ вас нет прав'
+  admin-usage:
+    - '&#F8BEFBКниги &7» &f/cloudenchants give <энчант> <игрок>'
+    - '&#F8BEFBКниги &7» &f/cloudenchants reload'
+  reloaded: '&#F8BEFBКниги &7» &aКонфиг перезагружен'
+  not-found-item: '&#F8BEFBКниги &7» &cЭнчант не найден'
+  player-not-found: '&#F8BEFBКниги &7» &cИгрок не найден'
+  given: '&#F8BEFBКниги &7» &aКнига энчанта выдана игроку &f%player%'
+  inventory-full: '&#F8BEFBКниги &7» &cИнвентарь игрока заполнен'
+  cant-break-shulker: '&#F8BEFBТелепатия &7» &cНельзя ломать шалкеры'
+  stealer-kill: '&#F8BEFBГрабитель &7» &aВы украли &7%money% &aмонет'
+  stealer-victim: '&#F8BEFBГрабитель &7» &cУ вас украли &7%money% &cмонет'
+
+items:
+  drill:
+    name: ""
+    lore:
+      - "&7Бур (Копает 3x3)"
+    items:
+      - "NETHERITE_PICKAXE"
+      - "NETHERITE_SHOVEL"
+      - "NETHERITE_AXE"
+      - "DIAMOND_PICKAXE"
+      - "DIAMOND_SHOVEL"
+      - "DIAMOND_AXE"
+      - "IRON_PICKAXE"
+      - "IRON_SHOVEL"
+      - "IRON_AXE"
+      - "GOLDEN_PICKAXE"
+      - "GOLDEN_SHOVEL"
+      - "GOLDEN_AXE"
+      - "STONE_PICKAXE"
+      - "STONE_SHOVEL"
+      - "STONE_AXE"
+      - "WOODEN_PICKAXE"
+      - "WOODEN_SHOVEL"
+      - "WOODEN_AXE"
+  lightner:
+    name: ""
+    lore:
+      - "&7Светлячок (Подсвечивает игрока)"
+    items:
+      - "NETHERITE_SWORD"
+      - "NETHERITE_AXE"
+      - "DIAMOND_SWORD"
+      - "DIAMOND_AXE"
+      - "IRON_SWORD"
+      - "IRON_AXE"
+      - "GOLDEN_SWORD"
+      - "GOLDEN_AXE"
+      - "STONE_SWORD"
+      - "STONE_AXE"
+      - "WOODEN_SWORD"
+      - "WOODEN_AXE"
+  telepation:
+    name: ""
+    lore:
+      - "&7Телепатия"
+    items:
+      - "NETHERITE_PICKAXE"
+      - "NETHERITE_SHOVEL"
+      - "NETHERITE_AXE"
+      - "DIAMOND_PICKAXE"
+      - "DIAMOND_SHOVEL"
+      - "DIAMOND_AXE"
+      - "IRON_PICKAXE"
+      - "IRON_SHOVEL"
+      - "IRON_AXE"
+      - "GOLDEN_PICKAXE"
+      - "GOLDEN_SHOVEL"
+      - "GOLDEN_AXE"
+      - "STONE_PICKAXE"
+      - "STONE_SHOVEL"
+      - "STONE_AXE"
+      - "WOODEN_PICKAXE"
+      - "WOODEN_SHOVEL"
+      - "WOODEN_AXE"
+  woodcutter:
+    name: ""
+    lore:
+      - "&7Лесник"
+    items:
+      - "NETHERITE_AXE"
+      - "DIAMOND_AXE"
+      - "IRON_AXE"
+      - "GOLDEN_AXE"
+      - "STONE_AXE"
+      - "WOODEN_AXE"
+  wisdom:
+    name: ""
+    lore:
+      - "&7Мудрец"
+    items:
+      - "NETHERITE_SWORD"
+      - "NETHERITE_AXE"
+      - "DIAMOND_SWORD"
+      - "DIAMOND_AXE"
+      - "IRON_SWORD"
+      - "IRON_AXE"
+      - "GOLDEN_SWORD"
+      - "GOLDEN_AXE"
+      - "STONE_SWORD"
+      - "STONE_AXE"
+      - "WOODEN_SWORD"
+      - "WOODEN_AXE"
+  stealer:
+    name: ""
+    lore:
+      - "&7Грабитель"
+    items:
+      - "NETHERITE_SWORD"
+      - "NETHERITE_AXE"
+      - "DIAMOND_SWORD"
+      - "DIAMOND_AXE"
+      - "IRON_SWORD"
+      - "IRON_AXE"
+      - "GOLDEN_SWORD"
+      - "GOLDEN_AXE"
+      - "STONE_SWORD"
+      - "STONE_AXE"
+      - "WOODEN_SWORD"
+      - "WOODEN_AXE"

@@ -1,0 +1,64 @@
+This is the info file.
+
+This file format works with the following files:
+info.txt, motd.txt, help.txt, custom.txt and rules.txt
+
+You can create a specific file for a user or a group:
+Name it info_username.txt or info_groupname.txt
+
+This also works with the other files.
+
+Extra pages:
+Type /info Colors
+Type /info Tags
+
+If you have problem viewing this file ingame, try using /einfo.
+If this works, it means another command is blocking /info.
+
+It can contain chapters like the Chapter1 below:
+
+#Chapter1
+Lines starting with # begin a new chapter
+The user has to type /info Chapter1 to read this chapter
+
+If the file starts with a # then the user is shown a chapter selection, 
+when he does not select a chapter.
+
+#Colors
+Minecraft colors:
+&0 &&0  &1 &&1  &2 &&2  &3 &&3
+&4 &&4  &5 &&5  &#F8BEFB &&#F8BEFB  &7 &&7
+&8 &&8  &9 &&9  &a &&a  &b &&b
+&c &&c  &d &&d  &#FAD8FC &&#FAD8FC  &f &&f
+&0 
+&&k &kMagic&r   &&l &lBold
+&&m &mStrike&r  &&n &nUline
+&&o &oItalic&r   &&r &rReset
+
+#Tags
+&#F8BEFBPlayer's Display name:&r {PLAYER}, {DISPLAYNAME}
+&#F8BEFBPlayer's user name:&r {USERNAME}
+&#F8BEFBPlayer's nickname:&r {NICKNAME}
+&#F8BEFBPlayer's prefix:&r {PREFIX}
+&#F8BEFBPlayer's suffix:&r {SUFFIX}
+&#F8BEFBPlayer's primary group:&r {GROUP}
+&#F8BEFBPlayer's balance:&r {BALANCE}
+&#F8BEFBPlayer's unread mails:&r {MAILS}
+&#F8BEFBPlayer's playtime:&r {PLAYTIME}
+&#F8BEFBPlayer's coordinates:&r {COORDS}
+&#F8BEFBPlayer's current world:&r {WORLD}, {WORLDNAME}
+&#F8BEFBNumber of online, non-hidden players:&r {ONLINE}
+&#F8BEFBNumber of unique players who joined the server:&r {UNIQUE}
+&#F8BEFBWorlds list:&r {WORLDS}
+&#F8BEFBPlayer list:&r {PLAYERLIST}
+&#F8BEFBTime of server:&r {TIME}
+&#F8BEFBDate of server:&r {DATE}
+&#F8BEFBTime of world PM/AM:&r {WORLDTIME12}
+&#F8BEFBTime of world:&r {WORLDTIME24}
+&#F8BEFBDate of world:&r {WORLDDATE}
+&#F8BEFBTPS:&r {TPS}
+&#F8BEFBUptime:&r {UPTIME}
+&#F8BEFBIP:&r {IP}
+&#F8BEFBAddress:&r {ADDRESS}
+&#F8BEFBPlugin list:&r {PLUGINS}
+&#F8BEFBVersion of CraftBukkit:&r {VERSION}

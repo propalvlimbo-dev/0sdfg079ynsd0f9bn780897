@@ -1,0 +1,83 @@
+menu-slot: 11
+cooldown-hours: 24
+permission: quest.fish
+chain: fish
+result:
+  ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: NETHERITE_SWORD
+  meta:
+    ==: ItemMeta
+    meta-type: UNSPECIFIC
+    display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gold","text":"Фарм
+      Меч"}],"text":""}'
+    enchants:
+      LOOT_BONUS_MOBS: 5
+      DURABILITY: 5
+ingredients:
+  '0':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BUBBLE_CORAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Осколок Энда"}],"text":""}'
+      custom-model-data: 1001
+  '1':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BUBBLE_CORAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Осколок Энда"}],"text":""}'
+      custom-model-data: 1001
+  '2':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_SWORD
+  '3':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BUBBLE_CORAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Осколок Энда"}],"text":""}'
+      custom-model-data: 1001
+  '4':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHER_STAR
+  '5':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BUBBLE_CORAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Осколок Энда"}],"text":""}'
+      custom-model-data: 1001
+  '6':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_SWORD
+  '7':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BUBBLE_CORAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Осколок Энда"}],"text":""}'
+      custom-model-data: 1001
+  '8':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BUBBLE_CORAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Осколок Энда"}],"text":""}'
+      custom-model-data: 1001

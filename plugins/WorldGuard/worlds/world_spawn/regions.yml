@@ -1,0 +1,244 @@
+regions:
+  tower_1:
+    min:
+      x: -20
+      y: 89
+      z: -20
+    max:
+      x: 20
+      y: 229
+      z: 20
+    members: {}
+    flags:
+      build: deny
+      use: deny
+      passthrough: deny
+      interact: deny
+      chest-access: deny
+      mob-spawning: deny
+    owners: {}
+    type: cuboid
+    priority: 0
+  jobs_fish:
+    min:
+      x: -26
+      y: -64
+      z: 39
+    max:
+      x: 34
+      y: 319
+      z: 74
+    members: {}
+    flags:
+      other-explosion: allow
+      use: allow
+      pvp: allow
+      tnt: deny
+    owners: {}
+    type: cuboid
+    priority: 5
+  tower_3:
+    min:
+      x: -216
+      y: 84
+      z: 60
+    max:
+      x: -176
+      y: 224
+      z: 100
+    members: {}
+    flags:
+      build: deny
+      use: deny
+      passthrough: deny
+      interact: deny
+      chest-access: deny
+      mob-spawning: deny
+    owners: {}
+    type: cuboid
+    priority: 0
+  cabinka1:
+    min:
+      x: -26
+      y: 68
+      z: -18
+    max:
+      x: -18
+      y: 77
+      z: -5
+    members: {}
+    flags:
+      invincible: deny
+      blocked-cmds:
+      - /fly
+      pvp: allow
+    owners: {}
+    type: cuboid
+    priority: 5
+  tower_2:
+    min:
+      x: -20
+      y: 75
+      z: -20
+    max:
+      x: 20
+      y: 215
+      z: 20
+    members: {}
+    flags:
+      build: deny
+      use: deny
+      passthrough: deny
+      interact: deny
+      chest-access: deny
+      mob-spawning: deny
+    owners: {}
+    type: cuboid
+    priority: 0
+  cabinka2:
+    min:
+      x: -26
+      y: 70
+      z: 5
+    max:
+      x: -18
+      y: 77
+      z: 19
+    members: {}
+    flags:
+      invincible: deny
+      blocked-cmds:
+      - /fly
+      pvp: allow
+    owners: {}
+    type: cuboid
+    priority: 0
+  tower_5:
+    min:
+      x: -20
+      y: 89
+      z: -20
+    max:
+      x: 20
+      y: 229
+      z: 20
+    members: {}
+    flags:
+      build: deny
+      use: deny
+      passthrough: deny
+      interact: deny
+      chest-access: deny
+      mob-spawning: deny
+    owners: {}
+    type: cuboid
+    priority: 0
+  tower_4:
+    min:
+      x: 95
+      y: 42
+      z: -101
+    max:
+      x: 135
+      y: 182
+      z: -61
+    members: {}
+    flags:
+      build: deny
+      use: deny
+      passthrough: deny
+      interact: deny
+      chest-access: deny
+      mob-spawning: deny
+    owners: {}
+    type: cuboid
+    priority: 0
+  jobs_mine:
+    min:
+      x: -37
+      y: -64
+      z: -87
+    max:
+      x: 48
+      y: 319
+      z: -29
+    members: {}
+    flags:
+      pvp: deny
+      tnt: deny
+    owners: {}
+    type: cuboid
+    priority: 0
+  pvp:
+    min:
+      x: -113
+      y: 0
+      z: -37
+    max:
+      x: -36
+      y: 150
+      z: 27
+    members: {}
+    flags:
+      lightning: deny
+      invincible: deny
+      blocked-cmds:
+      - /fly
+      chest-access: allow
+      pvp: allow
+    owners: {}
+    type: cuboid
+    priority: 0
+  jobs_farm:
+    min:
+      x: -46
+      y: -64
+      z: 55
+    max:
+      x: 107
+      y: 319
+      z: 140
+    members: {}
+    flags:
+      pvp: allow
+      tnt: deny
+    owners: {}
+    type: cuboid
+    priority: 0
+  __global__:
+    members: {}
+    flags:
+      lightning: deny
+      deny-message: ''
+      other-explosion: deny
+      wither-damage: deny
+      invincible: allow
+      use: deny
+      interact: allow
+      enderman-grief: deny
+      pvp: deny
+      chest-access: deny
+      mob-spawning: deny
+      weather-lock: clear
+      fire-spread: deny
+      enderdragon-block-damage: deny
+      creeper-explosion: deny
+      build: deny
+      blocked-cmds:
+      - /regions i
+      - /region info
+      - /rg i
+      - /region i
+      - /rg claim
+      - /regions claim
+      - /region claim
+      - /regions info
+      - /rg info
+      mob-damage: deny
+      potion-splash: allow
+      lava-flow: deny
+      ghast-fireball: deny
+      entity-item-frame-destroy: deny
+    owners: {}
+    type: global
+    priority: 0

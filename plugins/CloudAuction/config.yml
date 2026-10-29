@@ -1,0 +1,243 @@
+database:
+  type: "SQLite" # Доступны: SQLite, MySQL
+  host: "localhost"
+  port: 3306
+  username: "admin"
+  password: "admin"
+  playerDatabase: "data"
+
+settings:
+  listingDurationHours: 24
+  maxItemsDefault: 5
+  itemsPerPage: 28
+
+gui:
+  auction:
+    title: "&fꈁꀀꈂꌗꈂꀁꈃ&0ꄙ"
+    slots: [10,11,12,13,14,15,16,19,20,21,22,23,24,25,28,29,30,31,32,33,34,37,38,39,40,41,42,43]
+
+  my:
+    title: "&fꈁꀀꈂꌗꈂꀁꈃ§0ꄙ&r&r"
+    slots: [10,11,12,13,14,15,16,19,20,21,22,23,24,25,28,29,30,31,32,33,34,37,38,39,40,41,42,43]
+
+  confirm:
+    title: "&fꈁꀀꈂꌵꈂꀁꈃ&0ꄙ"
+    itemSlot: 22
+    confirmSlots: [19,20,28,29]
+    cancelSlots: [24,25,33,34]
+
+  category:
+    title: "&fꈁꀀꈂꌴꈂꀁ&0ꈃꄙ"
+
+buttons:
+  sort:
+    slot: 3
+    material: HOPPER
+    customModelData: 10006
+    name: "&#F8BEFB&lСортировка"
+    lore:
+      - "&7Нажмите, чтобы изменить сортировку"
+      - "{sortTypes}"
+
+  refresh:
+    slot: 4
+    material: SNOWBALL
+    customModelData: 10005
+    name: "&#F8BEFB&lОбновить аукцион"
+    lore:
+      - "&7Нажмите, чтобы &#F8BEFBобновить"
+      - "&7список товара"
+
+  category:
+    slot: 5
+    material: COMPARATOR
+    customModelData: 10007
+    name: "&#F8BEFB&lВыбрать категорию"
+    lore:
+      - "&7Нажмите, чтобы выбрать категорию"
+      - "&7Сейчас выбрана: {current}"
+
+  myItems:
+    slot: 49
+    material: OAK_DOOR
+    customModelData: 10004
+    name: "&#F8BEFB&lВаши Товары"
+    lore:
+      - " &7Истекшие товары: &#F8BEFB{expired}"
+      - " &7Товары на продаже: &#F8BEFB{active}&7/&#F8BEFB{max}"
+      - ""
+      - "&#F8BEFBНажмите, чтобы посмотреть свои товары"
+
+  nextPage:
+    slot: 53
+    material: ARROW
+    customModelData: 10003
+    name: "&#F8BEFB&lСледующая страница"
+    lore:
+      - "&7Нажмите, чтобы перейти на"
+      - "&#F8BEFBследующую &7страницу"
+
+  prevPage:
+    slot: 45
+    material: ARROW
+    customModelData: 10002
+    name: "&#F8BEFB&lПредыдущая страница"
+    lore:
+      - "&7Нажмите, чтобы перейти на"
+      - "&#F8BEFBпредыдущую &7страницу"
+
+  back:
+    slot: 49
+    material: OAK_DOOR
+    customModelData: 10004
+    name: "&#F8BEFB&lГлавная"
+    lore:
+      - "&f"
+
+  confirm:
+    material: LIME_STAINED_GLASS_PANE
+    name: "&#F8BEFB&lКупить"
+    lore:
+      - "&f"
+
+  cancel:
+    material: RED_STAINED_GLASS_PANE
+    name: "&c&lОтмена"
+    lore:
+      - "&f"
+
+categories:
+  ALL:
+    slot: 10
+    material: BARRIER
+    name: "&#F8BEFB&lВсе Предметы"
+    lore:
+      - "&7Нажмите, чтобы выбрать"
+
+  ARMOR:
+    slot: 13
+    material: TOTEM_OF_UNDYING
+    name: "&#F8BEFB&lБроня"
+    lore:
+      - "&7Нажмите, чтобы выбрать"
+
+  WEAPONS:
+    slot: 16
+    material: BOW
+    name: "&#F8BEFB&lОружие"
+    lore:
+      - "&7Нажмите, чтобы выбрать"
+
+  TOOLS:
+    slot: 19
+    material: DIAMOND_PICKAXE
+    name: "&#F8BEFB&lИнструменты"
+    lore:
+      - "&7Нажмите, чтобы выбрать"
+
+  HEADS:
+    slot: 22
+    material: PLAYER_HEAD
+    name: "&#F8BEFB&lШары&8/&#F8BEFB&lГоловы"
+    lore:
+      - "&7Нажмите, чтобы выбрать"
+
+  SPAWNERS:
+    slot: 25
+    material: SPAWNER
+    name: "&#F8BEFB&lСпавнера"
+    lore:
+      - "&7Нажмите, чтобы выбрать"
+
+  ENCHANTS:
+    slot: 28
+    material: ENCHANTED_BOOK
+    name: "&#F8BEFB&lЗачарования"
+    lore:
+      - "&7Нажмите, чтобы выбрать"
+
+  FOOD:
+    slot: 31
+    material: APPLE
+    name: "&#F8BEFB&lЕда"
+    lore:
+      - "&7Нажмите, чтобы выбрать"
+
+  POTIONS:
+    slot: 34
+    material: POTION
+    name: "&#F8BEFB&lЗелья"
+    lore:
+      - "&7Нажмите, чтобы выбрать"
+
+itemDisplay:
+  lore:
+    - ""
+    - " &7Продавец: &#F8BEFB{seller} {status}"
+    - " &7Цена: &#F8BEFB{price}"
+    - " &7Истекает через: &#F8BEFB{time}"
+    - ""
+    - " &#F8BEFB{clickAction}"
+  status:
+    online: "&7(&aОнлайн&7)"
+    offline: "&7(&cОффлайн&7)"
+  clickAction: "Нажмите, чтобы купить"
+
+myItemsDisplay:
+  lore:
+    - ""
+    - " &7Цена: &#F8BEFB{price}"
+    - " &7Истекает через: &#F8BEFB{time}"
+    - ""
+    - " &#F8BEFB{clickAction}"
+  clickAction: "Нажмите, чтобы снять с продажи"
+
+sortTypes:
+  NEWEST: "▪ Сначала новые"
+  OLDEST: "▪ Сначала старые"
+  CHEAPEST: "▪ Сначала дешевые"
+  EXPENSIVE: "▪ Сначала дорогие"
+
+messages:
+  onlyPlayers: "&#F8BEFBАукцион &7» &cДанная команда доступна только для игрока"
+  usage:
+    - "&#F8BEFBАукцион &7» &#F8BEFB&lАукцион"
+    - "&#F8BEFBАукцион &7» &#F8BEFB/auction &7- открыть товары"
+    - "&#F8BEFBАукцион &7» &#F8BEFB/auction search [Предмет] &7- поиск по аукциону"
+    - "&#F8BEFBАукцион &7» &#F8BEFB/auction sell (Цена) &7- выставить предмет на продажу"
+    - "&#F8BEFBАукцион &7» &#F8BEFB/auction my &7- просмотреть свои товары"
+  adminUsage: "&#F8BEFBАукцион &7» &f/cloudauction reload/resetdb"
+  noPerms: "&#F8BEFBАукцион &7» &cУ вас нет прав"
+  reloadCmd: "&#F8BEFBАукцион &7» &aКонфиг перезагружен"
+  resetdbCmd: "&#F8BEFBАукцион &7» &aБаза данных очищена"
+  noItemInHand: "&#F8BEFBАукцион &7» &cВозьмите предмет в руку, который хотите продать"
+  maxItemsReached: "&#F8BEFBАукцион &7» &cВы достигли лимита на продажу предметов"
+  itemListed: "&#F8BEFBАукцион &7» &aВы успешно выставили предмет на продажу"
+  invalidPrice: "&#F8BEFBАукцион &7» &cЦена указана некорректно"
+  itemPurchased: "&#F8BEFBАукцион &7» &aВы успешно купили предмет"
+  itemSold: "&#F8BEFBАукцион &7» &#F8BEFB{buyer} &fкупил у вас &#F8BEFB{item} &fза &#F8BEFB{price}$"
+  notEnoughMoney: "&#F8BEFBАукцион &7» &cНедостаточно средств для совершения этой покупки"
+  cantBuyOwnItem: "&#F8BEFBАукцион &7» &cВы не можете купить свой же товар"
+  itemAlreadySold: "&#F8BEFBАукцион &7» &cЭтот предмет уже был продан"
+  inventoryFull: "&#F8BEFBАукцион &7» &cУ вас полный инвентарь"
+  itemExpired: "&#F8BEFBАукцион &7» &cСрок действия этого предмета истек"
+  itemReturned: "&#F8BEFBАукцион &7» &aПредмет возвращен в ваш инвентарь"
+  itemExpiredReturned: "&#F8BEFBАукцион &7» &aСрок действия товара истек, предмет возвращен в инвентарь"
+  inventoryFullPending: "&#F8BEFBАукцион &7» &cИнвентарь полон"
+  expiredItemsReturned: "&#F8BEFBАукцион &7» &aИстекшие предметы с аукциона возвращены в ваш инвентарь"
+  expiredItemClaimed: "&#F8BEFBАукцион &7» &aВы забрали истекший предмет"
+  itemNotFound: "&#F8BEFBАукцион &7» &cПредмет не найден"
+  notYourItem: "&#F8BEFBАукцион &7» &cЭто не ваш предмет"
+  itemNotExpired: "&#F8BEFBАукцион &7» &cЭтот предмет еще не истек"
+  specifyPrice: "&#F8BEFBАукцион &7» &cУкажите цену для продажи"
+  specifySearch: "&#F8BEFBАукцион &7» &cУкажите запрос для поиска"
+
+time:
+  expired: "Истекло"
+  days: " д."
+  hours: " ч."
+  minutes: " мин."
+  seconds: " сек."
+
+groupPermissions:
+  - "cloudauction.default.999"

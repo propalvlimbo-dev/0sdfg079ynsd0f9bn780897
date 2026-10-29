@@ -1,0 +1,90 @@
+WorldCleaner:
+  enabled: true
+  worlds:
+    - world
+    - world_nether
+    - world_the_end
+  values:
+    interval: 420
+    alerts:
+      enabled: true
+      permission: ""
+      actionbar: false
+      message: true
+
+    items:
+      enabled: true
+      disable_item_despawn: false
+      time_lived: 15000
+      blacklist:
+        - BEACON
+        - TOTEM_OF_UNDYING
+        - ELYTRA
+        - ENCHANTED_GOLDEN_APPLE
+        - PLAYER_HEAD
+        - SPAWNER
+        - TRIPWIRE_HOOK
+        - DRAGON_EGG
+        - NETHER_STAR
+        - NETHERITE_HELMET
+        - NETHERITE_CHESTPLATE
+        - NETHERITE_LEGGINGS
+        - NETHERITE_BOOTS
+        - NETHERITE_SWORD
+        - NETHERITE_PICKAXE
+        - NETHERITE_AXE
+        - NETHERITE_SHOVEL
+        - NETHERITE_INGOT
+        - SHULKER_BOX
+        - WHITE_SHULKER_BOX
+        - ORANGE_SHULKER_BOX
+        - MAGENTA_SHULKER_BOX
+        - LIGHT_BLUE_SHULKER_BOX
+        - YELLOW_SHULKER_BOX
+        - LIME_SHULKER_BOX
+        - PINK_SHULKER_BOX
+        - GRAY_SHULKER_BOX
+        - LIGHT_GRAY_SHULKER_BOX
+        - CYAN_SHULKER_BOX
+        - PURPLE_SHULKER_BOX
+        - BLUE_SHULKER_BOX
+        - BROWN_SHULKER_BOX
+        - GREEN_SHULKER_BOX
+        - RED_SHULKER_BOX
+        - BLACK_SHULKER_BOX
+      abyss:
+        enabled: false
+        alerts: false
+        permission: ""
+        item_despawn: false
+        close: 60
+        blacklist:
+          - BEDROCK
+
+    creatures:
+      enabled: true
+      named: false
+      drop_items: false
+      stacked: false
+      levelled: false
+      ignore_models: true
+      list_mode: true
+      list:
+        - BAT
+        - PHANTOM
+        - SILVERFISH
+        - SQUID
+        - GLOW_SQUID
+        - COD
+        - SALMON
+        - PUFFERFISH
+        - TROPICAL_FISH
+
+    projectiles:
+      enabled: true
+      list_mode: true
+      list:
+        - EGG
+        - SNOWBALL
+        - ARROW
+        - SPECTRAL_ARROW

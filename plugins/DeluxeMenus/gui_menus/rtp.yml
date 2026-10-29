@@ -1,0 +1,46 @@
+menu_title: '§fꈁꀀꈂꌧꈂꀁ§fꈃꄕ'
+open_command: rtp
+size: 54
+items:
+  item_20:
+    material: ENDER_PEARL
+    slot: 20
+    display_name: '&#F8BEFBБлизкая телепортация'
+    lore:
+      - ''
+      - '&7 Дальность: &#F8BEFB1000 блоков'
+      - '&7 Опасность: &#F8BEFBСредняя'
+      - '&7 Доступно: &aВСЕМ'
+      - ''
+      - '&#F8BEFB➠ &fНажмите, чтобы телепортироваться'
+    click_commands:
+      - '[close]'
+      - '[player] rtp safe'
+  item_22:
+    material: PLAYER_HEAD
+    slot: 22
+    display_name: '&#F8BEFBТелепортация рядом с игроками'
+    lore:
+      - ''
+      - '&7 Дальность: &#F8BEFBдо 2000 блоков'
+      - '&7 Опасность: &cВысокая'
+      - '&7 Доступно: &fот &#FD00E4&lDRAGON'
+      - ''
+      - '&#F8BEFB➠ &fНажмите, чтобы телепортироваться'
+    click_commands:
+      - '[close]'
+      - '[player] rtp near'
+  item_24:
+    material: ENDER_EYE
+    slot: 24
+    display_name: '&#F8BEFBДалёкая телепортация'
+    lore:
+      - ''
+      - '&7 Дальность: &#F8BEFB2000 блоков'
+      - '&7 Опасность: &aНизкая'
+      - '&7 Доступно: &aВСЕМ'
+      - ''
+      - '&#F8BEFB➠ &fНажмите, чтобы телепортироваться'
+    click_commands:
+      - '[close]'
+      - '[player] rtp far'

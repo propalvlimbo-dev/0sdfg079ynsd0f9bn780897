@@ -1,0 +1,101 @@
+menu_title: '§fꈁꀀꈂꌅꈂꀁ§fꈃꄂ'
+open_command: warps
+size: 54
+items:
+  item_1:
+    material: WHEAT
+    slot: 1
+    display_name: '&7Варп &8- &#F8BEFBfarm'
+    lore:
+      - '  &7Нажмите, чтобы перейти на &#F8BEFB/warp farm  '
+    click_commands:
+      - '[player] warp farm'
+      - '[close]'
+  item_2:
+    material: DIAMOND_ORE
+    slot: 2
+    display_name: '&7Варп &8- &#F8BEFBmine'
+    lore:
+      - '  &7Нажмите, чтобы перейти на &#F8BEFB/warp mine  '
+    click_commands:
+      - '[player] warp mine'  
+      - '[close]'
+  item_3:
+    material: TROPICAL_FISH
+    slot: 3
+    display_name: '&7Варп &8- &#F8BEFBfish'
+    lore:
+      - '  &7Нажмите, чтобы перейти на &#F8BEFB/warp fish  '
+    click_commands:
+      - '[player] warp fish'  
+      - '[close]'
+  item_4:
+    material: OAK_LOG
+    slot: 4
+    display_name: '&7Варп &8- &#F8BEFBles'
+    lore:
+      - '  &7Нажмите, чтобы перейти на &#F8BEFB/warp les  '
+    click_commands:
+      - '[player] warp les'  
+      - '[close]'
+  item_5:
+    material: SUNFLOWER
+    slot: 5
+    display_name: '&7Варп &8- &#F8BEFBah'
+    lore:
+      - '  &7Нажмите, чтобы перейти на &#F8BEFB/warp ah  '
+    click_commands:
+      - '[player] warp auc'  
+      - '[close]'
+  item_6:
+    material: TRAPPED_CHEST
+    slot: 6
+    display_name: '&7Варп &8- &#F8BEFBcase'
+    lore:
+      - '  &7Нажмите, чтобы перейти на &#F8BEFB/warp case  '
+    click_commands:
+      - '[player] warp case'  
+      - '[close]'
+  item_7:
+    material: GOLD_NUGGET
+    slot: 7
+    display_name: '&7Варп &8- &#F8BEFBcasino'
+    lore:
+      - '  &7Нажмите, чтобы перейти на &#F8BEFB/warp casino  '
+    click_commands:
+      - '[player] warp casino'
+      - '[close]'      
+  item_10:
+    material: END_PORTAL_FRAME
+    slot: 10
+    display_name: '&7Варп &8- &#F8BEFBportals'
+    lore:
+      - '  &7Нажмите, чтобы перейти на &#F8BEFB/warp portals  '
+    click_commands:
+      - '[player] warp portals'  
+      - '[close]'
+  item_11:
+    material: ENDER_EYE
+    slot: 11
+    display_name: '&7Варп &8- &#F8BEFBend'
+    lore:
+      - '  &7Нажмите, чтобы перейти на &#F8BEFB/warp end  '
+    click_commands:
+      - '[player] warp end'  
+      - '[close]'
+  item_12:
+    material: NETHERITE_SWORD
+    slot: 12
+    display_name: '&7Варп &8- &#F8BEFBpvp'
+    lore:
+      - '  &7Нажмите, чтобы перейти на &#F8BEFB/warp pvp  '
+    click_commands:
+      - '[player] warp pvp'  
+      - '[close]'
+  item_49:
+    material: OAK_DOOR
+    slot: 49
+    display_name: '&fВ главное меню'
+    model_data: 10004
+    click_commands:
+      - '[player] warp'

@@ -1,0 +1,14 @@
+location: world_spawn:66.250:64.116:-40.947
+enabled: true
+display-range: 24
+update-range: 24
+update-interval: 20
+facing: 0.0
+down-origin: false
+pages:
+- lines:
+  - content: '&#F8BEFB&lТелепортация в игровой мир'
+    height: 0.3
+  - content: '<#F8BEFB>&lГРИФ #1</#FAD8FC>'
+    height: 0.3
+  actions: {}

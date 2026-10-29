@@ -1,0 +1,84 @@
+menu-slot: 14
+cooldown-hours: 24
+permission: quest.farm
+chain: farm
+result:
+  ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: FURNACE
+  meta:
+    ==: ItemMeta
+    meta-type: TILE_ENTITY
+    display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Комбинированая
+      Печь"}],"text":""}'
+    lore:
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Имеет
+      "},{"italic":false,"color":"gold","text":"100%"},{"italic":false,"color":"gray","text":"
+      шанс удвоить ресурс"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Работает
+      на "},{"italic":false,"color":"gold","text":"30%"},{"italic":false,"color":"gray","text":"
+      быстрее"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Потребляет
+      "},{"italic":false,"color":"red","text":"очень много"},{"italic":false,"color":"gray","text":"
+      топлива"}],"text":""}'
+    enchants:
+      DURABILITY: 1
+    ItemFlags:
+    - HIDE_ENCHANTS
+    - HIDE_UNBREAKABLE
+    PublicBukkitValues:
+      rwfurnace:nfurnace-block: COMBINATION
+      rwfurnace:nfurnace-level: 1i
+    blockMaterial: FURNACE
+ingredients:
+  '0':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: DAYLIGHT_DETECTOR
+  '1':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: FURNACE
+  '2':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: DAYLIGHT_DETECTOR
+  '3':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BLAST_FURNACE
+  '4':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHER_STAR
+  '5':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: SMOKER
+  '6':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BUBBLE_CORAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Осколок Энда"}],"text":""}'
+      custom-model-data: 1001
+  '7':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BUBBLE_CORAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Осколок Энда"}],"text":""}'
+      custom-model-data: 1001
+  '8':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BUBBLE_CORAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Осколок Энда"}],"text":""}'
+      custom-model-data: 1001

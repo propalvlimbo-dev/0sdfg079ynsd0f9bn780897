@@ -1,0 +1,925 @@
+﻿#########################################################
+## Developed by Little Room, patreon.com/littleroomdev ##
+#########################################################
+
+LR_BEHOLDER_aggro:
+  TargetConditions:
+  - lineofsight
+  - fieldofview{angle=180}
+  Skills:
+  - threat{amount=10}
+  - look{force=true}
+
+LR_BEHOLDER_recoil:
+  Skills:
+  - recoil{r=10;pitch=-.4}
+  - delay 1
+  - recoil{r=10;pitch=.3}
+  - delay 1
+  - recoil{r=10;pitch=-.2}
+  - delay 1
+  - recoil{r=10;pitch=.1}
+
+
+LR_BEHOLDER_damaged:
+  Skills:
+  - state{s=hit_<random.1to3>;p=5;lo=7} @self{conditions=[ - offgcd true]}
+  - brightness{em=false;b=15;s=15} @self
+  - delay 2
+  - brightness{em=false;b=-1;s=-1} @self
+  - brightness{p=glow;em=false;b=15;s=15} @self
+
+  
+### BEHOLDER LEASH ###
+
+LR_BEHOLDER_target_too_far_away:
+  TargetConditions:
+  - distance{d=>12} true
+  Skills:
+  ###- message{m="YOURE SO FAR AWAY!"} @target
+  - propel{v=0.25} @target
+  
+LR_BEHOLDER_maintain_altitude:
+  TargetConditions:
+  - distance{d=>12} false
+  Conditions:
+  - varequals{var=caster.swoop;val=true} false
+  - altitude{a=<6} true
+  Skills:
+  - propel{v=0.15} @forward{f=0;y=2}
+  
+  
+### ATTACKS ###
+  
+  
+### BITE ###  
+  
+LR_BEHOLDER_swoop:
+  Cooldown: 15
+  TargetConditions:
+  - distance{d=8to12} true
+  Conditions:
+  - varequals{var=caster.eye_lasers;val=true} false
+  - offgcd true
+  Skills:
+  - setvar{var=caster.swoop;val=true;type=STRING;duration=40}
+  - propel{v=0.5;repeat=20;repeati=1} @target{conditions=[ - distance{d=>3}]}
+  
+  
+LR_BEHOLDER_bite:
+  Cooldown: 4
+  TargetConditions:
+  - distance{d=<6} true
+  Conditions:
+  - offgcd true
+  Skills:
+  - gcd{ticks=40}
+  - sound{s=littleroom_beholder:beholder.open_maw;v=1;sc=HOSTILE;p=1.0;delay=5} @self
+  - state{s=bite;p=2} @self
+  - propel{v=1;delay=10} @target
+  - sound{s=littleroom_beholder:beholder.bite;v=1;sc=HOSTILE;p=1.0;delay=10} @self
+  - totem{md=2;oH=LR_BEHOLDER_bite_damage;hr=2;vr=2;drawhitbox=false;delay=15;hnp=true} @modelpart{pid=body;offset=LOCAL;z=-2;y=-2}
+  
+LR_BEHOLDER_bite_damage:
+  Skills:
+  - shieldbreak{duration=120}
+  - skill{s=LR_BEHOLDER_recoil}
+  - basedamage{m=1}
+  - throw{v=12;vy=4}
+  - e:p{p=block;m=NETHER_WART;a=50;hs=.25;vs=.25;y=1} @target{conditions=[ - blocking false]}
+  
+  
+  
+  
+  
+  
+  
+  
+### LASER ###
+
+LR_BEHOLDER_laser_telegraph_eyeball_1:
+  Skills:
+  - missile{bulletType=MOB;
+               mob=LR_BEHOLDER_laser_particle;
+               syo=<random.float.-2to2>;
+               sfo=<random.float.2to4>;
+               sso=<random.float.-2to2>;
+               oT=[ - setprojectiledirection @modelpart{pid=tentacle_1_eyeball;offset=GLOBAL;y=2}];
+               v=5;
+               fromorigin=true;
+               origin=@modelpart{pid=tentacle_1_eyeball};
+               hitself=true;
+               mr=2;
+               byo=2;
+               tyo=2;
+               se=false;
+               sb=false}
+
+LR_BEHOLDER_laser_telegraph_eyeball_2:
+  Skills:
+  - missile{bulletType=MOB;
+               mob=LR_BEHOLDER_laser_particle;
+               syo=<random.float.-2to2>;
+               sfo=<random.float.2to4>;
+               sso=<random.float.-2to2>;
+               oT=[ - setprojectiledirection @modelpart{pid=tentacle_1_eyeball2;offset=GLOBAL;y=2}];
+               v=5;
+               fromorigin=true;
+               origin=@modelpart{pid=tentacle_1_eyeball2};
+               hitself=true;
+               mr=2;
+               byo=2;
+               tyo=2;
+               se=false;
+               sb=false}
+               
+LR_BEHOLDER_laser_telegraph_eyeball_3:
+  Skills:
+  - missile{bulletType=MOB;
+               mob=LR_BEHOLDER_laser_particle;
+               syo=<random.float.-2to2>;
+               sfo=<random.float.2to4>;
+               sso=<random.float.-2to2>;
+               oT=[ - setprojectiledirection @modelpart{pid=tentacle_1_eyeball3;offset=GLOBAL;y=2}];
+               v=5;
+               fromorigin=true;
+               origin=@modelpart{pid=tentacle_1_eyeball3};
+               hitself=true;
+               mr=2;
+               byo=2;
+               tyo=2;
+               se=false;
+               sb=false}
+               
+LR_BEHOLDER_laser_telegraph_eyeball_4:
+  Skills:
+  - missile{bulletType=MOB;
+               mob=LR_BEHOLDER_laser_particle;
+               syo=<random.float.-2to2>;
+               sfo=<random.float.2to4>;
+               sso=<random.float.-2to2>;
+               oT=[ - setprojectiledirection @modelpart{pid=tentacle_1_eyeball4;offset=GLOBAL;y=2}];
+               v=5;
+               fromorigin=true;
+               origin=@modelpart{pid=tentacle_1_eyeball4};
+               hitself=true;
+               mr=2;
+               byo=2;
+               tyo=2;
+               se=false;
+               sb=false}
+               
+LR_BEHOLDER_laser_telegraph_eyeball_5:
+  Skills:
+  - missile{bulletType=MOB;
+               mob=LR_BEHOLDER_laser_particle;
+               syo=<random.float.-2to2>;
+               sfo=<random.float.2to4>;
+               sso=<random.float.-2to2>;
+               oT=[ - setprojectiledirection @modelpart{pid=tentacle_1_eyeball5;offset=GLOBAL;y=2}];
+               v=5;
+               fromorigin=true;
+               origin=@modelpart{pid=tentacle_1_eyeball5};
+               hitself=true;
+               mr=2;
+               byo=2;
+               tyo=2;
+               se=false;
+               sb=false}
+               
+  
+LR_BEHOLDER_eye_laser:
+  #Cooldown: 5
+  TargetConditions:
+  - distance{d=<6} false
+  - fieldofview{angle=120} true
+  Conditions:
+  #- varequals{var=caster.swoop;val=true} false
+  - incombat true
+  - offgcd true
+  Skills:
+  - setvar{var=caster.eye_lasers;val=true;type=STRING;duration=60} @self
+  - randomskill{skills=LR_BEHOLDER_eye_laser_1,
+                       LR_BEHOLDER_eye_laser_2,
+                       LR_BEHOLDER_eye_laser_3,
+                       LR_BEHOLDER_eye_laser_4,
+                       LR_BEHOLDER_eye_laser_5}
+  
+LR_BEHOLDER_eye_laser_1:
+  Cooldown: 1
+  Conditions:
+  - offgcd true
+  - varequals{var=caster.eye_1;val=removed} false
+  TargetConditions:
+  - distance{d=8to32} true
+  Skills:
+  #- gcd{ticks=10}
+  - skill{s=LR_BEHOLDER_laser_telegraph_eyeball_1;repeat=3;repeati=1} @modelpart{pid=tentacle_1_eyeball}
+  #- summon{t=LR_BEHOLDER_target_marker} @targetlocation
+  - sound{s=littleroom_beholder:beholder.laser_build;v=5;sc=HOSTILE;p=1.0} @self
+  - delay 10
+  - state{s=fire_laser_1;p=4;lo=4} @self
+  - skill{s=LR_BEHOLDER_eye_laser_1_attack_projectile} @targetlocation
+  - sound{s=littleroom_beholder:beholder.laser;v=5;sc=HOSTILE;p=1.0} @self
+  
+LR_BEHOLDER_eye_laser_1_attack_projectile:
+  Conditions:
+  - varequals{var=caster.stun;val=true} false
+  Skills:
+  - projectile{v=50;
+               bullettype=DISPLAY;
+               interpolation=4;
+               material=ink_sac;
+               model=13370001;
+               hr=1;
+               vr=1;
+               sE=false;
+               oT=LR_BEHOLDER_eye_laser_tick;
+               oS=LR_BEHOLDER_eye_laser_start;
+               oH=LR_BEHOLDER_eye_laser_hit;
+               ohb=LR_BEHOLDER_eye_laser_end;
+               syo=0;
+               sfo=0.5;
+               sso=0;
+               tyo=1;
+               hnp=true;
+               bulletbrightnessblock=15;
+               bulletbrightnesssky=15;
+               fromorigin=true;
+               origin=@modelpart{pid=tentacle_1_eyeball}}
+  
+LR_BEHOLDER_eye_laser_2:
+  Cooldown: 1
+  Conditions:
+  - offgcd true
+  - varequals{var=caster.eye_2;val=removed} false
+  TargetConditions:
+  - distance{d=8to32} true
+  Skills:
+  #- gcd{ticks=10}
+  - skill{s=LR_BEHOLDER_laser_telegraph_eyeball_2;repeat=3;repeati=1} @modelpart{pid=tentacle_1_eyeball2}
+  #- summon{t=LR_BEHOLDER_target_marker} @targetlocation
+  - sound{s=littleroom_beholder:beholder.laser_build;v=5;sc=HOSTILE;p=1.0} @self
+  - delay 10
+  - state{s=fire_laser_2;p=4;lo=4} @self
+  - skill{s=LR_BEHOLDER_eye_laser_2_attack_projectile} @targetlocation
+  - sound{s=littleroom_beholder:beholder.laser;v=5;sc=HOSTILE;p=1.0} @self
+  
+LR_BEHOLDER_eye_laser_2_attack_projectile:
+  Conditions:
+  - varequals{var=caster.stun;val=true} false
+  Skills:
+  - projectile{v=50;
+               bullettype=DISPLAY;
+               interpolation=4;
+               material=ink_sac;
+               model=13370001;
+               hr=1;
+               vr=1;
+               sE=false;
+               oT=LR_BEHOLDER_eye_laser_tick;
+               oS=LR_BEHOLDER_eye_laser_start;
+               oH=LR_BEHOLDER_eye_laser_hit;
+               ohb=LR_BEHOLDER_eye_laser_end;
+               syo=0;
+               sfo=0.5;
+               sso=0;
+               tyo=1;
+               hnp=true;
+               bulletbrightnessblock=15;
+               bulletbrightnesssky=15;
+               fromorigin=true;
+               origin=@modelpart{pid=tentacle_1_eyeball2}}
+  
+LR_BEHOLDER_eye_laser_3:
+  Cooldown: 1
+  Conditions:
+  #- offgcd true
+  - varequals{var=caster.eye_3;val=removed} false
+  TargetConditions:
+  - distance{d=8to32} true
+  Skills:
+  - gcd{ticks=10}
+  - skill{s=LR_BEHOLDER_laser_telegraph_eyeball_3;repeat=3;repeati=1} @modelpart{pid=tentacle_1_eyeball3}
+  #- summon{t=LR_BEHOLDER_target_marker} @targetlocation
+  - sound{s=littleroom_beholder:beholder.laser_build;v=5;sc=HOSTILE;p=1.0} @self
+  - delay 10
+  - state{s=fire_laser_3;p=4;lo=4} @self
+  - skill{s=LR_BEHOLDER_eye_laser_3_attack_projectile} @targetlocation
+  - sound{s=littleroom_beholder:beholder.laser;v=5;sc=HOSTILE;p=1.0} @self
+  
+LR_BEHOLDER_eye_laser_3_attack_projectile:
+  Conditions:
+  - varequals{var=caster.stun;val=true} false
+  Skills:
+  - projectile{v=50;
+               bullettype=DISPLAY;
+               interpolation=4;
+               material=ink_sac;
+               model=13370001;
+               hr=1;
+               vr=1;
+               sE=false;
+               oT=LR_BEHOLDER_eye_laser_tick;
+               oS=LR_BEHOLDER_eye_laser_start;
+               oH=LR_BEHOLDER_eye_laser_hit;
+               ohb=LR_BEHOLDER_eye_laser_end;
+               syo=0;
+               sfo=0.5;
+               sso=0;
+               tyo=1;
+               hnp=true;
+               bulletbrightnessblock=15;
+               bulletbrightnesssky=15;
+               fromorigin=true;
+               origin=@modelpart{pid=tentacle_1_eyeball3}}
+  
+LR_BEHOLDER_eye_laser_4:
+  Cooldown: 1
+  Conditions:
+  #- offgcd true
+  - varequals{var=caster.eye_4;val=removed} false
+  TargetConditions:
+  - distance{d=8to32} true
+  Skills:
+  - gcd{ticks=10}
+  - skill{s=LR_BEHOLDER_laser_telegraph_eyeball_4;repeat=3;repeati=1} @modelpart{pid=tentacle_1_eyeball4}
+  #- summon{t=LR_BEHOLDER_target_marker} @targetlocation
+  - sound{s=littleroom_beholder:beholder.laser_build;v=5;sc=HOSTILE;p=1.0} @self
+  - delay 10
+  - state{s=fire_laser_4;p=4;lo=4} @self
+  - skill{s=LR_BEHOLDER_eye_laser_4_attack_projectile} @targetlocation
+  - sound{s=littleroom_beholder:beholder.laser;v=5;sc=HOSTILE;p=1.0} @self
+  
+LR_BEHOLDER_eye_laser_4_attack_projectile:
+  Conditions:
+  - varequals{var=caster.stun;val=true} false
+  Skills:
+  - projectile{v=50;
+               bullettype=DISPLAY;
+               interpolation=4;
+               material=ink_sac;
+               model=13370001;
+               hr=1;
+               vr=1;
+               sE=false;
+               oT=LR_BEHOLDER_eye_laser_tick;
+               oS=LR_BEHOLDER_eye_laser_start;
+               oH=LR_BEHOLDER_eye_laser_hit;
+               ohb=LR_BEHOLDER_eye_laser_end;
+               syo=0;
+               sfo=0.5;
+               sso=0;
+               tyo=1;
+               hnp=true;
+               bulletbrightnessblock=15;
+               bulletbrightnesssky=15;
+               fromorigin=true;
+               origin=@modelpart{pid=tentacle_1_eyeball4}}
+  
+LR_BEHOLDER_eye_laser_5:
+  Cooldown: 1
+  Conditions:
+  #- offgcd true
+  - varequals{var=caster.eye_5;val=removed} false
+  TargetConditions:
+  - distance{d=8to32} true
+  Skills:
+  - gcd{ticks=10}
+  - skill{s=LR_BEHOLDER_laser_telegraph_eyeball_5;repeat=3;repeati=1} @modelpart{pid=tentacle_1_eyeball5}
+  #- summon{t=LR_BEHOLDER_target_marker} @targetlocation
+  - sound{s=littleroom_beholder:beholder.laser_build;v=5;sc=HOSTILE;p=1.0} @self
+  - delay 10
+  - state{s=fire_laser_5;p=4;lo=4} @self
+  - skill{s=LR_BEHOLDER_eye_laser_5_attack_projectile} @targetlocation
+  - sound{s=littleroom_beholder:beholder.laser;v=5;sc=HOSTILE;p=1.0} @self
+  
+LR_BEHOLDER_eye_laser_5_attack_projectile:
+  Conditions:
+  - varequals{var=caster.stun;val=true} false
+  Skills:
+  - projectile{v=50;
+               bullettype=DISPLAY;
+               interpolation=4;
+               material=ink_sac;
+               model=13370001;
+               hr=1;
+               vr=1;
+               sE=false;
+               oT=LR_BEHOLDER_eye_laser_tick;
+               oS=LR_BEHOLDER_eye_laser_start;
+               oH=LR_BEHOLDER_eye_laser_hit;
+               ohb=LR_BEHOLDER_eye_laser_end;
+               syo=0;
+               sfo=0.5;
+               sso=0;
+               tyo=1;
+               hnp=true;
+               bulletbrightnessblock=15;
+               bulletbrightnesssky=15;
+               fromorigin=true;
+               origin=@modelpart{pid=tentacle_1_eyeball5}}
+    
+  
+LR_BEHOLDER_eye_laser_tick:
+  Skills:
+  - effect:blockmask{m=LIGHT;r=1;d=2;oa=true;na=false}
+  
+LR_BEHOLDER_eye_laser_start:
+  Skills:
+  - effect:blockmask{m=LIGHT;r=1;d=2;oa=true;na=false}
+  - effect:particle{p=flash}
+  
+LR_BEHOLDER_eye_laser_end:
+  Skills:
+  - explosion{yield=1;bd=false;f=false}
+  
+  
+  
+LR_BEHOLDER_eye_laser_hit:
+  TargetConditions:
+  - mythicmobtype{t=LRD_beholder} castinstead LR_BEHOLDER_eye_laser_deflect_hit
+  Skills:
+  - sudoskill{s=LR_BEHOLDER_eye_laser_hit_blocking;cat=true}
+
+LR_BEHOLDER_eye_laser_hit_blocking:
+  Skills:
+  #- message{m="<caster.name> i am running the sudoskill!"} @self
+  - skill{s=LR_BEHOLDER_eye_laser_hit_blocking_look_check} @trigger
+  
+LR_BEHOLDER_eye_laser_hit_blocking_look_check:
+  TriggerConditions:
+  - fieldofview{angle=180} orElseCast LR_BEHOLDER_eye_laser_hit_fail
+  Skills:
+  - skill{s=LR_BEHOLDER_eye_laser_hit_blocking_block_check} @self
+  #- message{m="<caster.name> the beholder is in my view!"} @self
+  
+  
+LR_BEHOLDER_eye_laser_hit_blocking_block_check:
+  Conditions:
+  - blocking orElseCast LR_BEHOLDER_eye_laser_hit_fail
+  Skills:
+  - endprojectile @trigger
+  - sound{s=littleroom_beholder:beholder.shield_hit;v=1;sc=HOSTILE;p=1.0} @self
+  - sound{s=littleroom_beholder:beholder.deflect;v=1;sc=HOSTILE;p=1.0} @self
+  ##- message{m="i am blocking!"} @self
+  - lunge{v=0.5} @forward{f=-2}
+  - skill{s=LR_BEHOLDER_recoil} @self
+  - projectile{v=25;
+               bullettype=DISPLAY;
+               interpolation=4;
+               material=ink_sac;
+               model=13370001;
+               hr=0.25;
+               vr=0.25;
+               sE=false;
+               oT=LR_BEHOLDER_eye_laser_tick;
+               oS=LR_BEHOLDER_eye_laser_start;
+               oH=LR_BEHOLDER_eye_laser_deflect_hit;
+               ohb=LR_BEHOLDER_eye_laser_end;
+               syo=1;
+               sfo=0.25;
+               sso=0;
+               tyo=6;
+               a=.75;
+               hnp=true;
+               hp=true;
+               eso=<random.float.-6to6>;
+               hnp=true;
+               drawhitbox=false;
+               bulletbrightnessblock=15;
+               bulletbrightnesssky=15} @trigger
+  
+LR_BEHOLDER_eye_laser_hit_fail:
+  Skills:
+  #- message{m="<caster.name> hit fail!"} @self
+  - ignite{d=60} @self
+  - throw{v=4;vy=5} @self{conditions=[ - isFlying false]}
+  - signal{signal=LASERHITFAIL} @trigger
+  - skill{s=LR_BEHOLDER_recoil} @self
+  
+  
+LR_BEHOLDER_eye_laser_deflect_hit:
+  Cooldown: 1
+  Conditions:
+  - varequals{var=caster.stun;val=true} false
+  Skills:
+  - sound{s=littleroom_beholder:beholder.deflect_hit;v=5;sc=HOSTILE;p=1.0} @self
+  - setvar{var=caster.stun;val=true;type=STRING;duration=40} @self
+  - sudoskill{s=LR_BEHOLDER_tentacle_dismemberment}
+  - damagepercent{percent=0.15}
+  - e:p{p=flash;a=1}
+  - skill{s=LR_BEHOLDER_recoil}
+  #- message{m="I GOT HIT BY A DEFLECTION"} @self
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+### LASER DANCE ###
+
+LR_BEHOLDER_laser_telegraph_laser_dance:
+  Skills:
+  - missile{bulletType=MOB;
+               mob=LR_BEHOLDER_laser_particle;
+               syo=<random.float.-2to2>;
+               sfo=<random.float.2to4>;
+               sso=<random.float.-2to2>;
+               oT=[ - setprojectiledirection @modelpart{pid=glow_eyeball;offset=GLOBAL;y=2}];
+               v=5;
+               fromorigin=true;
+               origin=@modelpart{pid=glow_eyeball};
+               hitself=true;
+               mr=2;
+               byo=2;
+               tyo=2;
+               se=false;
+               sb=false}
+               
+               
+               
+LR_BEHOLDER_laser_dance:
+  Cooldown: 25
+  Conditions:
+  - offgcd true
+  - (varequals{var=caster.eye_1;val=removed} && varequals{var=caster.eye_2;val=removed} && varequals{var=caster.eye_3;val=removed} && varequals{var=caster.eye_4;val=removed} && varequals{var=caster.eye_5;val=removed}) false
+  - altitude{a=5to8} true
+  TargetConditions:
+  - distance{d=5to16} true
+  - altitude{a=<2} true
+  - ydiff{diff=-3to-10} true
+  Skills:
+  - gcd{ticks=80}
+  #- stun{d=60} @self
+  - skill{s=LR_BEHOLDER_laser_telegraph_laser_dance;repeat=4;repeati=1} @modelpart{pid=glow_eyeball}
+  - sound{s=littleroom_beholder:beholder.laser_dance_build;v=5;sc=HOSTILE;p=1.0} @self
+  - delay 10
+  - lockmodel{l=true} @self
+  - lockmodel{l=false;delay=60} @self
+  - propel{v=0.15;repeat=20;repeati=1} @forward{f=1;lockpitch=true}
+  - state{s=laser_dance;p=6;lo=5} @self
+  ##- message{m="you are right in my Q zone!"} @target
+  - sound{s=littleroom_beholder:beholder.laser_dance;v=5;sc=HOSTILE;p=1.0;delay=15} @self
+  - skill{s=LR_BEHOLDER_laser_dance_eye_1}
+  - skill{s=LR_BEHOLDER_laser_dance_eye_2}
+  - skill{s=LR_BEHOLDER_laser_dance_eye_3}
+  - skill{s=LR_BEHOLDER_laser_dance_eye_4}
+  - skill{s=LR_BEHOLDER_laser_dance_eye_5}
+  
+LR_BEHOLDER_eye_laser_dance_hit:
+  Skills:
+  - ignite{d=60}
+  - throw{v=4;vy=5}
+  - basedamage{m=1}
+  - explosion{yield=1;bd=false;f=false;cd=1}
+  - skill{s=LR_BEHOLDER_recoil}
+  
+LR_BEHOLDER_eye_laser_dance_end:
+  Skills:
+  - totem{md=2;oH=LR_BEHOLDER_eye_laser_dance_AOE;hr=2;vr=2}
+  - e:p{p=lava;a=1}
+  - e:p{p=large_smoke;a=1;s=0.1;d=true;dir=0,1,0}
+  - effect:blockmask{m=LIGHT;r=1;d=2;oa=true;na=false}
+  
+LR_BEHOLDER_eye_laser_dance_AOE:
+  Skills:
+  - skill{s=LR_BEHOLDER_recoil;cd=1}
+  
+  ## EYE 1 ##
+  
+LR_BEHOLDER_laser_dance_eye_1:
+  Conditions:
+  - varequals{var=caster.eye_1;val=removed} false
+  Skills:
+  - partvis{pid=glow_eyeball_laser_1;em=false;v=true;delay=10} @self
+  - partvis{pid=glow_eyeball_laser_1;em=false;v=false;delay=60} @self
+  - skill{s=LR_BEHOLDER_laser_dance_eye_1_projectile;repeat=40;repeati=1}
+  
+LR_BEHOLDER_laser_dance_eye_1_projectile:
+  Skills:
+  - projectile{v=50;
+               interpolation=4;
+               hr=0.5;
+               vr=1;
+               sE=false;
+               oH=LR_BEHOLDER_eye_laser_dance_hit;
+               ohb=LR_BEHOLDER_eye_laser_dance_end;
+               syo=0;
+               sfo=0;
+               sso=0;
+               tyo=1;
+               hnp=true;
+               fromorigin=true;
+               origin=@modelpart{pid=tentacle_1_eyeball1}} @modelpart{pid=eyeball_1_laser_target}
+  
+  
+  ## EYE 2 ##
+  
+LR_BEHOLDER_laser_dance_eye_2:
+  Conditions:
+  - varequals{var=caster.eye_2;val=removed} false
+  Skills:
+  - partvis{pid=glow_eyeball_laser_2;em=false;v=true;delay=10} @self
+  - partvis{pid=glow_eyeball_laser_2;em=false;v=false;delay=60} @self
+  - skill{s=LR_BEHOLDER_laser_dance_eye_2_projectile;repeat=40;repeati=1}
+  
+LR_BEHOLDER_laser_dance_eye_2_projectile:
+  Skills:
+  - projectile{v=50;
+               interpolation=4;
+               hr=0.5;
+               vr=1;
+               sE=false;
+               oH=LR_BEHOLDER_eye_laser_dance_hit;
+               ohb=LR_BEHOLDER_eye_laser_dance_end;
+               syo=0;
+               sfo=0;
+               sso=0;
+               tyo=1;
+               hnp=true;
+               fromorigin=true;
+               origin=@modelpart{pid=tentacle_1_eyeball2}} @modelpart{pid=eyeball_2_laser_target}
+  
+  
+  ## EYE 3 ##
+  
+LR_BEHOLDER_laser_dance_eye_3:
+  Conditions:
+  - varequals{var=caster.eye_3;val=removed} false
+  Skills:
+  - partvis{pid=glow_eyeball_laser_3;em=false;v=true;delay=10} @self
+  - partvis{pid=glow_eyeball_laser_3;em=false;v=false;delay=60} @self
+  - skill{s=LR_BEHOLDER_laser_dance_eye_3_projectile;repeat=40;repeati=1}
+  
+LR_BEHOLDER_laser_dance_eye_3_projectile:
+  Skills:
+  - projectile{v=50;
+               interpolation=4;
+               hr=0.5;
+               vr=1;
+               sE=false;
+               oH=LR_BEHOLDER_eye_laser_dance_hit;
+               ohb=LR_BEHOLDER_eye_laser_dance_end;
+               syo=0;
+               sfo=0;
+               sso=0;
+               tyo=1;
+               hnp=true;
+               fromorigin=true;
+               origin=@modelpart{pid=tentacle_1_eyeball3}} @modelpart{pid=eyeball_3_laser_target}
+  
+  
+  ## EYE 4 ##
+  
+LR_BEHOLDER_laser_dance_eye_4:
+  Conditions:
+  - varequals{var=caster.eye_4;val=removed} false
+  Skills:
+  - partvis{pid=glow_eyeball_laser_4;em=false;v=true;delay=10} @self
+  - partvis{pid=glow_eyeball_laser_4;em=false;v=false;delay=60} @self
+  - skill{s=LR_BEHOLDER_laser_dance_eye_4_projectile;repeat=40;repeati=1}
+  
+LR_BEHOLDER_laser_dance_eye_4_projectile:
+  Skills:
+  - projectile{v=50;
+               interpolation=4;
+               hr=0.5;
+               vr=1;
+               sE=false;
+               oH=LR_BEHOLDER_eye_laser_dance_hit;
+               ohb=LR_BEHOLDER_eye_laser_dance_end;
+               syo=0;
+               sfo=0;
+               sso=0;
+               tyo=1;
+               hnp=true;
+               fromorigin=true;
+               origin=@modelpart{pid=tentacle_1_eyeball4}} @modelpart{pid=eyeball_4_laser_target}
+  
+  
+  ## EYE 5 ##
+  
+LR_BEHOLDER_laser_dance_eye_5:
+  Conditions:
+  - varequals{var=caster.eye_5;val=removed} false
+  Skills:
+  - partvis{pid=glow_eyeball_laser_5;em=false;v=true;delay=10} @self
+  - partvis{pid=glow_eyeball_laser_5;em=false;v=false;delay=60} @self
+  - skill{s=LR_BEHOLDER_laser_dance_eye_5_projectile;repeat=40;repeati=1}
+  
+LR_BEHOLDER_laser_dance_eye_5_projectile:
+  Skills:
+  - projectile{v=50;
+               interpolation=4;
+               hr=0.5;
+               vr=1;
+               sE=false;
+               oH=LR_BEHOLDER_eye_laser_dance_hit;
+               ohb=LR_BEHOLDER_eye_laser_dance_end;
+               syo=0;
+               sfo=0;
+               sso=0;
+               tyo=1;
+               hnp=true;
+               fromorigin=true;
+               origin=@modelpart{pid=tentacle_1_eyeball5}} @modelpart{pid=eyeball_5_laser_target}
+  
+               
+               
+               
+               
+               
+## EVADE PROJECTILES ##
+
+LR_BEHOLDER_evade_arrows:
+  Skills:
+  - skill{s=LR_BEHOLDER_detect_arrow_projectiles_left}
+  - skill{s=LR_BEHOLDER_detect_arrow_projectiles_right}
+
+
+LR_BEHOLDER_detect_arrow_projectiles_right:
+  Cooldown: 1
+  Conditions:
+  #- offgcd true
+  TargetConditions:
+  - onground false
+  - fieldofview{angle=90;r=60}
+  - entitytype{t=ARROW} true
+  Skills:
+  - gcd{ticks=5}
+  - state{s=evade_right;p=4;lo=3} @self
+  ###- message{m="OH DAMN IS THAT AN ARROW ON MY LEFT!?"} @everyone
+  - propel{v=0.5;repeat=5;repeati=1} @forward{f=0;so=5}
+
+LR_BEHOLDER_detect_arrow_projectiles_left:
+  Cooldown: 1
+  Conditions:
+  #- offgcd true
+  TargetConditions:
+  - onground false
+  - fieldofview{angle=90;r=-60}
+  - entitytype{t=ARROW} true
+  Skills:
+  - gcd{ticks=5}
+  - state{s=evade_left;p=4;lo=3} @self
+  ###- message{m="OH DAMN IS THAT AN ARROW ON MY RIGHT!?"} @everyone
+  - propel{v=0.5;repeat=5;repeati=1} @forward{f=0;so=-5}
+  
+  
+  
+#### TENTACLE REMOVALS/DISMEMBERMENT ####
+
+LR_BEHOLDER_tentacle_dismemberment:
+  Skills:
+  - randomskill{s=LR_BEHOLDER_remove_tentacle_1,
+                  LR_BEHOLDER_remove_tentacle_2,
+                  LR_BEHOLDER_remove_tentacle_3,
+                  LR_BEHOLDER_remove_tentacle_4,
+                  LR_BEHOLDER_remove_tentacle_5} @self
+
+LR_BEHOLDER_remove_tentacle_1:
+  Conditions:
+  - varequals{var=caster.eye_1;val=removed} false
+  Skills:
+  - gcd{ticks=120}
+  - sound{s=littleroom_beholder:beholder.scream;v=5;sc=HOSTILE;p=1.0} @self
+  - sound{s=littleroom_beholder:beholder.dismember_tentacle;v=2;sc=HOSTILE;p=1.0} @self
+  - changepart{mid=lrd_beholder;pid=tentacle_6_1_cube;nmid=lrd_beholder;npid=broken_tentacle} @self
+  - partvis{pid=tentacle_5_1;child=true} @self
+  - setvar{var=caster.eye_1;val=removed;type=STRING} @self
+  - skill{s=LR_BEHOLDER_recoil} @pir{r=24}
+  - state{s=remove_tentacle;p=10} @self
+  - state{s=tentacle_1_remove;p=11} @self
+  - e:p{p=falling_obsidian_tear;a=10;hs=.15;vs=.15;repeat=60;repeati=1} @modelpart{pid=tentacle_5_1}
+  ##- message{m="<caster.var.eye_1>"} @everyone
+  
+LR_BEHOLDER_remove_tentacle_2:
+  Conditions:
+  - varequals{var=caster.eye_2;val=removed} false
+  Skills:
+  - gcd{ticks=120}
+  - sound{s=littleroom_beholder:beholder.scream;v=5;sc=HOSTILE;p=1.0} @self
+  - sound{s=littleroom_beholder:beholder.dismember_tentacle;v=2;sc=HOSTILE;p=1.0} @self
+  - changepart{mid=lrd_beholder;pid=tentacle_6_1_cube2;nmid=lrd_beholder;npid=broken_tentacle} @self
+  - partvis{pid=tentacle_5_2;child=true} @self
+  - setvar{var=caster.eye_2;val=removed;type=STRING} @self
+  - skill{s=LR_BEHOLDER_recoil} @pir{r=24}
+  - state{s=remove_tentacle;p=10} @self
+  - state{s=tentacle_2_remove;p=12} @self
+  - e:p{p=falling_obsidian_tear;a=10;hs=.15;vs=.15;repeat=60;repeati=1} @modelpart{pid=tentacle_5_2}
+  ##- message{m="<caster.var.eye_2>"} @everyone
+  
+LR_BEHOLDER_remove_tentacle_3:
+  Conditions:
+  - varequals{var=caster.eye_3;val=removed} false
+  Skills:
+  - gcd{ticks=120}
+  - sound{s=littleroom_beholder:beholder.scream;v=5;sc=HOSTILE;p=1.0} @self
+  - sound{s=littleroom_beholder:beholder.dismember_tentacle;v=2;sc=HOSTILE;p=1.0} @self
+  - changepart{mid=lrd_beholder;pid=tentacle_6_1_cube3;nmid=lrd_beholder;npid=broken_tentacle} @self
+  - partvis{pid=tentacle_5_3;child=true} @self
+  - setvar{var=caster.eye_3;val=removed;type=STRING} @self
+  - skill{s=LR_BEHOLDER_recoil} @pir{r=24}
+  - state{s=remove_tentacle;p=10} @self
+  - state{s=tentacle_3_remove;p=13} @self
+  - e:p{p=falling_obsidian_tear;a=10;hs=.15;vs=.15;repeat=60;repeati=1} @modelpart{pid=tentacle_5_3}
+  ##- message{m="<caster.var.eye_3>"} @everyone
+  
+LR_BEHOLDER_remove_tentacle_4:
+  Conditions:
+  - varequals{var=caster.eye_4;val=removed} false
+  Skills:
+  - gcd{ticks=120}
+  - sound{s=littleroom_beholder:beholder.scream;v=5;sc=HOSTILE;p=1.0} @self
+  - sound{s=littleroom_beholder:beholder.dismember_tentacle;v=2;sc=HOSTILE;p=1.0} @self
+  - changepart{mid=lrd_beholder;pid=tentacle_6_1_cube4;nmid=lrd_beholder;npid=broken_tentacle} @self
+  - partvis{pid=tentacle_5_4;child=true} @self
+  - setvar{var=caster.eye_4;val=removed;type=STRING} @self
+  - skill{s=LR_BEHOLDER_recoil} @pir{r=24}
+  - state{s=remove_tentacle;p=10} @self
+  - state{s=tentacle_4_remove;p=14} @self
+  - e:p{p=falling_obsidian_tear;a=10;hs=.15;vs=.15;repeat=60;repeati=1} @modelpart{pid=tentacle_5_4}
+  ##- message{m="<caster.var.eye_4>"} @everyone
+  
+LR_BEHOLDER_remove_tentacle_5:
+  Conditions:
+  - varequals{var=caster.eye_5;val=removed} false
+  Skills:
+  - gcd{ticks=120}
+  - sound{s=littleroom_beholder:beholder.scream;v=5;sc=HOSTILE;p=1.0} @self
+  - sound{s=littleroom_beholder:beholder.dismember_tentacle;v=2;sc=HOSTILE;p=1.0} @self
+  - changepart{mid=lrd_beholder;pid=tentacle_6_1_cube5;nmid=lrd_beholder;npid=broken_tentacle} @self
+  - partvis{pid=tentacle_5_5;child=true} @self
+  - setvar{var=caster.eye_5;val=removed;type=STRING} @self
+  - skill{s=LR_BEHOLDER_recoil} @pir{r=24}
+  - state{s=remove_tentacle;p=10} @self
+  - state{s=tentacle_5_remove;p=15} @self
+  - e:p{p=falling_obsidian_tear;a=10;hs=.15;vs=.15;repeat=60;repeati=1} @modelpart{pid=tentacle_5_5}
+  ##- message{m="<caster.var.eye_5>"} @everyone
+  
+  
+  
+#### DEATH ####
+
+
+LR_BEHOLDER_death:
+  Skills:
+  - skill{s=LR_BEHOLDER_death_move_up;repeat=20;repeati=1} @self
+  - sound{s=littleroom_beholder:beholder.death;v=5;sc=HOSTILE;p=1.0} @self
+  - state{s=death} @self
+  - brightness{em=false;b=-1;s=-1} @self
+  - brightness{p=glow;em=false;b=15;s=15} @self
+  - e:p{p=falling_obsidian_tear;a=2;hs=.05;vs=.25;repeat=100;repeati=1} @modelpart{pid=glow_eyeball}
+  - e:p{p=falling_obsidian_tear;a=2;hs=.05;vs=.25;repeat=100;repeati=1} @modelpart{pid=right_cheek}
+  - e:p{p=large_smoke;a=2;hs=.25;vs=.25;repeat=100;repeati=1;d=true;dir=0,1,0} @modelpart{pid=body}
+  - skill{s=LR_BEHOLDER_recoil} @pir{r=24}
+  - changepart{mid=lrd_beholder;pid=body;nmid=lrd_beholder;npid=dead_body} @self
+  - changepart{mid=lrd_beholder;pid=bottom_eyelid;nmid=lrd_beholder;npid=dead_bottom_eyelid} @self
+  - partvis{pid=glow_eyeball_laser;em=false} @self
+  - partvis{pid=eyebrow} @self
+  - partvis{pid=left_horn} @self
+  - partvis{pid=left_cheek} @self
+  - partvis{pid=left_jaw;child=true} @self
+  - partvis{pid=glow_eyeball;child=true} @self
+  - partvis{pid=tentacle_8_2;child=true} @self
+  - summon{t=LR_BEHOLDER_gib_random;a=5;v=2;vy=6;r=1} @modelpart{p=body}
+  - summon{t=LR_BEHOLDER_gib_horn;v=2;vy=6} @modelpart{pid=left_horn}
+  - summon{t=LR_BEHOLDER_gib_eye} @modelpart{pid=glow_eyeball}
+  - delay 70
+  - dropitem{i=LR_BEHOLDER_EYE} @modelpart{pid=body}
+  - sound{s=littleroom_beholder:beholder.vanish;v=1;sc=HOSTILE;p=1.0} @self
+  - skill{s=LR_BEHOLDER_recoil} @pir{r=24}
+  - e:p{p=flash;a=1} @modelpart{pid=body}
+  - e:p{p=end_rod;a=50;s=0.1} @modelpart{pid=body}
+  - remove @self
+  
+  
+LR_BEHOLDER_death_move_up:
+  Conditions:
+  - altitude{a=<2} true
+  Skills:
+  - propel{v=0.05} @forward{f=0;yo=1}
+
+## GIBS ##
+
+LR_BEHOLDER_gib_random_1:
+  Skills:
+  - partvis{pid=gib_1} @self
+
+LR_BEHOLDER_gib_random_2:
+  Skills:
+  - partvis{pid=gib_2} @self
+  
+  
+  
+  
+  
+# sSaYlFn7l2pYFq2uWuT1PzEI2vLQqbzgdAblxLlk+LYXbB038j/DVDTe06n0yij2Aqzddudq8x7u5M4/ud28rnpNfMOl1gAsXN/pp2OrWeI=

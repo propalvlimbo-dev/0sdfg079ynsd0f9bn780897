@@ -1,0 +1,1 @@
+{"textures":{"0":"modelengine:entity/models/texture_ghost","particle":"#0"},"elements":[{"from":[5.761885,4.1900578,8.28729],"to":[11.001316,11.525257,8.28729],"faces":{"north":{"uv":[5.25,0.0,5.875,0.875],"tintindex":0,"rotation":0,"texture":"#0"}}}],"display":{"gui":{"rotation":[-150.0,-45.0,180.0]}}}
