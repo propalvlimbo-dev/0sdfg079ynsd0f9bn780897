@@ -31,6 +31,10 @@ public class TrackerTest {
         Location event=new Location(A,0,0,0); event.set(A,1,0,0,180);
         for(int i=0;i<25;i++) t.stepFromPacket(p,event);
         near(t.getBodyYaw(),130,"duplicate packets do not advance body");
+        event.set(A,1,0,0,-60); t.stepFromPacket(p,event);
+        near(t.getBodyYaw(),-110,"sharp turn responds before server tick");
+        for(int i=0;i<25;i++) t.stepFromPacket(p,event);
+        near(t.getBodyYaw(),-110,"duplicate sharp-turn packets remain stable");
         p.head=0; p.x=0; p.z=0; t.resetToPlayer(p);
         p.z=-0.2; t.stepServerTick(p); near(t.getBodyYaw(),0,"walking backwards faces forward");
         p.x=0.2; t.stepServerTick(p); check(Math.abs(t.getBodyYaw())>1,"strafing turns body");

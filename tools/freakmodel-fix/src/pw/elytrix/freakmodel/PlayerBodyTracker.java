@@ -56,9 +56,18 @@ public final class PlayerBodyTracker {
     }
     public synchronized void stepFromPacket(Player player, Location to) {
         if (player == null || to == null || to.getWorld() == null) return;
-        // Capture the newest input but never step rotation here. A duplicate or
-        // burst of packets must not make the body turn multiple times in a tick.
+        // React immediately to the portion of a sharp look turn that the
+        // client's body cannot absorb as head rotation. This is a bounded
+        // correction, not a second simulation step per movement packet.
         headYaw = validYaw(to.getYaw(), headYaw);
+        if (initialized && to.getWorld().getName().equals(worldName) && !player.isInsideVehicle()) {
+            float delta = wrapDegrees(headYaw - bodyYaw);
+            float correction = delta - clamp(delta, -50.0f, 50.0f);
+            if (correction != 0.0f) {
+                bodyYaw += correction;
+                turnSpeed = Math.abs(correction);
+            }
+        }
     }
     public synchronized void stepServerTick(Player player) {
         if (player == null) return;
