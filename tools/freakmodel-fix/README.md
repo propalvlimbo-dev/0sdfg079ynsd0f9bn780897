@@ -1,4 +1,4 @@
-# ElytrixFreakModel 3.2.9 compatibility patch
+# ElytrixFreakModel 3.2.10 compatibility patch
 
 The repository contained a binary-only 3.2.3 jar. Its main plugin class was
 compiled against a different `PlayerBodyTracker` and `WornAngelRig` than those
@@ -37,10 +37,17 @@ latency. It is an experimental server-only trade-off and needs live verification
 Version 3.2.9 limits that lead to four degrees on a confirmed reversal of the
 estimated body turn (ordinary turns retain the 12-degree limit), with a one-degree
 noise threshold. Packet previews do not advance the history, and resets clear it.
-This reduces predictive overcorrection in the covered reversal test; it does not
-eliminate network delay or prove correct behaviour at every +/-180 degree turn.
-The 1.21.10 live client and ModelEngine interpolation were not available for
-verification, so no claim of perfect tracking is made.
+This reduces predictive overcorrection in the covered reversal test.
+
+Version 3.2.10 increases visual prediction to 0.75 of the latest body step,
+capped at 18 degrees on ordinary turns and 12 on reversals. This experimental
+trade-off is intended to make the displayed model respond sooner. Its stronger
+prediction can overshoot further when turning stops and applies to all viewers,
+not just the wearer. Body estimation, packet-preview isolation, two-tick
+interpolation and the exclusions for vehicles, swimming and flight are
+unchanged. It does not eliminate network delay or prove correct behaviour at
+every +/-180 degree turn. The 1.21.10 live client and ModelEngine interpolation
+were not available for verification, so no claim of perfect tracking is made.
 
 ModelEngine attaches its display pivots to the player. In 3.2.6 the wing
 surfaces are shifted closer without moving the shared bone pivots. In 3.2.9,
@@ -59,7 +66,7 @@ To reproduce, use the unmodified jar from commit
 
 ```
 git show 20e2fa0364e2369316897f19a2d44ed47d0b8d31:plugins/ElytrixFreakModel.jar > /tmp/freakmodel-3.2.3.jar
-JAVA=/path/to/java ECJ=/path/to/ecj.jar tools/freakmodel-fix/build.sh /tmp/freakmodel-3.2.3.jar /tmp/freakmodel-3.2.9.jar
+JAVA=/path/to/java ECJ=/path/to/ecj.jar tools/freakmodel-fix/build.sh /tmp/freakmodel-3.2.3.jar /tmp/freakmodel-3.2.10.jar
 ```
 
 The script tests the tracker with minimal Bukkit stubs and checks plugin method

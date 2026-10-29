@@ -17,9 +17,9 @@ public final class PlayerBodyTracker {
     private boolean initialized;
     private String worldName;
     private double previousX, previousZ, speed;
-    private static final float MAX_VISUAL_LEAD_DEGREES = 12.0f;
-    private static final float MAX_REVERSAL_LEAD_DEGREES = 4.0f;
-    private static final float VISUAL_LEAD_FACTOR = 0.5f;
+    private static final float MAX_VISUAL_LEAD_DEGREES = 18.0f;
+    private static final float MAX_REVERSAL_LEAD_DEGREES = 12.0f;
+    private static final float VISUAL_LEAD_FACTOR = 0.75f;
     private float bodyYaw, headYaw, turnSpeed, previousBodyStep;
     // Render targets are independent from the state of the body simulation.
     private float renderBodyYaw;
