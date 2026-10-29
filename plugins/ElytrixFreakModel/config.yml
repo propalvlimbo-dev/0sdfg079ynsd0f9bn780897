@@ -1,6 +1,7 @@
 # ═══════════════════════════════════════════════════════════════════════
-# ElytrixFreakModel — Хаб кастомных 3D-моделек и ангельской брони
-# Сюда добавляются машины, ангельская броня (нимб-шлем и крылья-нагрудник) и декор
+# ElytrixFreakModel v3.0 — Хаб кастомных 3D-моделек и ангельской брони (ModelEngine)
+# Все 3D-модели (Сияющий Нимб, Ангельские Крылья и Лада Приора) рендерятся
+# через движок ModelEngine 4.1 (пакетные кости, плавные анимации, 0 лагов)
 # ═══════════════════════════════════════════════════════════════════════
 
 defaults:
@@ -22,14 +23,15 @@ messages:
 # ═══════════════════════════════════════════════════════════════════════
 # Реестр моделек (/fm list, /fm give <игрок> <id|angel_set>, /clearpriora)
 # kind:
-#   - VEHICLE     — управляемый транспорт (1–2 места, физика WASD)
-#   - ANGEL_HALO  — шлем-нимб для игроков (слот шлема, крутящийся и парящий 3D-нимб)
-#   - ANGEL_WINGS — нагрудник-крылья для игроков (слот нагрудника, 3D-крылья + перья)
+#   - VEHICLE     — управляемый транспорт (ModelEngine Dummy + вращение колёс/руля)
+#   - ANGEL_HALO  — шлем-нимб (ModelEngine PivotOverride + Head-кость h_halo_root)
+#   - ANGEL_WINGS — нагрудник-крылья (ModelEngine PivotOverride + суставные крылья и перья)
 #   - PROP        — декорация или статичное сиденье
 # ═══════════════════════════════════════════════════════════════════════
 models:
   priora_black:
     kind: VEHICLE
+    blueprint: elytrix_priora_black
     aliases:
       - priora
       - black
@@ -47,9 +49,9 @@ models:
       - ' &#F8BEFB• &fПКМ по машине &8— &fсесть'
       - ' &#F8BEFB• &fShift + ПКМ &8— &fзабрать'
       - ''
-    scale: 1.4
+    scale: 1.0
     yaw-offset: 0.0
-    model-y-offset: 0.5
+    model-y-offset: 0.0
     hitbox-width: 2.2
     hitbox-height: 1.5
     interpolation-ticks: 2
@@ -69,9 +71,13 @@ models:
 
   priora_white:
     kind: VEHICLE
+    blueprint: elytrix_priora_white
     aliases:
       - white
+      - silver
+      - priora_silver
       - белая
+      - серебряная
       - облако
     material: DIAMOND_HORSE_ARMOR
     cmd: 31
@@ -85,9 +91,9 @@ models:
       - ' &#F8BEFB• &fПКМ по машине &8— &fсесть'
       - ' &#F8BEFB• &fShift + ПКМ &8— &fзабрать'
       - ''
-    scale: 1.4
+    scale: 1.0
     yaw-offset: 0.0
-    model-y-offset: 0.5
+    model-y-offset: 0.0
     hitbox-width: 2.2
     hitbox-height: 1.5
     interpolation-ticks: 2
@@ -107,6 +113,7 @@ models:
 
   priora_pink:
     kind: VEHICLE
+    blueprint: elytrix_priora_pink
     aliases:
       - pink
       - elytrix
@@ -123,9 +130,9 @@ models:
       - ' &#F8BEFB• &fПКМ по машине &8— &fсесть'
       - ' &#F8BEFB• &fShift + ПКМ &8— &fзабрать'
       - ''
-    scale: 1.4
+    scale: 1.0
     yaw-offset: 0.0
-    model-y-offset: 0.5
+    model-y-offset: 0.0
     hitbox-width: 2.2
     hitbox-height: 1.5
     interpolation-ticks: 2
@@ -145,6 +152,7 @@ models:
 
   angel_halo:
     kind: ANGEL_HALO
+    blueprint: elytrix_angel_halo
     aliases:
       - halo
       - нимб
@@ -152,8 +160,6 @@ models:
     material: NETHERITE_HELMET
     item-model: 'reallyworld:angel_halo'
     cmd: 37
-    halo-cmd: 37
-    halo-scale: 0.88
     name: '&#FFF6B8&lСияющий Нимб'
     lore:
       - ''
@@ -164,11 +170,11 @@ models:
       - ' &#F8BEFB• &fСлот брони: &#FFF6B8Шлем'
       - ' &#F8BEFB• &fНаденьте в слот шлема &8— &fнимб появится на вас'
       - ''
-    scale: 0.88
-    interpolation-ticks: 1
+    scale: 1.0
 
   angel_wings:
     kind: ANGEL_WINGS
+    blueprint: elytrix_angel_wings
     aliases:
       - wings
       - крылья
@@ -176,9 +182,6 @@ models:
     material: NETHERITE_CHESTPLATE
     item-model: 'reallyworld:angel_wings'
     cmd: 34
-    left-wing-cmd: 35
-    right-wing-cmd: 36
-    feather-cmd: 38
     name: '&#F8BEFB&lАнгельские Крылья'
     lore:
       - ''
@@ -189,5 +192,4 @@ models:
       - ' &#F8BEFB• &fСлот брони: &#F8BEFBНагрудник'
       - ' &#F8BEFB• &fНаденьте в слот нагрудника &8— &fкрылья появятся на вас'
       - ''
-    scale: 1.08
-    interpolation-ticks: 1
+    scale: 1.0
