@@ -11,7 +11,7 @@
 
 ```bash
 cd /root/RW_GRIEF && \
-curl -fsSL -o /tmp/elytrix-leaf.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/eeb800172113aef3f8c60f19f419a748d81b8c7b/elytrix-leaf-1.21.11.zip && \
+curl -fsSL -o /tmp/elytrix-leaf.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/1d19814da543b0b24c4932275c03915364505a22/elytrix-leaf-1.21.11.zip && \
 rm -rf /tmp/elytrix-leaf && unzip -oq /tmp/elytrix-leaf.zip -d /tmp/elytrix-leaf && \
 bash /tmp/elytrix-leaf/install.sh /root/RW_GRIEF
 ```

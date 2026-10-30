@@ -10,7 +10,7 @@ SHA-1 пака остаётся `7173523183d1e1f76d011702a350b44fadcd99bb`, по
 
 ```bash
 cd /root/RW_GRIEF && set -e && \
-curl -fsSL -o /tmp/elytrix-v22.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/COMMIT_SHA/elytrix-tentacles-v22.zip && \
+curl -fsSL -o /tmp/elytrix-v22.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/1d19814da543b0b24c4932275c03915364505a22/elytrix-tentacles-v22.zip && \
 B=/root/elytrix-backup-$(date +%Y%m%d-%H%M%S) && mkdir -p "$B" && \
 cp -a plugins/ElytrixFreakModel.jar "$B/" && \
 unzip -oq /tmp/elytrix-v22.zip plugins/ElytrixFreakModel.jar -d /root/RW_GRIEF && \
