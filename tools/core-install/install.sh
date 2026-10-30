@@ -17,6 +17,12 @@
 #  НЕ трогает: миры, players/, plugins/*/данные, server.properties, eula.txt,
 #  ресурспак, остальные плагины.
 # ============================================================================
+# Скрипт написан под bash (массивы, pipefail). Если его запустили через sh/dash,
+# перезапускаем себя правильным интерпретатором — иначе будет "Syntax error".
+if [ -z "${BASH_VERSION:-}" ]; then
+    exec /bin/bash "$0" "$@"
+fi
+
 set -euo pipefail
 
 SELF_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

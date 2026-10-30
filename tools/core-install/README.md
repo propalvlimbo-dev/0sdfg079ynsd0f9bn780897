@@ -1,3 +1,5 @@
+<!-- SHA: подставь полный 40-символьный SHA коммита, в котором лежит архив
+     (git rev-parse HEAD), ровно как в команде из ответа. -->
 # Elytrix — Leaf 1.21.11 + оптимизированные конфиги + фикс плагина
 
 Один пакет: ядро, конфиги, лаунчер и починенный `ElytrixFreakModel`.
@@ -11,7 +13,7 @@
 
 ```bash
 cd /root/RW_GRIEF && \
-curl -fsSL -o /tmp/elytrix-leaf.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/1d19814da543b0b24c4932275c03915364505a22/elytrix-leaf-1.21.11.zip && \
+curl -fsSL -o /tmp/elytrix-leaf.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/<COMMIT_SHA>/elytrix-leaf-1.21.11.zip && \
 rm -rf /tmp/elytrix-leaf && unzip -oq /tmp/elytrix-leaf.zip -d /tmp/elytrix-leaf && \
 bash /tmp/elytrix-leaf/install.sh /root/RW_GRIEF
 ```
@@ -83,7 +85,7 @@ grep -E 'Pause' logs/gc.log | grep -cE '[0-9]{3}\.[0-9]+ms' || true
 не видит (троттлинг CPU контейнера, steal time, диск, cron):
 
 ```bash
-curl -fsSL -o /tmp/elytrix-lag-diag.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/5928b03c0c5f19aa2bb480adf5ae862be06d1546/elytrix-lag-diag.zip && \
+curl -fsSL -o /tmp/elytrix-lag-diag.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/<COMMIT_SHA>/elytrix-lag-diag.zip && \
 rm -rf /tmp/elytrix-lag-diag && unzip -oq /tmp/elytrix-lag-diag.zip -d /tmp/elytrix-lag-diag && \
 bash /tmp/elytrix-lag-diag/collect.sh 90
 ```
