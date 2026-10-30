@@ -4,7 +4,7 @@
 
 ```bash
 cd /root/RW_GRIEF && set -e && \
-curl -fsSL -o /tmp/elytrix-v4.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/3a54e0529c3ae41e71fc3784d5cabec081781fe4/elytrix-tentacles-v4.zip && \
+curl -fsSL -o /tmp/elytrix-v4.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/609b4634ae232ddd3837b3410b3a9799a099b866/elytrix-tentacles-v4.zip && \
 B=/root/elytrix-backup-$(date +%Y%m%d-%H%M%S) && mkdir -p "$B" && \
 cp -a "plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_kaneki_tentacles" "$B/" 2>/dev/null || true && \
 cp -a plugins/ModelEngine/blueprints/elytrix_kaneki_tentacles.bbmodel "$B/" 2>/dev/null || true && \
