@@ -124,7 +124,7 @@ class BlueprintTests(unittest.TestCase):
         starts = [self.paths[name][0] for name in TENDRILS]
         for x, y, z in starts:
             self.assertLessEqual(abs(x), 1.2, 'on the centre line, not on the shoulders')
-            self.assertTrue(14.8 <= y <= 18.0, f'the lower/middle back, got y={y}')
+            self.assertTrue(13.0 <= y <= 19.0, f'the back, between the ribs and the waist, got y={y}')
             self.assertTrue(1.2 <= z <= 3.0, 'just behind the torso, never in front of it')
         spread = max(math.dist(a, b) for a in starts for b in starts)
         self.assertLess(spread, 2.6, 'one common root, not four separate ones')
@@ -206,7 +206,8 @@ class BlueprintTests(unittest.TestCase):
                 self.assertGreaterEqual(a + 1e-6, b, f'{name}: the tendril widens again')
 
     def test_the_fan_spreads_in_the_top_view(self):
-        """Seen from above the four tendrils must be four separate shapes.
+        """Seen from above the four tendrils must be four separate shapes
+        running *forward*: v13 grew them out to the sides like wings.
 
         Symmetric pairs share a bearing, so counting angles is the wrong test.
         What has to hold is that the four outermost points are far apart in
@@ -230,8 +231,39 @@ class BlueprintTests(unittest.TestCase):
         points = [p for path in self.paths.values() for p in path]
         xs = [p[0] for p in points]
         zs = [p[2] for p in points]
-        self.assertGreater(max(xs) - min(xs), 15, 'wider than the shoulders')
-        self.assertGreater(max(zs) - min(zs), 4.0, 'and it opens up behind the back')
+        wide, reach = max(xs) - min(xs), max(zs) - min(zs)
+        self.assertGreater(wide, 6.0, 'four separate tails, not one flat ribbon')
+        self.assertGreater(reach, 13.0, 'they run forward, out past the chest')
+        self.assertGreater(reach, wide + 3.5,
+                           'the reach forward dominates the step to the side: a kagune, not wings')
+
+    def test_after_the_root_the_tail_keeps_its_line(self):
+        """The sketch: one tight turn out of the spine, then a straight run.
+
+        v10-v13 kept bending all the way out, which is what made the tails read
+        as wings.  Past the first 45% of the chain every joint must stay on the
+        same heading as the tip, and the sideways coordinate must be spent.
+        """
+        import build_tentacles
+        specs = {spec['name']: spec for spec in build_tentacles.TENDRILS}
+        for name, path in self.paths.items():
+            bones = build_tentacles.blade_bones(specs[name])
+            length = sum(b['length'] for b in bones)
+            walked = 0.0
+            for index, (here, following) in enumerate(zip(path, path[1:])):
+                walked += bones[index]['length']
+                if walked / length < 0.45:
+                    continue
+                u = [following[i] - here[i] for i in range(3)]
+                v = [path[-1][i] - path[-2][i] for i in range(3)]
+                nu = math.sqrt(sum(t * t for t in u)) or 1.0
+                nv = math.sqrt(sum(t * t for t in v)) or 1.0
+                angle = math.degrees(math.acos(max(-1.0, min(1.0,
+                    sum(u[i] * v[i] for i in range(3)) / (nu * nv)))))
+                self.assertLess(angle, 12.0,
+                                f'{name}: {angle:.0f} deg of bend past the root - a wing, not a spear')
+                self.assertLess(abs(following[0] - here[0]), 0.35,
+                                f'{name}: still sliding sideways at {walked:.0f}/{length:.0f}')
 
     def test_the_blades_are_slim(self):
         """v4 was 8-9 units across and nearly as deep - it read as a fat strap."""
@@ -239,8 +271,9 @@ class BlueprintTests(unittest.TestCase):
                    for cube in self.cubes[bone['name']]]
         widest = max(e['to'][1] - e['from'][1] for e in tendril)
         deepest = max(e['to'][2] - e['from'][2] for e in tendril)
-        self.assertLess(widest, 7.4, 'a tendril, not a beam, but thick enough to be round')
-        self.assertLess(deepest, 7.4, 'and as deep as it is wide - a round tube, not a ribbon')
+        # v12 was 5.6 across and the verdict was "слишком жирные"
+        self.assertLess(widest, 3.4, 'a thin tendril, not a beam')
+        self.assertLess(deepest, 3.4, 'and as deep as it is wide - a round tube, not a ribbon')
         for cube in tendril:
             across, through = cube['to'][1] - cube['from'][1], cube['to'][2] - cube['from'][2]
             self.assertLess(abs(across - through), 0.6,
@@ -360,7 +393,9 @@ class PackTests(unittest.TestCase):
             definition = json.loads(pack.read('assets/reallyworld/items/kaneki_tentacles_icon.json'))
             self.assertEqual(definition['model']['model'], 'reallyworld:item/freak/kaneki_tentacles_icon')
             model = json.loads(pack.read('assets/reallyworld/models/item/freak/kaneki_tentacles_icon.json'))
-            self.assertEqual(model['textures']['0'], 'reallyworld:item/freak/kaneki_tentacles_icon')
+            self.assertEqual(model['parent'], 'minecraft:item/generated')
+            self.assertEqual(model['textures'],
+                             {'layer0': 'reallyworld:item/freak/kaneki_tentacles_icon'})
             image = Image.open(io.BytesIO(pack.read(ICON)))
             self.assertEqual(image.size, (32, 32))
             self.assertEqual(image.mode, 'RGBA')
