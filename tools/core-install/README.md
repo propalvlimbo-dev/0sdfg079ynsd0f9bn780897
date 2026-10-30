@@ -38,7 +38,9 @@ cd /root/RW_GRIEF && bash start.sh
 | `config/paper-world-defaults.yml` | без изменений | уже настроен нормально |
 | `config/gale-*.yml` | без изменений | то же |
 | `plugins/LagFixer/modules/WorldCleaner.yml` | `interval: 1080` (было 420) | обход всех сущностей 3 миров каждые 7 минут → 18 минут |
-| `plugins/ElytrixFreakModel.jar` | v21 | `/аксессуары` больше не может выключить весь плагин |
+| `plugins/ElytrixFreakModel.jar` | 3.4.0 | меню без «Назад», «Снять всё» внизу по центру, повязка — слой брони |
+| `rp/Elytrix-RP-1.21.zip` | `fdddcf3e…` | новый ресурспак с `equipment/kaneki_eyepatch` |
+| `plugins/ElytrixRP/config.yml` | — | ставится вместе с паком, sha1 пересчитывается на месте |
 | `versions/`, `divinemc*.yml`, `purpur.yml` | уводятся в бэкап | остатки DivineMC; `versions/` иначе может подсунуть старое ядро |
 
 Не трогается: миры, `players/`, данные плагинов, `server.properties`, `eula.txt`,

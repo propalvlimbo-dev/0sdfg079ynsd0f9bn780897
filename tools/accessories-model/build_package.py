@@ -29,8 +29,8 @@ MODELS = ('elytrix_kaneki_tentacles', 'elytrix_kaneki_eyepatch')
 TITLE = ROOT / 'tools/accessories-integration/staging-assets/assets/reallyworld/textures/gui/title/elytrix_accessories.png'
 # The accessory-enabled plugin build that ships with this package; committing the
 # jar keeps the release reproducible instead of depending on a /tmp candidate.
-PLUGIN = ROOT / 'tools/accessories-integration/dist/ElytrixFreakModel-v22.jar'
-PLUGIN_SHA = '21fb71176403dd6755fbec463de0d0aa08e88761d2f5b1e41c1b3abffa9fec50'
+PLUGIN = ROOT / 'tools/accessories-integration/dist/ElytrixFreakModel-v23.jar'
+PLUGIN_SHA = '2295ca00358f46fa8424cd828199d039a69d04cf60a21ab81daed044cb071b45'
 
 
 def sha1(path):
@@ -76,6 +76,7 @@ def build(output):
         entries['plugins/ElytrixFreakModel.jar'] = plugin
         entries['rp/Elytrix-RP-1.21.zip'] = merged.read_bytes()
         entries['plugins/ElytrixRP/config.yml'] = config.encode('utf-8')
+        entries['install.sh'] = (HERE / 'install_eyepatch.sh').read_bytes()
 
         with zipfile.ZipFile(output, 'x') as package:
             for name in sorted(entries):

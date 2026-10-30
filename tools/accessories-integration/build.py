@@ -25,7 +25,7 @@ def main():
    y=original.read('plugin.yml').decode('utf8')
    if y.count('\npermissions:\n')!=1 or '\n  accessories:' in y or 'elytrixaccessories.admin:' in y:raise ValueError('plugin metadata unexpected')
    if 'version: 3.2.10' not in y:raise ValueError('unexpected plugin version')
-   y=y.replace('version: 3.2.10','version: 3.3.0',1)
+   y=y.replace('version: 3.2.10','version: 3.4.0',1)
    y=y.replace('\npermissions:\n','\n  accessories:\n    description: Меню аксессуаров\n    aliases: [аксессуары]\npermissions:\n  elytrixaccessories.admin:\n    description: Применение аксессуаров\n    default: op\n  elytrixaccessories.use:\n    description: Аксессуары для донат-группы media\n    default: false\n',1).encode('utf8')
    added=[p for p in (cls/'pw/elytrix/freakmodel').glob('AccessoryController*.class')]
    expected={'AccessoryController.class','AccessoryController$Holder.class'}

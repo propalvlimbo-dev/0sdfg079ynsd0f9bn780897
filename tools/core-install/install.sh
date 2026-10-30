@@ -33,7 +33,7 @@ LEAF_VERSION="1.21.11-179"
 LEAF_URL="https://github.com/Winds-Studio/Leaf/releases/download/ver-1.21.11/leaf-1.21.11-179.jar"
 LEAF_SHA="5da79782215c1a25edcd7c73b3523b7ecb7f4b86dc8a5846a176ed69bc2cd020"
 LEAF_SIZE="83953995"
-PLUGIN_SHA="21fb71176403dd6755fbec463de0d0aa08e88761d2f5b1e41c1b3abffa9fec50"
+PLUGIN_SHA="2295ca00358f46fa8424cd828199d039a69d04cf60a21ab81daed044cb071b45"
 
 Y=$'\033[33m'; G=$'\033[32m'; R=$'\033[31m'; B=$'\033[1m'; N=$'\033[0m'
 step() { printf '\n%s==> %s%s\n' "$B" "$*" "$N"; }
@@ -226,7 +226,7 @@ bash -n "$DIR/start.sh" || die "новый start.sh не проходит про
 ok "start.sh (heap 60% RAM, GC-лог, цель паузы 200 мс, автоперезапуск)"
 
 # ------------------------------------------------------------- 6. фикс плагина
-step "6/8  ElytrixFreakModel v21"
+step "6/8  Аксессуары: плагин и ресурспак"
 
 NEW_PLUGIN="$SELF_DIR/plugins/ElytrixFreakModel.jar"
 [ -f "$NEW_PLUGIN" ] || die "в пакете нет ElytrixFreakModel.jar"
@@ -234,6 +234,20 @@ NEW_PLUGIN="$SELF_DIR/plugins/ElytrixFreakModel.jar"
     || die "jar плагина в пакете повреждён (SHA-256 не совпал)"
 install -m 644 "$NEW_PLUGIN" "$DIR/plugins/ElytrixFreakModel.jar"
 ok "плагин обновлён (SHA-256 $PLUGIN_SHA)"
+
+# Повязка Канэки — это слой брони, его рисует клиент, поэтому она живёт в паке.
+NEW_PACK="$SELF_DIR/rp/Elytrix-RP-1.21.zip"
+if [ -f "$NEW_PACK" ]; then
+    mkdir -p "$DIR/rp" "$DIR/plugins/ElytrixRP"
+    install -m 644 "$NEW_PACK" "$DIR/rp/Elytrix-RP-1.21.zip"
+    if mkdir -p /root/RP 2>/dev/null && [ -w /root/RP ]; then
+        install -m 644 "$NEW_PACK" /root/RP/Elytrix-RP-1.21.zip
+    fi
+    PACK_SHA1="$(sha1sum "$DIR/rp/Elytrix-RP-1.21.zip" | cut -d' ' -f1)"
+    install -m 644 "$SELF_DIR/plugins/ElytrixRP/config.yml" "$DIR/plugins/ElytrixRP/config.yml"
+    sed -i -E "s|^([[:space:]]*sha1[[:space:]]*:).*|\1 \"$PACK_SHA1\"|" "$DIR/plugins/ElytrixRP/config.yml"
+    ok "ресурспак $PACK_SHA1 (+ plugins/ElytrixRP/config.yml)"
+fi
 
 # --------------------------------------------------------- 7. остатки DivineMC
 step "7/8  Остатки DivineMC"
