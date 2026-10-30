@@ -145,15 +145,18 @@ rewards:
     lore:
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fСодержимое:'
-      - '&#F8BEFB&l┃  &7• &fКейс с рилликами &7(x1)'
+      - '&#F8BEFB&l┃  &7• &fКейс с наборами &7(x1)'
+      - '&#F8BEFB&l┃  &7• &fКейс с донатом &7(x2)'
+      - '&#F8BEFB&l┃  &7• &#F8BEFB300 рилликов &fꐃ'
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
       - '&#F8BEFB&l┃ '
       - '{status}'
     items: []
     commands:
-      - 'bcases give {player} rilik 1'
-
+      - 'bcases give {player} kits 1'
+      - 'bcases give {player} donate 2'
+      - 'p give {player} 300'
   free6:
     slot: 15
     minutes: 180
@@ -163,15 +166,20 @@ rewards:
     lore:
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fСодержимое:'
-      - '&#F8BEFB&l┃  &7• &fНабор &#B210BA&lBULL'
+      - '&#F8BEFB&l┃  &7• &fНабор &#F8BEFB&lRABBIT'
+      - '&#F8BEFB&l┃  &7• &fКейс с наборами &7(x1)'
+      - '&#F8BEFB&l┃  &7• &fКейс с донатом &7(x2)'
+      - '&#F8BEFB&l┃  &7• &#F8BEFB350 рилликов &fꐃ'
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
       - '&#F8BEFB&l┃ '
       - '{status}'
     items: []
     commands:
-      - 'kit bull {player}'
-
+      - 'nkits:kit rabbit {player}'
+      - 'bcases give {player} kits 1'
+      - 'bcases give {player} donate 2'
+      - 'p give {player} 350'
   free7:
     slot: 16
     minutes: 240
@@ -181,17 +189,20 @@ rewards:
     lore:
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fСодержимое:'
-      - '&#F8BEFB&l┃  &7• &fКейс с валютой &7(x2)'
-      - '&#F8BEFB&l┃  &7• &#F8BEFB50 рилликов &fꐃ'
+      - '&#F8BEFB&l┃  &7• &fНабор &#F8BEFB&lRABBIT'
+      - '&#F8BEFB&l┃  &7• &fКейс с наборами &7(x2)'
+      - '&#F8BEFB&l┃  &7• &fКейс с донатом &7(x2)'
+      - '&#F8BEFB&l┃  &7• &#F8BEFB400 рилликов &fꐃ'
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
       - '&#F8BEFB&l┃ '
       - '{status}'
     items: []
     commands:
-      - 'bcases give {player} money 2'
-      - 'p give {player} 50'
-
+      - 'nkits:kit rabbit {player}'
+      - 'bcases give {player} kits 2'
+      - 'bcases give {player} donate 2'
+      - 'p give {player} 400'
   free8:
     slot: 19
     minutes: 360
@@ -201,15 +212,20 @@ rewards:
     lore:
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fСодержимое:'
-      - '&#F8BEFB&l┃  &7• &fНабор &#E5E5E5&lRABBIT'
+      - '&#F8BEFB&l┃  &7• &fНабор &#F8BEFB&lHYDRA'
+      - '&#F8BEFB&l┃  &7• &fКейс с наборами &7(x2)'
+      - '&#F8BEFB&l┃  &7• &fКейс с донатом &7(x2)'
+      - '&#F8BEFB&l┃  &7• &#F8BEFB450 рилликов &fꐃ'
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
       - '&#F8BEFB&l┃ '
       - '{status}'
     items: []
     commands:
-      - 'kit rabbit {player}'
-
+      - 'nkits:kit hydra {player}'
+      - 'bcases give {player} kits 2'
+      - 'bcases give {player} donate 2'
+      - 'p give {player} 450'
   free9:
     slot: 20
     minutes: 480
@@ -219,17 +235,20 @@ rewards:
     lore:
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fСодержимое:'
-      - '&#F8BEFB&l┃  &7• &fКейс с рилликами &7(x1)'
-      - '&#F8BEFB&l┃  &7• &#F8BEFB75 рилликов &fꐃ'
+      - '&#F8BEFB&l┃  &7• &fНабор &#F8BEFB&lHYDRA'
+      - '&#F8BEFB&l┃  &7• &fКейс с наборами &7(x2)'
+      - '&#F8BEFB&l┃  &7• &fКейс с донатом &7(x3)'
+      - '&#F8BEFB&l┃  &7• &#F8BEFB500 рилликов &fꐃ'
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
       - '&#F8BEFB&l┃ '
       - '{status}'
     items: []
     commands:
-      - 'bcases give {player} rilik 1'
-      - 'p give {player} 75'
-
+      - 'nkits:kit hydra {player}'
+      - 'bcases give {player} kits 2'
+      - 'bcases give {player} donate 3'
+      - 'p give {player} 500'
   free10:
     slot: 21
     minutes: 720
@@ -239,15 +258,20 @@ rewards:
     lore:
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fСодержимое:'
-      - '&#F8BEFB&l┃  &7• &fНабор &#0F9E10&lHYDRA'
+      - '&#F8BEFB&l┃  &7• &fНабор &#F8BEFB&lCOBRA'
+      - '&#F8BEFB&l┃  &7• &fКейс с наборами &7(x2)'
+      - '&#F8BEFB&l┃  &7• &fКейс с донатом &7(x3)'
+      - '&#F8BEFB&l┃  &7• &#F8BEFB550 рилликов &fꐃ'
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
       - '&#F8BEFB&l┃ '
       - '{status}'
     items: []
     commands:
-      - 'kit hydra {player}'
-
+      - 'nkits:kit cobra {player}'
+      - 'bcases give {player} kits 2'
+      - 'bcases give {player} donate 3'
+      - 'p give {player} 550'
   free11:
     slot: 23
     minutes: 960
@@ -257,17 +281,20 @@ rewards:
     lore:
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fСодержимое:'
-      - '&#F8BEFB&l┃  &7• &fКейс с валютой &7(x3)'
-      - '&#F8BEFB&l┃  &7• &#F8BEFB100 рилликов &fꐃ'
+      - '&#F8BEFB&l┃  &7• &fНабор &#F8BEFB&lCOBRA'
+      - '&#F8BEFB&l┃  &7• &fКейс с наборами &7(x3)'
+      - '&#F8BEFB&l┃  &7• &fКейс с донатом &7(x3)'
+      - '&#F8BEFB&l┃  &7• &#F8BEFB600 рилликов &fꐃ'
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
       - '&#F8BEFB&l┃ '
       - '{status}'
     items: []
     commands:
-      - 'bcases give {player} money 3'
-      - 'p give {player} 100'
-
+      - 'nkits:kit cobra {player}'
+      - 'bcases give {player} kits 3'
+      - 'bcases give {player} donate 3'
+      - 'p give {player} 600'
   free12:
     slot: 24
     minutes: 1200
@@ -277,15 +304,20 @@ rewards:
     lore:
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fСодержимое:'
-      - '&#F8BEFB&l┃  &7• &fНабор &#39FF39&lCOBRA'
+      - '&#F8BEFB&l┃  &7• &fНабор &#F8BEFB&lGOD'
+      - '&#F8BEFB&l┃  &7• &fКейс с наборами &7(x3)'
+      - '&#F8BEFB&l┃  &7• &fКейс с донатом &7(x3)'
+      - '&#F8BEFB&l┃  &7• &#F8BEFB650 рилликов &fꐃ'
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
       - '&#F8BEFB&l┃ '
       - '{status}'
     items: []
     commands:
-      - 'kit cobra {player}'
-
+      - 'nkits:kit god {player}'
+      - 'bcases give {player} kits 3'
+      - 'bcases give {player} donate 3'
+      - 'p give {player} 650'
   free13:
     slot: 25
     minutes: 1560
@@ -295,17 +327,20 @@ rewards:
     lore:
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fСодержимое:'
-      - '&#F8BEFB&l┃  &7• &fКейс с рилликами &7(x2)'
-      - '&#F8BEFB&l┃  &7• &#F8BEFB150 рилликов &fꐃ'
+      - '&#F8BEFB&l┃  &7• &fНабор &#F8BEFB&lGOD'
+      - '&#F8BEFB&l┃  &7• &fКейс с наборами &7(x3)'
+      - '&#F8BEFB&l┃  &7• &fКейс с донатом &7(x4)'
+      - '&#F8BEFB&l┃  &7• &#F8BEFB700 рилликов &fꐃ'
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
       - '&#F8BEFB&l┃ '
       - '{status}'
     items: []
     commands:
-      - 'bcases give {player} rilik 2'
-      - 'p give {player} 150'
-
+      - 'nkits:kit god {player}'
+      - 'bcases give {player} kits 3'
+      - 'bcases give {player} donate 4'
+      - 'p give {player} 700'
   free14:
     slot: 31
     minutes: 2160
@@ -315,17 +350,17 @@ rewards:
     lore:
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fСодержимое:'
-      - '&#F8BEFB&l┃  &7• &fНабор &#FBBF24&lGOD'
-      - '&#F8BEFB&l┃  &7• &fКейс с рилликами &7(x2)'
-      - '&#F8BEFB&l┃  &7• &fКейс с валютой &7(x3)'
-      - '&#F8BEFB&l┃  &7• &#F8BEFB250 рилликов &fꐃ'
+      - '&#F8BEFB&l┃  &7• &fНабор &#F8BEFB&lANGEL'
+      - '&#F8BEFB&l┃  &7• &fКейс с наборами &7(x4)'
+      - '&#F8BEFB&l┃  &7• &fКейс с донатом &7(x4)'
+      - '&#F8BEFB&l┃  &7• &#F8BEFB750 рилликов &fꐃ'
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
       - '&#F8BEFB&l┃ '
       - '{status}'
     items: []
     commands:
-      - 'kit god {player}'
-      - 'bcases give {player} rilik 2'
-      - 'bcases give {player} money 3'
-      - 'p give {player} 250'
+      - 'nkits:kit angel {player}'
+      - 'bcases give {player} kits 4'
+      - 'bcases give {player} donate 4'
+      - 'p give {player} 750'

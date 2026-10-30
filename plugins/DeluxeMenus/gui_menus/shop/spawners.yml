@@ -1187,8 +1187,5 @@ items:
           - '[message] &#F8BEFBРиллики &7» &cНедостаточно рилликов для покупки'
           - '[message] &#F8BEFBРиллики &7» &fПополнить баланс можно на сайте - &#F8BEFBhttps://elytrix.pw'
     click_commands:
-    - '[console] points take %player_name% 119'
-    - '[console] randomegg %player_name%'
-    - '[message] &#F8BEFBРиллики &7» &fУспешная покупка!'
-    - '[console] cashback give %player_name% 119'
+    - '[console] randomeggbuy %player_name%'
     - '[refresh]'

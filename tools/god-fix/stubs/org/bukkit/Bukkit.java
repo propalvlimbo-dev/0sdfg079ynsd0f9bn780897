@@ -1,0 +1,1 @@
+package org.bukkit; public class Bukkit { public static org.bukkit.plugin.PluginManager manager; public static org.bukkit.scheduler.BukkitScheduler scheduler; public static org.bukkit.plugin.PluginManager getPluginManager(){return manager;} public static org.bukkit.scheduler.BukkitScheduler getScheduler(){return scheduler;} }

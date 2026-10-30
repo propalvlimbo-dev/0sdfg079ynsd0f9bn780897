@@ -1,0 +1,1 @@
+package org.bukkit.entity; public interface Player extends Entity { String getName(); org.bukkit.permissions.PermissionAttachment addAttachment(org.bukkit.plugin.Plugin p); void removeAttachment(org.bukkit.permissions.PermissionAttachment a); }

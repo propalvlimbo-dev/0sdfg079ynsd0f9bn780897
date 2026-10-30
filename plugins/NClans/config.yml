@@ -125,7 +125,7 @@ thingInvName: "§fꈁꀀꈂꍠꈂꀁ§fꈃꄅ"
 shulkerInvName: "§fꈁꀀꈂꍟꈂꀁ§fꈃꄅ"
 spawnerInvName: "§fꈁꀀꈂꍡꈂꀁ§fꈃꄅ"
 
-clanNameFormat: "&8[%clan%&8]"
+clanNameFormat: "%clan%"
 clanChatPrefix: "&#F8BEFB[Клан] "
 handleKitCommand: "kit %kit% %nick%"
 

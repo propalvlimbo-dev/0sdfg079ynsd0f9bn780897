@@ -22,7 +22,10 @@ class Tests(unittest.TestCase):
         for rel in patch.EXPECTED:
             dest = self.root / rel
             dest.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copyfile(REPO / rel, dest)
+            # The checked-out configs may now include newer fixes. Test the
+            # historical snapshot that the guarded patch is designed for.
+            content = subprocess.check_output(['git', 'show', '20e2fa0364e2369316897f19a2d44ed47d0b8d31:' + rel], cwd=REPO)
+            dest.write_bytes(content)
         self.old = {p: (self.root / p).read_text() for p in patch.EXPECTED}
     def run_patch(self, *args):
         return subprocess.run([sys.executable, str(HERE / 'patch.py'), str(self.root), *args], capture_output=True, text=True)
