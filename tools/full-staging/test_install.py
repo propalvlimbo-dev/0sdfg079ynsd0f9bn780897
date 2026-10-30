@@ -9,7 +9,7 @@ class Test(unittest.TestCase):
   for rel in mod.NEW:
    out=self.bundle/rel;out.parent.mkdir(parents=True,exist_ok=True);shutil.copy(REPO/rel,out)
   for rel in list(mod.EXPECTED)+['plugins/BCases/prizes.yml']+[f'plugins/nKits/Kits/{k}.yml' for k in ('rabbit','hydra','cobra','god','angel','dragon')]:
-   p=self.root/rel;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(subprocess.check_output(['git','show','HEAD:'+rel],cwd=REPO))
+   p=self.root/rel;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(subprocess.check_output(['git','show','37ec54155b6493fc8cbe114d37d2a8a37299c993:'+rel],cwd=REPO))
  def runit(self,*args):return subprocess.run([sys.executable,str(self.bundle/'install.py'),str(self.root),*args],text=True,capture_output=True)
  def test_preview_and_apply(self):
   r=self.runit();self.assertEqual(r.returncode,0,r.stderr);self.assertFalse((self.root/'plugins/ElytrixGodPickup.jar').exists())
