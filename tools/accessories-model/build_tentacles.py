@@ -54,36 +54,37 @@ PARTS = tuple('abcdefghijklmnopqrstuvwx')   # bone suffixes, one per joint
 # closer to the centre line than the widest point of the same tendril.
 TENDRILS = [
     {
-        # upper right: leaves the knot, arcs out past the shoulder and keeps
-        # going until it is beside the chest, then drops the tip forward.  The
-        # x keeps ahead of the z, so the tube goes *around* the torso instead of
-        # through it.
+        # upper right: out of the spine, around the shoulder and then a long,
+        # almost straight run outwards - a tail, not a wing.  The bend lives in
+        # the first third, the rest is a taper.
         'name': 'right_upper',
-        'ctrl': [(0.6, 17.1, 2.3), (2.6, 18.7, 2.0), (5.2, 20.3, 1.2),
-                 (8.3, 20.8, -0.3), (10.9, 20.2, -2.5), (12.6, 18.6, -4.4),
-                 (13.3, 16.8, -5.8)],
-        'girth': (5.6, 5.4), 'tip': 0.45,
+        'ctrl': [(0.7, 17.5, 2.1), (3.4, 18.2, 1.3), (7.0, 18.3, -0.5),
+                 (11.0, 18.0, -2.0), (15.0, 17.6, -3.2), (18.6, 17.4, -4.0),
+                 (21.4, 17.3, -4.5)],
+        'girth': (3.6, 3.4), 'tip': 0.32,
     },
     {
         'name': 'left_upper',
-        'ctrl': [(-0.6, 17.2, 2.3), (-2.7, 18.8, 2.0), (-5.3, 20.4, 1.2),
-                 (-8.4, 20.9, -0.3), (-11.0, 20.3, -2.5), (-12.7, 18.7, -4.4),
-                 (-13.4, 16.9, -5.8)],
-        'girth': (5.5, 5.3), 'tip': 0.45,
+        'ctrl': [(-0.7, 17.6, 2.1), (-3.5, 18.3, 1.3), (-7.1, 18.4, -0.5),
+                 (-11.1, 18.1, -2.0), (-15.1, 17.7, -3.2), (-18.7, 17.5, -4.0),
+                 (-21.5, 17.4, -4.5)],
+        'girth': (3.5, 3.3), 'tip': 0.32,
     },
     {
-        # lower right: same wrap, a hand lower, so the four of them frame the
-        # body from the hips to the chest instead of standing up like a crown
+        # lower right: a hand lower, the same long straight run - the two pairs
+        # frame the hips and the chest
         'name': 'right_lower',
-        'ctrl': [(0.6, 15.6, 2.3), (2.9, 14.1, 2.0), (5.9, 12.9, 1.0),
-                 (9.1, 12.1, -0.4), (11.8, 11.8, -2.3), (13.6, 12.0, -4.2)],
-        'girth': (5.4, 5.2), 'tip': 0.42,
+        'ctrl': [(0.7, 15.9, 2.1), (3.6, 15.0, 1.4), (7.3, 14.4, -0.2),
+                 (11.4, 14.2, -1.6), (15.4, 14.1, -2.8), (19.0, 14.1, -3.6),
+                 (22.0, 14.1, -4.1)],
+        'girth': (3.4, 3.2), 'tip': 0.3,
     },
     {
         'name': 'left_lower',
-        'ctrl': [(-0.6, 15.5, 2.3), (-3.0, 14.0, 2.0), (-6.0, 12.8, 1.0),
-                 (-9.2, 12.0, -0.4), (-11.9, 11.7, -2.3), (-13.7, 11.9, -4.2)],
-        'girth': (5.3, 5.1), 'tip': 0.42,
+        'ctrl': [(-0.7, 15.8, 2.1), (-3.7, 14.9, 1.4), (-7.4, 14.3, -0.2),
+                 (-11.5, 14.1, -1.6), (-15.5, 14.0, -2.8), (-19.1, 14.0, -3.6),
+                 (-22.1, 14.0, -4.1)],
+        'girth': (3.3, 3.1), 'tip': 0.3,
     },
 ]
 

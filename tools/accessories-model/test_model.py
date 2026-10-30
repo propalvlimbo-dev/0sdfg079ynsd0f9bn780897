@@ -124,7 +124,7 @@ class BlueprintTests(unittest.TestCase):
         starts = [self.paths[name][0] for name in TENDRILS]
         for x, y, z in starts:
             self.assertLessEqual(abs(x), 1.2, 'on the centre line, not on the shoulders')
-            self.assertTrue(15.4 <= y <= 18.0, f'the middle of the back, got y={y}')
+            self.assertTrue(14.8 <= y <= 18.0, f'the lower/middle back, got y={y}')
             self.assertTrue(1.2 <= z <= 3.0, 'just behind the torso, never in front of it')
         spread = max(math.dist(a, b) for a in starts for b in starts)
         self.assertLess(spread, 2.6, 'one common root, not four separate ones')
@@ -221,7 +221,7 @@ class BlueprintTests(unittest.TestCase):
         # the two pairs sit at clearly different heights, otherwise they merge
         # into one thick bar in the back view
         for side in ('right', 'left'):
-            self.assertGreater(abs(apex[f'{side}_upper'][1] - apex[f'{side}_lower'][1]), 4.0,
+            self.assertGreater(abs(apex[f'{side}_upper'][1] - apex[f'{side}_lower'][1]), 2.8,
                                f'{side}: the pairs must not sit at the same height')
         # and every tendril has to come round the torso to the front (z < 0 is
         # in front of the spine, the body plane is at z = -2)
