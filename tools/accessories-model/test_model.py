@@ -199,10 +199,14 @@ class BlueprintTests(unittest.TestCase):
             self.assertLess(sum(turns) / len(turns), 20.0, f'{name}: the curve is even')
         # the cross-section must taper monotonically: the v7 "rib" pattern
         # (1.06 / 0.94 alternating) was half of the saw-tooth look
+        # The section is narrow at the root (so four arms leave one point),
+        # full in the body and blunt at the end - it must never get *thicker*
+        # again after the body, which is what made v7 look saw-toothed.
         for name, chain in self.chains.items():
             widths = [self.cubes[b['name']][0]['to'][1] - self.cubes[b['name']][0]['from'][1]
                       for b in chain]
-            for a, b in zip(widths, widths[1:]):
+            body = widths[1:]
+            for a, b in zip(body, body[1:]):
                 self.assertGreaterEqual(a + 1e-6, b, f'{name}: the tendril widens again')
 
     def test_the_fan_spreads_in_the_top_view(self):
@@ -229,15 +233,13 @@ class BlueprintTests(unittest.TestCase):
         # and every tendril has to come round the torso to the front (z < 0 is
         # in front of the spine, the body plane is at z = -2)
         for name, path in self.paths.items():
-            self.assertLess(path[-1][2], -0.8, f'{name}: the tip leans forward a little')
+            self.assertGreater(path[-1][2], 5.5, f'{name}: the tip hangs behind the back')
         points = [p for path in self.paths.values() for p in path]
         xs = [p[0] for p in points]
         zs = [p[2] for p in points]
         wide, reach = max(xs) - min(xs), max(zs) - min(zs)
-        self.assertGreater(wide, 28.0, 'the arms span the whole back')
-        self.assertLess(reach, 6.0, 'they spread sideways, they do not shoot ahead')
-        self.assertGreater(wide, reach * 4.0,
-                           'sideways spread dominates: four arms across the back, not four spears')
+        self.assertGreater(wide, 20.0, 'the arms span the whole back')
+        self.assertLess(reach, 10.0, 'they open behind the back, they do not shoot away')
 
     def test_the_arms_open_across_the_back(self):
         """The reference: four arms out of one point on the spine, spreading
@@ -254,9 +256,12 @@ class BlueprintTests(unittest.TestCase):
             radii = [abs(p[0]) for p in path]
             for before, after in zip(radii, radii[1:]):
                 self.assertGreater(after, before, f'{name}: the arm folds back in')
-            # and the last leg turns upward, the way the reference tips kick up
-            self.assertGreater(path[-1][1] - path[-2][1], 0.8,
-                               f'{name}: the tip must kick up at the end')
+            # the arm has to *leave* the spine: the tip hangs in the air behind
+            # the player, well clear of the back surface (z = +2)
+            self.assertGreater(path[-1][2], 5.5,
+                               f'{name}: the arm still lies flat on the back')
+            self.assertGreater(path[-1][2] - path[0][2], 3.0,
+                               f'{name}: it barely moved away from the spine')
             # the root really sits on the spine, not out on the shoulder
             self.assertLessEqual(abs(path[0][0]), 1.2, f'{name}: root off the centre line')
             self.assertGreaterEqual(path[0][2], 1.6, f'{name}: root in front of the back')
@@ -278,15 +283,17 @@ class BlueprintTests(unittest.TestCase):
         widest = max(e['to'][1] - e['from'][1] for e in tendril)
         deepest = max(e['to'][2] - e['from'][2] for e in tendril)
         # v12 was 5.6 across and the verdict was "слишком жирные"
-        self.assertLess(widest, 4.8, 'a tendril, not a beam')
-        self.assertLess(deepest, 4.8, 'and as deep as it is wide - a round tube, not a ribbon')
+        self.assertLess(widest, 5.2, 'a tendril, not a beam')
+        self.assertLess(deepest, 5.2, 'and as deep as it is wide - a round tube, not a ribbon')
         for cube in tendril:
             across, through = cube['to'][1] - cube['from'][1], cube['to'][2] - cube['from'][2]
             self.assertLess(abs(across - through), 0.6,
                             'square section: the tube must not be flat')
+        # v15 ended on a 0.34 point and the verdict was "убери писюльки"
         tips = [self.cubes[chain[-1]['name']][0] for chain in self.chains.values()]
         for cube in tips:
-            self.assertLess(cube['to'][1] - cube['from'][1], 1.0, 'the tip tapers to a point')
+            self.assertGreater(cube['to'][1] - cube['from'][1], 1.8,
+                               'the arm must end on a blunt stump, not a spike')
 
     def test_the_curve_comes_from_the_bones(self):
         """Cubes stay on the 22.5 grid only if they never rotate; here none do."""

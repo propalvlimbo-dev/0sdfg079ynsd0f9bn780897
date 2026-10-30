@@ -54,37 +54,39 @@ PARTS = tuple('abcdefghijklmnopqrstuvwx')   # bone suffixes, one per joint
 # closer to the centre line than the widest point of the same tendril.
 TENDRILS = [
     {
-        # upper right: out of the spine diagonally, one elbow over the shoulder
-        # blade, a long leg out to the side and the tip kicking up.  Sideways 14,
-        # forward 1.4: the arms spread across the back, they do not shoot ahead
-        # of the player.
+        # upper right.  Two things the reference (image-24) demands: the four
+        # arms leave ONE point on the spine and fan out in a wide X with air
+        # between them, and they hang *behind* the back, not flat on it.  So each
+        # arm climbs at ~40 deg and drifts backwards all the way out: 13 out,
+        # 7 up, 7 back.  The end is thick and cut off - never a thin point.
         'name': 'right_upper',
-        'ctrl': [(0.8, 17.0, 2.2), (2.4, 19.6, 2.1), (4.4, 21.8, 1.4),
-                 (6.8, 23.0, 0.4), (9.6, 23.3, -0.5), (12.2, 23.1, -1.2),
-                 (14.0, 23.8, -1.6), (15.0, 25.6, -1.9)],
-        'girth': (4.2, 3.7), 'tip': 0.34,
+        'ctrl': [(0.8, 16.9, 2.2), (1.4, 18.7, 4.2), (2.5, 20.6, 6.1),
+                 (4.3, 22.2, 7.4), (6.9, 23.3, 8.3), (9.8, 23.6, 8.8),
+                 (12.4, 23.4, 9.0)],
+        'girth': (4.8, 4.7),
     },
     {
         'name': 'left_upper',
-        'ctrl': [(-0.8, 17.0, 2.2), (-2.4, 19.6, 2.1), (-4.4, 21.8, 1.4),
-                 (-6.8, 23.0, 0.4), (-9.6, 23.3, -0.5), (-12.2, 23.1, -1.2),
-                 (-14.0, 23.8, -1.6), (-15.0, 25.6, -1.9)],
-        'girth': (4.1, 3.6), 'tip': 0.34,
+        'ctrl': [(-0.8, 16.9, 2.2), (-1.4, 18.7, 4.2), (-2.5, 20.6, 6.1),
+                 (-4.3, 22.2, 7.4), (-6.9, 23.3, 8.3), (-9.8, 23.6, 8.8),
+                 (-12.4, 23.4, 9.0)],
+        'girth': (4.7, 4.6),
     },
     {
-        # lower right: down under the ribs, the long horizontal leg, tip lifts.
+        # lower right: the mirror arm, down and out.  A clear gap of air runs
+        # between the pairs from the root outwards.
         'name': 'right_lower',
-        'ctrl': [(0.8, 15.8, 2.2), (2.4, 13.2, 2.1), (4.6, 11.2, 1.4),
-                 (7.2, 10.2, 0.4), (10.2, 9.9, -0.5), (13.2, 10.0, -1.2),
-                 (15.8, 10.6, -1.6), (17.2, 12.2, -1.9)],
-        'girth': (4.2, 3.7), 'tip': 0.34,
+        'ctrl': [(0.8, 16.3, 2.2), (1.4, 14.5, 4.2), (2.5, 12.6, 6.1),
+                 (4.3, 11.0, 7.4), (6.9, 9.9, 8.3), (9.8, 9.6, 8.8),
+                 (12.4, 9.8, 9.0)],
+        'girth': (4.8, 4.7),
     },
     {
         'name': 'left_lower',
-        'ctrl': [(-0.8, 15.8, 2.2), (-2.4, 13.2, 2.1), (-4.6, 11.2, 1.4),
-                 (-7.2, 10.2, 0.4), (-10.2, 9.9, -0.5), (-13.2, 10.0, -1.2),
-                 (-15.8, 10.6, -1.6), (-17.2, 12.2, -1.9)],
-        'girth': (4.1, 3.6), 'tip': 0.34,
+        'ctrl': [(-0.8, 16.3, 2.2), (-1.4, 14.5, 4.2), (-2.5, 12.6, 6.1),
+                 (-4.3, 11.0, 7.4), (-6.9, 9.9, 8.3), (-9.8, 9.6, 8.8),
+                 (-12.4, 9.8, 9.0)],
+        'girth': (4.7, 4.6),
     },
 ]
 
@@ -93,17 +95,15 @@ TENDRILS = [
 # it is wider than the four roots, so the tendrils read as branches of one organ.
 KNOT = {
     'name': 'root_knot',
-    'origin': [0.0, 16.8, 2.4],
+    'origin': [0.0, 16.7, 2.4],
     'boxes': [
-        # (x0, x1, y0, y1, z0, z1) around the origin; z = 0 is the back surface of
-        # the torso, so everything positive here sticks out behind the player and
-        # the -0.9 boxes sink into the body so no gap can ever appear.
-        # It stays compact (a hand's width): in the reference the four arms leave
-        # one narrow point on the spine, the root must not read as a red backpack.
-        (-2.4, 2.4, -2.6, 0.6, -0.9, 1.2),
-        (-3.0, 3.0, -1.4, 1.6, -0.8, 1.6),
-        (-2.2, 2.2, 1.2, 2.8, -0.7, 1.4),
-        (-1.4, 1.4, 0.2, 1.4, 0.9, 2.2),
+        # (x0, x1, y0, y1, z0, z1) around the origin.  A small mound of flesh on
+        # the spine, not a plate: the arms do the spreading, the knot only hides
+        # the four roots.  Everything sinks 0.9 into the body so no gap shows.
+        (-2.0, 2.0, -2.2, 0.6, -0.9, 1.5),
+        (-2.4, 2.4, -1.2, 1.6, -0.8, 1.8),
+        (-1.2, 1.2, 0.8, 2.4, -0.7, 1.6),
+        (-1.0, 1.0, -0.8, 0.8, 1.2, 2.6),
     ],
 }
 
@@ -258,15 +258,24 @@ def chain_points(origin, euler, lengths):
 def blade_profile(spec, t):
     """Diameter of the tube at `t` = 0 root .. 1 tip.
 
-    A kagune is a muscle, not a blade: it keeps most of its girth over the first
-    half and only then tapers into the point.  Width == depth, so the section is
-    square and the tube looks the same from every side.
+    Three stages, all taken from the reference image-24:
+      * the root is *narrower* than the arm (0.55 of it), so the four arms leave
+        one point on the spine without fusing into a red slab;
+      * the arm is at full girth from 22% to 78% of its length;
+      * the tip is a blunt stump (0.52 of the girth), not a spike - the reference
+        arms end cut off, and a thin point is exactly the "писюлька" that was
+        rejected in game.
+    Width == depth, so the section is square and the tube looks round.
     """
     width0, depth0 = spec['girth']
-    k = min(1.0, max(0.0, (t - 0.62) / 0.38))
-    fade = (1.0 - smoothstep(k)) ** 0.8
-    return (spec['tip'] + (width0 - spec['tip']) * fade,
-            spec['tip'] + (depth0 - spec['tip']) * fade)
+    blunt = spec.get('blunt', 0.58)
+    if t < 0.18:
+        share = 0.55 + 0.45 * smoothstep(t / 0.18)
+    elif t > 0.42:
+        share = 1.0 - (1.0 - blunt) * smoothstep((t - 0.42) / 0.58)
+    else:
+        share = 1.0
+    return (width0 * share, depth0 * share)
 
 
 def blade_bones(spec):
