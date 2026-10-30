@@ -1,0 +1,1 @@
+package org.bukkit.event.entity; public class EntityPickupItemEvent { private final org.bukkit.entity.Entity entity; private boolean cancelled; public EntityPickupItemEvent(org.bukkit.entity.Entity e){entity=e;} public org.bukkit.entity.Entity getEntity(){return entity;} public void setCancelled(boolean b){cancelled=b;} public boolean isCancelled(){return cancelled;} }

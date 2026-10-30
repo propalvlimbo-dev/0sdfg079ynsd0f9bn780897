@@ -1,0 +1,1 @@
+package org.bukkit.plugin.java; public class JavaPlugin implements org.bukkit.plugin.Plugin { public boolean isEnabled(){return true;} public void onEnable(){} public java.util.logging.Logger getLogger(){return java.util.logging.Logger.getLogger("test");} }

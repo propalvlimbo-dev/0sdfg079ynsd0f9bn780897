@@ -1,0 +1,5 @@
+name: ElytrixGameplaySafety
+version: '0.1-test'
+main: pw.elytrix.safety.GameplaySafety
+api-version: '1.21'
+depend: [Essentials, CakeSub, CloudQuests]
