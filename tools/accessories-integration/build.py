@@ -26,7 +26,8 @@ def main():
    if y.count('\npermissions:\n')!=1 or '\n  accessories:' in y or 'elytrixaccessories.admin:' in y:raise ValueError('plugin metadata unexpected')
    y=y.replace('\npermissions:\n','\n  accessories:\n    description: Меню аксессуаров\n    aliases: [аксессуары]\npermissions:\n  elytrixaccessories.admin:\n    description: Применение аксессуаров\n    default: op\n',1).encode('utf8')
    added=[p for p in (cls/'pw/elytrix/freakmodel').glob('AccessoryController*.class')]
-   if {p.name for p in added}!={'AccessoryController.class','AccessoryController$Holder.class'}:raise ValueError('Unexpected helper classes')
+   expected={'AccessoryController.class','AccessoryController$Holder.class','AccessoryController$PatchRig.class'}
+   if {p.name for p in added}!=expected:raise ValueError('Unexpected helper classes')
    with zipfile.ZipFile(dest,'x') as out:
     for info in original.infolist():out.writestr(info,new.read_bytes() if info.filename==ENTRY else y if info.filename=='plugin.yml' else original.read(info))
     for p in sorted(added):
@@ -35,6 +36,6 @@ def main():
      info=zipfile.ZipInfo(n,(2020,1,1,0,0,0));info.compress_type=zipfile.ZIP_DEFLATED;out.writestr(info,p.read_bytes())
   with zipfile.ZipFile(BASE) as a,zipfile.ZipFile(dest) as b:
    assert {n for n in a.namelist() if a.read(n)!=b.read(n)}=={ENTRY,'plugin.yml'}
-   assert set(b.namelist())-set(a.namelist())=={'pw/elytrix/freakmodel/AccessoryController.class','pw/elytrix/freakmodel/AccessoryController$Holder.class'}
+   assert set(b.namelist())-set(a.namelist())=={'pw/elytrix/freakmodel/AccessoryController.class','pw/elytrix/freakmodel/AccessoryController$Holder.class','pw/elytrix/freakmodel/AccessoryController$PatchRig.class'}
  print('Mock-tested candidate only:',dest,hashlib.sha256(dest.read_bytes()).hexdigest())
 if __name__=='__main__':main()

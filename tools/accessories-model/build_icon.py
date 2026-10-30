@@ -19,6 +19,7 @@ from PIL import Image, ImageDraw
 
 HERE = Path(__file__).resolve().parent
 ICON = 'kaneki_tentacles_icon'
+PATCH_ICON = 'kaneki_eyepatch_icon'
 SIZE = 32
 OUTLINE = (58, 0, 10, 255)
 BODY = (168, 16, 26, 255)
@@ -71,27 +72,55 @@ def build_icon():
     return img
 
 
-def build_model():
-    """One 1/16-block thin plate whose faces show the 32x32 icon."""
-    faces = {}
-    for name in ('north', 'south', 'east', 'west', 'up', 'down'):
-        faces[name] = {'uv': [0, 0, 16, 16], 'texture': '#0'}
+def build_patch_icon():
+    """A white eyepatch with the strap, drawn pixel by pixel.
+
+    Same 32x32 grid and the same outline-first technique as the kagune icon, so
+    the two slots of the menu look like they belong to one set.  The patch is an
+    octagon (cut corners), the strap leaves it to both sides and the knot sits
+    on the right - the way the patch actually sits on the head.
+    """
+    img = Image.new('RGBA', (SIZE, SIZE), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+    outline = (46, 46, 54, 255)
+    shade = (186, 182, 174, 255)
+    cloth = (231, 228, 221, 255)
+    light = (252, 251, 247, 255)
+    seam = (168, 164, 156, 255)
+
+    # the strap: two bands leaving the patch towards the top and bottom right
+    for y0, y1, colour, width in ((11, 5, outline, 4), (15, 21, outline, 4)):
+        draw.line([(5, y0), (27, y1)], fill=colour, width=width)
+    draw.line([(5, 11), (27, 5)], fill=shade, width=2)
+    draw.line([(5, 15), (27, 21)], fill=shade, width=2)
+    draw.line([(6, 10), (26, 5)], fill=cloth, width=1)
+    draw.line([(6, 16), (26, 21)], fill=cloth, width=1)
+
+    # the patch: an octagon of cloth with a raised hem and one stitched fold
+    draw.polygon([(9, 8), (22, 8), (24, 10), (24, 23), (22, 25), (9, 25), (7, 23), (7, 10)],
+                 fill=outline)
+    draw.polygon([(10, 9), (21, 9), (23, 11), (23, 22), (21, 24), (10, 24), (8, 22), (8, 11)],
+                 fill=cloth)
+    draw.polygon([(10, 9), (21, 9), (23, 11), (10, 12), (8, 11)], fill=light)
+    draw.polygon([(23, 21), (23, 22), (21, 24), (10, 24), (8, 22), (8, 21)], fill=shade)
+    draw.line([(9, 13), (22, 13)], fill=seam)
+    draw.line([(9, 20), (22, 20)], fill=seam)
+    # the knot on the strap behind the ear
+    draw.rectangle([22, 4, 27, 9], fill=outline)
+    draw.rectangle([23, 5, 26, 8], fill=shade)
+    draw.line([(24, 6), (25, 7)], fill=cloth)
+    return img
+
+
+def build_model(icon=ICON):
+    """A plain generated item model: the 32x32 texture is already the whole icon.
+
+    The same shape v18 shipped with, so the two menu icons render identically on
+    the servers that already show the kagune slot.
+    """
     return {
-        'credit': 'Elytrix - Kaneki accessory menu icon',
-        'textures': {0: f'reallyworld:item/freak/{ICON}', 'particle': f'reallyworld:item/freak/{ICON}'},
-        'elements': [{
-            'from': [0, 0, 7.6], 'to': [16, 16, 8.4],
-            'faces': faces,
-        }],
-        'display': {
-            'gui': {'rotation': [0, 0, 0], 'translation': [0, 0, 0], 'scale': [1, 1, 1]},
-            'ground': {'rotation': [0, 0, 0], 'translation': [0, 2, 0], 'scale': [0.5, 0.5, 0.5]},
-            'fixed': {'rotation': [0, 0, 0], 'translation': [0, 0, 0], 'scale': [1, 1, 1]},
-            'firstperson_righthand': {'rotation': [0, 45, 0], 'translation': [0, 2, 0], 'scale': [0.4, 0.4, 0.4]},
-            'firstperson_lefthand': {'rotation': [0, 45, 0], 'translation': [0, 2, 0], 'scale': [0.4, 0.4, 0.4]},
-            'thirdperson_righthand': {'rotation': [0, 45, 0], 'translation': [0, 2, 0], 'scale': [0.4, 0.4, 0.4]},
-            'thirdperson_lefthand': {'rotation': [0, 45, 0], 'translation': [0, 2, 0], 'scale': [0.4, 0.4, 0.4]},
-        },
+        'parent': 'minecraft:item/generated',
+        'textures': {'layer0': f'reallyworld:item/freak/{icon}'},
     }
 
 
@@ -104,18 +133,17 @@ def main():
     (out / 'reallyworld/models/item/freak').mkdir(parents=True, exist_ok=True)
     (out / 'reallyworld/items').mkdir(parents=True, exist_ok=True)
 
-    icon = build_icon()
-    icon.save(out / f'reallyworld/textures/item/freak/{ICON}.png')
-    icon.resize((256, 256), Image.NEAREST).save(Path(args.out_dir) / 'icon_preview.png')
-
-    model = out / f'reallyworld/models/item/freak/{ICON}.json'
-    model.write_text(json.dumps(build_model(), separators=(',', ':')), encoding='utf-8')
-
-    definition = out / f'reallyworld/items/{ICON}.json'
-    definition.write_text(json.dumps(
-        {'model': {'type': 'minecraft:model', 'model': f'reallyworld:item/freak/{ICON}'}},
-        separators=(',', ':')), encoding='utf-8')
-    print(f'icon -> {out} ({icon.size[0]}x{icon.size[1]} texture, model + item definition)')
+    for name, image in ((ICON, build_icon()), (PATCH_ICON, build_patch_icon())):
+        image.save(out / f'reallyworld/textures/item/freak/{name}.png')
+        image.resize((256, 256), Image.NEAREST).save(
+            Path(args.out_dir) / f'{name}_preview.png')
+        model = out / f'reallyworld/models/item/freak/{name}.json'
+        model.write_text(json.dumps(build_model(name), separators=(',', ':')) + '\n', encoding='utf-8')
+        definition = out / f'reallyworld/items/{name}.json'
+        definition.write_text(json.dumps(
+            {'model': {'type': 'minecraft:model', 'model': f'reallyworld:item/freak/{name}'}},
+            separators=(',', ':')) + '\n', encoding='utf-8')
+        print(f'{name}: {image.size[0]}x{image.size[1]} texture, model + item definition -> {out}')
 
 
 if __name__ == '__main__':

@@ -9,8 +9,10 @@
 | Файл | Назначение |
 | --- | --- |
 | `build_tentacles.py` | Собирает `elytrix_kaneki_tentacles.bbmodel` и текстуру 64×64 |
-| `build_icon.py` | Рисует иконку аксессуара для меню (32×32) и её item-модель |
+| `build_eyepatch.py` | Собирает `elytrix_kaneki_eyepatch.bbmodel` — повязку Канэки на левый глаз (11 кубов, 2 кости, без анимации) |
+| `build_icon.py` | Рисует обе иконки меню (щупальца и повязка, 32×32) и их item-модели |
 | `elytrix_kaneki_tentacles.bbmodel` | Готовый blueprint (4 щупальца, 39 костей + узел, 45 кубов) |
+| `elytrix_kaneki_eyepatch.bbmodel` | Готовый blueprint повязки: полотно на левый глаз, лента вокруг головы, узел за правым ухом |
 | `assets/` | JSON и текстура, сгенерированные настоящим ModelEngine |
 | `generate_assets.sh`, `GenerateAssets.java` | Запуск генератора ModelEngine офлайн |
 | `compose_title.py`, `test_title.py` | Заголовок «АКСЕССУАРЫ» настоящим шрифтом пака |

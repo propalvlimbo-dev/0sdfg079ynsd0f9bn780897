@@ -694,7 +694,7 @@ LIGHT = _norm((-0.42, 0.72, 0.55))
 
 def preview(model, out_path, scale=8.0, size=(620, 460), title='', yaw=-26.0, pitch=8.0,
             texture=None, body=False, centre=(0.0, 27.0, 8.0), perspective=0.0,
-            shade=0.85):
+            shade=0.85, head=False):
     """Small flat-shaded renderer (painter's algorithm + back-face culling).
 
     Bone rotations are applied, so the solved chain is drawn here exactly as the
@@ -768,12 +768,15 @@ def preview(model, out_path, scale=8.0, size=(620, 460), title='', yaw=-26.0, pi
                         world = _apply(_rotation(axis_index, euler[axis_index]), world)
             quads.append((pts, world, element['faces'][face_name]['uv'], None))
 
-    if body:
-        # a plain player proxy (legs, torso, head in 1/16 units) so the scale of
-        # the fan can be judged against something that is exactly 1.8 blocks tall
+    if body or head:
+        # a plain player proxy (legs, torso and head in 1/16 units) so the scale
+        # can be judged against something that is exactly 1.8 blocks tall.
+        # The head is drawn at its real size (8x8x8, z from -4 to 4) whenever a
+        # head-worn accessory is being previewed.
+        depth = 4 if head else 2
         proxy = [((-4, 0, -2), (4, 12, 2), (66, 74, 92)),
                  ((-4, 12, -2), (4, 24, 2), (96, 104, 126)),
-                 ((-4, 24, -2), (4, 32, 2), (128, 132, 152))]
+                 ((-4, 24, -depth), (4, 32, depth), (128, 132, 152))]
         for low, high, colour in proxy:
             for keys, normal in (((0, 0, 0), (1, 0, 0), (1, 1, 0), (0, 1, 0)), (0, 0, -1)), \
                                 (((0, 0, 1), (0, 1, 1), (1, 1, 1), (1, 0, 1)), (0, 0, 1)), \

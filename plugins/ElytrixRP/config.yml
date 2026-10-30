@@ -10,7 +10,7 @@ enabled: true
 url: ''
 
 # (Необязательно) SHA-1 хэш архива (40 символов, для текущего rp/Elytrix-RP-1.21.zip: d6701c4da33bd86b3fa25732f2bad882cdbecf7d).
-sha1: "19e05affc9ef9a31e4d81dcff5ab4fa7912f41ca"
+sha1: "7173523183d1e1f76d011702a350b44fadcd99bb"
 
 # Если на VDS найден /root/RP/Elytrix-RP-1.21.zip (или rp/Elytrix-RP-1.21.zip),
 # встроенный HTTP-сервер ElytrixRP автоматически раздаст актуальный архив и вычистит старый РП у клиентов

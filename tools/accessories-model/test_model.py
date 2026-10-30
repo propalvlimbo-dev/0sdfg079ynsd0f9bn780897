@@ -19,6 +19,8 @@ from PIL import Image
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 MODEL = 'elytrix_kaneki_tentacles'
+PATCH = 'elytrix_kaneki_eyepatch'
+PATCH_ICON = 'assets/reallyworld/textures/item/freak/kaneki_eyepatch_icon.png'
 TITLE = 'assets/reallyworld/textures/gui/title/elytrix_accessories.png'
 FONT = 'assets/minecraft/font/default.json'
 GLYPH = 'ꏠ'
@@ -399,6 +401,80 @@ class BlueprintTests(unittest.TestCase):
                            'both pairs bulge out to exactly the same depth')
 
 
+class PatchBlueprintTests(unittest.TestCase):
+    """The eyepatch is a separate blueprint: head-worn, no animation, left eye."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.model = json.loads((HERE / f'{PATCH}.bbmodel').read_text(encoding='utf-8'))
+        cls.bones = {}
+        flatten(cls.model['outliner'], cls.bones)
+        cls.elements = {e['uuid']: e for e in cls.model['elements']}
+        cls.cubes = {name: [cls.elements[u] for u in bone['children'] if isinstance(u, str)]
+                     for name, bone in cls.bones.items()}
+
+    def test_shape(self):
+        self.assertEqual(self.model['model_identifier'], PATCH)
+        self.assertEqual(self.model['animations'], [], 'a patch does not wobble')
+        self.assertEqual(len(self.model['elements']), 11)
+        self.assertEqual(set(self.bones), {'eyepatch_root', 'eyepatch_patch', 'eyepatch_band'})
+        self.assertEqual(self.model['outliner'][0]['origin'], [0.0, 24.0, 0.0],
+                         'root sits on the neck, above the feet')
+
+    def test_it_sits_on_the_left_eye(self):
+        """+X is the player's right in blueprint space (see the priora's fl/fr
+        wheels), so Kaneki's patch must be on negative X, and in front (-Z)."""
+        patch = self.cubes['eyepatch_patch']
+        low = [min(c['from'][i] for c in patch) for i in range(3)]
+        high = [max(c['to'][i] for c in patch) for i in range(3)]
+        self.assertLess(high[0], 0.0, 'the patch is on the left half of the face')
+        self.assertGreater(low[0], -4.2, 'and does not hang off the cheek')
+        self.assertGreater(high[0] - low[0], 2.0, 'it covers a whole eye, not a dot')
+        self.assertLess(high[2], -3.8, 'in front of the face plane (z = -4)')
+        self.assertGreaterEqual(low[1], 26.5, 'over the eye line, not over the chin')
+        self.assertLessEqual(high[1], 31.0, 'below the top of the head')
+
+    def test_the_band_goes_all_the_way_round(self):
+        band = self.cubes['eyepatch_band']
+        self.assertGreaterEqual(len(band), 7, 'front, back, both sides and the knot')
+        self.assertLess(min(c['from'][2] for c in band), -3.8, 'touches the forehead')
+        self.assertGreater(max(c['to'][2] for c in band), 3.8, 'and the back of the head')
+        self.assertLess(min(c['from'][0] for c in band), -4.0)
+        self.assertGreater(max(c['to'][0] for c in band), 4.0)
+        # the knot is the only part that sticks out sideways or downwards
+        loose = [c for c in band if c['name'].startswith('knot')]
+        self.assertGreaterEqual(len(loose), 3)
+        for cube in band:
+            for i in range(3):
+                self.assertLessEqual(cube['to'][i] - cube['from'][i], 8.3, cube['name'])
+
+    def test_generated_assets_exist(self):
+        base = HERE / 'assets' / 'modelengine'
+        for bone in ('eyepatch_patch', 'eyepatch_band'):
+            model = json.loads((base / 'models' / PATCH / f'{bone}.json').read_text())
+            definition = json.loads((base / 'items' / PATCH / f'{bone}.json').read_text())
+            self.assertEqual(definition['model']['model'], f'modelengine:{PATCH}/{bone}')
+            self.assertEqual(model['textures']['0'], f'modelengine:entity/models/{PATCH}')
+        texture = Image.open(base / 'textures' / 'entity' / 'models' / f'{PATCH}.png')
+        self.assertEqual(texture.size, (64, 64))
+        self.assertEqual(texture.mode, 'RGBA')
+        self.assertGreater(sum(1 for px in texture.getdata() if px[3] > 0), 400,
+                           'the cloth and the strap are painted')
+
+    def test_menu_icon(self):
+        base = HERE / 'assets' / 'reallyworld'
+        definition = json.loads((base / 'items' / 'kaneki_eyepatch_icon.json').read_text())
+        self.assertEqual(definition['model']['model'], 'reallyworld:item/freak/kaneki_eyepatch_icon')
+        model = json.loads((base / 'models/item/freak/kaneki_eyepatch_icon.json').read_text())
+        self.assertEqual(model['parent'], 'minecraft:item/generated')
+        image = Image.open(base / 'textures/item/freak/kaneki_eyepatch_icon.png')
+        self.assertEqual((image.size, image.mode), ((32, 32), 'RGBA'))
+        light = [px for px in image.getdata() if px[3] > 0]
+        self.assertGreater(len(light), 120, 'the icon is drawn')
+        white = [px for px in light if min(px[:3]) > 200]
+        self.assertGreater(len(white), 60, 'the patch is white, not dark')
+
+
 class PackTests(unittest.TestCase):
     """Runs against a merged pack given with --pack=."""
 
@@ -419,11 +495,12 @@ class PackTests(unittest.TestCase):
                                  else 'assets/modelengine/' + path.relative_to(
                                      HERE / 'assets' / 'modelengine').as_posix())
             generated = {name for name in names
-                         if name.startswith(f'assets/modelengine/items/{MODEL}/')
-                         or name.startswith(f'assets/modelengine/models/{MODEL}/')
-                         or name == f'assets/modelengine/textures/entity/models/{MODEL}.png'
+                         if any(name.startswith(f'assets/modelengine/items/{m}/') or
+                                name.startswith(f'assets/modelengine/models/{m}/') or
+                                name == f'assets/modelengine/textures/entity/models/{m}.png'
+                                for m in (MODEL, PATCH))
                          or name.startswith('assets/reallyworld/')
-                         and 'kaneki_tentacles_icon' in name}
+                         and ('kaneki_tentacles_icon' in name or 'kaneki_eyepatch_icon' in name)}
             self.assertEqual(generated, expected)
             for name in generated:
                 source = HERE / 'assets' / name[len('assets/'):]
@@ -483,14 +560,17 @@ class PackTests(unittest.TestCase):
             changed = {n for n in old_names & new_names if old.read(n) != new.read(n)}
             added = new_names - old_names
             allowed_changes = {FONT} | {n for n in changed
-                                        if MODEL in n or 'kaneki_tentacles_icon' in n}
+                                        if MODEL in n or PATCH in n
+                                        or 'kaneki_tentacles_icon' in n
+                                        or 'kaneki_eyepatch_icon' in n}
             self.assertLessEqual(changed, allowed_changes,
                                  'only the tentacle model, its icon and the font may change')
             # the title bitmap may be new or redrawn, everything else is model data
             self.assertIn(TITLE, new_names, 'the menu title bitmap must survive the merge')
-            allowed = {n for n in added if n.startswith('assets/modelengine/') and MODEL in n}
+            allowed = {n for n in added if n.startswith('assets/modelengine/')
+                       and (MODEL in n or PATCH in n)}
             allowed |= {n for n in added if n.startswith('assets/reallyworld/')
-                        and 'kaneki_tentacles_icon' in n}
+                        and ('kaneki_tentacles_icon' in n or 'kaneki_eyepatch_icon' in n)}
             self.assertLessEqual(added - {TITLE}, allowed)
             for name in ('pack.png', 'assets/minecraft/atlases/blocks.json',
                          'assets/minecraft/items/leather_horse_armor.json',

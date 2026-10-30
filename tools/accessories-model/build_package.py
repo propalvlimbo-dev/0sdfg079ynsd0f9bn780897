@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Builds the deployable ZIP for the tentacle model + menu title.
+"""Builds the deployable ZIP for the Kaneki accessories + menu title.
 
 Contents (relative to /root/RW_GRIEF on the VDS):
 
     plugins/ModelEngine/blueprints/elytrix_kaneki_tentacles.bbmodel
+    plugins/ModelEngine/blueprints/elytrix_kaneki_eyepatch.bbmodel
     plugins/ModelEngine/resource pack/assets/modelengine/...   (generated assets)
     plugins/ModelEngine/resource pack/assets/reallyworld/...   (menu icon)
     plugins/ElytrixFreakModel.jar                              (accessories menu)
@@ -24,9 +25,12 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-MODEL = 'elytrix_kaneki_tentacles'
+MODELS = ('elytrix_kaneki_tentacles', 'elytrix_kaneki_eyepatch')
 TITLE = ROOT / 'tools/accessories-integration/staging-assets/assets/reallyworld/textures/gui/title/elytrix_accessories.png'
-PLUGIN_SOURCE = ROOT / 'elytrix-accessories-v3-test.zip'
+# The accessory-enabled plugin build that ships with this package; committing the
+# jar keeps the release reproducible instead of depending on a /tmp candidate.
+PLUGIN = ROOT / 'tools/accessories-integration/dist/ElytrixFreakModel-v19.jar'
+PLUGIN_SHA = 'e26faf1c9b1e779333f4af19e3fd4e52415284c78bc84e2ff4c0e694d971a91c'
 
 
 def sha1(path):
@@ -49,11 +53,10 @@ def build(output):
         print(result.stdout.strip())
         pack_sha1 = sha1(merged)
 
-        # 2. accessory-enabled plugin (menu) taken from the tested accessory package
-        with zipfile.ZipFile(PLUGIN_SOURCE) as package:
-            plugin = package.read('ElytrixFreakModel.jar')
+        # 2. accessory-enabled plugin (menu + eyepatch hook), hash-checked
+        plugin = PLUGIN.read_bytes()
         plugin_sha = hashlib.sha256(plugin).hexdigest()
-        if plugin_sha != 'd229db5c08787a7431c7cfcc03dc3eb3cb158c9038a466f3412752720441e3ae':
+        if plugin_sha != PLUGIN_SHA:
             raise SystemExit('unexpected accessory plugin build: ' + plugin_sha)
 
         # 3. ElytrixRP config with the new SHA-1
@@ -63,12 +66,9 @@ def build(output):
         if count != 1:
             raise SystemExit('ElytrixRP config sha1 entry not found exactly once')
 
-        entries = {
-            f'plugins/ModelEngine/blueprints/{MODEL}.bbmodel':
-                (HERE / f'{MODEL}.bbmodel').read_bytes(),
-            'plugins/ElytrixFreedom/placeholder': None,
-        }
-        entries.pop('plugins/ElytrixFreedom/placeholder')
+        entries = {}
+        for model in MODELS:
+            entries[f'plugins/ModelEngine/blueprints/{model}.bbmodel'] = (HERE / f'{model}.bbmodel').read_bytes()
         for path in sorted((HERE / 'assets').rglob('*')):
             if path.is_file():
                 name = path.relative_to(HERE).as_posix()          # assets/modelengine/...
