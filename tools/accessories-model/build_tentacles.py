@@ -53,28 +53,28 @@ BLADES = [
         # an antler.  Every blade starts from the SAME point (same y and z), only the
         # x differs by a hair so the four roots do not sit exactly on top of each other
         'name': 'right_upper',
-        'root': (0.9, 18.4, 2.6), 'length': 32.0, 'yaw': -10.0,
-        'turns': (80.0, -10.0, 8.0, -22.0, -10.0, -14.0, -8.0),
+        'root': (0.9, 18.4, 2.6), 'length': 34.0, 'yaw': -12.0,
+        'turns': (64.0, -8.0, 6.0, -18.0, -8.0, -12.0, -6.0),
         'girth': (6.4, 5.4), 'tip': 0.30,
     },
     {
         # lower right: goes down and out, then levels off to the side with a wave
         'name': 'right_lower',
-        'root': (0.9, 18.4, 2.9), 'length': 40.0, 'yaw': -27.0,
+        'root': (0.9, 18.4, 2.9), 'length': 40.0, 'yaw': -42.0,
         'turns': (-30.0, 12.0, -10.0, 20.0, 8.0, 12.0, 6.0),
         'girth': (6.0, 5.0), 'tip': 0.28,
     },
     {
         # upper left: the mirror, a touch longer and a little less curved
         'name': 'left_upper',
-        'root': (-0.9, 18.4, 3.2), 'length': 33.0, 'yaw': 15.0,
-        'turns': (100.0, 10.0, -8.0, 22.0, 10.0, 14.0, 8.0),
+        'root': (-0.9, 18.4, 3.2), 'length': 35.0, 'yaw': 15.0,
+        'turns': (116.0, 8.0, -6.0, 18.0, 8.0, 12.0, 6.0),
         'girth': (6.2, 5.2), 'tip': 0.30,
     },
     {
         # lower left: the mirror, one unit longer
         'name': 'left_lower',
-        'root': (-0.9, 18.4, 3.5), 'length': 41.0, 'yaw': 31.0,
+        'root': (-0.9, 18.4, 3.5), 'length': 41.0, 'yaw': 45.0,
         'turns': (210.0, -12.0, 10.0, -20.0, -8.0, -12.0, -6.0),
         'girth': (5.8, 4.8), 'tip': 0.28,
     },

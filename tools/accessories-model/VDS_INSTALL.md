@@ -4,7 +4,7 @@
 
 ```bash
 cd /root/RW_GRIEF && set -e && \
-curl -fsSL -o /tmp/elytrix-v7.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/bf2bc74efea7ce98b09b8566efb64b4ee8ee9c0f/elytrix-tentacles-v7.zip && \
+curl -fsSL -o /tmp/elytrix-v7.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/COMMIT_PLACEHOLDER/elytrix-tentacles-v7.zip && \
 B=/root/elytrix-backup-$(date +%Y%m%d-%H%M%S) && mkdir -p "$B" && \
 cp -a "plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_kaneki_tentacles" "$B/" 2>/dev/null || true && \
 cp -a plugins/ModelEngine/blueprints/elytrix_kaneki_tentacles.bbmodel "$B/" 2>/dev/null || true && \
@@ -20,7 +20,7 @@ sha1sum rp/Elytrix-RP-1.21.zip /root/RP/Elytrix-RP-1.21.zip
 
 После этого — `restart` в консоли сервера.
 
-Ожидаемый SHA-1: `f11c1a549533606febe950dbf2d5e3174df68f90` (оба пути должны совпасть).
+Ожидаемый SHA-1: `1979ef575f513be8d48cf8bc01e0f6aa918b5e8a` (оба пути должны совпасть).
 
 Что ставится: blueprint, 28 JSON моделей + 28 item-definitions + текстура щупалец,
 иконка меню (`assets/reallyworld/...kaneki_tentacles_icon`), `ElytrixFreakModel.jar`,

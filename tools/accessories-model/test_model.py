@@ -99,9 +99,15 @@ class BlueprintTests(unittest.TestCase):
         xs = [p[0] for p in points]
         ys = [p[1] for p in points]
         zs = [p[2] for p in points]
-        self.assertGreater(max(xs) - min(xs), 60, 'the fan is wider than the body')
-        self.assertGreater(max(ys) - min(ys), 30, 'and taller')
-        self.assertGreater(max(zs) - min(zs), 12, 'and it opens up behind the back')
+        self.assertGreater(max(xs) - min(xs), 50, 'the fan is wider than the body')
+        self.assertGreater(max(ys) - min(ys), 25, 'and taller')
+        self.assertGreater(max(zs) - min(zs), 15, 'and it opens up behind the back')
+        # the four tips must sit at four clearly different compass angles
+        angles = sorted(math.degrees(math.atan2(path[-1][2] - path[0][2],
+                                                path[-1][0] - path[0][0])) % 360
+                        for path in paths)
+        gaps = [b - a for a, b in zip(angles, angles[1:])] + [angles[0] + 360 - angles[-1]]
+        self.assertTrue(all(gap > 20 for gap in gaps), f'the fan is wide: {angles}')
 
     def test_the_blades_are_slim(self):
         """v4 was 8-9 units across and nearly as deep - it read as a fat strap."""
