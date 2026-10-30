@@ -14,3 +14,8 @@ classpath="$tmp:$root/plugins/ModelEngine-4.1.0.jar:$root/plugins/BLib.jar:$root
 model="$root/tools/accessories-draft/elytrix_kaneki_tentacles.bbmodel"
 "$JAVA" -Xverify:all -cp "$classpath" ParseModel "$model"
 "$JAVA" -Xverify:all -cp "$classpath" ParseBlueprint "$model"
+
+# Optional real fastutil dependency tests the server's existing rotation=false path.
+if [ -n "${FASTUTIL:-}" ]; then
+  "$JAVA" -Xverify:all -Dmodelengine.test.rotation=false ${MODEL_OUTPUT:+-Dmodelengine.test.output="$MODEL_OUTPUT"} -cp "$FASTUTIL:$classpath" ParseBlueprint "$model"
+fi

@@ -1,4 +1,4 @@
-import java.nio.file.*; import java.lang.reflect.*; import java.util.*;
+import java.nio.file.*; import java.nio.charset.StandardCharsets; import java.lang.reflect.*; import java.util.*;
 public class ParseBlueprint {
  public static void main(String[] a)throws Exception {
   Class<?> bb=Class.forName("com.ticxo.modelengine.api.generator.parser.blockbench.BlockbenchModel");
@@ -21,6 +21,18 @@ public class ParseBlueprint {
   int elements=0; Class<?> item=Class.forName("com.ticxo.modelengine.api.generator.assets.JavaItemModel");
   for (Object collection:models.values()) for (Object itemModel:(Collection<?>)collection) elements+=((List<?>)item.getMethod("getElements").invoke(itemModel)).size();
   if(elements!=14 || ((List<?>)ac.getMethod("getTextures").invoke(assets)).size()!=1 || !((Map<?,?>)bp.getMethod("getAnimations").invoke(blueprint)).containsKey("idle") || !((List<?>)ec.getMethod("getErrorList").invoke(collector)).isEmpty()) throw new AssertionError("unexpected assets or parser errors; elements="+elements);
-  System.out.println("ModelEngine populateBlueprint/assets with mocked API and Use-New-Rotation=true: 4 item models, 14 elements, 1 texture, idle, no collected warnings");
+  String output=System.getProperty("modelengine.test.output");
+  if(output!=null){
+   Path root=Path.of(output);
+   for(Object group:models.values()){
+    Collection<?> collection=(Collection<?>)group;
+    if(collection.size()!=1)throw new AssertionError("export expects one model per bone");
+    Object m=collection.iterator().next();String name=(String)item.getMethod("getName").invoke(m);
+    if(!name.matches("[a-z0-9_]+"))throw new AssertionError("unsafe model name");
+    Path file=root.resolve("assets/modelengine/models/elytrix_kaneki_tentacles/"+name+".json");Files.createDirectories(file.getParent());Files.writeString(file,(String)g.getClass().getMethod("toJson",Object.class).invoke(g,m),StandardCharsets.UTF_8);
+    Path itemFile=root.resolve("assets/modelengine/items/elytrix_kaneki_tentacles/"+name+".json");Files.createDirectories(itemFile.getParent());Files.writeString(itemFile,"{\"model\":{\"model\":\"modelengine:elytrix_kaneki_tentacles/"+name+"\",\"tints\":[{\"index\":0,\"default\":16777215,\"type\":\"minecraft:custom_model_data\"}],\"type\":\"minecraft:model\"}}",StandardCharsets.UTF_8);
+   }
+  }
+  System.out.println("ModelEngine populateBlueprint/assets with mocked API and Use-New-Rotation="+System.getProperty("modelengine.test.rotation", "true")+": 4 item models, 14 elements, 1 texture, idle, no collected warnings");
  }
 }

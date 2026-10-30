@@ -1,0 +1,1 @@
+package com.ticxo.modelengine.api; import com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint; public class ModelEngineAPI {public static boolean loaded=true;public static ModelBlueprint getBlueprint(String id){return loaded?new ModelBlueprint():null;}}

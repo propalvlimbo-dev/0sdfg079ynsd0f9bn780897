@@ -1,0 +1,1 @@
+package org.bukkit.event.inventory; import org.bukkit.inventory.InventoryView; public class InventoryDragEvent {public InventoryView view;public boolean cancelled;public InventoryView getView(){return view;}public void setCancelled(boolean c){cancelled=c;} }

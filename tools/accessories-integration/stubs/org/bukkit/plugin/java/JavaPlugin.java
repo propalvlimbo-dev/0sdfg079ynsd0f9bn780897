@@ -1,0 +1,1 @@
+package org.bukkit.plugin.java; import org.bukkit.plugin.Plugin; import org.bukkit.command.PluginCommand; public class JavaPlugin implements Plugin {public final PluginCommand mockCommand=new PluginCommand();public PluginCommand getCommand(String command){return mockCommand;}}

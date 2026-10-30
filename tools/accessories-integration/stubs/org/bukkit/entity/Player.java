@@ -1,0 +1,1 @@
+package org.bukkit.entity; import org.bukkit.inventory.Inventory; import org.bukkit.persistence.PersistentDataContainer; public interface Player extends HumanEntity {boolean hasPermission(String name); PersistentDataContainer getPersistentDataContainer(); org.bukkit.inventory.InventoryView openInventory(Inventory inv);}

@@ -1,0 +1,1 @@
+package org.bukkit; public class NamespacedKey {public final String name;public NamespacedKey(String namespace,String key){this.name=namespace+":"+key;} public boolean equals(Object v){return v instanceof NamespacedKey n && n.name.equals(name);} public int hashCode(){return name.hashCode();}}

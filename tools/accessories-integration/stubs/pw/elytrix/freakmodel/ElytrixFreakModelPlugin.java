@@ -1,0 +1,1 @@
+package pw.elytrix.freakmodel; import org.bukkit.plugin.java.JavaPlugin; public final class ElytrixFreakModelPlugin extends JavaPlugin {public FreakModelSpec wings,halo;public FreakModelSpec findModel(String name){return name.equals("angel_wings")?wings:name.equals("angel_halo")?halo:null;}}
