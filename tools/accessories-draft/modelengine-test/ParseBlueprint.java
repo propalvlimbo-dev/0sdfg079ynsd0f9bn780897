@@ -21,6 +21,18 @@ public class ParseBlueprint {
   int elements=0; Class<?> item=Class.forName("com.ticxo.modelengine.api.generator.assets.JavaItemModel");
   for (Object collection:models.values()) for (Object itemModel:(Collection<?>)collection) elements+=((List<?>)item.getMethod("getElements").invoke(itemModel)).size();
   if(elements!=14 || ((List<?>)ac.getMethod("getTextures").invoke(assets)).size()!=1 || !((Map<?,?>)bp.getMethod("getAnimations").invoke(blueprint)).containsKey("idle") || !((List<?>)ec.getMethod("getErrorList").invoke(collector)).isEmpty()) throw new AssertionError("unexpected assets or parser errors; elements="+elements);
+  Object idle=((Map<?,?>)bp.getMethod("getAnimations").invoke(blueprint)).get("idle");
+  Map<?,?> timelines=(Map<?,?>)idle.getClass().getMethod("getTimelines").invoke(idle);
+  if(timelines.size()!=4)throw new AssertionError("expected four animated bones, got "+timelines.size());
+  Field flatField=bp.getDeclaredField("flatMap");flatField.setAccessible(true); Map<?,?> flat=(Map<?,?>)flatField.get(blueprint);Set<Object> boneIds=new HashSet<>();
+  for(Object bone:flat.values())boneIds.add(bone.getClass().getMethod("getUuid").invoke(bone));
+  if(!boneIds.containsAll(timelines.keySet()))throw new AssertionError("animation timelines must target blueprint bones");
+  Class<?> kt=Class.forName("com.ticxo.modelengine.api.animation.keyframe.KeyframeType");
+  Object rotation=Class.forName("com.ticxo.modelengine.api.animation.keyframe.KeyframeTypes").getField("ROTATION").get(null);
+  for(Object timeline:timelines.values()){
+   Map<?,?> frames=(Map<?,?>)timeline.getClass().getMethod("getInterpolator",kt).invoke(timeline,rotation);
+   if(frames==null || frames.size()!=25)throw new AssertionError("expected 25 rotation keyframes per animated bone: "+frames);
+  }
   String output=System.getProperty("modelengine.test.output");
   if(output!=null){
    Path root=Path.of(output);
@@ -33,6 +45,6 @@ public class ParseBlueprint {
     Path itemFile=root.resolve("assets/modelengine/items/elytrix_kaneki_tentacles/"+name+".json");Files.createDirectories(itemFile.getParent());Files.writeString(itemFile,"{\"model\":{\"model\":\"modelengine:elytrix_kaneki_tentacles/"+name+"\",\"tints\":[{\"index\":0,\"default\":16777215,\"type\":\"minecraft:custom_model_data\"}],\"type\":\"minecraft:model\"}}",StandardCharsets.UTF_8);
    }
   }
-  System.out.println("ModelEngine populateBlueprint/assets with mocked API and Use-New-Rotation="+System.getProperty("modelengine.test.rotation", "true")+": 4 item models, 14 elements, 1 texture, idle, no collected warnings");
+  System.out.println("ModelEngine populateBlueprint/assets with mocked API and Use-New-Rotation="+System.getProperty("modelengine.test.rotation", "true")+": 4 item models, 14 elements, 1 texture, 4 animated bones with 25 keyframes, no collected warnings");
  }
 }

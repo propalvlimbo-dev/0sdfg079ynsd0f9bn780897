@@ -28,7 +28,10 @@ class ModelTest(unittest.TestCase):
         self.assertEqual(idle['name'],'idle'); self.assertEqual(idle['loop'],'loop')
         self.assertEqual(set(idle['animators']),{b['uuid'] for b in bones})
         for a in idle['animators'].values():
-            keys=a['keyframes']; self.assertEqual(keys[0]['time'],0); self.assertEqual(keys[-1]['time'],idle['length'])
+            keys=a['keyframes']; self.assertEqual(len(keys),25); self.assertEqual(keys[0]['time'],0); self.assertEqual(keys[-1]['time'],idle['length'])
+            self.assertTrue(any(abs(float(k['data_points'][0]['z'])) >= 3.9 for k in keys))
+            self.assertTrue(all(k['interpolation']=='linear' for k in keys))
+            self.assertTrue(all(abs(float(keys[i+1]['data_points'][0]['z']) - float(keys[i]['data_points'][0]['z'])) < 1.1 for i in range(len(keys)-1)))
             self.assertEqual(keys[0]['data_points'],keys[-1]['data_points'])
     def test_texture(self):
         t=self.model['textures'][0]; prefix='data:image/png;base64,'

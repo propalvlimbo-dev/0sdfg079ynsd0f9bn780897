@@ -79,8 +79,11 @@ def key(name,t,z):
 animators={}
 for i, arm in enumerate(arms):
     sign = -1 if i%2==0 else 1
-    animators[arm['uuid']]={'name':arm['name'],'type':'bone','keyframes':[key(arm['name'],0,0),
-        key(arm['name'],1.5,sign*4),key(arm['name'],3,0),key(arm['name'],4.5,-sign*4),key(arm['name'],6,0)]}
+    # Sample a full sine cycle at quarter-second intervals. Piecewise-linear
+    # interpolation between closely spaced samples avoids abrupt reversals.
+    frames=[key(arm['name'],step/4,round(sign*4*math.sin(math.pi*step/12),4)) for step in range(25)]
+    frames[-1]['data_points']=frames[0]['data_points']
+    animators[arm['uuid']]={'name':arm['name'],'type':'bone','keyframes':frames}
 model={'meta':{'format_version':'4.10','model_format':'free','box_uv':False},
        'name':'elytrix_kaneki_tentacles','model_identifier':'elytrix_kaneki_tentacles',
        'visible_box':[5,5,1], 'resolution':{'width':16,'height':16}, 'elements':elements,
