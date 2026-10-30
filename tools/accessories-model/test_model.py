@@ -344,17 +344,59 @@ class BlueprintTests(unittest.TestCase):
         colours = {c for c in texture.convert('RGB').getdata()}
         self.assertGreater(len(colours), 30, 'texture must have real shading')
 
-    def test_no_animation_clip(self):
-        """The model ships without a clip on purpose.
+    def test_the_idle_clip_moves_but_stays_a_delta(self):
+        """One 'idle' clip that sways the arms - as *deltas*, never absolutes.
 
-        ElytrixFreakModel drives whatever sits in the back slot through
-        WornAngelRig, which keeps restarting the model's own "idle" clip.  The
-        keyframes are absolute, so any sign difference between the clip and the
-        solved rest pose bends every joint twice - that is exactly the C-shaped
-        hoops that were rejected in game.  The rest pose is the shape.
+        WornAngelRig keeps re-playing the model's own 'idle' on the back slot.
+        ModelEngine 4.1 applies a rotation keyframe as
+        `bone.localRotation.add(key)` (KeyframeTypes), so a keyframe that already
+        carries the solved rest angle doubles every bend - that is what turned v9
+        into C-shaped hoops.  Hence: exactly one clip, small values, mean zero.
         """
-        self.assertEqual(self.model['animations'], [],
-                         'a worn accessory must not carry its own clip')
+        clips = self.model['animations']
+        self.assertEqual(len(clips), 1, 'one clip, and it is the idle')
+        clip = clips[0]
+        self.assertEqual(clip['name'], 'idle', 'the rig looks the clip up by this name')
+        self.assertEqual(clip['loop'], 'loop')
+        self.assertGreaterEqual(clip['length'], 3.0, 'a sway, not a twitch')
+        self.assertEqual(len(clip['animators']), len(self.bones) - 2,
+                         'every joint sways (the root and the knot stay put)')
+
+        values = []
+        moved = {'y': 0, 'z': 0}
+        for animator in clip['animators'].values():
+            keys = animator['keyframes']
+            self.assertGreaterEqual(len(keys), 12, 'the sway needs real keyframes')
+            self.assertEqual(keys[0]['data_points'], keys[-1]['data_points'],
+                             'the loop has to close without a jump')
+            for key in keys:
+                point = key['data_points'][0]
+                for axis in ('y', 'z'):
+                    value = float(point[axis])
+                    values.append(value)
+                    if abs(value) > 0.5:
+                        moved[axis] += 1
+        self.assertLess(max(abs(v) for v in values), 9.0,
+                        'past ~9 deg the engine folds the arm - that is the v9 bug')
+        self.assertLess(abs(sum(values) / len(values)), 0.15,
+                        'a clip of deltas has to average zero, not sit at rest')
+        self.assertGreater(moved['z'], 0, 'the arms must swing up and down')
+        self.assertGreater(moved['y'], 0, 'and forward and back')
+
+    def test_the_two_pairs_differ(self):
+        """Upper and lower arms are not a mirror: the user asked for a slight
+        difference, so the lower pair reaches further and curls less."""
+        upper = self.paths['right_upper']
+        lower = self.paths['right_lower']
+        reach_upper = max(point[0] for point in upper)
+        reach_lower = max(point[0] for point in lower)
+        self.assertGreater(abs(reach_lower - reach_upper), 0.6,
+                           'the pairs are a perfect mirror again')
+        # and the two pairs do not sit at the same height
+        depth_upper = max(point[2] for point in upper)
+        depth_lower = max(point[2] for point in lower)
+        self.assertGreater(abs(depth_upper - depth_lower), 0.3,
+                           'both pairs bulge out to exactly the same depth')
 
 
 class PackTests(unittest.TestCase):

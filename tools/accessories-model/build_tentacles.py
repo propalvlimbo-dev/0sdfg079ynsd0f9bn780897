@@ -74,18 +74,22 @@ TENDRILS = [
     },
     {
         # lower right: the mirror arm under the ribs, curling forward the same way.
+        # Deliberately NOT a mirror of the upper one: the lower pair reaches
+        # further out (19.6 against 18.4), hugs the body a little longer before
+        # curling and is a hair thinner.  "сверху и снизу должны чуть-чуть
+        # отличаться друг от друга.
         'name': 'right_lower',
-        'ctrl': [(0.8, 16.3, 2.2), (1.4, 14.3, 4.0), (2.8, 12.3, 5.6),
-                 (5.2, 10.7, 6.4), (8.4, 9.9, 6.2), (11.8, 10.2, 4.8),
-                 (15.0, 11.3, 2.2), (17.2, 12.8, -1.0), (18.4, 14.0, -3.0)],
-        'girth': (3.0, 2.9),
+        'ctrl': [(0.8, 16.3, 2.2), (1.4, 14.2, 4.2), (2.8, 12.0, 6.0),
+                 (5.2, 10.3, 6.9), (8.4, 9.4, 6.8), (11.9, 9.7, 5.3),
+                 (15.4, 10.9, 2.6), (17.9, 12.5, -0.7), (19.6, 13.8, -2.4)],
+        'girth': (2.8, 2.7),
     },
     {
         'name': 'left_lower',
-        'ctrl': [(-0.8, 16.3, 2.2), (-1.4, 14.3, 4.0), (-2.8, 12.3, 5.6),
-                 (-5.2, 10.7, 6.4), (-8.4, 9.9, 6.2), (-11.8, 10.2, 4.8),
-                 (-15.0, 11.3, 2.2), (-17.2, 12.8, -1.0), (-18.4, 14.0, -3.0)],
-        'girth': (2.9, 2.8),
+        'ctrl': [(-0.8, 16.3, 2.2), (-1.4, 14.2, 4.2), (-2.8, 12.0, 6.0),
+                 (-5.2, 10.3, 6.9), (-8.4, 9.4, 6.8), (-11.9, 9.7, 5.3),
+                 (-15.4, 10.9, 2.6), (-17.9, 12.5, -0.7), (-19.6, 13.8, -2.4)],
+        'girth': (2.7, 2.6),
     },
 ]
 
@@ -498,45 +502,52 @@ def build_texture():
 
 
 # --------------------------------------------------------------------------- animation
-ANIM_LENGTH = 6.0
+ANIM_LENGTH = 4.0               # seconds; a slow, heavy sway, not a twitch
 ANIM_FRAMES = 25
 
 
 def motion(depth, count):
-    """Amplitude (deg), lag and the sideways share for the joint at `depth`."""
+    """Amplitude (deg) and lag for the joint at `depth` of a chain.
+
+    The root barely moves, the tip swings: that is what makes a limb read as a
+    limb instead of a rigid prop.  Amplitudes stay small on purpose - the engine
+    *adds* these values to the bone's rest rotation, so anything big would fold
+    the arm.
+    """
     t = depth / max(1, count - 1)
-    gain = 1.8 + 8.6 * t ** 1.7
-    lag = 0.42 * t
-    mix = 0.30 - 0.20 * t
-    return gain, lag, mix
+    return 1.0 + 5.5 * t ** 1.6, 0.55 * t
 
 
 def build_animation(tendrils):
-    """Lively idle: the tendril whips in its own plane and swings a little sideways.
+    """Lively idle: every arm breathes up/down and sweeps forward/back.
 
-    Keyframes are absolute, so the *solved* rest angles of the chain are written
-    into the keys - otherwise playing the animation would flatten the curve.
+    IMPORTANT - these are *deltas*, not absolute angles.  ModelEngine applies a
+    rotation keyframe as `bone.localRotation.add(key)`, so a keyframe that
+    already contains the solved rest angle doubles the bend (that is exactly the
+    "huge C" of v9).  Deltas around zero keep the rest pose intact and only add
+    movement on top of it.
     """
     animators = {}
     for index, tendril in enumerate(tendrils):
+        # the four arms are deliberately out of step with each other
         phase = index * math.pi / 2.3
         count = len(tendril['bones'])
         for depth, bone in enumerate(tendril['bones']):
-            gain, lag, mix = motion(depth, count)
-            rest_y, rest_z = bone['yaw'], bone['turn']
+            gain, lag = motion(depth, count)
             keys = []
             for step in range(ANIM_FRAMES):
                 t = ANIM_LENGTH * step / (ANIM_FRAMES - 1)
                 swing = 2 * math.pi * t / ANIM_LENGTH
-                bend = gain * (math.sin(swing + phase - lag * 6.0)
-                               + 0.22 * math.sin(2.0 * swing + phase * 1.7))
-                side = gain * 0.5 * math.cos(swing * 0.72 + phase * 1.3 - lag * 4.0)
+                # z = up/down in the arm's own plane, y = forward/back sweep
+                up = gain * (math.sin(swing + phase - lag * 6.0)
+                             + 0.18 * math.sin(2.0 * swing + phase * 1.7))
+                back = gain * 0.72 * math.sin(swing + phase * 1.4 - lag * 4.0 + math.pi / 2)
                 keys.append({
                     'channel': 'rotation',
                     'data_points': [{
                         'x': '0',
-                        'y': str(round(rest_y + side * mix, 3)),
-                        'z': str(round(rest_z + bend, 3)),
+                        'y': str(round(back, 3)),
+                        'z': str(round(up, 3)),
                     }],
                     'uuid': uid(f'key:{bone["name"]}:{step}'),
                     'time': round(t, 3), 'color': -1, 'interpolation': 'linear',
@@ -606,14 +617,13 @@ def build_model():
         'name': MODEL, 'model_identifier': MODEL, 'visible_box': [5, 5, 1],
         'resolution': {'width': 16, 'height': 16}, 'elements': elements,
         'outliner': [root], 'textures': [texture_entry],
-        # No keyframes on purpose.  ElytrixFreakModel drives the worn
-        # accessory through WornAngelRig, which keeps re-playing its
-        # 'idle' clip on whatever model sits in the back slot; keyframes
-        # are absolute, so any sign mismatch between the animation and the
-        # bone rest pose bends every joint twice - that is what turned the
-        # tentacles into C-shaped hoops in game.  The rest pose is the
-        # shape; the silent clip is the fix.
-        'animations': [],
+        # One clip, named 'idle' on purpose: ElytrixFreakModel drives the back
+        # slot through WornAngelRig, which keeps re-playing the model's own
+        # 'idle'.  ModelEngine 4 applies a rotation keyframe as
+        # bone.localRotation.add(key), so the clip carries *deltas only* - a
+        # clip with the solved rest angles baked in doubles every bend (that is
+        # what turned v9 into C-shaped hoops).
+        'animations': [build_animation(TENDRILS)],
     }, texture
 
 
