@@ -12,7 +12,7 @@ import com.ticxo.modelengine.api.ModelEngineAPI;
 
 public class AccessoryTest {
  static class Data implements PersistentDataContainer {Map<NamespacedKey,Object> m=new HashMap<>();@SuppressWarnings("unchecked") public <P,C>C get(NamespacedKey k,PersistentDataType<P,C> t){return (C)m.get(k);}public <P,C>void set(NamespacedKey k,PersistentDataType<P,C> t,C v){m.put(k,v);} public void remove(NamespacedKey k){m.remove(k);}}
- static class PlayerFake implements Player {boolean admin;String command;UUID uuid=UUID.fromString("00000000-0000-0000-0000-0000000000aa");public boolean performCommand(String c){command=c;return true;}public void closeInventory(){}Data data=new Data();String msg;public boolean hasPermission(String s){return admin;}public Data getPersistentDataContainer(){return data;}public Inventory opened;public InventoryView openInventory(Inventory i){opened=i;return null;}public void sendMessage(String s){msg=s;}public java.util.UUID getUniqueId(){return uuid;}public boolean isOnline(){return true;}}
+ static class PlayerFake implements Player {boolean admin,use;String command;UUID uuid=UUID.fromString("00000000-0000-0000-0000-0000000000aa");public boolean performCommand(String c){command=c;return true;}public void closeInventory(){}Data data=new Data();String msg;public boolean hasPermission(String s){return admin || (use && s.equals(AccessoryController.USE_PERMISSION));}public Data getPersistentDataContainer(){return data;}public Inventory opened;public InventoryView openInventory(Inventory i){opened=i;return null;}public void sendMessage(String s){msg=s;}public java.util.UUID getUniqueId(){return uuid;}public boolean isOnline(){return true;}}
  static FreakModelSpec spec(String id){return new FreakModelSpec(id,ModelKind.ANGEL_WINGS,id,List.of(),Material.FEATHER,"model",34,id,List.of(),1,0,0,1,1,2,0,0,0,0,0,0,0,0,0,0,0,false,false);}
  // --- ModelEngine double: proves tickEyepatch really attaches the patch ------
  static class FakePivot implements com.ticxo.modelengine.api.model.PivotOverride {}
@@ -53,25 +53,49 @@ public class AccessoryTest {
   p.data.set(AccessoryController.BACK,PersistentDataType.STRING,"wings");check(AccessoryController.back(plugin,p)==plugin.wings,"wings selected");
   p.data.set(AccessoryController.BACK,PersistentDataType.STRING,"bad");check(AccessoryController.back(plugin,p)==null,"unknown rejected");
   p.admin=false;check(AccessoryController.halo(plugin,p)==null,"permission revocation applied");
-  class PM implements PluginManager {Listener listener;public void registerEvents(Listener l,Plugin p){listener=l;}} PM pm=new PM();Bukkit.manager=pm;
+  class PM implements PluginManager {Listener listener;java.util.Set<String> enabled=new java.util.HashSet<>();public void registerEvents(Listener l,Plugin p){listener=l;}public boolean isPluginEnabled(String n){return enabled.contains(n);}}
+  PM pm=new PM();Bukkit.manager=pm;
   AccessoryController.install(plugin);AccessoryController controller=(AccessoryController)pm.listener;
   check(plugin.mockCommand.executor==controller,"executor registered");
+  check(Bukkit.dispatched.isEmpty(),"no LuckPerms command when the plugin is absent");
+  // with LuckPerms installed the start-up writes the media node once
+  pm.enabled.add("LuckPerms");Bukkit.dispatched.clear();AccessoryController.install(plugin);
+  check(Bukkit.dispatched.equals(List.of("lp group media permission set elytrixaccessories.use true")),
+        "media group gets the node automatically");
+  pm.enabled.clear();
   p.admin=false;check(controller.onCommand(p,new Command(),"аксессуары",new String[0]),"command handled");
   check(p.opened!=null,"menu visible to non-admin");
   check(Bukkit.slots.get(14).meta.model.equals(new NamespacedKey("reallyworld","kaneki_tentacles_icon")),"tentacle menu icon");
   check(Bukkit.slots.get(12).meta.model.equals(new NamespacedKey("reallyworld","angel_wings")),"wings icon");
+  // «Назад» is the same resource-pack arrow DeluxeMenus /menu shows
+  ItemStack backButton=Bukkit.slots.get(31);
+  check(backButton.meta.cmd!=null && backButton.meta.cmd==10002,"back button uses the pack arrow");
+  check(backButton.meta.model==null,"and does not need an item model");
+  check(Bukkit.slots.get(30).meta.title.contains("Снять всё"),"one button clears everything");
+  check(Bukkit.slots.size()==6,"four accessories, clear-all and back");
   InventoryClickEvent click=new InventoryClickEvent();click.view=()->p.opened;click.who=p;click.slot=14;
   check(Bukkit.size==54 && Bukkit.title.contains("ꏠ"),"resource pack menu");
   click.slot=31;controller.onClick(click);check("menu".equals(p.command),"back available to non-admin");click.slot=14;
-  p.data.remove(AccessoryController.BACK);controller.onClick(click);check(click.cancelled && AccessoryController.back(plugin,p)==null && !p.data.m.containsKey(AccessoryController.BACK),"non-admin click denied");
+  p.data.remove(AccessoryController.BACK);controller.onClick(click);
+  check(click.cancelled && AccessoryController.back(plugin,p)==null && !p.data.m.containsKey(AccessoryController.BACK),"non-admin click denied");
+  check(p.msg.contains("media"),"the denial names the donation rank");
+  // the media rank reaches the same menu through its permission node
+  PlayerFake media=new PlayerFake();media.use=true;media.uuid=UUID.randomUUID();
+  check(AccessoryController.allowed(media),"media permission unlocks the menu");
+  check(!AccessoryController.allowed(p),"no permission, no accessories");
   p.admin=true;ModelEngineAPI.backend=null;controller.onClick(click);check(!p.data.m.containsKey(AccessoryController.BACK),"missing engine denied");
+  p.data.remove(AccessoryController.HALO);   // the legacy node is covered further down
   ModelEngineAPI.backend=new FakeEngine();controller.onClick(click);check(AccessoryController.back(plugin,p).blueprintId.equals("elytrix_kaneki_tentacles"),"menu selection");
-  click.slot=13;controller.onClick(click);check(AccessoryController.halo(plugin,p)==plugin.halo,"independent halo click");
+  // second click on the same button takes it off again
+  controller.onClick(click);check(AccessoryController.back(plugin,p)==null,"second click removes the kagune");
+  check(p.msg.contains("сняты"),"and says so");
+  controller.onClick(click);check(AccessoryController.back(plugin,p)!=null,"third click puts it back");
   click.slot=12;controller.onClick(click);check(AccessoryController.back(plugin,p)==plugin.wings,"wings replace tentacles");
-  click.slot=30;controller.onClick(click);check(AccessoryController.back(plugin,p)==null && AccessoryController.halo(plugin,p)!=null,"clear only back");
+  controller.onClick(click);check(AccessoryController.back(plugin,p)==null,"clicking the worn wings takes them off");
+  click.slot=13;controller.onClick(click);check(AccessoryController.halo(plugin,p)==plugin.halo,"halo on");
+  controller.onClick(click);check(AccessoryController.halo(plugin,p)==null,"halo off by the same button");
   // --- the eyepatch: its own menu slot, its own head slot -------------------
   check(Bukkit.slots.get(15).meta.model.equals(new NamespacedKey("reallyworld","kaneki_eyepatch_icon")),"eyepatch menu icon");
-  check(Bukkit.slots.get(32).meta.title.contains("голов"),"head slot has its own remove button");
   p.data.set(AccessoryController.BACK,PersistentDataType.STRING,"kaneki");
   click.slot=15;controller.onClick(click);
   check(AccessoryController.eyepatchSelected(p),"eyepatch selected from the menu");
@@ -80,13 +104,14 @@ public class AccessoryTest {
   FreakModelSpec patch=AccessoryController.eyepatch(plugin);
   check(patch!=null && patch.blueprintId.equals("elytrix_kaneki_eyepatch"),"own spec for the patch");
   check(patch==AccessoryController.eyepatch(plugin),"patch spec cached");
-  p.data.remove(AccessoryController.BACK);
-  p.data.set(AccessoryController.BACK,PersistentDataType.STRING,"kaneki");
   check(AccessoryController.back(plugin,p)!=null && AccessoryController.eyepatchSelected(p),"kagune and patch together");
   click.slot=13;controller.onClick(click);
   check(AccessoryController.halo(plugin,p)==plugin.halo && !AccessoryController.eyepatchSelected(p),"halo replaces the patch");
-  click.slot=32;controller.onClick(click);
-  check(AccessoryController.halo(plugin,p)==null && !AccessoryController.eyepatchSelected(p),"head cleared");
+  click.slot=15;controller.onClick(click);
+  check(AccessoryController.eyepatchSelected(p) && AccessoryController.halo(plugin,p)==null,"patch replaces the halo");
+  click.slot=30;controller.onClick(click);
+  check(AccessoryController.back(plugin,p)==null && AccessoryController.halo(plugin,p)==null &&
+        !AccessoryController.eyepatchSelected(p),"clear all wipes back and head");
   // legacy halo selection (written before the head slot existed) is honoured
   p.data.set(AccessoryController.HALO,PersistentDataType.STRING,"halo");
   check(AccessoryController.halo(plugin,p)==plugin.halo,"legacy halo key still works");

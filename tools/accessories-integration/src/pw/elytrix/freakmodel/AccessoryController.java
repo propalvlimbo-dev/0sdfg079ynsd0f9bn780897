@@ -35,6 +35,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
     private static FreakModelSpec cachedTentacles;
     private static FreakModelSpec cachedPatch;
     private static final String PATCH_BLUEPRINT = "elytrix_kaneki_eyepatch";
+    /** Donation rank that is allowed to wear the accessories, besides the staff. */
+    static final String MEDIA_GROUP = "media";
+    static final String USE_PERMISSION = "elytrixaccessories.use";
     private static final java.util.Map<java.util.UUID, PatchRig> PATCHES = new java.util.HashMap<>();
     public static void install(ElytrixFreakModelPlugin plugin) {
         AccessoryController controller = new AccessoryController();
@@ -42,8 +45,28 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (command == null) throw new IllegalStateException("Missing аксессуары command");
         command.setExecutor(controller);
         Bukkit.getPluginManager().registerEvents(controller, plugin);
+        grantDonationAccess();
     }
-    private static boolean allowed(Player player) { return player.hasPermission("elytrixaccessories.admin"); }
+
+    /**
+     * Donators of the «media» rank must be able to take the accessories, so the
+     * node is written into LuckPerms once at start-up instead of asking the owner
+     * to type the command.  Idempotent, and silently skipped without LuckPerms.
+     */
+    private static void grantDonationAccess() {
+        try {
+            if (!Bukkit.getPluginManager().isPluginEnabled("LuckPerms")) return;
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+                "lp group " + MEDIA_GROUP + " permission set " + USE_PERMISSION + " true");
+        } catch (RuntimeException ignored) {
+            // no LuckPerms, or the command is blocked: the node can still be set by hand
+        }
+    }
+
+    /** Staff, or the donation rank (the permission that {@link #grantDonationAccess} sets). */
+    static boolean allowed(Player player) {
+        return player.hasPermission("elytrixaccessories.admin") || player.hasPermission(USE_PERMISSION);
+    }
     private static String get(Player p, NamespacedKey k) {
         String v = p.getPersistentDataContainer().get(k, PersistentDataType.STRING);
         return v == null ? "" : v;
@@ -206,45 +229,122 @@ public final class AccessoryController implements CommandExecutor, Listener {
         @Override public Inventory getInventory() { return inventory; }
     }
     private static ItemStack item(Material mat, String title, String model, String... lore) {
+        return item(mat, title, model, null, lore);
+    }
+    private static ItemStack item(Material mat, String title, String model, Integer customModelData, String... lore) {
         ItemStack result = new ItemStack(mat); ItemMeta meta = result.getItemMeta();
-        if (meta != null) { meta.setDisplayName(title); meta.setLore(java.util.Arrays.asList(lore)); if (model != null) meta.setItemModel(new NamespacedKey("reallyworld", model)); result.setItemMeta(meta); }
+        if (meta != null) {
+            meta.setDisplayName(title);
+            meta.setLore(java.util.Arrays.asList(lore));
+            if (model != null) meta.setItemModel(new NamespacedKey("reallyworld", model));
+            if (customModelData != null) meta.setCustomModelData(customModelData);
+            result.setItemMeta(meta);
+        }
         return result;
     }
-    @Override public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) { sender.sendMessage("Только для игроков."); return true; }
+    /** The same «Назад» arrow the DeluxeMenus /menu uses: arrow + custom model data. */
+    private static final Integer BACK_ARROW = 10002;
+
+    private static String[] lore(String hint, String... body) {
+        String[] out = new String[body.length + 2];
+        out[0] = "";
+        System.arraycopy(body, 0, out, 1, body.length);
+        out[out.length - 1] = hint;
+        return out;
+    }
+
+    /** Rewrites the whole menu, so a click can flip a button and show the new state. */
+    static void openMenu(Player player) {
         Holder holder = new Holder();
         // The same frame, slot overlay and spacing glyphs as DeluxeMenus /shop.
         // ꏠ is the dedicated "АКСЕССУАРЫ" title added to the resource pack.
-        Inventory menu = Bukkit.createInventory(holder, 54, "§fꈁꀀꈂꌀꈂꀁ§fꈃꏠ"); holder.inventory=menu;
-        String restriction = allowed(player) ? "§dНажми, чтобы выбрать" : "§cПока доступно только администрации";
-        menu.setItem(12, item(Material.FEATHER, "§x§F§A§D§8§F§C§lАнгельские крылья", "angel_wings", "", "§7Аксессуар для спины", "§7Не занимает слот брони", "", restriction));
-        menu.setItem(13, item(Material.NETHER_STAR, "§x§F§A§D§8§F§C§lБожественный нимб", "angel_halo", "", "§7Нимб можно носить вместе", "§7с аксессуаром для спины", "", restriction));
-        menu.setItem(14, item(Material.RED_DYE, "§x§F§A§D§8§F§C§lЩупальца Канэки", "kaneki_tentacles_icon", "", "§7Анимированный аксессуар для спины", "§7Только внешний вид, без способностей", "", restriction));
-        menu.setItem(15, item(Material.WHITE_DYE, "§x§F§A§D§8§F§C§lПовязка Канэки", "kaneki_eyepatch_icon", "", "§7Белая повязка на левый глаз", "§7Носится вместе с щупальцами", "", restriction));
-        menu.setItem(30, item(Material.BARRIER, "§cСнять со спины", null, "", "§7Снять крылья или щупальца", "", restriction));
-        menu.setItem(31, item(Material.ARROW, "§x§F§A§D§8§F§C§lНазад в меню", null, "", "§7Вернуться в главное меню", "", "§dНажми, чтобы открыть"));
-        menu.setItem(32, item(Material.BARRIER, "§cСнять с головы", null, "", "§7Нимб или повязка — отдельно от спины", "", restriction));
-        player.openInventory(menu); return true;
+        Inventory menu = Bukkit.createInventory(holder, 54, "§fꈁꀀꈂꌀꈂꀁ§fꈃꏠ");
+        holder.inventory = menu;
+        boolean allowed = allowed(player);
+        String hint = allowed ? "§dНажми, чтобы выбрать" : "§cДоступно с доната §dmedia";
+        String chosen = allowed ? "§a● Сейчас надето" : "§8● Недоступно";
+        String back = get(player, BACK);
+        String head = headChoice(player);
+        boolean wings = back.equals("wings"), kagune = back.equals("kaneki");
+        boolean halo = head.equals("halo"), patch = head.equals("eyepatch");
+        menu.setItem(12, item(Material.FEATHER, "§x§F§A§D§8§F§C§lАнгельские крылья", "angel_wings", null,
+            wings ? lore(chosen, "§7Аксессуар для спины", "§7Не занимает слот брони", "§7Нажми ещё раз — снять")
+                  : lore(hint, "§7Аксессуар для спины", "§7Не занимает слот брони")));
+        menu.setItem(13, item(Material.NETHER_STAR, "§x§F§A§D§8§F§C§lБожественный нимб", "angel_halo", null,
+            halo ? lore(chosen, "§7Нимб на голову", "§7Нажми ещё раз — снять")
+                 : lore(hint, "§7Нимб на голову")));
+        menu.setItem(14, item(Material.RED_DYE, "§x§F§A§D§8§F§C§lЩупальца Канэки", "kaneki_tentacles_icon", null,
+            kagune ? lore(chosen, "§7Анимированный аксессуар для спины", "§7Нажми ещё раз — снять")
+                   : lore(hint, "§7Анимированный аксессуар для спины")));
+        menu.setItem(15, item(Material.WHITE_DYE, "§x§F§A§D§8§F§C§lПовязка Канэки", "kaneki_eyepatch_icon", null,
+            patch ? lore(chosen, "§7Белая повязка на левый глаз", "§7Нажми ещё раз — снять")
+                  : lore(hint, "§7Белая повязка на левый глаз")));
+        menu.setItem(30, item(Material.BARRIER, "§cСнять всё", null, null,
+            lore("§dНажми, чтобы снять", "§7Убирает и спину, и голову")));
+        menu.setItem(31, item(Material.ARROW, "§x§F§A§D§8§F§C§lНазад в меню", null, BACK_ARROW,
+            lore("§dНажми, чтобы вернуться", "§7Главное меню сервера")));
+        player.openInventory(menu);
     }
+
+    @Override public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!(sender instanceof Player player)) { sender.sendMessage("Только для игроков."); return true; }
+        openMenu(player);
+        return true;
+    }
+
+    private static void setHead(Player player, String choice) {
+        set(player, HEAD, choice);
+        // a node written by the older build must not resurrect the halo on top
+        set(player, HALO, "");
+    }
+
     @EventHandler public void onClick(InventoryClickEvent event) {
         if (!(event.getView().getTopInventory().getHolder() instanceof Holder)) return;
         event.setCancelled(true);
         if (!(event.getWhoClicked() instanceof Player player)) return;
-        int slot=event.getRawSlot();
-        if (slot==31) { player.closeInventory(); player.performCommand("menu"); return; }
-        if (!allowed(player)) { player.sendMessage("§cПока аксессуары доступны только администрации."); return; }
-        String blueprint = slot==12 ? "elytrix_angel_wings" : slot==13 ? "elytrix_angel_halo"
-            : slot==14 ? "elytrix_kaneki_tentacles" : slot==15 ? PATCH_BLUEPRINT : null;
+        int slot = event.getRawSlot();
+        if (slot == 31) { player.closeInventory(); player.performCommand("menu"); return; }
+        if (!allowed(player)) {
+            player.sendMessage("§cАксессуары доступны с доната §d" + MEDIA_GROUP + "§c.");
+            return;
+        }
+        String blueprint = slot == 12 ? "elytrix_angel_wings" : slot == 13 ? "elytrix_angel_halo"
+            : slot == 14 ? "elytrix_kaneki_tentacles" : slot == 15 ? PATCH_BLUEPRINT : null;
         if (blueprint != null && ModelEngineAPI.getBlueprint(blueprint) == null) {
             player.sendMessage("§cМодель ещё не загружена. Обратитесь к администрации."); return;
         }
-        if (slot==12) { set(player,BACK,"wings"); player.sendMessage("§dВыбраны крылья."); }
-        else if (slot==13) { set(player,HEAD,"halo"); player.sendMessage("§eВыбран нимб."); }
-        else if (slot==14) { set(player,BACK,"kaneki"); player.sendMessage("§cВыбраны щупальца Канэки."); }
-        else if (slot==15) { set(player,HEAD,"eyepatch"); player.sendMessage("§fВыбрана повязка Канэки."); }
-        else if (slot==30) { set(player,BACK,""); player.sendMessage("§7Аксессуар со спины снят."); }
-        else if (slot==32) { set(player,HEAD,""); set(player,HALO,""); player.sendMessage("§7Голова свободна."); }
+        // one click wears it, the same click takes it off again
+        if (slot == 12) { toggleBack(player, "wings", "Крылья"); }
+        else if (slot == 14) { toggleBack(player, "kaneki", "Щупальца Канэки"); }
+        else if (slot == 13) { toggleHead(player, "halo", "Нимб", "надет", "снят"); }
+        else if (slot == 15) { toggleHead(player, "eyepatch", "Повязка Канэки", "надета", "снята"); }
+        else if (slot == 30) {
+            set(player, BACK, ""); setHead(player, "");
+            player.sendMessage("§7Все аксессуары сняты.");
+        } else return;
+        openMenu(player);
     }
+
+    private static void toggleBack(Player player, String choice, String name) {
+        if (get(player, BACK).equals(choice)) {
+            set(player, BACK, "");
+            player.sendMessage("§7" + name + " сняты.");
+        } else {
+            set(player, BACK, choice);
+            player.sendMessage("§d" + name + " надеты.");
+        }
+    }
+
+    private static void toggleHead(Player player, String choice, String name, String on, String off) {
+        if (headChoice(player).equals(choice)) {
+            setHead(player, "");
+            player.sendMessage("§7" + name + " " + off + ".");
+        } else {
+            setHead(player, choice);
+            player.sendMessage("§d" + name + " " + on + ".");
+        }
+    }
+
     @EventHandler public void onDrag(InventoryDragEvent event) {
         if (event.getView().getTopInventory().getHolder() instanceof Holder) event.setCancelled(true);
     }

@@ -1,12 +1,17 @@
 import java.nio.file.*;
 import org.objectweb.asm.*;
-/** Exact bytecode integration: override the two armor-derived selections and register menu. */
+/**
+ * Exact bytecode integration: register the accessories menu, override the two
+ * armor-derived selections, tick the eyepatch, and run the worn rig every tick
+ * (the stock build only syncs it every fourth tick, which made the kagune lag
+ * behind the back and stutter while walking).
+ */
 public class PatchAccessory implements Opcodes {
  public static void main(String[] args) throws Exception {
   ClassReader reader=new ClassReader(Files.readAllBytes(Path.of(args[0])));
   String owner="pw/elytrix/freakmodel/ElytrixFreakModelPlugin";
   if(!reader.getClassName().equals(owner))throw new IllegalStateException("unexpected class");
-  ClassWriter writer=new ClassWriter(reader,ClassWriter.COMPUTE_MAXS);int[] hooks={0,0,0,0};
+  ClassWriter writer=new ClassWriter(reader,ClassWriter.COMPUTE_MAXS);int[] hooks={0,0,0,0,0};
   reader.accept(new ClassVisitor(ASM9,writer){
    public MethodVisitor visitMethod(int acc,String name,String desc,String sig,String[] exceptions){
     MethodVisitor m=super.visitMethod(acc,name,desc,sig,exceptions);
@@ -31,10 +36,21 @@ public class PatchAccessory implements Opcodes {
       super.visitMethodInsn(op,own,method,d,itf);
      }
     };
+    if(name.equals("tickWornAngelRigs")&&desc.equals("()V"))return new MethodVisitor(ASM9,m){
+     private boolean afterCounter;
+     public void visitFieldInsn(int op,String own,String field,String d){
+      super.visitFieldInsn(op,own,field,d);
+      afterCounter=op==GETFIELD&&field.equals("globalTickCounter");
+     }
+     public void visitInsn(int opcode){
+      if(afterCounter&&opcode==ICONST_4){afterCounter=false;hooks[4]++;super.visitInsn(ICONST_1);return;}
+      afterCounter=false;super.visitInsn(opcode);
+     }
+    };
     return m;
    }
   },0);
-  if(hooks[0]!=1||hooks[1]!=2||hooks[2]!=2||hooks[3]!=1)throw new IllegalStateException("hooks mismatch");
+  if(hooks[0]!=1||hooks[1]!=2||hooks[2]!=2||hooks[3]!=1||hooks[4]!=1)throw new IllegalStateException("hooks mismatch");
   Files.write(Path.of(args[1]),writer.toByteArray());
  }
 }

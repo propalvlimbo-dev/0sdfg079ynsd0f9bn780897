@@ -1,1 +1,1 @@
-package org.bukkit.inventory.meta; public interface ItemMeta {void setDisplayName(String name); void setLore(java.util.List<String> lore); void setItemModel(org.bukkit.NamespacedKey key);}
+package org.bukkit.inventory.meta; public interface ItemMeta {void setDisplayName(String name); void setLore(java.util.List<String> lore); void setItemModel(org.bukkit.NamespacedKey key); void setCustomModelData(Integer data);}
