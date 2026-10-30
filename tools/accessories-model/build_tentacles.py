@@ -53,28 +53,28 @@ BLADES = [
         # an antler.  Every blade starts from the SAME point (same y and z), only the
         # x differs by a hair so the four roots do not sit exactly on top of each other
         'name': 'right_upper',
-        'root': (0.9, 18.4, 2.6), 'length': 32.0,
+        'root': (0.9, 18.4, 2.6), 'length': 32.0, 'yaw': -10.0,
         'turns': (80.0, -10.0, 8.0, -22.0, -10.0, -14.0, -8.0),
         'girth': (6.4, 5.4), 'tip': 0.30,
     },
     {
         # lower right: goes down and out, then levels off to the side with a wave
         'name': 'right_lower',
-        'root': (0.9, 18.4, 2.9), 'length': 44.0,
+        'root': (0.9, 18.4, 2.9), 'length': 40.0, 'yaw': -27.0,
         'turns': (-30.0, 12.0, -10.0, 20.0, 8.0, 12.0, 6.0),
         'girth': (6.0, 5.0), 'tip': 0.28,
     },
     {
         # upper left: the mirror, a touch longer and a little less curved
         'name': 'left_upper',
-        'root': (-0.9, 18.4, 3.2), 'length': 33.0,
+        'root': (-0.9, 18.4, 3.2), 'length': 33.0, 'yaw': 15.0,
         'turns': (100.0, 10.0, -8.0, 22.0, 10.0, 14.0, 8.0),
         'girth': (6.2, 5.2), 'tip': 0.30,
     },
     {
         # lower left: the mirror, one unit longer
         'name': 'left_lower',
-        'root': (-0.9, 18.4, 3.5), 'length': 45.0,
+        'root': (-0.9, 18.4, 3.5), 'length': 41.0, 'yaw': 31.0,
         'turns': (210.0, -12.0, 10.0, -20.0, -8.0, -12.0, -6.0),
         'girth': (5.8, 4.8), 'tip': 0.28,
     },
@@ -294,6 +294,7 @@ def build_animation(tendrils):
         phase = index * math.pi / 2.3
         for depth, (bone_name, (gain, lag, mix)) in enumerate(zip(tendril['bones'], BONE_MOTION)):
             base = tendril['turns'][depth]
+            yaw = tendril.get('yaw', 0.0) if depth == 0 else 0.0
             keys = []
             for step in range(ANIM_FRAMES):
                 t = ANIM_LENGTH * step / (ANIM_FRAMES - 1)
@@ -305,7 +306,7 @@ def build_animation(tendrils):
                     'channel': 'rotation',
                     'data_points': [{
                         'x': '0',
-                        'y': str(round(side * mix[1], 3)),
+                        'y': str(round(yaw + side * mix[1], 3)),
                         'z': str(round(base + bend * mix[0], 3)),
                     }],
                     'uuid': uid(f'key:{bone_name}:{step}'),
@@ -345,9 +346,10 @@ def build_model():
             chain.append({
                 'name': bone['name'],
                 'origin': bone['origin'],
-                # every joint, the root included, bends the blade inside the plane of
-                # the back - there is no yaw and no depth sweep any more
-                'rotation': [0.0, 0.0, bone['turn']],
+                # the root joint also yaws the blade around the back, so the four
+                # blades fan out in the top view instead of stacking into one plane
+                'rotation': [0.0, tendril.get('yaw', 0.0), bone['turn']] if index == 0
+                else [0.0, 0.0, bone['turn']],
                 'color': index, 'uuid': uid(f'bone:{bone["name"]}'),
                 'export': True, 'mirror_uv': False, 'isOpen': True, 'locked': False,
                 'visibility': True, 'autouv': 0,

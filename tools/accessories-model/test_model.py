@@ -88,9 +88,12 @@ class BlueprintTests(unittest.TestCase):
         self.assertEqual(len({round(r[0], 1) for r in roots}), 2,
                          'left and right, a hair apart so they do not overlap exactly')
 
-    def test_the_fan_lives_in_the_plane_of_the_back(self):
-        """v5 swept 25 units backwards and yawed every blade - the reference does not."""
+    def test_the_fan_spreads_in_the_top_view(self):
+        """Seen from above the four tendrils must fan out, not collapse into a line."""
         import build_tentacles
+        yaws = [spec['yaw'] for spec in build_tentacles.BLADES]
+        self.assertEqual(len(set(yaws)), 4, 'four different directions')
+        self.assertGreater(max(yaws) - min(yaws), 30, 'and a wide spread')
         paths = [build_tentacles.blade_path(spec) for spec in build_tentacles.BLADES]
         points = [point for path in paths for point in path]
         xs = [p[0] for p in points]
@@ -98,9 +101,7 @@ class BlueprintTests(unittest.TestCase):
         zs = [p[2] for p in points]
         self.assertGreater(max(xs) - min(xs), 60, 'the fan is wider than the body')
         self.assertGreater(max(ys) - min(ys), 30, 'and taller')
-        self.assertLess(max(zs) - min(zs), 3.0, 'but stays flat against the back')
-        yaws = [b['rotation'][1] for b in self.model['outliner'][0]['children']]
-        self.assertEqual(yaws, [0.0, 0.0, 0.0, 0.0], 'no yaw at all any more')
+        self.assertGreater(max(zs) - min(zs), 12, 'and it opens up behind the back')
 
     def test_the_blades_are_slim(self):
         """v4 was 8-9 units across and nearly as deep - it read as a fat strap."""
