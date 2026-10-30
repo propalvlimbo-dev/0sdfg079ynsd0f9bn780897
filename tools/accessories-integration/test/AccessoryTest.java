@@ -14,7 +14,7 @@ public class AccessoryTest {
  static class Data implements PersistentDataContainer {Map<NamespacedKey,Object> m=new HashMap<>();@SuppressWarnings("unchecked") public <P,C>C get(NamespacedKey k,PersistentDataType<P,C> t){return (C)m.get(k);}public <P,C>void set(NamespacedKey k,PersistentDataType<P,C> t,C v){m.put(k,v);} public void remove(NamespacedKey k){m.remove(k);}}
  static class PlayerFake implements Player {boolean admin,use;String command;UUID uuid=UUID.fromString("00000000-0000-0000-0000-0000000000aa");public boolean performCommand(String c){command=c;return true;}public void closeInventory(){}Data data=new Data();String msg;public boolean hasPermission(String s){return admin || (use && s.equals(AccessoryController.USE_PERMISSION));}public Data getPersistentDataContainer(){return data;}public Inventory opened;public InventoryView openInventory(Inventory i){opened=i;return null;}public void sendMessage(String s){msg=s;}public java.util.UUID getUniqueId(){return uuid;}public boolean isOnline(){return true;}public String getName(){return "Tester";}}
  static FreakModelSpec spec(String id){return new FreakModelSpec(id,ModelKind.ANGEL_WINGS,id,List.of(),Material.FEATHER,"model",34,id,List.of(),1,0,0,1,1,2,0,0,0,0,0,0,0,0,0,0,0,false,false);}
- // --- ModelEngine double: proves tickEyepatch really attaches the patch ------
+ // --- ModelEngine double: keeps the mock runs away from a live engine -------
  static class FakePivot implements com.ticxo.modelengine.api.model.PivotOverride {}
  static class FakePivotRegistry implements com.ticxo.modelengine.api.model.PivotOverrideRegistry {
   public com.ticxo.modelengine.api.model.PivotOverride getOrCreate(Entity e){return new FakePivot();}}
@@ -72,15 +72,16 @@ public class AccessoryTest {
   check(p.opened!=null,"menu visible to non-admin");
   check(Bukkit.slots.get(14).meta.model.equals(new NamespacedKey("reallyworld","kaneki_tentacles_icon")),"tentacle menu icon");
   check(Bukkit.slots.get(12).meta.model.equals(new NamespacedKey("reallyworld","angel_wings")),"wings icon");
-  // «Назад» is the same resource-pack arrow DeluxeMenus /menu shows
-  ItemStack backButton=Bukkit.slots.get(31);
-  check(backButton.meta.cmd!=null && backButton.meta.cmd==10002,"back button uses the pack arrow");
-  check(backButton.meta.model==null,"and does not need an item model");
-  check(Bukkit.slots.get(30).meta.title.contains("Снять всё"),"one button clears everything");
-  check(Bukkit.slots.size()==6,"four accessories, clear-all and back");
+  // кнопки «назад» больше нет, «Снять всё» переехала в нижний ряд по центру
+  check(Bukkit.slots.get(31)==null,"no back button any more");
+  check(Bukkit.slots.get(30)==null,"old clear-all slot stays empty");
+  ItemStack clearAll=Bukkit.slots.get(49);
+  check(clearAll!=null && clearAll.getType()==Material.BARRIER,"one button clears everything");
+  check(clearAll.meta.title.contains("Снять всё"),"clear-all is labelled");
+  check(Bukkit.slots.size()==5,"four accessories and clear-all");
   InventoryClickEvent click=new InventoryClickEvent();click.view=()->p.opened;click.who=p;click.slot=14;
   check(Bukkit.size==54 && Bukkit.title.contains("ꏠ"),"resource pack menu");
-  click.slot=31;controller.onClick(click);check("menu".equals(p.command),"back available to non-admin");click.slot=14;
+  click.slot=14;   // никакой кнопки «назад» в меню больше нет
   p.data.remove(AccessoryController.BACK);controller.onClick(click);
   check(click.cancelled && AccessoryController.back(plugin,p)==null && !p.data.m.containsKey(AccessoryController.BACK),"non-admin click denied");
   check(p.msg.contains("media"),"the denial names the donation rank");
@@ -99,82 +100,43 @@ public class AccessoryTest {
   controller.onClick(click);check(AccessoryController.back(plugin,p)==null,"clicking the worn wings takes them off");
   click.slot=13;controller.onClick(click);check(AccessoryController.halo(plugin,p)==plugin.halo,"halo on");
   controller.onClick(click);check(AccessoryController.halo(plugin,p)==null,"halo off by the same button");
-  // --- the eyepatch: its own menu slot, its own head slot -------------------
+  // --- the eyepatch: its own menu slot, riding the halo (head) slot ---------
   check(Bukkit.slots.get(15).meta.model.equals(new NamespacedKey("reallyworld","kaneki_eyepatch_icon")),"eyepatch menu icon");
   p.data.set(AccessoryController.BACK,PersistentDataType.STRING,"kaneki");
   click.slot=15;controller.onClick(click);
   check(AccessoryController.eyepatchSelected(p),"eyepatch selected from the menu");
-  check(AccessoryController.halo(plugin,p)==null,"the patch replaces the halo on the head");
-  check("kaneki".equals(p.data.get(AccessoryController.BACK,PersistentDataType.STRING)),"the patch does not touch the back slot");
-  FreakModelSpec patch=AccessoryController.eyepatch(plugin);
-  check(patch!=null && patch.blueprintId.equals("elytrix_kaneki_eyepatch"),"own spec for the patch");
+  // повязка обязана идти через слот нимба: только его плагин умеет цеплять
+  // к голове игрока (pivot + PlayerAuraAttachment), иначе модель не рисуется
+  FreakModelSpec patch=AccessoryController.halo(plugin,p);
+  check(patch!=null && patch.blueprintId.equals("elytrix_kaneki_eyepatch"),"patch comes from the head slot");
   check(patch==AccessoryController.eyepatch(plugin),"patch spec cached");
+  check("kaneki".equals(p.data.get(AccessoryController.BACK,PersistentDataType.STRING)),"the patch does not touch the back slot");
   check(AccessoryController.back(plugin,p)!=null && AccessoryController.eyepatchSelected(p),"kagune and patch together");
   click.slot=13;controller.onClick(click);
   check(AccessoryController.halo(plugin,p)==plugin.halo && !AccessoryController.eyepatchSelected(p),"halo replaces the patch");
   click.slot=15;controller.onClick(click);
-  check(AccessoryController.eyepatchSelected(p) && AccessoryController.halo(plugin,p)==null,"patch replaces the halo");
-  click.slot=30;controller.onClick(click);
+  check(AccessoryController.eyepatchSelected(p)
+        && AccessoryController.halo(plugin,p).blueprintId.equals("elytrix_kaneki_eyepatch"),"patch replaces the halo");
+  // --- menu layout: нет кнопки «назад», «снять всё» внизу по центру -------
+  check(Bukkit.slots.get(31)==null,"no back button any more");
+  check(Bukkit.slots.get(30)==null,"old clear-all slot is empty");
+  ItemStack bottomBarrier=Bukkit.slots.get(49);
+  check(bottomBarrier!=null && bottomBarrier.getType()==Material.BARRIER,"clear-all sits in the bottom row centre");
+  click.slot=49;controller.onClick(click);
   check(AccessoryController.back(plugin,p)==null && AccessoryController.halo(plugin,p)==null &&
         !AccessoryController.eyepatchSelected(p),"clear all wipes back and head");
   // legacy halo selection (written before the head slot existed) is honoured
   p.data.set(AccessoryController.HALO,PersistentDataType.STRING,"halo");
   check(AccessoryController.halo(plugin,p)==plugin.halo,"legacy halo key still works");
   p.data.set(AccessoryController.HEAD,PersistentDataType.STRING,"eyepatch");
-  check(AccessoryController.eyepatchSelected(p) && AccessoryController.halo(plugin,p)==null,"head key wins");
-  // --- tickEyepatch: attaches exactly one patch and cleans it up ------------
-  p.data.set(AccessoryController.HEAD,PersistentDataType.STRING,"eyepatch");
-  FakeEngine engine=(FakeEngine)ModelEngineAPI.backend;Query q=engine.q;
-  AccessoryController.tickEyepatch(plugin,p);
-  FakeModeled worn=engine.entities.get(p.getUniqueId());
-  check(worn!=null && worn.adds==1,"patch attached to the shared model entity");
-  check(worn.baseVisible,"the player under the patch stays visible");
-  check(q.last!=null && !q.last.canHurt && !q.last.shadow && !q.last.hitbox,"patch is a pure cosmetic");
-  check(q.last.lockPitch && q.last.lockYaw && q.last.view==64f,"patch follows the body");
-  check(Boolean.TRUE.equals(q.last.rotLocked) && q.last.lockedX==0f && q.last.lockedY==0f && q.last.lockedBody==0f,"rotation locked like the halo");
-  check(q.last.pivot!=null,"pivot override shared");
-  AccessoryController.tickEyepatch(plugin,p);
-  check(worn.adds==1,"ticking again does not stack a second patch");
-  p.data.set(AccessoryController.HEAD,PersistentDataType.STRING,"halo");
-  AccessoryController.tickEyepatch(plugin,p);
-  check(worn.removes==1 && q.last.destroyed,"patch removed when the halo comes back");
-  p.data.set(AccessoryController.HEAD,PersistentDataType.STRING,"eyepatch");
-  q.created=0;AccessoryController.tickEyepatch(plugin,p);
-  check(q.created==1 && worn.adds==2,"patch comes back after re-selecting");
-  q.last.destroyed=true;AccessoryController.tickEyepatch(plugin,p);
-  check(worn.adds==3,"a destroyed patch is rebuilt");
-  // a reload keeps the attached model but forgets our map: adopt, never duplicate
-  PlayerFake other=new PlayerFake();other.admin=true;other.uuid=UUID.randomUUID();
-  other.data.set(AccessoryController.HEAD,PersistentDataType.STRING,"eyepatch");
-  FakeModeled seeded=new FakeModeled(engine.q);
-  FakeActive leftover=new FakeActive(new com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint());
-  seeded.models.put("elytrix_kaneki_eyepatch",leftover);
-  engine.entities.put(other.uuid,seeded);
-  AccessoryController.tickEyepatch(plugin,other);
-  check(seeded.adds==0 && !leftover.destroyed,"leftover patch is adopted, not duplicated");
-  // and a player without the patch never touches ModelEngine at all
-  PlayerFake idle=new PlayerFake();idle.admin=true;idle.uuid=UUID.randomUUID();
-  AccessoryController.tickEyepatch(plugin,idle);
-  check(!engine.entities.containsKey(idle.uuid),"no entity created for players without the patch");
+  check(AccessoryController.eyepatchSelected(p)
+        && AccessoryController.halo(plugin,p).blueprintId.equals("elytrix_kaneki_eyepatch"),"head key wins");
   // --- a broken install must never disable the whole plugin ------------------
   ElytrixFreakModelPlugin bare=new ElytrixFreakModelPlugin();bare.returnNullCommand=true;
   AccessoryController.install(bare);
   check(bare.mockCommand.executor==null,"no executor without a command");
   check(!bare.warnings.isEmpty() && bare.warnings.get(0).contains("accessories"),
         "a missing command is logged, never thrown out of onEnable");
-  // --- a broken ModelEngine must not spam or crash the tick ------------------
-  ModelEngineAPI.backend=new ModelEngineAPI.Backend(){
-    public com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint blueprint(String id){throw new IllegalStateException("boom");}
-    public com.ticxo.modelengine.api.model.ModeledEntity modeledEntity(Entity e){throw new IllegalStateException("boom");}
-    public com.ticxo.modelengine.api.model.ActiveModel createActiveModel(com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint bp){throw new IllegalStateException("boom");}
-    public com.ticxo.modelengine.api.model.PivotOverrideRegistry pivots(){throw new IllegalStateException("boom");}};
-  PlayerFake brokenPatch=new PlayerFake();brokenPatch.admin=true;brokenPatch.uuid=UUID.randomUUID();
-  brokenPatch.data.set(AccessoryController.HEAD,PersistentDataType.STRING,"eyepatch");
-  int warningsBefore=plugin.warnings.size();
-  AccessoryController.tickEyepatch(plugin,brokenPatch);
-  AccessoryController.tickEyepatch(plugin,brokenPatch);
-  check(plugin.warnings.size()==warningsBefore+1,"one warning per player, not one per tick");
-  ModelEngineAPI.backend=new FakeEngine();
   InventoryDragEvent drag=new InventoryDragEvent();drag.view=click.view;controller.onDrag(drag);check(drag.cancelled,"drag cancelled");
   System.out.println("Accessory GUI, permission, selection and cached tentacle spec mock tests passed");
  }

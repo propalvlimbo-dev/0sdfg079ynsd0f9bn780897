@@ -23,20 +23,36 @@ fi
 [ -f "$BK/MANIFEST" ] || { echo "В $BK нет MANIFEST — это не бэкап установщика" >&2; exit 1; }
 [ -d "$DIR" ] || { echo "Каталог сервера $DIR не найден" >&2; exit 1; }
 
-# Процессы java с -jar ... .jar — именно сервер, а не случайная строка в чужой
-# командной строке (иначе pgrep -f ловит сам установщик и ssh-команду).
+# Процессы java, запущенные именно с ядром ИЗ ЭТОГО каталога (server.jar/leaf.jar/...).
+# Важно: прокси вроде NullCordX.jar рядом на машине нас не интересует, как и чужие
+# строки в командной строке — поэтому смотрим /proc/<pid>/cmdline, находим -jar
+# и сверяем путь к jar с каталогом установки.
 server_pids() {
-    local p cmd first
+    local p args jar cwd target dir_real name
     for p in /proc/[0-9]*; do
         [ -r "$p/cmdline" ] || continue
-        cmd="$(tr '\0' ' ' < "$p/cmdline" 2>/dev/null)" || continue
-        [ -n "$cmd" ] || continue
-        first="${cmd%% *}"
-        case "${first##*/}" in java|javaw) ;; *) continue ;; esac
-        case " $cmd " in *" -jar "*) ;; *) continue ;; esac
-        printf '%s %s\n' "${p#/proc/}" "$cmd"
+        mapfile -d '' -t args < "$p/cmdline" 2>/dev/null || continue
+        [ "${#args[@]}" -gt 0 ] || continue
+        case "${args[0]##*/}" in java|javaw) ;; *) continue ;; esac
+        jar=""
+        local i
+        for ((i = 0; i < ${#args[@]}; i++)); do
+            if [ "${args[i]}" = "-jar" ]; then jar="${args[i+1]:-}"; break; fi
+        done
+        [ -n "$jar" ] || continue
+        cwd="$(readlink -f "$p/cwd" 2>/dev/null || echo /)"
+        case "$jar" in
+            /*) target="$(readlink -f "$jar" 2>/dev/null || echo "$jar")" ;;
+            *)  target="$(readlink -f "$cwd/$jar" 2>/dev/null || echo "$cwd/$jar")" ;;
+        esac
+        name="${target##*/}"
+        case "$name" in server.jar|leaf.jar|paper.jar|purpur.jar|spigot.jar|craftbukkit.jar) ;; *) continue ;; esac
+        dir_real="$(readlink -f "$DIR")"
+        [ "$(dirname "$target")" = "$dir_real" ] || continue
+        printf '%s %s\n' "${p#/proc/}" "$target"
     done
 }
+
 
 RUNNING="$(server_pids)"
 if [ -n "$RUNNING" ]; then

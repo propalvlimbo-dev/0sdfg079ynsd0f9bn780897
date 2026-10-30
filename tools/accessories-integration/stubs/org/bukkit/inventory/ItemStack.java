@@ -5,6 +5,6 @@ public class ItemStack {
         public void setLore(java.util.List<String> l){lore=l;} public void setDisplayName(String t){title=t;}
         public void setItemModel(NamespacedKey k){model=k;} public void setCustomModelData(Integer d){cmd=d;}
     }
-    public final Meta meta=new Meta(); public ItemStack(Material mat){} public ItemMeta getItemMeta(){return meta;}
+    public final Meta meta=new Meta(); public final Material type; public ItemStack(Material mat){type=mat;} public Material getType(){return type;} public ItemMeta getItemMeta(){return meta;}
     public boolean setItemMeta(ItemMeta m){return m==meta;}
 }

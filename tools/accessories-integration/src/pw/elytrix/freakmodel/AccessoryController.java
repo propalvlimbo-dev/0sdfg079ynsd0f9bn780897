@@ -31,17 +31,12 @@ public final class AccessoryController implements CommandExecutor, Listener {
     /** Head slot: "halo" or "eyepatch".  HALO is kept as the legacy spelling. */
     static final NamespacedKey HEAD = new NamespacedKey("elytrixaccessories", "head");
     private AccessoryController() {}
-    private static FreakModelSpec cachedBase;
-    private static FreakModelSpec cachedTentacles;
-    private static FreakModelSpec cachedPatch;
+    private static FreakModelSpec cachedHaloBase, cachedTentacles, cachedPatch;
     private static final String PATCH_BLUEPRINT = "elytrix_kaneki_eyepatch";
     /** Donation rank that is allowed to wear the accessories, besides the staff. */
     static final String MEDIA_GROUP = "media";
     static final String USE_PERMISSION = "elytrixaccessories.use";
     private static boolean mediaGranted;
-    private static final java.util.Map<java.util.UUID, PatchRig> PATCHES = new java.util.HashMap<>();
-    /** Players whose patch blew up once; they are not retried every tick. */
-    private static final java.util.Set<java.util.UUID> BROKEN = new java.util.HashSet<>();
     public static void install(ElytrixFreakModelPlugin plugin) {
         // Никогда не бросаем исключение из onEnable: если оно улетит, ядро выключит
         // весь ElytrixFreakModel, и вместе с меню умрут крылья, нимб и кагуне.
@@ -99,8 +94,21 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return choice.isEmpty() ? get(player, HALO) : choice;
     }
 
+    /**
+     * The head slot spec.  The eyepatch deliberately rides the *halo* slot: it
+     * is the only slot this plugin already knows how to attach to a player's
+     * head (the rig builds a ModeledEntity on PlayerAuraAttachment, parents the
+     * model's pivot to the player and destroys it cleanly afterwards).  A
+     * hand-made second ModeledEntity on the player never got its pivot
+     * parented, and the rig's own cleanup killed it every tick - that is why
+     * the patch was invisible in game.
+     */
     public static FreakModelSpec halo(ElytrixFreakModelPlugin plugin, Player player) {
-        return allowed(player) && headChoice(player).equals("halo") ? plugin.findModel("angel_halo") : null;
+        if (!allowed(player)) return null;
+        String choice = headChoice(player);
+        if (choice.equals("halo")) return plugin.findModel("angel_halo");
+        if (choice.equals("eyepatch")) return eyepatch(plugin);
+        return null;
     }
 
     /** True when this player should be wearing Kaneki's eyepatch. */
@@ -118,8 +126,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
         FreakModelSpec base = plugin.findModel("angel_halo");
         if (base == null) base = plugin.findModel("angel_wings");
         if (base == null) return null;
-        if (cachedBase == base && cachedPatch != null) return cachedPatch;
-        cachedBase = base;
+        if (cachedHaloBase == base && cachedPatch != null) return cachedPatch;
+        cachedHaloBase = base;
         cachedPatch = new FreakModelSpec(PATCH_BLUEPRINT, base.kind, PATCH_BLUEPRINT,
             java.util.List.of(), org.bukkit.Material.WHITE_DYE, "kaneki_eyepatch_icon", 36,
             "Повязка Канэки", java.util.List.of(), 1.0F, 0.0F, 0.0D, 0.9F, 0.9F, 1, 0,
@@ -127,100 +135,6 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return cachedPatch;
     }
 
-    /**
-     * Keeps the eyepatch attached to the player.
-     *
-     * The halo and the kagune ride the WornAngelRig, which owns its own model
-     * slots; the eyepatch adds a *second* model to the same ModeledEntity and
-     * shares the player's pivot override.  That is the only way to wear the
-     * patch together with the kagune, which is the whole Kaneki look, and it
-     * cannot disturb the rig's own two slots.
-     */
-    public static void tickEyepatch(ElytrixFreakModelPlugin plugin, Player player) {
-        try {
-            tickEyepatch0(plugin, player);
-        } catch (Throwable failure) {
-            // тик идёт 20 раз в секунду: одна ошибка не должна ни спамить лог, ни
-            // оставлять игрока с «залипшей» моделью
-            java.util.UUID id = player.getUniqueId();
-            PatchRig stale = PATCHES.remove(id);
-            if (stale != null) stale.destroy();
-            if (BROKEN.add(id)) plugin.getLogger().warning("[Аксессуары] повязка отключена у " + player.getName() + ": " + failure);
-        }
-    }
-
-    private static void tickEyepatch0(ElytrixFreakModelPlugin plugin, Player player) {
-        java.util.UUID id = player.getUniqueId();
-        if (!eyepatchSelected(player)) {
-            PatchRig stale = PATCHES.remove(id);
-            if (stale != null) stale.destroy();
-            return;
-        }
-        PatchRig rig = PATCHES.get(id);
-        if (rig == null) { rig = new PatchRig(); PATCHES.put(id, rig); }
-        rig.sync(plugin, player);
-    }
-
-    /** One player's eyepatch model.  Dropped with the player's ModeledEntity. */
-    static final class PatchRig {
-        private ModeledEntity entity;
-        private ActiveModel model;
-
-        void destroy() {
-            ModeledEntity owner = entity;
-            ActiveModel attached = model;
-            entity = null;
-            model = null;
-            try {
-                if (owner != null && !owner.isDestroyed() && attached != null) owner.removeModel(PATCH_BLUEPRINT);
-                if (attached != null && !attached.isDestroyed()) attached.destroy();
-            } catch (RuntimeException ignored) {
-                // the entity died before we got here: nothing is left to clean up
-            }
-        }
-
-        void sync(ElytrixFreakModelPlugin plugin, Player player) {
-            ModeledEntity current = ModelEngineAPI.getOrCreateModeledEntity(player);
-            if (current == null || current.isDestroyed()) { model = null; entity = null; return; }
-            if (model == null || model.isDestroyed() || entity != current) {
-                entity = current;
-                model = null;
-                // a cosmetic must never hide the player underneath it
-                current.setBaseEntityVisible(true);
-                // a reload can leave the patch attached: adopt it instead of stacking a twin
-                java.util.Optional<ActiveModel> existing = current.getModel(PATCH_BLUEPRINT);
-                if (existing != null && existing.isPresent() && !existing.get().isDestroyed()) {
-                    model = existing.get();
-                } else {
-                    ModelBlueprint blueprint = ModelEngineAPI.getBlueprint(PATCH_BLUEPRINT);
-                    if (blueprint == null) return;
-                    ActiveModel created = ModelEngineAPI.createActiveModel(blueprint);
-                    if (created == null) return;
-                    created.setCanHurt(false);
-                    created.setShadowVisible(false);
-                    created.setHitboxVisible(false);
-                    created.setLockPitch(true);
-                    created.setLockYaw(true);
-                    created.setViewRange(64.0F);
-                    PivotOverride pivot = ModelEngineAPI.getPivotOverrideRegistry() == null ? null
-                        : ModelEngineAPI.getPivotOverrideRegistry().getOrCreate(player);
-                    if (pivot != null) created.setPivotOverride(pivot);
-                    // the same locking the rig uses for the halo: the model follows the
-                    // player's body rotation instead of spinning on its own
-                    created.setModelRotationLocked(Boolean.TRUE);
-                    created.setLockedXHeadRot(0.0F);
-                    created.setLockedYHeadRot(0.0F);
-                    created.setLockedYBodyRot(0.0F);
-                    java.util.Optional<ActiveModel> added = current.addModel(created, false);
-                    model = added != null && added.isPresent() ? added.get() : created;
-                }
-            }
-            // No yaw push here: the model hangs off the player's own ModeledEntity,
-            // and ModelEngine reads the body rotation from the entity every tick.
-            // (The halo rig has to push it by hand only because it rides a fake
-            // attachment entity that has no rotation of its own.)
-        }
-    }
     public static FreakModelSpec back(ElytrixFreakModelPlugin plugin, Player player) {
         if (!allowed(player)) return null;
         String selection = get(player, BACK);
@@ -240,8 +154,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (configured != null) return configured;
         FreakModelSpec base = plugin.findModel("angel_wings");
         if (base == null) return null;
-        if (cachedBase == base && cachedTentacles != null) return cachedTentacles;
-        cachedBase = base;
+        if (cachedTentacles != null) return cachedTentacles;
         cachedTentacles = new FreakModelSpec("elytrix_kaneki_tentacles", base.kind, "elytrix_kaneki_tentacles",
             java.util.List.of(), org.bukkit.Material.RED_DYE, "kaneki_tentacles_icon", 35,
             "Щупальца Канэки", java.util.List.of(), 1.0F, 0.0F, 0.0D, 0.9F, 0.9F, 1, 0,
@@ -272,9 +185,6 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
         return result;
     }
-    /** The same «Назад» arrow the DeluxeMenus /menu uses: arrow + custom model data. */
-    private static final Integer BACK_ARROW = 10002;
-
     private static String[] lore(String hint, String... body) {
         String[] out = new String[body.length + 2];
         out[0] = "";
@@ -309,10 +219,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
         menu.setItem(15, item(Material.WHITE_DYE, "§x§F§A§D§8§F§C§lПовязка Канэки", "kaneki_eyepatch_icon", null,
             patch ? lore(chosen, "§7Белая повязка на левый глаз", "§7Нажми ещё раз — снять")
                   : lore(hint, "§7Белая повязка на левый глаз")));
-        menu.setItem(30, item(Material.BARRIER, "§cСнять всё", null, null,
+        // 49 — нижний ряд, середина: кнопка «Снять всё» в самом низу меню
+        menu.setItem(49, item(Material.BARRIER, "§cСнять всё", null, null,
             lore("§dНажми, чтобы снять", "§7Убирает и спину, и голову")));
-        menu.setItem(31, item(Material.ARROW, "§x§F§A§D§8§F§C§lНазад в меню", null, BACK_ARROW,
-            lore("§dНажми, чтобы вернуться", "§7Главное меню сервера")));
         player.openInventory(menu);
     }
 
@@ -334,7 +243,6 @@ public final class AccessoryController implements CommandExecutor, Listener {
         event.setCancelled(true);
         if (!(event.getWhoClicked() instanceof Player player)) return;
         int slot = event.getRawSlot();
-        if (slot == 31) { player.closeInventory(); player.performCommand("menu"); return; }
         if (!allowed(player)) {
             player.sendMessage("§cАксессуары доступны с доната §d" + MEDIA_GROUP + "§c.");
             return;
@@ -349,7 +257,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         else if (slot == 14) { toggleBack(player, "kaneki", "Щупальца Канэки"); }
         else if (slot == 13) { toggleHead(player, "halo", "Нимб", "надет", "снят"); }
         else if (slot == 15) { toggleHead(player, "eyepatch", "Повязка Канэки", "надета", "снята"); }
-        else if (slot == 30) {
+        else if (slot == 49) {
             set(player, BACK, ""); setHead(player, "");
             player.sendMessage("§7Все аксессуары сняты.");
         } else return;

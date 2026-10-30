@@ -1,45 +1,57 @@
-# Установка v21 на VDS
+# Установка v22 на VDS
 
-v21 — это **только `ElytrixFreakModel.jar`**: ресурспак, blueprint-ы и ассеты не менялись
-(SHA-1 пака остаётся `7173523183d1e1f76d011702a350b44fadcd99bb`).
+**Одной командой лучше ставить ядро**: пакет `elytrix-leaf-1.21.11.zip` уже содержит
+этот jar (`tools/core-install/`). Если менять ядро пока не нужно — ниже только плагин.
 
-Одна команда, из любого места:
+## Только плагин (ресурспак не менялся)
+
+SHA-1 пака остаётся `7173523183d1e1f76d011702a350b44fadcd99bb`, поэтому ресурспак
+копировать не обязательно.
 
 ```bash
 cd /root/RW_GRIEF && set -e && \
-curl -fsSL -o /tmp/elytrix-v21.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/ecdad4901e9a778705879550ecabe88e441f438a/elytrix-tentacles-v21.zip && \
+curl -fsSL -o /tmp/elytrix-v22.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/COMMIT_SHA/elytrix-tentacles-v22.zip && \
 B=/root/elytrix-backup-$(date +%Y%m%d-%H%M%S) && mkdir -p "$B" && \
 cp -a plugins/ElytrixFreakModel.jar "$B/" && \
-unzip -oq /tmp/elytrix-v21.zip plugins/ElytrixFreakModel.jar -d /root/RW_GRIEF && \
+unzip -oq /tmp/elytrix-v22.zip plugins/ElytrixFreakModel.jar -d /root/RW_GRIEF && \
 sha256sum plugins/ElytrixFreakModel.jar
 ```
 
-Ожидаемый SHA-256 jar: `096ecb999a9760704618f9e24b124f242776d97a12a86dd33c6766d54cd8f401`.
-Бэкап старого jar — в `/root/elytrix-backup-*`.
+Ожидаемый SHA-256: `21fb71176403dd6755fbec463de0d0aa08e88761d2f5b1e41c1b3abffa9fec50`
+(в jar теперь `version: 3.3.0`). После — `restart`.
 
-После этого — `restart` в консоли сервера.
+## Что в v22
 
-## Что чинит v21
+### 1. Повязка Канэки теперь реально рисуется
 
-`/аксессуары` отвечал `Cannot execute command 'аксессуары' ... plugin is disabled`:
-плагин падал на `onEnable`, и вместе с меню умирали крылья, нимб, кагуне и повязка.
-Код аксессуаров подключается в самом конце `onEnable`, поэтому любое исключение
-оттуда выключало весь плагин.
+Раньше плагин добавлял модель повязки **вторым** `ActiveModel` на
+`ModeledEntity` игрока и не выполнял ключевой шаг, который делает риг крыльев/нимба:
+`PivotOverride.addPassenger(pivotId)` — привязку модели к пивоту игрока. Плюс
+`syncPlayerWornAngelRig` при пустом риге каждый тик **уничтожал** этот
+`ModeledEntity`, то есть нашу модель стирало 20 раз в секунду.
 
-- `AccessoryController.install()` теперь ловит `Throwable`, пишет предупреждение
-  в лог и **не роняет плагин**; если команда `accessories` не найдена — просто
-  логирует это.
-- `tickEyepatch` защищён от повторов: одна ошибка на игрока, без спама 20 раз
-  в секунду.
-- Выдача прав LuckPerms тоже не может уронить включение.
+Теперь повязка идёт через **слот нимба** — единственный путь в этом плагине,
+который умеет цеплять модель к голове игрока и корректно её убирать:
 
-Если после `restart` в логе всё ещё есть `plugin is disabled` — значит причина не
-в коде аксессуаров, а в самом включении плагина (чаще всего не поднялся
-`ModelEngine`). Тогда нужен лог:
+- `halo(player)` возвращает спеку нимба при `head = halo` и спеку повязки при
+  `head = eyepatch`;
+- blueprint `elytrix_kaneki_eyepatch` — из того же пакета, размеры уже на лице;
+- нимб и повязка взаимно исключаются (это один слот головы), кагуне и крылья —
+  отдельный слот спины, всё сочетается;
+- из ASM-патча убран пятый хук (`tickEyepatch`), осталось четыре проверенных.
 
-```bash
-grep -n -B2 -A25 "ElytrixFreakModel" /root/RW_GRIEF/logs/latest.log | tail -60
-```
+### 2. Меню
+
+- **Кнопки «Назад» больше нет.**
+- **«Снять всё» — в самом низу по центру** (слот 49).
+- Крылья / нимб / щупальца / повязка — клик надевает, повторный клик снимает;
+  на надетом предмете висит строка `§a● Сейчас надето`.
+
+### 3. Доступ для доната `media`
+
+При включении плагин один раз выполняет
+`lp group media permission set elytrixaccessories.use true`.
+Проверить: `/lp group media info` — должен быть `elytrixaccessories.use = true`.
 
 ## Откат
 
