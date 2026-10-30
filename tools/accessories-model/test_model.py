@@ -26,7 +26,7 @@ GLYPH = 'ꏠ'
 # Cubes further than this from their bone pivot make ModelEngine halve the model
 # resolution (JavaItemModel.scaleToFit) - the tendrils must stay under it.
 SCALE_LIMIT = 24.0
-PARTS = ('a', 'b', 'c', 'd')
+PARTS = ('a', 'b', 'c', 'd', 'e', 'f')
 SNAP = 22.5
 ICON = 'assets/reallyworld/textures/item/freak/kaneki_tentacles_icon.png'
 
@@ -41,6 +41,16 @@ def flatten(node, out):
             continue
         out[bone['name']] = bone
         flatten(bone.get('children', []), out)
+
+
+def _chain(bone):
+    """The bones of one blade, root first."""
+    out = []
+    while bone is not None:
+        out.append(bone)
+        nested = [child for child in bone.get('children', []) if isinstance(child, dict)]
+        bone = nested[0] if nested else None
+    return out
 
 
 class BlueprintTests(unittest.TestCase):
@@ -59,31 +69,49 @@ class BlueprintTests(unittest.TestCase):
         self.assertEqual(len(tendrils), 4, 'upper/lower on both sides')
         names = {b['name'] for b in tendrils}
         self.assertEqual(names, {'left_upper_a', 'left_lower_a', 'right_upper_a', 'right_lower_a'})
-        # each tendril is a chain of four bones: more joints for the animation and
-        # every cube stays inside scaleToFit()'s 24-unit limit
+        # every blade is a chain of six bones: the curve is carried by the bones, so
+        # the joints can turn by arbitrary angles instead of the 22.5 deg cube grid
         for bone in tendrils:
-            names = []
-            node = bone
+            chain, node = [], bone
             while node is not None:
-                names.append(node['name'])
+                chain.append(node['name'])
                 nested = [child for child in node['children'] if isinstance(child, dict)]
-                self.assertEqual(len([c for c in node['children'] if isinstance(c, str)]) > 0, True,
-                                 f'{node["name"]} has its own cubes')
                 node = nested[0] if nested else None
-            self.assertEqual(names, [bone['name'][:-1] + part for part in PARTS])
+            self.assertEqual(chain, [bone['name'][:-1] + part for part in PARTS])
 
     def test_the_group_is_not_flat(self):
         """v3 lived inside a 5-unit deep slab and read as one level bar in game."""
-        xs = [v for e in self.model['elements'] for v in (e['from'][0], e['to'][0])]
-        ys = [v for e in self.model['elements'] for v in (e['from'][1], e['to'][1])]
-        zs = [v for e in self.model['elements'] for v in (e['from'][2], e['to'][2])]
-        self.assertGreater(max(xs) - min(xs), 58, 'wider than the previous revision')
-        self.assertGreater(max(zs) - min(zs), 18, 'real depth: the tendrils leave the back')
-        self.assertGreater(max(ys) - min(ys), 14, 'and they are not level with each other')
-        # the four tendrils must not be mirror copies of each other either
+        import build_tentacles
+        paths = [build_tentacles.blade_path(spec) for spec in build_tentacles.BLADES]
+        xs = [point[0] for path in paths for point in path]
+        ys = [point[1] for path in paths for point in path]
+        zs = [point[2] for path in paths for point in path]
+        self.assertGreater(max(xs) - min(xs), 70, 'the fan is wider than the body')
+        self.assertGreater(max(zs) - min(zs), 15, 'and it sweeps behind the back')
+        self.assertGreater(max(ys) - min(ys), 16, 'the blades are not level with each other')
+        # each blade lives in its own vertical plane, so the fan is not one card
+        yaws = {round(b['rotation'][1], 1) for b in self.model['outliner'][0]['children']}
+        self.assertEqual(len(yaws), 4, 'four different planes')
         roots = {(round(b['origin'][1], 1), round(b['origin'][2], 1))
                  for b in self.model['outliner'][0]['children']}
-        self.assertEqual(len(roots), 4, 'every tendril leaves the back from its own spot')
+        self.assertEqual(len(roots), 4, 'every blade leaves the back from its own spot')
+
+    def test_the_blades_are_slim(self):
+        """v4 was 8-9 units across and nearly as deep - it read as a fat strap."""
+        widest = max(e['to'][1] - e['from'][1] for e in self.model['elements'])
+        deepest = max(e['to'][2] - e['from'][2] for e in self.model['elements'])
+        self.assertLess(widest, 6.0, 'a blade is not a beam')
+        self.assertLess(deepest, 4.0, 'and it is flatter than it is wide')
+
+    def test_the_curve_comes_from_the_bones(self):
+        """Cubes stay on the 22.5 grid only if they never rotate; here none do."""
+        for element in self.model['elements']:
+            self.assertEqual([v for v in element['rotation'] if v], [],
+                             'cubes are unrotated: the bone chain bends the blade')
+        turns = [bone['rotation'][2] for tendril in self.model['outliner'][0]['children']
+                 for bone in _chain(tendril)][1:]
+        self.assertTrue(turns, 'the chain must actually turn')
+        self.assertLessEqual(max(abs(t) for t in turns), 22.0, 'joints stay gentle')
 
     def test_no_bone_is_scaled_down(self):
         for name, bone in self.bones.items():
@@ -120,15 +148,17 @@ class BlueprintTests(unittest.TestCase):
         animation = self.model['animations'][0]
         self.assertEqual(animation['name'], 'idle')
         self.assertEqual(animation['loop'], 'loop')
-        self.assertEqual(len(animation['animators']), 16, 'every joint of every tendril moves')
+        self.assertEqual(len(animation['animators']), 24, 'every joint of every blade moves')
         for animator in animation['animators'].values():
             keys = animator['keyframes']
             self.assertEqual(keys[0]['time'], 0)
             self.assertEqual(keys[-1]['time'], animation['length'])
             self.assertEqual(keys[0]['data_points'], keys[-1]['data_points'], 'seamless loop')
             values = [float(k['data_points'][0][axis]) for k in keys for axis in ('x', 'z')]
-            self.assertLess(max(abs(v) for v in values), 16, 'swing stays readable')
-            self.assertGreater(max(values) - min(values), 3.0, 'more motion than the 1-degree v3 sway')
+            swing = max(values) - min(values)
+            # the keys are absolute, so they contain the blade's own bend as well
+            self.assertLess(swing, 40, 'the swing stays readable')
+            self.assertGreater(swing, 3.0, 'more motion than the 1-degree v3 sway')
 
 
 class PackTests(unittest.TestCase):
@@ -164,7 +194,7 @@ class PackTests(unittest.TestCase):
     def test_item_definitions(self):
         with zipfile.ZipFile(self.pack) as pack:
             items = [n for n in pack.namelist() if n.startswith(f'assets/modelengine/items/{MODEL}/')]
-            self.assertEqual(len(items), 16)
+            self.assertEqual(len(items), 24)
             for name in items:
                 definition = json.loads(pack.read(name))['model']
                 self.assertEqual(definition['model'],

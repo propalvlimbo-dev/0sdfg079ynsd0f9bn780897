@@ -1,28 +1,29 @@
 #!/usr/bin/env python3
 """Builds the Kaneki kagune (щупальца) blueprint + texture, pixel-art only.
 
-v4. The reference is four organic red tendrils that burst out of the back: thick at
-the root, sweeping through big open 3-D arcs (up, outward *and* backwards), tapering
-to a pointed tip with scale plates near the end.
+v5. The reference is four long, *slim* crimson blades that leave the back and sweep
+outward in big smooth arcs, tapering into needle points.
 
-Why the model is built this way
--------------------------------
-* Every tendril is a real 3-D curve (Catmull-Rom through 3-D control points), so the
-  group never collapses into a flat "cardboard fan" when seen from above or from the
-  side.  The previous revision kept dz nearly constant, which is exactly why the
-  in-game result read as one level bar.
-* ModelEngine 4.1.0 writes one rotation per cube (axis + any angle, and for 1.21.4
-  item models the rotation is preserved as `{"origin":..,"angle":..,"axis":..}`).
-  A cube can therefore only be tilted inside the plane that is perpendicular to the
-  chosen axis.  For every segment we pick the axis with the *smallest* direction
-  component, so the segment lies almost exactly in that plane and the long axis of
-  the box follows the curve tangent.
-* Each tendril is a chain of three bones instead of two: it keeps every cube within
-  scaleToFit()'s 24-unit limit (a bigger distance silently halves that bone) and it
-  gives the animation nine joints per side to move.
+What changed after the in-game screenshots of v4
+------------------------------------------------
+* **They were fat straps.** The cross-section was 8-9 units wide and nearly as deep,
+  so the blade read as a beam. It is now 4.6 units at the root and drops to 0.22 at
+  the tip (about a fifth of a block), with the depth about half of that.
+* **The silhouette was a saw.** v4 changed the cube angle every 2 units and cube
+  angles may only be multiples of 22.5 deg, so the edge was a staircase. The curve is
+  now carried by a *chain of six bones* (bones take arbitrary angles - the shipped
+  dwarves use values such as -79.9 deg) and every cube is an unrotated box inside its
+  bone, so the outline has ~10 deg joints instead of 22.5 deg zig-zag.
+* **The hierarchy does the bending.** Cubes are authored in the rest pose along +X and
+  the runtime stacks each bone's rotation on its parent's, exactly like the
+  gp2_goblin_warrior leg -> shin -> foot chain (nested bones with rotations such as
+  [47.4, 23.3, -18.5]).
+
+No cube has a rotation of its own, so `RotationSolver` - the part of ModelEngine
+4.1.0 that throws on cube angles off the 22.5 deg grid - is never reached.
 
 Usage:
-    python3 tools/accessories-model/build_tentacles.py [--out-dir tools/accessories-model] [--preview]
+    python3 tools/accessories-model/build_tentacles.py [--out-dir DIR] [--preview]
 """
 import argparse
 import base64
@@ -37,233 +38,121 @@ from PIL import Image, ImageDraw
 HERE = Path(__file__).resolve().parent
 MODEL = 'elytrix_kaneki_tentacles'
 ROOT_ORIGIN = [0.0, 20.0, 0.0]
-STEP = 2.0          # arc length of one segment, in 1/16 block units
-OVERLAP = 0.75      # extra length on both ends so the joints stay closed
-PARTS = ('a', 'b', 'c', 'd')
+PARTS = ('a', 'b', 'c', 'd', 'e', 'f')   # six bones per blade = six joints to animate
+SEGMENTS = 8                      # long straight pieces per blade
+SNAP = 22.5                       # the only angles ModelEngine 4.1.0 accepts
 
-# --------------------------------------------------------------------------- curves
+# --------------------------------------------------------------------------- blades
 # Blockbench units: +X = the player's right, +Y = up, +Z = behind the back.
-# The four tendrils are deliberately NOT mirror images of each other: different
-# height, different reach, different depth and a different tip, which is what makes
-# the group read as organic instead of as a symmetric cardboard cut-out.
-def sweep(root, heading, pitch, yaw_rate, pitch_rate, length, steps=6):
-    """Control points of a crescent: march forward while the tangent keeps turning.
-
-    `heading` is the direction in the XZ plane (0 = +X/right, 90 = +Z/behind),
-    `pitch` is the climb angle, the two rates bend the curve per unit of length.
-    """
-    points = [root]
-    x, y, z = root
-    step = length / steps
-    h, p = heading, pitch
-    for _ in range(steps):
-        ch, sh = math.cos(math.radians(h)), math.sin(math.radians(h))
-        cp = math.cos(math.radians(p))
-        x += cp * ch * step
-        y += math.sin(math.radians(p)) * step
-        z += cp * sh * step
-        points.append((round(x, 2), round(y, 2), round(z, 2)))
-        h += yaw_rate * step
-        p += pitch_rate * step
-    return points
-
-
-SIDE = [
+# `start` is the direction of the first segment in the blade's own XY plane,
+# `curve` bends it per unit of length, `yaw` turns the whole plane around the back.
+# The four blades deliberately differ: a perfect mirror pair reads as cardboard.
+BLADES = [
     {
-        # right upper: the longest blade, climbs gently out of the shoulder blade
-        # and ends in the point that sits above the shoulder in the reference
+        # right upper: leaves the shoulder blade level, flattens over the middle and
+        # hooks up at the tip - the claw of the reference
         'name': 'right_upper',
-        'points': sweep((1.4, 19.0, 2.2), heading=22, pitch=15,
-                        yaw_rate=0.60, pitch_rate=0.38, length=46),
-        'width': (9.2, 1.05),
+        'root': (1.4, 19.8, 2.4), 'yaw': -24.0, 'length': 50.0,
+        'turns': (0.0, 9.0, 6.0, 6.0, 8.0, 10.0),
+        'girth': (5.2, 3.0), 'tip': 0.26,
     },
     {
-        # right lower: leaves the hip a little downward, then curls back upward -
-        # the opposite curvature to the upper one, so the pair is never level
+        # right lower: lower on the back, dips first and rises the whole way after -
+        # the opposite curvature to the upper blade, so the pair is never parallel
         'name': 'right_lower',
-        'points': sweep((1.6, 15.4, 3.4), heading=24, pitch=-4,
-                        yaw_rate=0.52, pitch_rate=0.55, length=42),
-        'width': (8.6, 1.0),
+        'root': (1.6, 14.6, 3.0), 'yaw': -32.0, 'length': 42.0,
+        'turns': (0.0, -4.0, 4.0, 6.0, 8.0, 10.0),
+        'girth': (4.9, 2.8), 'tip': 0.24,
     },
     {
-        # left upper: starts higher and stays flat, swings further behind the player
+        # left upper: longer than its right twin and it lifts earlier
         'name': 'left_upper',
-        'points': sweep((-1.2, 21.0, 4.4), heading=152, pitch=13,
-                        yaw_rate=-0.58, pitch_rate=0.18, length=39),
-        'width': (8.8, 1.1),
+        'root': (-1.3, 20.8, 3.2), 'yaw': 180.0 + 21.0, 'length': 47.0,
+        'turns': (0.0, 11.0, 7.0, 6.0, 7.0, 9.0),
+        'girth': (5.0, 2.9), 'tip': 0.26,
     },
     {
-        # left lower: the shortest blade, dips the deepest and flicks up at the tip
+        # left lower: the shortest blade and the widest yaw - the fan is never
+        # mirror-symmetric, which is what keeps it from looking like cardboard
         'name': 'left_lower',
-        'points': sweep((-1.6, 13.6, 5.2), heading=148, pitch=-8,
-                        yaw_rate=-0.52, pitch_rate=0.60, length=32),
-        'width': (8.0, 1.0),
+        'root': (-1.6, 13.9, 3.6), 'yaw': 180.0 + 29.0, 'length': 40.0,
+        'turns': (0.0, -6.0, 4.0, 6.0, 8.0, 10.0),
+        'girth': (4.7, 2.7), 'tip': 0.24,
     },
 ]
 
-TENDRILS = [dict(spec) for spec in SIDE]
+TENDRILS = [dict(spec) for spec in BLADES]
 
 
 def uid(tag):
     return str(uuid.uuid5(uuid.NAMESPACE_URL, f'elytrix-kaneki:{tag}'))
 
 
-def catmull_rom(points, samples_per_span=24):
-    """Centripetal-ish Catmull-Rom through the control points (padded at both ends)."""
-    pts = [points[0]] + list(points) + [points[-1]]
-    out = []
-    for i in range(len(pts) - 3):
-        p0, p1, p2, p3 = pts[i], pts[i + 1], pts[i + 2], pts[i + 3]
-        for s in range(samples_per_span):
-            t = s / samples_per_span
-            t2, t3 = t * t, t * t * t
-            out.append(tuple(
-                0.5 * ((2 * p1[k]) + (-p0[k] + p2[k]) * t
-                       + (2 * p0[k] - 5 * p1[k] + 4 * p2[k] - p3[k]) * t2
-                       + (-p0[k] + 3 * p1[k] - 3 * p2[k] + p3[k]) * t3)
-                for k in range(3)))
-    out.append(pts[-2])
-    return out
+def blade_path(spec):
+    """Joint positions of the blade in world space (the transform the runtime uses).
 
-
-def resample(curve, step):
-    """Uniform arc-length resampling."""
-    lengths = [0.0]
-    for a, b in zip(curve, curve[1:]):
-        lengths.append(lengths[-1] + math.dist(a, b))
-    total = lengths[-1]
-    count = max(2, int(round(total / step)))
-    result = []
-    for i in range(count):
-        target = total * i / (count - 1)
-        j = 0
-        while j < len(lengths) - 2 and lengths[j + 1] < target:
-            j += 1
-        span = lengths[j + 1] - lengths[j] or 1.0
-        t = (target - lengths[j]) / span
-        result.append(tuple(curve[j][k] + (curve[j + 1][k] - curve[j][k]) * t for k in range(3)))
-    return result
-
-
-def _unit(vec):
-    length = math.sqrt(sum(v * v for v in vec)) or 1.0
-    return tuple(v / length for v in vec)
-
-
-def segments(tendril):
-    """Splits a tendril into cubes: centre, 3-D direction and segment length."""
-    curve = resample(catmull_rom(tendril['points']), STEP)
-    pieces = []
-    count = max(1, len(curve) - 1)
-    for i, (a, b) in enumerate(zip(curve, curve[1:])):
-        direction = _unit(tuple(b[k] - a[k] for k in range(3)))
-        pieces.append({
-            'centre': tuple((a[k] + b[k]) / 2 for k in range(3)),
-            'direction': direction,
-            'length': math.dist(a, b), 't': (i + 0.5) / count,
-            'start': a, 'end': b,
-        })
-    return pieces
-
-
-def tilt_axis(pieces):
-    """One tilt axis for a whole bone.
-
-    A cube can only be rotated around one axis, and its long side has to stay
-    perpendicular to it, so the bone uses the axis its segments cross the least.
-    Keeping a single axis per bone also avoids ModelEngine splitting a bone into
-    several item models.
+    The rest pose runs along +X; bone k has its own turn, which stacks on top of the
+    parent's frame, so the direction of bone k is the sum of the turns up to it.  The
+    root bone additionally yaws the whole blade around the back.
     """
-    def error(axis):
-        return sum(abs(p['direction'][axis]) for p in pieces)
-    return min(range(3), key=error)
+    count = len(spec['turns'])
+    length = spec['length'] / count
+    yaw = math.radians(spec['yaw'])
+    x, y, z = spec['root']
+    points = [(x, y, z)]
+    angle = 0.0
+    for turn in spec['turns']:
+        angle += turn
+        rad = math.radians(angle)
+        x += length * math.cos(rad) * math.cos(yaw)
+        y += length * math.sin(rad)
+        z -= length * math.cos(rad) * math.sin(yaw)
+        points.append((x, y, z))
+    return points
 
 
-def _tilt(axis, direction):
-    """Angle (degrees) and long axis of the box for a segment inside `axis`' plane."""
-    if axis == 2:            # tilt around Z, box runs along X
-        return math.degrees(math.atan2(direction[1], direction[0])), 0
-    if axis == 1:            # tilt around Y, box runs along X
-        return math.degrees(math.atan2(-direction[2], direction[0])), 0
-    return math.degrees(math.atan2(direction[2], direction[1])), 1     # around X, along Y
+def blade_profile(spec, t):
+    """Width (across the blade) and depth (through it) at `t` = 0 root .. 1 tip.
+
+    A kagune is a scythe: it stays meaty for the first third and then runs out into
+    a needle, so the exponent is close to linear but slightly convex.
+    """
+    width0, depth0 = spec['girth']
+    fade = max(0.0, 1.0 - t) ** 0.85
+    width = spec['tip'] + (width0 - spec['tip']) * fade
+    depth = spec['tip'] + (depth0 - spec['tip']) * fade
+    return width, depth
 
 
-def lerp(profile, t):
-    """Blade profile: stays broad for the first half, then runs out into a point."""
-    root, tip = profile
-    body = root * (1.0 - 0.35 * min(t, 0.55))
-    if t <= 0.55:
-        return body
-    k = (t - 0.55) / 0.45
-    return tip + (body - tip) * (1.0 - k ** 1.6)
+def blade_bones(spec, sub=2):
+    """The blade as a chain of bones, each with straight boxes in the rest pose.
 
-
-def build_elements(tendril, part):
-    """Turns one third of a tendril into Blockbench cubes with per-face UV regions."""
-    elements = []
-    pieces = segments(tendril)
-    bounds = bone_ranges(len(pieces), len(PARTS))
-    index_of_part = PARTS.index(part)
-    low, high = bounds[index_of_part]
-    axis = tilt_axis(pieces[low:high])
-    for index, piece in enumerate(pieces):
-        if not low <= index < high:
-            continue
-        t = piece['t']
-        width = lerp(tendril['width'], t)          # across the tendril
-        depth = width * 0.85                       # through it (thick blade)
-        angle, long_axis = _tilt(axis, piece['direction'])
-        # ModelEngine 4.1.0 only accepts one rotation axis per cube and, more
-        # importantly, it snaps/combinates anything else through RotationSolver -
-        # which throws on 4.1.0. Multiples of 22.5 are legal, so snap to them.
-        angle = round(angle / 22.5) * 22.5
-        while angle > 90.0:
-            angle -= 180.0
-        while angle <= -90.0:
-            angle += 180.0
-        centre = piece['centre']
-        half = piece['length'] / 2 + OVERLAP
-        cross = [k for k in range(3) if k not in (long_axis, axis)][0]
-        p0, p1 = list(centre), list(centre)
-        p0[long_axis] -= half
-        p1[long_axis] += half
-        p0[cross] -= width / 2
-        p1[cross] += width / 2
-        p0[axis] -= depth / 2
-        p1[axis] += depth / 2
-        # near the tip the faces switch to the scale-plate texture region
-        body = 'scales' if t > 0.78 else 'body'
-        faces = {
-            'up': {'uv': uv_rect('top'), 'texture': 0},
-            'down': {'uv': uv_rect('dark'), 'texture': 0},
-            'east': {'uv': uv_rect(body), 'texture': 0},
-            'west': {'uv': uv_rect(body), 'texture': 0},
-            'north': {'uv': uv_rect(body), 'texture': 0},
-            'south': {'uv': uv_rect(body), 'texture': 0},
-        }
-        rotation = [0, 0, 0]
-        rotation[axis] = round(angle, 3)
-        elements.append({
-            'name': f'{tendril["name"]}_{part}{index + 1:02d}',
-            'box_uv': False, 'rescale': False, 'locked': False, 'light_emission': 0,
-            'render_order': 'default', 'allow_mirror_modeling': True,
-            'from': [round(v, 4) for v in p0], 'to': [round(v, 4) for v in p1],
-            'autouv': 0, 'color': 0,
-            'origin': [round(v, 4) for v in centre],
-            'rotation': rotation,
-            'faces': faces, 'type': 'cube', 'uuid': uid(f'cube:{tendril["name"]}:{index}'),
+    The rest pose runs along +X; the curve comes entirely from the bones' own
+    rotations, which the runtime stacks parent -> child.  That is what makes the
+    outline smooth: a bone may turn by any angle, a cube only by multiples of 22.5.
+    """
+    count = len(spec['turns'])
+    length = spec['length'] / count
+    root = spec['root']
+    bones = []
+    for index, turn in enumerate(spec['turns']):
+        origin = (root[0] + length * index, root[1], root[2])
+        boxes = []
+        for part in range(sub):
+            t0, t1 = part / sub, (part + 1) / sub
+            width, depth = blade_profile(spec, (index + (t0 + t1) / 2) / count)
+            boxes.append({
+                'x0': round(length * t0, 4), 'x1': round(length * t1, 4),
+                'width': width, 'depth': depth,
+                't': (index + (t0 + t1) / 2) / count,
+            })
+        bones.append({
+            'name': f'{spec["name"]}_{PARTS[index]}',
+            'origin': [round(v, 4) for v in origin],
+            'turn': turn,
+            'boxes': boxes,
         })
-    return elements
-
-
-def bone_ranges(count, parts):
-    """Splits `count` segments into `parts` contiguous, non-empty groups."""
-    bounds = []
-    for part in range(parts):
-        low = round(count * part / parts)
-        high = round(count * (part + 1) / parts)
-        bounds.append((low, max(high, low + 1)))
-    return bounds
+    return bones
 
 
 # UV layout inside the 0..16 space of a vanilla-mapped texture (64x64 -> 4px per unit)
@@ -279,14 +168,45 @@ def uv_rect(region):
     return list(UV_REGIONS[region])
 
 
+def build_elements(bone):
+    """One bone of the blade as unrotated Blockbench cubes with per-face UV regions."""
+    elements = []
+    for index, box in enumerate(bone['boxes']):
+        width, depth = box['width'] / 2, box['depth'] / 2
+        p0 = [bone['origin'][0] + box['x0'], bone['origin'][1] - width,
+              bone['origin'][2] - depth]
+        p1 = [bone['origin'][0] + box['x1'], bone['origin'][1] + width,
+              bone['origin'][2] + depth]
+        body = 'scales' if box['t'] > 0.72 else 'body'
+        faces = {
+            'up': {'uv': uv_rect('top'), 'texture': 0},
+            'down': {'uv': uv_rect('dark'), 'texture': 0},
+            'east': {'uv': uv_rect(body), 'texture': 0},
+            'west': {'uv': uv_rect(body), 'texture': 0},
+            'north': {'uv': uv_rect(body), 'texture': 0},
+            'south': {'uv': uv_rect(body), 'texture': 0},
+        }
+        elements.append({
+            'name': f'{bone["name"]}_{index}',
+            'box_uv': False, 'rescale': False, 'locked': False, 'light_emission': 0,
+            'render_order': 'default', 'allow_mirror_modeling': True,
+            'from': [round(v, 4) for v in p0], 'to': [round(v, 4) for v in p1],
+            'autouv': 0, 'color': 0,
+            'origin': [round(bone['origin'][0] + (box['x0'] + box['x1']) / 2, 4),
+                       round(bone['origin'][1], 4), round(bone['origin'][2], 4)],
+            'rotation': [0.0, 0.0, 0.0],
+            'faces': faces, 'type': 'cube', 'uuid': uid(f'cube:{bone["name"]}:{index}'),
+        })
+    return elements
+
+
 # --------------------------------------------------------------------------- texture
 def build_texture():
     """Glossy crimson kagune skin, drawn pixel by pixel (no AI, no external images).
 
     ItemDisplay entities in Minecraft are lit flatly, so the volume is baked into
     the texture: the top face uses a bright tile, the sides a mid crimson tile and
-    the underside a dark maroon tile. That is what makes the tendril read as a
-    rounded limb instead of a flat ribbon.
+    the underside a dark maroon tile.
     """
     size = 64
     img = Image.new('RGBA', (size, size), (120, 6, 16, 255))
@@ -295,7 +215,8 @@ def build_texture():
     def tile(x0, y0, x1, y1, colour, grain):
         for y in range(y0, y1):
             for x in range(x0, x1):
-                n = (math.sin(x * 0.9 + y * 1.7) * 0.5 + math.sin(x * 0.31 - y * 0.73) * 0.5) * grain
+                n = (math.sin(x * 0.9 + y * 1.7) * 0.5
+                     + math.sin(x * 0.31 - y * 0.73) * 0.5) * grain
                 px[x, y] = tuple(max(0, min(255, int(c * (1 + n)))) for c in colour) + (255,)
 
     # sides: mid crimson with a soft vertical sheen (V runs across the tendril)
@@ -348,34 +269,43 @@ def build_texture():
 # --------------------------------------------------------------------------- animation
 ANIM_LENGTH = 6.0
 ANIM_FRAMES = 37
-# per bone of the chain: (gain, lag, axis mix) - the tip moves the most and lags
+# per joint of the chain: amplitude (degrees), lag, and the mix between the in-plane
+# bend (z) and the sideways swing (y)
 BONE_MOTION = (
-    (2.6, 0.00, (0.55, 0.45)),
-    (5.0, 0.12, (0.35, 0.65)),
-    (8.4, 0.22, (0.70, 0.30)),
-    (12.0, 0.34, (0.45, 0.55)),
+    (2.5, 0.00, (1.00, 0.40)),
+    (4.0, 0.08, (1.00, 0.30)),
+    (5.5, 0.16, (1.00, 0.24)),
+    (7.0, 0.23, (1.00, 0.18)),
+    (9.0, 0.30, (1.00, 0.14)),
+    (11.0, 0.38, (1.00, 0.10)),
 )
 
 
 def build_animation(tendrils):
-    """Lively idle: every joint swings on two axes, the tip lags behind its root."""
+    """Lively idle: the blade whips in its own plane and swings a little sideways.
+
+    Keyframes are absolute, so the root bone's static yaw is written into its keys -
+    otherwise playing the animation would flatten the fan.
+    """
     animators = {}
     for index, tendril in enumerate(tendrils):
-        phase = index * math.pi / 2.4
+        phase = index * math.pi / 2.3
         for depth, (bone_name, (gain, lag, mix)) in enumerate(zip(tendril['bones'], BONE_MOTION)):
+            yaw = tendril['yaw'] if depth == 0 else 0.0
+            base = 0.0 if depth == 0 else tendril['turns'][depth]
             keys = []
             for step in range(ANIM_FRAMES):
                 t = ANIM_LENGTH * step / (ANIM_FRAMES - 1)
                 swing = 2 * math.pi * t / ANIM_LENGTH
-                primary = gain * (math.sin(swing + phase - lag * 6.0)
-                                  + 0.35 * math.sin(2.0 * swing + phase * 1.7))
-                secondary = gain * 0.75 * math.cos(swing * 0.75 + phase * 1.3 - lag * 4.0)
+                bend = gain * (math.sin(swing + phase - lag * 6.0)
+                               + 0.30 * math.sin(2.0 * swing + phase * 1.7))
+                side = gain * 0.55 * math.cos(swing * 0.75 + phase * 1.3 - lag * 4.0)
                 keys.append({
                     'channel': 'rotation',
                     'data_points': [{
-                        'x': str(round(primary * mix[0], 3)),
-                        'y': '0',
-                        'z': str(round(secondary * mix[1], 3)),
+                        'x': '0',
+                        'y': str(round(yaw + side * mix[1], 3)),
+                        'z': str(round(base + bend * mix[0], 3)),
                     }],
                     'uuid': uid(f'key:{bone_name}:{step}'),
                     'time': round(t, 3), 'color': -1, 'interpolation': 'linear',
@@ -408,27 +338,28 @@ def build_model():
 
     elements, bones = [], []
     for tendril in TENDRILS:
-        pieces = segments(tendril)
-        bounds = bone_ranges(len(pieces), len(PARTS))
         chain = []
-        for part_index, part in enumerate(PARTS):
-            low, _ = bounds[part_index]
-            origin = pieces[low]['start']
+        for index, bone in enumerate(blade_bones(tendril)):
+            cubes = build_elements(bone)
             chain.append({
-                'name': f'{tendril["name"]}_{part}',
-                'origin': [round(v, 4) for v in origin],
-                'rotation': [0, 0, 0], 'color': part_index, 'uuid': uid(f'bone:{tendril["name"]}_{part}'),
+                'name': bone['name'],
+                'origin': bone['origin'],
+                # the root bone turns the whole blade around the back, the rest of
+                # the chain bends it inside its own plane
+                'rotation': [0.0, tendril['yaw'], 0.0] if index == 0
+                else [0.0, 0.0, bone['turn']],
+                'color': index, 'uuid': uid(f'bone:{bone["name"]}'),
                 'export': True, 'mirror_uv': False, 'isOpen': True, 'locked': False,
                 'visibility': True, 'autouv': 0,
-                'children': [c['uuid'] for c in build_elements(tendril, part)],
+                'children': [c['uuid'] for c in cubes],
             })
-            elements.extend(build_elements(tendril, part))
-        for upper, lower in zip(chain, chain[1:]):
-            upper['children'].append(lower)
+            elements.extend(cubes)
+        for outer, inner in zip(chain, chain[1:]):
+            outer['children'].append(inner)
         bones.append(chain[0])
         tendril['bones'] = tuple(f'{tendril["name"]}_{part}' for part in PARTS)
     root = {
-        'name': 'tentacles_root', 'origin': list(ROOT_ORIGIN), 'rotation': [0, 0, 0],
+        'name': 'tentacles_root', 'origin': list(ROOT_ORIGIN), 'rotation': [0.0, 0.0, 0.0],
         'color': 0, 'uuid': uid('bone:root'), 'export': True, 'mirror_uv': False,
         'isOpen': True, 'locked': False, 'visibility': True, 'autouv': 0,
         'children': bones,
@@ -443,6 +374,24 @@ def build_model():
 
 
 # --------------------------------------------------------------------------- preview
+def bone_chains(model):
+    """uuid -> list of (origin, euler) from the root bone down to the owning bone."""
+    chains = {}
+
+    def walk(node, chain):
+        for bone in node:
+            if isinstance(bone, str):
+                continue
+            own = chain + [(tuple(bone['origin']), list(bone['rotation']))]
+            for child in bone.get('children', []):
+                if isinstance(child, str):
+                    chains[child] = own
+            walk([c for c in bone.get('children', []) if isinstance(c, dict)], own)
+
+    walk(model['outliner'], [])
+    return chains
+
+
 def _rotation(axis, angle):
     a = math.radians(angle)
     c, s = math.cos(a), math.sin(a)
@@ -467,12 +416,12 @@ def _font(size):
         return ImageFont.load_default()
 
 
-def preview(model, out_path, scale=8.0, size=(620, 460), title='', yaw=-26.0, pitch=8.0, texture=None):
+def preview(model, out_path, scale=8.0, size=(620, 460), title='', yaw=-26.0, pitch=8.0,
+            texture=None, body=False):
     """Small orthographic flat-shaded renderer (painter's algorithm + back-face culling).
 
-    It is a schematic used to judge the silhouette and the tapering, not an
-    in-game screenshot: no textures, no lighting model, no interpolation.  All three
-    rotation axes are honoured, so what you see is what the resource pack contains.
+    Bone rotations are applied, so the yaw of each blade is visible here exactly as
+    it will be in game.  It stays a schematic: flat shading, no lighting model.
     """
     img = Image.new('RGB', size, (24, 28, 42))
     draw = ImageDraw.Draw(img)
@@ -488,13 +437,13 @@ def preview(model, out_path, scale=8.0, size=(620, 460), title='', yaw=-26.0, pi
         return -xr, yr, zr
 
     def view(x, y, z):
-        # the projection is centred between the shoulder blades and the tips
-        return rotate(x, y - 25.0, z - 12.0)
+        return rotate(x, y - 22.0, z - 10.0)
 
     def project(x, y, z):
         xr, yr, zr = view(x, y, z)
         return (size[0] / 2 + xr * scale, size[1] / 2 - yr * scale), zr
 
+    chains = bone_chains(model)
     quads = []
     for element in model['elements']:
         axis, angle = 2, 0.0
@@ -503,6 +452,7 @@ def preview(model, out_path, scale=8.0, size=(620, 460), title='', yaw=-26.0, pi
                 axis, angle = k, element['rotation'][k]
         matrix = _rotation(axis, angle)
         origin = element['origin']
+        chain = chains.get(element['uuid'], [])
         corner = {}
         for i in (0, 1):
             for j in (0, 1):
@@ -511,7 +461,17 @@ def preview(model, out_path, scale=8.0, size=(620, 460), title='', yaw=-26.0, pi
                              element['from'][1] if j == 0 else element['to'][1],
                              element['from'][2] if k == 0 else element['to'][2])
                     rel = _apply(matrix, tuple(local[n] - origin[n] for n in range(3)))
-                    corner[(i, j, k)] = tuple(origin[n] + rel[n] for n in range(3))
+                    point = tuple(origin[n] + rel[n] for n in range(3))
+                    # world = T_root . T_child . ... : the innermost bone is applied
+                    # first and the root frame last
+                    for bone_origin, euler in reversed(chain):
+                        for axis_index in range(3):
+                            if euler[axis_index]:
+                                bone_matrix = _rotation(axis_index, euler[axis_index])
+                                rel = tuple(point[n] - bone_origin[n] for n in range(3))
+                                point = tuple(bone_origin[n] + _apply(bone_matrix, rel)[n]
+                                              for n in range(3))
+                    corner[(i, j, k)] = point
         sides = [
             ([(0, 0, 0), (1, 0, 0), (1, 1, 0), (0, 1, 0)], (0, 0, -1), 'north'),
             ([(0, 0, 1), (0, 1, 1), (1, 1, 1), (1, 0, 1)], (0, 0, 1), 'south'),
@@ -521,31 +481,53 @@ def preview(model, out_path, scale=8.0, size=(620, 460), title='', yaw=-26.0, pi
             ([(0, 0, 0), (0, 1, 0), (0, 1, 1), (0, 0, 1)], (-1, 0, 0), 'west'),
         ]
         for keys, normal, face_name in sides:
-            pts = [corner[k] for k in keys]
-            quads.append((pts, _apply(matrix, normal), element['faces'][face_name]['uv']))
+            pts = [corner[key] for key in keys]
+            world = _apply(matrix, normal)
+            for _, euler in reversed(chain):
+                for axis_index in range(3):
+                    if euler[axis_index]:
+                        world = _apply(_rotation(axis_index, euler[axis_index]), world)
+            quads.append((pts, world, element['faces'][face_name]['uv'], None))
+
+    if body:
+        # a plain player proxy (boots, legs, torso, head in 1/16 units) so the scale
+        # of the fan can be judged against something that is exactly 1.8 blocks tall
+        proxy = [((-4, 0, -2), (4, 12, 2)), ((-4, 12, -2), (4, 24, 2)),
+                 ((-4, 24, -2), (4, 32, 2))]
+        for low, high in proxy:
+            for keys, normal in (((0, 0, 0), (1, 0, 0), (1, 1, 0), (0, 1, 0)), (0, 0, -1)), \
+                                (((0, 0, 1), (0, 1, 1), (1, 1, 1), (1, 0, 1)), (0, 0, 1)), \
+                                (((0, 1, 0), (1, 1, 0), (1, 1, 1), (0, 1, 1)), (0, 1, 0)), \
+                                (((1, 0, 0), (1, 0, 1), (1, 1, 1), (1, 1, 0)), (1, 0, 0)), \
+                                (((0, 0, 0), (0, 1, 0), (0, 1, 1), (0, 0, 1)), (-1, 0, 0)):
+                pts = []
+                for ix, iy, iz in keys:
+                    pts.append((low[0] + (high[0] - low[0]) * ix,
+                                low[1] + (high[1] - low[1]) * iy,
+                                low[2] + (high[2] - low[2]) * iz))
+                quads.append((pts, normal, None, (96, 104, 126)))
 
     rendered = []
-    for pts, normal, uv in quads:
-        vx, vy, vz = rotate(*normal)          # normals are directions: no translation
+    for pts, normal, uv, flat in quads:
         projected = [project(*pt) for pt in pts]
         depth = sum(d for _, d in projected) / len(projected)
-        rendered.append((depth, [q for q, _ in projected], (vx, vy, vz), uv))
+        nx, ny, nz = rotate(*normal)          # normals are directions: no translation
+        rendered.append((depth, [q for q, _ in projected], nz, uv, flat))
     rendered.sort(key=lambda item: item[0])
 
-    for _, poly, n, uv in rendered:
-        if n[2] <= 0:
+    for _, poly, nz, uv, flat in rendered:
+        if nz <= 0:
             continue
-        if texture is not None:
-            # average colour of the 16x16 texel patch of this face
+        if flat is not None:
+            colour = flat
+        elif texture is not None:
             u0, v0, u1, v1 = uv
             box = texture.crop((int(u0 * 4), int(v0 * 4), int(u1 * 4), int(v1 * 4))).convert('RGB')
             patch = list(box.getdata())
             colour = tuple(sum(px[i] for px in patch) // len(patch) for i in range(3))
         else:
-            light = max(0.0, -(n[0] * -0.42 + n[1] * 0.58 + n[2] * -0.7))
-            shade = 0.46 + 0.78 * light
-            colour = (min(255, int(206 * shade)), min(255, int(28 * shade)), min(255, int(36 * shade)))
-        draw.polygon(poly, fill=colour, outline=(70, 2, 10))
+            colour = (196, 26, 34)
+        draw.polygon(poly, fill=colour, outline=(70, 2, 10) if flat is None else (58, 62, 78))
 
     font = _font(18)
     small = _font(14)
@@ -569,16 +551,16 @@ def main():
     if args.preview:
         panel = (680, 470)
         preview(model, out / 'tentacles_back.png', title='вид со спины', yaw=0, pitch=0,
-                scale=6.4, size=panel, texture=texture)
+                scale=5.6, size=panel, texture=texture, body=True)
         preview(model, out / 'tentacles_angle.png', title='вид 3/4', yaw=-38, pitch=16,
-                scale=6.4, size=panel, texture=texture)
+                scale=5.6, size=panel, texture=texture, body=True)
         preview(model, out / 'tentacles_top.png', title='вид сверху (проверка объёма)',
-                yaw=-12, pitch=76, scale=6.4, size=panel, texture=texture)
+                yaw=-12, pitch=76, scale=5.6, size=panel, texture=texture, body=True)
         combo = Image.new('RGB', (panel[0] * 3, panel[1]), (24, 28, 42))
         for index, name in enumerate(('tentacles_back', 'tentacles_angle', 'tentacles_top')):
             combo.paste(Image.open(out / f'{name}.png'), (panel[0] * index, 0))
         combo.save(out / 'tentacles_preview.png')
-    print(f'{len(model["elements"])} cubes in {len(model["outliner"][0]["children"])} tendrils -> {out}')
+    print(f'{len(model["elements"])} cubes in {len(model["outliner"][0]["children"])} blades -> {out}')
 
 
 if __name__ == '__main__':
