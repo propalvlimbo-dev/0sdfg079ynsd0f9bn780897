@@ -29,8 +29,8 @@ MODELS = ('elytrix_kaneki_tentacles', 'elytrix_kaneki_eyepatch')
 TITLE = ROOT / 'tools/accessories-integration/staging-assets/assets/reallyworld/textures/gui/title/elytrix_accessories.png'
 # The accessory-enabled plugin build that ships with this package; committing the
 # jar keeps the release reproducible instead of depending on a /tmp candidate.
-PLUGIN = ROOT / 'tools/accessories-integration/dist/ElytrixFreakModel-v20.jar'
-PLUGIN_SHA = '8a0d0607bf71c08d1136e1256d63ad7c593501d9a0bb078fcd93d0e2362daec2'
+PLUGIN = ROOT / 'tools/accessories-integration/dist/ElytrixFreakModel-v21.jar'
+PLUGIN_SHA = '096ecb999a9760704618f9e24b124f242776d97a12a86dd33c6766d54cd8f401'
 
 
 def sha1(path):

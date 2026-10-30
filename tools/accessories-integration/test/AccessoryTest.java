@@ -12,7 +12,7 @@ import com.ticxo.modelengine.api.ModelEngineAPI;
 
 public class AccessoryTest {
  static class Data implements PersistentDataContainer {Map<NamespacedKey,Object> m=new HashMap<>();@SuppressWarnings("unchecked") public <P,C>C get(NamespacedKey k,PersistentDataType<P,C> t){return (C)m.get(k);}public <P,C>void set(NamespacedKey k,PersistentDataType<P,C> t,C v){m.put(k,v);} public void remove(NamespacedKey k){m.remove(k);}}
- static class PlayerFake implements Player {boolean admin,use;String command;UUID uuid=UUID.fromString("00000000-0000-0000-0000-0000000000aa");public boolean performCommand(String c){command=c;return true;}public void closeInventory(){}Data data=new Data();String msg;public boolean hasPermission(String s){return admin || (use && s.equals(AccessoryController.USE_PERMISSION));}public Data getPersistentDataContainer(){return data;}public Inventory opened;public InventoryView openInventory(Inventory i){opened=i;return null;}public void sendMessage(String s){msg=s;}public java.util.UUID getUniqueId(){return uuid;}public boolean isOnline(){return true;}}
+ static class PlayerFake implements Player {boolean admin,use;String command;UUID uuid=UUID.fromString("00000000-0000-0000-0000-0000000000aa");public boolean performCommand(String c){command=c;return true;}public void closeInventory(){}Data data=new Data();String msg;public boolean hasPermission(String s){return admin || (use && s.equals(AccessoryController.USE_PERMISSION));}public Data getPersistentDataContainer(){return data;}public Inventory opened;public InventoryView openInventory(Inventory i){opened=i;return null;}public void sendMessage(String s){msg=s;}public java.util.UUID getUniqueId(){return uuid;}public boolean isOnline(){return true;}public String getName(){return "Tester";}}
  static FreakModelSpec spec(String id){return new FreakModelSpec(id,ModelKind.ANGEL_WINGS,id,List.of(),Material.FEATHER,"model",34,id,List.of(),1,0,0,1,1,2,0,0,0,0,0,0,0,0,0,0,0,false,false);}
  // --- ModelEngine double: proves tickEyepatch really attaches the patch ------
  static class FakePivot implements com.ticxo.modelengine.api.model.PivotOverride {}
@@ -156,6 +156,25 @@ public class AccessoryTest {
   PlayerFake idle=new PlayerFake();idle.admin=true;idle.uuid=UUID.randomUUID();
   AccessoryController.tickEyepatch(plugin,idle);
   check(!engine.entities.containsKey(idle.uuid),"no entity created for players without the patch");
+  // --- a broken install must never disable the whole plugin ------------------
+  ElytrixFreakModelPlugin bare=new ElytrixFreakModelPlugin();bare.returnNullCommand=true;
+  AccessoryController.install(bare);
+  check(bare.mockCommand.executor==null,"no executor without a command");
+  check(!bare.warnings.isEmpty() && bare.warnings.get(0).contains("accessories"),
+        "a missing command is logged, never thrown out of onEnable");
+  // --- a broken ModelEngine must not spam or crash the tick ------------------
+  ModelEngineAPI.backend=new ModelEngineAPI.Backend(){
+    public com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint blueprint(String id){throw new IllegalStateException("boom");}
+    public com.ticxo.modelengine.api.model.ModeledEntity modeledEntity(Entity e){throw new IllegalStateException("boom");}
+    public com.ticxo.modelengine.api.model.ActiveModel createActiveModel(com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint bp){throw new IllegalStateException("boom");}
+    public com.ticxo.modelengine.api.model.PivotOverrideRegistry pivots(){throw new IllegalStateException("boom");}};
+  PlayerFake brokenPatch=new PlayerFake();brokenPatch.admin=true;brokenPatch.uuid=UUID.randomUUID();
+  brokenPatch.data.set(AccessoryController.HEAD,PersistentDataType.STRING,"eyepatch");
+  int warningsBefore=plugin.warnings.size();
+  AccessoryController.tickEyepatch(plugin,brokenPatch);
+  AccessoryController.tickEyepatch(plugin,brokenPatch);
+  check(plugin.warnings.size()==warningsBefore+1,"one warning per player, not one per tick");
+  ModelEngineAPI.backend=new FakeEngine();
   InventoryDragEvent drag=new InventoryDragEvent();drag.view=click.view;controller.onDrag(drag);check(drag.cancelled,"drag cancelled");
   System.out.println("Accessory GUI, permission, selection and cached tentacle spec mock tests passed");
  }

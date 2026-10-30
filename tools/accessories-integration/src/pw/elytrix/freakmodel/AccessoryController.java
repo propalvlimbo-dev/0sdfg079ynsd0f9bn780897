@@ -40,13 +40,25 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final String USE_PERMISSION = "elytrixaccessories.use";
     private static boolean mediaGranted;
     private static final java.util.Map<java.util.UUID, PatchRig> PATCHES = new java.util.HashMap<>();
+    /** Players whose patch blew up once; they are not retried every tick. */
+    private static final java.util.Set<java.util.UUID> BROKEN = new java.util.HashSet<>();
     public static void install(ElytrixFreakModelPlugin plugin) {
-        AccessoryController controller = new AccessoryController();
-        PluginCommand command = plugin.getCommand("accessories");
-        if (command == null) throw new IllegalStateException("Missing аксессуары command");
-        command.setExecutor(controller);
-        Bukkit.getPluginManager().registerEvents(controller, plugin);
-        grantDonationAccess();
+        // Никогда не бросаем исключение из onEnable: если оно улетит, ядро выключит
+        // весь ElytrixFreakModel, и вместе с меню умрут крылья, нимб и кагуне.
+        // Ровно это и случилось на DivineMC: "/аксессуары -> plugin is disabled".
+        try {
+            AccessoryController controller = new AccessoryController();
+            PluginCommand command = plugin.getCommand("accessories");
+            if (command == null) {
+                plugin.getLogger().warning("[Аксессуары] команда accessories не найдена в plugin.yml — меню не подключено");
+            } else {
+                command.setExecutor(controller);
+            }
+            Bukkit.getPluginManager().registerEvents(controller, plugin);
+            grantDonationAccess();
+        } catch (Throwable failure) {
+            plugin.getLogger().warning("[Аксессуары] меню не подключилось: " + failure);
+        }
     }
 
     /**
@@ -63,8 +75,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
             if (!Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
                 "lp group " + MEDIA_GROUP + " permission set " + USE_PERMISSION + " true")) return;
             mediaGranted = true;
-        } catch (RuntimeException ignored) {
-            // no LuckPerms, or the command is blocked: the node can still be set by hand
+        } catch (Throwable ignored) {
+            // no LuckPerms / different core API: the node can still be set by hand
         }
     }
 
@@ -125,6 +137,19 @@ public final class AccessoryController implements CommandExecutor, Listener {
      * cannot disturb the rig's own two slots.
      */
     public static void tickEyepatch(ElytrixFreakModelPlugin plugin, Player player) {
+        try {
+            tickEyepatch0(plugin, player);
+        } catch (Throwable failure) {
+            // тик идёт 20 раз в секунду: одна ошибка не должна ни спамить лог, ни
+            // оставлять игрока с «залипшей» моделью
+            java.util.UUID id = player.getUniqueId();
+            PatchRig stale = PATCHES.remove(id);
+            if (stale != null) stale.destroy();
+            if (BROKEN.add(id)) plugin.getLogger().warning("[Аксессуары] повязка отключена у " + player.getName() + ": " + failure);
+        }
+    }
+
+    private static void tickEyepatch0(ElytrixFreakModelPlugin plugin, Player player) {
         java.util.UUID id = player.getUniqueId();
         if (!eyepatchSelected(player)) {
             PatchRig stale = PATCHES.remove(id);
