@@ -4,7 +4,7 @@
 
 ```bash
 cd /root/RW_GRIEF && set -e && \
-curl -fsSL -o /tmp/elytrix-v20.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/cff72f8de535427ec6b74d9d86f6f7aaf906e800/elytrix-tentacles-v20.zip && \
+curl -fsSL -o /tmp/elytrix-v20.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/779e79b4d9537dee68c7feb1dd7835cc5b4831d1/elytrix-tentacles-v20.zip && \
 B=/root/elytrix-backup-$(date +%Y%m%d-%H%M%S) && mkdir -p "$B" && \
 cp -a plugins/ElytrixFreakModel.jar "$B/" 2>/dev/null || true && \
 cp -a plugins/ElytrixRP/config.yml "$B/" 2>/dev/null || true && \
@@ -43,8 +43,9 @@ sha1sum rp/Elytrix-RP-1.21.zip /root/RP/Elytrix-RP-1.21.zip
   ```
   lp group media permission set elytrixaccessories.use true
   ```
-  то есть группа `media` получает доступ без ручных команд. Если LuckPerms нет
-  или команда запрещена — доступ выдаётся вручную той же командой из консоли.
+  то есть группа `media` получает доступ без ручных команд. Если LuckPerms нет,
+  команда запрещена или он ещё грузился в этот момент — плагин повторит попытку
+  при первом открытии меню; вручную это та же команда в консоли.
 
 ## Если что-то пошло не так
 
