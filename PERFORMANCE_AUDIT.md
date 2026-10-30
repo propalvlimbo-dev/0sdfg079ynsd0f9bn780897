@@ -154,9 +154,35 @@ spark gc
 GC-лог (добавить в `start.sh`, один раз):
 `-Xlog:gc*:file=/root/RW_GRIEF/logs/gc.log:time,uptime,level,tags:filecount=5,filesize=20M`
 
-## 5. План будущей команды «ядро + конфиги + фикс плагина»
+## 5. Команда «ядро + конфиги + фикс плагина» — СОБРАНА
 
-Пока **не собрана** — здесь зафиксирован состав, чтобы не потерять.
+Пакет: `elytrix-leaf-1.21.11.zip`, исходники `tools/core-install/`.
+Статус: собрано и проверено на копии сервера (install → start.sh для G1 и ZGC
+на JDK 25 → rollback), на живом VDS **ещё не запускалось**.
+
+- Ядро: Leaf `1.21.11-179`, SHA-256 `5da79782215c1a25edcd7c73b3523b7ecb7f4b86dc8a5846a176ed69bc2cd020`,
+  размер 83 953 995 Б, URL `https://github.com/Winds-Studio/Leaf/releases/download/ver-1.21.11/leaf-1.21.11-179.jar`.
+- `start.sh`: heap 60% RAM (3–12 ГБ) вместо `-Xms10G -Xmx10G`;
+  `MaxGCPauseMillis=200` вместо 100; `-Xlog:gc*` в `logs/gc.log`; проверка
+  модуля `jdk.incubator.vector`; `GC_MODE=zgc` как опция; автоперезапуск после
+  падения и выход после штатного `stop`.
+- Конфиги: `bukkit.yml` autosave 0 / chunk-gc 600; `spigot.yml`
+  `restart-on-crash: false`; `pufferfish.yml` `tps-catchup: false`;
+  `paper-global.yml` player-auto-save 12000/2; `leaf-global.yml`
+  `reject-policy: WAIT_FOR_COMPLETION`, `async-playerdata-save: true`,
+  `OptimizeNonFlushPacketSending: true`; `WorldCleaner.interval` 420 → 1080.
+- Плагин: `ElytrixFreakModel` v21 (SHA-256 `096ecb99…`).
+- Откат: `bash /root/elytrix-backup-*/rollback.sh /root/RW_GRIEF`.
+
+### Что осталось выяснить после запуска
+
+- `ModelEngine 4.1.0` в `plugins/` содержит NMS-хендлеры до `v1_21_R7` и `v26_2`,
+  то есть 1.21.11 он поддерживать должен. Но если в логе будет
+  `Unsupported NMS Version: 1.21.11…`, значит аксессуары не поднимутся по вине
+  ME, а не нашего кода — понадобится сборка ME под 1.21.11.
+- В `AI_INSTRUCTIONS.txt` §2 записано, что на Leaf 1.21.11 ранее были ошибки
+  `BLib` и зависимых плагинов. После смены ядра это надо проверить в логе
+  (`grep -iE "blib|Could not load|disabled" logs/latest.log`).
 
 1. Бэкап: `plugins/ElytrixFreakModel.jar`, `start.sh`, `server.jar`, все
    `*.yml`-конфиги ядра в `/root/elytrix-backup-<дата>/`, плюс `world` не трогаем.
