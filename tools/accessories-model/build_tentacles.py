@@ -73,7 +73,7 @@ SIDE = [
         # right upper: the longest blade, climbs gently out of the shoulder blade
         # and ends in the point that sits above the shoulder in the reference
         'name': 'right_upper',
-        'points': sweep((1.4, 19.0, 2.2), heading=22, pitch=8,
+        'points': sweep((1.4, 19.0, 2.2), heading=22, pitch=15,
                         yaw_rate=0.60, pitch_rate=0.38, length=46),
         'width': (9.2, 1.05),
     },
@@ -88,7 +88,7 @@ SIDE = [
     {
         # left upper: starts higher and stays flat, swings further behind the player
         'name': 'left_upper',
-        'points': sweep((-1.2, 21.0, 4.4), heading=152, pitch=5,
+        'points': sweep((-1.2, 21.0, 4.4), heading=152, pitch=13,
                         yaw_rate=-0.58, pitch_rate=0.18, length=39),
         'width': (8.8, 1.1),
     },
@@ -457,6 +457,16 @@ def _apply(matrix, vec):
     return tuple(sum(matrix[i][k] * vec[k] for k in range(3)) for i in range(3))
 
 
+def _font(size):
+    """DejaVu (Cyrillic) when present, PIL's bitmap font otherwise."""
+    try:
+        from PIL import ImageFont
+        return ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', size)
+    except Exception:
+        from PIL import ImageFont
+        return ImageFont.load_default()
+
+
 def preview(model, out_path, scale=8.0, size=(620, 460), title='', yaw=-26.0, pitch=8.0, texture=None):
     """Small orthographic flat-shaded renderer (painter's algorithm + back-face culling).
 
@@ -537,8 +547,10 @@ def preview(model, out_path, scale=8.0, size=(620, 460), title='', yaw=-26.0, pi
             colour = (min(255, int(206 * shade)), min(255, int(28 * shade)), min(255, int(36 * shade)))
         draw.polygon(poly, fill=colour, outline=(70, 2, 10))
 
-    draw.text((10, 10), title, fill=(232, 232, 242))
-    draw.text((10, 26), 'schematic preview (flat shading), not an in-game render', fill=(150, 152, 170))
+    font = _font(18)
+    small = _font(14)
+    draw.text((12, 10), title, fill=(232, 232, 242), font=font)
+    draw.text((12, 36), 'схема (плоская заливка), не игровой рендер', fill=(150, 152, 170), font=small)
     img.save(out_path)
 
 

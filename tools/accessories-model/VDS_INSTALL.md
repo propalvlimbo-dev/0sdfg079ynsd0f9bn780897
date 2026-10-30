@@ -20,7 +20,7 @@ sha1sum rp/Elytrix-RP-1.21.zip /root/RP/Elytrix-RP-1.21.zip
 
 После этого — `restart` в консоли сервера.
 
-Ожидаемый SHA-1: `e389686bad33346fe04056d7b32393177ad9e45c` (оба пути должны совпасть).
+Ожидаемый SHA-1: `67ff2f519e54138748d9f6c4eedfc0613e4677c4` (оба пути должны совпасть).
 
 Что ставится: blueprint, 16 JSON моделей + 16 item-definitions + текстура щупалец,
 иконка меню (`assets/reallyworld/...kaneki_tentacles_icon`), `ElytrixFreakModel.jar`,
