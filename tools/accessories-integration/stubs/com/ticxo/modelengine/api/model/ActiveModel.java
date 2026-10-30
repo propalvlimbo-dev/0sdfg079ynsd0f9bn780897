@@ -5,6 +5,8 @@ public interface ActiveModel {
     boolean isDestroyed();
     void destroy();
     ModelBlueprint getBlueprint();
+    void setBlockLight(int light);
+    void setSkyLight(int light);
     void setCanHurt(boolean value);
     void setShadowVisible(boolean value);
     void setHitboxVisible(boolean value);

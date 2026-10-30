@@ -5,6 +5,7 @@ import com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint;
 import com.ticxo.modelengine.api.model.ActiveModel;
 import com.ticxo.modelengine.api.model.ModeledEntity;
 import com.ticxo.modelengine.api.model.PivotOverride;
+import com.ticxo.modelengine.api.model.PivotOverrideRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -12,6 +13,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,37 +22,44 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.components.EquippableComponent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-/** Experimental server-side cosmetic selection. Installed inside ElytrixFreakModel. */
+/**
+ * Server-side accessories menu: wings, halo, kagune and Kaneki's mask.
+ *
+ * <p>The mask is a real ModelEngine mesh on the head (21 cubes), not an armour
+ * layer: it never touches the helmet slot, and the blueprint's root bone is
+ * named {@code h_mask}, the prefix ModelEngine reads as the HEAD behaviour, so
+ * the whole mask turns with the head yaw and pitch.
+ */
 public final class AccessoryController implements CommandExecutor, Listener {
     static final NamespacedKey BACK = new NamespacedKey("elytrixaccessories", "back");
     static final NamespacedKey HALO = new NamespacedKey("elytrixaccessories", "halo");
-    /** Head slot: "halo" or "eyepatch".  HALO is kept as the legacy spelling. */
+    /** Head slot: "halo" or "mask".  HALO is kept as the legacy spelling. */
     static final NamespacedKey HEAD = new NamespacedKey("elytrixaccessories", "head");
-    private AccessoryController() {}
-    private static FreakModelSpec cachedTentacles;
-    /** Marks the real helmet-slot item that draws the patch on the head. */
-    static final NamespacedKey EYEPATCH_ITEM = new NamespacedKey("elytrixaccessories", "eyepatch_item");
-    /** Equipment asset (assets/reallyworld/equipment/kaneki_eyepatch.json). */
-    private static final NamespacedKey EYEPATCH_ASSET = new NamespacedKey("reallyworld", "kaneki_eyepatch");
-    private static final NamespacedKey EYEPATCH_ICON = new NamespacedKey("reallyworld", "kaneki_eyepatch_icon");
+    /** Marker of the v23 armour patch: it is retired and cleaned off the head. */
+    static final NamespacedKey LEGACY_PATCH_ITEM = new NamespacedKey("elytrixaccessories", "eyepatch_item");
+    /** Blueprint of the 3D mask (plugins/ModelEngine/blueprints/elytrix_kaneki_mask.bbmodel). */
+    static final String MASK_CHOICE = "mask";
+    static final String MASK_BLUEPRINT = "elytrix_kaneki_mask";
     /** Donation rank that is allowed to wear the accessories, besides the staff. */
     static final String MEDIA_GROUP = "media";
     static final String USE_PERMISSION = "elytrixaccessories.use";
     private static boolean mediaGranted;
+    private static ElytrixFreakModelPlugin host;
+    private static final java.util.Map<java.util.UUID, ActiveModel> MASKS = new java.util.HashMap<>();
+    private AccessoryController() {}
+    private static FreakModelSpec cachedTentacles;
+
     public static void install(ElytrixFreakModelPlugin plugin) {
         // Никогда не бросаем исключение из onEnable: если оно улетит, ядро выключит
         // весь ElytrixFreakModel, и вместе с меню умрут крылья, нимб и кагуне.
-        // Ровно это и случилось на DivineMC: "/аксессуары -> plugin is disabled".
         try {
             AccessoryController controller = new AccessoryController();
+            host = plugin;
             PluginCommand command = plugin.getCommand("accessories");
             if (command == null) {
                 plugin.getLogger().warning("[Аксессуары] команда accessories не найдена в plugin.yml — меню не подключено");
@@ -57,6 +67,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
                 command.setExecutor(controller);
             }
             Bukkit.getPluginManager().registerEvents(controller, plugin);
+            // Маска живёт отдельно от рига крыльев: свой такт, чтобы её можно было
+            // надеть и снять, даже когда на спине и на голове ничего нет.
+            Bukkit.getScheduler().runTaskTimer(plugin, AccessoryController::tickAll, 40L, 5L);
             grantDonationAccess();
         } catch (Throwable failure) {
             plugin.getLogger().warning("[Аксессуары] меню не подключилось: " + failure);
@@ -86,118 +99,150 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static boolean allowed(Player player) {
         return player.hasPermission("elytrixaccessories.admin") || player.hasPermission(USE_PERMISSION);
     }
+
     private static String get(Player p, NamespacedKey k) {
         String v = p.getPersistentDataContainer().get(k, PersistentDataType.STRING);
         return v == null ? "" : v;
     }
+
     private static void set(Player p, NamespacedKey k, String v) {
         PersistentDataContainer data = p.getPersistentDataContainer();
         if (v.isEmpty()) data.remove(k); else data.set(k, PersistentDataType.STRING, v);
     }
-    /** What sits on the head right now: "halo", "eyepatch" or "" (nothing). */
+
+    /** What sits on the head right now: "halo", "mask" or "" (nothing). */
     static String headChoice(Player player) {
         String choice = get(player, HEAD);
-        // players who picked a halo before the head slot existed keep it
-        return choice.isEmpty() ? get(player, HALO) : choice;
+        if (choice.isEmpty()) choice = get(player, HALO);
+        // v23 stored the flat armour patch under this name; it is the same mask now
+        return choice.equals("eyepatch") ? MASK_CHOICE : choice;
     }
 
-    /**
-     * The head slot spec.  Only the halo is a ModelEngine model now: Kaneki's
-     * patch is a real helmet-slot item whose armour layer the client draws as
-     * part of the player model, which is the only way to keep it out of the
-     * first-person view while still showing it in F5.
-     */
+    /** Only the halo goes through the wing rig; the mask has its own model path. */
     public static FreakModelSpec halo(ElytrixFreakModelPlugin plugin, Player player) {
         if (!allowed(player)) return null;
-        String choice = headChoice(player);
-        if (choice.equals("halo")) return plugin.findModel("angel_halo");
-        return null;
+        return headChoice(player).equals("halo") ? plugin.findModel("angel_halo") : null;
     }
 
-    /** True when this player should be wearing Kaneki's eyepatch. */
-    public static boolean eyepatchSelected(Player player) {
-        return allowed(player) && headChoice(player).equals("eyepatch");
+    /** True when this player should be wearing Kaneki's 3D mask. */
+    public static boolean maskSelected(Player player) {
+        return allowed(player) && headChoice(player).equals(MASK_CHOICE);
     }
 
-    /** The white patch as a wearable: a leather helmet with our own armour layer. */
-    static ItemStack eyepatchItem() {
-        ItemStack stack = new ItemStack(Material.LEATHER_HELMET);
-        ItemMeta meta = stack.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName("\u00a7x\u00a7F\u00a7A\u00a7D\u00a78\u00a7F\u00a7C\u00a7lПовязка Канэки");
-            meta.setLore(java.util.Arrays.asList("", "\u00a77Белая повязка на левый глаз",
-                "\u00a77Надета поверх головы, снимается из меню"));
-            meta.setItemModel(EYEPATCH_ICON);
-            EquippableComponent equippable = meta.getEquippable();
-            if (equippable != null) {
-                equippable.setSlot(EquipmentSlot.HEAD);
-                equippable.setModel(EYEPATCH_ASSET);
-                meta.setEquippable(equippable);
-            }
-            meta.getPersistentDataContainer().set(EYEPATCH_ITEM, PersistentDataType.STRING, "kaneki");
-            stack.setItemMeta(meta);
+    /** Test hook: is the 3D mask model alive for this player right now? */
+    static boolean wearingMaskModel(Player player) {
+        ActiveModel model = MASKS.get(player.getUniqueId());
+        return model != null && !model.isDestroyed();
+    }
+
+    /** Spawns or removes the mask model so the world matches the stored choice. */
+    static void syncMask(Player player) {
+        if (player == null || !player.isOnline()) return;
+        boolean want = maskSelected(player);
+        ActiveModel model = MASKS.get(player.getUniqueId());
+        if (want && (model == null || model.isDestroyed())) {
+            model = spawnMask(player);
+            if (model != null) MASKS.put(player.getUniqueId(), model);
+        } else if (!want && model != null) {
+            removeMask(player, model);
         }
-        return stack;
+        if (want) hideOwnMask(player);
     }
 
-    /** True when the stack on the head is our patch. */
-    static boolean isPatchItem(ItemStack stack) {
-        if (stack == null || stack.getType() == Material.AIR) return false;
-        ItemMeta meta = stack.getItemMeta();
-        return meta != null && meta.getPersistentDataContainer().get(EYEPATCH_ITEM, PersistentDataType.STRING) != null;
+    /** Keeps every masked player in sync; called every five ticks from install(). */
+    static void tickAll() {
+        try {
+            for (Player player : Bukkit.getOnlinePlayers()) syncMask(player);
+        } catch (Throwable ignored) {
+            // a broken model must never take the server tick down with it
+        }
     }
 
-    /** True when the player is physically wearing the patch right now. */
-    static boolean wearingPatch(Player player) {
-        return isPatchItem(player.getInventory().getHelmet());
+    private static ActiveModel spawnMask(Player player) {
+        ModelBlueprint blueprint = ModelEngineAPI.getBlueprint(MASK_BLUEPRINT);
+        if (blueprint == null) return null;                 // blueprint not imported yet
+        ModeledEntity entity = ModelEngineAPI.getOrCreateModeledEntity(player);
+        if (entity == null || entity.isDestroyed()) return null;
+        ActiveModel model = ModelEngineAPI.createActiveModel(blueprint);
+        if (model == null) return null;
+        // Same numbers the angel rig uses, so the mask is lit like the rest of the
+        // accessories and never draws a hitbox, a shadow or a fire overlay.
+        model.setBlockLight(2);
+        model.setSkyLight(2);
+        model.setCanHurt(false);
+        model.setShadowVisible(false);
+        model.setHitboxVisible(false);
+        model.setLockPitch(true);
+        model.setLockYaw(true);
+        model.setViewRange(2.0F);
+        PivotOverrideRegistry registry = ModelEngineAPI.getPivotOverrideRegistry();
+        PivotOverride pivot = registry == null ? null : registry.getOrCreate(player);
+        if (pivot != null) model.setPivotOverride(pivot);
+        entity.addModel(model, true);
+        return model;
+    }
+
+    private static void removeMask(Player player, ActiveModel model) {
+        MASKS.remove(player.getUniqueId());
+        try {
+            ModeledEntity entity = ModelEngineAPI.getModeledEntity(player);
+            if (entity != null && !entity.isDestroyed()) entity.removeModel(MASK_BLUEPRINT);
+        } catch (Throwable ignored) {
+            // the model is destroyed below either way
+        }
+        try {
+            if (!model.isDestroyed()) model.destroy();
+        } catch (Throwable ignored) {
+            // already gone
+        }
+    }
+
+    /** Forgets a model of a player who logged out or died. */
+    static void releaseMask(Player player) {
+        ActiveModel model = MASKS.remove(player.getUniqueId());
+        if (model != null && !model.isDestroyed()) {
+            try {
+                model.destroy();
+            } catch (Throwable ignored) {
+                // nothing else to do
+            }
+        }
     }
 
     /**
-     * Keeps the stored choice and the item in sync: a player who died, dropped
-     * the patch or pulled it into a chest must not keep a stale "worn" flag.
+     * The mask sits two pixels in front of the eyes, i.e. right inside the
+     * first-person camera.  ModelEngine spawns real ItemDisplay entities, so the
+     * wearer simply gets those hidden — the first person view stays clear and
+     * everybody else sees the mask normally.
      */
-    static void syncEyepatch(Player player) {
-        boolean worn = wearingPatch(player);
-        if (worn && !headChoice(player).equals("eyepatch")) setHead(player, "eyepatch");
-        else if (!worn && headChoice(player).equals("eyepatch")) setHead(player, "");
-    }
-
-    private static void togglePatch(Player player) {
-        if (headChoice(player).equals("eyepatch") || wearingPatch(player)) {
-            setHead(player, "");
-            player.sendMessage("\u00a77Повязка Канэки снята.");
-            return;
-        }
-        if (!putOnPatch(player)) return;
-        setHead(player, "eyepatch");
-        player.sendMessage("\u00a7dПовязка Канэки надета.");
-    }
-
-    private static boolean putOnPatch(Player player) {
-        PlayerInventory inventory = player.getInventory();
-        ItemStack worn = inventory.getHelmet();
-        if (worn != null && worn.getType() != Material.AIR && !isPatchItem(worn)) {
-            // a real helmet is in the way: move it to the inventory, never into the void
-            if (inventory.firstEmpty() < 0) {
-                player.sendMessage("\u00a7cНет свободного слота: освободи место, чтобы снять текущий шлем.");
-                return false;
+    private static void hideOwnMask(Player player) {
+        if (host == null) return;
+        org.bukkit.Location eye = player.getEyeLocation();
+        if (eye == null || eye.getWorld() == null) return;
+        try {
+            for (Entity nearby : eye.getWorld().getNearbyEntities(eye, 0.62D, 0.34D, 0.62D)) {
+                if (!(nearby instanceof ItemDisplay)) continue;
+                if (nearby.getUniqueId().equals(player.getUniqueId())) continue;
+                double dy = Math.abs(nearby.getLocation().getY() - eye.getY());
+                if (dy > 0.34D) continue;                 // the halo ring and the wings are higher
+                player.hideEntity(host, nearby);
             }
-            inventory.setHelmet(null);
-            inventory.addItem(worn);
+        } catch (Throwable ignored) {
+            // an engine without real display entities simply keeps the mask visible
         }
-        inventory.setHelmet(eyepatchItem());
-        return true;
     }
 
-    private static void takeOffPatch(Player player) {
-        PlayerInventory inventory = player.getInventory();
-        ItemStack worn = inventory.getHelmet();
-        if (!isPatchItem(worn)) return;
-        inventory.setHelmet(null);
-        java.util.Map<Integer, ItemStack> left = inventory.addItem(worn);
-        if (left != null && !left.isEmpty()) {
-            inventory.setHelmet(left.values().iterator().next());
-            player.sendMessage("\u00a7eИнвентарь полон — повязка осталась на голове.");
+    /**
+     * Takes the v23 armour patch off the head: it drew a flat white band over the
+     * helmet slot, the exact thing this build replaces.
+     */
+    static void cleanupLegacyPatch(Player player) {
+        ItemStack worn = player.getInventory().getHelmet();
+        if (worn == null || worn.getType() == Material.AIR) return;
+        ItemMeta meta = worn.getItemMeta();
+        if (meta == null) return;
+        if (meta.getPersistentDataContainer().get(LEGACY_PATCH_ITEM, PersistentDataType.STRING) != null) {
+            player.getInventory().setHelmet(null);
         }
     }
 
@@ -237,20 +282,19 @@ public final class AccessoryController implements CommandExecutor, Listener {
         private Inventory inventory;
         @Override public Inventory getInventory() { return inventory; }
     }
+
     private static ItemStack item(Material mat, String title, String model, String... lore) {
-        return item(mat, title, model, null, lore);
-    }
-    private static ItemStack item(Material mat, String title, String model, Integer customModelData, String... lore) {
-        ItemStack result = new ItemStack(mat); ItemMeta meta = result.getItemMeta();
+        ItemStack result = new ItemStack(mat);
+        ItemMeta meta = result.getItemMeta();
         if (meta != null) {
             meta.setDisplayName(title);
             meta.setLore(java.util.Arrays.asList(lore));
             if (model != null) meta.setItemModel(new NamespacedKey("reallyworld", model));
-            if (customModelData != null) meta.setCustomModelData(customModelData);
             result.setItemMeta(meta);
         }
         return result;
     }
+
     private static String[] lore(String hint, String... body) {
         String[] out = new String[body.length + 2];
         out[0] = "";
@@ -267,27 +311,30 @@ public final class AccessoryController implements CommandExecutor, Listener {
         Inventory menu = Bukkit.createInventory(holder, 54, "§fꈁꀀꈂꌀꈂꀁ§fꈃꏠ");
         holder.inventory = menu;
         boolean allowed = allowed(player);
-        if (allowed) syncEyepatch(player);
+        if (allowed) {
+            cleanupLegacyPatch(player);
+            syncMask(player);
+        }
         String hint = allowed ? "§dНажми, чтобы выбрать" : "§cДоступно с доната §dmedia";
         String chosen = allowed ? "§a● Сейчас надето" : "§8● Недоступно";
         String back = get(player, BACK);
         String head = headChoice(player);
         boolean wings = back.equals("wings"), kagune = back.equals("kaneki");
-        boolean halo = head.equals("halo"), patch = head.equals("eyepatch");
-        menu.setItem(12, item(Material.FEATHER, "§x§F§A§D§8§F§C§lАнгельские крылья", "angel_wings", null,
+        boolean halo = head.equals("halo"), mask = head.equals(MASK_CHOICE);
+        menu.setItem(12, item(Material.FEATHER, "§x§F§A§D§8§F§C§lАнгельские крылья", "angel_wings",
             wings ? lore(chosen, "§7Аксессуар для спины", "§7Не занимает слот брони", "§7Нажми ещё раз — снять")
                   : lore(hint, "§7Аксессуар для спины", "§7Не занимает слот брони")));
-        menu.setItem(13, item(Material.NETHER_STAR, "§x§F§A§D§8§F§C§lБожественный нимб", "angel_halo", null,
+        menu.setItem(13, item(Material.NETHER_STAR, "§x§F§A§D§8§F§C§lБожественный нимб", "angel_halo",
             halo ? lore(chosen, "§7Нимб на голову", "§7Нажми ещё раз — снять")
                  : lore(hint, "§7Нимб на голову")));
-        menu.setItem(14, item(Material.RED_DYE, "§x§F§A§D§8§F§C§lЩупальца Канэки", "kaneki_tentacles_icon", null,
+        menu.setItem(14, item(Material.RED_DYE, "§x§F§A§D§8§F§C§lЩупальца Канэки", "kaneki_tentacles_icon",
             kagune ? lore(chosen, "§7Анимированный аксессуар для спины", "§7Нажми ещё раз — снять")
                    : lore(hint, "§7Анимированный аксессуар для спины")));
-        menu.setItem(15, item(Material.WHITE_DYE, "§x§F§A§D§8§F§C§lПовязка Канэки", "kaneki_eyepatch_icon", null,
-            patch ? lore(chosen, "§7Белая повязка на левый глаз", "§7Нажми ещё раз — снять")
-                  : lore(hint, "§7Белая повязка на левый глаз")));
+        menu.setItem(15, item(Material.PAPER, "§x§F§A§D§8§F§C§lМаска Канэки", "kaneki_eyepatch_icon",
+            mask ? lore(chosen, "§73D-маска на лицо", "§7Не занимает слот брони", "§7Нажми ещё раз — снять")
+                 : lore(hint, "§73D-маска на лицо", "§7Не занимает слот брони")));
         // 49 — нижний ряд, середина: кнопка «Снять всё» в самом низу меню
-        menu.setItem(49, item(Material.BARRIER, "§cСнять всё", null, null,
+        menu.setItem(49, item(Material.BARRIER, "§cСнять всё", null,
             lore("§dНажми, чтобы снять", "§7Убирает и спину, и голову")));
         player.openInventory(menu);
     }
@@ -303,8 +350,26 @@ public final class AccessoryController implements CommandExecutor, Listener {
         set(player, HEAD, choice);
         // a node written by the older build must not resurrect the halo on top
         set(player, HALO, "");
-        // the halo is a model, the patch is an item: only one of them may stay on
-        if (!choice.equals("eyepatch")) takeOffPatch(player);
+        // the halo and the mask both live on the head: only one may stay on
+        if (!choice.equals(MASK_CHOICE)) {
+            ActiveModel model = MASKS.get(player.getUniqueId());
+            if (model != null) removeMask(player, model);
+        }
+    }
+
+    private static void toggleMask(Player player) {
+        if (headChoice(player).equals(MASK_CHOICE)) {
+            setHead(player, "");
+            player.sendMessage("§7Маска Канэки снята.");
+            return;
+        }
+        if (ModelEngineAPI.getBlueprint(MASK_BLUEPRINT) == null) {
+            player.sendMessage("§cМодель маски ещё не загружена. Обратитесь к администрации.");
+            return;
+        }
+        setHead(player, MASK_CHOICE);
+        syncMask(player);
+        player.sendMessage("§dМаска Канэки надета.");
     }
 
     @EventHandler public void onClick(InventoryClickEvent event) {
@@ -317,7 +382,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
             return;
         }
         String blueprint = slot == 12 ? "elytrix_angel_wings" : slot == 13 ? "elytrix_angel_halo"
-            : slot == 14 ? "elytrix_kaneki_tentacles" : null;
+            : slot == 14 ? "elytrix_kaneki_tentacles" : slot == 15 ? MASK_BLUEPRINT : null;
         if (blueprint != null && ModelEngineAPI.getBlueprint(blueprint) == null) {
             player.sendMessage("§cМодель ещё не загружена. Обратитесь к администрации."); return;
         }
@@ -325,9 +390,11 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (slot == 12) { toggleBack(player, "wings", "Крылья"); }
         else if (slot == 14) { toggleBack(player, "kaneki", "Щупальца Канэки"); }
         else if (slot == 13) { toggleHead(player, "halo", "Нимб", "надет", "снят"); }
-        else if (slot == 15) { togglePatch(player); }
+        else if (slot == 15) { toggleMask(player); }
         else if (slot == 49) {
             set(player, BACK, ""); setHead(player, "");
+            ActiveModel model = MASKS.get(player.getUniqueId());
+            if (model != null) removeMask(player, model);
             player.sendMessage("§7Все аксессуары сняты.");
         } else return;
         openMenu(player);
@@ -349,6 +416,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
             player.sendMessage("§7" + name + " " + off + ".");
         } else {
             setHead(player, choice);
+            ActiveModel model = MASKS.get(player.getUniqueId());
+            if (model != null) removeMask(player, model);       // the halo wins the head
             player.sendMessage("§d" + name + " " + on + ".");
         }
     }

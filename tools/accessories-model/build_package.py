@@ -5,6 +5,7 @@ Contents (relative to /root/RW_GRIEF on the VDS):
 
     plugins/ModelEngine/blueprints/elytrix_kaneki_tentacles.bbmodel
     plugins/ModelEngine/blueprints/elytrix_kaneki_eyepatch.bbmodel
+    plugins/ModelEngine/blueprints/elytrix_kaneki_mask.bbmodel
     plugins/ModelEngine/resource pack/assets/modelengine/...   (generated assets)
     plugins/ModelEngine/resource pack/assets/reallyworld/...   (menu icon)
     plugins/ElytrixFreakModel.jar                              (accessories menu)
@@ -25,12 +26,12 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-MODELS = ('elytrix_kaneki_tentacles', 'elytrix_kaneki_eyepatch')
+MODELS = ('elytrix_kaneki_tentacles', 'elytrix_kaneki_eyepatch', 'elytrix_kaneki_mask')
 TITLE = ROOT / 'tools/accessories-integration/staging-assets/assets/reallyworld/textures/gui/title/elytrix_accessories.png'
 # The accessory-enabled plugin build that ships with this package; committing the
 # jar keeps the release reproducible instead of depending on a /tmp candidate.
-PLUGIN = ROOT / 'tools/accessories-integration/dist/ElytrixFreakModel-v23.jar'
-PLUGIN_SHA = '2295ca00358f46fa8424cd828199d039a69d04cf60a21ab81daed044cb071b45'
+PLUGIN = ROOT / 'tools/accessories-integration/dist/ElytrixFreakModel-v24.jar'
+PLUGIN_SHA = 'd170199c7f7fb131f8ef27d0a7442479d085d6086d4f40c5c031073abc7f7aa9'
 
 
 def sha1(path):

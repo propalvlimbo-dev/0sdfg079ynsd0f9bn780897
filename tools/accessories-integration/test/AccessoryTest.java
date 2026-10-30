@@ -23,7 +23,12 @@ public class AccessoryTest {
    for(ItemStack it:items){ if(added.size()<capacity) added.add(it); else left.put(left.size(),it); }
    return left;}
  }
- static class PlayerFake implements Player {Inv inv=new Inv(36);public PlayerInventory getInventory(){return inv;}boolean admin,use;String command;UUID uuid=UUID.fromString("00000000-0000-0000-0000-0000000000aa");public boolean performCommand(String c){command=c;return true;}public void closeInventory(){}Data data=new Data();String msg;public boolean hasPermission(String s){return admin || (use && s.equals(AccessoryController.USE_PERMISSION));}public Data getPersistentDataContainer(){return data;}public Inventory opened;public InventoryView openInventory(Inventory i){opened=i;return null;}public void sendMessage(String s){msg=s;}public java.util.UUID getUniqueId(){return uuid;}public boolean isOnline(){return true;}public String getName(){return "Tester";}}
+ static class PlayerFake implements Player {
+  final java.util.List<Entity> hidden=new java.util.ArrayList<>();World world;Location eye=new Location(null,0,1.62,0);
+  public Location getLocation(){return new Location(world,0,1.6,0);}
+  public Location getEyeLocation(){eye=new Location(world,0,1.62,0);return eye;}
+  public void hideEntity(org.bukkit.plugin.Plugin plugin,Entity e){hidden.add(e);}
+  Inv inv=new Inv(36);public PlayerInventory getInventory(){return inv;}boolean admin,use;String command;UUID uuid=UUID.fromString("00000000-0000-0000-0000-0000000000aa");public boolean performCommand(String c){command=c;return true;}public void closeInventory(){}Data data=new Data();String msg;public boolean hasPermission(String s){return admin || (use && s.equals(AccessoryController.USE_PERMISSION));}public Data getPersistentDataContainer(){return data;}public Inventory opened;public InventoryView openInventory(Inventory i){opened=i;return null;}public void sendMessage(String s){msg=s;}public java.util.UUID getUniqueId(){return uuid;}public boolean isOnline(){return true;}public String getName(){return "Tester";}}
  static FreakModelSpec spec(String id){return new FreakModelSpec(id,ModelKind.ANGEL_WINGS,id,List.of(),Material.FEATHER,"model",34,id,List.of(),1,0,0,1,1,2,0,0,0,0,0,0,0,0,0,0,0,false,false);}
  // --- ModelEngine double: keeps the mock runs away from a live engine -------
  static class FakePivot implements com.ticxo.modelengine.api.model.PivotOverride {}
@@ -34,7 +39,7 @@ public class AccessoryTest {
   FakeActive(com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint bp){this.bp=bp;}
   public boolean isDestroyed(){return destroyed;}public void destroy(){destroyed=true;}
   public com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint getBlueprint(){return bp;}
-  public void setCanHurt(boolean v){canHurt=v;}public void setShadowVisible(boolean v){shadow=v;}public void setHitboxVisible(boolean v){hitbox=v;}
+  public void setBlockLight(int v){}public void setSkyLight(int v){}public void setCanHurt(boolean v){canHurt=v;}public void setShadowVisible(boolean v){shadow=v;}public void setHitboxVisible(boolean v){hitbox=v;}
   public void setLockPitch(boolean v){lockPitch=v;}public void setLockYaw(boolean v){lockYaw=v;}public void setViewRange(float v){view=v;}
   public void setScale(double v){}public void setPivotOverride(com.ticxo.modelengine.api.model.PivotOverride v){pivot=v;}
   public void setModelRotationLocked(Boolean v){rotLocked=v;}public void setLockedXHeadRot(float v){lockedX=v;}
@@ -51,7 +56,7 @@ public class AccessoryTest {
  static class Query {FakeActive last;int blueprints;int created;}
  static class FakeEngine implements ModelEngineAPI.Backend {
   final Query q=new Query();final Map<UUID,FakeModeled> entities=new HashMap<>();final FakePivotRegistry pivots=new FakePivotRegistry();
-  public com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint blueprint(String id){q.blueprints++;return new com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint();}
+  public boolean noBlueprint;public com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint blueprint(String id){q.blueprints++;return noBlueprint?null:new com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint();}
   public com.ticxo.modelengine.api.model.ModeledEntity modeledEntity(Entity e){return entities.computeIfAbsent(e.getUniqueId(),k->new FakeModeled(q));}
   public com.ticxo.modelengine.api.model.ActiveModel createActiveModel(com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint bp){q.created++;return new FakeActive(bp);}
   public com.ticxo.modelengine.api.model.PivotOverrideRegistry pivots(){return pivots;}}
@@ -111,45 +116,50 @@ public class AccessoryTest {
   controller.onClick(click);check(AccessoryController.back(plugin,p)==null,"clicking the worn wings takes them off");
   click.slot=13;controller.onClick(click);check(AccessoryController.halo(plugin,p)==plugin.halo,"halo on");
   controller.onClick(click);check(AccessoryController.halo(plugin,p)==null,"halo off by the same button");
-  // --- the eyepatch: a real helmet-slot item, no ModelEngine model ---------
-  check(Bukkit.slots.get(15).meta.model.equals(new NamespacedKey("reallyworld","kaneki_eyepatch_icon")),"eyepatch menu icon");
+  // --- the mask: a real 3D model, never an armour layer --------------------
+  check(Bukkit.slots.get(15).meta.model.equals(new NamespacedKey("reallyworld","kaneki_eyepatch_icon")),"mask menu icon");
+  check(Bukkit.slots.get(15).meta.title.contains("Маска"),"the head button is the mask");
   p.data.set(AccessoryController.BACK,PersistentDataType.STRING,"kaneki");
   click.slot=15;controller.onClick(click);
-  check(AccessoryController.eyepatchSelected(p),"eyepatch selected from the menu");
-  check(AccessoryController.wearingPatch(p),"the patch item sits on the head");
-  ItemStack worn=p.inv.getHelmet();
-  check(worn!=null && worn.getType()==Material.LEATHER_HELMET,"head slot holds the patch");
-  check(worn.meta.equippable.slot==EquipmentSlot.HEAD,"equipped in the head slot");
-  check(new NamespacedKey("reallyworld","kaneki_eyepatch").equals(worn.meta.equippable.model),"custom armour layer");
-  check(new NamespacedKey("reallyworld","kaneki_eyepatch_icon").equals(worn.meta.model),"inventory icon");
-  // ни одного ModelEngine-объекта: слой рисует сам клиент, поэтому в первом лице его нет
-  check(AccessoryController.halo(plugin,p)==null,"no head model any more");
-  check("kaneki".equals(p.data.get(AccessoryController.BACK,PersistentDataType.STRING)),"the patch does not touch the back slot");
-  check(AccessoryController.back(plugin,p)!=null && AccessoryController.eyepatchSelected(p),"kagune and patch together");
-  // второй клик снимает предмет и возвращает его в инвентарь
+  check(AccessoryController.maskSelected(p),"mask selected from the menu");
+  check(AccessoryController.wearingMaskModel(p),"a ModelEngine model is spawned");
+  check(p.inv.getHelmet()==null,"the helmet slot stays empty");
+  check(AccessoryController.halo(plugin,p)==null,"the mask is not the halo rig");
+  check("kaneki".equals(p.data.get(AccessoryController.BACK,PersistentDataType.STRING)),"the mask does not touch the back slot");
+  check(AccessoryController.back(plugin,p)!=null,"kagune and mask together");
+  // the wearer's own display entities are hidden, so first person stays clear
+  final java.util.List<Entity> nearby=new java.util.ArrayList<>();
+  World world=new World(){public java.util.Collection<Entity> getNearbyEntities(Location l,double x,double y,double z){return nearby;}};
+  nearby.add(new ItemDisplay(){public ItemStack getItem(){return new ItemStack(Material.PAPER);}public java.util.UUID getUniqueId(){return UUID.randomUUID();}public Location getLocation(){return new Location(world,0,1.64,0);}});
+  p.world=world;p.hidden.clear();
+  try{java.lang.reflect.Method hide=AccessoryController.class.getDeclaredMethod("hideOwnMask",Player.class);hide.setAccessible(true);hide.invoke(null,p);}catch(Exception e){throw new AssertionError(e);}
+  check(p.hidden.size()==1,"the mask display is hidden from the wearer");
+  // second click takes the model down again
   click.slot=15;controller.onClick(click);
-  check(!AccessoryController.eyepatchSelected(p) && !AccessoryController.wearingPatch(p),"second click removes the patch");
-  check(p.inv.getHelmet()==null && p.inv.added.size()==1,"the patch goes back to the inventory");
+  check(!AccessoryController.maskSelected(p) && !AccessoryController.wearingMaskModel(p),"second click removes the mask");
+  check(p.msg.contains("снята"),"and says so");
   click.slot=15;controller.onClick(click);
-  check(AccessoryController.wearingPatch(p),"third click wears it again");
-  // нимб забирает слот головы, а вместе с ним уходит и предмет повязки
+  check(AccessoryController.wearingMaskModel(p),"third click wears it again");
+  // the halo takes the head, so the mask model has to go
   click.slot=13;controller.onClick(click);
-  check(AccessoryController.halo(plugin,p)==plugin.halo && !AccessoryController.eyepatchSelected(p),"halo replaces the patch");
-  check(!AccessoryController.wearingPatch(p),"halo takes the patch item off");
+  check(AccessoryController.halo(plugin,p)==plugin.halo && !AccessoryController.maskSelected(p),"halo replaces the mask");
+  check(!AccessoryController.wearingMaskModel(p),"and its model is destroyed");
   click.slot=15;controller.onClick(click);
-  check(AccessoryController.eyepatchSelected(p) && AccessoryController.halo(plugin,p)==null,"patch replaces the halo");
-  // настоящий шлем не теряется: он уезжает в инвентарь
-  click.slot=15;controller.onClick(click);          // снимаем повязку
-  p.inv.setHelmet(new ItemStack(Material.FEATHER));p.inv.added.clear();
-  click.slot=15;controller.onClick(click);          // надеваем поверх шлема
-  check(AccessoryController.wearingPatch(p),"patch goes over the helmet");
-  check(p.inv.added.size()==1 && p.inv.added.get(0).getType()==Material.FEATHER,"the helmet is stored, not deleted");
-  // инвентарь полон — надевать некуда, отказываем и шлем не трогаем
-  PlayerFake full=new PlayerFake();full.admin=true;full.inv=new Inv(0);full.inv.setHelmet(new ItemStack(Material.FEATHER));
-  click.who=full;click.slot=15;controller.onClick(click);
-  check(!AccessoryController.wearingPatch(full) && full.inv.getHelmet().getType()==Material.FEATHER,"no room, no swap");
-  check(full.msg.contains("Нет свободного слота"),"and the player is told why");
-  click.who=p;
+  check(AccessoryController.maskSelected(p) && AccessoryController.halo(plugin,p)==null,"mask replaces the halo");
+  // a v23 patch item left on the head is cleaned up, a real helmet is not touched
+  p.inv.setHelmet(new ItemStack(Material.LEATHER_HELMET));
+  AccessoryController.cleanupLegacyPatch(p);
+  check(p.inv.getHelmet()!=null && p.inv.getHelmet().getType()==Material.LEATHER_HELMET,"a real helmet is never removed");
+  // a missing blueprint means no model and a clear message
+  click.slot=15;controller.onClick(click);          // mask off again
+  check(!AccessoryController.maskSelected(p),"mask off");
+  ModelEngineAPI.Backend engine=ModelEngineAPI.backend;((FakeEngine)engine).noBlueprint=true;
+  click.slot=15;controller.onClick(click);
+  check(!AccessoryController.maskSelected(p),"no blueprint, no mask");
+  check(p.msg.contains("не загружена"),"and the player is told why");
+  ((FakeEngine)engine).noBlueprint=false;
+  click.slot=15;controller.onClick(click);
+  check(AccessoryController.wearingMaskModel(p),"mask back on");
   // --- menu layout: нет кнопки «назад», «снять всё» внизу по центру -------
   check(Bukkit.slots.get(31)==null,"no back button any more");
   check(Bukkit.slots.get(30)==null,"old clear-all slot is empty");
@@ -157,13 +167,15 @@ public class AccessoryTest {
   check(bottomBarrier!=null && bottomBarrier.getType()==Material.BARRIER,"clear-all sits in the bottom row centre");
   click.slot=49;controller.onClick(click);
   check(AccessoryController.back(plugin,p)==null && AccessoryController.halo(plugin,p)==null &&
-        !AccessoryController.eyepatchSelected(p),"clear all wipes back and head");
-  check(!AccessoryController.wearingPatch(p),"clear all also takes the patch item off");
+        !AccessoryController.maskSelected(p),"clear all wipes back and head");
+  check(!AccessoryController.wearingMaskModel(p),"clear all also destroys the mask model");
   // legacy halo selection (written before the head slot existed) is honoured
   p.data.set(AccessoryController.HALO,PersistentDataType.STRING,"halo");
   check(AccessoryController.halo(plugin,p)==plugin.halo,"legacy halo key still works");
+  p.data.set(AccessoryController.HEAD,PersistentDataType.STRING,"mask");
+  check(AccessoryController.maskSelected(p) && AccessoryController.halo(plugin,p)==null,"head key wins");
   p.data.set(AccessoryController.HEAD,PersistentDataType.STRING,"eyepatch");
-  check(AccessoryController.eyepatchSelected(p) && AccessoryController.halo(plugin,p)==null,"head key wins");
+  check(AccessoryController.maskSelected(p),"the v23 eyepatch value is read as the mask");
   // --- a broken install must never disable the whole plugin ------------------
   ElytrixFreakModelPlugin bare=new ElytrixFreakModelPlugin();bare.returnNullCommand=true;
   AccessoryController.install(bare);
