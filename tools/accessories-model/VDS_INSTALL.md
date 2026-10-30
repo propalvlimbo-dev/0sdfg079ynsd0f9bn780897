@@ -1,10 +1,10 @@
-# Установка v14 на VDS
+# Установка v15 на VDS
 
 Один запуск, из любого места (нужен `unzip`, `curl`):
 
 ```bash
 cd /root/RW_GRIEF && set -e && \
-curl -fsSL -o /tmp/elytrix-v14.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/ab2871a4db5d63397644b396a4b5ed39386d2e12/elytrix-tentacles-v14.zip && \
+curl -fsSL -o /tmp/elytrix-v15.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/8a72d6164581bbd191996b9d7e280ab48537beca/elytrix-tentacles-v15.zip && \
 B=/root/elytrix-backup-$(date +%Y%m%d-%H%M%S) && mkdir -p "$B" && \
 cp -a "plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_kaneki_tentacles" "$B/" 2>/dev/null || true && \
 cp -a "plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_kaneki_tentacles" "$B/" 2>/dev/null || true && \
@@ -14,7 +14,7 @@ cp -a rp/Elytrix-RP-1.21.zip "$B/" 2>/dev/null || true && \
 cp -a plugins/ElytrixFreakModel.jar "$B/" 2>/dev/null || true && \
 rm -rf "plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_kaneki_tentacles" \
        "plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_kaneki_tentacles" && \
-unzip -oq /tmp/elytrix-v14.zip -d /root/RW_GRIEF && \
+unzip -oq /tmp/elytrix-v15.zip -d /root/RW_GRIEF && \
 cp -f rp/Elytrix-RP-1.21.zip /root/RP/Elytrix-RP-1.21.zip && \
 chmod 644 /root/RP/Elytrix-RP-1.21.zip && \
 sha1sum rp/Elytrix-RP-1.21.zip /root/RP/Elytrix-RP-1.21.zip
@@ -22,30 +22,27 @@ sha1sum rp/Elytrix-RP-1.21.zip /root/RP/Elytrix-RP-1.21.zip
 
 После этого — `restart` в консоли сервера.
 
-Ожидаемый SHA-1: `d23e9af2abfc88e181c25de0cd1c96057c8e3ed3` (оба пути должны совпасть).
+Ожидаемый SHA-1: `d3842bce95561d50f6c50e402f241f73dafc7e77` (оба пути должны совпасть).
 
-Что ставится: blueprint, **50** JSON моделей + 50 item-definitions + текстура кагуне,
-иконка меню, `ElytrixFreakModel.jar` (свой спек щупалец вместо копии крыльев),
-`rp/Elytrix-RP-1.21.zip`, `plugins/ElytrixRP/config.yml` с новым SHA-1.
-Бэкап — в `/root/elytrix-backup-*`.
+Что ставится: blueprint, **41** JSON модель + 41 item-definition + текстура кагуне,
+иконка меню, `ElytrixFreakModel.jar`, `rp/Elytrix-RP-1.21.zip`,
+`plugins/ElytrixRP/config.yml` с новым SHA-1. Бэкап — в `/root/elytrix-backup-*`.
 
-Старые файлы модели удаляются до распаковки: у v14 другой набор костей
+Старые файлы модели удаляются до распаковки: у v15 другой набор костей
 (10/10/10/10 + узел), без `rm -rf` в паке остались бы файлы прошлой версии.
 
 ## Что изменилось в рендере
 
-- **Хвосты растут из спины и идут вперёд, туда, куда смотрит игрок.** В v13 они
-  расходились в стороны веером — это и читалось как крылья. Теперь весь боковой
-  ход заканчивается в первой трети: 4.7 единицы в сторону, 15.6 вперёд (‑Z).
-  Дальше каждый хвост идёт строго прямой линией.
-- **Вдвое тоньше.** 2.9 в корне против 5.6 у v12, к концу сходит в 0.25.
-  Размер 11.1 × 7.2 × 15.6 единицы (0.69 × 0.45 × 0.98 блока) — тело перекрыто
-  только корнем, основная масса уходит вперёд.
-- Корень один, на позвоночнике: все четыре хвоста выходят из узла на спине
-  (z = +2.2, x = ±0.8), верхняя пара на y ≈ 17.8, нижняя на y ≈ 15.9.
-- В модели нет клипа `idle`. `ElytrixFreakModel` держит модель слота спины через
-  `WornAngelRig` и постоянно переигрывает её клип; ключи кадров абсолютные, любое
-  расхождение знака с решённой рест-позой удваивало изгиб каждой кости — отсюда
-  были «огромные C» вокруг тела. Теперь форма — это рест-поза, переигрывать нечего.
-- У щупалец свой спек `elytrix_kaneki_tentacles` (`AccessoryController.kaneki`):
-  масштаб 1.0, нулевые офсеты, интерполяция 1.
+- **Форма по референсу: четыре «руки» из одной точки на спине.** Каждая выходит
+  из позвоночника по диагонали, имеет два локтя, уходит в сторону и заканчивается
+  поднятым кончиком. Верхняя пара идёт над лопатками, нижняя — под рёбрами.
+- **Вперёд почти не уходит.** Боковой разлёт 34.4 единицы, вперёд всего 1.9
+  (у v14 было 15.6 вперёд — отсюда и «слишком ровно идут»). Глубина 4.1.
+- **Рука, а не шило:** толщина 4.2 в корне держится до 62% длины и только потом
+  сходит в 0.34; в прошлой версии она падала уже с 35%.
+- Узел на спине сжат до ширины ладони — руки выходят из одной узкой точки,
+  а не из красного рюкзака.
+- В модели нет клипа `idle`: `WornAngelRig` переигрывает клип слота спины, а
+  ключи кадров абсолютные — отсюда раньше были «огромные C» вокруг тела.
+  Форма — это рест-поза.
+- Спек свой: `elytrix_kaneki_tentacles` (масштаб 1.0, нулевые офсеты, интерполяция 1).
