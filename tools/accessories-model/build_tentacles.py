@@ -38,7 +38,7 @@ from PIL import Image, ImageDraw
 HERE = Path(__file__).resolve().parent
 MODEL = 'elytrix_kaneki_tentacles'
 ROOT_ORIGIN = [0.0, 20.0, 0.0]
-PARTS = ('a', 'b', 'c', 'd', 'e', 'f')   # six bones per blade = six joints to animate
+PARTS = ('a', 'b', 'c', 'd', 'e', 'f', 'g')   # seven bones per blade = seven joints
 SEGMENTS = 8                      # long straight pieces per blade
 SNAP = 22.5                       # the only angles ModelEngine 4.1.0 accepts
 
@@ -49,35 +49,34 @@ SNAP = 22.5                       # the only angles ModelEngine 4.1.0 accepts
 # The four blades deliberately differ: a perfect mirror pair reads as cardboard.
 BLADES = [
     {
-        # right upper: leaves the shoulder blade level, flattens over the middle and
-        # hooks up at the tip - the claw of the reference
+        # upper right: leaves the middle of the back going up, then arcs outward like
+        # an antler.  Every blade starts from the SAME point (same y and z), only the
+        # x differs by a hair so the four roots do not sit exactly on top of each other
         'name': 'right_upper',
-        'root': (1.4, 19.8, 2.4), 'yaw': -24.0, 'length': 50.0,
-        'turns': (0.0, 9.0, 6.0, 6.0, 8.0, 10.0),
-        'girth': (5.2, 3.0), 'tip': 0.26,
+        'root': (0.9, 18.4, 2.6), 'length': 32.0,
+        'turns': (80.0, -10.0, 8.0, -22.0, -10.0, -14.0, -8.0),
+        'girth': (6.4, 5.4), 'tip': 0.30,
     },
     {
-        # right lower: lower on the back, dips first and rises the whole way after -
-        # the opposite curvature to the upper blade, so the pair is never parallel
+        # lower right: goes down and out, then levels off to the side with a wave
         'name': 'right_lower',
-        'root': (1.6, 14.6, 3.0), 'yaw': -32.0, 'length': 42.0,
-        'turns': (0.0, -4.0, 4.0, 6.0, 8.0, 10.0),
-        'girth': (4.9, 2.8), 'tip': 0.24,
+        'root': (0.9, 18.4, 2.9), 'length': 44.0,
+        'turns': (-30.0, 12.0, -10.0, 20.0, 8.0, 12.0, 6.0),
+        'girth': (6.0, 5.0), 'tip': 0.28,
     },
     {
-        # left upper: longer than its right twin and it lifts earlier
+        # upper left: the mirror, a touch longer and a little less curved
         'name': 'left_upper',
-        'root': (-1.3, 20.8, 3.2), 'yaw': 180.0 + 21.0, 'length': 47.0,
-        'turns': (0.0, 11.0, 7.0, 6.0, 7.0, 9.0),
-        'girth': (5.0, 2.9), 'tip': 0.26,
+        'root': (-0.9, 18.4, 3.2), 'length': 33.0,
+        'turns': (100.0, 10.0, -8.0, 22.0, 10.0, 14.0, 8.0),
+        'girth': (6.2, 5.2), 'tip': 0.30,
     },
     {
-        # left lower: the shortest blade and the widest yaw - the fan is never
-        # mirror-symmetric, which is what keeps it from looking like cardboard
+        # lower left: the mirror, one unit longer
         'name': 'left_lower',
-        'root': (-1.6, 13.9, 3.6), 'yaw': 180.0 + 29.0, 'length': 40.0,
-        'turns': (0.0, -6.0, 4.0, 6.0, 8.0, 10.0),
-        'girth': (4.7, 2.7), 'tip': 0.24,
+        'root': (-0.9, 18.4, 3.5), 'length': 45.0,
+        'turns': (210.0, -12.0, 10.0, -20.0, -8.0, -12.0, -6.0),
+        'girth': (5.8, 4.8), 'tip': 0.28,
     },
 ]
 
@@ -97,7 +96,7 @@ def blade_path(spec):
     """
     count = len(spec['turns'])
     length = spec['length'] / count
-    yaw = math.radians(spec['yaw'])
+    yaw = math.radians(spec.get('yaw', 0.0))
     x, y, z = spec['root']
     points = [(x, y, z)]
     angle = 0.0
@@ -141,6 +140,8 @@ def blade_bones(spec, sub=2):
         for part in range(sub):
             t0, t1 = part / sub, (part + 1) / sub
             width, depth = blade_profile(spec, (index + (t0 + t1) / 2) / count)
+            rib = 1.06 if part == 0 else 0.94          # knobby, like the reference
+            width, depth = width * rib, depth * rib
             boxes.append({
                 'x0': round(length * t0, 4), 'x1': round(length * t1, 4),
                 'width': width, 'depth': depth,
@@ -272,12 +273,13 @@ ANIM_FRAMES = 37
 # per joint of the chain: amplitude (degrees), lag, and the mix between the in-plane
 # bend (z) and the sideways swing (y)
 BONE_MOTION = (
-    (2.5, 0.00, (1.00, 0.40)),
-    (4.0, 0.08, (1.00, 0.30)),
-    (5.5, 0.16, (1.00, 0.24)),
-    (7.0, 0.23, (1.00, 0.18)),
-    (9.0, 0.30, (1.00, 0.14)),
-    (11.0, 0.38, (1.00, 0.10)),
+    (2.5, 0.00, (1.00, 0.30)),
+    (3.5, 0.07, (1.00, 0.24)),
+    (5.0, 0.14, (1.00, 0.20)),
+    (6.5, 0.21, (1.00, 0.16)),
+    (8.0, 0.27, (1.00, 0.13)),
+    (9.0, 0.33, (1.00, 0.11)),
+    (10.0, 0.40, (1.00, 0.09)),
 )
 
 
@@ -291,20 +293,19 @@ def build_animation(tendrils):
     for index, tendril in enumerate(tendrils):
         phase = index * math.pi / 2.3
         for depth, (bone_name, (gain, lag, mix)) in enumerate(zip(tendril['bones'], BONE_MOTION)):
-            yaw = tendril['yaw'] if depth == 0 else 0.0
-            base = 0.0 if depth == 0 else tendril['turns'][depth]
+            base = tendril['turns'][depth]
             keys = []
             for step in range(ANIM_FRAMES):
                 t = ANIM_LENGTH * step / (ANIM_FRAMES - 1)
                 swing = 2 * math.pi * t / ANIM_LENGTH
                 bend = gain * (math.sin(swing + phase - lag * 6.0)
-                               + 0.30 * math.sin(2.0 * swing + phase * 1.7))
+                               + 0.25 * math.sin(2.0 * swing + phase * 1.7))
                 side = gain * 0.55 * math.cos(swing * 0.75 + phase * 1.3 - lag * 4.0)
                 keys.append({
                     'channel': 'rotation',
                     'data_points': [{
                         'x': '0',
-                        'y': str(round(yaw + side * mix[1], 3)),
+                        'y': str(round(side * mix[1], 3)),
                         'z': str(round(base + bend * mix[0], 3)),
                     }],
                     'uuid': uid(f'key:{bone_name}:{step}'),
@@ -344,10 +345,9 @@ def build_model():
             chain.append({
                 'name': bone['name'],
                 'origin': bone['origin'],
-                # the root bone turns the whole blade around the back, the rest of
-                # the chain bends it inside its own plane
-                'rotation': [0.0, tendril['yaw'], 0.0] if index == 0
-                else [0.0, 0.0, bone['turn']],
+                # every joint, the root included, bends the blade inside the plane of
+                # the back - there is no yaw and no depth sweep any more
+                'rotation': [0.0, 0.0, bone['turn']],
                 'color': index, 'uuid': uid(f'bone:{bone["name"]}'),
                 'export': True, 'mirror_uv': False, 'isOpen': True, 'locked': False,
                 'visibility': True, 'autouv': 0,
@@ -437,7 +437,7 @@ def preview(model, out_path, scale=8.0, size=(620, 460), title='', yaw=-26.0, pi
         return -xr, yr, zr
 
     def view(x, y, z):
-        return rotate(x, y - 22.0, z - 10.0)
+        return rotate(x, y - 27.0, z - 8.0)
 
     def project(x, y, z):
         xr, yr, zr = view(x, y, z)
