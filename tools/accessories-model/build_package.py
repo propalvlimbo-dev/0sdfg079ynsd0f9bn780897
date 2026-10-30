@@ -26,7 +26,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 MODEL = 'elytrix_kaneki_tentacles'
 TITLE = ROOT / 'tools/accessories-integration/staging-assets/assets/reallyworld/textures/gui/title/elytrix_accessories.png'
-PLUGIN_SOURCE = ROOT / 'elytrix-accessories-v2-test.zip'
+PLUGIN_SOURCE = ROOT / 'elytrix-accessories-v3-test.zip'
 
 
 def sha1(path):
@@ -53,7 +53,7 @@ def build(output):
         with zipfile.ZipFile(PLUGIN_SOURCE) as package:
             plugin = package.read('ElytrixFreakModel.jar')
         plugin_sha = hashlib.sha256(plugin).hexdigest()
-        if plugin_sha != '5e03f7c41e924abfad2a8b9388e913c9b675b0e878645a68f2f0faa7e2aeb409':
+        if plugin_sha != 'd229db5c08787a7431c7cfcc03dc3eb3cb158c9038a466f3412752720441e3ae':
             raise SystemExit('unexpected accessory plugin build: ' + plugin_sha)
 
         # 3. ElytrixRP config with the new SHA-1

@@ -48,21 +48,37 @@ public final class AccessoryController implements CommandExecutor, Listener {
     }
     public static FreakModelSpec back(ElytrixFreakModelPlugin plugin, Player player) {
         if (!allowed(player)) return null;
-        String selection=get(player, BACK);
+        String selection = get(player, BACK);
+        if (selection.equals("wings")) return plugin.findModel("angel_wings");
+        if (selection.equals("kaneki")) return kaneki(plugin);
+        return null;
+    }
+
+    /**
+     * The kagune has its own spec instead of a copy of the wings one. The worn
+     * rig only reads the blueprint id, the scale and the interpolation, so an
+     * explicit accessory spec keeps the tentacles from inheriting numbers that
+     * were tuned for feathers (and from silently picking up a future wings tweak).
+     */
+    static FreakModelSpec kaneki(ElytrixFreakModelPlugin plugin) {
+        FreakModelSpec configured = plugin.findModel("elytrix_kaneki_tentacles");
+        if (configured != null) return configured;
         FreakModelSpec base = plugin.findModel("angel_wings");
         if (base == null) return null;
-        if (selection.equals("wings")) return base;
-        if (!selection.equals("kaneki")) return null;
-        if (base == cachedBase && cachedTentacles != null) return cachedTentacles;
-        cachedBase=base;
-        cachedTentacles = new FreakModelSpec("elytrix_kaneki_tentacles", base.kind, "elytrix_kaneki_tentacles", base.aliases,
-            base.material, base.itemModel, base.cmd, base.displayName, base.lore, base.scale, base.yawOffset,
-            base.modelYOffset, base.hitboxWidth, base.hitboxHeight, base.interpolationTicks, base.seats,
-            base.seatXOffset, base.seatYOffset, base.seatZOffset, base.maxSpeed, base.reverseSpeed,
-            base.acceleration, base.braking, base.rollingFriction, base.turnRate, base.kmhMultiplier,
-            base.hornEnabled, base.exhaustParticles);
+        if (cachedBase == base && cachedTentacles != null) return cachedTentacles;
+        cachedBase = base;
+        cachedTentacles = new FreakModelSpec("elytrix_kaneki_tentacles", base.kind, "elytrix_kaneki_tentacles",
+            java.util.List.of(), org.bukkit.Material.RED_DYE, "kaneki_tentacles_icon", 35,
+            "Щупальца Канэки", java.util.List.of(), 1.0F, 0.0F, 0.0D, 0.9F, 0.9F, 1, 0,
+            0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0F, 0.0D, false, false);
         return cachedTentacles;
     }
+
+    /** True when this player should be wearing the kagune. */
+    public static boolean kanekiSelected(Player player) {
+        return allowed(player) && get(player, BACK).equals("kaneki");
+    }
+
     private static final class Holder implements InventoryHolder {
         private Inventory inventory;
         @Override public Inventory getInventory() { return inventory; }

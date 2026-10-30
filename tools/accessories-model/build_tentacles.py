@@ -54,37 +54,36 @@ PARTS = tuple('abcdefghijklmnopqrstuvwx')   # bone suffixes, one per joint
 # closer to the centre line than the widest point of the same tendril.
 TENDRILS = [
     {
-        # upper right: out of the knot, up, then out and a full block back off the
-        # spine (that backward sweep is what opens the fan in the top view); the
-        # tip turns back in towards the neck
+        # upper right: leaves the knot, rises along the spine and sweeps *back*
+        # (+Z) as it climbs - depth is what stops the fan reading as a decal.
         'name': 'right_upper',
-        'ctrl': [(0.8, 16.6, 1.8), (1.4, 20.0, 3.9), (2.8, 23.4, 6.4),
-                 (5.4, 26.6, 8.6), (9.0, 29.2, 9.8), (12.6, 31.0, 9.4),
-                 (15.4, 32.2, 8.0), (16.8, 33.0, 6.0), (15.6, 33.4, 4.4)],
-        'girth': (6.6, 6.4), 'tip': 0.7,
+        'ctrl': [(0.5, 17.6, 2.3), (1.4, 20.4, 3.5), (2.8, 23.2, 4.9),
+                 (4.5, 25.9, 6.2), (5.9, 28.4, 7.1), (6.8, 30.4, 7.3),
+                 (6.9, 32.0, 6.9)],
+        'girth': (4.4, 4.2), 'tip': 0.5,
     },
     {
         'name': 'left_upper',
-        'ctrl': [(-0.8, 17.0, 1.8), (-1.5, 20.4, 3.7), (-3.1, 23.8, 6.1),
-                 (-5.9, 26.9, 8.3), (-9.6, 29.4, 9.4), (-13.2, 31.0, 9.0),
-                 (-15.9, 32.1, 7.6), (-17.2, 32.8, 5.6), (-16.0, 33.2, 4.1)],
-        'girth': (6.4, 6.2), 'tip': 0.7,
+        'ctrl': [(-0.5, 17.8, 2.3), (-1.5, 20.6, 3.5), (-3.0, 23.4, 4.9),
+                 (-4.7, 26.1, 6.1), (-6.1, 28.5, 7.0), (-7.0, 30.5, 7.2),
+                 (-7.1, 32.1, 6.8)],
+        'girth': (4.3, 4.1), 'tip': 0.5,
     },
     {
-        # lower right: out level with the waist, only a little way back, then the
-        # tip hooks up and in - so the top view reads as two different pairs
+        # lower right: outwards and upwards with the same backwards sweep, so the
+        # four of them leave the knot as one fan and never fold under the arms
         'name': 'right_lower',
-        'ctrl': [(0.8, 16.2, 1.8), (3.2, 15.4, 3.0), (7.2, 15.0, 4.4),
-                 (11.6, 15.2, 5.6), (15.6, 16.0, 6.2), (18.6, 17.2, 5.8),
-                 (20.4, 18.6, 4.8), (20.2, 20.0, 3.8), (18.8, 20.6, 3.2)],
-        'girth': (6.4, 6.2), 'tip': 0.66,
+        'ctrl': [(0.5, 17.0, 2.3), (2.2, 17.9, 3.2), (4.1, 19.2, 4.2),
+                 (5.8, 20.8, 5.1), (7.1, 22.6, 5.8), (8.0, 24.4, 6.0),
+                 (8.3, 26.0, 5.7)],
+        'girth': (4.2, 4.0), 'tip': 0.48,
     },
     {
         'name': 'left_lower',
-        'ctrl': [(-0.8, 16.0, 1.8), (-3.3, 15.2, 2.9), (-7.5, 14.9, 4.2),
-                 (-12.0, 15.2, 5.3), (-16.0, 15.9, 5.9), (-19.0, 17.0, 5.5),
-                 (-20.7, 18.4, 4.5), (-20.5, 19.8, 3.5), (-19.1, 20.4, 3.0)],
-        'girth': (6.2, 6.0), 'tip': 0.66,
+        'ctrl': [(-0.5, 16.9, 2.3), (-2.3, 17.8, 3.2), (-4.2, 19.1, 4.2),
+                 (-5.9, 20.7, 5.1), (-7.2, 22.5, 5.8), (-8.1, 24.3, 6.0),
+                 (-8.4, 25.9, 5.7)],
+        'girth': (4.1, 3.9), 'tip': 0.48,
     },
 ]
 
@@ -108,9 +107,9 @@ KNOT = {
     ],
 }
 
-MAX_TURN = 18.0                 # largest bend between two joints (deg)
-MAX_LEN = 5.0                   # longest bone
-MIN_TIP_LEN = 1.0               # bones shorter than this at the tip are merged
+MAX_TURN = 15.0                 # largest bend between two joints (deg)
+MAX_LEN = 2.4                   # longest bone: short joints keep the taper round
+MIN_TIP_LEN = 0.7               # bones shorter than this at the tip are merged
 
 
 def uid(tag):
@@ -599,7 +598,14 @@ def build_model():
         'name': MODEL, 'model_identifier': MODEL, 'visible_box': [5, 5, 1],
         'resolution': {'width': 16, 'height': 16}, 'elements': elements,
         'outliner': [root], 'textures': [texture_entry],
-        'animations': [build_animation(TENDRILS)],
+        # No keyframes on purpose.  ElytrixFreakModel drives the worn
+        # accessory through WornAngelRig, which keeps re-playing its
+        # 'idle' clip on whatever model sits in the back slot; keyframes
+        # are absolute, so any sign mismatch between the animation and the
+        # bone rest pose bends every joint twice - that is what turned the
+        # tentacles into C-shaped hoops in game.  The rest pose is the
+        # shape; the silent clip is the fix.
+        'animations': [],
     }, texture
 
 
