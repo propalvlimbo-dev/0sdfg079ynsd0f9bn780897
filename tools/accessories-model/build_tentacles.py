@@ -54,36 +54,38 @@ PARTS = tuple('abcdefghijklmnopqrstuvwx')   # bone suffixes, one per joint
 # closer to the centre line than the widest point of the same tendril.
 TENDRILS = [
     {
-        # upper right: leaves the knot, rises along the spine and sweeps *back*
-        # (+Z) as it climbs - depth is what stops the fan reading as a decal.
+        # upper right: the tall pair.  It climbs a little over two blocks, past
+        # the top of the head, and keeps sweeping back (+Z) so it is never a
+        # decal on the spine.
         'name': 'right_upper',
-        'ctrl': [(0.5, 17.6, 2.3), (1.4, 20.4, 3.5), (2.8, 23.2, 4.9),
-                 (4.5, 25.9, 6.2), (5.9, 28.4, 7.1), (6.8, 30.4, 7.3),
-                 (6.9, 32.0, 6.9)],
-        'girth': (4.4, 4.2), 'tip': 0.5,
+        'ctrl': [(0.6, 17.8, 2.4), (1.7, 21.2, 3.7), (3.6, 25.0, 5.3),
+                 (5.9, 28.9, 6.9), (8.4, 32.6, 8.3), (10.8, 36.2, 9.4),
+                 (12.7, 39.4, 10.2), (13.9, 42.2, 10.5), (14.4, 44.4, 10.3)],
+        'girth': (6.0, 5.8), 'tip': 0.6,
     },
     {
         'name': 'left_upper',
-        'ctrl': [(-0.5, 17.8, 2.3), (-1.5, 20.6, 3.5), (-3.0, 23.4, 4.9),
-                 (-4.7, 26.1, 6.1), (-6.1, 28.5, 7.0), (-7.0, 30.5, 7.2),
-                 (-7.1, 32.1, 6.8)],
-        'girth': (4.3, 4.1), 'tip': 0.5,
+        'ctrl': [(-0.6, 18.0, 2.4), (-1.7, 21.4, 3.7), (-3.7, 25.2, 5.3),
+                 (-6.0, 29.1, 6.9), (-8.5, 32.8, 8.3), (-10.9, 36.4, 9.4),
+                 (-12.8, 39.6, 10.2), (-14.0, 42.4, 10.5), (-14.5, 44.6, 10.3)],
+        'girth': (5.9, 5.7), 'tip': 0.6,
     },
     {
-        # lower right: outwards and upwards with the same backwards sweep, so the
-        # four of them leave the knot as one fan and never fold under the arms
+        # lower right: the wide pair.  It goes out over the shoulders and keeps
+        # going - the tips sit well outside the player's silhouette, which is
+        # what makes the fan read as a kagune instead of a hat.
         'name': 'right_lower',
-        'ctrl': [(0.5, 17.0, 2.3), (2.2, 17.9, 3.2), (4.1, 19.2, 4.2),
-                 (5.8, 20.8, 5.1), (7.1, 22.6, 5.8), (8.0, 24.4, 6.0),
-                 (8.3, 26.0, 5.7)],
-        'girth': (4.2, 4.0), 'tip': 0.48,
+        'ctrl': [(0.6, 16.9, 2.4), (3.6, 18.2, 3.5), (7.4, 20.1, 4.7),
+                 (11.2, 22.9, 5.9), (14.9, 26.2, 6.9), (18.4, 29.6, 7.7),
+                 (21.2, 32.7, 8.1), (23.2, 35.2, 8.1)],
+        'girth': (5.8, 5.6), 'tip': 0.55,
     },
     {
         'name': 'left_lower',
-        'ctrl': [(-0.5, 16.9, 2.3), (-2.3, 17.8, 3.2), (-4.2, 19.1, 4.2),
-                 (-5.9, 20.7, 5.1), (-7.2, 22.5, 5.8), (-8.1, 24.3, 6.0),
-                 (-8.4, 25.9, 5.7)],
-        'girth': (4.1, 3.9), 'tip': 0.48,
+        'ctrl': [(-0.6, 16.8, 2.4), (-3.7, 18.1, 3.5), (-7.5, 20.0, 4.7),
+                 (-11.3, 22.8, 5.9), (-15.0, 26.1, 6.9), (-18.5, 29.5, 7.7),
+                 (-21.3, 32.6, 8.1), (-23.3, 35.1, 8.1)],
+        'girth': (5.7, 5.5), 'tip': 0.55,
     },
 ]
 
