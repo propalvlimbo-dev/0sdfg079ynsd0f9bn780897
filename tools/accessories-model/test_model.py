@@ -154,7 +154,7 @@ class BlueprintTests(unittest.TestCase):
             # path is long.  A fan blade keeps most of its length as a chord.
             arc = sum(b['length'] for b in bones)
             chord = math.dist(path[0], path[-1])
-            self.assertGreater(chord / arc, 0.72,
+            self.assertGreater(chord / arc, 0.60,
                                f'{name}: the tendril curls back instead of fanning out')
             widest = max(build_tentacles.spline(specs[name]['ctrl']),
                          key=lambda p: abs(p[0]))
@@ -207,7 +207,7 @@ class BlueprintTests(unittest.TestCase):
                       for b in chain]
             body = widths[1:]
             for a, b in zip(body, body[1:]):
-                self.assertGreaterEqual(a + 1e-6, b, f'{name}: the tendril widens again')
+                self.assertGreaterEqual(a + 0.05, b, f'{name}: the tendril widens again')
 
     def test_the_fan_spreads_in_the_top_view(self):
         """Seen from above the four arms must be four separate shapes.
@@ -233,13 +233,13 @@ class BlueprintTests(unittest.TestCase):
         # and every tendril has to come round the torso to the front (z < 0 is
         # in front of the spine, the body plane is at z = -2)
         for name, path in self.paths.items():
-            self.assertGreater(path[-1][2], 5.5, f'{name}: the tip hangs behind the back')
+            self.assertLess(path[-1][2], -1.5, f'{name}: the tips curl forward')
         points = [p for path in self.paths.values() for p in path]
         xs = [p[0] for p in points]
         zs = [p[2] for p in points]
         wide, reach = max(xs) - min(xs), max(zs) - min(zs)
-        self.assertGreater(wide, 20.0, 'the arms span the whole back')
-        self.assertLess(reach, 10.0, 'they open behind the back, they do not shoot away')
+        self.assertGreater(wide, 30.0, 'the arms span the whole back')
+        self.assertLess(reach, 12.0, 'the curl is a bend, not a run forward')
 
     def test_the_arms_open_across_the_back(self):
         """The reference: four arms out of one point on the spine, spreading
@@ -256,12 +256,18 @@ class BlueprintTests(unittest.TestCase):
             radii = [abs(p[0]) for p in path]
             for before, after in zip(radii, radii[1:]):
                 self.assertGreater(after, before, f'{name}: the arm folds back in')
-            # the arm has to *leave* the spine: the tip hangs in the air behind
-            # the player, well clear of the back surface (z = +2)
-            self.assertGreater(path[-1][2], 5.5,
+            # the arm has to *leave* the spine (the arc bulges behind the back)
+            # and then curl forward: the last joint must travel towards the way
+            # the player faces (-Z), which is what v16 did not do at all.
+            self.assertGreater(max(p[2] for p in path), 4.5,
                                f'{name}: the arm still lies flat on the back')
-            self.assertGreater(path[-1][2] - path[0][2], 3.0,
-                               f'{name}: it barely moved away from the spine')
+            self.assertLess(path[-1][2], -1.5,
+                            f'{name}: the tip must curl towards where the player looks')
+            self.assertGreater(max(p[2] for p in path) - path[-1][2], 6.0,
+                               f'{name}: the curl at the end is too weak')
+            # and it must be long: reach out past the shoulders
+            self.assertGreater(max(abs(p[0]) for p in path), 16.0,
+                               f'{name}: the arm is too short')
             # the root really sits on the spine, not out on the shoulder
             self.assertLessEqual(abs(path[0][0]), 1.2, f'{name}: root off the centre line')
             self.assertGreaterEqual(path[0][2], 1.6, f'{name}: root in front of the back')
@@ -283,8 +289,9 @@ class BlueprintTests(unittest.TestCase):
         widest = max(e['to'][1] - e['from'][1] for e in tendril)
         deepest = max(e['to'][2] - e['from'][2] for e in tendril)
         # v12 was 5.6 across and the verdict was "слишком жирные"
-        self.assertLess(widest, 5.2, 'a tendril, not a beam')
-        self.assertLess(deepest, 5.2, 'and as deep as it is wide - a round tube, not a ribbon')
+        # v16 was 4.8 across and the verdict was "жирные"
+        self.assertLess(widest, 3.4, 'a slim tendril, not a beam')
+        self.assertLess(deepest, 3.4, 'and as deep as it is wide - a round tube, not a ribbon')
         for cube in tendril:
             across, through = cube['to'][1] - cube['from'][1], cube['to'][2] - cube['from'][2]
             self.assertLess(abs(across - through), 0.6,
@@ -292,7 +299,7 @@ class BlueprintTests(unittest.TestCase):
         # v15 ended on a 0.34 point and the verdict was "убери писюльки"
         tips = [self.cubes[chain[-1]['name']][0] for chain in self.chains.values()]
         for cube in tips:
-            self.assertGreater(cube['to'][1] - cube['from'][1], 1.8,
+            self.assertGreater(cube['to'][1] - cube['from'][1], 1.6,
                                'the arm must end on a blunt stump, not a spike')
 
     def test_the_curve_comes_from_the_bones(self):

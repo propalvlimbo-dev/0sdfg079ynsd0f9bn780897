@@ -54,39 +54,38 @@ PARTS = tuple('abcdefghijklmnopqrstuvwx')   # bone suffixes, one per joint
 # closer to the centre line than the widest point of the same tendril.
 TENDRILS = [
     {
-        # upper right.  Two things the reference (image-24) demands: the four
-        # arms leave ONE point on the spine and fan out in a wide X with air
-        # between them, and they hang *behind* the back, not flat on it.  So each
-        # arm climbs at ~40 deg and drifts backwards all the way out: 13 out,
-        # 7 up, 7 back.  The end is thick and cut off - never a thin point.
+        # upper right.  The user's last three notes: longer, thinner, and the tip
+        # must curl further towards where the player is looking.  So the arc is
+        # stretched out (x to 18.5), the section is slimmed to 3.0, and the last
+        # two joints turn well past the shoulder line: the arm bulges backwards
+        # to z = 6.4 and then swings forward to z = -3.0, i.e. 9.4 units of curl.
         'name': 'right_upper',
-        'ctrl': [(0.8, 16.9, 2.2), (1.4, 18.7, 4.2), (2.5, 20.6, 6.1),
-                 (4.3, 22.2, 7.4), (6.9, 23.3, 8.3), (9.8, 23.6, 8.8),
-                 (12.4, 23.4, 9.0)],
-        'girth': (4.8, 4.7),
+        'ctrl': [(0.8, 16.9, 2.2), (1.4, 18.9, 4.0), (2.8, 20.9, 5.6),
+                 (5.2, 22.5, 6.4), (8.4, 23.3, 6.2), (11.8, 23.0, 4.8),
+                 (15.0, 21.9, 2.2), (17.2, 20.4, -1.0), (18.4, 19.2, -3.0)],
+        'girth': (3.0, 2.9),
     },
     {
         'name': 'left_upper',
-        'ctrl': [(-0.8, 16.9, 2.2), (-1.4, 18.7, 4.2), (-2.5, 20.6, 6.1),
-                 (-4.3, 22.2, 7.4), (-6.9, 23.3, 8.3), (-9.8, 23.6, 8.8),
-                 (-12.4, 23.4, 9.0)],
-        'girth': (4.7, 4.6),
+        'ctrl': [(-0.8, 16.9, 2.2), (-1.4, 18.9, 4.0), (-2.8, 20.9, 5.6),
+                 (-5.2, 22.5, 6.4), (-8.4, 23.3, 6.2), (-11.8, 23.0, 4.8),
+                 (-15.0, 21.9, 2.2), (-17.2, 20.4, -1.0), (-18.4, 19.2, -3.0)],
+        'girth': (2.9, 2.8),
     },
     {
-        # lower right: the mirror arm, down and out.  A clear gap of air runs
-        # between the pairs from the root outwards.
+        # lower right: the mirror arm under the ribs, curling forward the same way.
         'name': 'right_lower',
-        'ctrl': [(0.8, 16.3, 2.2), (1.4, 14.5, 4.2), (2.5, 12.6, 6.1),
-                 (4.3, 11.0, 7.4), (6.9, 9.9, 8.3), (9.8, 9.6, 8.8),
-                 (12.4, 9.8, 9.0)],
-        'girth': (4.8, 4.7),
+        'ctrl': [(0.8, 16.3, 2.2), (1.4, 14.3, 4.0), (2.8, 12.3, 5.6),
+                 (5.2, 10.7, 6.4), (8.4, 9.9, 6.2), (11.8, 10.2, 4.8),
+                 (15.0, 11.3, 2.2), (17.2, 12.8, -1.0), (18.4, 14.0, -3.0)],
+        'girth': (3.0, 2.9),
     },
     {
         'name': 'left_lower',
-        'ctrl': [(-0.8, 16.3, 2.2), (-1.4, 14.5, 4.2), (-2.5, 12.6, 6.1),
-                 (-4.3, 11.0, 7.4), (-6.9, 9.9, 8.3), (-9.8, 9.6, 8.8),
-                 (-12.4, 9.8, 9.0)],
-        'girth': (4.7, 4.6),
+        'ctrl': [(-0.8, 16.3, 2.2), (-1.4, 14.3, 4.0), (-2.8, 12.3, 5.6),
+                 (-5.2, 10.7, 6.4), (-8.4, 9.9, 6.2), (-11.8, 10.2, 4.8),
+                 (-15.0, 11.3, 2.2), (-17.2, 12.8, -1.0), (-18.4, 14.0, -3.0)],
+        'girth': (2.9, 2.8),
     },
 ]
 
@@ -268,7 +267,7 @@ def blade_profile(spec, t):
     Width == depth, so the section is square and the tube looks round.
     """
     width0, depth0 = spec['girth']
-    blunt = spec.get('blunt', 0.58)
+    blunt = spec.get('blunt', 0.66)
     if t < 0.18:
         share = 0.55 + 0.45 * smoothstep(t / 0.18)
     elif t > 0.42:
