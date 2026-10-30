@@ -1,0 +1,27 @@
+# Elytrix baseline for DivineMC 1.21.11 build 30.
+# This file is created only when no divinemc.yml exists; existing configs are never overwritten.
+# Leave player-combat and entity tracking behavior conservative until verified in game.
+async:
+  auto-thread-allocation: false
+  parallel-world-ticking:
+    enable: false
+    disable-hard-throw: false
+  regionized-chunk-ticking:
+    enable: false
+  pathfinding:
+    enable: false
+  parallel-entity-tracker:
+    enable: false
+  chunk-sending:
+    enable: true
+    max-threads: 1
+  mob-spawning:
+    enable: false
+    async-natural-spawn: false
+performance:
+  optimizations:
+    create-snapshot-on-retrieving-block-state: true
+  dab:
+    enabled: false
+  virtual-threads:
+    enabled: false
