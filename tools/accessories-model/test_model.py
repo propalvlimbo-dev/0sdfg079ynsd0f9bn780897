@@ -206,8 +206,10 @@ class BlueprintTests(unittest.TestCase):
                 self.assertGreaterEqual(a + 1e-6, b, f'{name}: the tendril widens again')
 
     def test_the_fan_spreads_in_the_top_view(self):
-        """Seen from above the four tendrils must be four separate shapes
-        running *forward*: v13 grew them out to the sides like wings.
+        """Seen from above the four arms must be four separate shapes.
+
+        They spread across the back, not ahead of it: v14 shot them 15 units
+        forward and the verdict was "слишком ровно идут, не как у Канеки".
 
         Symmetric pairs share a bearing, so counting angles is the wrong test.
         What has to hold is that the four outermost points are far apart in
@@ -227,43 +229,47 @@ class BlueprintTests(unittest.TestCase):
         # and every tendril has to come round the torso to the front (z < 0 is
         # in front of the spine, the body plane is at z = -2)
         for name, path in self.paths.items():
-            self.assertLess(path[-1][2], -2.5, f'{name}: the tip must wrap round to the front')
+            self.assertLess(path[-1][2], -0.8, f'{name}: the tip leans forward a little')
         points = [p for path in self.paths.values() for p in path]
         xs = [p[0] for p in points]
         zs = [p[2] for p in points]
         wide, reach = max(xs) - min(xs), max(zs) - min(zs)
-        self.assertGreater(wide, 6.0, 'four separate tails, not one flat ribbon')
-        self.assertGreater(reach, 13.0, 'they run forward, out past the chest')
-        self.assertGreater(reach, wide + 3.5,
-                           'the reach forward dominates the step to the side: a kagune, not wings')
+        self.assertGreater(wide, 28.0, 'the arms span the whole back')
+        self.assertLess(reach, 6.0, 'they spread sideways, they do not shoot ahead')
+        self.assertGreater(wide, reach * 4.0,
+                           'sideways spread dominates: four arms across the back, not four spears')
 
-    def test_after_the_root_the_tail_keeps_its_line(self):
-        """The sketch: one tight turn out of the spine, then a straight run.
+    def test_the_arms_open_across_the_back(self):
+        """The reference: four arms out of one point on the spine, spreading
+        sideways across the back like a claw - not four spears shot forward.
 
-        v10-v13 kept bending all the way out, which is what made the tails read
-        as wings.  Past the first 45% of the chain every joint must stay on the
-        same heading as the tip, and the sideways coordinate must be spent.
+        v14 was exactly that spear and the verdict was "слишком ровно идут".
         """
         import build_tentacles
         specs = {spec['name']: spec for spec in build_tentacles.TENDRILS}
         for name, path in self.paths.items():
-            bones = build_tentacles.blade_bones(specs[name])
-            length = sum(b['length'] for b in bones)
-            walked = 0.0
-            for index, (here, following) in enumerate(zip(path, path[1:])):
-                walked += bones[index]['length']
-                if walked / length < 0.45:
-                    continue
-                u = [following[i] - here[i] for i in range(3)]
-                v = [path[-1][i] - path[-2][i] for i in range(3)]
-                nu = math.sqrt(sum(t * t for t in u)) or 1.0
-                nv = math.sqrt(sum(t * t for t in v)) or 1.0
-                angle = math.degrees(math.acos(max(-1.0, min(1.0,
-                    sum(u[i] * v[i] for i in range(3)) / (nu * nv)))))
-                self.assertLess(angle, 12.0,
-                                f'{name}: {angle:.0f} deg of bend past the root - a wing, not a spear')
-                self.assertLess(abs(following[0] - here[0]), 0.35,
-                                f'{name}: still sliding sideways at {walked:.0f}/{length:.0f}')
+            spec = specs[name]
+            # every joint travels further from the centre line than the one
+            # before it: the arm opens out, it never curls back inside itself
+            radii = [abs(p[0]) for p in path]
+            for before, after in zip(radii, radii[1:]):
+                self.assertGreater(after, before, f'{name}: the arm folds back in')
+            # and the last leg turns upward, the way the reference tips kick up
+            self.assertGreater(path[-1][1] - path[-2][1], 0.8,
+                               f'{name}: the tip must kick up at the end')
+            # the root really sits on the spine, not out on the shoulder
+            self.assertLessEqual(abs(path[0][0]), 1.2, f'{name}: root off the centre line')
+            self.assertGreaterEqual(path[0][2], 1.6, f'{name}: root in front of the back')
+            # three legs like the reference: up/out, sideways, tip
+            bones = build_tentacles.blade_bones(spec)
+            self.assertGreaterEqual(len(bones), 8, f'{name}: an arm needs elbows, not one bend')
+
+    def test_the_root_knot_stays_compact(self):
+        """One narrow point on the spine, not a red backpack."""
+        knot = [cube for cube in self.cubes['root_knot']]
+        left = min(c['from'][0] for c in knot)
+        right = max(c['to'][0] for c in knot)
+        self.assertLess(right - left, 7.0, 'the knot grew into a backpack')
 
     def test_the_blades_are_slim(self):
         """v4 was 8-9 units across and nearly as deep - it read as a fat strap."""
@@ -272,8 +278,8 @@ class BlueprintTests(unittest.TestCase):
         widest = max(e['to'][1] - e['from'][1] for e in tendril)
         deepest = max(e['to'][2] - e['from'][2] for e in tendril)
         # v12 was 5.6 across and the verdict was "слишком жирные"
-        self.assertLess(widest, 3.4, 'a thin tendril, not a beam')
-        self.assertLess(deepest, 3.4, 'and as deep as it is wide - a round tube, not a ribbon')
+        self.assertLess(widest, 4.8, 'a tendril, not a beam')
+        self.assertLess(deepest, 4.8, 'and as deep as it is wide - a round tube, not a ribbon')
         for cube in tendril:
             across, through = cube['to'][1] - cube['from'][1], cube['to'][2] - cube['from'][2]
             self.assertLess(abs(across - through), 0.6,

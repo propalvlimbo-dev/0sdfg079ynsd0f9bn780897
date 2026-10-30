@@ -54,37 +54,37 @@ PARTS = tuple('abcdefghijklmnopqrstuvwx')   # bone suffixes, one per joint
 # closer to the centre line than the widest point of the same tendril.
 TENDRILS = [
     {
-        # upper right: the tail leaves the spine, takes one tight turn out past
-        # the shoulder, and then runs dead straight ahead (-Z).  The turn is
-        # spent in the first third of the chain: 4.7 units sideways against
-        # 13 units of straight run.
+        # upper right: out of the spine diagonally, one elbow over the shoulder
+        # blade, a long leg out to the side and the tip kicking up.  Sideways 14,
+        # forward 1.4: the arms spread across the back, they do not shoot ahead
+        # of the player.
         'name': 'right_upper',
-        'ctrl': [(0.8, 17.8, 2.2), (2.9, 19.4, 2.1), (4.8, 20.6, 1.3),
-                 (5.1, 20.7, -0.2), (5.2, 20.6, -3.0), (5.3, 20.6, -6.5),
-                 (5.4, 20.6, -10.0), (5.5, 20.6, -13.2)],
-        'girth': (2.9, 2.5), 'tip': 0.26,
+        'ctrl': [(0.8, 17.0, 2.2), (2.4, 19.6, 2.1), (4.4, 21.8, 1.4),
+                 (6.8, 23.0, 0.4), (9.6, 23.3, -0.5), (12.2, 23.1, -1.2),
+                 (14.0, 23.8, -1.6), (15.0, 25.6, -1.9)],
+        'girth': (4.2, 3.7), 'tip': 0.34,
     },
     {
         'name': 'left_upper',
-        'ctrl': [(-0.8, 17.9, 2.2), (-3.0, 19.5, 2.1), (-4.9, 20.7, 1.3),
-                 (-5.2, 20.8, -0.2), (-5.3, 20.7, -3.0), (-5.4, 20.7, -6.5),
-                 (-5.5, 20.7, -10.0), (-5.6, 20.7, -13.2)],
-        'girth': (2.8, 2.4), 'tip': 0.26,
+        'ctrl': [(-0.8, 17.0, 2.2), (-2.4, 19.6, 2.1), (-4.4, 21.8, 1.4),
+                 (-6.8, 23.0, 0.4), (-9.6, 23.3, -0.5), (-12.2, 23.1, -1.2),
+                 (-14.0, 23.8, -1.6), (-15.0, 25.6, -1.9)],
+        'girth': (4.1, 3.6), 'tip': 0.34,
     },
     {
-        # lower right: the same run a hand lower, under the ribs
+        # lower right: down under the ribs, the long horizontal leg, tip lifts.
         'name': 'right_lower',
-        'ctrl': [(0.8, 15.9, 2.2), (2.9, 14.7, 2.1), (4.8, 13.9, 1.3),
-                 (5.1, 13.7, -0.3), (5.2, 13.7, -3.2), (5.3, 13.7, -6.6),
-                 (5.4, 13.7, -10.2), (5.5, 13.7, -13.4)],
-        'girth': (2.8, 2.4), 'tip': 0.25,
+        'ctrl': [(0.8, 15.8, 2.2), (2.4, 13.2, 2.1), (4.6, 11.2, 1.4),
+                 (7.2, 10.2, 0.4), (10.2, 9.9, -0.5), (13.2, 10.0, -1.2),
+                 (15.8, 10.6, -1.6), (17.2, 12.2, -1.9)],
+        'girth': (4.2, 3.7), 'tip': 0.34,
     },
     {
         'name': 'left_lower',
-        'ctrl': [(-0.8, 15.8, 2.2), (-3.0, 14.6, 2.1), (-4.9, 13.8, 1.3),
-                 (-5.2, 13.6, -0.3), (-5.3, 13.6, -3.2), (-5.4, 13.6, -6.6),
-                 (-5.5, 13.6, -10.2), (-5.6, 13.6, -13.4)],
-        'girth': (2.7, 2.3), 'tip': 0.25,
+        'ctrl': [(-0.8, 15.8, 2.2), (-2.4, 13.2, 2.1), (-4.6, 11.2, 1.4),
+                 (-7.2, 10.2, 0.4), (-10.2, 9.9, -0.5), (-13.2, 10.0, -1.2),
+                 (-15.8, 10.6, -1.6), (-17.2, 12.2, -1.9)],
+        'girth': (4.1, 3.6), 'tip': 0.34,
     },
 ]
 
@@ -97,14 +97,13 @@ KNOT = {
     'boxes': [
         # (x0, x1, y0, y1, z0, z1) around the origin; z = 0 is the back surface of
         # the torso, so everything positive here sticks out behind the player and
-        # the -0.8 boxes sink into the body so no gap can ever appear
-        (-3.2, 3.2, -3.2, 0.8, -0.9, 2.0),
-        (-4.4, 4.4, -1.8, 2.0, -0.8, 2.9),
-        (-3.6, 3.6, 1.6, 3.6, -0.7, 2.5),
-        (-2.0, 2.0, 3.2, 4.8, -0.6, 1.9),
-        (-5.0, -2.4, -1.0, 1.6, -0.6, 2.3),
-        (2.4, 5.0, -1.0, 1.6, -0.6, 2.3),
-        (-1.6, 1.6, -2.6, 2.6, 1.6, 3.4),
+        # the -0.9 boxes sink into the body so no gap can ever appear.
+        # It stays compact (a hand's width): in the reference the four arms leave
+        # one narrow point on the spine, the root must not read as a red backpack.
+        (-2.4, 2.4, -2.6, 0.6, -0.9, 1.2),
+        (-3.0, 3.0, -1.4, 1.6, -0.8, 1.6),
+        (-2.2, 2.2, 1.2, 2.8, -0.7, 1.4),
+        (-1.4, 1.4, 0.2, 1.4, 0.9, 2.2),
     ],
 }
 
@@ -264,8 +263,8 @@ def blade_profile(spec, t):
     square and the tube looks the same from every side.
     """
     width0, depth0 = spec['girth']
-    k = min(1.0, max(0.0, (t - 0.35) / 0.65))
-    fade = (1.0 - smoothstep(k)) ** 0.55
+    k = min(1.0, max(0.0, (t - 0.62) / 0.38))
+    fade = (1.0 - smoothstep(k)) ** 0.8
     return (spec['tip'] + (width0 - spec['tip']) * fade,
             spec['tip'] + (depth0 - spec['tip']) * fade)
 
