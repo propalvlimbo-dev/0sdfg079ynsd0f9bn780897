@@ -12,7 +12,7 @@ import com.ticxo.modelengine.api.ModelEngineAPI;
 
 public class AccessoryTest {
  static class Data implements PersistentDataContainer {Map<NamespacedKey,Object> m=new HashMap<>();@SuppressWarnings("unchecked") public <P,C>C get(NamespacedKey k,PersistentDataType<P,C> t){return (C)m.get(k);}public <P,C>void set(NamespacedKey k,PersistentDataType<P,C> t,C v){m.put(k,v);} public void remove(NamespacedKey k){m.remove(k);}}
- static class PlayerFake implements Player {boolean admin;Data data=new Data();String msg;public boolean hasPermission(String s){return admin;}public Data getPersistentDataContainer(){return data;}public Inventory opened;public InventoryView openInventory(Inventory i){opened=i;return null;}public void sendMessage(String s){msg=s;}}
+ static class PlayerFake implements Player {boolean admin;String command;public boolean performCommand(String c){command=c;return true;}public void closeInventory(){}Data data=new Data();String msg;public boolean hasPermission(String s){return admin;}public Data getPersistentDataContainer(){return data;}public Inventory opened;public InventoryView openInventory(Inventory i){opened=i;return null;}public void sendMessage(String s){msg=s;}}
  static FreakModelSpec spec(String id){return new FreakModelSpec(id,ModelKind.ANGEL_WINGS,id,List.of(),Material.FEATHER,"model",34,id,List.of(),1,0,0,1,1,2,0,0,0,0,0,0,0,0,0,0,0,false,false);}
  static void check(boolean c,String s){if(!c)throw new AssertionError(s);}
  public static void main(String[] args){
@@ -28,15 +28,17 @@ public class AccessoryTest {
   check(plugin.mockCommand.executor==controller,"executor registered");
   p.admin=false;check(controller.onCommand(p,new Command(),"аксессуары",new String[0]),"command handled");
   check(p.opened!=null,"menu visible to non-admin");
-  check(Bukkit.slots.get(15).meta.model.equals(new NamespacedKey("reallyworld","kaneki_tentacles_icon")),"tentacle menu icon");
-  check(Bukkit.slots.get(11).meta.model.equals(new NamespacedKey("reallyworld","angel_wings")),"wings icon");
-  InventoryClickEvent click=new InventoryClickEvent();click.view=()->p.opened;click.who=p;click.slot=15;
+  check(Bukkit.slots.get(14).meta.model.equals(new NamespacedKey("reallyworld","kaneki_tentacles_icon")),"tentacle menu icon");
+  check(Bukkit.slots.get(12).meta.model.equals(new NamespacedKey("reallyworld","angel_wings")),"wings icon");
+  InventoryClickEvent click=new InventoryClickEvent();click.view=()->p.opened;click.who=p;click.slot=14;
+  check(Bukkit.size==54 && Bukkit.title.contains("ꏠ"),"resource pack menu");
+  click.slot=31;controller.onClick(click);check("menu".equals(p.command),"back available to non-admin");click.slot=14;
   p.data.remove(AccessoryController.BACK);controller.onClick(click);check(click.cancelled && AccessoryController.back(plugin,p)==null && !p.data.m.containsKey(AccessoryController.BACK),"non-admin click denied");
   p.admin=true;ModelEngineAPI.loaded=false;controller.onClick(click);check(!p.data.m.containsKey(AccessoryController.BACK),"missing model denied");
   ModelEngineAPI.loaded=true;controller.onClick(click);check(AccessoryController.back(plugin,p).blueprintId.equals("elytrix_kaneki_tentacles"),"menu selection");
   click.slot=13;controller.onClick(click);check(AccessoryController.halo(plugin,p)==plugin.halo,"independent halo click");
-  click.slot=11;controller.onClick(click);check(AccessoryController.back(plugin,p)==plugin.wings,"wings replace tentacles");
-  click.slot=21;controller.onClick(click);check(AccessoryController.back(plugin,p)==null && AccessoryController.halo(plugin,p)!=null,"clear only back");
+  click.slot=12;controller.onClick(click);check(AccessoryController.back(plugin,p)==plugin.wings,"wings replace tentacles");
+  click.slot=30;controller.onClick(click);check(AccessoryController.back(plugin,p)==null && AccessoryController.halo(plugin,p)!=null,"clear only back");
   InventoryDragEvent drag=new InventoryDragEvent();drag.view=click.view;controller.onDrag(drag);check(drag.cancelled,"drag cancelled");
   System.out.println("Accessory GUI, permission, selection and cached tentacle spec mock tests passed");
  }

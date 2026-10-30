@@ -20,7 +20,7 @@ public class ParseBlueprint {
   if (!models.keySet().equals(Set.of("left_upper","left_lower","right_upper","right_lower"))) throw new AssertionError("wrong generated bones: "+models.keySet());
   int elements=0; Class<?> item=Class.forName("com.ticxo.modelengine.api.generator.assets.JavaItemModel");
   for (Object collection:models.values()) for (Object itemModel:(Collection<?>)collection) elements+=((List<?>)item.getMethod("getElements").invoke(itemModel)).size();
-  if(elements!=14 || ((List<?>)ac.getMethod("getTextures").invoke(assets)).size()!=1 || !((Map<?,?>)bp.getMethod("getAnimations").invoke(blueprint)).containsKey("idle") || !((List<?>)ec.getMethod("getErrorList").invoke(collector)).isEmpty()) throw new AssertionError("unexpected assets or parser errors; elements="+elements);
+  if(elements!=20 || ((List<?>)ac.getMethod("getTextures").invoke(assets)).size()!=1 || !((Map<?,?>)bp.getMethod("getAnimations").invoke(blueprint)).containsKey("idle") || !((List<?>)ec.getMethod("getErrorList").invoke(collector)).isEmpty()) throw new AssertionError("unexpected assets or parser errors; elements="+elements);
   Object idle=((Map<?,?>)bp.getMethod("getAnimations").invoke(blueprint)).get("idle");
   Map<?,?> timelines=(Map<?,?>)idle.getClass().getMethod("getTimelines").invoke(idle);
   if(timelines.size()!=4)throw new AssertionError("expected four animated bones, got "+timelines.size());
@@ -45,6 +45,6 @@ public class ParseBlueprint {
     Path itemFile=root.resolve("assets/modelengine/items/elytrix_kaneki_tentacles/"+name+".json");Files.createDirectories(itemFile.getParent());Files.writeString(itemFile,"{\"model\":{\"model\":\"modelengine:elytrix_kaneki_tentacles/"+name+"\",\"tints\":[{\"index\":0,\"default\":16777215,\"type\":\"minecraft:custom_model_data\"}],\"type\":\"minecraft:model\"}}",StandardCharsets.UTF_8);
    }
   }
-  System.out.println("ModelEngine populateBlueprint/assets with mocked API and Use-New-Rotation="+System.getProperty("modelengine.test.rotation", "true")+": 4 item models, 14 elements, 1 texture, 4 animated bones with 25 keyframes, no collected warnings");
+  System.out.println("ModelEngine populateBlueprint/assets with mocked API and Use-New-Rotation="+System.getProperty("modelengine.test.rotation", "true")+": 4 item models, 20 elements, 1 texture, 4 animated bones with 25 keyframes, no collected warnings");
  }
 }

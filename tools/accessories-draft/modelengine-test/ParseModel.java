@@ -13,7 +13,7 @@ public class ParseModel {
   Map<?,?> roots=(Map<?,?>)model.getMethod("getOutliner").invoke(parsed);
   Map<?,?> textures=(Map<?,?>)model.getMethod("getTextures").invoke(parsed);
   Map<?,?> animations=(Map<?,?>)model.getMethod("getAnimations").invoke(parsed);
-  if(elements.size()!=14 || roots.size()!=1 || textures.size()!=1 || animations.size()!=1 || !animations.containsKey("idle")) throw new AssertionError("unexpected parsed content");
-  System.out.println("ModelEngine 4.1.0 deserializer: 14 cubes, 1 root, 1 texture, idle animation");
+  if(elements.size()!=20 || roots.size()!=1 || textures.size()!=1 || animations.size()!=1 || !animations.containsKey("idle")) throw new AssertionError("unexpected parsed content");
+  System.out.println("ModelEngine 4.1.0 deserializer: 20 cubes, 1 root, 1 texture, idle animation");
  }
 }

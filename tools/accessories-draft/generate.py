@@ -35,42 +35,44 @@ def bone(name, origin, children):
             'export':True, 'mirror_uv':False, 'isOpen':True, 'locked':False, 'visibility':True,
             'autouv':0, 'children':children}
 
-# All geometry is at least four units behind the back plane. Four visible kagune,
-# each split into articulated-looking overlapping angular pieces, not a flat sprite.
-base_paths = {
-    'upper': [(0,20),(7,13),(14,20),(14,30)],
-    'lower': [(0,19),(7,12),(15,12),(19,8),(25,8)]
+# Four separately placed arms, based on the supplied silhouette.  The z
+# component increases away from the player's back: arms do not share a plane.
+# Angles are constrained to vanilla's -45/-22.5/0/22.5/45 degree rotations.
+c=0.41421356237
+paths={
+ 'left_upper': [(-0.8,18.6,4.7),(-7.0,12.4,5.1),(-14.0,12.4+7*c,5.6),(-20.0,18.4+7*c,6.0),(-20.0,28.3,6.4),(-18.0,28.3+2/c,6.8)],
+ 'right_upper':[(0.9,19.0,5.2),(6.7,13.2,5.6),(13.2,13.2+6.5*c,6.1),(19.0,19.0+6.5*c,6.5),(19.0,29.4,6.9),(17.4,29.4+1.6/c,7.2)],
+ 'left_lower':[(-0.5,16.5,5.0),(-6.7,10.3,5.4),(-13.7,10.3-7*c,5.9),(-19.5,10.3-7*c,6.3),(-23.5,10.3-3*c,6.7),(-27.5,10.3-3*c,7.1)],
+ 'right_lower':[(0.7,16.4,5.5),(7.1,10.0,5.9),(12.1,5.0,6.4),(18.6,5.0,6.8),(23.6,5.0+5*c,7.2),(26.6,8.0+5*c,7.6)],
 }
 elements=[]; arms=[]; paths_for_preview=[]
-for side in (-1, 1):
-    for arm, path0 in base_paths.items():
-        name=('left_' if side<0 else 'right_')+arm
-        path=[(side*x,y) for x,y in path0]; children=[]
-        for i,(a,b) in enumerate(zip(path,path[1:])):
-            dx,dy=b[0]-a[0],b[1]-a[1]
-            length=math.hypot(dx,dy)
-            angle=math.degrees(math.atan2(dy,dx))
-            if angle > 90: angle -= 180
-            if angle < -90: angle += 180
-            # A vertical cube needs no JSON element rotation.
-            center=[(a[0]+b[0])/2, (a[1]+b[1])/2, 6.1 if arm=='upper' else 7.5]
-            width=max(1.25, 3.3 - i*0.6)
-            if abs(angle)==90:
-                p0=[center[0]-width/2,center[1]-length/2-0.35,center[2]-width/2]
-                p1=[center[0]+width/2,center[1]+length/2+0.35,center[2]+width/2]
-                rotation=[0,0,0]
-            else:
-                assert angle in (-45,0,45), angle
-                p0=[center[0]-length/2-0.35,center[1]-width/2,center[2]-width/2]
-                p1=[center[0]+length/2+0.35,center[1]+width/2,center[2]+width/2]
-                rotation=[0,0,angle]
-            eid=uid(f'cube:{name}:{i}'); children.append(eid)
-            faces={face:{'uv':[0,0,16,16],'texture':0} for face in ('north','south','east','west','up','down')}
-            elements.append({'name':f'{name}_{i+1}', 'box_uv':False, 'rescale':False, 'locked':False,
-                'light_emission':0, 'render_order':'default','allow_mirror_modeling':True,
-                'from':[round(v,4) for v in p0], 'to':[round(v,4) for v in p1], 'autouv':0, 'color':0,
-                'origin':center, 'rotation':rotation, 'faces':faces, 'type':'cube','uuid':eid})
-        arms.append(bone(name,[0,20,0],children)); paths_for_preview.append(path)
+for name,path in paths.items():
+    children=[]
+    for i,(a,b) in enumerate(zip(path,path[1:])):
+        dx,dy=b[0]-a[0],b[1]-a[1]; length=math.hypot(dx,dy)
+        angle=math.degrees(math.atan2(dy,dx))
+        while angle > 90:angle-=180
+        while angle < -90:angle+=180
+        vertical=abs(angle)>45.01
+        if vertical: angle-=math.copysign(90,angle)
+        nearest=round(angle/22.5)*22.5
+        assert abs(angle-nearest)<0.02 and abs(nearest)<=45, (name,i,angle)
+        center=[(a[0]+b[0])/2,(a[1]+b[1])/2,(a[2]+b[2])/2]
+        # A broad root tapers to a pointed end, like the segmented reference.
+        width=max(1.45,4.7-i*0.62)
+        if vertical:
+            p0=[center[0]-width/2,center[1]-length/2-0.48,center[2]-width/2]
+            p1=[center[0]+width/2,center[1]+length/2+0.48,center[2]+width/2]
+        else:
+            p0=[center[0]-length/2-0.48,center[1]-width/2,center[2]-width/2]
+            p1=[center[0]+length/2+0.48,center[1]+width/2,center[2]+width/2]
+        eid=uid(f'cube:{name}:{i}');children.append(eid)
+        faces={face:{'uv':[0,0,16,16],'texture':0} for face in ('north','south','east','west','up','down')}
+        elements.append({'name':f'{name}_{i+1}', 'box_uv':False, 'rescale':False, 'locked':False,
+            'light_emission':0, 'render_order':'default','allow_mirror_modeling':True,
+            'from':[round(v,4) for v in p0], 'to':[round(v,4) for v in p1], 'autouv':0, 'color':0,
+            'origin':[round(v,4) for v in center], 'rotation':[0,0,nearest], 'faces':faces, 'type':'cube','uuid':eid})
+    arms.append(bone(name,list(path[0]),children));paths_for_preview.append([(x,y) for x,y,z in path])
 root=bone('tentacles_root',[0,20,0],arms)
 
 def key(name,t,z):
@@ -81,7 +83,7 @@ for i, arm in enumerate(arms):
     sign = -1 if i%2==0 else 1
     # Sample a full sine cycle at quarter-second intervals. Piecewise-linear
     # interpolation between closely spaced samples avoids abrupt reversals.
-    frames=[key(arm['name'],step/4,round(sign*4*math.sin(math.pi*step/12),4)) for step in range(25)]
+    frames=[key(arm['name'],step/4,round(sign*4*math.sin(math.pi*step/12+i*0.55),4)) for step in range(25)]
     frames[-1]['data_points']=frames[0]['data_points']
     animators[arm['uuid']]={'name':arm['name'],'type':'bone','keyframes':frames}
 model={'meta':{'format_version':'4.10','model_format':'free','box_uv':False},

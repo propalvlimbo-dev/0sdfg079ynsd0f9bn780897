@@ -9,7 +9,11 @@ def main():
  inp=Path(sys.argv[1]).resolve(strict=True);out=Path(sys.argv[2]).resolve()
  if inp==out or out.exists():raise SystemExit('Output must be a new file')
  if out.is_relative_to((ROOT/'plugins').resolve()) or out.is_relative_to((ROOT/'rp').resolve()):raise SystemExit('Output must not be in server directories')
- base=HERE/'staging-assets';assets={p.relative_to(base).as_posix():p.read_bytes() for p in base.rglob('*') if p.is_file()}
+ base=HERE/'staging-assets'
+ # This is the frozen v1 merger; the v2 assets are handled by accessories-upgrade/merge.py.
+ if len([p for p in base.rglob('*') if p.is_file()])!=12:
+  base=HERE.parent/'accessories-upgrade/previous/staging-assets'
+ assets={p.relative_to(base).as_posix():p.read_bytes() for p in base.rglob('*') if p.is_file()}
  if len(assets)!=12:raise ValueError('Expected precisely 12 staging assets')
  with zipfile.ZipFile(inp) as old:
   names=old.namelist()

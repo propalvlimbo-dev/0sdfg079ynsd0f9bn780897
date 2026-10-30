@@ -15,15 +15,18 @@ class ModelTest(unittest.TestCase):
         root=m['outliner'][0]; self.assertEqual(root['name'],'tentacles_root')
         self.assertEqual(root['origin'],[0,20,0]); self.assertEqual(len(root['children']),4)
         bones=root['children']; self.assertEqual(len({b['uuid'] for b in bones}),4)
-        elems={e['uuid']:e for e in m['elements']}; self.assertEqual(len(elems),14)
+        elems={e['uuid']:e for e in m['elements']}; self.assertEqual(len(elems),20)
         refs=[u for bone in bones for u in bone['children']]
         self.assertEqual(len(set(refs)),len(refs)); self.assertEqual(set(refs),set(elems))
         for e in elems.values():
             uuid.UUID(e['uuid'])
             self.assertTrue(all(a<b for a,b in zip(e['from'],e['to'])))
-            self.assertGreaterEqual(e['from'][2],3.9)
-            self.assertIn(e['rotation'][2],(-45,0,45))
+            self.assertGreaterEqual(e['from'][2],2.4)
+            self.assertIn(e['rotation'][2],(-45,-22.5,0,22.5,45))
             self.assertTrue(all(face['texture']==0 for face in e['faces'].values()))
+        self.assertGreater(len({b['origin'][1] for b in bones}),1)
+        self.assertGreater(len({b['origin'][2] for b in bones}),1)
+        self.assertGreater(max(e['to'][2] for e in elems.values()) - min(e['from'][2] for e in elems.values()), 3)
         idle=m['animations'][0]
         self.assertEqual(idle['name'],'idle'); self.assertEqual(idle['loop'],'loop')
         self.assertEqual(set(idle['animators']),{b['uuid'] for b in bones})

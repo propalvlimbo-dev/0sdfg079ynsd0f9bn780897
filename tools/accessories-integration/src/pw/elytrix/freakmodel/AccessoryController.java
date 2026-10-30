@@ -67,37 +67,42 @@ public final class AccessoryController implements CommandExecutor, Listener {
         private Inventory inventory;
         @Override public Inventory getInventory() { return inventory; }
     }
-    private static ItemStack item(Material mat, String title, String model) {
+    private static ItemStack item(Material mat, String title, String model, String... lore) {
         ItemStack result = new ItemStack(mat); ItemMeta meta = result.getItemMeta();
-        if (meta != null) { meta.setDisplayName(title); if (model != null) meta.setItemModel(new NamespacedKey("reallyworld", model)); result.setItemMeta(meta); }
+        if (meta != null) { meta.setDisplayName(title); meta.setLore(java.util.Arrays.asList(lore)); if (model != null) meta.setItemModel(new NamespacedKey("reallyworld", model)); result.setItemMeta(meta); }
         return result;
     }
     @Override public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) { sender.sendMessage("Только для игроков."); return true; }
         Holder holder = new Holder();
-        Inventory menu = Bukkit.createInventory(holder, 27, "§8Аксессуары"); holder.inventory=menu;
-        menu.setItem(11, item(Material.FEATHER, "§dАнгельские крылья", "angel_wings"));
-        menu.setItem(13, item(Material.NETHER_STAR, "§eБожественный нимб", "angel_halo"));
-        menu.setItem(15, item(Material.RED_DYE, "§cЩупальца Канэки", "kaneki_tentacles_icon"));
-        menu.setItem(21, item(Material.BARRIER, "§7Снять аксессуар со спины", null));
-        menu.setItem(23, item(Material.BARRIER, "§7Снять нимб", null));
+        // The same frame, slot overlay and spacing glyphs as DeluxeMenus /shop.
+        // ꏠ is the dedicated "АКСЕССУАРЫ" title added to the resource pack.
+        Inventory menu = Bukkit.createInventory(holder, 54, "§fꈁꀀꈂꌀꈂꀁ§fꈃꏠ"); holder.inventory=menu;
+        String restriction = allowed(player) ? "§dНажми, чтобы выбрать" : "§cПока доступно только администрации";
+        menu.setItem(12, item(Material.FEATHER, "§x§F§A§D§8§F§C§lАнгельские крылья", "angel_wings", "", "§7Аксессуар для спины", "§7Не занимает слот брони", "", restriction));
+        menu.setItem(13, item(Material.NETHER_STAR, "§x§F§A§D§8§F§C§lБожественный нимб", "angel_halo", "", "§7Нимб можно носить вместе", "§7с аксессуаром для спины", "", restriction));
+        menu.setItem(14, item(Material.RED_DYE, "§x§F§A§D§8§F§C§lЩупальца Канэки", "kaneki_tentacles_icon", "", "§7Анимированный аксессуар для спины", "§7Только внешний вид, без способностей", "", restriction));
+        menu.setItem(30, item(Material.BARRIER, "§cСнять со спины", null, "", "§7Снять крылья или щупальца", "", restriction));
+        menu.setItem(31, item(Material.ARROW, "§x§F§A§D§8§F§C§lНазад в меню", null, "", "§7Вернуться в главное меню", "", "§dНажми, чтобы открыть"));
+        menu.setItem(32, item(Material.BARRIER, "§cСнять нимб", null, "", "§7Нимб снимается отдельно", "", restriction));
         player.openInventory(menu); return true;
     }
     @EventHandler public void onClick(InventoryClickEvent event) {
         if (!(event.getView().getTopInventory().getHolder() instanceof Holder)) return;
         event.setCancelled(true);
         if (!(event.getWhoClicked() instanceof Player player)) return;
-        if (!allowed(player)) { player.sendMessage("§cПока аксессуары доступны только администрации."); return; }
         int slot=event.getRawSlot();
-        String blueprint = slot==11 ? "elytrix_angel_wings" : slot==13 ? "elytrix_angel_halo" : slot==15 ? "elytrix_kaneki_tentacles" : null;
+        if (slot==31) { player.closeInventory(); player.performCommand("menu"); return; }
+        if (!allowed(player)) { player.sendMessage("§cПока аксессуары доступны только администрации."); return; }
+        String blueprint = slot==12 ? "elytrix_angel_wings" : slot==13 ? "elytrix_angel_halo" : slot==14 ? "elytrix_kaneki_tentacles" : null;
         if (blueprint != null && ModelEngineAPI.getBlueprint(blueprint) == null) {
             player.sendMessage("§cМодель ещё не загружена. Обратитесь к администрации."); return;
         }
-        if (slot==11) { set(player,BACK,"wings"); player.sendMessage("§dВыбраны крылья."); }
+        if (slot==12) { set(player,BACK,"wings"); player.sendMessage("§dВыбраны крылья."); }
         else if (slot==13) { set(player,HALO,"halo"); player.sendMessage("§eВыбран нимб."); }
-        else if (slot==15) { set(player,BACK,"kaneki"); player.sendMessage("§cВыбраны щупальца Канэки."); }
-        else if (slot==21) { set(player,BACK,""); player.sendMessage("§7Аксессуар со спины снят."); }
-        else if (slot==23) { set(player,HALO,""); player.sendMessage("§7Нимб снят."); }
+        else if (slot==14) { set(player,BACK,"kaneki"); player.sendMessage("§cВыбраны щупальца Канэки."); }
+        else if (slot==30) { set(player,BACK,""); player.sendMessage("§7Аксессуар со спины снят."); }
+        else if (slot==32) { set(player,HALO,""); player.sendMessage("§7Нимб снят."); }
     }
     @EventHandler public void onDrag(InventoryDragEvent event) {
         if (event.getView().getTopInventory().getHolder() instanceof Holder) event.setCancelled(true);
