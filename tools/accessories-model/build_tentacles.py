@@ -54,38 +54,36 @@ PARTS = tuple('abcdefghijklmnopqrstuvwx')   # bone suffixes, one per joint
 # closer to the centre line than the widest point of the same tendril.
 TENDRILS = [
     {
-        # upper right: the tall pair.  It climbs a little over two blocks, past
-        # the top of the head, and keeps sweeping back (+Z) so it is never a
-        # decal on the spine.
+        # upper right: leaves the knot, arcs out past the shoulder and keeps
+        # going until it is beside the chest, then drops the tip forward.  The
+        # x keeps ahead of the z, so the tube goes *around* the torso instead of
+        # through it.
         'name': 'right_upper',
-        'ctrl': [(0.6, 17.8, 2.4), (1.7, 21.2, 3.7), (3.6, 25.0, 5.3),
-                 (5.9, 28.9, 6.9), (8.4, 32.6, 8.3), (10.8, 36.2, 9.4),
-                 (12.7, 39.4, 10.2), (13.9, 42.2, 10.5), (14.4, 44.4, 10.3)],
-        'girth': (6.0, 5.8), 'tip': 0.6,
+        'ctrl': [(0.6, 17.1, 2.3), (2.6, 18.7, 2.0), (5.2, 20.3, 1.2),
+                 (8.3, 20.8, -0.3), (10.9, 20.2, -2.5), (12.6, 18.6, -4.4),
+                 (13.3, 16.8, -5.8)],
+        'girth': (5.6, 5.4), 'tip': 0.45,
     },
     {
         'name': 'left_upper',
-        'ctrl': [(-0.6, 18.0, 2.4), (-1.7, 21.4, 3.7), (-3.7, 25.2, 5.3),
-                 (-6.0, 29.1, 6.9), (-8.5, 32.8, 8.3), (-10.9, 36.4, 9.4),
-                 (-12.8, 39.6, 10.2), (-14.0, 42.4, 10.5), (-14.5, 44.6, 10.3)],
-        'girth': (5.9, 5.7), 'tip': 0.6,
+        'ctrl': [(-0.6, 17.2, 2.3), (-2.7, 18.8, 2.0), (-5.3, 20.4, 1.2),
+                 (-8.4, 20.9, -0.3), (-11.0, 20.3, -2.5), (-12.7, 18.7, -4.4),
+                 (-13.4, 16.9, -5.8)],
+        'girth': (5.5, 5.3), 'tip': 0.45,
     },
     {
-        # lower right: the wide pair.  It goes out over the shoulders and keeps
-        # going - the tips sit well outside the player's silhouette, which is
-        # what makes the fan read as a kagune instead of a hat.
+        # lower right: same wrap, a hand lower, so the four of them frame the
+        # body from the hips to the chest instead of standing up like a crown
         'name': 'right_lower',
-        'ctrl': [(0.6, 16.9, 2.4), (3.6, 18.2, 3.5), (7.4, 20.1, 4.7),
-                 (11.2, 22.9, 5.9), (14.9, 26.2, 6.9), (18.4, 29.6, 7.7),
-                 (21.2, 32.7, 8.1), (23.2, 35.2, 8.1)],
-        'girth': (5.8, 5.6), 'tip': 0.55,
+        'ctrl': [(0.6, 15.6, 2.3), (2.9, 14.1, 2.0), (5.9, 12.9, 1.0),
+                 (9.1, 12.1, -0.4), (11.8, 11.8, -2.3), (13.6, 12.0, -4.2)],
+        'girth': (5.4, 5.2), 'tip': 0.42,
     },
     {
         'name': 'left_lower',
-        'ctrl': [(-0.6, 16.8, 2.4), (-3.7, 18.1, 3.5), (-7.5, 20.0, 4.7),
-                 (-11.3, 22.8, 5.9), (-15.0, 26.1, 6.9), (-18.5, 29.5, 7.7),
-                 (-21.3, 32.6, 8.1), (-23.3, 35.1, 8.1)],
-        'girth': (5.7, 5.5), 'tip': 0.55,
+        'ctrl': [(-0.6, 15.5, 2.3), (-3.0, 14.0, 2.0), (-6.0, 12.8, 1.0),
+                 (-9.2, 12.0, -0.4), (-11.9, 11.7, -2.3), (-13.7, 11.9, -4.2)],
+        'girth': (5.3, 5.1), 'tip': 0.42,
     },
 ]
 
@@ -852,7 +850,11 @@ def main():
         preview(model, out / 'tentacles_top.png', title='вид сверху (четыре луча)',
                 yaw=0, pitch=84, scale=13.0, size=panel, texture=texture, body=True,
                 centre=centre, perspective=260.0)
-        names = ('tentacles_back', 'tentacles_angle', 'tentacles_side', 'tentacles_top')
+        preview(model, out / 'tentacles_front.png', title='вид спереди (вышли за тело)',
+                yaw=180, pitch=4, scale=13.0, size=panel, texture=texture, body=True,
+                centre=centre, perspective=240.0)
+        names = ('tentacles_back', 'tentacles_front', 'tentacles_angle', 'tentacles_side',
+                 'tentacles_top')
         combo = Image.new('RGB', (panel[0] * len(names), panel[1]), (24, 28, 42))
         for index, name in enumerate(names):
             combo.paste(Image.open(out / f'{name}.png'), (panel[0] * index, 0))

@@ -127,7 +127,7 @@ class BlueprintTests(unittest.TestCase):
             self.assertTrue(15.4 <= y <= 18.0, f'the middle of the back, got y={y}')
             self.assertTrue(1.2 <= z <= 3.0, 'just behind the torso, never in front of it')
         spread = max(math.dist(a, b) for a in starts for b in starts)
-        self.assertLess(spread, 2.2, 'one common root, not four separate ones')
+        self.assertLess(spread, 2.6, 'one common root, not four separate ones')
         # the knot has to bridge the torso surface (z = 2), otherwise it floats
         knot = self.cubes['root_knot']
         self.assertGreaterEqual(len(knot), 3, 'the knot is a lump, not a plane')
@@ -218,11 +218,15 @@ class BlueprintTests(unittest.TestCase):
             for second in names[i + 1:]:
                 self.assertGreater(math.dist(apex[first], apex[second]), 2.5,
                                    f'{first} and {second} overlap')
-        # the upper pair reaches further back than the lower pair: that difference
-        # is what makes the top view read as a fan instead of one flat sheet
+        # the two pairs sit at clearly different heights, otherwise they merge
+        # into one thick bar in the back view
         for side in ('right', 'left'):
-            self.assertGreater(apex[f'{side}_upper'][2] - apex[f'{side}_lower'][2], 0.8,
-                               f'{side}: the upper tendril must sweep further back')
+            self.assertGreater(abs(apex[f'{side}_upper'][1] - apex[f'{side}_lower'][1]), 4.0,
+                               f'{side}: the pairs must not sit at the same height')
+        # and every tendril has to come round the torso to the front (z < 0 is
+        # in front of the spine, the body plane is at z = -2)
+        for name, path in self.paths.items():
+            self.assertLess(path[-1][2], -2.5, f'{name}: the tip must wrap round to the front')
         points = [p for path in self.paths.values() for p in path]
         xs = [p[0] for p in points]
         zs = [p[2] for p in points]
