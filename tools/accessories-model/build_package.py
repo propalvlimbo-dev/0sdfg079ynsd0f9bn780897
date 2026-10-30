@@ -30,7 +30,7 @@ TITLE = ROOT / 'tools/accessories-integration/staging-assets/assets/reallyworld/
 # The accessory-enabled plugin build that ships with this package; committing the
 # jar keeps the release reproducible instead of depending on a /tmp candidate.
 PLUGIN = ROOT / 'tools/accessories-integration/dist/ElytrixFreakModel-v20.jar'
-PLUGIN_SHA = '7c26a3c9fa595ede26f8e95944016e4b5e5c057fbaa1d07d648ce4cbbdc3ff52'
+PLUGIN_SHA = '8a0d0607bf71c08d1136e1256d63ad7c593501d9a0bb078fcd93d0e2362daec2'
 
 
 def sha1(path):

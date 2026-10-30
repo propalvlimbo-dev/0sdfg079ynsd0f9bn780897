@@ -5,6 +5,7 @@ public class Bukkit {
     public static final CommandSender console = message -> {};
     public static PluginManager getPluginManager(){return manager;}
     public static CommandSender getConsoleSender(){return console;}
-    public static boolean dispatchCommand(CommandSender sender,String command){dispatched.add(command);return true;}
+    public static boolean dispatchCommand(CommandSender sender,String command){if(!dispatchWorks)return false;dispatched.add(command);return true;}
+    public static boolean dispatchWorks=true;
     public static Inventory createInventory(InventoryHolder h,int n,String title){Bukkit.title=title;Bukkit.size=n;slots=new java.util.HashMap<>();created=new Inventory(){public void setItem(int slot,ItemStack item){slots.put(slot,item);}public InventoryHolder getHolder(){return h;}};return created;}
 }

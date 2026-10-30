@@ -38,6 +38,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
     /** Donation rank that is allowed to wear the accessories, besides the staff. */
     static final String MEDIA_GROUP = "media";
     static final String USE_PERMISSION = "elytrixaccessories.use";
+    private static boolean mediaGranted;
     private static final java.util.Map<java.util.UUID, PatchRig> PATCHES = new java.util.HashMap<>();
     public static void install(ElytrixFreakModelPlugin plugin) {
         AccessoryController controller = new AccessoryController();
@@ -54,10 +55,14 @@ public final class AccessoryController implements CommandExecutor, Listener {
      * to type the command.  Idempotent, and silently skipped without LuckPerms.
      */
     private static void grantDonationAccess() {
+        if (mediaGranted) return;
         try {
             if (!Bukkit.getPluginManager().isPluginEnabled("LuckPerms")) return;
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-                "lp group " + MEDIA_GROUP + " permission set " + USE_PERMISSION + " true");
+            // If LuckPerms is still enabling, its command does not exist yet and the
+            // dispatch answers false: keep the flag down so the next menu open retries.
+            if (!Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+                "lp group " + MEDIA_GROUP + " permission set " + USE_PERMISSION + " true")) return;
+            mediaGranted = true;
         } catch (RuntimeException ignored) {
             // no LuckPerms, or the command is blocked: the node can still be set by hand
         }
@@ -288,6 +293,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
 
     @Override public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) { sender.sendMessage("Только для игроков."); return true; }
+        grantDonationAccess();          // LuckPerms is certainly up by the time a player opens this
         openMenu(player);
         return true;
     }

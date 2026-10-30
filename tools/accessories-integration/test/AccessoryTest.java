@@ -59,9 +59,14 @@ public class AccessoryTest {
   check(plugin.mockCommand.executor==controller,"executor registered");
   check(Bukkit.dispatched.isEmpty(),"no LuckPerms command when the plugin is absent");
   // with LuckPerms installed the start-up writes the media node once
-  pm.enabled.add("LuckPerms");Bukkit.dispatched.clear();AccessoryController.install(plugin);
+  pm.enabled.add("LuckPerms");Bukkit.dispatched.clear();Bukkit.dispatchWorks=false;
+  AccessoryController.install(plugin);
+  check(Bukkit.dispatched.isEmpty(),"a dispatch while LuckPerms is still enabling is not counted");
+  Bukkit.dispatchWorks=true;AccessoryController.install(plugin);
   check(Bukkit.dispatched.equals(List.of("lp group media permission set elytrixaccessories.use true")),
         "media group gets the node automatically");
+  Bukkit.dispatched.clear();AccessoryController.install(plugin);
+  check(Bukkit.dispatched.isEmpty(),"and only once");
   pm.enabled.clear();
   p.admin=false;check(controller.onCommand(p,new Command(),"аксессуары",new String[0]),"command handled");
   check(p.opened!=null,"menu visible to non-admin");
