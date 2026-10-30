@@ -1,18 +1,28 @@
 #!/usr/bin/env python3
 """Builds the Kaneki kagune (щупальца) blueprint + texture, pixel-art only.
 
-The reference is a set of four organic red tendrils: thick at the root, sweeping
-through big open arcs, tapering to a pointed tip with scale plates near the end.
+v4. The reference is four organic red tendrils that burst out of the back: thick at
+the root, sweeping through big open 3-D arcs (up, outward *and* backwards), tapering
+to a pointed tip with scale plates near the end.
 
-ModelEngine 4.1.0 with Use-New-Rotation=false only accepts one rotation axis per
-cube and angles that are multiples of 22.5 degrees, so every curve is built from
-many short overlapping segments whose direction is snapped to 22.5 degrees (and
-folded into -45..45 by swapping the box cross-section, because a box rotated by
-90 degrees looks identical). That reproduces the faceted-but-smooth look of the
-reference model instead of the old chunky zig-zag.
+Why the model is built this way
+-------------------------------
+* Every tendril is a real 3-D curve (Catmull-Rom through 3-D control points), so the
+  group never collapses into a flat "cardboard fan" when seen from above or from the
+  side.  The previous revision kept dz nearly constant, which is exactly why the
+  in-game result read as one level bar.
+* ModelEngine 4.1.0 writes one rotation per cube (axis + any angle, and for 1.21.4
+  item models the rotation is preserved as `{"origin":..,"angle":..,"axis":..}`).
+  A cube can therefore only be tilted inside the plane that is perpendicular to the
+  chosen axis.  For every segment we pick the axis with the *smallest* direction
+  component, so the segment lies almost exactly in that plane and the long axis of
+  the box follows the curve tangent.
+* Each tendril is a chain of three bones instead of two: it keeps every cube within
+  scaleToFit()'s 24-unit limit (a bigger distance silently halves that bone) and it
+  gives the animation nine joints per side to move.
 
 Usage:
-    python3 tools/accessories-model/build_tentacles.py [--out-dir tools/accessories-model]
+    python3 tools/accessories-model/build_tentacles.py [--out-dir tools/accessories-model] [--preview]
 """
 import argparse
 import base64
@@ -27,56 +37,75 @@ from PIL import Image, ImageDraw
 HERE = Path(__file__).resolve().parent
 MODEL = 'elytrix_kaneki_tentacles'
 ROOT_ORIGIN = [0.0, 20.0, 0.0]
-STEP = 1.75         # arc length of one segment, in 1/16 block units
-SNAP = 22.5         # ModelEngine's only supported rotation step
-OVERLAP = 0.78      # extra length on both ends so the joints stay closed
+STEP = 2.0          # arc length of one segment, in 1/16 block units
+OVERLAP = 0.75      # extra length on both ends so the joints stay closed
+PARTS = ('a', 'b', 'c', 'd')
+
+# --------------------------------------------------------------------------- curves
+# Blockbench units: +X = the player's right, +Y = up, +Z = behind the back.
+# The four tendrils are deliberately NOT mirror images of each other: different
+# height, different reach, different depth and a different tip, which is what makes
+# the group read as organic instead of as a symmetric cardboard cut-out.
+def sweep(root, heading, pitch, yaw_rate, pitch_rate, length, steps=6):
+    """Control points of a crescent: march forward while the tangent keeps turning.
+
+    `heading` is the direction in the XZ plane (0 = +X/right, 90 = +Z/behind),
+    `pitch` is the climb angle, the two rates bend the curve per unit of length.
+    """
+    points = [root]
+    x, y, z = root
+    step = length / steps
+    h, p = heading, pitch
+    for _ in range(steps):
+        ch, sh = math.cos(math.radians(h)), math.sin(math.radians(h))
+        cp = math.cos(math.radians(p))
+        x += cp * ch * step
+        y += math.sin(math.radians(p)) * step
+        z += cp * sh * step
+        points.append((round(x, 2), round(y, 2), round(z, 2)))
+        h += yaw_rate * step
+        p += pitch_rate * step
+    return points
+
+
+SIDE = [
+    {
+        # right upper: the longest blade, climbs gently out of the shoulder blade
+        # and ends in the point that sits above the shoulder in the reference
+        'name': 'right_upper',
+        'points': sweep((1.4, 19.0, 2.2), heading=22, pitch=8,
+                        yaw_rate=0.60, pitch_rate=0.38, length=46),
+        'width': (9.2, 1.05),
+    },
+    {
+        # right lower: leaves the hip a little downward, then curls back upward -
+        # the opposite curvature to the upper one, so the pair is never level
+        'name': 'right_lower',
+        'points': sweep((1.6, 15.4, 3.4), heading=24, pitch=-4,
+                        yaw_rate=0.52, pitch_rate=0.55, length=42),
+        'width': (8.6, 1.0),
+    },
+    {
+        # left upper: starts higher and stays flat, swings further behind the player
+        'name': 'left_upper',
+        'points': sweep((-1.2, 21.0, 4.4), heading=152, pitch=5,
+                        yaw_rate=-0.58, pitch_rate=0.18, length=39),
+        'width': (8.8, 1.1),
+    },
+    {
+        # left lower: the shortest blade, dips the deepest and flicks up at the tip
+        'name': 'left_lower',
+        'points': sweep((-1.6, 13.6, 5.2), heading=148, pitch=-8,
+                        yaw_rate=-0.52, pitch_rate=0.60, length=32),
+        'width': (8.0, 1.0),
+    },
+]
+
+TENDRILS = [dict(spec) for spec in SIDE]
 
 
 def uid(tag):
     return str(uuid.uuid5(uuid.NAMESPACE_URL, f'elytrix-kaneki:{tag}'))
-
-
-# --------------------------------------------------------------------------- curves
-# Each tendril: control points (Blockbench units, +Z = away from the back) and the
-# thickness (across the tendril) along it, from root to tip.
-# One side is authored (positive X = the player's right), the other is mirrored.
-# Each curve leaves the back, opens into a wide arc, then hooks back towards the
-# body and ends in a point, like the reference art.
-SIDE = [
-    {
-        # upper: rises over the shoulder, hooks inwards and down
-        'name': 'upper',
-        'points': [(0.9, 19.8, 3.6), (6.6, 22.6, 4.1), (11.8, 26.4, 4.7),
-                   (14.8, 30.6, 5.4), (15.4, 34.4, 6.1), (13.6, 37.0, 6.8),
-                   (10.6, 37.6, 7.4), (8.2, 35.8, 7.8), (7.4, 32.8, 8.0)],
-        'width': (5.3, 1.5),
-        'depth': (3.7, 1.15),
-    },
-    {
-        # lower: sweeps down and out, then curls up with the tip turned inwards
-        'name': 'lower',
-        'points': [(0.7, 16.6, 4.6), (6.4, 14.4, 5.2), (12.4, 12.2, 5.9),
-                   (18.6, 10.4, 6.5), (24.8, 10.2, 7.1), (28.6, 12.6, 7.7),
-                   (29.2, 16.4, 8.3), (27.4, 19.6, 8.7), (24.6, 21.2, 9.0)],
-        'width': (5.5, 1.6),
-        'depth': (3.9, 1.2),
-    },
-]
-
-
-def mirrored(curve):
-    return [(-x, y, z + 0.6) for x, y, z in curve]
-
-
-TENDRILS = []
-for _side, _sign in (('right', 1.0), ('left', -1.0)):
-    for _spec in SIDE:
-        TENDRILS.append({
-            'name': f'{_side}_{_spec["name"]}',
-            'points': _spec['points'] if _sign > 0 else mirrored(_spec['points']),
-            'width': _spec['width'],
-            'depth': _spec['depth'],
-        })
 
 
 def catmull_rom(points, samples_per_span=24):
@@ -116,50 +145,92 @@ def resample(curve, step):
     return result
 
 
+def _unit(vec):
+    length = math.sqrt(sum(v * v for v in vec)) or 1.0
+    return tuple(v / length for v in vec)
+
+
 def segments(tendril):
-    """Splits a tendril into cubes: centre, direction angle, length and position along it."""
+    """Splits a tendril into cubes: centre, 3-D direction and segment length."""
     curve = resample(catmull_rom(tendril['points']), STEP)
     pieces = []
     count = max(1, len(curve) - 1)
     for i, (a, b) in enumerate(zip(curve, curve[1:])):
-        dx, dy = b[0] - a[0], b[1] - a[1]
-        snapped = round(math.degrees(math.atan2(dy, dx)) / SNAP) * SNAP
-        # A box turned by 90 degrees is the same box with its length and width swapped
-        # (the Z cross-section stays untouched), so any direction folds into -45..45.
-        folded, turns = snapped, 0
-        while folded > 45 + 1e-9:
-            folded -= 90
-            turns += 1
-        while folded <= -45 + 1e-9:
-            folded += 90
-            turns += 1
-        centre = ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2, (a[2] + b[2]) / 2)
-        pieces.append({'centre': centre, 'angle': folded, 'length': math.dist(a, b),
-                       't': (i + 0.5) / count, 'swap': turns % 2 == 1})
+        direction = _unit(tuple(b[k] - a[k] for k in range(3)))
+        pieces.append({
+            'centre': tuple((a[k] + b[k]) / 2 for k in range(3)),
+            'direction': direction,
+            'length': math.dist(a, b), 't': (i + 0.5) / count,
+            'start': a, 'end': b,
+        })
     return pieces
 
 
+def tilt_axis(pieces):
+    """One tilt axis for a whole bone.
+
+    A cube can only be rotated around one axis, and its long side has to stay
+    perpendicular to it, so the bone uses the axis its segments cross the least.
+    Keeping a single axis per bone also avoids ModelEngine splitting a bone into
+    several item models.
+    """
+    def error(axis):
+        return sum(abs(p['direction'][axis]) for p in pieces)
+    return min(range(3), key=error)
+
+
+def _tilt(axis, direction):
+    """Angle (degrees) and long axis of the box for a segment inside `axis`' plane."""
+    if axis == 2:            # tilt around Z, box runs along X
+        return math.degrees(math.atan2(direction[1], direction[0])), 0
+    if axis == 1:            # tilt around Y, box runs along X
+        return math.degrees(math.atan2(-direction[2], direction[0])), 0
+    return math.degrees(math.atan2(direction[2], direction[1])), 1     # around X, along Y
+
+
 def lerp(profile, t):
-    return profile[0] + (profile[1] - profile[0]) * (t ** 0.72)
+    """Blade profile: stays broad for the first half, then runs out into a point."""
+    root, tip = profile
+    body = root * (1.0 - 0.35 * min(t, 0.55))
+    if t <= 0.55:
+        return body
+    k = (t - 0.55) / 0.45
+    return tip + (body - tip) * (1.0 - k ** 1.6)
 
 
 def build_elements(tendril, part):
-    """Turns one half of a tendril into Blockbench cubes with per-face UV regions."""
+    """Turns one third of a tendril into Blockbench cubes with per-face UV regions."""
     elements = []
-    for index, piece in enumerate(segments(tendril)):
-        if (piece['t'] >= 0.5) != (part == 'b'):
+    pieces = segments(tendril)
+    bounds = bone_ranges(len(pieces), len(PARTS))
+    index_of_part = PARTS.index(part)
+    low, high = bounds[index_of_part]
+    axis = tilt_axis(pieces[low:high])
+    for index, piece in enumerate(pieces):
+        if not low <= index < high:
             continue
-        cx, cy, cz = piece['centre']
         t = piece['t']
         width = lerp(tendril['width'], t)          # across the tendril
-        depth = lerp(tendril['depth'], t)          # through the tendril (Z)
-        half_len = piece['length'] / 2 + OVERLAP
-        if piece['swap']:
-            p0 = [cx - width / 2, cy - half_len, cz - depth / 2]
-            p1 = [cx + width / 2, cy + half_len, cz + depth / 2]
-        else:
-            p0 = [cx - half_len, cy - width / 2, cz - depth / 2]
-            p1 = [cx + half_len, cy + width / 2, cz + depth / 2]
+        depth = width * 0.85                       # through it (thick blade)
+        angle, long_axis = _tilt(axis, piece['direction'])
+        # ModelEngine 4.1.0 only accepts one rotation axis per cube and, more
+        # importantly, it snaps/combinates anything else through RotationSolver -
+        # which throws on 4.1.0. Multiples of 22.5 are legal, so snap to them.
+        angle = round(angle / 22.5) * 22.5
+        while angle > 90.0:
+            angle -= 180.0
+        while angle <= -90.0:
+            angle += 180.0
+        centre = piece['centre']
+        half = piece['length'] / 2 + OVERLAP
+        cross = [k for k in range(3) if k not in (long_axis, axis)][0]
+        p0, p1 = list(centre), list(centre)
+        p0[long_axis] -= half
+        p1[long_axis] += half
+        p0[cross] -= width / 2
+        p1[cross] += width / 2
+        p0[axis] -= depth / 2
+        p1[axis] += depth / 2
         # near the tip the faces switch to the scale-plate texture region
         body = 'scales' if t > 0.78 else 'body'
         faces = {
@@ -170,17 +241,29 @@ def build_elements(tendril, part):
             'north': {'uv': uv_rect(body), 'texture': 0},
             'south': {'uv': uv_rect(body), 'texture': 0},
         }
+        rotation = [0, 0, 0]
+        rotation[axis] = round(angle, 3)
         elements.append({
             'name': f'{tendril["name"]}_{part}{index + 1:02d}',
             'box_uv': False, 'rescale': False, 'locked': False, 'light_emission': 0,
             'render_order': 'default', 'allow_mirror_modeling': True,
             'from': [round(v, 4) for v in p0], 'to': [round(v, 4) for v in p1],
             'autouv': 0, 'color': 0,
-            'origin': [round(cx, 4), round(cy, 4), round(cz, 4)],
-            'rotation': [0, 0, piece['angle']],
-            'faces': faces, 'type': 'cube', 'uuid': uid(f'cube:{tendril["name"]}:{part}:{index}'),
+            'origin': [round(v, 4) for v in centre],
+            'rotation': rotation,
+            'faces': faces, 'type': 'cube', 'uuid': uid(f'cube:{tendril["name"]}:{index}'),
         })
     return elements
+
+
+def bone_ranges(count, parts):
+    """Splits `count` segments into `parts` contiguous, non-empty groups."""
+    bounds = []
+    for part in range(parts):
+        low = round(count * part / parts)
+        high = round(count * (part + 1) / parts)
+        bounds.append((low, max(high, low + 1)))
+    return bounds
 
 
 # UV layout inside the 0..16 space of a vanilla-mapped texture (64x64 -> 4px per unit)
@@ -263,23 +346,37 @@ def build_texture():
 
 
 # --------------------------------------------------------------------------- animation
+ANIM_LENGTH = 6.0
+ANIM_FRAMES = 37
+# per bone of the chain: (gain, lag, axis mix) - the tip moves the most and lags
+BONE_MOTION = (
+    (2.6, 0.00, (0.55, 0.45)),
+    (5.0, 0.12, (0.35, 0.65)),
+    (8.4, 0.22, (0.70, 0.30)),
+    (12.0, 0.34, (0.45, 0.55)),
+)
+
+
 def build_animation(tendrils):
-    """Long, soft sway; the tip of every tendril lags behind its root."""
-    length = 8.0
-    frames = 33
+    """Lively idle: every joint swings on two axes, the tip lags behind its root."""
     animators = {}
     for index, tendril in enumerate(tendrils):
-        phase = index * math.pi / 2.2
-        for bone_name, lag, gain in ((tendril['bones'][0], 0.0, 2.6),
-                                     (tendril['bones'][1], 0.55, 1.5)):
+        phase = index * math.pi / 2.4
+        for depth, (bone_name, (gain, lag, mix)) in enumerate(zip(tendril['bones'], BONE_MOTION)):
             keys = []
-            for step in range(frames):
-                t = length * step / (frames - 1)
-                wobble = round(gain * math.sin(2 * math.pi * t / length + phase - lag), 3)
-                lean = round(0.35 * gain * math.sin(2 * math.pi * t / length + phase + 1.1 - lag), 3)
+            for step in range(ANIM_FRAMES):
+                t = ANIM_LENGTH * step / (ANIM_FRAMES - 1)
+                swing = 2 * math.pi * t / ANIM_LENGTH
+                primary = gain * (math.sin(swing + phase - lag * 6.0)
+                                  + 0.35 * math.sin(2.0 * swing + phase * 1.7))
+                secondary = gain * 0.75 * math.cos(swing * 0.75 + phase * 1.3 - lag * 4.0)
                 keys.append({
                     'channel': 'rotation',
-                    'data_points': [{'x': str(lean), 'y': '0', 'z': str(wobble)}],
+                    'data_points': [{
+                        'x': str(round(primary * mix[0], 3)),
+                        'y': '0',
+                        'z': str(round(secondary * mix[1], 3)),
+                    }],
                     'uuid': uid(f'key:{bone_name}:{step}'),
                     'time': round(t, 3), 'color': -1, 'interpolation': 'linear',
                 })
@@ -289,7 +386,7 @@ def build_animation(tendrils):
             }
     return {
         'uuid': uid('animation:idle'), 'name': 'idle', 'loop': 'loop', 'override': False,
-        'length': length, 'snapping': 30, 'selected': True, 'anim_time_update': '',
+        'length': ANIM_LENGTH, 'snapping': 30, 'selected': True, 'anim_time_update': '',
         'blend_weight': '', 'start_delay': '', 'loop_delay': '', 'animators': animators,
     }
 
@@ -311,30 +408,25 @@ def build_model():
 
     elements, bones = [], []
     for tendril in TENDRILS:
-        curve = resample(catmull_rom(tendril['points']), STEP)
-        joint = min(curve, key=lambda p: abs(curve.index(p) / (len(curve) - 1) - 0.5))
-        root_cubes = build_elements(tendril, 'a')
-        tip_cubes = build_elements(tendril, 'b')
-        elements.extend(root_cubes)
-        elements.extend(tip_cubes)
-        # Two bones per tendril: ModelEngine halves the model resolution (scaleToFit)
-        # once a cube sits further than 24 units from its pivot, and a single bone
-        # would exceed that on these big arcs.
-        tip_bone = {
-            'name': f'{tendril["name"]}_b', 'origin': [round(v, 4) for v in joint],
-            'rotation': [0, 0, 0], 'color': 0, 'uuid': uid(f'bone:{tendril["name"]}_b'),
-            'export': True, 'mirror_uv': False, 'isOpen': True, 'locked': False,
-            'visibility': True, 'autouv': 0, 'children': [c['uuid'] for c in tip_cubes],
-        }
-        bones.append({
-            'name': f'{tendril["name"]}_a',
-            'origin': [round(v, 4) for v in tendril['points'][0]],
-            'rotation': [0, 0, 0], 'color': 0, 'uuid': uid(f'bone:{tendril["name"]}_a'),
-            'export': True, 'mirror_uv': False, 'isOpen': True, 'locked': False,
-            'visibility': True, 'autouv': 0,
-            'children': [c['uuid'] for c in root_cubes] + [tip_bone],
-        })
-        tendril['bones'] = (f'{tendril["name"]}_a', f'{tendril["name"]}_b')
+        pieces = segments(tendril)
+        bounds = bone_ranges(len(pieces), len(PARTS))
+        chain = []
+        for part_index, part in enumerate(PARTS):
+            low, _ = bounds[part_index]
+            origin = pieces[low]['start']
+            chain.append({
+                'name': f'{tendril["name"]}_{part}',
+                'origin': [round(v, 4) for v in origin],
+                'rotation': [0, 0, 0], 'color': part_index, 'uuid': uid(f'bone:{tendril["name"]}_{part}'),
+                'export': True, 'mirror_uv': False, 'isOpen': True, 'locked': False,
+                'visibility': True, 'autouv': 0,
+                'children': [c['uuid'] for c in build_elements(tendril, part)],
+            })
+            elements.extend(build_elements(tendril, part))
+        for upper, lower in zip(chain, chain[1:]):
+            upper['children'].append(lower)
+        bones.append(chain[0])
+        tendril['bones'] = tuple(f'{tendril["name"]}_{part}' for part in PARTS)
     root = {
         'name': 'tentacles_root', 'origin': list(ROOT_ORIGIN), 'rotation': [0, 0, 0],
         'color': 0, 'uuid': uid('bone:root'), 'export': True, 'mirror_uv': False,
@@ -351,11 +443,26 @@ def build_model():
 
 
 # --------------------------------------------------------------------------- preview
+def _rotation(axis, angle):
+    a = math.radians(angle)
+    c, s = math.cos(a), math.sin(a)
+    if axis == 0:
+        return ((1, 0, 0), (0, c, -s), (0, s, c))
+    if axis == 1:
+        return ((c, 0, s), (0, 1, 0), (-s, 0, c))
+    return ((c, -s, 0), (s, c, 0), (0, 0, 1))
+
+
+def _apply(matrix, vec):
+    return tuple(sum(matrix[i][k] * vec[k] for k in range(3)) for i in range(3))
+
+
 def preview(model, out_path, scale=8.0, size=(620, 460), title='', yaw=-26.0, pitch=8.0, texture=None):
     """Small orthographic flat-shaded renderer (painter's algorithm + back-face culling).
 
     It is a schematic used to judge the silhouette and the tapering, not an
-    in-game screenshot: no textures, no lighting model, no interpolation.
+    in-game screenshot: no textures, no lighting model, no interpolation.  All three
+    rotation axes are honoured, so what you see is what the resource pack contains.
     """
     img = Image.new('RGB', size, (24, 28, 42))
     draw = ImageDraw.Draw(img)
@@ -363,85 +470,60 @@ def preview(model, out_path, scale=8.0, size=(620, 460), title='', yaw=-26.0, pi
     cp_, sp_ = math.cos(math.radians(pitch)), math.sin(math.radians(pitch))
 
     def rotate(x, y, z):
-        xr = x * cy_ + z * sy_
-        zr = -x * sy_ + z * cy_
+        """Camera sits behind the player (+Z) and looks along -Z."""
+        xr = x * cy_ - z * sy_
+        zr = x * sy_ + z * cy_
         yr = y * cp_ - zr * sp_
         zr = y * sp_ + zr * cp_
-        return xr, yr, zr
+        return -xr, yr, zr
 
     def view(x, y, z):
-        # the projection is centred on the middle of the player's back
-        return rotate(x, y - 18.0, z - 6.0)
+        # the projection is centred between the shoulder blades and the tips
+        return rotate(x, y - 25.0, z - 12.0)
 
     def project(x, y, z):
         xr, yr, zr = view(x, y, z)
-        return (size[0] / 2 + xr * scale, size[1] / 2 - yr * scale + 30), zr
-
-    def cube_quads(element):
-        x0, y0, z0 = element['from']
-        x1, y1, z1 = element['to']
-        angle = math.radians(element['rotation'][2])
-        ox, oy, _ = element['origin']
-        ca, sa = math.cos(angle), math.sin(angle)
-
-        def rot(x, y):
-            dx, dy = x - ox, y - oy
-            return (ox + dx * ca - dy * sa, oy + dx * sa + dy * ca)
-
-        corners = {(i, j): rot(x0 if i == 0 else x1, y0 if j == 0 else y1) for i in (0, 1) for j in (0, 1)}
-        faces = []
-        for zz in (z0, z1):
-            faces.append(((corners[(0, 0)], corners[(1, 0)], corners[(1, 1)], corners[(0, 1)]), zz))
-        for i in (0, 1):
-            faces.append((((corners[(i, 0)], corners[(i, 1)]), (corners[(i, 1)], corners[(i, 0)])), None))
-        return corners, faces
+        return (size[0] / 2 + xr * scale, size[1] / 2 - yr * scale), zr
 
     quads = []
     for element in model['elements']:
-        x0, y0, z0 = element['from']
-        x1, y1, z1 = element['to']
-        angle = math.radians(element['rotation'][2])
-        ox, oy, _ = element['origin']
-        ca, sa = math.cos(angle), math.sin(angle)
-
-        def rot(x, y):
-            dx, dy = x - ox, y - oy
-            return (ox + dx * ca - dy * sa, oy + dx * sa + dy * ca)
-
-        p = {(i, j, k): rot(x0 if i == 0 else x1, y0 if j == 0 else y1) + (z0 if k == 0 else z1,)
-             for i in (0, 1) for j in (0, 1) for k in (0, 1)}
+        axis, angle = 2, 0.0
+        for k in range(3):
+            if element['rotation'][k]:
+                axis, angle = k, element['rotation'][k]
+        matrix = _rotation(axis, angle)
+        origin = element['origin']
+        corner = {}
+        for i in (0, 1):
+            for j in (0, 1):
+                for k in (0, 1):
+                    local = (element['from'][0] if i == 0 else element['to'][0],
+                             element['from'][1] if j == 0 else element['to'][1],
+                             element['from'][2] if k == 0 else element['to'][2])
+                    rel = _apply(matrix, tuple(local[n] - origin[n] for n in range(3)))
+                    corner[(i, j, k)] = tuple(origin[n] + rel[n] for n in range(3))
         sides = [
-            ([(0, 0, 0), (1, 0, 0), (1, 1, 0), (0, 1, 0)], (0, 0, -1)),   # front
-            ([(0, 0, 1), (0, 1, 1), (1, 1, 1), (1, 0, 1)], (0, 0, 1)),    # back
-            ([(0, 1, 0), (1, 1, 0), (1, 1, 1), (0, 1, 1)], (0, 1, 0)),   # top
-            ([(0, 0, 0), (0, 0, 1), (1, 0, 1), (1, 0, 0)], (0, -1, 0)),  # bottom
-            ([(1, 0, 0), (1, 0, 1), (1, 1, 1), (1, 1, 0)], (1, 0, 0)),   # right
-            ([(0, 0, 0), (0, 1, 0), (0, 1, 1), (0, 0, 1)], (-1, 0, 0)),  # left
+            ([(0, 0, 0), (1, 0, 0), (1, 1, 0), (0, 1, 0)], (0, 0, -1), 'north'),
+            ([(0, 0, 1), (0, 1, 1), (1, 1, 1), (1, 0, 1)], (0, 0, 1), 'south'),
+            ([(0, 1, 0), (1, 1, 0), (1, 1, 1), (0, 1, 1)], (0, 1, 0), 'up'),
+            ([(0, 0, 0), (0, 0, 1), (1, 0, 1), (1, 0, 0)], (0, -1, 0), 'down'),
+            ([(1, 0, 0), (1, 0, 1), (1, 1, 1), (1, 1, 0)], (1, 0, 0), 'east'),
+            ([(0, 0, 0), (0, 1, 0), (0, 1, 1), (0, 0, 1)], (-1, 0, 0), 'west'),
         ]
-        for keys, normal in sides:
-            pts = [p[k] for k in keys]
-            face_name = {0: 'north', 1: 'south', 2: 'up', 3: 'down', 4: 'east', 5: 'west'}[len(quads) % 6]
-            uv = element['faces'][face_name]['uv']
-            quads.append((pts, normal, uv))
-
-    def normal_view(n, angle):
-        ca, sa = math.cos(math.radians(angle)), math.sin(math.radians(angle))
-        nx, ny, nz = n[0] * ca - n[1] * sa, n[0] * sa + n[1] * ca, n[2]
-        return nx, ny, nz
+        for keys, normal, face_name in sides:
+            pts = [corner[k] for k in keys]
+            quads.append((pts, _apply(matrix, normal), element['faces'][face_name]['uv']))
 
     rendered = []
-    for index, (pts, normal, uv) in enumerate(quads):
-        element = model['elements'][index // 6]
-        nx, ny, nz = normal_view(normal, element['rotation'][2])
-        vx, vy, vz = rotate(nx, ny, nz)   # normals are directions: no translation
+    for pts, normal, uv in quads:
+        vx, vy, vz = rotate(*normal)          # normals are directions: no translation
         projected = [project(*pt) for pt in pts]
         depth = sum(d for _, d in projected) / len(projected)
-        centre = (sum(p[0] for p in pts) / 4, sum(p[1] for p in pts) / 4, sum(p[2] for p in pts) / 4)
-        rendered.append((depth, [q for q, _ in projected], (vx, vy, vz), uv, centre))
+        rendered.append((depth, [q for q, _ in projected], (vx, vy, vz), uv))
     rendered.sort(key=lambda item: item[0])
 
-    for _, poly, n, uv, centre in rendered:
-        if n[2] >= 0:
+    for _, poly, n, uv in rendered:
+        if n[2] <= 0:
             continue
         if texture is not None:
             # average colour of the 16x16 texel patch of this face
@@ -473,13 +555,16 @@ def main():
                                           encoding='utf-8')
     texture.save(out / f'{MODEL}.png')
     if args.preview:
-        preview(model, out / 'tentacles_back.png', title='вид сзади', yaw=0, pitch=0,
-                scale=7.4, size=(520, 430), texture=texture)
-        preview(model, out / 'tentacles_angle.png', title='вид 3/4', yaw=-32, pitch=14,
-                scale=7.4, size=(520, 430), texture=texture)
-        combo = Image.new('RGB', (1040, 430), (24, 28, 42))
-        combo.paste(Image.open(out / 'tentacles_back.png'), (0, 0))
-        combo.paste(Image.open(out / 'tentacles_angle.png'), (520, 0))
+        panel = (680, 470)
+        preview(model, out / 'tentacles_back.png', title='вид со спины', yaw=0, pitch=0,
+                scale=6.4, size=panel, texture=texture)
+        preview(model, out / 'tentacles_angle.png', title='вид 3/4', yaw=-38, pitch=16,
+                scale=6.4, size=panel, texture=texture)
+        preview(model, out / 'tentacles_top.png', title='вид сверху (проверка объёма)',
+                yaw=-12, pitch=76, scale=6.4, size=panel, texture=texture)
+        combo = Image.new('RGB', (panel[0] * 3, panel[1]), (24, 28, 42))
+        for index, name in enumerate(('tentacles_back', 'tentacles_angle', 'tentacles_top')):
+            combo.paste(Image.open(out / f'{name}.png'), (panel[0] * index, 0))
         combo.save(out / 'tentacles_preview.png')
     print(f'{len(model["elements"])} cubes in {len(model["outliner"][0]["children"])} tendrils -> {out}')
 

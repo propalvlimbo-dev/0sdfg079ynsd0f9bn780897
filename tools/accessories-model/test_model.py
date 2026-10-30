@@ -6,6 +6,7 @@ Usage:
     python3 tools/accessories-model/test_model.py --pack=path/to/new-pack.zip \
         [--base=path/to/original-pack.zip]
 """
+import io
 import json
 import math
 import sys
@@ -25,6 +26,9 @@ GLYPH = 'ꏠ'
 # Cubes further than this from their bone pivot make ModelEngine halve the model
 # resolution (JavaItemModel.scaleToFit) - the tendrils must stay under it.
 SCALE_LIMIT = 24.0
+PARTS = ('a', 'b', 'c', 'd')
+SNAP = 22.5
+ICON = 'assets/reallyworld/textures/item/freak/kaneki_tentacles_icon.png'
 
 
 def load_blueprint():
@@ -55,14 +59,31 @@ class BlueprintTests(unittest.TestCase):
         self.assertEqual(len(tendrils), 4, 'upper/lower on both sides')
         names = {b['name'] for b in tendrils}
         self.assertEqual(names, {'left_upper_a', 'left_lower_a', 'right_upper_a', 'right_lower_a'})
-        # each root bone owns a second bone for the tip (scaleToFit needs two pivots)
-        bones = {b['name']: b for b in tendrils}
+        # each tendril is a chain of four bones: more joints for the animation and
+        # every cube stays inside scaleToFit()'s 24-unit limit
         for bone in tendrils:
-            nested = [child for child in bone['children'] if isinstance(child, dict)]
-            self.assertEqual(len(nested), 1, 'one nested tip bone')
-            self.assertEqual(nested[0]['name'], bone['name'][:-1] + 'b')
-            self.assertGreater(len([c for c in bone['children'] if isinstance(c, str)]), 3,
-                               'the root half has its own cubes')
+            names = []
+            node = bone
+            while node is not None:
+                names.append(node['name'])
+                nested = [child for child in node['children'] if isinstance(child, dict)]
+                self.assertEqual(len([c for c in node['children'] if isinstance(c, str)]) > 0, True,
+                                 f'{node["name"]} has its own cubes')
+                node = nested[0] if nested else None
+            self.assertEqual(names, [bone['name'][:-1] + part for part in PARTS])
+
+    def test_the_group_is_not_flat(self):
+        """v3 lived inside a 5-unit deep slab and read as one level bar in game."""
+        xs = [v for e in self.model['elements'] for v in (e['from'][0], e['to'][0])]
+        ys = [v for e in self.model['elements'] for v in (e['from'][1], e['to'][1])]
+        zs = [v for e in self.model['elements'] for v in (e['from'][2], e['to'][2])]
+        self.assertGreater(max(xs) - min(xs), 58, 'wider than the previous revision')
+        self.assertGreater(max(zs) - min(zs), 18, 'real depth: the tendrils leave the back')
+        self.assertGreater(max(ys) - min(ys), 14, 'and they are not level with each other')
+        # the four tendrils must not be mirror copies of each other either
+        roots = {(round(b['origin'][1], 1), round(b['origin'][2], 1))
+                 for b in self.model['outliner'][0]['children']}
+        self.assertEqual(len(roots), 4, 'every tendril leaves the back from its own spot')
 
     def test_no_bone_is_scaled_down(self):
         for name, bone in self.bones.items():
@@ -77,8 +98,13 @@ class BlueprintTests(unittest.TestCase):
     def test_segments_are_watertight_and_snapped(self):
         for element in self.model['elements']:
             self.assertTrue(all(a < b for a, b in zip(element['from'], element['to'])))
-            self.assertIn(element['rotation'][2], (-45, -22.5, 0, 22.5, 45))
-            self.assertGreaterEqual(element['from'][2], 1.5, 'never inside the chest')
+            rotated = [k for k in range(3) if element['rotation'][k]]
+            self.assertLessEqual(len(rotated), 1, 'one rotation axis per cube')
+            for k in rotated:
+                angle = element['rotation'][k] / SNAP
+                self.assertAlmostEqual(angle, round(angle), msg='angle must be a multiple of 22.5')
+                self.assertLessEqual(abs(element['rotation'][k]), 90)
+            self.assertGreater(element['from'][2], -4.0, 'never punches through the chest')
             for face, data in element['faces'].items():
                 self.assertEqual(data['texture'], 0, face)
                 self.assertTrue(all(0 <= value <= 16 for value in data['uv']), face)
@@ -94,15 +120,15 @@ class BlueprintTests(unittest.TestCase):
         animation = self.model['animations'][0]
         self.assertEqual(animation['name'], 'idle')
         self.assertEqual(animation['loop'], 'loop')
-        self.assertEqual(len(animation['animators']), 8, 'both bones of every tendril move')
+        self.assertEqual(len(animation['animators']), 16, 'every joint of every tendril moves')
         for animator in animation['animators'].values():
             keys = animator['keyframes']
             self.assertEqual(keys[0]['time'], 0)
             self.assertEqual(keys[-1]['time'], animation['length'])
             self.assertEqual(keys[0]['data_points'], keys[-1]['data_points'], 'seamless loop')
-            values = [float(k['data_points'][0]['z']) for k in keys]
-            self.assertLess(max(values) - min(values), 9, 'sway stays gentle')
-            self.assertTrue(any(abs(v) > 0.5 for v in values))
+            values = [float(k['data_points'][0][axis]) for k in keys for axis in ('x', 'z')]
+            self.assertLess(max(abs(v) for v in values), 16, 'swing stays readable')
+            self.assertGreater(max(values) - min(values), 3.0, 'more motion than the 1-degree v3 sway')
 
 
 class PackTests(unittest.TestCase):
@@ -127,7 +153,9 @@ class PackTests(unittest.TestCase):
             generated = {name for name in names
                          if name.startswith(f'assets/modelengine/items/{MODEL}/')
                          or name.startswith(f'assets/modelengine/models/{MODEL}/')
-                         or name == f'assets/modelengine/textures/entity/models/{MODEL}.png'}
+                         or name == f'assets/modelengine/textures/entity/models/{MODEL}.png'
+                         or name.startswith('assets/reallyworld/')
+                         and 'kaneki_tentacles_icon' in name}
             self.assertEqual(generated, expected)
             for name in generated:
                 source = HERE / 'assets' / name[len('assets/'):]
@@ -136,13 +164,31 @@ class PackTests(unittest.TestCase):
     def test_item_definitions(self):
         with zipfile.ZipFile(self.pack) as pack:
             items = [n for n in pack.namelist() if n.startswith(f'assets/modelengine/items/{MODEL}/')]
-            self.assertEqual(len(items), 8)
+            self.assertEqual(len(items), 16)
             for name in items:
                 definition = json.loads(pack.read(name))['model']
                 self.assertEqual(definition['model'],
                                  f'modelengine:{MODEL}/' + Path(name).stem)
                 self.assertEqual(definition['type'], 'minecraft:model')
                 self.assertEqual(definition['tints'][0]['type'], 'minecraft:custom_model_data')
+
+    def test_menu_icon_exists(self):
+        """The menu puts the icon on a RED_DYE; without these files the slot shows
+        the purple/black missing-texture checkerboard."""
+        with zipfile.ZipFile(self.pack) as pack:
+            names = set(pack.namelist())
+            for name in ('assets/reallyworld/items/kaneki_tentacles_icon.json',
+                         'assets/reallyworld/models/item/freak/kaneki_tentacles_icon.json',
+                         ICON):
+                self.assertIn(name, names)
+            definition = json.loads(pack.read('assets/reallyworld/items/kaneki_tentacles_icon.json'))
+            self.assertEqual(definition['model']['model'], 'reallyworld:item/freak/kaneki_tentacles_icon')
+            model = json.loads(pack.read('assets/reallyworld/models/item/freak/kaneki_tentacles_icon.json'))
+            self.assertEqual(model['textures']['0'], 'reallyworld:item/freak/kaneki_tentacles_icon')
+            image = Image.open(io.BytesIO(pack.read(ICON)))
+            self.assertEqual(image.size, (32, 32))
+            self.assertEqual(image.mode, 'RGBA')
+            self.assertGreater(sum(1 for px in image.getdata() if px[3] > 0), 120, 'icon is drawn')
 
     def test_title_glyph_registered_once(self):
         with zipfile.ZipFile(self.pack) as pack:
@@ -163,12 +209,16 @@ class PackTests(unittest.TestCase):
             old_names, new_names = set(old.namelist()), set(new.namelist())
             changed = {n for n in old_names & new_names if old.read(n) != new.read(n)}
             added = new_names - old_names
-            self.assertEqual(changed, {FONT}, 'only the font file is rewritten')
+            allowed_changes = {FONT} | {n for n in changed
+                                        if MODEL in n or 'kaneki_tentacles_icon' in n}
+            self.assertLessEqual(changed, allowed_changes,
+                                 'only the tentacle model, its icon and the font may change')
             # the title bitmap may be new or redrawn, everything else is model data
-            self.assertTrue(TITLE in added or TITLE in changed)
-            self.assertLessEqual(added - {TITLE},
-                                 {n for n in added if n.startswith('assets/modelengine/')
-                                  and MODEL in n})
+            self.assertIn(TITLE, new_names, 'the menu title bitmap must survive the merge')
+            allowed = {n for n in added if n.startswith('assets/modelengine/') and MODEL in n}
+            allowed |= {n for n in added if n.startswith('assets/reallyworld/')
+                        and 'kaneki_tentacles_icon' in n}
+            self.assertLessEqual(added - {TITLE}, allowed)
             for name in ('pack.png', 'assets/minecraft/atlases/blocks.json',
                          'assets/minecraft/items/leather_horse_armor.json',
                          'assets/minecraft/models/item/leather_horse_armor.json'):

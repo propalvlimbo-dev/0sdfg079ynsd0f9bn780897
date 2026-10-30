@@ -188,9 +188,12 @@ def main():
     parser.add_argument('--assets', required=True)
     parser.add_argument('--title', required=True)
     parser.add_argument('--texture', help='texture PNG for the model (optional if already in --assets)')
+    parser.add_argument('--allow-existing-glyph', action='store_true',
+                        help='the source pack already carries the menu title glyph')
     args = parser.parse_args()
     sha1, replaced, removed = merge(args.source, args.destination, args.assets, args.title,
-                                    texture_png=args.texture)
+                                    texture_png=args.texture,
+                                    allow_existing_glyph=args.allow_existing_glyph)
     print(f'merged pack: {args.destination}')
     print(f'  font provider: {"replaced" if replaced else "added"}, stale files removed: {removed}')
     print(f'  SHA-1: {sha1}')

@@ -5,6 +5,7 @@ Contents (relative to /root/RW_GRIEF on the VDS):
 
     plugins/ModelEngine/blueprints/elytrix_kaneki_tentacles.bbmodel
     plugins/ModelEngine/resource pack/assets/modelengine/...   (generated assets)
+    plugins/ModelEngine/resource pack/assets/reallyworld/...   (menu icon)
     plugins/ElytrixFreakModel.jar                              (accessories menu)
     rp/Elytrix-RP-1.21.zip                                     (merged pack)
     plugins/ElytrixRP/config.yml                               (new SHA-1)
@@ -42,7 +43,8 @@ def build(output):
         merged = tmp / 'Elytrix-RP-1.21.zip'
         result = subprocess.run(
             [sys.executable, str(HERE / 'merge_pack.py'), str(ROOT / 'rp/Elytrix-RP-1.21.zip'),
-             str(merged), '--assets', str(HERE / 'assets'), '--title', str(TITLE)],
+             str(merged), '--assets', str(HERE / 'assets'), '--title', str(TITLE),
+             '--allow-existing-glyph'],
             check=True, capture_output=True, text=True)
         print(result.stdout.strip())
         pack_sha1 = sha1(merged)
@@ -88,4 +90,4 @@ def build(output):
 
 
 if __name__ == '__main__':
-    build(sys.argv[1] if len(sys.argv) > 1 else ROOT / 'elytrix-tentacles-v3.zip')
+    build(sys.argv[1] if len(sys.argv) > 1 else ROOT / 'elytrix-tentacles-v4.zip')
