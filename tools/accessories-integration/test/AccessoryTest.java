@@ -42,6 +42,13 @@ public class AccessoryTest {
   public void setBlockLight(int v){}public void setSkyLight(int v){}public void setCanHurt(boolean v){canHurt=v;}public void setShadowVisible(boolean v){shadow=v;}public void setHitboxVisible(boolean v){hitbox=v;}
   public void setLockPitch(boolean v){lockPitch=v;}public void setLockYaw(boolean v){lockYaw=v;}public void setViewRange(float v){view=v;}
   public void setScale(double v){}public void setPivotOverride(com.ticxo.modelengine.api.model.PivotOverride v){pivot=v;}
+  public java.util.Optional<com.ticxo.modelengine.api.model.bone.ModelBone> getBone(String id){
+   final com.ticxo.modelengine.api.utils.math.SafeTransform transform=new com.ticxo.modelengine.api.utils.math.SafeTransform();
+   return java.util.Optional.of(new com.ticxo.modelengine.api.model.bone.ModelBone(){
+    public String getBoneId(){return id;}
+    public com.ticxo.modelengine.api.utils.math.SafeTransform getLocalTransform(){return transform;}
+    public void setManualAnimator(com.ticxo.modelengine.api.model.bone.ManualAnimator a){}
+    public com.ticxo.modelengine.api.model.bone.ManualAnimator getManualAnimator(){return null;}});}
   public void setModelRotationLocked(Boolean v){rotLocked=v;}public void setLockedXHeadRot(float v){lockedX=v;}
   public void setLockedYHeadRot(float v){lockedY=v;}public void setLockedYBodyRot(float v){lockedBody=v;}}
  static class FakeModeled implements com.ticxo.modelengine.api.model.ModeledEntity {
@@ -94,7 +101,7 @@ public class AccessoryTest {
   ItemStack clearAll=Bukkit.slots.get(49);
   check(clearAll!=null && clearAll.getType()==Material.BARRIER,"one button clears everything");
   check(clearAll.meta.title.contains("Снять всё"),"clear-all is labelled");
-  check(Bukkit.slots.size()==5,"four accessories and clear-all");
+  check(Bukkit.slots.size()==6,"five accessories and clear-all");
   InventoryClickEvent click=new InventoryClickEvent();click.view=()->p.opened;click.who=p;click.slot=14;
   check(Bukkit.size==54 && Bukkit.title.contains("ꏠ"),"resource pack menu");
   click.slot=14;   // никакой кнопки «назад» в меню больше нет
@@ -160,6 +167,22 @@ public class AccessoryTest {
   ((FakeEngine)engine).noBlueprint=false;
   click.slot=15;controller.onClick(click);
   check(AccessoryController.wearingMaskModel(p),"mask back on");
+  // --- the centipede: its own model above the head ------------------------
+  check(Bukkit.slots.get(16)!=null,"a pet button sits next to the other accessories");
+  click.slot=16;controller.onClick(click);
+  check(AccessoryController.centipedeSelected(p),"centipede selected");
+  check(AccessoryController.wearingCentipede(p),"the centipede model is spawned");
+  // the crawl wave actually moves between two ticks
+  float[] first=AccessoryController.crawlAngles(3,false,false,0.0);
+  float[] second=AccessoryController.crawlAngles(3,false,false,0.27);
+  check(Math.abs(first[1]-second[1])>0.5,"the body wave advances");
+  float[] lookA=AccessoryController.crawlAngles(0,true,false,0.0);
+  float[] lookB=AccessoryController.crawlAngles(0,true,false,2.0);
+  check(Math.abs(lookA[1]-lookB[1])>1.0,"the head looks around");
+  click.slot=16;controller.onClick(click);
+  check(!AccessoryController.centipedeSelected(p) && !AccessoryController.wearingCentipede(p),"second click sends it away");
+  click.slot=16;controller.onClick(click);
+  check(AccessoryController.wearingCentipede(p),"and it comes back");
   // --- menu layout: нет кнопки «назад», «снять всё» внизу по центру -------
   check(Bukkit.slots.get(31)==null,"no back button any more");
   check(Bukkit.slots.get(30)==null,"old clear-all slot is empty");
@@ -169,6 +192,7 @@ public class AccessoryTest {
   check(AccessoryController.back(plugin,p)==null && AccessoryController.halo(plugin,p)==null &&
         !AccessoryController.maskSelected(p),"clear all wipes back and head");
   check(!AccessoryController.wearingMaskModel(p),"clear all also destroys the mask model");
+  check(!AccessoryController.wearingCentipede(p),"clear all sends the centipede away too");
   // legacy halo selection (written before the head slot existed) is honoured
   p.data.set(AccessoryController.HALO,PersistentDataType.STRING,"halo");
   check(AccessoryController.halo(plugin,p)==plugin.halo,"legacy halo key still works");

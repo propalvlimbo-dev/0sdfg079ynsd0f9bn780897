@@ -6,6 +6,8 @@ import com.ticxo.modelengine.api.model.ActiveModel;
 import com.ticxo.modelengine.api.model.ModeledEntity;
 import com.ticxo.modelengine.api.model.PivotOverride;
 import com.ticxo.modelengine.api.model.PivotOverrideRegistry;
+import com.ticxo.modelengine.api.model.bone.ManualAnimator;
+import com.ticxo.modelengine.api.model.bone.ModelBone;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -45,12 +47,22 @@ public final class AccessoryController implements CommandExecutor, Listener {
     /** Blueprint of the 3D mask (plugins/ModelEngine/blueprints/elytrix_kaneki_mask.bbmodel). */
     static final String MASK_CHOICE = "mask";
     static final String MASK_BLUEPRINT = "elytrix_kaneki_mask";
+    /** Pet slot: "centipede" or "" (nothing).  The animal flies above the head. */
+    static final NamespacedKey PET = new NamespacedKey("elytrixaccessories", "pet");
+    static final String PET_CHOICE = "centipede";
+    /** Blueprint of the flying centipede. */
+    static final String CENTIPEDE_BLUEPRINT = "elytrix_centipede";
     /** Donation rank that is allowed to wear the accessories, besides the staff. */
     static final String MEDIA_GROUP = "media";
     static final String USE_PERMISSION = "elytrixaccessories.use";
     private static boolean mediaGranted;
     private static ElytrixFreakModelPlugin host;
     private static final java.util.Map<java.util.UUID, ActiveModel> MASKS = new java.util.HashMap<>();
+    private static final java.util.Map<java.util.UUID, ActiveModel> PETS = new java.util.HashMap<>();
+    /** Players whose pet bones already carry the crawl animator. */
+    private static final java.util.Set<java.util.UUID> PET_ANIMATED = new java.util.HashSet<>();
+    /** Shared clock of the crawl wave, advanced once per server tick. */
+    static double crawlPhase;
     private AccessoryController() {}
     private static FreakModelSpec cachedTentacles;
 
@@ -70,6 +82,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
             // Маска живёт отдельно от рига крыльев: свой такт, чтобы её можно было
             // надеть и снять, даже когда на спине и на голове ничего нет.
             Bukkit.getScheduler().runTaskTimer(plugin, AccessoryController::tickAll, 40L, 5L);
+            // Every tick only for the wave clock: without it the centipede freezes.
+            Bukkit.getScheduler().runTaskTimer(plugin, AccessoryController::animatePets, 5L, 1L);
             grantDonationAccess();
         } catch (Throwable failure) {
             plugin.getLogger().warning("[Аксессуары] меню не подключилось: " + failure);
@@ -129,6 +143,131 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return allowed(player) && headChoice(player).equals(MASK_CHOICE);
     }
 
+    /** True when this player should be followed by the centipede. */
+    public static boolean centipedeSelected(Player player) {
+        return allowed(player) && get(player, PET).equals(PET_CHOICE);
+    }
+
+    /** Test hook: is the centipede model alive for this player right now? */
+    static boolean wearingCentipede(Player player) {
+        ActiveModel model = PETS.get(player.getUniqueId());
+        return model != null && !model.isDestroyed();
+    }
+
+    /** Test hook: the angles the crawl animator asks for at a given phase. */
+    static float[] crawlAngles(int index, boolean head, boolean root, double phase) {
+        double p = phase - index * 0.62D;
+        if (root) return new float[] {0.0F, (float) (26.0D * Math.sin(phase * 0.17D)), 0.0F};
+        if (head) return new float[] {(float) (7.0D * Math.sin(phase * 0.80D + 1.0D)),
+            (float) (18.0D * Math.sin(phase * 0.55D)), 0.0F};
+        return new float[] {(float) (4.0D * Math.sin(p * 0.5D)),
+            (float) (15.0D * Math.sin(p)), (float) (5.0D * Math.sin(p + 1.1D))};
+    }
+
+    /** One bone of the animal: the head looks around, the body carries the wave. */
+    private static final class Crawl implements ManualAnimator {
+        private final int index;
+        private final boolean head;
+        private final boolean root;
+        Crawl(int index, boolean head, boolean root) {
+            this.index = index;
+            this.head = head;
+            this.root = root;
+        }
+        @Override public boolean applyBoneDefaultLocal() {
+            return true;                       // keep the pivot the blueprint asks for
+        }
+        @Override public void animate(ModelBone bone) {
+            float[] angles = crawlAngles(index, head, root, crawlPhase);
+            float pitch = angles[0], yaw = angles[1], roll = angles[2];
+            bone.getLocalTransform().mutateSafe(transform ->
+                transform.mutateLeftEuler(vector -> vector.set(pitch, yaw, roll)));
+        }
+    }
+
+    /** Spawns or removes the pet and keeps the crawl animators attached. */
+    static void syncPet(Player player) {
+        if (player == null || !player.isOnline()) return;
+        boolean want = centipedeSelected(player);
+        ActiveModel model = PETS.get(player.getUniqueId());
+        if (want && (model == null || model.isDestroyed())) {
+            model = spawnPet(player);
+            if (model != null) PETS.put(player.getUniqueId(), model);
+        } else if (!want && model != null) {
+            removePet(player, model);
+            return;
+        }
+        if (want) attachCrawl(player.getUniqueId(), model);
+    }
+
+    /** Called every tick: moves the wave and fills in animators that were not ready yet. */
+    static void animatePets() {
+        crawlPhase += 0.27D;
+        for (java.util.Map.Entry<java.util.UUID, ActiveModel> entry : PETS.entrySet()) {
+            attachCrawl(entry.getKey(), entry.getValue());
+        }
+    }
+
+    private static void attachCrawl(java.util.UUID id, ActiveModel model) {
+        if (model == null || model.isDestroyed() || PET_ANIMATED.contains(id)) return;
+        boolean root = hookBone(model, "body_root", new Crawl(0, false, true));
+        boolean head = hookBone(model, "head", new Crawl(0, true, false));
+        boolean body = true;
+        for (int index = 1; index <= 9; index++) {
+            body &= hookBone(model, "c" + index, new Crawl(index, false, false));
+        }
+        if (root && head && body) PET_ANIMATED.add(id);
+    }
+
+    private static boolean hookBone(ActiveModel model, String boneId, ManualAnimator animator) {
+        try {
+            java.util.Optional<ModelBone> bone = model.getBone(boneId);
+            if (bone == null || bone.isEmpty()) return false;
+            bone.get().setManualAnimator(animator);
+            return true;
+        } catch (Throwable ignored) {
+            return false;
+        }
+    }
+
+    private static ActiveModel spawnPet(Player player) {
+        ModelBlueprint blueprint = ModelEngineAPI.getBlueprint(CENTIPEDE_BLUEPRINT);
+        if (blueprint == null) return null;
+        ModeledEntity entity = ModelEngineAPI.getOrCreateModeledEntity(player);
+        if (entity == null || entity.isDestroyed()) return null;
+        ActiveModel model = ModelEngineAPI.createActiveModel(blueprint);
+        if (model == null) return null;
+        model.setBlockLight(15);
+        model.setSkyLight(15);
+        model.setCanHurt(false);
+        model.setShadowVisible(false);
+        model.setHitboxVisible(false);
+        model.setLockPitch(true);
+        model.setLockYaw(true);
+        model.setViewRange(3.0F);
+        PivotOverrideRegistry registry = ModelEngineAPI.getPivotOverrideRegistry();
+        PivotOverride pivot = registry == null ? null : registry.getOrCreate(player);
+        if (pivot != null) model.setPivotOverride(pivot);
+        entity.addModel(model, true);
+        return model;
+    }
+
+    private static void removePet(Player player, ActiveModel model) {
+        PETS.remove(player.getUniqueId());
+        PET_ANIMATED.remove(player.getUniqueId());
+        try {
+            ModeledEntity entity = ModelEngineAPI.getModeledEntity(player);
+            if (entity != null && !entity.isDestroyed()) entity.removeModel(CENTIPEDE_BLUEPRINT);
+        } catch (Throwable ignored) {
+            // destroyed below anyway
+        }
+        try {
+            if (!model.isDestroyed()) model.destroy();
+        } catch (Throwable ignored) {
+            // already gone
+        }
+    }
+
     /** Test hook: is the 3D mask model alive for this player right now? */
     static boolean wearingMaskModel(Player player) {
         ActiveModel model = MASKS.get(player.getUniqueId());
@@ -147,6 +286,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
             removeMask(player, model);
         }
         if (want) hideOwnMask(player);
+        syncPet(player);
     }
 
     /** Keeps every masked player in sync; called every five ticks from install(). */
@@ -333,6 +473,10 @@ public final class AccessoryController implements CommandExecutor, Listener {
         menu.setItem(15, item(Material.PAPER, "§x§F§A§D§8§F§C§lМаска Канэки", "kaneki_eyepatch_icon",
             mask ? lore(chosen, "§73D-маска на лицо", "§7Не занимает слот брони", "§7Нажми ещё раз — снять")
                  : lore(hint, "§73D-маска на лицо", "§7Не занимает слот брони")));
+        boolean bug = allowed && get(player, PET).equals(PET_CHOICE);
+        menu.setItem(16, item(Material.SPIDER_EYE, "§x§F§A§D§8§F§C§lСороконожка", null,
+            bug ? lore(chosen, "§7Живая сороконожка над головой", "§7Ползает и покачивается", "§7Нажми ещё раз — снять")
+                : lore(hint, "§7Живая сороконожка над головой", "§7Ползает и покачивается")));
         // 49 — нижний ряд, середина: кнопка «Снять всё» в самом низу меню
         menu.setItem(49, item(Material.BARRIER, "§cСнять всё", null,
             lore("§dНажми, чтобы снять", "§7Убирает и спину, и голову")));
@@ -382,7 +526,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
             return;
         }
         String blueprint = slot == 12 ? "elytrix_angel_wings" : slot == 13 ? "elytrix_angel_halo"
-            : slot == 14 ? "elytrix_kaneki_tentacles" : slot == 15 ? MASK_BLUEPRINT : null;
+            : slot == 14 ? "elytrix_kaneki_tentacles" : slot == 15 ? MASK_BLUEPRINT
+            : slot == 16 ? CENTIPEDE_BLUEPRINT : null;
         if (blueprint != null && ModelEngineAPI.getBlueprint(blueprint) == null) {
             player.sendMessage("§cМодель ещё не загружена. Обратитесь к администрации."); return;
         }
@@ -391,13 +536,34 @@ public final class AccessoryController implements CommandExecutor, Listener {
         else if (slot == 14) { toggleBack(player, "kaneki", "Щупальца Канэки"); }
         else if (slot == 13) { toggleHead(player, "halo", "Нимб", "надет", "снят"); }
         else if (slot == 15) { toggleMask(player); }
+        else if (slot == 16) { togglePet(player); }
         else if (slot == 49) {
             set(player, BACK, ""); setHead(player, "");
             ActiveModel model = MASKS.get(player.getUniqueId());
             if (model != null) removeMask(player, model);
+            ActiveModel pet = PETS.get(player.getUniqueId());
+            if (pet != null) removePet(player, pet);
+            set(player, PET, "");
             player.sendMessage("§7Все аксессуары сняты.");
         } else return;
         openMenu(player);
+    }
+
+    private static void togglePet(Player player) {
+        if (get(player, PET).equals(PET_CHOICE)) {
+            set(player, PET, "");
+            ActiveModel model = PETS.get(player.getUniqueId());
+            if (model != null) removePet(player, model);
+            player.sendMessage("§7Сороконожка улетела.");
+            return;
+        }
+        if (ModelEngineAPI.getBlueprint(CENTIPEDE_BLUEPRINT) == null) {
+            player.sendMessage("§cМодель сороконожки ещё не загружена. Обратитесь к администрации.");
+            return;
+        }
+        set(player, PET, PET_CHOICE);
+        syncPet(player);
+        player.sendMessage("§dСороконожка приползла.");
     }
 
     private static void toggleBack(Player player, String choice, String name) {

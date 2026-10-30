@@ -1,10 +1,12 @@
 package com.ticxo.modelengine.api.model;
 import com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint;
+import com.ticxo.modelengine.api.model.bone.ModelBone;
 /** Compile-time stand-in: only the calls the accessory code makes. */
 public interface ActiveModel {
     boolean isDestroyed();
     void destroy();
     ModelBlueprint getBlueprint();
+    java.util.Optional<ModelBone> getBone(String id);
     void setBlockLight(int light);
     void setSkyLight(int light);
     void setCanHurt(boolean value);
