@@ -8,6 +8,7 @@ public class Bukkit {
     public static final BukkitScheduler scheduler = (plugin,task,delay,period) -> {tasks.add(task);return new BukkitTask(){public void cancel(){}public int getTaskId(){return tasks.size();}};};
     public static BukkitScheduler getScheduler(){return scheduler;}
     public static java.util.Collection<? extends Player> getOnlinePlayers(){return online;}
+    public static Player getPlayer(java.util.UUID id){for(Player p:online) if(p.getUniqueId().equals(id)) return p; return null;}
     public static PluginManager getPluginManager(){return manager;}
     public static CommandSender getConsoleSender(){return console;}
     public static boolean dispatchCommand(CommandSender sender,String command){if(!dispatchWorks)return false;dispatched.add(command);return true;}

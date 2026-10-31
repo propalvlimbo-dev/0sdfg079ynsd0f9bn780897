@@ -2,6 +2,7 @@ package com.ticxo.modelengine.api.model;
 import java.util.Optional;
 /** Compile-time stand-in. */
 public interface ModeledEntity {
+    com.ticxo.modelengine.api.entity.BaseEntity getBase();
     boolean isDestroyed();
     void setBaseEntityVisible(boolean visible);
     Optional<ActiveModel> addModel(ActiveModel model, boolean passenger);

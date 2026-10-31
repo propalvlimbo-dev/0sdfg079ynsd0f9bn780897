@@ -4,7 +4,12 @@ import com.ticxo.modelengine.api.ModelEngineAPI;
 import com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint;
 import com.ticxo.modelengine.api.model.ActiveModel;
 import com.ticxo.modelengine.api.model.ModeledEntity;
+import com.ticxo.modelengine.api.entity.BaseEntity;
+import com.ticxo.modelengine.api.entity.CullType;
+import com.ticxo.modelengine.api.entity.data.BukkitEntityData;
+import com.ticxo.modelengine.api.entity.data.IEntityData;
 import com.ticxo.modelengine.api.model.PivotOverride;
+import com.ticxo.modelengine.api.nms.entity.wrapper.TrackedEntity;
 import com.ticxo.modelengine.api.model.PivotOverrideRegistry;
 import com.ticxo.modelengine.api.model.bone.ManualAnimator;
 import com.ticxo.modelengine.api.model.bone.ModelBone;
@@ -59,6 +64,12 @@ public final class AccessoryController implements CommandExecutor, Listener {
     private static final java.util.Set<java.util.UUID> PET_ANIMATED = new java.util.HashSet<>();
     /** Bones of the centipede blueprint that carry the crawl wave. */
     static final int PET_BONES = 11;
+    /** Tracking range, in blocks: 96 is the value the working wings rig uses. */
+    static final int VIEW_RANGE = 96;
+    /** Ticks the model stays in the wearer's tracking set before it is refreshed. */
+    static final long RE_PAIR_TICKS = 100;
+    /** Advances once per server tick; used for the refresh timer. */
+    static long petTicks;
     /** Shared clock of the crawl wave, advanced once per server tick. */
     static double crawlPhase;
     private AccessoryController() {}
@@ -69,6 +80,12 @@ public final class AccessoryController implements CommandExecutor, Listener {
         final ActiveModel model;
         final PivotOverride pivot;
         boolean attached;
+        /** The wearer is in the model's tracking set and culling is switched off. */
+        boolean ownerSees;
+        long pairedAt;
+        /** One automatic rebuild per pet if the pivot stops following the player. */
+        boolean rescued;
+        int lostTicks;
         /** The ready line is written once per wearer, not every tick. */
         boolean loggedBones;
         Pet(ActiveModel model, PivotOverride pivot) {
@@ -247,6 +264,60 @@ public final class AccessoryController implements CommandExecutor, Listener {
     }
 
     /**
+     * Makes the wearer actually receive their own model, and stops ModelEngine
+     * from culling it away.
+     *
+     * <p>Two things were missing for the centipede, and both are the reason it
+     * existed on the server yet was never on the player's screen:
+     * <ul>
+     *   <li>ModelEngine sends a model to the players that <em>track</em> the base
+     *       entity - and a player never tracks themself. The wearer therefore saw
+     *       nothing while everyone around did. The wings rig fixes this with
+     *       {@code TrackedEntity.addForcedPairing(player)}; the pet needs the
+     *       same call.</li>
+     *   <li>By default the engine drops a model that sits too far above or
+     *       behind its base (vertical/back/blocked cull). A bug hovering two
+     *       blocks above the head is exactly what that culling throws away, so
+     *       all three are switched off.</li>
+     * </ul>
+     */
+    static boolean ensureOwnerSees(Player player, ActiveModel model) {
+        if (player == null || model == null || model.isDestroyed()) return false;
+        ModeledEntity entity;
+        try {
+            entity = model.getModeledEntity();
+        } catch (Throwable failure) {
+            reportOnce("видимость", failure);
+            return false;
+        }
+        if (entity == null || entity.isDestroyed()) return false;
+        try {
+            BaseEntity base = entity.getBase();
+            if (base == null) return false;
+            IEntityData data = base.getData();
+            if (data == null) return false;
+            data.setVerticalCull(false);          // a flying pet is above the head
+            data.setBackCull(false);              // and behind the player's back
+            data.setBlockedCull(false);           // walls must not hide it either
+            data.setCullInterval(1);
+            data.setVerticalCullType(CullType.NO_CULL);
+            data.setBackCullType(CullType.NO_CULL);
+            data.setBlockedCullType(CullType.NO_CULL);
+            if (data instanceof BukkitEntityData) {
+                TrackedEntity tracked = ((BukkitEntityData) data).getTracked();
+                if (tracked != null) {
+                    tracked.addForcedPairing(player.getUniqueId());
+                    if (tracked.getBaseRange() < VIEW_RANGE) tracked.setBaseRange(VIEW_RANGE);
+                }
+            }
+            return true;
+        } catch (Throwable failure) {
+            reportOnce("видимость", failure);
+            return false;
+        }
+    }
+
+    /**
      * Registers the model's pivot entity as a passenger of the player's pivot
      * override.  This is the step that actually makes a ModelEngine model ride on
      * an entity: without it the model is created, its bones exist, and nothing is
@@ -285,14 +356,20 @@ public final class AccessoryController implements CommandExecutor, Listener {
             return;
         }
         if (!want || pet == null) return;
+        rescuesIfLost(pet, player);
+        if (!pet.ownerSees || petTicks - pet.pairedAt > RE_PAIR_TICKS) {
+            pet.ownerSees = ensureOwnerSees(player, pet.model);
+            pet.pairedAt = petTicks;
+        }
         if (!pet.attached) pet.attached = attachPivotToPlayer(pet.model, pet.pivot);
         int bound = attachCrawl(player.getUniqueId(), pet.model);
-        logPetReady(pet, bound);
+        logPetReady(pet, bound, pivotDistance(pet.model, player));
     }
 
     /** Called every tick: moves the wave, attaches the pivot, rescues a dead model. */
     static void animatePets() {
         crawlPhase += 0.27D;
+        petTicks++;
         if (PETS.isEmpty()) return;
         for (java.util.Map.Entry<java.util.UUID, Pet> entry : new java.util.ArrayList<>(PETS.entrySet())) {
             Pet pet = entry.getValue();
@@ -303,7 +380,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
                     continue;
                 }
                 if (!pet.attached) pet.attached = attachPivotToPlayer(pet.model, pet.pivot);
-                logPetReady(pet, attachCrawl(entry.getKey(), pet.model));
+                Player wearer = Bukkit.getPlayer(entry.getKey());
+                logPetReady(pet, attachCrawl(entry.getKey(), pet.model),
+                            wearer == null ? -1.0D : pivotDistance(pet.model, wearer));
             } catch (Throwable failure) {
                 reportOnce("питомец", failure);
             }
@@ -328,13 +407,63 @@ public final class AccessoryController implements CommandExecutor, Listener {
      * answers «видно её или нет»: bones bound, and whether the pivot rides the
      * player.  A model with unbound bones still shows, but it will not crawl.
      */
-    private static void logPetReady(Pet pet, int bound) {
+    private static void logPetReady(Pet pet, int bound, double pivotDistance) {
         if (pet.loggedBones || bound < PET_BONES) return;
         pet.loggedBones = true;
         if (host == null) return;
         host.getLogger().info("[Аксессуары] сороконожка: кости " + bound + "/" + PET_BONES
             + ", " + (pet.attached ? "модель едет на игроке"
-                                   : "pivot пока не прикрепился, повторяю каждый тик"));
+                                   : "pivot пока не прикрепился, повторяю каждый тик")
+            + ", " + (pet.ownerSees ? "владелец в трекинге, куллинг выключен"
+                                    : "владелец НЕ в трекинге — модель ему не отправлена")
+            + (pivotDistance < 0.0D ? ", позиция pivot неизвестна"
+                                    : String.format(java.util.Locale.ROOT,
+                                        ", pivot в %.2f блока от игрока", pivotDistance)));
+    }
+
+    /**
+     * Rebuilds the model once if its pivot has stopped following the player.
+     *
+     * <p>A live model whose pivot froze (renderer re-initialised under it, chunk
+     * reload, teleport across worlds) stays on the server forever and is never
+     * seen again. One silent respawn turns that into a short blink instead of a
+     * permanent "нету".
+     */
+    private static void rescuesIfLost(Pet pet, Player player) {
+        if (pet.rescued || !pet.attached) return;
+        double distance = pivotDistance(pet.model, player);
+        if (distance < 0.0D || distance < 8.0D) {
+            pet.lostTicks = 0;
+            return;
+        }
+        if (++pet.lostTicks < 3) return;
+        pet.rescued = true;
+        try {
+            removePet(player, pet);
+        } catch (Throwable ignored) {
+            // the next sync spawns a fresh one anyway
+        }
+        if (host != null) host.getLogger().warning("[Аксессуары] сороконожка отстала от игрока на "
+            + String.format(java.util.Locale.ROOT, "%.1f", distance) + " блока — пересоздал модель");
+    }
+
+    /** Distance between the model's pivot and the player, in blocks (diagnostics). */
+    static double pivotDistance(ActiveModel model, Player player) {
+        try {
+            ModelRenderer renderer = model.getModelRenderer();
+            if (!(renderer instanceof DisplayRenderer)) return -1.0D;
+            DisplayRenderer display = (DisplayRenderer) renderer;
+            DisplayRenderer.Pivot pivot = display.getPivot();
+            if (pivot == null || pivot.getPosition() == null) return -1.0D;
+            Object position = pivot.getPosition().get();
+            if (!(position instanceof org.joml.Vector3f)) return -1.0D;
+            org.joml.Vector3f p = (org.joml.Vector3f) position;
+            org.bukkit.Location loc = player.getLocation();
+            double dx = p.x - loc.getX(), dy = p.y - loc.getY(), dz = p.z - loc.getZ();
+            return Math.sqrt(dx * dx + dy * dy + dz * dz);
+        } catch (Throwable ignored) {
+            return -1.0D;
+        }
     }
 
     private static boolean hookBone(ActiveModel model, String boneId, ManualAnimator animator) {
@@ -359,6 +488,10 @@ public final class AccessoryController implements CommandExecutor, Listener {
         // visible at night: it would otherwise be a black silhouette after dusk.
         model.setBlockLight(15);
         model.setSkyLight(15);
+        // The blueprint is a real bug: 0.14 blocks thick and one block long. At
+        // first person that is a line above the head, so the pet is scaled up to
+        // read as an animal (~0.2 x 1.5 blocks) without becoming a monument.
+        model.setScale(1.5D);
         model.setCanHurt(false);
         model.setShadowVisible(false);
         model.setHitboxVisible(false);

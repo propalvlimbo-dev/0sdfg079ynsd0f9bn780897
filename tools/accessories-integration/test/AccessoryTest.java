@@ -46,7 +46,7 @@ public class AccessoryTest {
         public void addPassenger(int id){passengers.add(id);}
         public com.ticxo.modelengine.api.utils.data.tracker.CollectionDataTracker getPassengers(){return passengers;}};}
  static class FakeActive implements com.ticxo.modelengine.api.model.ActiveModel {
-  final com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint bp;boolean destroyed,canHurt=true,shadow=true,hitbox=true,lockPitch,lockYaw;float view;Boolean rotLocked;float lockedX,lockedY,lockedBody;com.ticxo.modelengine.api.model.PivotOverride pivot;
+  final com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint bp;boolean destroyed,canHurt=true,shadow=true,hitbox=true,lockPitch,lockYaw;float view;Boolean rotLocked;float lockedX,lockedY,lockedBody;com.ticxo.modelengine.api.model.PivotOverride pivot;FakeModeled owner;
   FakeActive(com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint bp){this.bp=bp;}
   public boolean isDestroyed(){return destroyed;}public void destroy(){destroyed=true;}
   public com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint getBlueprint(){return bp;}
@@ -58,7 +58,14 @@ public class AccessoryTest {
    return new com.ticxo.modelengine.api.model.render.DisplayRenderer(){
     public boolean isInitialized(){return rendererReady;}
     public void initialize(){rendererReady=true;}
-    public Pivot getPivot(){return () -> pivotId;}};}
+    public Pivot getPivot(){return new Pivot(){
+     public int getId(){return pivotId;}
+     public boolean isOverridden(){return false;}
+     public com.ticxo.modelengine.api.utils.data.tracker.DataTracker getPosition(){
+      return new com.ticxo.modelengine.api.utils.data.tracker.DataTracker(){
+       public Object get(){return new org.joml.Vector3f(0,64,0);}};}};}};}
+
+  public com.ticxo.modelengine.api.model.ModeledEntity getModeledEntity(){return owner;}
   public java.util.Optional<com.ticxo.modelengine.api.model.bone.ModelBone> getBone(String id){
    final com.ticxo.modelengine.api.utils.math.SafeTransform transform=new com.ticxo.modelengine.api.utils.math.SafeTransform();
    return java.util.Optional.of(new com.ticxo.modelengine.api.model.bone.ModelBone(){
@@ -73,10 +80,30 @@ public class AccessoryTest {
   FakeModeled(Query q){this.q=q;}
   public boolean isDestroyed(){return destroyed;}
   public void setBaseEntityVisible(boolean v){baseVisible=v;}
-  public Optional<com.ticxo.modelengine.api.model.ActiveModel> addModel(com.ticxo.modelengine.api.model.ActiveModel m,boolean passenger){adds++;q.last=(FakeActive)m;models.put("elytrix_centipede",m);return Optional.of(m);}
+  public Optional<com.ticxo.modelengine.api.model.ActiveModel> addModel(com.ticxo.modelengine.api.model.ActiveModel m,boolean passenger){adds++;q.last=(FakeActive)m;((FakeActive)m).owner=this;models.put("elytrix_centipede",m);return Optional.of(m);}
   public Optional<com.ticxo.modelengine.api.model.ActiveModel> removeModel(String id){removes++;com.ticxo.modelengine.api.model.ActiveModel m=models.remove(id);if(m instanceof FakeActive)((FakeActive)m).destroy();return Optional.ofNullable(m);}
   public Optional<com.ticxo.modelengine.api.model.ActiveModel> getModel(String id){return Optional.ofNullable(models.get(id));}
-  public void setYBodyRotImmediately(float v){}public void setYHeadRotImmediately(float v){}public void setXHeadRotImmediately(float v){}public void setRotationTick(int t){}}
+  public void setYBodyRotImmediately(float v){}public void setYHeadRotImmediately(float v){}public void setXHeadRotImmediately(float v){}public void setRotationTick(int t){}
+  final FakeBase base=new FakeBase();
+  public com.ticxo.modelengine.api.entity.BaseEntity getBase(){return base;}}
+ static class FakeBase implements com.ticxo.modelengine.api.entity.BaseEntity {
+  final FakeData data=new FakeData();
+  public com.ticxo.modelengine.api.entity.data.IEntityData getData(){return data;}
+  public int getEntityId(){return 7;}
+  public java.util.UUID getUUID(){return java.util.UUID.randomUUID();}}
+ /** Records what the controller did to the engine's culling and tracking. */
+ static class FakeData extends com.ticxo.modelengine.api.entity.data.BukkitEntityData {
+  Boolean verticalCull=true,backCull=true,blockedCull=true;Integer cullInterval;int baseRange=32;java.util.UUID paired;
+  public com.ticxo.modelengine.api.nms.entity.wrapper.TrackedEntity getTracked(){
+   return new com.ticxo.modelengine.api.nms.entity.wrapper.TrackedEntity(){
+    public int getBaseRange(){return baseRange;}
+    public void setBaseRange(int r){baseRange=r;}
+    public void addForcedPairing(java.util.UUID u){paired=u;}
+    public void removeForcedPairing(java.util.UUID u){}};}
+  public void setVerticalCull(Boolean v){verticalCull=v;}
+  public void setBackCull(Boolean v){backCull=v;}
+  public void setBlockedCull(Boolean v){blockedCull=v;}
+  public void setCullInterval(Integer v){cullInterval=v;}}
  static class Query {FakeActive last;int blueprints;int created;}
  static class FakeEngine implements ModelEngineAPI.Backend {
   final Query q=new Query();final Map<UUID,FakeModeled> entities=new HashMap<>();final FakePivotRegistry pivots=new FakePivotRegistry();
@@ -147,12 +174,21 @@ public class AccessoryTest {
   click.slot=15;controller.onClick(click);
   check(AccessoryController.centipedeSelected(p),"centipede selected");
   check(AccessoryController.wearingCentipede(p),"the centipede model is spawned");
+  // the wearer never tracks themself, and the pet hovers above the head where the
+  // vertical cull would eat it: both must be fixed or nothing is ever visible
+  FakeData engineData=((FakeEngine)ModelEngineAPI.backend).entities.get(p.uuid).base.data;
+  check(Boolean.FALSE.equals(engineData.verticalCull),"the vertical cull is off (pet is above the head)");
+  check(Boolean.FALSE.equals(engineData.backCull) && Boolean.FALSE.equals(engineData.blockedCull),"back and blocked culls are off");
+  check(p.uuid.equals(engineData.paired),"the wearer is force-paired into the model's tracking set");
+  check(engineData.baseRange>=96,"and the tracking range covers the pet");
   // The renderer is not ready right after addModel, exactly like the real engine:
   // the pivot must be attached on a later tick, otherwise nothing is visible.
   check(!AccessoryController.centipedeAttached(p),"not attached while the renderer boots");
   ((FakeActive)((FakeEngine)ModelEngineAPI.backend).entities.get(p.uuid).models.get("elytrix_centipede")).rendererReady=true;
   AccessoryController.animatePets();
   check(AccessoryController.centipedeAttached(p),"the pivot rides the player once the renderer is up");
+  check(AccessoryController.ensureOwnerSees(p, ((FakeEngine)ModelEngineAPI.backend).entities.get(p.uuid).models.get("elytrix_centipede")),
+        "re-applying the visibility fix is idempotent");
   check(((FakeEngine)ModelEngineAPI.backend).pivots.passengers.contains(4242),"pivot id became a passenger");
   check(((FakeEngine)ModelEngineAPI.backend).pivots.passengers.dirty,"and the passenger list was marked dirty");
   // handleBoneCrawl still finds every bone, so the wave is wired

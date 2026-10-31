@@ -9,6 +9,7 @@ public interface ActiveModel {
     ModelBlueprint getBlueprint();
     java.util.Optional<ModelBone> getBone(String id);
     ModelRenderer getModelRenderer();
+    ModeledEntity getModeledEntity();
     void setBlockLight(int light);
     void setSkyLight(int light);
     void setCanHurt(boolean value);
