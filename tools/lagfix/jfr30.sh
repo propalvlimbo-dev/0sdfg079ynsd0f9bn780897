@@ -73,6 +73,36 @@ make_hi_jfc() {  # копия profile.jfc с частыми сэмплами в�
     printf '%s' "$out"
 }
 
+# --- счётчики процессора / cgroup -------------------------------------------
+CG2=/sys/fs/cgroup
+CG1=/sys/fs/cgroup/cpu
+cpu_stat() {  # печатает: nr_throttled throttled_ms usage_ms
+    if [ -r "$CG2/cpu.stat" ]; then
+        awk '/^usage_usec/ {u=$2} /^nr_throttled/ {t=$2} /^throttled_usec/ {d=$2}
+             END { printf "%d %d %d\n", t+0, int((d+0)/1000), int((u+0)/1000) }' "$CG2/cpu.stat"
+    elif [ -r "$CG1/cpu.stat" ]; then
+        awk '/^nr_throttled/ {t=$2} /^throttled_time/ {d=$2} /^usage_usec/ {u=$2}
+             END { printf "%d %d %d\n", t+0, int((d+0)/1000000), int((u+0)/1000) }' "$CG1/cpu.stat"
+    else
+        printf '0 0 0\n'
+    fi
+}
+CLK=$(getconf CLK_TCK 2>/dev/null || echo 100)
+cpu_quota() {
+    if [ -r "$CG2/cpu.max" ]; then cat "$CG2/cpu.max"
+    elif [ -r "$CG1/cpu.cfs_quota_us" ]; then
+        printf '%s %s\n' "$(cat "$CG1/cpu.cfs_quota_us")" "$(cat "$CG1/cpu.cfs_period_us")"
+    else echo "нет"; fi
+}
+psi_cpu() {
+    [ -r /proc/pressure/cpu ] || { printf 'n/a\n'; return; }
+    awk '/^some/ { for (i = 1; i <= NF; i++) if ($i ~ /^avg10=/) { sub(/avg10=/, "", $i); print $i } }' /proc/pressure/cpu
+}
+jvm_ticks() {  # utime+stime процесса в тиках
+    awk '{ print $14 + $15 }' "/proc/$1/stat" 2>/dev/null
+}
+
+
 PID=$(find_pid)
 
 analyze_window() {  # $1 файл, $2 lo, $3 hi — печатает события и сэмплы окна
@@ -173,6 +203,110 @@ ticks)  # история медленных тиков из лога: время
             printf "  %s  %8.1f ms   %s\n", t, ms, (prev == "" ? "" : "+" d " с")
             prev = sec
         }'
+    ;;
+cpu)  # раз в секунду пишем в cpu.log: троттлинг cgroup, PSI, нагрузку
+    SECS=${3:-1800}
+    OUTCPU=$SERVER_DIR/cpu.log
+    if [ -z "$PID" ]; then echo "процесс сервера не найден" >&2; exit 1; fi
+    {
+        echo "# $(date '+%Y-%m-%d %H:%M:%S') ядер: $(nproc), quota: $(cpu_quota), pid: $PID"
+        echo "# колонки: время thr=<периодов троттлинга> thr_ms=<время троттлинга мс> cpu_ms=<израсходовано CPU мс>"
+        echo "#          psi=<давление CPU avg10> load=<loadavg1> jvm=<доля CPU процесса % от одного ядра>"
+    } > "$OUTCPU"
+    echo "пишу $OUTCPU каждую секунду, ${SECS} с. Остановить: Ctrl+C"
+    prev_t=""; prev_u=""; prev_j=""; end=$(( $(date +%s) + SECS ))
+    while [ "$(date +%s)" -lt "$end" ]; do
+        read -r t d u <<< "$(cpu_stat)"
+        j=$(jvm_ticks "$PID")
+        if [ -n "$prev_t" ]; then
+            dj=$(( j - prev_j )); du=$(( u - prev_u ))
+            jpct=$(( dj * 100 / CLK ))   # тиков за 1 с -> % одного ядра
+            printf '%s thr=%d thr_ms=%d cpu_ms=%d psi=%s load=%s jvm=%d\n' \
+                "$(date '+%H:%M:%S')" "$t" "$d" "$du" "$(psi_cpu)" "$(cut -d' ' -f1 /proc/loadavg)" "$jpct" >> "$OUTCPU"
+        fi
+        prev_t=$t; prev_u=$u; prev_j=$j
+        sleep 1
+    done
+    echo "готово: $OUTCPU"
+    ;;
+cpu-report)  # троттлинг против лагов
+    OUTCPU=$SERVER_DIR/cpu.log
+    [ -f "$OUTCPU" ] || { echo "нет $OUTCPU — сначала: bash $0 $SERVER_DIR cpu 1800" >&2; exit 1; }
+    : > "$OUT"
+    say "=== CPU report $(date '+%Y-%m-%d %H:%M:%S') ==="
+    head -2 "$OUTCPU" | sed 's/^/  /' | tee -a "$OUT"
+    say ""
+    awk '
+        /^#/ { next }
+        {
+            split($1, t, ":"); sec = t[1] * 3600 + t[2] * 60 + t[3] + 0
+            th = 0; thm = 0; jv = 0
+            for (i = 2; i <= NF; i++) {
+                if ($i ~ /^thr=/)    { v = $i; sub(/thr=/, "", v); th = v + 0 }
+                if ($i ~ /^thr_ms=/) { v = $i; sub(/thr_ms=/, "", v); thm = v + 0 }
+                if ($i ~ /^jvm=/)    { v = $i; sub(/jvm=/, "", v); jv = v + 0 }
+                if ($i ~ /^psi=/)    { v = $i; sub(/psi=/, "", v); ps = v + 0 }
+            }
+            n++
+            if (prev != "") {
+                if (th > prev_th) { grow++; grow_ms[grow] = thm - prev_thm; grow_t[grow] = $1; grow_j[grow] = jv }
+            }
+            prev_th = th; prev_thm = thm
+            if (jv > maxjv) maxjv = jv
+            if (ps > maxpsi) maxpsi = ps
+            first_th = (first_th == "") ? th : first_th
+            last_th = th; last_thm = thm
+        }
+        END {
+            printf "  секунд наблюдения: %d\n", n
+            printf "  троттлинг всего: %d периодов, %.1f с\n", last_th, last_thm / 1000
+            printf "  максимум CPU процесса: %d%% одного ядра\n", maxjv
+            printf "  максимум давление CPU (PSI avg10): %.2f\n", maxpsi
+            if (grow == 0) {
+                print ""
+                print "  >>> ВЕРДИКТ: процесс НЕ троттлился — CPU-квота не при чём."
+            } else {
+                print ""
+                printf "  >>> ВЕРДИКТ: было %d эпизодов троттлинга:\n", grow
+                for (i = 1; i <= grow && i <= 20; i++) printf "      %s  +%.1f с троттлинга, CPU %d%%\n", grow_t[i], grow_ms[i] / 1000, grow_j[i]
+            }
+        }' "$OUTCPU" | tee -a "$OUT"
+
+    if [ -f "$SERVER_DIR/lag-events.log" ]; then
+        say ""
+        say "--- сверка с лагами ---"
+        awk '
+            FNR == NR {
+                if ($0 ~ /^\[/) { lt = substr($0, 2, 8); split(lt, a, ":"); lag[++nl] = a[1] * 3600 + a[2] * 60 + a[3]; lagtxt[nl] = lt }
+                next
+            }
+            /^#/ { next }
+            {
+                split($1, t, ":"); sec = t[1] * 3600 + t[2] * 60 + t[3] + 0
+                for (i = 2; i <= NF; i++) if ($i ~ /^thr=/) { v = $i; sub(/thr=/, "", v); th = v + 0 }
+                for (i = 2; i <= NF; i++) if ($i ~ /^thr_ms=/) { v = $i; sub(/thr_ms=/, "", v); thm = v + 0 }
+                m++; mt[m] = sec; mth[m] = th; mthm[m] = thm
+            }
+            END {
+                if (nl == 0) { print "  lag-events.log пуст"; exit }
+                hit = 0
+                for (k = 1; k <= nl; k++) {
+                    best = 0
+                    for (i = 2; i <= m; i++) if (mt[i] >= lag[k] && mt[i] - lag[k] <= 10) { best = i; break }
+                    if (best == 0) { printf "  %s  нет данных CPU рядом\n", lagtxt[k]; continue }
+                    if (best - 1 >= 1 && mth[best] > mth[best - 1]) {
+                        printf "  %s  ТРОТТЛИНГ +%.1f с\n", lagtxt[k], (mthm[best] - mthm[best - 1]) / 1000
+                        hit++
+                    } else {
+                        printf "  %s  троттлинга нет\n", lagtxt[k]
+                    }
+                }
+                print ""
+                printf "  лагов с троттлингом: %d из %d\n", hit, nl
+            }' "$SERVER_DIR/lag-events.log" "$OUTCPU" | tee -a "$OUT"
+    fi
+    say ""
+    say "готово. Пришли $OUT"
     ;;
 watch)  # ждём медленный тик по логу и сразу снимаем JFR
     if [ -z "$PID" ]; then echo "процесс сервера не найден" >&2; exit 1; fi
@@ -428,6 +562,10 @@ report)
                 dv[bi] = 0
             }
         }' | tee -a "$OUT"
+
+    say ""
+    say "--- троттлинг CPU контейнера (если ВМ на квоте) ---"
+    "$JFR" view --width 100 container-cpu-throttling "$JFR_FILE" 2>/dev/null | head -10 | tee -a "$OUT"
 
     say ""
     say "--- паузы GC ---"
