@@ -33,7 +33,7 @@ LEAF_VERSION="1.21.11-179"
 LEAF_URL="https://github.com/Winds-Studio/Leaf/releases/download/ver-1.21.11/leaf-1.21.11-179.jar"
 LEAF_SHA="5da79782215c1a25edcd7c73b3523b7ecb7f4b86dc8a5846a176ed69bc2cd020"
 LEAF_SIZE="83953995"
-PLUGIN_SHA="2295ca00358f46fa8424cd828199d039a69d04cf60a21ab81daed044cb071b45"
+PLUGIN_SHA="44ad787637117a26c7e45cb6708b6892920c3d2ccc1d6496439ebc363111bf55"
 
 Y=$'\033[33m'; G=$'\033[32m'; R=$'\033[31m'; B=$'\033[1m'; N=$'\033[0m'
 step() { printf '\n%s==> %s%s\n' "$B" "$*" "$N"; }
@@ -234,6 +234,15 @@ NEW_PLUGIN="$SELF_DIR/plugins/ElytrixFreakModel.jar"
     || die "jar плагина в пакете повреждён (SHA-256 не совпал)"
 install -m 644 "$NEW_PLUGIN" "$DIR/plugins/ElytrixFreakModel.jar"
 ok "плагин обновлён (SHA-256 $PLUGIN_SHA)"
+
+# Модели аксессуаров (маска, сороконожка, крылья, кагуне) — без них ModelEngine
+# поднимет плагин, но меню не найдёт blueprint'ы и честно скажет об этом в лог.
+if [ -d "$SELF_DIR/plugins/ModelEngine" ]; then
+    mkdir -p "$DIR/plugins/ModelEngine"
+    cp -a "$SELF_DIR/plugins/ModelEngine/." "$DIR/plugins/ModelEngine/"
+    MODELS=$(find "$DIR/plugins/ModelEngine/blueprints" -maxdepth 1 -name '*.bbmodel' 2>/dev/null | wc -l)
+    ok "модели ModelEngine: $MODELS blueprint(ов) в plugins/ModelEngine/blueprints"
+fi
 
 # Повязка Канэки — это слой брони, его рисует клиент, поэтому она живёт в паке.
 NEW_PACK="$SELF_DIR/rp/Elytrix-RP-1.21.zip"
