@@ -53,7 +53,8 @@ item-модели из ресурспака: нужны `assets/modelengine/item
 Установка (сервер должен быть остановлен):
 
 ```bash
-cd /root/RW_GRIEF && curl -fsSLO https://github.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/releases/download/v28/elytrix-v28.zip && unzip -oq elytrix-v28.zip -d /tmp/elytrix-v28 && bash /tmp/elytrix-v28/install.sh /root/RW_GRIEF
+curl -fsSL -o /tmp/elytrix-v28.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/1ed3441b466c22f0626152e0a7a0db63f5cd83ef/elytrix-v28.zip && \
+unzip -oq /tmp/elytrix-v28.zip -d /tmp/elytrix-v28 && bash /tmp/elytrix-v28/install.sh /root/RW_GRIEF
 ```
 
 Проверка после `restart`:
