@@ -109,6 +109,21 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
     }
 
+    /** Accessories already reported, so a broken model logs once and not every tick. */
+    private static final java.util.Set<String> REPORTED = new java.util.HashSet<>();
+
+    /** Logs a broken accessory once per start-up, with the real cause for the owner. */
+    static void reportOnce(String what, Throwable failure) {
+        if (!REPORTED.add(what)) return;
+        try {
+            if (host != null) {
+                host.getLogger().warning("[Аксессуары] " + what + " не работает: " + failure);
+            }
+        } catch (Throwable ignored) {
+            // logging must never throw on top of the original failure
+        }
+    }
+
     /** Staff, or the donation rank (the permission that {@link #grantDonationAccess} sets). */
     static boolean allowed(Player player) {
         return player.hasPermission("elytrixaccessories.admin") || player.hasPermission(USE_PERMISSION);
@@ -248,7 +263,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         PivotOverrideRegistry registry = ModelEngineAPI.getPivotOverrideRegistry();
         PivotOverride pivot = registry == null ? null : registry.getOrCreate(player);
         if (pivot != null) model.setPivotOverride(pivot);
-        entity.addModel(model, true);
+        entity.addModel(model, false);   // same as the halo/wings rig: not a passenger model
         return model;
     }
 
@@ -289,10 +304,44 @@ public final class AccessoryController implements CommandExecutor, Listener {
         syncPet(player);
     }
 
+    /** True once the start-up model report was written to the log. */
+    private static boolean modelsLogged;
+
+    /** Names every accessory blueprint ModelEngine actually loaded (once, at start-up). */
+    static void logLoadedModels() {
+        if (modelsLogged || host == null) return;
+        modelsLogged = true;
+        StringBuilder missing = new StringBuilder();
+        for (String id : new String[] {"angel_wings", "angel_halo", "elytrix_kaneki_tentacles",
+                                       MASK_BLUEPRINT, CENTIPEDE_BLUEPRINT}) {
+            if (ModelEngineAPI.getBlueprint(id) == null) {
+                if (missing.length() > 0) missing.append(", ");
+                missing.append(id);
+            }
+        }
+        try {
+            if (missing.length() == 0) {
+                host.getLogger().info("[Аксессуары] ModelEngine загрузил все модели: крылья, нимб, кагуне, маска, сороконожка");
+            } else {
+                host.getLogger().warning("[Аксессуары] ModelEngine не загрузил: " + missing
+                    + " — проверь plugins/ModelEngine/blueprints и лог ModelEngine");
+            }
+        } catch (Throwable ignored) {
+            // diagnostics must never break the game loop
+        }
+    }
+
     /** Keeps every masked player in sync; called every five ticks from install(). */
     static void tickAll() {
         try {
-            for (Player player : Bukkit.getOnlinePlayers()) syncMask(player);
+            logLoadedModels();
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                try {
+                    syncMask(player);
+                } catch (Throwable failure) {
+                    reportOnce("маска", failure);
+                }
+            }
         } catch (Throwable ignored) {
             // a broken model must never take the server tick down with it
         }
@@ -318,7 +367,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         PivotOverrideRegistry registry = ModelEngineAPI.getPivotOverrideRegistry();
         PivotOverride pivot = registry == null ? null : registry.getOrCreate(player);
         if (pivot != null) model.setPivotOverride(pivot);
-        entity.addModel(model, true);
+        entity.addModel(model, false);   // same as the halo/wings rig: not a passenger model
         return model;
     }
 
@@ -452,8 +501,18 @@ public final class AccessoryController implements CommandExecutor, Listener {
         holder.inventory = menu;
         boolean allowed = allowed(player);
         if (allowed) {
-            cleanupLegacyPatch(player);
-            syncMask(player);
+            // An accessory failure must never take the whole menu down: that is
+            // exactly how v3.6.0 answered /аксессуары with a command exception.
+            try {
+                cleanupLegacyPatch(player);
+            } catch (Throwable failure) {
+                reportOnce("снятие старой повязки", failure);
+            }
+            try {
+                syncMask(player);
+            } catch (Throwable failure) {
+                reportOnce("маска", failure);
+            }
         }
         String hint = allowed ? "§dНажми, чтобы выбрать" : "§cДоступно с доната §dmedia";
         String chosen = allowed ? "§a● Сейчас надето" : "§8● Недоступно";
@@ -512,7 +571,19 @@ public final class AccessoryController implements CommandExecutor, Listener {
             return;
         }
         setHead(player, MASK_CHOICE);
-        syncMask(player);
+        try {
+            syncMask(player);
+        } catch (Throwable failure) {
+            reportOnce("маска", failure);
+            setHead(player, "");                 // never remember a mask that is not there
+            player.sendMessage("§cМаска не наделась: " + failure.getClass().getSimpleName());
+            return;
+        }
+        if (!wearingMaskModel(player)) {         // spawn refused quietly (no blueprint/entity)
+            setHead(player, "");
+            player.sendMessage("§cМаска не наделась: модель не загрузилась.");
+            return;
+        }
         player.sendMessage("§dМаска Канэки надета.");
     }
 
@@ -562,7 +633,19 @@ public final class AccessoryController implements CommandExecutor, Listener {
             return;
         }
         set(player, PET, PET_CHOICE);
-        syncPet(player);
+        try {
+            syncPet(player);
+        } catch (Throwable failure) {
+            reportOnce("сороконожка", failure);
+            set(player, PET, "");
+            player.sendMessage("§cСороконожка не приползла: " + failure.getClass().getSimpleName());
+            return;
+        }
+        if (!wearingCentipede(player)) {
+            set(player, PET, "");
+            player.sendMessage("§cСороконожка не приползла: модель не загрузилась.");
+            return;
+        }
         player.sendMessage("§dСороконожка приползла.");
     }
 

@@ -17,6 +17,9 @@ def main():
   stubs=[str(p) for p in (HERE/'stubs').rglob('*.java')]
   run(JAVA,'-jar',ECJ,'-21','-encoding','UTF-8','-proc:none','-cp',str(ROOT/'plugins/BLib.jar'),'-d',str(cls),*stubs,str(src/'pw/elytrix/freakmodel/AccessoryController.java'),str(src/'PatchAccessory.java'),str(src/'VerifyAccessory.java'),str(HERE/'test/AccessoryTest.java'))
   run(JAVA,'-Xverify:all','-cp',str(cls),'pw.elytrix.freakmodel.AccessoryTest')
+  # the mocks are built from our own stubs, so they cannot notice a stub that lies
+  # about the engine (that is how v25 shipped an invokeinterface on a class).
+  run(sys.executable,str(HERE/'verify_engine.py'),str(cls),str(ROOT/'plugins/ModelEngine-4.1.0.jar'))
   with zipfile.ZipFile(BASE) as original:
    names=original.namelist()
    if len(names)!=len(set(names)) or names.count(ENTRY)!=1 or names.count('plugin.yml')!=1:raise ValueError('unexpected original ZIP')
@@ -25,7 +28,7 @@ def main():
    y=original.read('plugin.yml').decode('utf8')
    if y.count('\npermissions:\n')!=1 or '\n  accessories:' in y or 'elytrixaccessories.admin:' in y:raise ValueError('plugin metadata unexpected')
    if 'version: 3.2.10' not in y:raise ValueError('unexpected plugin version')
-   y=y.replace('version: 3.2.10','version: 3.6.0',1)
+   y=y.replace('version: 3.2.10','version: 3.6.1',1)
    y=y.replace('\npermissions:\n','\n  accessories:\n    description: Меню аксессуаров\n    aliases: [аксессуары]\npermissions:\n  elytrixaccessories.admin:\n    description: Применение аксессуаров\n    default: op\n  elytrixaccessories.use:\n    description: Аксессуары для донат-группы media\n    default: false\n',1).encode('utf8')
    added=[p for p in (cls/'pw/elytrix/freakmodel').glob('AccessoryController*.class')]
    expected={'AccessoryController.class','AccessoryController$Holder.class','AccessoryController$Crawl.class'}

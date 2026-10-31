@@ -31,9 +31,10 @@ public class AccessoryTest {
   Inv inv=new Inv(36);public PlayerInventory getInventory(){return inv;}boolean admin,use;String command;UUID uuid=UUID.fromString("00000000-0000-0000-0000-0000000000aa");public boolean performCommand(String c){command=c;return true;}public void closeInventory(){}Data data=new Data();String msg;public boolean hasPermission(String s){return admin || (use && s.equals(AccessoryController.USE_PERMISSION));}public Data getPersistentDataContainer(){return data;}public Inventory opened;public InventoryView openInventory(Inventory i){opened=i;return null;}public void sendMessage(String s){msg=s;}public java.util.UUID getUniqueId(){return uuid;}public boolean isOnline(){return true;}public String getName(){return "Tester";}}
  static FreakModelSpec spec(String id){return new FreakModelSpec(id,ModelKind.ANGEL_WINGS,id,List.of(),Material.FEATHER,"model",34,id,List.of(),1,0,0,1,1,2,0,0,0,0,0,0,0,0,0,0,0,false,false);}
  // --- ModelEngine double: keeps the mock runs away from a live engine -------
- static class FakePivot implements com.ticxo.modelengine.api.model.PivotOverride {}
- static class FakePivotRegistry implements com.ticxo.modelengine.api.model.PivotOverrideRegistry {
-  public com.ticxo.modelengine.api.model.PivotOverride getOrCreate(Entity e){return new FakePivot();}}
+ // PivotOverrideRegistry and PivotOverride are classes in the real engine: the
+ // fake has to extend them, otherwise the mock would not catch an invokeinterface
+ static class FakePivotRegistry extends com.ticxo.modelengine.api.model.PivotOverrideRegistry {
+  public com.ticxo.modelengine.api.model.PivotOverride getOrCreate(Entity e){return new com.ticxo.modelengine.api.model.PivotOverride(java.util.UUID.randomUUID(),1,() -> new org.joml.Vector3f());}}
  static class FakeActive implements com.ticxo.modelengine.api.model.ActiveModel {
   final com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint bp;boolean destroyed,canHurt=true,shadow=true,hitbox=true,lockPitch,lockYaw;float view;Boolean rotLocked;float lockedX,lockedY,lockedBody;com.ticxo.modelengine.api.model.PivotOverride pivot;
   FakeActive(com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint bp){this.bp=bp;}
@@ -183,6 +184,19 @@ public class AccessoryTest {
   check(!AccessoryController.centipedeSelected(p) && !AccessoryController.wearingCentipede(p),"second click sends it away");
   click.slot=16;controller.onClick(click);
   check(AccessoryController.wearingCentipede(p),"and it comes back");
+  // --- a broken engine must not take the menu down (the v3.6.0 crash) ------
+  click.slot=15;controller.onClick(click);           // mask off first
+  check(!AccessoryController.maskSelected(p),"mask off before the engine breaks");
+  ModelEngineAPI.Backend good=ModelEngineAPI.backend;
+  ModelEngineAPI.backend=new FakeEngine(){public com.ticxo.modelengine.api.model.PivotOverrideRegistry pivots(){throw new IncompatibleClassChangeError("Found class PivotOverrideRegistry, but interface was expected");}};
+  p.opened=null;controller.onCommand(p,new Command(),"аксессуары",new String[0]);
+  check(p.opened!=null,"the menu still opens when the engine call explodes");
+  click.slot=15;controller.onClick(click);
+  check(!AccessoryController.maskSelected(p),"a failed mask is not stored as worn");
+  check(p.msg.contains("не наделась") || p.msg.contains("Маска"),"and the player is told");
+  ModelEngineAPI.backend=good;
+  click.slot=15;controller.onClick(click);
+  check(AccessoryController.wearingMaskModel(p),"the mask works again once the engine is fine");
   // --- menu layout: нет кнопки «назад», «снять всё» внизу по центру -------
   check(Bukkit.slots.get(31)==null,"no back button any more");
   check(Bukkit.slots.get(30)==null,"old clear-all slot is empty");
