@@ -28,6 +28,9 @@ ENGINE_PREFIX = 'com/ticxo/'
 # Our own test seam, not part of ModelEngine: the stub of ModelEngineAPI carries
 # a Backend interface so the mock tests can swap the engine out.
 OWN_STUBS = {'com/ticxo/modelengine/api/ModelEngineAPI$Backend'}
+# methods every type inherits from Object; the compiler may reference them through
+# an interface constant even when the declaring type is a class
+OBJECT_METHODS = {'getClass', 'hashCode', 'equals', 'toString', 'notify', 'notifyAll', 'wait'}
 
 
 # --------------------------------------------------------------------------- class file
@@ -161,15 +164,28 @@ def main():
                 continue
             problems.append(f'{name}: method {m_name}{m_desc} does not exist in the engine')
 
-    # every call our own classes make into the engine has to resolve
+    # every call our own classes make into the engine has to resolve, and the
+    # constant-pool tag has to match the target: InterfaceMethodref (tag 11) on a
+    # class compiles to invokeinterface and dies with IncompatibleClassChangeError
     for name, data in scan_classes(classes_dir):
-        if name.startswith(ENGINE_PREFIX):
-            continue                    # our stubs are covered by the checks above
-        for owner, m_name, m_desc in method_refs(data):
-            if not owner.startswith(ENGINE_PREFIX):
+        for owner, m_name, m_desc, tag in method_refs(data):
+            if not owner.startswith(ENGINE_PREFIX) or owner in OWN_STUBS:
+                continue
+            real = engine.info(owner)
+            if real is None:
+                problems.append(f'{name}: call to {owner} — no such class in the engine')
                 continue
             if not engine.has_method(owner, m_name, m_desc):
                 problems.append(f'{name}: call to {owner}.{m_name}{m_desc} does not resolve')
+                continue
+            is_interface = bool(real[0] & 0x0200)
+            object_method = m_name in OBJECT_METHODS
+            if tag == 11 and not is_interface and not object_method:
+                problems.append(f'{name}: invokeinterface on {owner} which is a class '
+                                f'({m_name}{m_desc}) — would throw IncompatibleClassChangeError')
+            elif tag == 10 and is_interface and not object_method:
+                problems.append(f'{name}: invokevirtual on {owner} which is an interface '
+                                f'({m_name}{m_desc})')
 
     if problems:
         print('engine cross-check FAILED')
@@ -201,9 +217,12 @@ def method_refs(data):
         elif tag == 15:
             i += 3
         elif tag in (9, 10, 11):             # Fieldref / Methodref / InterfaceMethodref
-            pool[n] = ('ref',) + struct.unpack('>HH', data[i:i + 4])
+            pool[n] = ('ref',) + struct.unpack('>HH', data[i:i + 4]) + (tag,)
             i += 4
-        elif tag in (3, 4, 12, 17, 18):
+        elif tag == 12:                      # NameAndType -> (name, descriptor)
+            pool[n] = ('nat',) + struct.unpack('>HH', data[i:i + 4])
+            i += 4
+        elif tag in (3, 4, 17, 18):
             i += 4
         elif tag in (5, 6):
             i += 8
@@ -214,7 +233,9 @@ def method_refs(data):
     for entry in pool.values():
         if not isinstance(entry, tuple) or entry[0] != 'ref':
             continue
-        _, class_index, nat_index = entry
+        _, class_index, nat_index, entry_tag = entry
+        if entry_tag == 9:                  # Fieldref: not a method call
+            continue
         cls = pool.get(class_index)
         nat = pool.get(nat_index)
         if not cls or not nat:
@@ -224,7 +245,7 @@ def method_refs(data):
         nat_desc = pool.get(nat[2])
         if not owner or not nat_name or not nat_desc:
             continue
-        yield owner[1], nat_name[1], nat_desc[1]
+        yield owner[1], nat_name[1], nat_desc[1], entry_tag
 
 
 if __name__ == '__main__':
