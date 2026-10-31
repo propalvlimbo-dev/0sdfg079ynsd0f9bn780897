@@ -98,6 +98,14 @@ psi_cpu() {
     [ -r /proc/pressure/cpu ] || { printf 'n/a\n'; return; }
     awk '/^some/ { for (i = 1; i <= NF; i++) if ($i ~ /^avg10=/) { sub(/avg10=/, "", $i); print $i } }' /proc/pressure/cpu
 }
+mem_avail_mb() { awk '/^MemAvailable:/ { print int($2 / 1024) }' /proc/meminfo 2>/dev/null; }
+swap_used_mb() { awk '/^SwapTotal:/ { t = $2 } /^SwapFree:/ { f = $2 } END { print int((t - f) / 1024) }' /proc/meminfo 2>/dev/null; }
+vmstat_get() { awk -v k="$1" '$1 == k { print $2 }' /proc/vmstat 2>/dev/null; }
+psi_get() {
+    [ -r "/proc/pressure/$1" ] || { printf 'n/a'; return; }
+    awk -v c="avg10=" '$1 == "some" || $1 == "full" { for (i = 1; i <= NF; i++) if (index($i, c) == 1) { v = $i; sub(c, "", v); print v; exit } }' "/proc/pressure/$1"
+}
+jvm_majflt() { awk '{ print $12 }' "/proc/$1/stat" 2>/dev/null; }
 jvm_ticks() {  # utime+stime процесса в тиках
     awk '{ print $14 + $15 }' "/proc/$1/stat" 2>/dev/null
 }
@@ -107,7 +115,7 @@ PID=$(find_pid)
 
 analyze_window() {  # $1 файл, $2 lo, $3 hi — печатает события и сэмплы окна
     WFILE=$1; LO=$2; HI=$3
-    "$JFR" print --events jdk.ThreadPark,jdk.JavaMonitorEnter,jdk.JavaMonitorWait,jdk.SocketRead,jdk.SocketWrite,jdk.FileRead,jdk.FileWrite,jdk.GarbageCollection,jdk.ExecutionSample,jdk.NativeMethodSample \
+    "$JFR" print --events jdk.ThreadPark,jdk.JavaMonitorEnter,jdk.JavaMonitorWait,jdk.SocketRead,jdk.SocketWrite,jdk.FileRead,jdk.FileWrite,jdk.GarbageCollection,jdk.ZAllocationStall,jdk.ExecutionSample,jdk.NativeMethodSample \
         --stack-depth 6 "$WFILE" 2>/dev/null | awk -v lo="$LO" -v hi="$HI" '
         /^jdk\.[A-Za-z0-9_.]+ \{/ { ev = $1; inp = 1; st = ""; th = ""; dur = 0; nfr = 0; inf = 0; fr[1] = ""; fr[2] = ""; fr[3] = ""; next }
         inp && /^  startTime = / { st = $3 }
@@ -204,109 +212,154 @@ ticks)  # история медленных тиков из лога: время
             prev = sec
         }'
     ;;
-cpu)  # раз в секунду пишем в cpu.log: троттлинг cgroup, PSI, нагрузку
+cpu)  # раз в секунду: CPU, троттлинг, память, swap, page faults
     SECS=${3:-1800}
     OUTCPU=$SERVER_DIR/cpu.log
     if [ -z "$PID" ]; then echo "процесс сервера не найден" >&2; exit 1; fi
     {
         echo "# $(date '+%Y-%m-%d %H:%M:%S') ядер: $(nproc), quota: $(cpu_quota), pid: $PID"
-        echo "# колонки: время thr=<периодов троттлинга> thr_ms=<время троттлинга мс> cpu_ms=<израсходовано CPU мс>"
-        echo "#          psi=<давление CPU avg10> load=<loadavg1> jvm=<доля CPU процесса % от одного ядра>"
+        echo "# thr=периоды троттлинга throttled_ms=мс троттлинга cpu_ms=CPU мс ядра jvm=%CPU процесса"
+        echo "# avail=свободно МБ swap=занято swap МБ swpin/swpout=страниц в/из swap за секунду"
+        echo "# majflt=крупных page fault за секунду psi_mem=давление памяти avg10"
     } > "$OUTCPU"
-    echo "пишу $OUTCPU каждую секунду, ${SECS} с. Остановить: Ctrl+C"
-    prev_t=""; prev_u=""; prev_j=""; end=$(( $(date +%s) + SECS ))
-    while [ "$(date +%s)" -lt "$end" ]; do
-        read -r t d u <<< "$(cpu_stat)"
-        j=$(jvm_ticks "$PID")
-        if [ -n "$prev_t" ]; then
+    echo "пишу $OUTCPU каждую секунду, ${SECS} с. Проверить: tail -3 $OUTCPU   Остановить: Ctrl+C"
+    t_end=$(( $(date +%s) + SECS ))
+    prev_t=""; prev_u=""; prev_j=""; prev_i=""; prev_o=""; prev_f=""
+    while [ "$(date +%s)" -lt "$t_end" ]; do
+        read -r th th_ms u <<< "$(cpu_stat)"
+        j=$(jvm_ticks "$PID"); f=$(jvm_majflt "$PID")
+        i=$(vmstat_get pswpin); o=$(vmstat_get pswpout)
+        if [ -z "$prev_t" ]; then
+            line="$(date '+%H:%M:%S') thr=$th thr_ms=$th_ms cpu_ms=0 jvm=0 avail=$(mem_avail_mb) swap=$(swap_used_mb) swpin=0 swpout=0 majflt=0 psi_mem=$(psi_get memory)"
+        else
             dj=$(( j - prev_j )); du=$(( u - prev_u ))
-            jpct=$(( dj * 100 / CLK ))   # тиков за 1 с -> % одного ядра
-            printf '%s thr=%d thr_ms=%d cpu_ms=%d psi=%s load=%s jvm=%d\n' \
-                "$(date '+%H:%M:%S')" "$t" "$d" "$du" "$(psi_cpu)" "$(cut -d' ' -f1 /proc/loadavg)" "$jpct" >> "$OUTCPU"
+            di=$(( i - prev_i )); do_=$(( o - prev_o )); df=$(( f - prev_f ))
+            [ "$du" -lt 0 ] && du=0
+            line="$(date '+%H:%M:%S') thr=$th thr_ms=$th_ms cpu_ms=$du jvm=$(( dj * 100 / CLK )) avail=$(mem_avail_mb) swap=$(swap_used_mb) swpin=$di swpout=$do_ majflt=$df psi_mem=$(psi_get memory)"
         fi
-        prev_t=$t; prev_u=$u; prev_j=$j
+        printf '%s\n' "$line" >> "$OUTCPU"
+        prev_t=$th; prev_u=$u; prev_j=$j; prev_i=$i; prev_o=$o; prev_f=$f
         sleep 1
     done
     echo "готово: $OUTCPU"
     ;;
-cpu-report)  # троттлинг против лагов
+cpu-report)  # троттлинг и память против лагов
     OUTCPU=$SERVER_DIR/cpu.log
-    [ -f "$OUTCPU" ] || { echo "нет $OUTCPU — сначала: bash $0 $SERVER_DIR cpu 1800" >&2; exit 1; }
+    [ -f "$OUTCPU" ] || { echo "нет $OUTCPU - сначала: bash $0 $SERVER_DIR cpu 1800" >&2; exit 1; }
     : > "$OUT"
-    say "=== CPU report $(date '+%Y-%m-%d %H:%M:%S') ==="
-    head -2 "$OUTCPU" | sed 's/^/  /' | tee -a "$OUT"
+    say "=== CPU/mem report $(date '+%Y-%m-%d %H:%M:%S') ==="
+    head -4 "$OUTCPU" | sed 's/^/  /' | tee -a "$OUT"
     say ""
     awk '
         /^#/ { next }
         {
-            split($1, t, ":"); sec = t[1] * 3600 + t[2] * 60 + t[3] + 0
-            th = 0; thm = 0; jv = 0
-            for (i = 2; i <= NF; i++) {
-                if ($i ~ /^thr=/)    { v = $i; sub(/thr=/, "", v); th = v + 0 }
-                if ($i ~ /^thr_ms=/) { v = $i; sub(/thr_ms=/, "", v); thm = v + 0 }
-                if ($i ~ /^jvm=/)    { v = $i; sub(/jvm=/, "", v); jv = v + 0 }
-                if ($i ~ /^psi=/)    { v = $i; sub(/psi=/, "", v); ps = v + 0 }
-            }
             n++
-            if (prev != "") {
-                if (th > prev_th) { grow++; grow_ms[grow] = thm - prev_thm; grow_t[grow] = $1; grow_j[grow] = jv }
+            for (i = 2; i <= NF; i++) {
+                split($i, kv, "="); k = kv[1]; v = kv[2] + 0
+                if (k == "thr") th = v
+                if (k == "thr_ms") thm = v
+                if (k == "jvm") { jv = v; if (v > maxjv) maxjv = v }
+                if (k == "avail") { av = v; if (minav == "" || v < minav) { minav = v; minav_t = $1 } }
+                if (k == "swap") { sw = v; if (v > maxsw) maxsw = v }
+                if (k == "swpin") spi = v
+                if (k == "swpout") spo = v
+                if (k == "majflt") mf = v
+                if (k == "psi_mem") { pm = v; if (v > maxpm) maxpm = v }
             }
-            prev_th = th; prev_thm = thm
-            if (jv > maxjv) maxjv = jv
-            if (ps > maxpsi) maxpsi = ps
-            first_th = (first_th == "") ? th : first_th
-            last_th = th; last_thm = thm
+            split($1, t, ":"); secs[n] = t[1] * 3600 + t[2] * 60 + t[3] + 0; txt[n] = $1
+            thi[n] = th; thi_ms[n] = thm; avi[n] = av; spi_a[n] = spi; spo_a[n] = spo; mf_a[n] = mf
+            tot_spi += spi; tot_spo += spo; tot_mf += mf
         }
         END {
             printf "  секунд наблюдения: %d\n", n
-            printf "  троттлинг всего: %d периодов, %.1f с\n", last_th, last_thm / 1000
-            printf "  максимум CPU процесса: %d%% одного ядра\n", maxjv
-            printf "  максимум давление CPU (PSI avg10): %.2f\n", maxpsi
-            if (grow == 0) {
-                print ""
-                print "  >>> ВЕРДИКТ: процесс НЕ троттлился — CPU-квота не при чём."
-            } else {
-                print ""
-                printf "  >>> ВЕРДИКТ: было %d эпизодов троттлинга:\n", grow
-                for (i = 1; i <= grow && i <= 20; i++) printf "      %s  +%.1f с троттлинга, CPU %d%%\n", grow_t[i], grow_ms[i] / 1000, grow_j[i]
-            }
+            printf "  троттлинг CPU: %d периодов, %.1f с (пик CPU процесса %d%% ядра)\n", thi[n], thi_ms[n] / 1000, maxjv
+            printf "  свободная память: минимум %d МБ (%s)\n", minav, minav_t
+            printf "  swap занято: максимум %d МБ; страниц в swap %d, из swap %d\n", maxsw, tot_spo, tot_spi
+            printf "  крупных page fault за всё время: %d; пик давления памяти PSI avg10: %.2f\n", tot_mf, maxpm
+            print ""
+            if (maxsw > 0 || tot_spi > 0) print "  >>> память: swap реально использовался - это причина зависаний, не догадка"
+            if (tot_spi == 0 && maxsw > 0) print "  >>> swap заполнен, но обратно не читался: страницы просто выгружены, хуже не стало"
+            if (maxsw == 0 && tot_spi == 0) print "  >>> swap не использовался"
+            if (thi[n] == 0) print "  >>> троттлинга CPU-квоты не было"
+            save_n = n
         }' "$OUTCPU" | tee -a "$OUT"
 
     if [ -f "$SERVER_DIR/lag-events.log" ]; then
         say ""
-        say "--- сверка с лагами ---"
+        say "--- что было в момент каждого лага ---"
         awk '
-            FNR == NR {
-                if ($0 ~ /^\[/) { lt = substr($0, 2, 8); split(lt, a, ":"); lag[++nl] = a[1] * 3600 + a[2] * 60 + a[3]; lagtxt[nl] = lt }
-                next
-            }
+            FNR == NR { if ($0 ~ /^\[/) { lt = substr($0, 2, 8); split(lt, a, ":"); lag[++nl] = a[1] * 3600 + a[2] * 60 + a[3]; lagtxt[nl] = lt } next }
             /^#/ { next }
             {
-                split($1, t, ":"); sec = t[1] * 3600 + t[2] * 60 + t[3] + 0
-                for (i = 2; i <= NF; i++) if ($i ~ /^thr=/) { v = $i; sub(/thr=/, "", v); th = v + 0 }
-                for (i = 2; i <= NF; i++) if ($i ~ /^thr_ms=/) { v = $i; sub(/thr_ms=/, "", v); thm = v + 0 }
-                m++; mt[m] = sec; mth[m] = th; mthm[m] = thm
+                m++
+                split($1, t, ":"); mt[m] = t[1] * 3600 + t[2] * 60 + t[3] + 0
+                for (i = 2; i <= NF; i++) {
+                    split($i, kv, "="); k = kv[1]; v = kv[2] + 0
+                    if (k == "majflt") mf[m] = v
+                    if (k == "swpin") spi[m] = v
+                    if (k == "avail") av[m] = v
+                    if (k == "jvm") jv[m] = v
+                }
             }
             END {
                 if (nl == 0) { print "  lag-events.log пуст"; exit }
-                hit = 0
                 for (k = 1; k <= nl; k++) {
-                    best = 0
-                    for (i = 2; i <= m; i++) if (mt[i] >= lag[k] && mt[i] - lag[k] <= 10) { best = i; break }
-                    if (best == 0) { printf "  %s  нет данных CPU рядом\n", lagtxt[k]; continue }
-                    if (best - 1 >= 1 && mth[best] > mth[best - 1]) {
-                        printf "  %s  ТРОТТЛИНГ +%.1f с\n", lagtxt[k], (mthm[best] - mthm[best - 1]) / 1000
-                        hit++
-                    } else {
-                        printf "  %s  троттлинга нет\n", lagtxt[k]
+                    sMF = 0; sSP = 0; minA = -1; maxJ = 0; cnt = 0
+                    for (i = 1; i <= m; i++) {
+                        if (mt[i] >= lag[k] - 2 && mt[i] <= lag[k] + 10) {
+                            cnt++; sMF += mf[i]; sSP += spi[i]
+                            if (minA < 0 || av[i] < minA) minA = av[i]
+                            if (jv[i] > maxJ) maxJ = jv[i]
+                        }
                     }
+                    if (cnt == 0) { printf "  %s  нет данных (запись не шла)\n", lagtxt[k]; continue }
+                    printf "  %s  page faults %4d, чтений из swap %3d, свободно %4d МБ, CPU %3d%%", lagtxt[k], sMF, sSP, minA, maxJ
+                    if (sMF > 500 || sSP > 0) print "  << МЕМОРИЯ"; else print "  чисто"
                 }
                 print ""
-                printf "  лагов с троттлингом: %d из %d\n", hit, nl
+                print "  << МЕМОРИЯ = в эти секунды шла работа со swap/диском, тик ждал память"
+                print "  чисто = ни памяти, ни троттлинга: причина в коде на главном потоке"
             }' "$SERVER_DIR/lag-events.log" "$OUTCPU" | tee -a "$OUT"
     fi
     say ""
     say "готово. Пришли $OUT"
+    ;;
+procs)  # что вообще ест память и CPU на машине
+    : > "$OUT"
+    say "=== кто на машине $(date '+%Y-%m-%d %H:%M:%S') ==="
+    say "ядер: $(nproc), quota: $(cpu_quota), load: $(cut -d' ' -f1-3 /proc/loadavg)"
+    say ""
+    say "--- память (МБ) ---"
+    while IFS= read -r l; do say "  $l"; done <<EOF
+$(free -m)
+EOF
+    say ""
+    say "--- swap ---"
+    while IFS= read -r l; do say "  $l"; done <<EOF
+$(cat /proc/swaps 2>/dev/null || echo "нет swap")
+EOF
+    say ""
+    say "--- топ процессов по памяти ---"
+    while IFS= read -r l; do say "  $l"; done <<EOF
+$(ps -eo pid,rss,etime,rss,args --sort=-rss 2>/dev/null | head -12 | cut -c1-150)
+EOF
+    say ""
+    say "--- java-процессы ---"
+    n=0
+    for p in $(pgrep -x java 2>/dev/null); do
+        n=$(( n + 1 ))
+        say "  pid $p  rss=$(awk '/VmRSS/ { print int($2 / 1024) }' "/proc/$p/status" 2>/dev/null) МБ  живёт: $(ps -o etime= -p "$p" 2>/dev/null | tr -d ' ')  cmd: $(tr '\0' ' ' < "/proc/$p/cmdline" 2>/dev/null | cut -c1-110)"
+    done
+    [ "$n" = "0" ] && say "  java-процессов нет"
+    say "  всего java: $n"
+    if [ "$n" -gt 1 ]; then
+        say ""
+        say "  >>> ВНИМАНИЕ: java-процессов больше одного — второй держит память и swap"
+        say "      и может драться за файлы мира. Лишний убивается: kill <pid>"
+    fi
+    say ""
+    say "  потоков в системе: $(ps -eLf 2>/dev/null | tail -n +2 | wc -l)"
+    say "  готово. Пришли $OUT"
     ;;
 watch)  # ждём медленный тик по логу и сразу снимаем JFR
     if [ -z "$PID" ]; then echo "процесс сервера не найден" >&2; exit 1; fi
@@ -560,6 +613,29 @@ report)
                 if (!bi) break
                 printf "    %s  %7.1f ms  %s (%s)\n", tv[bi], dv[bi], nv[bi], cv[bi]
                 dv[bi] = 0
+            }
+        }' | tee -a "$OUT"
+
+    say ""
+    say "--- ZGC allocation stall (поток ждал, пока GC освободит память) ---"
+    "$JFR" print --events jdk.ZAllocationStall "$JFR_FILE" 2>/dev/null | awk '
+        /^jdk\.ZAllocationStall \{/ { inp = 1; d = 0; t = ""; n = 0; next }
+        inp && /^  startTime = / { t = $3 }
+        inp && /^  duration = / { d = $3 + 0 }
+        inp && /^\}$/ {
+            inp = 0; cnt++; tot += d
+            if (d > 15) { k++; dv[k] = d; tv[k] = t }
+            next
+        }
+        END {
+            if (cnt == 0) { print "  нет ни одного allocation stall"; exit }
+            printf "  %d stall, суммарно %.0f ms\n", cnt, tot
+            for (r = 0; r < 8; r++) {
+                bi = 0
+                for (i = 1; i <= k; i++) if (!used[i] && (bi == 0 || dv[bi] < dv[i])) bi = i
+                if (!bi) break
+                used[bi] = 1
+                printf "    %s  %7.1f ms\n", tv[bi], dv[bi]
             }
         }' | tee -a "$OUT"
 
