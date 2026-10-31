@@ -115,7 +115,9 @@ cat <<'EOF'
 
 Готово. Дальше:
 
-  1) перезапусти сервер (не /reload);
+  1) ПОЛНОСТЬЮ перезапусти сервер: флаг -Dblib.server.version применяется
+     только при старте JVM. /plugman reload BLib его НЕ подхватит — в логе
+     снова будет UnsupportedVersionException;
   2) в логе проверь: "Server version 1.21.10 is set via property blib.server.version"
      и отсутствие ExceptionInInitializerError у BLib;
   3) запусти диагностику виновника 35% времени:
