@@ -70,6 +70,29 @@ dump)  # снимок идущей записи без остановки
     echo
     echo "дальше: bash $0 $SERVER_DIR window HH:MM:SS 10 $PART"
     ;;
+watch)  # ждём медленный тик по логу и сразу снимаем JFR
+    if [ -z "$PID" ]; then echo "процесс сервера не найден" >&2; exit 1; fi
+    JCMD=$(tool jcmd) || { echo "не найден jcmd" >&2; exit 1; }
+    THRESHOLD=${4:-150}
+    LOGF=${5:-logs/latest.log}
+    [ -f "$LOGF" ] || { echo "нет $LOGF" >&2; exit 1; }
+    echo "жду в $LOGF строки 'lasted N ms' с N >= $THRESHOLD; снимок -> $SERVER_DIR/lag-*.jfr"
+    echo "остановить: Ctrl+C"
+    tail -n0 -F "$LOGF" 2>/dev/null | while IFS= read -r line; do
+        case "$line" in
+            *lasted*ms*) ;;
+            *) continue ;;
+        esac
+        ms=$(printf '%s' "$line" | sed -n 's/.*lasted \([0-9][0-9]*\).*/\1/p')
+        [ -z "$ms" ] && continue
+        [ "$ms" -lt "$THRESHOLD" ] && continue
+        ts=$(date +%Y%m%d-%H%M%S)
+        echo ">>> $ms ms: снимаю JFR в lag-$ts.jfr"
+        printf '%s\n' "[$(date '+%H:%M:%S')] $line" >> "$SERVER_DIR/lag-events.log"
+        "$JCMD" "$PID" JFR.dump name="$NAME" filename="$SERVER_DIR/lag-$ts.jfr" >/dev/null 2>&1 \
+            && echo "    готово: lag-$ts.jfr" || echo "    не удалось снять (запись JFR запущена?)"
+    done
+    ;;
 deep)  # полные стеки: кто читает файлы, кто аллоцирует, кто паркуется
     JFR=$(tool jfr) || { echo "не найден jfr (JDK 21+)" >&2; exit 1; }
     [ -f "$JFR_FILE" ] || { echo "нет файла $JFR_FILE" >&2; exit 1; }

@@ -180,3 +180,29 @@ bash jfr30.sh /root/RW_GRIEF deep
   не только `Pair.of` или `BigInteger.add`, но и класс-вызыватель (в тесте:
   `int[] <- BigInteger.add(...) <- FileChurn.main`);
 * **кто паркуется** — стеки ожиданий с суммарными миллисекундами.
+
+### Автоматический снимок в момент лага
+
+Держать запись и вручную ловить момент неудобно. `watch` слушает лог и сам
+делает `JFR.dump`, как только spark сообщает о медленном тике:
+
+```
+bash jfr30.sh /root/RW_GRIEF start 14400
+nohup bash jfr30.sh /root/RW_GRIEF watch 150 > /root/RW_GRIEF/watch.log 2>&1 &
+```
+
+Нужен включённый `/spark tickmonitor --threshold-tick 150` — он и печатает
+строки `Tick #N lasted 214.6 ms`. На каждый такой тик появится
+`lag-YYYYmmdd-HHMMSS.jfr` и строка в `lag-events.log`.
+
+Разбор:
+
+```
+bash jfr30.sh /root/RW_GRIEF window 12:34:56 10 /root/RW_GRIEF/lag-20261031-125942.jfr
+```
+
+Не держи одновременно `/spark profiler` и JFR: в общем профиле половина
+«аллокаций сервера» оказывается внутренней статистикой spark
+(`RollingAverage.add(BigDecimal)`), а блокирующее чтение консоли
+(`Server console handler` в `FileInputStream.read0`) выглядит как нагрузка,
+хотя это поток, который просто ждёт ввода.
