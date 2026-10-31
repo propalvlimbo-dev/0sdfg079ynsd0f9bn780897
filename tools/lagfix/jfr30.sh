@@ -113,6 +113,9 @@ psi_get() {
     [ -r "/proc/pressure/$1" ] || { printf 'n/a'; return; }
     awk -v c="avg10=" '$1 == "some" || $1 == "full" { for (i = 1; i <= NF; i++) if (index($i, c) == 1) { v = $i; sub(c, "", v); print v; exit } }' "/proc/pressure/$1"
 }
+host_cpu() {  # $1=total $2=steal $3=iowait (тики)
+    awk '/^cpu / { t = 0; for (i = 2; i <= NF; i++) t += $i; printf "%d %d %d\n", t, $9 + 0, $6 + 0; exit }' /proc/stat
+}
 jvm_majflt() { awk '{ print $12 }' "/proc/$1/stat" 2>/dev/null; }
 jvm_ticks() {  # utime+stime процесса в тиках
     awk '{ print $14 + $15 }' "/proc/$1/stat" 2>/dev/null
@@ -229,13 +232,24 @@ cpu)  # раз в секунду: CPU, троттлинг, память, swap, p
         echo "# thr=периоды троттлинга throttled_ms=мс троттлинга cpu_ms=CPU мс ядра jvm=%CPU процесса"
         echo "# avail=свободно МБ swap=занято swap МБ swpin/swpout=страниц в/из swap за секунду"
         echo "# majflt=крупных page fault за секунду psi_mem=давление памяти avg10"
+        echo "# steal=процент ядер, отобранных гипервизором iow=ожидание диска в % ядер"
     } > "$OUTCPU"
     echo "пишу $OUTCPU каждую секунду, ${SECS} с. Проверить: tail -3 $OUTCPU   Остановить: Ctrl+C"
     t_end=$(( $(date +%s) + SECS ))
-    prev_t=""; prev_u=""; prev_j=""; prev_i=""; prev_o=""; prev_f=""
+    prev_t=""; prev_u=""; prev_j=""; prev_i=""; prev_o=""; prev_f=""; prev_h=""; prev_s=0; prev_w=0
     while [ "$(date +%s)" -lt "$t_end" ]; do
         read -r th th_ms u <<< "$(cpu_stat)"
         j=$(jvm_ticks "$PID"); f=$(jvm_majflt "$PID")
+        read -r h_total h_steal h_iowait <<< "$(host_cpu)"
+        stl=0; iow=0
+        if [ -n "$prev_h" ] && [ "$h_total" -gt "$prev_h" ]; then
+            dt=$(( h_total - prev_h ))
+            stl=$(( (h_steal - prev_s) * 100 / dt ))
+            iow=$(( (h_iowait - prev_w) * 100 / dt ))
+            [ "$stl" -lt 0 ] && stl=0
+            [ "$iow" -lt 0 ] && iow=0
+        fi
+        prev_h=$h_total; prev_s=$h_steal; prev_w=$h_iowait
         i=$(vmstat_get pswpin); o=$(vmstat_get pswpout)
         if [ -z "$prev_t" ]; then
             line="$(date '+%H:%M:%S') thr=$th thr_ms=$th_ms cpu_ms=0 jvm=0 avail=$(mem_avail_mb) swap=$(swap_used_mb) swpin=0 swpout=0 majflt=0 psi_mem=$(psi_get memory)"
@@ -243,7 +257,7 @@ cpu)  # раз в секунду: CPU, троттлинг, память, swap, p
             dj=$(( j - prev_j )); du=$(( u - prev_u ))
             di=$(( i - prev_i )); do_=$(( o - prev_o )); df=$(( f - prev_f ))
             [ "$du" -lt 0 ] && du=0
-            line="$(date '+%H:%M:%S') thr=$th thr_ms=$th_ms cpu_ms=$du jvm=$(( dj * 100 / CLK )) avail=$(mem_avail_mb) swap=$(swap_used_mb) swpin=$di swpout=$do_ majflt=$df psi_mem=$(psi_get memory)"
+            line="$(date '+%H:%M:%S') thr=$th thr_ms=$th_ms cpu_ms=$du jvm=$(( dj * 100 / CLK )) avail=$(mem_avail_mb) swap=$(swap_used_mb) swpin=$di swpout=$do_ majflt=$df psi_mem=$(psi_get memory) steal=$stl iow=$iow"
         fi
         printf '%s\n' "$line" >> "$OUTCPU"
         prev_t=$th; prev_u=$u; prev_j=$j; prev_i=$i; prev_o=$o; prev_f=$f
@@ -273,6 +287,8 @@ cpu-report)  # троттлинг и память против лагов
                 if (k == "swpout") spo = v
                 if (k == "majflt") mf = v
                 if (k == "psi_mem") { pm = v; if (v > maxpm) maxpm = v }
+                if (k == "steal") { st = v; if (v > maxst) maxst = v }
+                if (k == "iow") { iw = v; if (v > maxiw) maxiw = v }
             }
             split($1, t, ":"); secs[n] = t[1] * 3600 + t[2] * 60 + t[3] + 0; txt[n] = $1
             thi[n] = th; thi_ms[n] = thm; avi[n] = av; spi_a[n] = spi; spo_a[n] = spo; mf_a[n] = mf
@@ -305,8 +321,10 @@ cpu-report)  # троттлинг и память против лагов
                 for (i = 1; i <= m; i++) if (jarr[i] >= ncpu * 85) busy++
                 printf "  секунд, когда JVM забирала >=85%% всех ядер: %d из %d (%.1f%%)\n", busy, m, (m ? busy * 100 / m : 0)
             }
+            printf "  гипервизор забрал (steal): максимум %d%% всех ядер; ожидание диска (iowait): максимум %d%%\n", maxst, maxiw
+            if (maxst >= 20) print "  >>> STEAL: хост-машина отбирала процессор - сервер стоял не по своей вине"
             printf "  >>> CPU: пик %d%% ядра при %d ядрах в системе\n", maxjv, ncpu
-            if (maxjv >= ncpu * 85) print "  >>> CPU насыщен: JVM забирает почти все ядра, тику не хватает процессора"
+            if (maxjv >= ncpu * 85 && maxst < 20) print "  >>> CPU насыщен: JVM забирает почти все ядра, тику не хватает процессора"
             save_n = n
         }' "$OUTCPU" | tee -a "$OUT"
 
@@ -325,6 +343,7 @@ cpu-report)  # троттлинг и память против лагов
                     if (k == "swpin") spi[m] = v
                     if (k == "avail") av[m] = v
                     if (k == "jvm") jv[m] = v
+                    if (k == "steal") sl[m] = v
                     if (k == "thr") th[m] = v
                     if (k == "thr_ms") thm[m] = v
                 }
@@ -332,18 +351,20 @@ cpu-report)  # троттлинг и память против лагов
             END {
                 if (nl == 0) { print "  lag-events.log пуст"; exit }
                 for (k = 1; k <= nl; k++) {
-                    sMF = 0; sSP = 0; minA = -1; maxJ = 0; cnt = 0; maxTH = 0
+                    sMF = 0; sSP = 0; minA = -1; maxJ = 0; cnt = 0; maxTH = 0; maxSL = 0
                     for (i = 1; i <= m; i++) {
                         if (mt[i] >= lag[k] - 2 && mt[i] <= lag[k] + 10) {
                             cnt++; sMF += mf[i]; sSP += spi[i]
                             if (minA < 0 || av[i] < minA) minA = av[i]
                             if (jv[i] > maxJ) maxJ = jv[i]
                             if (i > 1 && th[i] > th[i-1]) maxTH = thm[i] - thm[i-1]
+                            if (sl[i] > maxSL) maxSL = sl[i]
                         }
                     }
                     if (cnt == 0) { printf "  %s  нет данных (запись не шла)\n", lagtxt[k]; continue }
-                    printf "  %s  faults %4d  swap-чт. %3d  свободно %4d МБ  CPU %3d%%", lagtxt[k], sMF, sSP, minA, maxJ
-                    if (sMF > 500 || sSP > 10) print "  << МЕМОРИЯ"
+                    printf "  %s  faults %4d  swap-чт. %3d  свободно %4d МБ  CPU %3d%%  steal %2d%%", lagtxt[k], sMF, sSP, minA, maxJ, maxSL
+                    if (maxSL >= 20) print "  << STEAL (процессор забрал гипервизор)"
+                    else if (sMF > 500 || sSP > 10) print "  << МЕМОРИЯ"
                     else if (maxJ >= ncpu * 85) print "  << CPU (JVM заняла почти все ядра)"
                     else if (maxTH > 0) print "  << ТРОТТЛ"
                     else print "  ни память, ни CPU - причина в коде"
@@ -352,6 +373,7 @@ cpu-report)  # троттлинг и память против лагов
                 print "  МЕМОРИЯ = в эти секунды шла работа со swap/диском, тик ждал диск"
                 print "  CPU      = JVM занимала все ядра, тику не хватило процессора"
                 print "  ТРОТТЛ   = срабатывала квота CPU контейнера"
+                print "  STEAL    = процессор у сервера отбирала хост-машина"
                 print "  ни память, ни CPU = причина в коде на главном потоке"
             }' "$SERVER_DIR/lag-events.log" "$OUTCPU" | tee -a "$OUT"
     fi
@@ -405,6 +427,85 @@ EOF
     say ""
     say "  потоков в системе: $(ps -eLf 2>/dev/null | tail -n +2 | wc -l)"
     say "  готово. Пришли $OUT"
+    ;;
+freeze)  # ищем провалы: когда ВСЯ JVM не выдавала ни одного сэмпла
+    HFILE=${3:-$(ls -t "$SERVER_DIR"/lag-*.jfr "$SERVER_DIR"/flight.jfr 2>/dev/null | head -1)}
+    MINMS=${4:-500}
+    [ -f "$HFILE" ] || { echo "нет файла. bash $0 $SERVER_DIR freeze путь.jfr [мс]" >&2; exit 1; }
+    JFR=$(tool jfr) || { echo "не найден jfr (JDK 21+)" >&2; exit 1; }
+    : > "$OUT"
+    say "=== freeze: $(basename "$HFILE") ($(du -h "$HFILE" | cut -f1)), провалы >= ${MINMS} мс ==="
+
+    say ""
+    say "--- провалы в сэмплах (в это время не работал ни один поток JVM) ---"
+    "$JFR" print --events jdk.ExecutionSample,jdk.NativeMethodSample --stack-depth 4 "$HFILE" 2>/dev/null | awk -v minms="$MINMS" '
+        function fmt(x,  h, m, sec) {
+            h = int(x / 3600); x -= h * 3600; m = int(x / 60); sec = x - m * 60
+            return sprintf("%02d:%02d:%02d.%03d", h, m, int(sec), int((sec - int(sec)) * 1000))
+        }
+        /^  startTime = / {
+            t = $3; split(t, a, ":"); sec = a[1] * 3600 + a[2] * 60 + a[3]
+            b = int(sec * 10)
+            if (!(b in cnt)) { cnt[b] = 0; bth[b] = th; bfr[b] = fr[1]; bfr2[b] = fr[2] }
+            cnt[b]++
+            if (bmin == 0 || b < bmin) bmin = b
+            if (b > bmax) bmax = b
+            fr[1] = ""; fr[2] = ""
+            next
+        }
+        /^  sampledThread = "/ { split($0, a, "\""); th = a[2]; next }
+        /^  eventThread = "/ { if (th == "") { split($0, a, "\""); th = a[2] } next }
+        /stackTrace = \[/ { inf = 1; n = 0; next }
+        inf && /^  \]/ { inf = 0; next }
+        inf && n < 2 { n++; fr[n] = $0; sub(/^ +/, "", fr[n]); sub(/ line:.*/, "", fr[n]) }
+        END {
+            want = int(minms / 100)
+            gap = 0; gstart = 0; found = 0
+            for (i = bmin; i <= bmax; i++) {
+                if (!(i in cnt)) {
+                    if (gap == 0) gstart = i
+                    gap++
+                } else {
+                    if (gap >= want) {
+                        found++
+                        printf "  %s  провал %6.2f с\n", fmt(gstart / 10), gap / 10
+                        if ((gstart - 1) in cnt)
+                            printf "       до:    [%s] %s <- %s\n", bth[gstart-1], bfr[gstart-1], bfr2[gstart-1]
+                        printf "       после: [%s] %s <- %s\n", bth[i], bfr[i], bfr2[i]
+                    }
+                    gap = 0
+                }
+            }
+            print ""
+            printf "  провалов всего: %d, окно записи: %s .. %s\n", found, fmt(bmin / 10), fmt(bmax / 10)
+            if (found == 0) print "  >>> ни одной секунды простоя: JVM всё время что-то выполняла"
+        }' | tee -a "$OUT"
+
+    say ""
+    say "--- паузы GC, safepoint и ZGC-сталлы >= 50 мс ---"
+    "$JFR" print --events jdk.GCPhasePause,jdk.SafepointBegin,jdk.ZAllocationStall "$HFILE" 2>/dev/null | awk '
+        function fmt(x,  h, m, sec) {
+            h = int(x / 3600); x -= h * 3600; m = int(x / 60); sec = x - m * 60
+            return sprintf("%02d:%02d:%02d.%03d", h, m, int(sec), int((sec - int(sec)) * 1000))
+        }
+        /^jdk\.[A-Za-z0-9_.]+ \{/ { ev = $1; inp = 1; d = 0; next }
+        inp && /^  startTime = / { st = $3; split(st, a, ":"); sec = a[1] * 3600 + a[2] * 60 + a[3] }
+        inp && /^  duration = / { d = $3 + 0 }
+        inp && /^\}/ {
+            inp = 0
+            if (d >= 50 || ev ~ /ZAllocationStall/) { m++; dv[m] = d; tv[m] = sec; evn[m] = ev }
+            next
+        }
+        END {
+            if (m == 0) { print "  событий >= 50 мс нет"; exit }
+            for (i = 2; i <= m; i++) { x = dv[i]; y = tv[i]; z = evn[i]; j = i - 1
+                while (j > 0 && tv[j] > y) { dv[j+1] = dv[j]; tv[j+1] = tv[j]; evn[j+1] = evn[j]; j-- }
+                dv[j+1] = x; tv[j+1] = y; evn[j+1] = z }
+            for (i = 1; i <= m && i <= 25; i++) printf "  %s  %8.1f ms  %s\n", fmt(tv[i]), dv[i], evn[i]
+        }' | tee -a "$OUT"
+
+    say ""
+    say "готово. Пришли $OUT"
     ;;
 hunt)  # форензика по уже снятому дампу: что делал Server thread
     HFILE=${3:-$(ls -t "$SERVER_DIR"/lag-*.jfr "$SERVER_DIR"/flight.jfr 2>/dev/null | head -1)}
