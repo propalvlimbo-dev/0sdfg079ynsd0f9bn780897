@@ -166,6 +166,21 @@ else
     )
 fi
 
+# --- BLib --------------------------------------------------------------------
+# BLib 1.7.2 (последний релиз на GitHub) знает версии Minecraft только до 1.21.10
+# и на 1.21.11 падает в <clinit> с org.by1337.blib.util.Version$UnsupportedVersionException:
+#   java.lang.ExceptionInInitializerError at NmsFactory.<clinit>(NmsFactory.java:89)
+# Вместе с ним не включаются BCases, BMenu и VirtualEntityApi (они зависят от BLib).
+# У самой библиотеки есть штатный обход: системное свойство blib.server.version
+# (org/by1337/blib/util/Version.java, статический блок). Пока не выйдет сборка под
+# 1.21.11, говорим BLib, что сервер — 1.21.10: NMS-путь тот же (Mojang mappings),
+# 1.21.11 — патч-версия, поэтому ветки 1.21.10 для неё рабочие.
+# Выключить обход (например, после обновления BLib): BLIB_VERSION=off
+BLIB_VERSION="${BLIB_VERSION:-1.21.10}"
+if [ -f plugins/BLib.jar ] && [ "$BLIB_VERSION" != "off" ]; then
+    FLAGS+=("-Dblib.server.version=${BLIB_VERSION}")
+fi
+
 ulimit -n 65536 2>/dev/null || true
 
 say "java     : $JAVA_BIN (Java $JAVA_MAJOR)"
@@ -173,6 +188,9 @@ say "jar      : $SERVER_JAR"
 say "heap     : ${HEAP} МБ"
 say "GC       : $GC_MODE$( [ "$GC_MODE" = "g1" ] && printf ' (цель паузы %s мс)' "$PAUSE_MS" )"
 say "GC-лог   : logs/gc.log"
+if [ -f plugins/BLib.jar ] && [ "$BLIB_VERSION" != "off" ]; then
+    say "BLib     : версия для библиотеки ${BLIB_VERSION} (обход отсутствия 1.21.11)"
+fi
 
 # --- цикл запуска ------------------------------------------------------------
 RESTARTS=0
