@@ -61,6 +61,74 @@ tool() {  # ищем jcmd/jfr: сначала рядом с java самого с
 PID=$(find_pid)
 
 case "$MODE" in
+dump)  # снимок идущей записи без остановки
+    if [ -z "$PID" ]; then echo "процесс сервера не найден" >&2; exit 1; fi
+    JCMD=$(tool jcmd) || { echo "не найден jcmd" >&2; exit 1; }
+    PART=$SERVER_DIR/part.jfr
+    "$JCMD" "$PID" JFR.dump name="$NAME" filename="$PART"
+    ls -l "$PART" 2>/dev/null
+    echo
+    echo "дальше: bash $0 $SERVER_DIR window HH:MM:SS 10 $PART"
+    ;;
+window)  # все события в окне +-N секунд вокруг отметки HH:MM:SS
+    CENTER=${3:-}
+    if [ -z "$CENTER" ]; then echo "использование: bash $0 <папка> window HH:MM:SS [секунд]" >&2; exit 1; fi
+    SPAN=${4:-10}
+    WFILE=${5:-$JFR_FILE}
+    IFS=: read -r hh mm ss <<< "$CENTER"
+    t=$(( 10#$hh * 3600 + 10#$mm * 60 + 10#$ss ))
+    fmt() { printf '%02d:%02d:%02d' $(( $1 / 3600 )) $(( ($1 % 3600) / 60 )) $(( $1 % 60 )); }
+    LO=$(( t - SPAN )); [ "$LO" -lt 0 ] && LO=0
+    HI=$(( t + SPAN ))
+    JFR=$(tool jfr) || { echo "не найден jfr (JDK 21+)" >&2; exit 1; }
+    [ -f "$WFILE" ] || { echo "нет файла $WFILE" >&2; exit 1; }
+    : > "$OUT"
+    say "=== JFR window $(fmt "$LO") .. $(fmt "$HI") ($((2*SPAN)) с вокруг $CENTER) ==="
+    "$JFR" print --events jdk.ThreadPark,jdk.JavaMonitorEnter,jdk.JavaMonitorWait,jdk.SocketRead,jdk.SocketWrite,jdk.FileRead,jdk.FileWrite,jdk.GarbageCollection \
+        --stack-depth 6 "$WFILE" 2>/dev/null | awk -v lo="$LO" -v hi="$HI" '
+        /^jdk\.[A-Za-z0-9_.]+ \{/ { ev = $1; inp = 1; st = ""; th = ""; dur = 0; nfr = 0; next }
+        inp && /^  startTime = / { st = $3 }
+        inp && /^  duration = / { dur = $3 + 0 }
+        inp && /^  eventThread = "/ { split($0, a, "\""); th = a[2] }
+        inp && /stackTrace = \[/ { inf = 1; next }
+        inf && /^  \]/ { inf = 0; next }
+        inf && nfr < 3 { nfr++; fr[nfr] = $0; sub(/^ +/, "", fr[nfr]) }
+        inp && /^\}$/ {
+            inp = 0
+            split(st, b, ":"); sec = b[1] * 3600 + b[2] * 60 + b[3]
+            if (st != "" && sec >= lo && sec <= hi) {
+                key = ev "  [" th "]  " fr[1]
+                if (fr[2] != "") key = key " <- " fr[2]
+                cnt[key]++
+                if (dur >= 15) { nl++; ed[nl] = dur; et[nl] = st; ek[nl] = key }
+            }
+            next
+        }
+        END {
+            m = 0
+            for (k in cnt) ks[++m] = k
+            for (i = 2; i <= m; i++) {
+                x = ks[i]; j = i - 1
+                while (j > 0 && cnt[ks[j]] < cnt[x]) { ks[j + 1] = ks[j]; j-- }
+                ks[j + 1] = x
+            }
+            print "  по количеству событий:"
+            for (i = 1; i <= m && i <= 14; i++) printf "  %5d  %s\n", cnt[ks[i]], ks[i]
+            if (nl > 0) {
+                print ""
+                print "  самые долгие события в окне:"
+                for (r = 0; r < 10; r++) {
+                    bi = 0
+                    for (i = 1; i <= nl; i++) if (!used[i] && (bi == 0 || ed[bi] < ed[i])) bi = i
+                    if (!bi) break
+                    used[bi] = 1
+                    printf "  %8.1f ms  %s  %s\n", ed[bi], et[bi], ek[bi]
+                }
+            }
+        }' | tee -a "$OUT"
+    say ""
+    say "готово. Отметку времени бери из строки spark: Tick #N lasted ... ms"
+    ;;
 start)
     : > "$OUT"
     if [ -z "$PID" ]; then echo "процесс сервера не найден" >&2; exit 1; fi
@@ -170,6 +238,18 @@ report)
     say ""
     say "--- горячие методы (сэмплы выполнения) ---"
     "$JFR" view --width 130 hot-methods "$JFR_FILE" 2>/dev/null | head -22 | tee -a "$OUT"
+
+    say ""
+    say "--- где время в native (сэмплы native-методов) ---"
+    "$JFR" view --width 120 native-methods "$JFR_FILE" 2>/dev/null | head -16 | tee -a "$OUT"
+
+    say ""
+    say "--- кто аллоцирует (по стеку) ---"
+    "$JFR" view --width 130 allocation-by-site "$JFR_FILE" 2>/dev/null | head -18 | tee -a "$OUT"
+
+    say ""
+    say "--- ожидание на блокировках ---"
+    "$JFR" view --width 130 contention-by-site "$JFR_FILE" 2>/dev/null | head -14 | tee -a "$OUT"
 
     say ""
     say "--- кто с кем говорит по сети ---"
