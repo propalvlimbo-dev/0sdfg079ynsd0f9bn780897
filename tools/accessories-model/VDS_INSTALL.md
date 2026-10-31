@@ -53,7 +53,7 @@ ModelEngine рассылает модель тем, кто отслеживае�
 Установка (сервер остановлен):
 
 ```bash
-curl -fsSL -o /tmp/elytrix-v29.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/<COMMIT_SHA>/elytrix-v29.zip && \
+curl -fsSL -o /tmp/elytrix-v29.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/0bfb713d1604c11d738b112a9ac87da4e7e5d86b/elytrix-v29.zip && \
 unzip -oq /tmp/elytrix-v29.zip -d /tmp/elytrix-v29 && bash /tmp/elytrix-v29/install.sh /root/RW_GRIEF
 ```
 
