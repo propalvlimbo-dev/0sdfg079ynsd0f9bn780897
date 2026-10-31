@@ -29,13 +29,21 @@ cd "$SERVER_DIR" || { echo "нет каталога $SERVER_DIR" >&2; exit 1; }
 
 say() { printf '%s\n' "$*" | tee -a "$OUT"; }
 
-find_pid() {  # только сам java: обёртка start.sh/screen тоже содержит "server.jar"
+find_pid() {  # среди java-процессов выбираем тот, что запущен из каталога сервера
     if [ -n "${JFR_PID:-}" ]; then printf '%s' "$JFR_PID"; return 0; fi
-    local p
-    for p in $(pgrep -f 'server\.jar|leaf-|paper-' 2>/dev/null) $(pgrep -x java 2>/dev/null); do
-        [ "$(cat "/proc/$p/comm" 2>/dev/null)" = "java" ] && { printf '%s' "$p"; return 0; }
+    local p rss best bestrss dir want match
+    want=$(readlink -f "$SERVER_DIR" 2>/dev/null)
+    best=""; bestrss=0; match=""
+    for p in $(pgrep -x java 2>/dev/null); do
+        [ "$(cat "/proc/$p/comm" 2>/dev/null)" = "java" ] || continue
+        rss=$(awk '/^VmRSS:/ { print $2 + 0 }' "/proc/$p/status" 2>/dev/null)
+        [ -z "$rss" ] && rss=0
+        dir=$(readlink -f "/proc/$p/cwd" 2>/dev/null)
+        [ -n "$want" ] && [ "$dir" = "$want" ] && match="$p"
+        if [ "$rss" -gt "$bestrss" ]; then bestrss=$rss; best=$p; fi
     done
-    printf ''
+    [ -n "$match" ] && { printf '%s' "$match"; return 0; }
+    printf '%s' "$best"
 }
 
 tool() {  # ищем jcmd/jfr: сначала рядом с java самого сервера
@@ -348,7 +356,9 @@ EOF
     n=0
     for p in $(pgrep -x java 2>/dev/null); do
         n=$(( n + 1 ))
-        say "  pid $p  rss=$(awk '/VmRSS/ { print int($2 / 1024) }' "/proc/$p/status" 2>/dev/null) МБ  живёт: $(ps -o etime= -p "$p" 2>/dev/null | tr -d ' ')  cmd: $(tr '\0' ' ' < "/proc/$p/cmdline" 2>/dev/null | cut -c1-110)"
+        say "  pid $p  rss=$(awk '/VmRSS/ { print int($2 / 1024) }' "/proc/$p/status" 2>/dev/null) МБ  живёт: $(ps -o etime= -p "$p" 2>/dev/null | tr -d ' ')"
+        say "       каталог: $(readlink -f "/proc/$p/cwd" 2>/dev/null)"
+        say "       cmd: $(tr '\0' ' ' < "/proc/$p/cmdline" 2>/dev/null | cut -c1-150)"
     done
     [ "$n" = "0" ] && say "  java-процессов нет"
     say "  всего java: $n"
@@ -356,6 +366,15 @@ EOF
         say ""
         say "  >>> ВНИМАНИЕ: java-процессов больше одного — второй держит память и swap"
         say "      и может драться за файлы мира. Лишний убивается: kill <pid>"
+    fi
+    say ""
+    say "--- кто слушает порты (java) ---"
+    if command -v ss >/dev/null 2>&1; then
+        while IFS= read -r l; do say "  $l"; done <<EOF
+$(ss -tlnp 2>/dev/null | grep -E 'java|LISTEN' | head -20 | cut -c1-160)
+EOF
+    else
+        say "  ss не установлен (apt install iproute2)"
     fi
     say ""
     say "  потоков в системе: $(ps -eLf 2>/dev/null | tail -n +2 | wc -l)"
@@ -519,7 +538,8 @@ start)
         HIFILE=$(make_hi_jfc) && { SETTINGS=$HIFILE; EXTRA=" (сэмплы 2 мс)"; say "частая выборка: $HIFILE"; }
     fi
     say "=== JFR start $(date '+%Y-%m-%d %H:%M:%S') ==="
-    say "pid: $PID, файл: $JFR_FILE, длительность: ${DURATION}s$EXTRA"
+    say "pid: $PID, каталог процесса: $(readlink -f "/proc/$PID/cwd" 2>/dev/null), длительность: ${DURATION}s$EXTRA"
+    say "java: $(tr '\0' ' ' < "/proc/$PID/cmdline" 2>/dev/null | cut -c1-140)"
     chk=$("$JCMD" "$PID" JFR.check name="$NAME" 2>&1)
     case "$chk" in
         *"Could not find"*) : ;;

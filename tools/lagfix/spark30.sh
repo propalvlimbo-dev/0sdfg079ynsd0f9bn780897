@@ -31,12 +31,21 @@ OUT=spark30.txt
 
 say() { printf '%s\n' "$*" | tee -a "$OUT"; }
 
-find_pid() {  # только сам java: обёртка start.sh/screen тоже содержит "server.jar"
-    local p
-    for p in $(pgrep -f 'server\.jar|leaf-|paper-' 2>/dev/null) $(pgrep -x java 2>/dev/null); do
-        [ "$(cat "/proc/$p/comm" 2>/dev/null)" = "java" ] && { printf '%s' "$p"; return 0; }
+find_pid() {  # среди java-процессов выбираем тот, что запущен из каталога сервера
+    if [ -n "${JFR_PID:-}" ]; then printf '%s' "$JFR_PID"; return 0; fi
+    local p rss best bestrss dir want match
+    want=$(readlink -f "$SERVER_DIR" 2>/dev/null)
+    best=""; bestrss=0; match=""
+    for p in $(pgrep -x java 2>/dev/null); do
+        [ "$(cat "/proc/$p/comm" 2>/dev/null)" = "java" ] || continue
+        rss=$(awk '/^VmRSS:/ { print $2 + 0 }' "/proc/$p/status" 2>/dev/null)
+        [ -z "$rss" ] && rss=0
+        dir=$(readlink -f "/proc/$p/cwd" 2>/dev/null)
+        [ -n "$want" ] && [ "$dir" = "$want" ] && match="$p"
+        if [ "$rss" -gt "$bestrss" ]; then bestrss=$rss; best=$p; fi
     done
-    printf ''
+    [ -n "$match" ] && { printf '%s' "$match"; return 0; }
+    printf '%s' "$best"
 }
 
 # --- счётчики ядра ----------------------------------------------------------

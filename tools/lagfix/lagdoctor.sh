@@ -95,9 +95,16 @@ log "== 3. Запуск и память =="
 pid=""
 if command -v pgrep >/dev/null 2>&1; then
     pid=""
-    for _p in $(pgrep -f 'server\.jar|leaf-|paper-' 2>/dev/null) $(pgrep -x java 2>/dev/null); do
-        if [ "$(cat "/proc/$_p/comm" 2>/dev/null)" = "java" ]; then pid="$_p"; break; fi
+    _want=$(readlink -f "$SERVER_DIR" 2>/dev/null)
+    _best=""; _bestrss=0
+    for _p in $(pgrep -x java 2>/dev/null); do
+        [ "$(cat "/proc/$_p/comm" 2>/dev/null)" = "java" ] || continue
+        _rss=$(awk '/^VmRSS:/ { print $2 + 0 }' "/proc/$_p/status" 2>/dev/null); [ -z "$_rss" ] && _rss=0
+        _dir=$(readlink -f "/proc/$_p/cwd" 2>/dev/null)
+        if [ -n "$_want" ] && [ "$_dir" = "$_want" ]; then pid="$_p"; break; fi
+        if [ "$_rss" -gt "$_bestrss" ]; then _bestrss=$_rss; _best="$_p"; fi
     done
+    [ -z "$pid" ] && pid="$_best"
 fi
 if [ -n "${pid:-}" ] && [ -r "/proc/$pid/cmdline" ]; then
     log "  pid: $pid"
