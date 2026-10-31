@@ -70,6 +70,89 @@ dump)  # снимок идущей записи без остановки
     echo
     echo "дальше: bash $0 $SERVER_DIR window HH:MM:SS 10 $PART"
     ;;
+deep)  # полные стеки: кто читает файлы, кто аллоцирует, кто паркуется
+    JFR=$(tool jfr) || { echo "не найден jfr (JDK 21+)" >&2; exit 1; }
+    [ -f "$JFR_FILE" ] || { echo "нет файла $JFR_FILE" >&2; exit 1; }
+    : > "$OUT"
+    say "=== JFR deep $(date '+%Y-%m-%d %H:%M:%S') ==="
+    say "файл: $JFR_FILE"
+
+    say ""
+    say "--- какие файлы читаются (jdk.FileRead) ---"
+    "$JFR" print --events jdk.FileRead "$JFR_FILE" 2>/dev/null | awk '
+        function tobytes(v, u) { if (u == "kB") return v * 1000; if (u == "MB") return v * 1000000; if (u == "GB") return v * 1000000000; return v }
+        /^jdk\.FileRead \{/ { inp = 1; pth = ""; b = 0; d = 0; n = 0; th = ""; next }
+        inp && /^  path = "/ { split($0, a, "\""); pth = a[2] }
+        inp && /^  bytesRead = / { b = tobytes($3, $4) }
+        inp && /^  duration = / { d = $3 }
+        inp && /^  eventThread = "/ { split($0, a, "\""); th = a[2] }
+        inp && /stackTrace = \[/ { ins = 1; next }
+        ins && /^  \]/ { ins = 0; next }
+        ins && n < 4 { n++; fr[n] = $0; sub(/^ +/, "", fr[n]); sub(/ line:.*/, "", fr[n]) }
+        inp && /^\}$/ {
+            inp = 0
+            fcnt[pth]++; fbytes[pth] += b; fms[pth] += d; fth[pth] = th
+            k = th "  " pth
+            for (i = 1; i <= n; i++) k = k " <- " fr[i]
+            scnt[k]++
+            next
+        }
+        END {
+            print "  по файлам: читалось раз / сколько / кто:"
+            m = 0; for (k in fcnt) ks[++m] = k
+            for (i = 2; i <= m; i++) { x = ks[i]; j = i - 1; while (j > 0 && fcnt[ks[j]] < fcnt[x]) { ks[j+1] = ks[j]; j-- } ks[j+1] = x }
+            for (i = 1; i <= m && i <= 10; i++) printf "  %6d  %10.0f kB  %8.1f ms  [%s]  %s\n", fcnt[ks[i]], fbytes[ks[i]] / 1000, fms[ks[i]], fth[ks[i]], ks[i]
+        }' | tee -a "$OUT"
+
+    say ""
+    say "--- кто аллоцирует (jdk.ObjectAllocationSample, топ по весу) ---"
+    "$JFR" print --events jdk.ObjectAllocationSample --stack-depth 12 "$JFR_FILE" 2>/dev/null | awk '
+        function tobytes(v, u) { if (u == "kB") return v * 1000; if (u == "MB") return v * 1000000; if (u == "GB") return v * 1000000000; return v }
+        /^jdk\.ObjectAllocationSample \{/ { inp = 1; cls = ""; w = 0; n = 0; next }
+        inp && /^  objectClass = / { c = $0; sub(/^ +objectClass = /, "", c); sub(/ \(classLoader.*/, "", c); cls = c }
+        inp && /^  weight = / { w = tobytes($3, $4) }
+        inp && /stackTrace = \[/ { ins = 1; next }
+        ins && /^  \]/ { ins = 0; next }
+        ins && n < 6 { n++; fr[n] = $0; sub(/^ +/, "", fr[n]); sub(/ line:.*/, "", fr[n]) }
+        inp && /^\}$/ {
+            inp = 0
+            key = cls
+            for (i = 1; i <= n; i++) key = key "  <- " fr[i]
+            wsum[key] += w; nsum[key]++
+            next
+        }
+        END {
+            m = 0; for (k in wsum) ks[++m] = k
+            for (i = 2; i <= m; i++) { x = ks[i]; j = i - 1; while (j > 0 && wsum[ks[j]] < wsum[x]) { ks[j+1] = ks[j]; j-- } ks[j+1] = x }
+            for (i = 1; i <= m && i <= 8; i++) printf "  %12.0f kB  (сэмплов %d)\n   %s\n", wsum[ks[i]] / 1000, nsum[ks[i]], ks[i]
+        }' | tee -a "$OUT"
+
+    say ""
+    say "--- кто паркуется (jdk.ThreadPark) ---"
+    "$JFR" print --events jdk.ThreadPark "$JFR_FILE" 2>/dev/null | awk '
+        function dms(v, u) { if (u == "s") return v * 1000; if (u == "us") return v / 1000; return v }
+        /^jdk\.ThreadPark \{/ { inp = 1; n = 0; th = ""; d = 0; next }
+        inp && /^  duration = / { d = dms($3, $4) }
+        inp && /^  eventThread = "/ { split($0, a, "\""); th = a[2] }
+        inp && /stackTrace = \[/ { ins = 1; next }
+        ins && /^  \]/ { ins = 0; next }
+        ins && n < 5 { n++; fr[n] = $0; sub(/^ +/, "", fr[n]); sub(/ line:.*/, "", fr[n]) }
+        inp && /^\}$/ {
+            inp = 0
+            k = th
+            for (i = 1; i <= n; i++) k = k " <- " fr[i]
+            cnt[k]++; ms[k] += d
+            next
+        }
+        END {
+            m = 0; for (k in cnt) ks[++m] = k
+            for (i = 2; i <= m; i++) { x = ks[i]; j = i - 1; while (j > 0 && cnt[ks[j]] < cnt[x]) { ks[j+1] = ks[j]; j-- } ks[j+1] = x }
+            for (i = 1; i <= m && i <= 8; i++) printf "  %7d  %10.0f ms  %s\n", cnt[ks[i]], ms[ks[i]], ks[i]
+        }' | tee -a "$OUT"
+
+    say ""
+    say "готово. Пришли $OUT"
+    ;;
 window)  # все события в окне +-N секунд вокруг отметки HH:MM:SS
     CENTER=${3:-}
     if [ -z "$CENTER" ]; then echo "использование: bash $0 <папка> window HH:MM:SS [секунд]" >&2; exit 1; fi
