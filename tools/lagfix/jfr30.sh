@@ -258,7 +258,7 @@ cpu-report)  # троттлинг и память против лагов
     say "=== CPU/mem report $(date '+%Y-%m-%d %H:%M:%S') ==="
     head -4 "$OUTCPU" | sed 's/^/  /' | tee -a "$OUT"
     say ""
-    awk '
+    awk -v ncpu="$(nproc)" '
         /^#/ { next }
         {
             n++
@@ -266,7 +266,7 @@ cpu-report)  # троттлинг и память против лагов
                 split($i, kv, "="); k = kv[1]; v = kv[2] + 0
                 if (k == "thr") th = v
                 if (k == "thr_ms") thm = v
-                if (k == "jvm") { jv = v; if (v > maxjv) maxjv = v }
+                if (k == "jvm") { jv = v; jvv[n] = v; if (v > maxjv) maxjv = v }
                 if (k == "avail") { av = v; if (minav == "" || v < minav) { minav = v; minav_t = $1 } }
                 if (k == "swap") { sw = v; if (v > maxsw) maxsw = v }
                 if (k == "swpin") spi = v
@@ -285,17 +285,35 @@ cpu-report)  # троттлинг и память против лагов
             printf "  swap занято: максимум %d МБ; страниц в swap %d, из swap %d\n", maxsw, tot_spo, tot_spi
             printf "  крупных page fault за всё время: %d; пик давления памяти PSI avg10: %.2f\n", tot_mf, maxpm
             print ""
-            if (maxsw > 0 || tot_spi > 0) print "  >>> память: swap реально использовался - это причина зависаний, не догадка"
-            if (tot_spi == 0 && maxsw > 0) print "  >>> swap заполнен, но обратно не читался: страницы просто выгружены, хуже не стало"
-            if (maxsw == 0 && tot_spi == 0) print "  >>> swap не использовался"
-            if (thi[n] == 0) print "  >>> троттлинга CPU-квоты не было"
+            per_s = (n > 0 ? tot_spi / n : 0)
+            if (per_s > 5 || tot_mf > n * 50) {
+                print "  >>> память: swap реально читался обратно / много крупных page fault - тик ждал диск"
+            } else if (maxsw > 0) {
+                printf "  >>> память: в swap лежит %d МБ, но обратно читалось %.1f страниц/с - на тик это не влияет\n", maxsw, per_s
+            } else {
+                print "  >>> память: swap не использовался"
+            }
+            if (thi[n] == 0) print "  >>> троттлинга CPU-квоты не было (квоты на этой ВМ нет вообще)"
+            # гистограмма CPU процесса
+            m = 0
+            for (i = 1; i <= n; i++) if (jvv[i] != "") jarr[++m] = jvv[i]
+            for (i = 2; i <= m; i++) { x = jarr[i]; j = i - 1; while (j > 0 && jarr[j] > x) { jarr[j+1] = jarr[j]; j-- } jarr[j+1] = x }
+            if (m > 0) {
+                printf "  CPU процесса: медиана %d%%, p90 %d%%, p99 %d%%, пик %d%% (ядер: %d)\n", \
+                    jarr[int(m * 0.5) + 1], jarr[int(m * 0.9) + 1], jarr[int(m * 0.99) + 1], jarr[m], ncpu
+                busy = 0
+                for (i = 1; i <= m; i++) if (jarr[i] >= ncpu * 85) busy++
+                printf "  секунд, когда JVM забирала >=85%% всех ядер: %d из %d (%.1f%%)\n", busy, m, (m ? busy * 100 / m : 0)
+            }
+            printf "  >>> CPU: пик %d%% ядра при %d ядрах в системе\n", maxjv, ncpu
+            if (maxjv >= ncpu * 85) print "  >>> CPU насыщен: JVM забирает почти все ядра, тику не хватает процессора"
             save_n = n
         }' "$OUTCPU" | tee -a "$OUT"
 
     if [ -f "$SERVER_DIR/lag-events.log" ]; then
         say ""
         say "--- что было в момент каждого лага ---"
-        awk '
+        awk -v ncpu="$(nproc)" '
             FNR == NR { if ($0 ~ /^\[/) { lt = substr($0, 2, 8); split(lt, a, ":"); lag[++nl] = a[1] * 3600 + a[2] * 60 + a[3]; lagtxt[nl] = lt } next }
             /^#/ { next }
             {
@@ -307,26 +325,34 @@ cpu-report)  # троттлинг и память против лагов
                     if (k == "swpin") spi[m] = v
                     if (k == "avail") av[m] = v
                     if (k == "jvm") jv[m] = v
+                    if (k == "thr") th[m] = v
+                    if (k == "thr_ms") thm[m] = v
                 }
             }
             END {
                 if (nl == 0) { print "  lag-events.log пуст"; exit }
                 for (k = 1; k <= nl; k++) {
-                    sMF = 0; sSP = 0; minA = -1; maxJ = 0; cnt = 0
+                    sMF = 0; sSP = 0; minA = -1; maxJ = 0; cnt = 0; maxTH = 0
                     for (i = 1; i <= m; i++) {
                         if (mt[i] >= lag[k] - 2 && mt[i] <= lag[k] + 10) {
                             cnt++; sMF += mf[i]; sSP += spi[i]
                             if (minA < 0 || av[i] < minA) minA = av[i]
                             if (jv[i] > maxJ) maxJ = jv[i]
+                            if (i > 1 && th[i] > th[i-1]) maxTH = thm[i] - thm[i-1]
                         }
                     }
                     if (cnt == 0) { printf "  %s  нет данных (запись не шла)\n", lagtxt[k]; continue }
-                    printf "  %s  page faults %4d, чтений из swap %3d, свободно %4d МБ, CPU %3d%%", lagtxt[k], sMF, sSP, minA, maxJ
-                    if (sMF > 500 || sSP > 0) print "  << МЕМОРИЯ"; else print "  чисто"
+                    printf "  %s  faults %4d  swap-чт. %3d  свободно %4d МБ  CPU %3d%%", lagtxt[k], sMF, sSP, minA, maxJ
+                    if (sMF > 500 || sSP > 10) print "  << МЕМОРИЯ"
+                    else if (maxJ >= ncpu * 85) print "  << CPU (JVM заняла почти все ядра)"
+                    else if (maxTH > 0) print "  << ТРОТТЛ"
+                    else print "  ни память, ни CPU - причина в коде"
                 }
                 print ""
-                print "  << МЕМОРИЯ = в эти секунды шла работа со swap/диском, тик ждал память"
-                print "  чисто = ни памяти, ни троттлинга: причина в коде на главном потоке"
+                print "  МЕМОРИЯ = в эти секунды шла работа со swap/диском, тик ждал диск"
+                print "  CPU      = JVM занимала все ядра, тику не хватило процессора"
+                print "  ТРОТТЛ   = срабатывала квота CPU контейнера"
+                print "  ни память, ни CPU = причина в коде на главном потоке"
             }' "$SERVER_DIR/lag-events.log" "$OUTCPU" | tee -a "$OUT"
     fi
     say ""
