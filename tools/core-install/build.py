@@ -11,6 +11,7 @@ Usage: python3 tools/core-install/build.py [output.zip]
 """
 import hashlib
 import re
+import shutil
 import sys
 import zipfile
 from pathlib import Path
@@ -20,9 +21,40 @@ ROOT = HERE.parents[1]
 OUT = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / 'elytrix-leaf-1.21.11.zip'
 JAR = HERE / 'plugins/ElytrixFreakModel.jar'
 ITEMS = ('install.sh', 'start.sh', 'rollback.sh', 'README.md', 'files', 'plugins', 'rp')
+# Every ModelEngine model the server needs; its bones and texture are generated
+# by tools/accessories-model/build_modelengine_assets.py.
+MODELS = ('elytrix_kaneki_tentacles', 'elytrix_centipede')
+MODELS_SRC = ROOT / 'tools/accessories-model'
+
+
+def sync_models():
+    """Makes plugins/ModelEngine an exact copy of tools/accessories-model.
+
+    The core package carries the accessory models itself, so it silently drifted
+    from the sources twice: it kept the retired mask and never got the centipede
+    (which is why the animal had no texture and never rendered).  Rebuilding the
+    package now re-copies the blueprints and regenerates the asset tree, and any
+    blueprint the sources no longer contain is deleted.
+    """
+    target = HERE / 'plugins' / 'ModelEngine'
+    blueprints = target / 'blueprints'
+    blueprints.mkdir(parents=True, exist_ok=True)
+    for path in sorted(blueprints.glob('*.bbmodel')):
+        if path.stem not in MODELS:
+            path.unlink()
+            print(f'blueprint removed: {path.name}')
+    for model in MODELS:
+        shutil.copyfile(MODELS_SRC / f'{model}.bbmodel', blueprints / f'{model}.bbmodel')
+    assets = target / 'resource pack' / 'assets'
+    if assets.exists():
+        shutil.rmtree(assets)
+    shutil.copytree(MODELS_SRC / 'assets', assets)
+    files = sum(1 for path in assets.rglob('*') if path.is_file())
+    print(f'ModelEngine synced: {len(MODELS)} blueprints, {files} asset files')
 
 
 def main():
+    sync_models()
     digest = hashlib.sha256(JAR.read_bytes()).hexdigest()
     install = HERE / 'install.sh'
     text = install.read_text(encoding='utf-8')

@@ -198,10 +198,14 @@ def build_model():
             'visibility': True, 'autouv': 0,
             'children': [c['uuid'] for c in cubes],
         }
+        # A child bone is a nested object in the Blockbench outliner.  Shipping
+        # its UUID as a string (what this file used to do) makes the parser look
+        # for an *element* with that id, fail, and drop the whole model — the
+        # reason the centipede never appeared in game.
         if chain is not None:
-            bone['children'].append(chain['uuid'])      # the rest of the body
+            bone['children'].append(chain)              # the rest of the body
         if index == 1:
-            bone['children'].append(bones['head']['uuid'])
+            bone['children'].append(bones['head'])
         bones[f'c{index}'] = bone
         chain = bone
 
@@ -209,7 +213,7 @@ def build_model():
         'name': 'body_root', 'origin': [0.0, 35.2, -6.0], 'rotation': [0.0, 0.0, 0.0],
         'color': 0, 'uuid': uid('bone:root'), 'export': True, 'mirror_uv': False,
         'isOpen': True, 'locked': False, 'visibility': True, 'autouv': 0,
-        'children': [bones['c1']['uuid']],
+        'children': [bones['c1']],
     }
     return {
         'meta': {'format_version': '4.10', 'model_format': 'free', 'box_uv': False},

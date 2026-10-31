@@ -4179,7 +4179,282 @@
    "visibility": true,
    "autouv": 0,
    "children": [
-    "ddd7d0cd-d1b7-5353-9e16-1cfbee6cf8d8"
+    {
+     "name": "c1",
+     "origin": [
+      0.32,
+      35.2,
+      -5.3
+     ],
+     "rotation": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "color": 0,
+     "uuid": "ddd7d0cd-d1b7-5353-9e16-1cfbee6cf8d8",
+     "export": true,
+     "mirror_uv": false,
+     "isOpen": true,
+     "locked": false,
+     "visibility": true,
+     "autouv": 0,
+     "children": [
+      "5cf1ad43-dce5-5fee-90b5-6e43ab06e9a5",
+      "f3f6d24e-c63d-5954-8e51-4502091b1ea1",
+      "7412c3d8-f647-53a0-b164-3296c214049b",
+      "28d053a4-20df-5809-8df8-9e342840ecab",
+      {
+       "name": "c2",
+       "origin": [
+        0.52,
+        35.2,
+        -4.05
+       ],
+       "rotation": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "color": 0,
+       "uuid": "0f1be0fc-1d7a-5c17-86fc-927fdec073fc",
+       "export": true,
+       "mirror_uv": false,
+       "isOpen": true,
+       "locked": false,
+       "visibility": true,
+       "autouv": 0,
+       "children": [
+        "cd044b58-31a7-51fc-b409-68b98df13707",
+        "3cc285ca-402d-5de9-819b-804e2fb344df",
+        "44ba1765-dd39-5902-90cd-9e988bdfe792",
+        "99c1f238-5d0f-5ffb-9250-12c400e601bd",
+        {
+         "name": "c3",
+         "origin": [
+          0.527,
+          35.2,
+          -2.8
+         ],
+         "rotation": [
+          0.0,
+          0.0,
+          0.0
+         ],
+         "color": 0,
+         "uuid": "c76b26cf-8d07-5de3-a6f1-208fe881ad4a",
+         "export": true,
+         "mirror_uv": false,
+         "isOpen": true,
+         "locked": false,
+         "visibility": true,
+         "autouv": 0,
+         "children": [
+          "ae6083c3-1cbf-5ec6-af56-abfba1f629ab",
+          "75400255-522c-5c7d-8ab5-fb974fb8e3ed",
+          "12e68747-fa5c-5287-b378-6410558ae392",
+          "5ce04a32-e2b4-5e20-8128-562ca6ee9c08",
+          {
+           "name": "c4",
+           "origin": [
+            0.338,
+            35.2,
+            -1.55
+           ],
+           "rotation": [
+            0.0,
+            0.0,
+            0.0
+           ],
+           "color": 0,
+           "uuid": "71771a96-13ff-55f0-a7d8-54a736152d82",
+           "export": true,
+           "mirror_uv": false,
+           "isOpen": true,
+           "locked": false,
+           "visibility": true,
+           "autouv": 0,
+           "children": [
+            "1e5a4e52-c7e9-5c9e-9c50-68f0986742b8",
+            "33a9693d-ec00-5e76-9e82-e26c645aa263",
+            "ae8aebec-2b53-593d-9485-8d5739c759fd",
+            "4d9e22da-10cc-5c84-b93e-e8b4ca211f1b",
+            {
+             "name": "c5",
+             "origin": [
+              0.023,
+              35.2,
+              -0.3
+             ],
+             "rotation": [
+              0.0,
+              0.0,
+              0.0
+             ],
+             "color": 0,
+             "uuid": "c144acff-6dee-5cde-9b3d-b2cae43edff6",
+             "export": true,
+             "mirror_uv": false,
+             "isOpen": true,
+             "locked": false,
+             "visibility": true,
+             "autouv": 0,
+             "children": [
+              "8bee473e-329c-5fbe-8739-d634d70167b4",
+              "7f384c7a-b272-5601-bcda-8d9fed1f7a2c",
+              "0f4e0691-f0b7-51fd-8b53-1cb8910d5189",
+              "64f4b931-c882-56b2-a698-7ad416ceea56",
+              {
+               "name": "c6",
+               "origin": [
+                -0.301,
+                35.2,
+                0.95
+               ],
+               "rotation": [
+                0.0,
+                0.0,
+                0.0
+               ],
+               "color": 0,
+               "uuid": "d2dcbb34-fbee-5ccb-b4a6-27bc074e2d52",
+               "export": true,
+               "mirror_uv": false,
+               "isOpen": true,
+               "locked": false,
+               "visibility": true,
+               "autouv": 0,
+               "children": [
+                "1aaebfe5-d95f-599f-b4b0-3a37999aa73b",
+                "58719e98-7d9e-5d8d-9059-120332bbdc88",
+                "26cd8663-09e3-5852-b40b-b18bc9bf1cda",
+                "f04e500d-4ec1-5f9b-bda0-2bd30caee997",
+                {
+                 "name": "c7",
+                 "origin": [
+                  -0.512,
+                  35.2,
+                  2.2
+                 ],
+                 "rotation": [
+                  0.0,
+                  0.0,
+                  0.0
+                 ],
+                 "color": 0,
+                 "uuid": "abea016e-4a2d-54ad-91a5-3d6ec15efe30",
+                 "export": true,
+                 "mirror_uv": false,
+                 "isOpen": true,
+                 "locked": false,
+                 "visibility": true,
+                 "autouv": 0,
+                 "children": [
+                  "76170517-c4a7-5f94-bc22-bfc64af3ee89",
+                  "3fce8fea-060c-5083-be25-963a5c80d0fa",
+                  "5af7891f-dcc6-5022-b7a2-4442c17426d2",
+                  "caca93aa-f221-57ab-b413-c7e988ea44d6",
+                  {
+                   "name": "c8",
+                   "origin": [
+                    -0.533,
+                    35.2,
+                    3.45
+                   ],
+                   "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                   ],
+                   "color": 0,
+                   "uuid": "843bf234-b076-5cd2-a180-f3494499fc30",
+                   "export": true,
+                   "mirror_uv": false,
+                   "isOpen": true,
+                   "locked": false,
+                   "visibility": true,
+                   "autouv": 0,
+                   "children": [
+                    "33e5b9a8-288c-5f80-80c5-54d1c92e9789",
+                    "3d0f3f50-5016-52f6-bd2d-dd9b43a91a88",
+                    "cb719ca6-1982-51ff-a062-3e27d02673ae",
+                    "4c5f6147-315c-5d85-bfcf-e7c0a37dd6ed",
+                    {
+                     "name": "c9",
+                     "origin": [
+                      -0.356,
+                      35.2,
+                      4.7
+                     ],
+                     "rotation": [
+                      0.0,
+                      0.0,
+                      0.0
+                     ],
+                     "color": 0,
+                     "uuid": "e6909801-3c29-5ade-b0f5-0c3dd2e5ea44",
+                     "export": true,
+                     "mirror_uv": false,
+                     "isOpen": true,
+                     "locked": false,
+                     "visibility": true,
+                     "autouv": 0,
+                     "children": [
+                      "f8b0019c-4ac1-532f-8cb4-87fc69a13252",
+                      "a968b1e0-e77a-5174-89fc-01f847f1ea74",
+                      "56397de4-eade-5fbe-adfc-5ab84e157c15",
+                      "65c61f6a-2c66-59f9-a497-3f13e905a796",
+                      "cd882c27-233f-57b1-be35-abb4b93e71e7",
+                      "0214b760-307b-587c-9d43-b09dda3a2fda"
+                     ]
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "head",
+       "origin": [
+        0.0,
+        35.2,
+        -6.0
+       ],
+       "rotation": [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "color": 0,
+       "uuid": "35dd8243-e64e-5ada-8c45-d19243bca28e",
+       "export": true,
+       "mirror_uv": false,
+       "isOpen": true,
+       "locked": false,
+       "visibility": true,
+       "autouv": 0,
+       "children": [
+        "71745bf9-568b-53ba-ae8f-53b64a034aaf",
+        "218c8cb7-947f-576e-bd0c-39b7c81cde1b",
+        "16d52dad-611f-5f4b-b3ac-47191d1cbf0f",
+        "d6942ea8-7524-5177-a445-8850dd885611",
+        "5d3f7fda-9be7-5bff-86db-fc205e4fd417",
+        "dc0527ba-3b0a-5903-b122-08db2156b4ba",
+        "bd45fa9d-f18f-5dc7-ae32-78513f6d0a0a",
+        "deb25e8d-7456-5ee8-9abb-b913931a6f25"
+       ]
+      }
+     ]
+    }
    ]
   }
  ],

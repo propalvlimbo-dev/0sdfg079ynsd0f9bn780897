@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 # ============================================================================
-#  Elytrix — сороконожка над головой, маска убрана (v27)
+#  Elytrix — сороконожка над головой, маска убрана (v28)
 # ----------------------------------------------------------------------------
 #  Что делает:
 #    * кладёт ElytrixFreakModel 3.7.0 (меню без кнопки «Назад», «Снять всё»
 #      внизу по центру: крылья, нимб, кагуне, сороконожка; маска удалена);
-#    * чинит главное: модель теперь реально едет на игроке — её pivot
-#      регистрируется пассажиром игрока и повторяет попытку каждый тик;
+#    * чинит главное: у сороконожки теперь есть свои модели и текстура
+#      (assets/modelengine/items|models/elytrix_centipede + текстура) и
+#      исправленный blueprint — без файлов в ресурспаке модель не рисуется
+#      вообще, даже если плагин её создал;
 #    * обновляет ресурспак и ElytrixRP/config.yml (новый SHA-1);
 #    * печатает контрольные суммы, чтобы можно было проверить руками.
 #
@@ -63,8 +65,17 @@ fi
 
 say "5/5  Модели ModelEngine"
 if [ -d "$SELF_DIR/plugins/ModelEngine" ]; then
+    rm -rf "$DIR/plugins/ModelEngine/blueprints/elytrix_kaneki_eyepatch.bbmodel" \
+           "$DIR/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_kaneki_eyepatch" \
+           "$DIR/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_kaneki_eyepatch" \
+           "$DIR/plugins/ModelEngine/resource pack/assets/modelengine/textures/entity/models/elytrix_kaneki_eyepatch.png" \
+           "$DIR/plugins/ModelEngine/resource pack/assets/reallyworld/equipment/kaneki_eyepatch.json" \
+           "$DIR/plugins/ModelEngine/resource pack/assets/reallyworld/items/kaneki_eyepatch_icon.json" \
+           "$DIR/plugins/ModelEngine/resource pack/assets/reallyworld/models/item/freak/kaneki_eyepatch_icon.json" \
+           "$DIR/plugins/ModelEngine/resource pack/assets/reallyworld/textures/entity/equipment/humanoid/kaneki_eyepatch.png" \
+           "$DIR/plugins/ModelEngine/resource pack/assets/reallyworld/textures/item/freak/kaneki_eyepatch_icon.png" 2>/dev/null || true
     cp -a "$SELF_DIR/plugins/ModelEngine/." "$DIR/plugins/ModelEngine/"
-    ok "blueprints и assets обновлены"
+    ok "blueprints и assets обновлены (остатки маски убраны)"
 fi
 
 printf '\n'

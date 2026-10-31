@@ -36,8 +36,8 @@ RETIRED = ('assets/modelengine/items/elytrix_kaneki_eyepatch/',
 TITLE = ROOT / 'tools/accessories-integration/staging-assets/assets/reallyworld/textures/gui/title/elytrix_accessories.png'
 # The accessory-enabled plugin build that ships with this package; committing the
 # jar keeps the release reproducible instead of depending on a /tmp candidate.
-PLUGIN = ROOT / 'tools/accessories-integration/dist/ElytrixFreakModel-v27.jar'
-PLUGIN_SHA = '751bff87bc8942a4e6e530f5a10a650501bf85ca2fe04ef219271be0f568a0c9'
+PLUGIN = ROOT / 'tools/accessories-integration/dist/ElytrixFreakModel-v28.jar'
+PLUGIN_SHA = '85bd94c4207cbea608b0f702bb85f7be6d1782c9ef2f699f48bd5b402f00c538'
 
 
 def sha1(path):

@@ -33,7 +33,7 @@ LEAF_VERSION="1.21.11-179"
 LEAF_URL="https://github.com/Winds-Studio/Leaf/releases/download/ver-1.21.11/leaf-1.21.11-179.jar"
 LEAF_SHA="5da79782215c1a25edcd7c73b3523b7ecb7f4b86dc8a5846a176ed69bc2cd020"
 LEAF_SIZE="83953995"
-PLUGIN_SHA="751bff87bc8942a4e6e530f5a10a650501bf85ca2fe04ef219271be0f568a0c9"
+PLUGIN_SHA="85bd94c4207cbea608b0f702bb85f7be6d1782c9ef2f699f48bd5b402f00c538"
 
 Y=$'\033[33m'; G=$'\033[32m'; R=$'\033[31m'; B=$'\033[1m'; N=$'\033[0m'
 step() { printf '\n%s==> %s%s\n' "$B" "$*" "$N"; }
@@ -235,10 +235,21 @@ NEW_PLUGIN="$SELF_DIR/plugins/ElytrixFreakModel.jar"
 install -m 644 "$NEW_PLUGIN" "$DIR/plugins/ElytrixFreakModel.jar"
 ok "плагин обновлён (SHA-256 $PLUGIN_SHA)"
 
-# Модели аксессуаров (маска, сороконожка, крылья, кагуне) — без них ModelEngine
+# Модели аксессуаров (сороконожка, крылья, кагуне) — без них ModelEngine
 # поднимет плагин, но меню не найдёт blueprint'ы и честно скажет об этом в лог.
 if [ -d "$SELF_DIR/plugins/ModelEngine" ]; then
     mkdir -p "$DIR/plugins/ModelEngine"
+    # Маска снята с проекта в v27: если она осталась от прошлых версий, её файлы
+    # надо убрать, иначе ModelEngine продолжит импортировать мёртвую модель.
+    rm -rf "$DIR/plugins/ModelEngine/blueprints/elytrix_kaneki_eyepatch.bbmodel" \
+           "$DIR/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_kaneki_eyepatch" \
+           "$DIR/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_kaneki_eyepatch" \
+           "$DIR/plugins/ModelEngine/resource pack/assets/modelengine/textures/entity/models/elytrix_kaneki_eyepatch.png" \
+           "$DIR/plugins/ModelEngine/resource pack/assets/reallyworld/equipment/kaneki_eyepatch.json" \
+           "$DIR/plugins/ModelEngine/resource pack/assets/reallyworld/items/kaneki_eyepatch_icon.json" \
+           "$DIR/plugins/ModelEngine/resource pack/assets/reallyworld/models/item/freak/kaneki_eyepatch_icon.json" \
+           "$DIR/plugins/ModelEngine/resource pack/assets/reallyworld/textures/entity/equipment/humanoid/kaneki_eyepatch.png" \
+           "$DIR/plugins/ModelEngine/resource pack/assets/reallyworld/textures/item/freak/kaneki_eyepatch_icon.png" 2>/dev/null || true
     cp -a "$SELF_DIR/plugins/ModelEngine/." "$DIR/plugins/ModelEngine/"
     MODELS=$(find "$DIR/plugins/ModelEngine/blueprints" -maxdepth 1 -name '*.bbmodel' 2>/dev/null | wc -l)
     ok "модели ModelEngine: $MODELS blueprint(ов) в plugins/ModelEngine/blueprints"

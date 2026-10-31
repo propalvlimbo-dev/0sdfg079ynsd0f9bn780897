@@ -57,6 +57,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
     private static final java.util.Map<java.util.UUID, Pet> PETS = new java.util.HashMap<>();
     /** Players whose pet bones already carry the crawl animator. */
     private static final java.util.Set<java.util.UUID> PET_ANIMATED = new java.util.HashSet<>();
+    /** Bones of the centipede blueprint that carry the crawl wave. */
+    static final int PET_BONES = 11;
     /** Shared clock of the crawl wave, advanced once per server tick. */
     static double crawlPhase;
     private AccessoryController() {}
@@ -67,6 +69,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
         final ActiveModel model;
         final PivotOverride pivot;
         boolean attached;
+        /** The ready line is written once per wearer, not every tick. */
+        boolean loggedBones;
         Pet(ActiveModel model, PivotOverride pivot) {
             this.model = model;
             this.pivot = pivot;
@@ -282,7 +286,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
         if (!want || pet == null) return;
         if (!pet.attached) pet.attached = attachPivotToPlayer(pet.model, pet.pivot);
-        attachCrawl(player.getUniqueId(), pet.model);
+        int bound = attachCrawl(player.getUniqueId(), pet.model);
+        logPetReady(pet, bound);
     }
 
     /** Called every tick: moves the wave, attaches the pivot, rescues a dead model. */
@@ -298,22 +303,38 @@ public final class AccessoryController implements CommandExecutor, Listener {
                     continue;
                 }
                 if (!pet.attached) pet.attached = attachPivotToPlayer(pet.model, pet.pivot);
-                attachCrawl(entry.getKey(), pet.model);
+                logPetReady(pet, attachCrawl(entry.getKey(), pet.model));
             } catch (Throwable failure) {
                 reportOnce("питомец", failure);
             }
         }
     }
 
-    private static void attachCrawl(java.util.UUID id, ActiveModel model) {
-        if (model == null || model.isDestroyed() || PET_ANIMATED.contains(id)) return;
-        boolean root = hookBone(model, "body_root", new Crawl(0, false, true));
-        boolean head = hookBone(model, "head", new Crawl(0, true, false));
-        boolean body = true;
+    /** Hooks the crawl wave onto every bone; returns how many of the 11 were found. */
+    private static int attachCrawl(java.util.UUID id, ActiveModel model) {
+        if (model == null || model.isDestroyed()) return 0;
+        if (PET_ANIMATED.contains(id)) return PET_BONES;
+        int bound = hookBone(model, "body_root", new Crawl(0, false, true)) ? 1 : 0;
+        bound += hookBone(model, "head", new Crawl(0, true, false)) ? 1 : 0;
         for (int index = 1; index <= 9; index++) {
-            body &= hookBone(model, "c" + index, new Crawl(index, false, false));
+            bound += hookBone(model, "c" + index, new Crawl(index, false, false)) ? 1 : 0;
         }
-        if (root && head && body) PET_ANIMATED.add(id);
+        if (bound == PET_BONES) PET_ANIMATED.add(id);
+        return bound;
+    }
+
+    /**
+     * Writes one line per wearer once the animal is complete, so the log alone
+     * answers «видно её или нет»: bones bound, and whether the pivot rides the
+     * player.  A model with unbound bones still shows, but it will not crawl.
+     */
+    private static void logPetReady(Pet pet, int bound) {
+        if (pet.loggedBones || bound < PET_BONES) return;
+        pet.loggedBones = true;
+        if (host == null) return;
+        host.getLogger().info("[Аксессуары] сороконожка: кости " + bound + "/" + PET_BONES
+            + ", " + (pet.attached ? "модель едет на игроке"
+                                   : "pivot пока не прикрепился, повторяю каждый тик"));
     }
 
     private static boolean hookBone(ActiveModel model, String boneId, ManualAnimator animator) {

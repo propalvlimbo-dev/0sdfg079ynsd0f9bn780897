@@ -38,8 +38,9 @@ cd /root/RW_GRIEF && bash start.sh
 | `config/paper-world-defaults.yml` | без изменений | уже настроен нормально |
 | `config/gale-*.yml` | без изменений | то же |
 | `plugins/LagFixer/modules/WorldCleaner.yml` | `interval: 1080` (было 420) | обход всех сущностей 3 миров каждые 7 минут → 18 минут |
-| `plugins/ElytrixFreakModel.jar` | 3.7.0 | меню без «Назад», «Снять всё» внизу по центру: крылья, нимб, кагуне, сороконожка (маска убрана) |
-| `rp/Elytrix-RP-1.21.zip` | `fdddcf3e…` | новый ресурспак с `equipment/kaneki_eyepatch` |
+| `plugins/ElytrixFreakModel.jar` | 3.8.0 | меню без «Назад», «Снять всё» внизу по центру: крылья, нимб, кагуне, сороконожка (маска убрана) |
+| `plugins/ModelEngine/` | 2 блюпринта + 135 файлов ассетов | модели аксессуаров: кагуне и сороконожка целиком (item-модели, модели костей, текстуры); файлы маски удаляются при установке |
+| `rp/Elytrix-RP-1.21.zip` | `22d87c27…` | ресурспак с моделями кагуне и сороконожки, без маски |
 | `plugins/ElytrixRP/config.yml` | — | ставится вместе с паком, sha1 пересчитывается на месте |
 | `versions/`, `divinemc*.yml`, `purpur.yml` | уводятся в бэкап | остатки DivineMC; `versions/` иначе может подсунуть старое ядро |
 

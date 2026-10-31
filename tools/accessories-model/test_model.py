@@ -19,8 +19,9 @@ from PIL import Image
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 MODEL = 'elytrix_kaneki_tentacles'
-PATCH = 'elytrix_kaneki_eyepatch'
-PATCH_ICON = 'assets/reallyworld/textures/item/freak/kaneki_eyepatch_icon.png'
+PET = 'elytrix_centipede'
+# every ModelEngine model the pack must contain, bones and textures included
+MODELS = (MODEL, PET)
 TITLE = 'assets/reallyworld/textures/gui/title/elytrix_accessories.png'
 FONT = 'assets/minecraft/font/default.json'
 GLYPH = 'ꏠ'
@@ -401,78 +402,126 @@ class BlueprintTests(unittest.TestCase):
                            'both pairs bulge out to exactly the same depth')
 
 
-class PatchBlueprintTests(unittest.TestCase):
-    """The eyepatch is a separate blueprint: head-worn, no animation, left eye."""
+class CentipedeBlueprintTests(unittest.TestCase):
+    """The flying centipede: an animal above the head, animated in code."""
 
     @classmethod
     def setUpClass(cls):
-        cls.model = json.loads((HERE / f'{PATCH}.bbmodel').read_text(encoding='utf-8'))
+        cls.model = json.loads((HERE / f'{PET}.bbmodel').read_text(encoding='utf-8'))
         cls.bones = {}
         flatten(cls.model['outliner'], cls.bones)
         cls.elements = {e['uuid']: e for e in cls.model['elements']}
         cls.cubes = {name: [cls.elements[u] for u in bone['children'] if isinstance(u, str)]
                      for name, bone in cls.bones.items()}
 
+    def test_children_are_bones_not_dangling_ids(self):
+        """A child bone must be a nested object.
+
+        The blueprint used to list its children as plain UUID strings while the
+        bones themselves lived in the outliner: the parser then looks for an
+        *element* with that id, fails, and drops the whole model - the centipede
+        never showed up in game.
+        """
+        def walk(node):
+            for bone in node:
+                self.assertIsInstance(bone, dict, 'outliner children must be bone objects')
+                for child in bone.get('children', []):
+                    if isinstance(child, str):
+                        self.assertIn(child, self.elements,
+                                      f'{bone["name"]}: child {child} is neither a cube nor a bone')
+                    else:
+                        self.assertIn('name', child, 'nested child is a bone')
+                walk([c for c in bone.get('children', []) if isinstance(c, dict)])
+        walk(self.model['outliner'])
+
     def test_shape(self):
-        self.assertEqual(self.model['model_identifier'], PATCH)
-        self.assertEqual(self.model['animations'], [], 'a patch does not wobble')
-        self.assertEqual(len(self.model['elements']), 11)
-        self.assertEqual(set(self.bones), {'eyepatch_root', 'eyepatch_patch', 'eyepatch_band'})
-        self.assertEqual(self.model['outliner'][0]['origin'], [0.0, 24.0, 0.0],
-                         'root sits on the neck, above the feet')
+        self.assertEqual(self.model['model_identifier'], PET)
+        self.assertEqual(self.model['animations'], [], 'the crawl wave is code, not a clip')
+        self.assertEqual(len(self.bones), 11)
+        self.assertEqual(set(self.bones),
+                         {'body_root'} | {f'c{i}' for i in range(1, 10)} | {'head'})
+        self.assertEqual(len(self.model['elements']), 46)
+        for name, bone in self.bones.items():
+            if name == 'body_root':
+                self.assertEqual(self.cubes[name], [], 'the root is a pivot, not a limb')
+            else:
+                self.assertGreaterEqual(len(self.cubes[name]), 2, f'{name} is a real segment')
 
-    def test_it_sits_on_the_left_eye(self):
-        """+X is the player's right in blueprint space (see the priora's fl/fr
-        wheels), so Kaneki's patch must be on negative X, and in front (-Z)."""
-        patch = self.cubes['eyepatch_patch']
-        low = [min(c['from'][i] for c in patch) for i in range(3)]
-        high = [max(c['to'][i] for c in patch) for i in range(3)]
-        self.assertLess(high[0], 0.0, 'the patch is on the left half of the face')
-        self.assertGreater(low[0], -4.2, 'and does not hang off the cheek')
-        self.assertGreater(high[0] - low[0], 2.0, 'it covers a whole eye, not a dot')
-        self.assertLess(high[2], -3.8, 'in front of the face plane (z = -4)')
-        self.assertGreaterEqual(low[1], 26.5, 'over the eye line, not over the chin')
-        self.assertLessEqual(high[1], 31.0, 'below the top of the head')
+    def test_it_hovers_above_the_head(self):
+        low = min(c['from'][1] for c in self.model['elements'])
+        high = max(c['to'][1] for c in self.model['elements'])
+        self.assertGreater(low, 32.0, 'above the top of the head (32), never inside it')
+        self.assertLess(high, 42.0, 'close enough to read as a pet over the player')
+        self.assertEqual(self.model['outliner'][0]['name'], 'body_root')
 
-    def test_the_band_goes_all_the_way_round(self):
-        band = self.cubes['eyepatch_band']
-        self.assertGreaterEqual(len(band), 7, 'front, back, both sides and the knot')
-        self.assertLess(min(c['from'][2] for c in band), -3.8, 'touches the forehead')
-        self.assertGreater(max(c['to'][2] for c in band), 3.8, 'and the back of the head')
-        self.assertLess(min(c['from'][0] for c in band), -4.0)
-        self.assertGreater(max(c['to'][0] for c in band), 4.0)
-        # the knot is the only part that sticks out sideways or downwards
-        loose = [c for c in band if c['name'].startswith('knot')]
-        self.assertGreaterEqual(len(loose), 3)
-        for cube in band:
-            for i in range(3):
-                self.assertLessEqual(cube['to'][i] - cube['from'][i], 8.3, cube['name'])
+    def test_it_is_long_along_the_body(self):
+        """An animal, not a hat: it stretches head-to-tail and stays narrow."""
+        width = max(c['to'][0] for c in self.model['elements']) - min(c['from'][0] for c in self.model['elements'])
+        height = max(c['to'][1] for c in self.model['elements']) - min(c['from'][1] for c in self.model['elements'])
+        length = max(c['to'][2] for c in self.model['elements']) - min(c['from'][2] for c in self.model['elements'])
+        self.assertGreater(length, 2.5 * width, 'much longer than wide')
+        self.assertLess(height, width, 'flat, like a bug crawling on a surface')
+        starts = [self.bones[f'c{i}']['origin'] for i in range(1, 10)]
+        zs = [p[2] for p in starts]
+        self.assertEqual(zs, sorted(zs), 'segments follow each other without a jump')
+        gaps = [b - a for a, b in zip(zs, zs[1:])]
+        self.assertLess(max(gaps) - min(gaps), 0.2, 'the body is evenly segmented')
 
-    def test_generated_assets_exist(self):
+    def test_it_has_a_head_in_front(self):
+        head = [c for c in self.cubes['head']]
+        body_front = min(self.bones['c1']['origin'][2], min(c['from'][2] for c in self.cubes['c1']))
+        self.assertLess(min(c['from'][2] for c in head), body_front, 'the head leads the body')
+        eyes = [c for c in head if 'eye' in c['name']]
+        self.assertGreaterEqual(len(eyes), 2, 'two eyes, otherwise it is just a tube')
+
+    def test_generated_assets_cover_every_bone(self):
         base = HERE / 'assets' / 'modelengine'
-        for bone in ('eyepatch_patch', 'eyepatch_band'):
-            model = json.loads((base / 'models' / PATCH / f'{bone}.json').read_text())
-            definition = json.loads((base / 'items' / PATCH / f'{bone}.json').read_text())
-            self.assertEqual(definition['model']['model'], f'modelengine:{PATCH}/{bone}')
-            self.assertEqual(model['textures']['0'], f'modelengine:entity/models/{PATCH}')
-        texture = Image.open(base / 'textures' / 'entity' / 'models' / f'{PATCH}.png')
+        bones = [name for name, bone in self.bones.items()
+                 if any(isinstance(c, str) for c in bone['children'])]
+        self.assertEqual(len(bones), 10)
+        for bone in bones:
+            model = json.loads((base / 'models' / PET / f'{bone}.json').read_text())
+            definition = json.loads((base / 'items' / PET / f'{bone}.json').read_text())
+            self.assertEqual(definition['model']['model'], f'modelengine:{PET}/{bone}')
+            self.assertEqual(model['textures']['0'], f'modelengine:entity/models/{PET}')
+            self.assertEqual(len(model['elements']), len(self.cubes[bone]))
+        texture = Image.open(base / 'textures' / 'entity' / 'models' / f'{PET}.png')
         self.assertEqual(texture.size, (64, 64))
         self.assertEqual(texture.mode, 'RGBA')
         self.assertGreater(sum(1 for px in texture.getdata() if px[3] > 0), 400,
-                           'the cloth and the strap are painted')
+                           'the shell and the head are painted')
 
-    def test_menu_icon(self):
-        base = HERE / 'assets' / 'reallyworld'
-        definition = json.loads((base / 'items' / 'kaneki_eyepatch_icon.json').read_text())
-        self.assertEqual(definition['model']['model'], 'reallyworld:item/freak/kaneki_eyepatch_icon')
-        model = json.loads((base / 'models/item/freak/kaneki_eyepatch_icon.json').read_text())
-        self.assertEqual(model['parent'], 'minecraft:item/generated')
-        image = Image.open(base / 'textures/item/freak/kaneki_eyepatch_icon.png')
-        self.assertEqual((image.size, image.mode), ((32, 32), 'RGBA'))
-        light = [px for px in image.getdata() if px[3] > 0]
-        self.assertGreater(len(light), 120, 'the icon is drawn')
-        white = [px for px in light if min(px[:3]) > 200]
-        self.assertGreater(len(white), 60, 'the patch is white, not dark')
+
+class ModelAssetsTests(unittest.TestCase):
+    """Every shipped ModelEngine model must be complete, or it renders as nothing.
+
+    A bone is drawn from its own item model inside the served pack, so a model
+    with blueprints but no ``items/<model>/`` + ``models/<model>/`` files is
+    simply invisible - no error, no missing-texture square.
+    """
+
+    def test_every_model_has_items_models_and_texture(self):
+        base = HERE / 'assets' / 'modelengine'
+        names = {path.relative_to(base).as_posix() for path in base.rglob('*') if path.is_file()}
+        found = {name.split('/')[1] for name in names if name.split('/')[0] in ('items', 'models')}
+        self.assertEqual(found, set(MODELS), 'assets of every shipped model, and only those')
+        for model in MODELS:
+            models = {n for n in names if n.startswith(f'models/{model}/')}
+            items = {n for n in names if n.startswith(f'items/{model}/')}
+            self.assertTrue(models, f'{model}: no bone models')
+            self.assertEqual({n.split('/')[-1] for n in models},
+                             {n.split('/')[-1] for n in items}, f'{model}: bones differ')
+            self.assertIn(f'textures/entity/models/{model}.png', names)
+
+    def test_the_blueprint_bones_match_the_generated_files(self):
+        for model in MODELS:
+            blueprint = json.loads((HERE / f'{model}.bbmodel').read_text(encoding='utf-8'))
+            bones = {}
+            flatten(blueprint['outliner'], bones)
+            drawn = {name for name, bone in bones.items()
+                     if any(isinstance(c, str) for c in bone['children'])}
+            generated = {path.stem for path in (HERE / 'assets' / 'modelengine' / 'models' / model).glob('*.json')}
+            self.assertEqual(generated, drawn, f'{model}: stale or missing bone files')
 
 
 class PackTests(unittest.TestCase):
@@ -498,9 +547,9 @@ class PackTests(unittest.TestCase):
                          if any(name.startswith(f'assets/modelengine/items/{m}/') or
                                 name.startswith(f'assets/modelengine/models/{m}/') or
                                 name == f'assets/modelengine/textures/entity/models/{m}.png'
-                                for m in (MODEL, PATCH))
+                                for m in MODELS)
                          or name.startswith('assets/reallyworld/')
-                         and ('kaneki_tentacles_icon' in name or 'kaneki_eyepatch_icon' in name)}
+                         and 'kaneki_tentacles_icon' in name}
             self.assertEqual(generated, expected)
             for name in generated:
                 source = HERE / 'assets' / name[len('assets/'):]
@@ -508,17 +557,22 @@ class PackTests(unittest.TestCase):
 
     def test_item_definitions(self):
         # one item definition per bone that owns cubes (the root owns none)
-        expected = len([name for name, bone in BlueprintTests.bones.items()
-                        if any(isinstance(c, str) for c in bone['children'])])
         with zipfile.ZipFile(self.pack) as pack:
-            items = [n for n in pack.namelist() if n.startswith(f'assets/modelengine/items/{MODEL}/')]
-            self.assertEqual(len(items), expected)
-            for name in items:
-                definition = json.loads(pack.read(name))['model']
-                self.assertEqual(definition['model'],
-                                 f'modelengine:{MODEL}/' + Path(name).stem)
-                self.assertEqual(definition['type'], 'minecraft:model')
-                self.assertEqual(definition['tints'][0]['type'], 'minecraft:custom_model_data')
+            for model in MODELS:
+                blueprint = json.loads((HERE / f'{model}.bbmodel').read_text(encoding='utf-8'))
+                bones = {}
+                flatten(blueprint['outliner'], bones)
+                expected = len([n for n, b in bones.items()
+                                if any(isinstance(c, str) for c in b['children'])])
+                items = [n for n in pack.namelist()
+                         if n.startswith(f'assets/modelengine/items/{model}/')]
+                self.assertEqual(len(items), expected, model)
+                for name in items:
+                    definition = json.loads(pack.read(name))['model']
+                    self.assertEqual(definition['model'],
+                                     f'modelengine:{model}/' + Path(name).stem)
+                    self.assertEqual(definition['type'], 'minecraft:model')
+                    self.assertEqual(definition['tints'][0]['type'], 'minecraft:custom_model_data')
 
     def test_menu_icon_exists(self):
         """The menu puts the icon on a RED_DYE; without these files the slot shows
@@ -560,17 +614,18 @@ class PackTests(unittest.TestCase):
             changed = {n for n in old_names & new_names if old.read(n) != new.read(n)}
             added = new_names - old_names
             allowed_changes = {FONT} | {n for n in changed
-                                        if MODEL in n or PATCH in n
-                                        or 'kaneki_tentacles_icon' in n
-                                        or 'kaneki_eyepatch_icon' in n}
+                                        if any(m in n for m in MODELS)
+                                        or 'kaneki_tentacles_icon' in n}
             self.assertLessEqual(changed, allowed_changes,
                                  'only the tentacle model, its icon and the font may change')
             # the title bitmap may be new or redrawn, everything else is model data
             self.assertIn(TITLE, new_names, 'the menu title bitmap must survive the merge')
             allowed = {n for n in added if n.startswith('assets/modelengine/')
-                       and (MODEL in n or PATCH in n)}
+                       and any(m in n for m in MODELS)}
             allowed |= {n for n in added if n.startswith('assets/reallyworld/')
-                        and ('kaneki_tentacles_icon' in n or 'kaneki_eyepatch_icon' in n)}
+                        and 'kaneki_tentacles_icon' in n}
+            # the centipede assets are new in this release: they may be added
+            self.assertTrue(allowed or not added)
             self.assertLessEqual(added - {TITLE}, allowed)
             for name in ('pack.png', 'assets/minecraft/atlases/blocks.json',
                          'assets/minecraft/items/leather_horse_armor.json',

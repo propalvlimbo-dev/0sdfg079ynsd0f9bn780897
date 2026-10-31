@@ -3,10 +3,9 @@
 
 Only these things change, everything else is copied byte for byte:
 
-* ``assets/modelengine/items|models/elytrix_kaneki_tentacles/`` becomes exactly the
-  files generated from the new blueprint (old four-bone files are removed);
-* ``assets/modelengine/textures/entity/models/elytrix_kaneki_tentacles.png`` is the
-  new texture;
+* ``assets/modelengine/items|models/<model>/`` for every shipped accessory becomes
+  exactly the files generated from that blueprint (old bone files are removed);
+* ``assets/modelengine/textures/entity/models/<model>.png`` is the new texture;
 * ``assets/reallyworld/textures/gui/title/elytrix_accessories.png`` is the menu title
   redrawn with the pack's own font;
 * ``assets/minecraft/font/default.json`` gets (or replaces) exactly one provider for
@@ -28,7 +27,11 @@ import sys
 import zipfile
 from pathlib import Path
 
-MODEL = 'elytrix_kaneki_tentacles'
+# Every ModelEngine model this repository ships.  A model without its
+# ``items/<model>/<bone>.json`` + ``models/<model>/<bone>.json`` + texture inside
+# the served pack is invisible in game, so all of them are validated and their
+# stale files are replaced.
+MODELS = ('elytrix_kaneki_tentacles', 'elytrix_centipede')
 GLYPH = 'ꏠ'
 FONT = 'assets/minecraft/font/default.json'
 TITLE = 'assets/reallyworld/textures/gui/title/elytrix_accessories.png'
@@ -83,29 +86,58 @@ def font_entry(font, replace):
     return font, bool(found)
 
 
-def validate_assets(files, model=MODEL):
-    """Every item definition must point to a model that exists, and JSON must parse."""
-    models = {name for name in files if name.startswith(f'assets/modelengine/models/{model}/')}
-    items = {name for name in files if name.startswith(f'assets/modelengine/items/{model}/')}
-    if not models or len(models) != len(items):
-        raise ValueError(f'item/model count mismatch: {len(items)} items, {len(models)} models')
-    for name in models | items:
-        if not name.endswith('.json'):
-            raise ValueError('unexpected non-JSON asset: ' + name)
-        json.loads(files[name])
-    for name in items:
-        definition = json.loads(files[name])['model']
-        reference = definition['model']
-        expected = f'modelengine:{model}/' + Path(name).stem
-        if reference != expected:
-            raise ValueError(f'{name} points to {reference}, expected {expected}')
-    textures = set()
-    for name in models:
-        textures.update(json.loads(files[name]).get('textures', {}).values())
-    textures = {t.split(':')[-1] for t in textures if not t.startswith('#')}
-    for texture in textures:
-        if f'assets/modelengine/textures/{texture}.png' not in files:
-            raise ValueError('missing texture ' + texture)
+def models_in(files):
+    """Model names that the generated asset tree actually contains."""
+    found = set()
+    for name in files:
+        parts = name.split('/')
+        if len(parts) >= 5 and parts[1] == 'modelengine' and parts[2] in ('items', 'models'):
+            found.add(parts[3])
+    if not found:
+        raise ValueError('the generated assets contain no modelengine model')
+    return found
+
+
+def validate_assets(files, models=None):
+    """Every item definition must point to a model that exists, and JSON must parse.
+
+    Covers *all* shipped models: a model whose files are missing entirely is the
+    exact defect that made the centipede invisible, so an unknown name in
+    ``models`` is an error instead of a silent skip.
+    """
+    present = models_in(files)
+    models = list(MODELS if models is None else models)
+    for model in models:
+        if model not in present:
+            raise ValueError(f'no assets generated for model {model}')
+    unknown = present - set(models)
+    if unknown:
+        raise ValueError('assets for unregistered models: ' + ', '.join(sorted(unknown)))
+    for model in models:
+        bone_models = {name for name in files if name.startswith(f'assets/modelengine/models/{model}/')}
+        bone_items = {name for name in files if name.startswith(f'assets/modelengine/items/{model}/')}
+        if not bone_models or len(bone_models) != len(bone_items):
+            raise ValueError(f'{model}: item/model count mismatch: '
+                             f'{len(bone_items)} items, {len(bone_models)} models')
+        for name in bone_models | bone_items:
+            if not name.endswith('.json'):
+                raise ValueError('unexpected non-JSON asset: ' + name)
+            json.loads(files[name])
+        for name in bone_items:
+            definition = json.loads(files[name])['model']
+            reference = definition['model']
+            expected = f'modelengine:{model}/' + Path(name).stem
+            if reference != expected:
+                raise ValueError(f'{name} points to {reference}, expected {expected}')
+        textures = set()
+        for name in bone_models:
+            textures.update(json.loads(files[name]).get('textures', {}).values())
+        textures = {t.split(':')[-1] for t in textures if not t.startswith('#')}
+        if not textures:
+            raise ValueError(f'{model}: its bone models reference no texture')
+        for texture in textures:
+            if f'assets/modelengine/textures/{texture}.png' not in files:
+                raise ValueError('missing texture ' + texture)
 
 
 def merge(source, destination, assets_dir, title_png, texture_png=None,
@@ -117,7 +149,8 @@ def merge(source, destination, assets_dir, title_png, texture_png=None,
         raise SystemExit('output must be a new file: ' + str(destination))
     generated = collect_assets(assets_dir)
     if texture_png:
-        generated[f'assets/modelengine/textures/entity/models/{MODEL}.png'] = \
+        # legacy flag: an explicit texture for the kagune model
+        generated[f'assets/modelengine/textures/entity/models/{MODELS[0]}.png'] = \
             Path(texture_png).read_bytes()
     validate_assets(generated)
 
@@ -136,12 +169,13 @@ def merge(source, destination, assets_dir, title_png, texture_png=None,
     font, replaced = font_entry(font, replace=allow_existing_glyph or GLYPH in json.dumps(font))
     font_bytes = (json.dumps(font, ensure_ascii=False, separators=(',', ':')) + '\n').encode('utf-8')
 
-    prefix_items = f'assets/modelengine/items/{MODEL}/'
-    prefix_models = f'assets/modelengine/models/{MODEL}/'
+    prefixes = []
+    for model in MODELS:
+        prefixes += [f'assets/modelengine/items/{model}/',
+                     f'assets/modelengine/models/{model}/',
+                     f'assets/modelengine/textures/entity/models/{model}.png']
     stale = {name for name in source_data
-             if (name.startswith(prefix_items) or name.startswith(prefix_models)) and name not in generated}
-    stale |= {name for name in source_data
-              if name.startswith(f'assets/modelengine/textures/entity/models/{MODEL}') and name not in generated}
+             if any(name.startswith(prefix) for prefix in prefixes) and name not in generated}
     # retired accessories: their files must leave the pack, not linger as orphans
     for prefix in drop:
         if not prefix:
