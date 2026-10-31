@@ -31,11 +31,12 @@ OUT=spark30.txt
 
 say() { printf '%s\n' "$*" | tee -a "$OUT"; }
 
-find_pid() {
+find_pid() {  # только сам java: обёртка start.sh/screen тоже содержит "server.jar"
     local p
-    p=$(pgrep -f 'server\.jar|leaf-|paper-' 2>/dev/null | head -1)
-    [ -z "$p" ] && p=$(pgrep -f 'java .*Xmx' 2>/dev/null | head -1)
-    printf '%s' "$p"
+    for p in $(pgrep -f 'server\.jar|leaf-|paper-' 2>/dev/null) $(pgrep -x java 2>/dev/null); do
+        [ "$(cat "/proc/$p/comm" 2>/dev/null)" = "java" ] && { printf '%s' "$p"; return 0; }
+    done
+    printf ''
 }
 
 # --- счётчики ядра ----------------------------------------------------------

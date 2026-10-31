@@ -94,7 +94,10 @@ log ""
 log "== 3. Запуск и память =="
 pid=""
 if command -v pgrep >/dev/null 2>&1; then
-    pid="$(pgrep -f 'server\.jar|leaf-|paper-' 2>/dev/null | head -1)"
+    pid=""
+    for _p in $(pgrep -f 'server\.jar|leaf-|paper-' 2>/dev/null) $(pgrep -x java 2>/dev/null); do
+        if [ "$(cat "/proc/$_p/comm" 2>/dev/null)" = "java" ]; then pid="$_p"; break; fi
+    done
 fi
 if [ -n "${pid:-}" ] && [ -r "/proc/$pid/cmdline" ]; then
     log "  pid: $pid"
