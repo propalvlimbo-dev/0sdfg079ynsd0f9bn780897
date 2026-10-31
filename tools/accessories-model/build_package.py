@@ -4,8 +4,6 @@
 Contents (relative to /root/RW_GRIEF on the VDS):
 
     plugins/ModelEngine/blueprints/elytrix_kaneki_tentacles.bbmodel
-    plugins/ModelEngine/blueprints/elytrix_kaneki_eyepatch.bbmodel
-    plugins/ModelEngine/blueprints/elytrix_kaneki_mask.bbmodel
     plugins/ModelEngine/blueprints/elytrix_centipede.bbmodel
     plugins/ModelEngine/resource pack/assets/modelengine/...   (generated assets)
     plugins/ModelEngine/resource pack/assets/reallyworld/...   (menu icon)
@@ -27,12 +25,19 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-MODELS = ('elytrix_kaneki_tentacles', 'elytrix_kaneki_eyepatch', 'elytrix_kaneki_mask', 'elytrix_centipede')
+MODELS = ('elytrix_kaneki_tentacles', 'elytrix_centipede')
+# Files of the retired mask/eyepatch: they must disappear from the pack instead
+# of staying behind as orphans nobody renders any more.
+RETIRED = ('assets/modelengine/items/elytrix_kaneki_eyepatch/',
+           'assets/modelengine/models/elytrix_kaneki_eyepatch/',
+           'assets/modelengine/textures/entity/models/elytrix_kaneki_eyepatch.png',
+           'assets/reallyworld/equipment/kaneki_eyepatch.json',
+           'assets/reallyworld/textures/entity/equipment/humanoid/kaneki_eyepatch.png')
 TITLE = ROOT / 'tools/accessories-integration/staging-assets/assets/reallyworld/textures/gui/title/elytrix_accessories.png'
 # The accessory-enabled plugin build that ships with this package; committing the
 # jar keeps the release reproducible instead of depending on a /tmp candidate.
-PLUGIN = ROOT / 'tools/accessories-integration/dist/ElytrixFreakModel-v26.jar'
-PLUGIN_SHA = '44ad787637117a26c7e45cb6708b6892920c3d2ccc1d6496439ebc363111bf55'
+PLUGIN = ROOT / 'tools/accessories-integration/dist/ElytrixFreakModel-v27.jar'
+PLUGIN_SHA = '751bff87bc8942a4e6e530f5a10a650501bf85ca2fe04ef219271be0f568a0c9'
 
 
 def sha1(path):
@@ -50,7 +55,8 @@ def build(output):
         result = subprocess.run(
             [sys.executable, str(HERE / 'merge_pack.py'), str(ROOT / 'rp/Elytrix-RP-1.21.zip'),
              str(merged), '--assets', str(HERE / 'assets'), '--title', str(TITLE),
-             '--allow-existing-glyph'],
+             '--allow-existing-glyph',
+             *[arg for prefix in RETIRED for arg in ('--drop', prefix)]],
             check=True, capture_output=True, text=True)
         print(result.stdout.strip())
         pack_sha1 = sha1(merged)

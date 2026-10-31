@@ -34,7 +34,17 @@ public class AccessoryTest {
  // PivotOverrideRegistry and PivotOverride are classes in the real engine: the
  // fake has to extend them, otherwise the mock would not catch an invokeinterface
  static class FakePivotRegistry extends com.ticxo.modelengine.api.model.PivotOverrideRegistry {
-  public com.ticxo.modelengine.api.model.PivotOverride getOrCreate(Entity e){return new com.ticxo.modelengine.api.model.PivotOverride(java.util.UUID.randomUUID(),1,() -> new org.joml.Vector3f());}}
+  static class FakePassengers extends com.ticxo.modelengine.api.utils.data.tracker.CollectionDataTracker {
+    final java.util.Set<Object> ids=new java.util.LinkedHashSet<>();boolean dirty;
+    public boolean contains(Object v){return ids.contains(v);}
+    public boolean add(Object v){return ids.add(v);}
+    public void markDirty(){dirty=true;}}
+  final FakePassengers passengers = new FakePassengers();
+  public com.ticxo.modelengine.api.model.PivotOverride getOrCreate(Entity e){return pivot;}
+  final com.ticxo.modelengine.api.model.PivotOverride pivot =
+      new com.ticxo.modelengine.api.model.PivotOverride(java.util.UUID.randomUUID(),1,() -> new org.joml.Vector3f()){
+        public void addPassenger(int id){passengers.add(id);}
+        public com.ticxo.modelengine.api.utils.data.tracker.CollectionDataTracker getPassengers(){return passengers;}};}
  static class FakeActive implements com.ticxo.modelengine.api.model.ActiveModel {
   final com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint bp;boolean destroyed,canHurt=true,shadow=true,hitbox=true,lockPitch,lockYaw;float view;Boolean rotLocked;float lockedX,lockedY,lockedBody;com.ticxo.modelengine.api.model.PivotOverride pivot;
   FakeActive(com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint bp){this.bp=bp;}
@@ -43,6 +53,12 @@ public class AccessoryTest {
   public void setBlockLight(int v){}public void setSkyLight(int v){}public void setCanHurt(boolean v){canHurt=v;}public void setShadowVisible(boolean v){shadow=v;}public void setHitboxVisible(boolean v){hitbox=v;}
   public void setLockPitch(boolean v){lockPitch=v;}public void setLockYaw(boolean v){lockYaw=v;}public void setViewRange(float v){view=v;}
   public void setScale(double v){}public void setPivotOverride(com.ticxo.modelengine.api.model.PivotOverride v){pivot=v;}
+  boolean rendererReady;int pivotId=4242;
+  public com.ticxo.modelengine.api.model.render.ModelRenderer getModelRenderer(){
+   return new com.ticxo.modelengine.api.model.render.DisplayRenderer(){
+    public boolean isInitialized(){return rendererReady;}
+    public void initialize(){rendererReady=true;}
+    public Pivot getPivot(){return () -> pivotId;}};}
   public java.util.Optional<com.ticxo.modelengine.api.model.bone.ModelBone> getBone(String id){
    final com.ticxo.modelengine.api.utils.math.SafeTransform transform=new com.ticxo.modelengine.api.utils.math.SafeTransform();
    return java.util.Optional.of(new com.ticxo.modelengine.api.model.bone.ModelBone(){
@@ -57,7 +73,7 @@ public class AccessoryTest {
   FakeModeled(Query q){this.q=q;}
   public boolean isDestroyed(){return destroyed;}
   public void setBaseEntityVisible(boolean v){baseVisible=v;}
-  public Optional<com.ticxo.modelengine.api.model.ActiveModel> addModel(com.ticxo.modelengine.api.model.ActiveModel m,boolean passenger){adds++;q.last=(FakeActive)m;models.put("elytrix_kaneki_eyepatch",m);return Optional.of(m);}
+  public Optional<com.ticxo.modelengine.api.model.ActiveModel> addModel(com.ticxo.modelengine.api.model.ActiveModel m,boolean passenger){adds++;q.last=(FakeActive)m;models.put("elytrix_centipede",m);return Optional.of(m);}
   public Optional<com.ticxo.modelengine.api.model.ActiveModel> removeModel(String id){removes++;com.ticxo.modelengine.api.model.ActiveModel m=models.remove(id);if(m instanceof FakeActive)((FakeActive)m).destroy();return Optional.ofNullable(m);}
   public Optional<com.ticxo.modelengine.api.model.ActiveModel> getModel(String id){return Optional.ofNullable(models.get(id));}
   public void setYBodyRotImmediately(float v){}public void setYHeadRotImmediately(float v){}public void setXHeadRotImmediately(float v){}public void setRotationTick(int t){}}
@@ -102,7 +118,7 @@ public class AccessoryTest {
   ItemStack clearAll=Bukkit.slots.get(49);
   check(clearAll!=null && clearAll.getType()==Material.BARRIER,"one button clears everything");
   check(clearAll.meta.title.contains("Снять всё"),"clear-all is labelled");
-  check(Bukkit.slots.size()==6,"five accessories and clear-all");
+  check(Bukkit.slots.size()==5,"four accessories and clear-all");
   InventoryClickEvent click=new InventoryClickEvent();click.view=()->p.opened;click.who=p;click.slot=14;
   check(Bukkit.size==54 && Bukkit.title.contains("ꏠ"),"resource pack menu");
   click.slot=14;   // никакой кнопки «назад» в меню больше нет
@@ -124,96 +140,59 @@ public class AccessoryTest {
   controller.onClick(click);check(AccessoryController.back(plugin,p)==null,"clicking the worn wings takes them off");
   click.slot=13;controller.onClick(click);check(AccessoryController.halo(plugin,p)==plugin.halo,"halo on");
   controller.onClick(click);check(AccessoryController.halo(plugin,p)==null,"halo off by the same button");
-  // --- the mask: a real 3D model, never an armour layer --------------------
-  check(Bukkit.slots.get(15).meta.model.equals(new NamespacedKey("reallyworld","kaneki_eyepatch_icon")),"mask menu icon");
-  check(Bukkit.slots.get(15).meta.title.contains("Маска"),"the head button is the mask");
-  p.data.set(AccessoryController.BACK,PersistentDataType.STRING,"kaneki");
+  // --- the centipede: a model that actually rides the player --------------
+  check(Bukkit.slots.get(15)!=null,"a pet button sits next to the other accessories");
+  check(Bukkit.slots.get(16)==null,"the mask slot is gone");
+  check(Bukkit.slots.size()==5,"four accessories and clear-all");
   click.slot=15;controller.onClick(click);
-  check(AccessoryController.maskSelected(p),"mask selected from the menu");
-  check(AccessoryController.wearingMaskModel(p),"a ModelEngine model is spawned");
-  check(p.inv.getHelmet()==null,"the helmet slot stays empty");
-  check(AccessoryController.halo(plugin,p)==null,"the mask is not the halo rig");
-  check("kaneki".equals(p.data.get(AccessoryController.BACK,PersistentDataType.STRING)),"the mask does not touch the back slot");
-  check(AccessoryController.back(plugin,p)!=null,"kagune and mask together");
-  // the wearer's own display entities are hidden, so first person stays clear
-  final java.util.List<Entity> nearby=new java.util.ArrayList<>();
-  World world=new World(){public java.util.Collection<Entity> getNearbyEntities(Location l,double x,double y,double z){return nearby;}};
-  nearby.add(new ItemDisplay(){public ItemStack getItem(){return new ItemStack(Material.PAPER);}public java.util.UUID getUniqueId(){return UUID.randomUUID();}public Location getLocation(){return new Location(world,0,1.64,0);}});
-  p.world=world;p.hidden.clear();
-  try{java.lang.reflect.Method hide=AccessoryController.class.getDeclaredMethod("hideOwnMask",Player.class);hide.setAccessible(true);hide.invoke(null,p);}catch(Exception e){throw new AssertionError(e);}
-  check(p.hidden.size()==1,"the mask display is hidden from the wearer");
-  // second click takes the model down again
+  check(AccessoryController.centipedeSelected(p),"centipede selected");
+  check(AccessoryController.wearingCentipede(p),"the centipede model is spawned");
+  // The renderer is not ready right after addModel, exactly like the real engine:
+  // the pivot must be attached on a later tick, otherwise nothing is visible.
+  check(!AccessoryController.centipedeAttached(p),"not attached while the renderer boots");
+  ((FakeActive)((FakeEngine)ModelEngineAPI.backend).entities.get(p.uuid).models.get("elytrix_centipede")).rendererReady=true;
+  AccessoryController.animatePets();
+  check(AccessoryController.centipedeAttached(p),"the pivot rides the player once the renderer is up");
+  check(((FakeEngine)ModelEngineAPI.backend).pivots.passengers.contains(4242),"pivot id became a passenger");
+  check(((FakeEngine)ModelEngineAPI.backend).pivots.passengers.dirty,"and the passenger list was marked dirty");
+  // handleBoneCrawl still finds every bone, so the wave is wired
+  check(AccessoryController.crawlAngles(3,false,false,0.0)[1]!=AccessoryController.crawlAngles(3,false,false,0.27)[1],
+        "the body wave advances");
+  check(Math.abs(AccessoryController.crawlAngles(0,true,false,0.0)[1]
+               - AccessoryController.crawlAngles(0,true,false,2.0)[1])>1.0,"the head looks around");
   click.slot=15;controller.onClick(click);
-  check(!AccessoryController.maskSelected(p) && !AccessoryController.wearingMaskModel(p),"second click removes the mask");
-  check(p.msg.contains("снята"),"and says so");
+  check(!AccessoryController.centipedeSelected(p) && !AccessoryController.wearingCentipede(p),"second click sends it away");
   click.slot=15;controller.onClick(click);
-  check(AccessoryController.wearingMaskModel(p),"third click wears it again");
-  // the halo takes the head, so the mask model has to go
-  click.slot=13;controller.onClick(click);
-  check(AccessoryController.halo(plugin,p)==plugin.halo && !AccessoryController.maskSelected(p),"halo replaces the mask");
-  check(!AccessoryController.wearingMaskModel(p),"and its model is destroyed");
-  click.slot=15;controller.onClick(click);
-  check(AccessoryController.maskSelected(p) && AccessoryController.halo(plugin,p)==null,"mask replaces the halo");
-  // a v23 patch item left on the head is cleaned up, a real helmet is not touched
-  p.inv.setHelmet(new ItemStack(Material.LEATHER_HELMET));
-  AccessoryController.cleanupLegacyPatch(p);
-  check(p.inv.getHelmet()!=null && p.inv.getHelmet().getType()==Material.LEATHER_HELMET,"a real helmet is never removed");
+  check(AccessoryController.wearingCentipede(p),"and it comes back");
   // a missing blueprint means no model and a clear message
-  click.slot=15;controller.onClick(click);          // mask off again
-  check(!AccessoryController.maskSelected(p),"mask off");
+  click.slot=15;controller.onClick(click);
   ModelEngineAPI.Backend engine=ModelEngineAPI.backend;((FakeEngine)engine).noBlueprint=true;
   click.slot=15;controller.onClick(click);
-  check(!AccessoryController.maskSelected(p),"no blueprint, no mask");
+  check(!AccessoryController.centipedeSelected(p),"no blueprint, no pet");
   check(p.msg.contains("не загружена"),"and the player is told why");
   ((FakeEngine)engine).noBlueprint=false;
   click.slot=15;controller.onClick(click);
-  check(AccessoryController.wearingMaskModel(p),"mask back on");
-  // --- the centipede: its own model above the head ------------------------
-  check(Bukkit.slots.get(16)!=null,"a pet button sits next to the other accessories");
-  click.slot=16;controller.onClick(click);
-  check(AccessoryController.centipedeSelected(p),"centipede selected");
-  check(AccessoryController.wearingCentipede(p),"the centipede model is spawned");
-  // the crawl wave actually moves between two ticks
-  float[] first=AccessoryController.crawlAngles(3,false,false,0.0);
-  float[] second=AccessoryController.crawlAngles(3,false,false,0.27);
-  check(Math.abs(first[1]-second[1])>0.5,"the body wave advances");
-  float[] lookA=AccessoryController.crawlAngles(0,true,false,0.0);
-  float[] lookB=AccessoryController.crawlAngles(0,true,false,2.0);
-  check(Math.abs(lookA[1]-lookB[1])>1.0,"the head looks around");
-  click.slot=16;controller.onClick(click);
-  check(!AccessoryController.centipedeSelected(p) && !AccessoryController.wearingCentipede(p),"second click sends it away");
-  click.slot=16;controller.onClick(click);
-  check(AccessoryController.wearingCentipede(p),"and it comes back");
-  // --- a broken engine must not take the menu down (the v3.6.0 crash) ------
-  click.slot=15;controller.onClick(click);           // mask off first
-  check(!AccessoryController.maskSelected(p),"mask off before the engine breaks");
-  ModelEngineAPI.Backend good=ModelEngineAPI.backend;
-  ModelEngineAPI.backend=new FakeEngine(){public com.ticxo.modelengine.api.model.PivotOverrideRegistry pivots(){throw new IncompatibleClassChangeError("Found class PivotOverrideRegistry, but interface was expected");}};
-  p.opened=null;controller.onCommand(p,new Command(),"аксессуары",new String[0]);
-  check(p.opened!=null,"the menu still opens when the engine call explodes");
-  click.slot=15;controller.onClick(click);
-  check(!AccessoryController.maskSelected(p),"a failed mask is not stored as worn");
-  check(p.msg.contains("не наделась") || p.msg.contains("Маска"),"and the player is told");
-  ModelEngineAPI.backend=good;
-  click.slot=15;controller.onClick(click);
-  check(AccessoryController.wearingMaskModel(p),"the mask works again once the engine is fine");
+  check(AccessoryController.wearingCentipede(p),"pet back on");
+  // --- the mask is gone completely ---------------------------------------
+  p.data.set(AccessoryController.HEAD,PersistentDataType.STRING,"mask");
+  check(AccessoryController.headChoice(p).isEmpty(),"a leftover mask choice is forgotten");
+  check(AccessoryController.halo(plugin,p)==null,"and it does not turn into a halo");
+  p.data.set(AccessoryController.HEAD,PersistentDataType.STRING,"eyepatch");
+  check(AccessoryController.headChoice(p).isEmpty(),"the old eyepatch value is dropped too");
   // --- menu layout: нет кнопки «назад», «снять всё» внизу по центру -------
   check(Bukkit.slots.get(31)==null,"no back button any more");
   check(Bukkit.slots.get(30)==null,"old clear-all slot is empty");
   ItemStack bottomBarrier=Bukkit.slots.get(49);
   check(bottomBarrier!=null && bottomBarrier.getType()==Material.BARRIER,"clear-all sits in the bottom row centre");
   click.slot=49;controller.onClick(click);
-  check(AccessoryController.back(plugin,p)==null && AccessoryController.halo(plugin,p)==null &&
-        !AccessoryController.maskSelected(p),"clear all wipes back and head");
-  check(!AccessoryController.wearingMaskModel(p),"clear all also destroys the mask model");
+  check(AccessoryController.back(plugin,p)==null && AccessoryController.halo(plugin,p)==null,
+        "clear all wipes back and head");
   check(!AccessoryController.wearingCentipede(p),"clear all sends the centipede away too");
   // legacy halo selection (written before the head slot existed) is honoured
   p.data.set(AccessoryController.HALO,PersistentDataType.STRING,"halo");
   check(AccessoryController.halo(plugin,p)==plugin.halo,"legacy halo key still works");
-  p.data.set(AccessoryController.HEAD,PersistentDataType.STRING,"mask");
-  check(AccessoryController.maskSelected(p) && AccessoryController.halo(plugin,p)==null,"head key wins");
-  p.data.set(AccessoryController.HEAD,PersistentDataType.STRING,"eyepatch");
-  check(AccessoryController.maskSelected(p),"the v23 eyepatch value is read as the mask");
+  p.data.set(AccessoryController.HEAD,PersistentDataType.STRING,"halo");
+  check(AccessoryController.halo(plugin,p)==plugin.halo,"head key still drives the halo");
   // --- a broken install must never disable the whole plugin ------------------
   ElytrixFreakModelPlugin bare=new ElytrixFreakModelPlugin();bare.returnNullCommand=true;
   AccessoryController.install(bare);

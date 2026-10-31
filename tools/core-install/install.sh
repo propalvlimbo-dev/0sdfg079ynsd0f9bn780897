@@ -33,7 +33,7 @@ LEAF_VERSION="1.21.11-179"
 LEAF_URL="https://github.com/Winds-Studio/Leaf/releases/download/ver-1.21.11/leaf-1.21.11-179.jar"
 LEAF_SHA="5da79782215c1a25edcd7c73b3523b7ecb7f4b86dc8a5846a176ed69bc2cd020"
 LEAF_SIZE="83953995"
-PLUGIN_SHA="44ad787637117a26c7e45cb6708b6892920c3d2ccc1d6496439ebc363111bf55"
+PLUGIN_SHA="751bff87bc8942a4e6e530f5a10a650501bf85ca2fe04ef219271be0f568a0c9"
 
 Y=$'\033[33m'; G=$'\033[32m'; R=$'\033[31m'; B=$'\033[1m'; N=$'\033[0m'
 step() { printf '\n%s==> %s%s\n' "$B" "$*" "$N"; }

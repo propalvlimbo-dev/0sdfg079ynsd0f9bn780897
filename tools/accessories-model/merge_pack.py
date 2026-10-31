@@ -109,7 +109,7 @@ def validate_assets(files, model=MODEL):
 
 
 def merge(source, destination, assets_dir, title_png, texture_png=None,
-          allow_existing_glyph=False):
+          allow_existing_glyph=False, drop=()):
     source, destination = Path(source), Path(destination)
     if not source.is_file():
         raise SystemExit('missing input pack: ' + str(source))
@@ -142,6 +142,11 @@ def merge(source, destination, assets_dir, title_png, texture_png=None,
              if (name.startswith(prefix_items) or name.startswith(prefix_models)) and name not in generated}
     stale |= {name for name in source_data
               if name.startswith(f'assets/modelengine/textures/entity/models/{MODEL}') and name not in generated}
+    # retired accessories: their files must leave the pack, not linger as orphans
+    for prefix in drop:
+        if not prefix:
+            continue
+        stale |= {name for name in source_data if name.startswith(prefix) and name not in generated}
 
     additions = dict(generated)
     additions[TITLE] = title_bytes
@@ -190,10 +195,13 @@ def main():
     parser.add_argument('--texture', help='texture PNG for the model (optional if already in --assets)')
     parser.add_argument('--allow-existing-glyph', action='store_true',
                         help='the source pack already carries the menu title glyph')
+    parser.add_argument('--drop', action='append', default=[],
+                        help='path prefix of a retired asset to remove from the pack (repeatable)')
     args = parser.parse_args()
     sha1, replaced, removed = merge(args.source, args.destination, args.assets, args.title,
                                     texture_png=args.texture,
-                                    allow_existing_glyph=args.allow_existing_glyph)
+                                    allow_existing_glyph=args.allow_existing_glyph,
+                                    drop=args.drop)
     print(f'merged pack: {args.destination}')
     print(f'  font provider: {"replaced" if replaced else "added"}, stale files removed: {removed}')
     print(f'  SHA-1: {sha1}')
