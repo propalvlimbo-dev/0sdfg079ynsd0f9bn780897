@@ -75,6 +75,80 @@ make_hi_jfc() {  # копия profile.jfc с частыми сэмплами в�
 
 PID=$(find_pid)
 
+analyze_window() {  # $1 файл, $2 lo, $3 hi — печатает события и сэмплы окна
+    WFILE=$1; LO=$2; HI=$3
+    "$JFR" print --events jdk.ThreadPark,jdk.JavaMonitorEnter,jdk.JavaMonitorWait,jdk.SocketRead,jdk.SocketWrite,jdk.FileRead,jdk.FileWrite,jdk.GarbageCollection,jdk.ExecutionSample,jdk.NativeMethodSample \
+        --stack-depth 6 "$WFILE" 2>/dev/null | awk -v lo="$LO" -v hi="$HI" '
+        /^jdk\.[A-Za-z0-9_.]+ \{/ { ev = $1; inp = 1; st = ""; th = ""; dur = 0; nfr = 0; inf = 0; fr[1] = ""; fr[2] = ""; fr[3] = ""; next }
+        inp && /^  startTime = / { st = $3 }
+        inp && /^  duration = / { dur = $3 + 0 }
+        inp && /^  eventThread = "/ { split($0, a, "\""); th = a[2] }
+        inp && /^  sampledThread = "/ { if (th == "") { split($0, a, "\""); th = a[2] } }
+        inp && /stackTrace = \[/ { inf = 1; next }
+        inf && /^  \]/ { inf = 0; next }
+        inf && nfr < 3 { nfr++; fr[nfr] = $0; sub(/^ +/, "", fr[nfr]) }
+        inp && /^\}$/ {
+            inp = 0
+            split(st, b, ":"); sec = b[1] * 3600 + b[2] * 60 + b[3]
+            if (st != "" && sec >= lo && sec <= hi) {
+                key = ev "  [" th "]  " fr[1]
+                if (fr[2] != "") key = key " <- " fr[2]
+                cnt[key]++
+                if (dur >= 15) { nl++; ed[nl] = dur; et[nl] = st; ek[nl] = key }
+            }
+            next
+        }
+        END {
+            m = 0
+            for (k in cnt) ks[++m] = k
+            for (i = 2; i <= m; i++) {
+                x = ks[i]; j = i - 1
+                while (j > 0 && cnt[ks[j]] < cnt[x]) { ks[j + 1] = ks[j]; j-- }
+                ks[j + 1] = x
+            }
+            print "  по количеству событий:"
+            for (i = 1; i <= m && i <= 14; i++) printf "  %5d  %s\n", cnt[ks[i]], ks[i]
+            if (nl > 0) {
+                print ""
+                print "  самые долгие события в окне:"
+                for (r = 0; r < 10; r++) {
+                    bi = 0
+                    for (i = 1; i <= nl; i++) if (!used[i] && (bi == 0 || ed[bi] < ed[i])) bi = i
+                    if (!bi) break
+                    used[bi] = 1
+                    printf "  %8.1f ms  %s  %s\n", ed[bi], et[bi], ek[bi]
+                }
+            }
+        }' | tee -a "$OUT"
+    say ""
+    say "--- чем был занят Server thread в окне (сэмплы) ---"
+    "$JFR" print --events jdk.ExecutionSample,jdk.NativeMethodSample --stack-depth 8 "$WFILE" 2>/dev/null | awk -v lo="$LO" -v hi="$HI" '
+        /^jdk\.[A-Za-z0-9_.]+ \{/ { ev = $1; inp = 1; st = ""; th = ""; nfr = 0; inf = 0; fr[1] = ""; fr[2] = ""; fr[3] = ""; next }
+        inp && /^  startTime = / { st = $3 }
+        inp && /^  sampledThread = "/ { split($0, a, "\""); th = a[2] }
+        inp && /^  eventThread = "/ { if (th == "") { split($0, a, "\""); th = a[2] } }
+        inp && /stackTrace = \[/ { inf = 1; next }
+        inf && /^  \]/ { inf = 0; next }
+        inf && nfr < 3 { nfr++; fr[nfr] = $0; sub(/^ +/, "", fr[nfr]); sub(/ line:.*/, "", fr[nfr]) }
+        inp && /^\}$/ {
+            inp = 0
+            split(st, b, ":"); sec = b[1] * 3600 + b[2] * 60 + b[3]
+            if (st != "" && sec >= lo && sec <= hi && th ~ /^Server thread/) {
+                k = fr[1]
+                if (fr[2] != "") k = k " <- " fr[2]
+                if (fr[3] != "") k = k " <- " fr[3]
+                cnt[k]++
+            }
+            next
+        }
+        END {
+            m = 0; for (k in cnt) ks[++m] = k
+            for (i = 2; i <= m; i++) { x = ks[i]; j = i - 1; while (j > 0 && cnt[ks[j]] < cnt[x]) { ks[j+1] = ks[j]; j-- } ks[j+1] = x }
+            if (m == 0) print "  сэмплов по Server thread в окне нет (JFR сэмплит редко)"
+            for (i = 1; i <= m && i <= 10; i++) printf "  %4d  %s\n", cnt[ks[i]], ks[i]
+        }' | tee -a "$OUT"
+}
+
 case "$MODE" in
 dump)  # снимок идущей записи без остановки
     if [ -z "$PID" ]; then echo "процесс сервера не найден" >&2; exit 1; fi
@@ -134,7 +208,7 @@ deep)  # полные стеки: кто читает файлы, кто алл�
     say "--- какие файлы читаются (jdk.FileRead) ---"
     "$JFR" print --events jdk.FileRead "$JFR_FILE" 2>/dev/null | awk '
         function tobytes(v, u) { if (u == "kB") return v * 1000; if (u == "MB") return v * 1000000; if (u == "GB") return v * 1000000000; return v }
-        /^jdk\.FileRead \{/ { inp = 1; pth = ""; b = 0; d = 0; n = 0; th = ""; next }
+        /^jdk\.FileRead \{/ { inp = 1; pth = ""; b = 0; d = 0; n = 0; th = ""; inf = 0; fr[1] = ""; fr[2] = ""; fr[3] = ""; fr[4] = ""; next }
         inp && /^  path = "/ { split($0, a, "\""); pth = a[2] }
         inp && /^  bytesRead = / { b = tobytes($3, $4) }
         inp && /^  duration = / { d = $3 }
@@ -161,7 +235,7 @@ deep)  # полные стеки: кто читает файлы, кто алл�
     say "--- кто аллоцирует (jdk.ObjectAllocationSample, топ по весу) ---"
     "$JFR" print --events jdk.ObjectAllocationSample --stack-depth 12 "$JFR_FILE" 2>/dev/null | awk '
         function tobytes(v, u) { if (u == "kB") return v * 1000; if (u == "MB") return v * 1000000; if (u == "GB") return v * 1000000000; return v }
-        /^jdk\.ObjectAllocationSample \{/ { inp = 1; cls = ""; w = 0; n = 0; next }
+        /^jdk\.ObjectAllocationSample \{/ { inp = 1; cls = ""; w = 0; n = 0; inf = 0; fr[1] = ""; fr[2] = ""; next }
         inp && /^  objectClass = / { c = $0; sub(/^ +objectClass = /, "", c); sub(/ \(classLoader.*/, "", c); cls = c }
         inp && /^  weight = / { w = tobytes($3, $4) }
         inp && /stackTrace = \[/ { ins = 1; next }
@@ -184,7 +258,7 @@ deep)  # полные стеки: кто читает файлы, кто алл�
     say "--- кто паркуется (jdk.ThreadPark) ---"
     "$JFR" print --events jdk.ThreadPark "$JFR_FILE" 2>/dev/null | awk '
         function dms(v, u) { if (u == "s") return v * 1000; if (u == "us") return v / 1000; return v }
-        /^jdk\.ThreadPark \{/ { inp = 1; n = 0; th = ""; d = 0; next }
+        /^jdk\.ThreadPark \{/ { inp = 1; n = 0; th = ""; d = 0; inf = 0; fr[1] = ""; fr[2] = ""; next }
         inp && /^  duration = / { d = dms($3, $4) }
         inp && /^  eventThread = "/ { split($0, a, "\""); th = a[2] }
         inp && /stackTrace = \[/ { ins = 1; next }
@@ -206,92 +280,47 @@ deep)  # полные стеки: кто читает файлы, кто алл�
     say ""
     say "готово. Пришли $OUT"
     ;;
-window)  # все события в окне +-N секунд вокруг отметки HH:MM:SS
+window)  # события в окне +-N секунд вокруг HH:MM:SS
     CENTER=${3:-}
-    if [ -z "$CENTER" ]; then echo "использование: bash $0 <папка> window HH:MM:SS [секунд]" >&2; exit 1; fi
+    if [ -z "$CENTER" ]; then echo "использование: bash $0 <папка> window HH:MM:SS [секунд] [файл]" >&2; exit 1; fi
     SPAN=${4:-10}
     WFILE=${5:-$JFR_FILE}
-    IFS=: read -r hh mm ss <<< "$CENTER"
-    t=$(( 10#$hh * 3600 + 10#$mm * 60 + 10#$ss ))
-    fmt() { printf '%02d:%02d:%02d' $(( $1 / 3600 )) $(( ($1 % 3600) / 60 )) $(( $1 % 60 )); }
-    LO=$(( t - SPAN )); [ "$LO" -lt 0 ] && LO=0
-    HI=$(( t + SPAN ))
     JFR=$(tool jfr) || { echo "не найден jfr (JDK 21+)" >&2; exit 1; }
     [ -f "$WFILE" ] || { echo "нет файла $WFILE" >&2; exit 1; }
+    IFS=: read -r hh mm ss <<< "$CENTER"
+    t=$(( 10#$hh * 3600 + 10#$mm * 60 + 10#$ss ))
+    LO=$(( t - SPAN )); [ "$LO" -lt 0 ] && LO=0
+    HI=$(( t + SPAN ))
     : > "$OUT"
-    say "=== JFR window $(fmt "$LO") .. $(fmt "$HI") ($((2*SPAN)) с вокруг $CENTER) ==="
-    "$JFR" print --events jdk.ThreadPark,jdk.JavaMonitorEnter,jdk.JavaMonitorWait,jdk.SocketRead,jdk.SocketWrite,jdk.FileRead,jdk.FileWrite,jdk.GarbageCollection,jdk.ExecutionSample,jdk.NativeMethodSample \
-        --stack-depth 6 "$WFILE" 2>/dev/null | awk -v lo="$LO" -v hi="$HI" '
-        /^jdk\.[A-Za-z0-9_.]+ \{/ { ev = $1; inp = 1; st = ""; th = ""; dur = 0; nfr = 0; next }
-        inp && /^  startTime = / { st = $3 }
-        inp && /^  duration = / { dur = $3 + 0 }
-        inp && /^  eventThread = "/ { split($0, a, "\""); th = a[2] }
-        inp && /stackTrace = \[/ { inf = 1; next }
-        inf && /^  \]/ { inf = 0; next }
-        inf && nfr < 3 { nfr++; fr[nfr] = $0; sub(/^ +/, "", fr[nfr]) }
-        inp && /^\}$/ {
-            inp = 0
-            split(st, b, ":"); sec = b[1] * 3600 + b[2] * 60 + b[3]
-            if (st != "" && sec >= lo && sec <= hi) {
-                key = ev "  [" th "]  " fr[1]
-                if (fr[2] != "") key = key " <- " fr[2]
-                cnt[key]++
-                if (dur >= 15) { nl++; ed[nl] = dur; et[nl] = st; ek[nl] = key }
-            }
-            next
-        }
-        END {
-            m = 0
-            for (k in cnt) ks[++m] = k
-            for (i = 2; i <= m; i++) {
-                x = ks[i]; j = i - 1
-                while (j > 0 && cnt[ks[j]] < cnt[x]) { ks[j + 1] = ks[j]; j-- }
-                ks[j + 1] = x
-            }
-            print "  по количеству событий:"
-            for (i = 1; i <= m && i <= 14; i++) printf "  %5d  %s\n", cnt[ks[i]], ks[i]
-            if (nl > 0) {
-                print ""
-                print "  самые долгие события в окне:"
-                for (r = 0; r < 10; r++) {
-                    bi = 0
-                    for (i = 1; i <= nl; i++) if (!used[i] && (bi == 0 || ed[bi] < ed[i])) bi = i
-                    if (!bi) break
-                    used[bi] = 1
-                    printf "  %8.1f ms  %s  %s\n", ed[bi], et[bi], ek[bi]
-                }
-            }
-        }' | tee -a "$OUT"
+    say "=== JFR window $CENTER +-${SPAN} с : $(basename "$WFILE") ==="
+    analyze_window "$WFILE" "$LO" "$HI"
     say ""
-    say "--- чем был занят Server thread в окне (сэмплы) ---"
-    "$JFR" print --events jdk.ExecutionSample,jdk.NativeMethodSample --stack-depth 8 "$WFILE" 2>/dev/null | awk -v lo="$LO" -v hi="$HI" '
-        /^jdk\.[A-Za-z0-9_.]+ \{/ { ev = $1; inp = 1; st = ""; th = ""; nfr = 0; next }
-        inp && /^  startTime = / { st = $3 }
-        inp && /^  sampledThread = "/ { split($0, a, "\""); th = a[2] }
-        inp && /^  eventThread = "/ { if (th == "") { split($0, a, "\""); th = a[2] } }
-        inp && /stackTrace = \[/ { inf = 1; next }
-        inf && /^  \]/ { inf = 0; next }
-        inf && nfr < 3 { nfr++; fr[nfr] = $0; sub(/^ +/, "", fr[nfr]); sub(/ line:.*/, "", fr[nfr]) }
-        inp && /^\}$/ {
-            inp = 0
-            split(st, b, ":"); sec = b[1] * 3600 + b[2] * 60 + b[3]
-            if (st != "" && sec >= lo && sec <= hi && th ~ /^Server thread/) {
-                k = fr[1]
-                if (fr[2] != "") k = k " <- " fr[2]
-                if (fr[3] != "") k = k " <- " fr[3]
-                cnt[k]++
-            }
-            next
-        }
-        END {
-            m = 0; for (k in cnt) ks[++m] = k
-            for (i = 2; i <= m; i++) { x = ks[i]; j = i - 1; while (j > 0 && cnt[ks[j]] < cnt[x]) { ks[j+1] = ks[j]; j-- } ks[j+1] = x }
-            if (m == 0) print "  сэмплов по Server thread в окне нет (JFR сэмплит редко)"
-            for (i = 1; i <= m && i <= 10; i++) printf "  %4d  %s\n", cnt[ks[i]], ks[i]
-        }' | tee -a "$OUT"
-
-    say ""
-    say "готово. Отметку времени бери из строки spark: Tick #N lasted ... ms"
+    say "готово. Пришли $OUT"
+    ;;
+windows)  # разобрать все lag-*.jfr, время берётся из имени файла
+    SPAN=${3:-10}
+    JFR=$(tool jfr) || { echo "не найден jfr (JDK 21+)" >&2; exit 1; }
+    : > "$OUT"
+    n=0
+    for f in "$SERVER_DIR"/lag-*.jfr; do
+        [ -f "$f" ] || continue
+        b=$(basename "$f")
+        c=$(printf '%s' "$b" | sed -n 's/^lag-[0-9]\{8\}-\([0-9]\{2\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)\.jfr$/\1:\2:\3/p')
+        [ -z "$c" ] && continue
+        IFS=: read -r hh mm ss <<< "$c"
+        t=$(( 10#$hh * 3600 + 10#$mm * 60 + 10#$ss ))
+        LO=$(( t - SPAN )); [ "$LO" -lt 0 ] && LO=0
+        HI=$(( t + SPAN ))
+        say "=== $b  (окно $c +-${SPAN} с) ==="
+        analyze_window "$f" "$LO" "$HI"
+        say ""
+        n=$(( n + 1 ))
+    done
+    if [ "$n" = "0" ]; then
+        say "файлов lag-*.jfr нет — watch ничего не снял"
+    else
+        say "разобрано файлов: $n. Пришли $OUT"
+    fi
     ;;
 start)
     : > "$OUT"
