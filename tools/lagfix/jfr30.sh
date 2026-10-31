@@ -406,6 +406,105 @@ EOF
     say "  потоков в системе: $(ps -eLf 2>/dev/null | tail -n +2 | wc -l)"
     say "  готово. Пришли $OUT"
     ;;
+hunt)  # форензика по уже снятому дампу: что делал Server thread
+    HFILE=${3:-$(ls -t "$SERVER_DIR"/lag-*.jfr "$SERVER_DIR"/flight.jfr 2>/dev/null | head -1)}
+    TH=${4:-Server thread}
+    [ -f "$HFILE" ] || { echo "нет файла. Укажи: bash $0 $SERVER_DIR hunt путь.jfr" >&2; exit 1; }
+    JFR=$(tool jfr) || { echo "не найден jfr (JDK 21+)" >&2; exit 1; }
+    : > "$OUT"
+    say "=== hunt: $(basename "$HFILE") ($(du -h "$HFILE" | cut -f1)) ==="
+    say "поток: $TH"
+    say ""
+    say "--- окно записи ---"
+    "$JFR" summary "$HFILE" 2>/dev/null | sed -n '1,8p' | tee -a "$OUT"
+
+    say ""
+    say "--- топ методов [$TH]: сэмплы выполнения ---"
+    "$JFR" print --events jdk.ExecutionSample,jdk.NativeMethodSample --stack-depth 12 "$HFILE" 2>/dev/null | awk -v want="$TH" '
+        /^jdk\.[A-Za-z0-9_.]+ \{/ { ev = $1; inp = 1; th = ""; n = 0; inf = 0; fr[1] = ""; fr[2] = ""; fr[3] = ""; next }
+        inp && /^  sampledThread = "/ { split($0, a, "\""); th = a[2] }
+        inp && /^  eventThread = "/ { if (th == "") { split($0, a, "\""); th = a[2] } }
+        inp && /stackTrace = \[/ { inf = 1; next }
+        inf && /^  \]/ { inf = 0; next }
+        inf && n < 3 { n++; fr[n] = $0; sub(/^ +/, "", fr[n]); sub(/ line:.*/, "", fr[n]) }
+        inp && /^\}$/ {
+            inp = 0; all++
+            if (index(th, want) == 1) {
+                mine++
+                k = fr[1]
+                if (fr[2] != "") k = k " <- " fr[2]
+                if (fr[3] != "") k = k " <- " fr[3]
+                cnt[k]++
+                if (ev ~ /Native/) nat[k]++
+            }
+            next
+        }
+        END {
+            printf "  сэмплов всего: %d, из них по потоку: %d\n", all, mine
+            if (mine == 0) { print "  по этому потоку сэмплов нет - смотри native-методы и парки"; exit }
+            m = 0; for (k in cnt) ks[++m] = k
+            for (i = 2; i <= m; i++) { x = ks[i]; j = i - 1; while (j > 0 && cnt[ks[j]] < cnt[x]) { ks[j+1] = ks[j]; j-- } ks[j+1] = x }
+            for (i = 1; i <= m && i <= 15; i++)
+                printf "  %5d  %5.1f%%  %s%s\n", cnt[ks[i]], cnt[ks[i]] * 100 / mine, ks[i], (nat[ks[i]] ? "  [native]" : "")
+        }' | tee -a "$OUT"
+
+    say ""
+    say "--- блокировки, ожидание GC и блокирующий ввод-вывод на [$TH] ---"
+    "$JFR" print --events jdk.JavaMonitorEnter,jdk.SocketRead,jdk.FileRead,jdk.FileWrite,jdk.ZAllocationStall --stack-depth 8 "$HFILE" 2>/dev/null | awk -v want="$TH" '
+        /^jdk\.[A-Za-z0-9_.]+ \{/ { ev = $1; inp = 1; th = ""; n = 0; inf = 0; dur = 0; fr[1] = ""; fr[2] = ""; fr[3] = ""; next }
+        inp && /^  duration = / { dur = $3 + 0 }
+        inp && /^  eventThread = "/ { split($0, a, "\""); th = a[2] }
+        inp && /stackTrace = \[/ { inf = 1; next }
+        inf && /^  \]/ { inf = 0; next }
+        inf && n < 3 { n++; fr[n] = $0; sub(/^ +/, "", fr[n]); sub(/ line:.*/, "", fr[n]) }
+        inp && /^\}$/ {
+            inp = 0
+            if (index(th, want) == 1) {
+                k = ev "  " fr[1]
+                if (fr[2] != "") k = k " <- " fr[2]
+                cnt[k]++; ms[k] += dur
+            }
+            next
+        }
+        END {
+            m = 0; for (k in cnt) ks[++m] = k
+            if (m == 0) { print "  событий нет - поток не блокировался и не читал сокеты/файлы"; exit }
+            for (i = 2; i <= m; i++) { x = ks[i]; j = i - 1; while (j > 0 && cnt[ks[j]] < cnt[x]) { ks[j+1] = ks[j]; j-- } ks[j+1] = x }
+            for (i = 1; i <= m && i <= 12; i++) printf "  %6d  %10.0f ms  %s\n", cnt[ks[i]], ms[ks[i]], ks[i]
+        }' | tee -a "$OUT"
+
+    say ""
+    say "--- GC и ZGC-сталлы в этом файле ---"
+    "$JFR" print --events jdk.GarbageCollection,jdk.ZAllocationStall "$HFILE" 2>/dev/null | awk '
+        /^jdk\.[A-Za-z0-9_.]+ \{/ { ev = $1; inp = 1; d = 0; t = ""; nm = ""; next }
+        inp && /^  startTime = / { t = $3 }
+        inp && /^  duration = / { d = $3 + 0 }
+        inp && /^  name = "/ { split($0, a, "\""); nm = a[2] }
+        inp && /^\}$/ {
+            inp = 0
+            if (ev !~ /GarbageCollection|ZAllocationStall/) next
+            k = ev (nm != "" ? " (" nm ")" : "")
+            cnt[k]++; tot[k] += d; m++
+            dv[m] = d; tv[m] = t; evn[m] = k
+            next
+        }
+        END {
+            if (m == 0) { print "  ни сборок, ни ZGC-сталлов"; exit }
+            for (k in cnt) printf "  %-45s %5d событий, %8.0f ms суммарно\n", k, cnt[k], tot[k]
+            print ""
+            print "  самые долгие:"
+            for (r = 0; r < 10; r++) {
+                bi = 0
+                for (i = 1; i <= m; i++) if (!used[i] && (bi == 0 || dv[bi] < dv[i])) bi = i
+                if (!bi) break
+                used[bi] = 1
+                printf "  %8.1f ms  %s  %s\n", dv[bi], tv[bi], evn[bi]
+            }
+        }' | tee -a "$OUT"
+
+    say ""
+    say "готово. Пришли $OUT"
+    ;;
 watch)  # ждём медленный тик по логу и сразу снимаем JFR
     if [ -z "$PID" ]; then echo "процесс сервера не найден" >&2; exit 1; fi
     JCMD=$(tool jcmd) || { echo "не найден jcmd" >&2; exit 1; }
