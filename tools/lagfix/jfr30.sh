@@ -58,6 +58,21 @@ tool() {  # ищем jcmd/jfr: сначала рядом с java самого с
     return 1
 }
 
+make_hi_jfc() {  # копия profile.jfc с частыми сэмплами выполнения
+    local jb base out
+    jb=$(tool java) || return 1
+    base=$(dirname "$(readlink -f "$jb")")/../lib/jfr/profile.jfc
+    [ -f "$base" ] || return 1
+    out=$SERVER_DIR/hi.jfc
+    awk '
+        /<event name="jdk.ExecutionSample">/ { ine = 1 }
+        ine && /<setting name="period"/ { sub(/>.*</, ">2 ms<"); print; next }
+        { print }
+        ine && /<\/event>/ { ine = 0 }
+    ' "$base" > "$out" || return 1
+    printf '%s' "$out"
+}
+
 PID=$(find_pid)
 
 case "$MODE" in
@@ -69,6 +84,21 @@ dump)  # снимок идущей записи без остановки
     ls -l "$PART" 2>/dev/null
     echo
     echo "дальше: bash $0 $SERVER_DIR window HH:MM:SS 10 $PART"
+    ;;
+ticks)  # история медленных тиков из лога: время, длительность, интервал
+    N=${3:-30}
+    LOGF=${4:-logs/latest.log}
+    [ -f "$LOGF" ] || { echo "нет $LOGF" >&2; exit 1; }
+    grep -a 'lasted' "$LOGF" | tail -n "$N" | awk '
+        {
+            t = substr($0, 2, 8)
+            ms = ""
+            if (match($0, /lasted [0-9]+[.,]?[0-9]* ms/)) { ms = substr($0, RSTART + 7, RLENGTH - 10); gsub(/,/, ".", ms) }
+            split(t, a, ":"); sec = a[1] * 3600 + a[2] * 60 + a[3]
+            d = (prev == "" ? 0 : sec - prev)
+            printf "  %s  %8.1f ms   %s\n", t, ms, (prev == "" ? "" : "+" d " с")
+            prev = sec
+        }'
     ;;
 watch)  # ждём медленный тик по логу и сразу снимаем JFR
     if [ -z "$PID" ]; then echo "процесс сервера не найден" >&2; exit 1; fi
@@ -190,7 +220,7 @@ window)  # все события в окне +-N секунд вокруг от�
     [ -f "$WFILE" ] || { echo "нет файла $WFILE" >&2; exit 1; }
     : > "$OUT"
     say "=== JFR window $(fmt "$LO") .. $(fmt "$HI") ($((2*SPAN)) с вокруг $CENTER) ==="
-    "$JFR" print --events jdk.ThreadPark,jdk.JavaMonitorEnter,jdk.JavaMonitorWait,jdk.SocketRead,jdk.SocketWrite,jdk.FileRead,jdk.FileWrite,jdk.GarbageCollection \
+    "$JFR" print --events jdk.ThreadPark,jdk.JavaMonitorEnter,jdk.JavaMonitorWait,jdk.SocketRead,jdk.SocketWrite,jdk.FileRead,jdk.FileWrite,jdk.GarbageCollection,jdk.ExecutionSample,jdk.NativeMethodSample \
         --stack-depth 6 "$WFILE" 2>/dev/null | awk -v lo="$LO" -v hi="$HI" '
         /^jdk\.[A-Za-z0-9_.]+ \{/ { ev = $1; inp = 1; st = ""; th = ""; dur = 0; nfr = 0; next }
         inp && /^  startTime = / { st = $3 }
@@ -233,14 +263,47 @@ window)  # все события в окне +-N секунд вокруг от�
             }
         }' | tee -a "$OUT"
     say ""
+    say "--- чем был занят Server thread в окне (сэмплы) ---"
+    "$JFR" print --events jdk.ExecutionSample,jdk.NativeMethodSample --stack-depth 8 "$WFILE" 2>/dev/null | awk -v lo="$LO" -v hi="$HI" '
+        /^jdk\.[A-Za-z0-9_.]+ \{/ { ev = $1; inp = 1; st = ""; th = ""; nfr = 0; next }
+        inp && /^  startTime = / { st = $3 }
+        inp && /^  sampledThread = "/ { split($0, a, "\""); th = a[2] }
+        inp && /^  eventThread = "/ { if (th == "") { split($0, a, "\""); th = a[2] } }
+        inp && /stackTrace = \[/ { inf = 1; next }
+        inf && /^  \]/ { inf = 0; next }
+        inf && nfr < 3 { nfr++; fr[nfr] = $0; sub(/^ +/, "", fr[nfr]); sub(/ line:.*/, "", fr[nfr]) }
+        inp && /^\}$/ {
+            inp = 0
+            split(st, b, ":"); sec = b[1] * 3600 + b[2] * 60 + b[3]
+            if (st != "" && sec >= lo && sec <= hi && th ~ /^Server thread/) {
+                k = fr[1]
+                if (fr[2] != "") k = k " <- " fr[2]
+                if (fr[3] != "") k = k " <- " fr[3]
+                cnt[k]++
+            }
+            next
+        }
+        END {
+            m = 0; for (k in cnt) ks[++m] = k
+            for (i = 2; i <= m; i++) { x = ks[i]; j = i - 1; while (j > 0 && cnt[ks[j]] < cnt[x]) { ks[j+1] = ks[j]; j-- } ks[j+1] = x }
+            if (m == 0) print "  сэмплов по Server thread в окне нет (JFR сэмплит редко)"
+            for (i = 1; i <= m && i <= 10; i++) printf "  %4d  %s\n", cnt[ks[i]], ks[i]
+        }' | tee -a "$OUT"
+
+    say ""
     say "готово. Отметку времени бери из строки spark: Tick #N lasted ... ms"
     ;;
 start)
     : > "$OUT"
     if [ -z "$PID" ]; then echo "процесс сервера не найден" >&2; exit 1; fi
     JCMD=$(tool jcmd) || { echo "не найден jcmd — нужен полный JDK, не JRE" >&2; exit 1; }
+    SETTINGS=profile
+    EXTRA=""
+    if [ "${HI:-0}" = "1" ]; then
+        HIFILE=$(make_hi_jfc) && { SETTINGS=$HIFILE; EXTRA=" (сэмплы 2 мс)"; say "частая выборка: $HIFILE"; }
+    fi
     say "=== JFR start $(date '+%Y-%m-%d %H:%M:%S') ==="
-    say "pid: $PID, файл: $JFR_FILE, длительность: ${DURATION}s"
+    say "pid: $PID, файл: $JFR_FILE, длительность: ${DURATION}s$EXTRA"
     chk=$("$JCMD" "$PID" JFR.check name="$NAME" 2>&1)
     case "$chk" in
         *"Could not find"*) : ;;
@@ -248,7 +311,7 @@ start)
            "$JCMD" "$PID" JFR.stop name="$NAME" >/dev/null 2>&1 || true ;;
     esac
 
-    out=$("$JCMD" "$PID" JFR.start name="$NAME" settings=profile duration="${DURATION}s" filename="$JFR_FILE" 2>&1)
+    out=$("$JCMD" "$PID" JFR.start name="$NAME" settings="$SETTINGS" duration="${DURATION}s" filename="$JFR_FILE" 2>&1)
     printf '%s\n' "$out" | tee -a "$OUT"
     case "$out" in
         *[Aa]lready*|*[Ee]xists*) say ">>> запись с именем $NAME уже идёт — сначала: bash $0 $SERVER_DIR stop" ;;
