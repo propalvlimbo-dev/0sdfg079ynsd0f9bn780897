@@ -9,7 +9,10 @@ Usage:
 import io
 import json
 import math
+import os
+import subprocess
 import sys
+import tempfile
 import unittest
 import zipfile
 from pathlib import Path
@@ -440,12 +443,26 @@ class CentipedeBlueprintTests(unittest.TestCase):
         self.assertEqual(len(self.bones), 11)
         self.assertEqual(set(self.bones),
                          {'body_root'} | {f'c{i}' for i in range(1, 10)} | {'head'})
-        self.assertEqual(len(self.model['elements']), 46)
+        self.assertEqual(len(self.model['elements']), 68)
         for name, bone in self.bones.items():
             if name == 'body_root':
                 self.assertEqual(self.cubes[name], [], 'the root is a pivot, not a limb')
             else:
                 self.assertGreaterEqual(len(self.cubes[name]), 2, f'{name} is a real segment')
+
+    def test_no_cube_is_rotated(self):
+        """ModelEngine 4.1.0 drops a blueprint whose bones carry rotated cubes.
+
+        Its ``RotationSolver.fetch`` calls ``Set.removeAll`` on an immutable set
+        (``AbstractSet.removeAll`` -> ``UnsupportedOperationException: remove``,
+        RotationSolver.java:255), which aborts ``BlockbenchParser.populateModel``
+        and throws the whole model away - the animal was invisible in game for
+        exactly this reason.  Angled limbs are built from stacked axis-aligned
+        boxes instead, so every cube must stay at zero rotation.
+        """
+        rotated = [(c['name'], c['rotation']) for c in self.model['elements']
+                   if any(abs(angle) > 1e-9 for angle in c.get('rotation', [0, 0, 0]))]
+        self.assertEqual(rotated, [], 'rotated cubes crash the ModelEngine parser')
 
     def test_it_hovers_above_the_head(self):
         low = min(c['from'][1] for c in self.model['elements'])
@@ -473,6 +490,27 @@ class CentipedeBlueprintTests(unittest.TestCase):
         self.assertLess(min(c['from'][2] for c in head), body_front, 'the head leads the body')
         eyes = [c for c in head if 'eye' in c['name']]
         self.assertGreaterEqual(len(eyes), 2, 'two eyes, otherwise it is just a tube')
+
+    def test_modelengine_itself_can_import_the_blueprint(self):
+        """Runs the real ModelEngine 4.1.0 parser over this blueprint.
+
+        Skipped unless JAVA and ECJ are set (see generate_assets.sh).  This is the
+        only check that proves the file is importable at all: a blueprint the
+        engine rejects produces no model, and no resource pack can make up for it.
+        """
+        java, ecj = os.environ.get('JAVA'), os.environ.get('ECJ')
+        if not java or not ecj:
+            self.skipTest('set JAVA and ECJ to run the real ModelEngine parser')
+        out = Path(tempfile.mkdtemp()) / 'assets'
+        result = subprocess.run(
+            ['sh', str(HERE / 'generate_assets.sh'), str(HERE / f'{PET}.bbmodel'), str(out)],
+            capture_output=True, text=True, timeout=300, env=dict(os.environ, JAVA=java, ECJ=ecj))
+        output = result.stdout + result.stderr
+        self.assertEqual(result.returncode, 0, output)
+        self.assertNotIn('UnsupportedOperationException', output)
+        generated = {p.stem for p in (out / 'assets/modelengine/items' / PET).glob('*.json')}
+        self.assertEqual(len(generated), 10, 'ModelEngine must emit one item model per bone')
+        self.assertEqual(generated, {n for n in self.bones if self.cubes[n]})
 
     def test_generated_assets_cover_every_bone(self):
         base = HERE / 'assets' / 'modelengine'

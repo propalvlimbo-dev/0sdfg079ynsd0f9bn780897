@@ -1,15 +1,24 @@
-#!/usr/bin/env python3
 """Elytrix's flying centipede: a segmented creature that hovers over the head.
 
-Ten bones, thirty-odd cubes.  The chain is `body_root -> c1 -> c2 -> ... -> c9`
+Eleven bones, sixty-odd cubes.  The chain is `body_root -> c1 -> c2 -> ... -> c9`
 with the head hanging off `c1`, so a yaw on one segment carries everything behind
 it and a travelling wave runs down the body.  ElytrixFreakModel drives that wave
 with a ManualAnimator, so the animal literally crawls and drifts left and right
 instead of hanging still.
 
 Space: +Y up, the player faces -Z, the head cube is x[-4,4] y[24,32] z[-4,4],
-so y 34.5-36.2 is just above the head and the body reaches from the forehead
-(z=-6.2) to behind the head (z=+7).
+so y 34.5-36.8 is just above the head and the body reaches from the forehead
+(z=-7.4) to behind the head (z=+7).
+
+No cube carries a rotation.  ModelEngine 4.1.0 cannot import a blueprint whose
+bones mix rotated cubes: its RotationSolver dies with
+`UnsupportedOperationException: remove` inside `AbstractSet.removeAll`
+(`RotationSolver.fetch`, line 255) and the whole model is dropped — which is why
+the animal never appeared in game even though the file looked fine in Blockbench.
+The angled legs, antennae, fangs and cerci are therefore built from two stacked
+axis-aligned boxes each: the silhouette still reads as angled, but nothing has to
+be rotated at parse time.  tools/accessories-model/test_model.py re-runs the real
+ModelEngine generator on this blueprint to keep that true.
 
 Usage:
     python3 tools/accessories-model/build_centipede.py --out-dir /tmp/bug --preview
@@ -39,10 +48,12 @@ UV = {
     'eye':         [8.0, 8.0, 16.0, 12.0],   # px  32,32 .. 64,48
 }
 
-BODY_Y0, BODY_Y1 = 34.50, 35.85
-SPINE_Y0, SPINE_Y1 = 35.85, 36.15
+BODY_Y0, BODY_Y1 = 34.55, 36.20     # the ring: 1.65 px tall, 2.4 px wide
+SPINE_Y0, SPINE_Y1 = 36.20, 36.55   # the pink plate riding on the ring
+BODY_HALF_W = 1.20
+HALF_L = 0.72
 Z0 = -4.60          # centre of the first segment
-STEP = 1.25
+STEP = 1.30
 
 
 def uid(tag):
@@ -93,7 +104,8 @@ def faces(region):
     return {side: region for side in ('north', 'south', 'east', 'west', 'up', 'down')}
 
 
-def cube(name, low, high, region, rotation=None):
+def cube(name, low, high, region):
+    """One axis-aligned box.  Rotation is deliberately not supported here."""
     return {
         'name': name,
         'box_uv': False, 'rescale': False, 'locked': False, 'light_emission': 0,
@@ -102,7 +114,7 @@ def cube(name, low, high, region, rotation=None):
         'to': [round(v, 4) for v in high],
         'autouv': 0, 'color': 0, 'inflate': 0,
         'origin': [round((low[i] + high[i]) / 2, 4) for i in range(3)],
-        'rotation': [round(v, 4) for v in (rotation or (0.0, 0.0, 0.0))],
+        'rotation': [0.0, 0.0, 0.0],
         'faces': {side: {'uv': list(UV[r]), 'texture': 0} for side, r in faces(region).items()},
         'type': 'cube', 'uuid': uid(f'cube:{name}'),
     }
@@ -113,47 +125,59 @@ def curve(index):
     return round(0.55 * math.sin(index * 0.62), 3)
 
 
+def legs(index, dx, z):
+    """Two stacked boxes per side: they step outwards and downwards like a leg."""
+    out = []
+    for side, sign in (('l', -1.0), ('r', 1.0)):
+        inner = BODY_HALF_W
+        out.append(cube(f'leg_a_{side}_{index}',
+                        (dx + sign * inner, 34.95, z - 0.34),
+                        (dx + sign * (inner + 0.95), 35.35, z + 0.34), 'leg'))
+        out.append(cube(f'leg_b_{side}_{index}',
+                        (dx + sign * (inner + 0.50), 34.20, z - 0.28),
+                        (dx + sign * (inner + 1.35), 34.95, z + 0.28), 'joint'))
+    return out
+
+
 def segment_cubes(index, z):
-    """One body ring: the shell, a pink plate on top and two legs."""
+    """One body ring: the shell, a pink plate on top and two stepped legs."""
     dx = curve(index)
     cubes = [
-        cube(f'body_{index}', (dx - 1.0, BODY_Y0, z - 0.70), (dx + 1.0, BODY_Y1, z + 0.70), 'chitin'),
-        cube(f'plate_{index}', (dx - 0.72, SPINE_Y0, z - 0.52), (dx + 0.72, SPINE_Y1, z + 0.52), 'pink'),
-        # legs are tilted outward-down with the element rotation, so the animal
-        # does not look like a brick with two sticks
-        cube(f'leg_l_{index}', (dx - 2.05, BODY_Y0 + 0.12, z - 0.36), (dx - 0.95, BODY_Y0 + 0.42, z + 0.36),
-             'leg', rotation=(0.0, 0.0, 32.0)),
-        cube(f'leg_r_{index}', (dx + 0.95, BODY_Y0 + 0.12, z - 0.36), (dx + 2.05, BODY_Y0 + 0.42, z + 0.36),
-             'leg', rotation=(0.0, 0.0, -32.0)),
+        cube(f'body_{index}', (dx - BODY_HALF_W, BODY_Y0, z - HALF_L),
+             (dx + BODY_HALF_W, BODY_Y1, z + HALF_L), 'chitin'),
+        cube(f'plate_{index}', (dx - 0.88, SPINE_Y0, z - 0.52),
+             (dx + 0.88, SPINE_Y1, z + 0.52), 'pink'),
     ]
+    cubes.extend(legs(index, dx, z))
     return cubes
 
 
 def head_cubes():
+    dx = curve(0)
     return [
-        cube('head', (curve(0) - 1.15, 34.35, -6.95), (curve(0) + 1.15, 36.00, -5.55), 'chitin'),
-        cube('head_plate', (-0.80, 36.00, -6.70), (0.80, 36.30, -5.80), 'pink'),
-        cube('eye_l', (-0.82, 35.20, -7.06), (-0.34, 35.70, -6.90), 'eye'),
-        cube('eye_r', (0.34, 35.20, -7.06), (0.82, 35.70, -6.90), 'eye'),
-        # antennae, swept up and forward
-        cube('antenna_l', (-0.62, 35.95, -7.80), (-0.30, 36.15, -6.90), 'leg',
-             rotation=(-18.0, 0.0, 0.0)),
-        cube('antenna_r', (0.30, 35.95, -7.80), (0.62, 36.15, -6.90), 'leg',
-             rotation=(-18.0, 0.0, 0.0)),
-        # mandibles under the face
-        cube('fang_l', (-0.78, 34.10, -7.45), (-0.44, 34.42, -6.85), 'leg',
-             rotation=(22.0, 0.0, 0.0)),
-        cube('fang_r', (0.44, 34.10, -7.45), (0.78, 34.42, -6.85), 'leg',
-             rotation=(22.0, 0.0, 0.0)),
+        cube('head', (dx - 1.45, 34.45, -7.30), (dx + 1.45, 36.30, -5.60), 'chitin'),
+        cube('head_plate', (dx - 1.05, 36.30, -7.05), (dx + 1.05, 36.62, -5.85), 'pink'),
+        cube('eye_l', (dx - 1.05, 35.30, -7.40), (dx - 0.45, 35.90, -7.24), 'eye'),
+        cube('eye_r', (dx + 0.45, 35.30, -7.40), (dx + 1.05, 35.90, -7.24), 'eye'),
+        # antennae: two boxes each, stepping up and forward (no rotation, see the
+        # module docstring — ModelEngine drops a model whose cubes are rotated)
+        cube('antenna_a_l', (dx - 0.98, 36.30, -7.10), (dx - 0.62, 36.58, -6.55), 'leg'),
+        cube('antenna_b_l', (dx - 1.22, 36.50, -7.72), (dx - 0.86, 36.78, -7.10), 'joint'),
+        cube('antenna_a_r', (dx + 0.62, 36.30, -7.10), (dx + 0.98, 36.58, -6.55), 'leg'),
+        cube('antenna_b_r', (dx + 0.86, 36.50, -7.72), (dx + 1.22, 36.78, -7.10), 'joint'),
+        # mandibles under the face, pointing forward and down
+        cube('fang_l', (dx - 0.88, 33.95, -7.20), (dx - 0.52, 34.45, -6.45), 'joint'),
+        cube('fang_r', (dx + 0.52, 33.95, -7.20), (dx + 0.88, 34.45, -6.45), 'joint'),
     ]
 
 
 def tail_cubes(z):
+    """Two cerci at the very back, stepped outwards."""
     return [
-        cube('cercus_l', (-0.62, BODY_Y0 + 0.25, z + 0.60), (-0.30, BODY_Y0 + 0.55, z + 1.70),
-             'leg', rotation=(14.0, 0.0, 0.0)),
-        cube('cercus_r', (0.30, BODY_Y0 + 0.25, z + 0.60), (0.62, BODY_Y0 + 0.55, z + 1.70),
-             'leg', rotation=(14.0, 0.0, 0.0)),
+        cube('cercus_a_l', (-0.80, 34.75, z + HALF_L), (-0.46, 35.10, z + 1.35), 'leg'),
+        cube('cercus_b_l', (-1.12, 34.55, z + 1.15), (-0.78, 34.90, z + 1.85), 'joint'),
+        cube('cercus_a_r', (0.46, 34.75, z + HALF_L), (0.80, 35.10, z + 1.35), 'leg'),
+        cube('cercus_b_r', (0.78, 34.55, z + 1.15), (1.12, 34.90, z + 1.85), 'joint'),
     ]
 
 

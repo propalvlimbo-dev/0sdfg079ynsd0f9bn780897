@@ -9,7 +9,7 @@
 | Файл | Назначение |
 | --- | --- |
 | `build_tentacles.py` | Собирает `elytrix_kaneki_tentacles.bbmodel` и текстуру 64×64 |
-| `build_centipede.py` | Собирает `elytrix_centipede.bbmodel` — сороконожку над головой (46 кубов, 11 костей, без клипа: волну ползёт код) |
+| `build_centipede.py` | Собирает `elytrix_centipede.bbmodel` — сороконожку над головой (68 кубов, 11 костей, **ни один куб не повёрнут**, иначе ModelEngine не импортирует модель) |
 | `build_modelengine_assets.py` | Превращает блюпринт в ассеты ModelEngine: `items/<model>/<bone>.json`, `models/<model>/<bone>.json`, текстура |
 | `build_icon.py` | Рисует обе иконки меню (щупальца и повязка, 32×32) и их item-модели |
 | `elytrix_kaneki_tentacles.bbmodel` | Готовый blueprint (4 щупальца, 39 костей + узел, 45 кубов) |
