@@ -56,7 +56,7 @@ java.lang.UnsupportedOperationException: remove
 Установка (сервер остановлен):
 
 ```bash
-curl -fsSL -o /tmp/elytrix-v30.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/__V30_SHA__/elytrix-v30.zip && \
+curl -fsSL -o /tmp/elytrix-v30.zip https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/306ad46c26df2243654749e46a2870c3e2e58aa8/elytrix-v30.zip && \
 unzip -oq /tmp/elytrix-v30.zip -d /tmp/elytrix-v30 && bash /tmp/elytrix-v30/install.sh /root/RW_GRIEF
 ```
 
