@@ -938,6 +938,100 @@ memsplit)  # куда ушла память сервера: heap, metaspace, dir
     say "готово. Пришли $OUT"
     ;;
 
+schedlog)  # сторож планировщика: раз в секунду сколько тик-поток реально работал
+    MIN=${3:-120}
+    case "$MIN" in ''|*[!0-9]*) MIN=120 ;; esac
+    if pgrep -f "jfr30[.]sh .* schedloop " >/dev/null 2>&1; then
+        echo "сторож уже работает. остановить: pkill -f 'jfr30[.]sh .* schedloop'"
+        exit 0
+    fi
+    nohup bash "$0" "$SERVER_DIR" schedloop "$MIN" >/dev/null 2>&1 &
+    sleep 2
+    echo "=== сторож планировщика запущен на ${MIN} мин ==="
+    echo "пишет: $SERVER_DIR/sched.log (строка раз в секунду, ~0% CPU)"
+    echo ""
+    echo "когда снова залагивает — подожди 10-20 секунд, потом:"
+    echo "  bash $0 $SERVER_DIR schedreport"
+    echo "остановить: pkill -f 'jfr30[.]sh .* schedloop'"
+    ;;
+schedloop)
+    MIN=${3:-120}
+    LOG=$SERVER_DIR/sched.log
+    END=$(( $(date +%s) + MIN * 60 ))
+    TID=${SRV_TID:-}
+    if [ -z "$TID" ]; then
+        for t in /proc/$PID/task/*/; do
+            c=$(cat "$t/comm" 2>/dev/null)
+            case "$c" in "Server thread"|Server*) TID=$(basename "$t"); break ;; esac
+        done
+    fi
+    [ -n "$TID" ] || { echo "нет потока Server thread" >&2; exit 1; }
+    SF=/proc/$PID/task/$TID/schedstat
+    : > "$LOG"
+    echo "# tid=$TID pid=$PID start=$(date '+%Y-%m-%d %H:%M:%S') every 1s" >> "$LOG"
+    read -r r1 w1 s1 < "$SF"
+    T1=$(date +%s%N)
+    while [ "$(date +%s)" -lt "$END" ]; do
+        sleep 1
+        [ -r "$SF" ] || break
+        read -r r2 w2 s2 < "$SF" 2>/dev/null || break
+        T2=$(date +%s%N)
+        awk -v t="$(date '+%H:%M:%S')" -v r1="${r1:-0}" -v r2="${r2:-0}" \
+            -v w1="${w1:-0}" -v w2="${w2:-0}" -v s1="${s1:-0}" -v s2="${s2:-0}" \
+            -v t1="$T1" -v t2="$T2" \
+            -v la="$(cut -d' ' -f1 /proc/loadavg 2>/dev/null)" \
+            -v ps="$(psi_get cpu)" 'BEGIN {
+            wall = (t2 - t1) / 1e9; if (wall <= 0) wall = 1
+            run = (r2 - r1) / 1e9; wait = (w2 - w1) / 1e9; sl = s2 - s1
+            printf "%s work=%.0f%% wait=%.0fms slices=%d load=%s psi=%.0f\n", t, run * 100 / wall, wait * 1000, sl, la, ps
+        }' >> "$LOG"
+        r1=$r2; w1=$w2; s1=$s2; T1=$T2
+    done
+    ;;
+schedreport)  # худшие секунды из sched.log
+    LOG=$SERVER_DIR/sched.log
+    [ -f "$LOG" ] || { echo "нет $LOG. сначала: bash $0 $SERVER_DIR schedlog 60" >&2; exit 1; }
+    : > "$OUT"
+    say "=== schedreport: секунды, когда главный поток не мог работать ($(basename "$LOG")) ==="
+    say ""
+    awk '
+        /^#/ { next }
+        {
+            n++
+            for (i = 2; i <= NF; i++) { split($i, kv, "="); v[kv[1]] = kv[2] }
+            work = v["work"] + 0; wait = v["wait"] + 0
+            w = work; if (w > 100) w = 100
+            sumw += w
+            if (wait > maxwait) maxwait = wait
+            if (n == 1) t0 = $1
+            t1 = $1
+            # секунда "плохая", если поток почти не работал ИЛИ долго стоял в очереди
+            bad = (wait >= 20)
+            if (bad) badn++
+            L[n] = $0
+            if (wait >= 20) { M++; TT[M] = $1; WW[M] = wait; LL[M] = $0 }
+        }
+        END {
+            if (n == 0) { print "  лог пуст"; exit }
+            printf "  секунд в логе: %d (с %s до %s)\n", n, t0, t1
+            printf "  средняя загрузка главного потока: %.0f%%\n", sumw / n
+            printf "  наибольшее ожидание в очереди ОС: %.0f мс за секунду\n", maxwait
+            print ""
+            if (badn == 0)
+                print "  ВЕРДИКТ: главный поток ни разу не стоял в очереди за процессор.\n           Значит фризы не из-за перегруженной машины. Смотрим ожидания в коде:\n           bash jfr30.sh <папка> waits 30"
+            else
+                printf "  ВЕРДИКТ: %d секунд с ожиданием >= 20 мс — поток отбирали другие процессы.\n", badn
+            print ""
+            print "  худшие секунды:"
+            for (i = 2; i <= M; i++) { x = WW[i]; y = LL[i]; j = i - 1
+                while (j > 0 && WW[j] < x) { WW[j+1] = WW[j]; LL[j+1] = LL[j]; j-- }
+                WW[j+1] = x; LL[j+1] = y }
+            for (i = 1; i <= M && i <= 15; i++) printf "  %s\n", LL[i]
+            if (M == 0) print "  (нет)"
+        }' "$LOG" | tee -a "$OUT"
+    say ""
+    say "готово. Пришли $OUT"
+    ;;
 memlog)  # дешёвый сторож памяти: пишет строку раз в 5 с, ничего не стоит
     MIN=${3:-60}
     case "$MIN" in ''|*[!0-9]*) MIN=60 ;; esac
