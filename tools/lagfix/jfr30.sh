@@ -499,6 +499,69 @@ blame)  # что делал Server thread в конкретном интерва
     say ""
     say "готово. Пришли $OUT"
     ;;
+session)  # один запуск: чистка, запись 90 мин, перехват и заметки
+    MINUTES=${3:-90}
+    echo "=== сессия записи на $MINUTES минут ==="
+    echo "1/4 чищу старые процессы и дампы"
+    pkill -f "jfr30.sh $SERVER_DIR watch" 2>/dev/null && echo "   остановлены старые watch"
+    rm -f "$SERVER_DIR"/lag-*.jfr "$SERVER_DIR"/part.jfr 2>/dev/null
+    echo "2/4 запускаю запись JFR (частая выборка 2 мс, хранить последние 3 минуты)"
+    HI=1 MAXAGE=3m MAXSIZE=300m bash "$0" "$SERVER_DIR" start $(( MINUTES * 60 )) || exit 1
+    echo ""
+    echo "3/4 запускаю перехват медленных тиков"
+    nohup bash "$0" "$SERVER_DIR" watch 150 > "$SERVER_DIR/watch.log" 2>&1 &
+    echo "   перехват в фоне (лог: $SERVER_DIR/watch.log)"
+    echo "4/4 запускаю замер CPU/памяти/steal"
+    pkill -f "jfr30.sh $SERVER_DIR cpu" 2>/dev/null
+    nohup bash "$0" "$SERVER_DIR" cpu $(( MINUTES * 60 )) > /dev/null 2>&1 &
+    echo "   замер в фоне (лог: $SERVER_DIR/cpu.log)"
+    echo ""
+    echo "ГОТОВО. Дальше играйте как обычно, ничего не трогайте."
+    echo ""
+    echo "Не забудьте один раз в консоли сервера:  /spark tickmonitor --threshold-tick 150"
+    echo ""
+    echo "Когда случится лаг — выполнить:"
+    echo "  bash $0 $SERVER_DIR catch"
+    echo ""
+    echo "Через $MINUTES минут всё остановится само."
+    ;;
+catch)  # найти последний лаг и сразу разобрать его
+    if [ ! -f "$SERVER_DIR/lag-events.log" ]; then
+        echo "нет $SERVER_DIR/lag-events.log — включён ли /spark tickmonitor?" >&2; exit 1
+    fi
+    echo "=== последние перехваченные тики ==="
+    tail -5 "$SERVER_DIR/lag-events.log" | sed 's/^/  /'
+    echo ""
+    LAST=$(ls -t "$SERVER_DIR"/lag-*.jfr 2>/dev/null | head -1)
+    if [ -z "$LAST" ]; then
+        echo "дампов нет: либо лагов не было, либо запись JFR не идёт."
+        echo "проверить запись: bash $0 $SERVER_DIR status"
+        exit 1
+    fi
+    B=$(basename "$LAST")
+    TIME=$(printf '%s' "$B" | sed -n 's/^lag-[0-9]\{8\}-\([0-9]\{2\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)\.jfr$/\1:\2:\3/p')
+    echo "разбираю $B (момент $TIME, $(du -h "$LAST" | cut -f1))"
+    echo ""
+    bash "$0" "$SERVER_DIR" blame "$LAST" "$TIME" 6
+    ;;
+status)  # что сейчас запущено и пишется
+    echo "=== состояние ==="
+    if [ -n "$PID" ]; then
+        echo "сервер: pid $PID, каталог $(readlink -f "/proc/$PID/cwd" 2>/dev/null)"
+    else
+        echo "сервер: процесс не найден"
+    fi
+    JCMD=$(tool jcmd) 2>/dev/null
+    if [ -n "$PID" ] && [ -n "$JCMD" ]; then
+        "$JCMD" "$PID" JFR.check name="$NAME" 2>&1 | tail -3
+    fi
+    echo ""
+    echo "перехват: $(pgrep -cf "jfr30.sh $SERVER_DIR watch") процессов"
+    echo "замер CPU: $(pgrep -cf "jfr30.sh $SERVER_DIR cpu") процессов"
+    echo "дампов: $(ls "$SERVER_DIR"/lag-*.jfr 2>/dev/null | wc -l), занимают $(du -sh --exclude=flight.jfr "$SERVER_DIR"/lag-*.jfr 2>/dev/null | tail -1 | cut -f1)"
+    echo "лаб-событий: $(grep -c '' "$SERVER_DIR/lag-events.log" 2>/dev/null || echo 0)"
+    echo "строк cpu.log: $(grep -c '' "$SERVER_DIR/cpu.log" 2>/dev/null || echo 0)"
+    ;;
 freeze)  # ищем провалы: когда ВСЯ JVM не выдавала ни одного сэмпла
     HFILE=${3:-$(ls -t "$SERVER_DIR"/lag-*.jfr "$SERVER_DIR"/flight.jfr 2>/dev/null | head -1)}
     MINMS=${4:-500}
@@ -680,10 +743,13 @@ hunt)  # форензика по уже снятому дампу: что дел
 watch)  # ждём медленный тик по логу и сразу снимаем JFR
     if [ -z "$PID" ]; then echo "процесс сервера не найден" >&2; exit 1; fi
     JCMD=$(tool jcmd) || { echo "не найден jcmd" >&2; exit 1; }
-    THRESHOLD=${4:-150}
-    LOGF=${5:-logs/latest.log}
+    THRESHOLD=${3:-150}
+    LOGF=${4:-logs/latest.log}
+    COOLDOWN=${5:-30}
+    last_dump=0
     [ -f "$LOGF" ] || { echo "нет $LOGF" >&2; exit 1; }
     echo "жду в $LOGF строки 'lasted N ms' с N >= $THRESHOLD; снимок -> $SERVER_DIR/lag-*.jfr"
+    echo "между снимками не меньше $COOLDOWN с (иначе дамп сам создаёт лаги)"
     echo "остановить: Ctrl+C"
     tail -n0 -F "$LOGF" 2>/dev/null | while IFS= read -r line; do
         case "$line" in
@@ -693,6 +759,12 @@ watch)  # ждём медленный тик по логу и сразу сни�
         ms=$(printf '%s' "$line" | sed -n 's/.*lasted \([0-9][0-9]*\).*/\1/p')
         [ -z "$ms" ] && continue
         [ "$ms" -lt "$THRESHOLD" ] && continue
+        now=$(date +%s)
+        if [ $(( now - last_dump )) -lt "$COOLDOWN" ]; then
+            echo ">>> $ms ms: пропускаю, прошлый снимок $(( now - last_dump )) с назад"
+            continue
+        fi
+        last_dump=$now
         ts=$(date +%Y%m%d-%H%M%S)
         echo ">>> $ms ms: снимаю JFR в lag-$ts.jfr"
         printf '%s\n' "[$(date '+%H:%M:%S')] $line" >> "$SERVER_DIR/lag-events.log"
@@ -844,7 +916,11 @@ start)
            "$JCMD" "$PID" JFR.stop name="$NAME" >/dev/null 2>&1 || true ;;
     esac
 
-    out=$("$JCMD" "$PID" JFR.start name="$NAME" settings="$SETTINGS" duration="${DURATION}s" filename="$JFR_FILE" 2>&1)
+    EXTRA_ARGS=()
+    [ -n "${MAXAGE:-}" ] && EXTRA_ARGS+=("maxage=$MAXAGE")
+    [ -n "${MAXSIZE:-}" ] && EXTRA_ARGS+=("maxsize=$MAXSIZE")
+    [ "${#EXTRA_ARGS[@]}" -gt 0 ] && say "хранить только последние: ${EXTRA_ARGS[*]}"
+    out=$("$JCMD" "$PID" JFR.start name="$NAME" settings="$SETTINGS" duration="${DURATION}s" filename="$JFR_FILE" "${EXTRA_ARGS[@]}" 2>&1)
     printf '%s\n' "$out" | tee -a "$OUT"
     case "$out" in
         *[Aa]lready*|*[Ee]xists*) say ">>> запись с именем $NAME уже идёт — сначала: bash $0 $SERVER_DIR stop" ;;
