@@ -502,3 +502,20 @@ ThreadPark / JavaMonitorEnter / JavaMonitorWait` длиннее порога и 
 длительность, поток, путь и стек. Это ответ на случай, когда `spikes` не видит
 всплеска: поток не работал, а ждал диск, сокет (MySQL/сеть) или лок. Выборка
 `jdk.ExecutionSample` такие тики не показывает — она ловит только RUNNABLE.
+
+## tune.sh: пакет оптимизаций ядра
+
+```
+bash tune.sh /root/RW_GRIEF
+```
+
+Меняет только те ключи, что реально есть в конфигах (остальные пропускает с
+пометкой), делает `.bak` на каждый файл, идемпотентен:
+
+* `server.properties`: `sync-chunk-writes=false`, `simulation-distance=6`
+* `config/paper-world-defaults.yml`: `chunks.max-auto-save-chunks-per-tick: 8`
+* `bukkit.yml`: `ticks-per.autosave: 12000`
+* `spigot.yml` (`world-settings.default`): радиус активации ИИ (animals 16,
+  monsters 24, misc/water 8, villagers 16), `merge-radius` (item 3.5, exp 4.0),
+  `max-entity-collisions: 2`, `tick-inactive-villagers: false`,
+  `item-despawn-rate: 4000`
