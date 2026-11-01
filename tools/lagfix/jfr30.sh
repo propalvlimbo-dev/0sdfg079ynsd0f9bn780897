@@ -1019,6 +1019,115 @@ memreport)  # самое плохое из mem.log: когда памяти не
     say ""
     say "готово. Пришли $OUT"
     ;;
+slowticks)  # самые долгие тики и что именно в них работало
+    TOP=${3:-5}
+    case "$TOP" in ''|*[!0-9]*) TOP=5 ;; esac
+    SFILE=${4:-$SERVER_DIR/now.jfr}
+    [ -f "$SFILE" ] || SFILE=$JFR_FILE
+    [ -f "$SFILE" ] || { echo "нет файла. сначала: bash $0 $SERVER_DIR mspt 5" >&2; exit 1; }
+    JFR=$(tool jfr) || { echo "не найден jfr (JDK 21+)" >&2; exit 1; }
+    : > "$OUT"
+    say "=== slowticks: ${TOP} самых долгих тиков ($(basename "$SFILE")) ==="
+    say ""
+    TMPD=$(mktemp -d)
+    trap 'rm -rf "$TMPD"' RETURN
+    "$JFR" print --events jdk.ExecutionSample --stack-depth 10 "$SFILE" 2>/dev/null > "$TMPD/s"
+    "$JFR" print --events jdk.GCPhasePause,jdk.SafepointBegin,jdk.GarbageCollection --stack-depth 1 "$SFILE" 2>/dev/null > "$TMPD/g"
+
+    awk -v top="$TOP" -v iv=2 -v winfile="$TMPD/slow" '
+        function head(f,   a, n) { sub(/\(.*/, "", f); n = split(f, a, "."); return a[n] }
+        /^jdk\.ExecutionSample \{/ { inp = 1; th = ""; n = 0; inf = 0; t = 0; next }
+        inp && /^  startTime = / { split($3, a, ":"); t = (a[1] * 3600 + a[2] * 60 + a[3]) * 1000; next }
+        inp && /^  sampledThread = "/ { split($0, b, "\""); th = b[2]; next }
+        inp && /stackTrace = \[/ { inf = 1; next }
+        inf && /^  \]/ { inf = 0; next }
+        inf { n++; f[n] = $0; sub(/^ +/, "", f[n]); sub(/ line:.*/, "", f[n]) }
+        inp && /^\}$/ {
+            inp = 0
+            if (th != "Server thread" || n < 1) next
+            k++; T[k] = t; S[k] = f[1]; P[k] = ""
+            for (i = 1; i <= n; i++) {
+                g = f[i]
+                if (g ~ /^(org\.bukkit|org\.spigotmc|io\.papermc|com\.destroystokyo|net\.minecraft|java|javax|jdk|sun|com\.sun|ca\.spottedleaf|io\.netty|com\.google|it\.unimi|org\.slf4j|org\.apache|net\.kyori|com\.mojang|org\.joml|kotlin|org\.spongepowered|net\.md_5|com\.typesafe|org\.jspecify|org\.yaml|org\.dreeam)(\.|$)/) continue
+                P[k] = g; break
+            }
+            next
+        }
+        END {
+            if (k == 0) { print "  сэмплов Server thread нет"; exit }
+            for (i = 2; i <= k; i++) { x = T[i]; j = i - 1
+                while (j > 0 && T[j] > x) { T[j+1] = T[j]; j-- }
+                T[j+1] = x }
+            nt = 0; st = T[1]; prev = T[1]
+            for (i = 2; i <= k; i++) {
+                if (T[i] - prev > 12) { nt++; B[nt] = st; D[nt] = (prev - st) + iv; st = T[i] }
+                prev = T[i]
+            }
+            nt++; B[nt] = st; D[nt] = (prev - st) + iv
+            for (i = 1; i <= nt; i++) ord[i] = i
+            for (i = 2; i <= nt; i++) { y = ord[i]; j = i - 1
+                while (j > 0 && D[ord[j]] < D[y]) { ord[j+1] = ord[j]; j-- }
+                ord[j+1] = y }
+            printf "  тиков найдено: %d, средний %.1f мс, худший %d мс\n", nt, (T[k] - T[1]) / nt, D[ord[1]]
+            printf "  (тик = кластер сэмплов; разрыв больше 12 мс считается границей тика)\n"
+            for (i = 1; i <= nt; i++) if (D[i] >= 30) print B[i], B[i] + D[i] > winfile
+            print ""
+            for (i = 1; i <= nt && i <= top; i++) {
+                t = B[ord[i]]; d = D[ord[i]]
+                hh = int(t / 3600000); mm = int((t % 3600000) / 60000)
+                ss = int((t % 60000) / 1000); ms = int(t % 1000)
+                printf "\n  ТИК %d мс в %02d:%02d:%02d.%03d\n", d, hh, mm, ss, ms
+                delete lc; delete pc
+                inside = 0
+                for (q = 1; q <= k; q++) {
+                    if (T[q] < t || T[q] > t + d) continue
+                    inside++
+                    lc[S[q]]++; if (P[q] != "") pc[P[q]]++
+                }
+                m = 0; for (x in lc) ls[++m] = x
+                for (u = 2; u <= m; u++) { y = ls[u]; j = u - 1
+                    while (j > 0 && lc[ls[j]] < lc[y]) { ls[j+1] = ls[j]; j-- }
+                    ls[j+1] = y }
+                printf "    сэмплов в тике: %d (шаг 2 мс), длительность %d мс\n", inside, d
+                for (u = 1; u <= m && u <= 6; u++)
+                    printf "      %4d  %5.1f%%  %s\n", lc[ls[u]], lc[ls[u]] * 100 / inside, ls[u]
+                m = 0; for (x in pc) ps[++m] = x
+                if (m > 0) {
+                    for (u = 2; u <= m; u++) { y = ps[u]; j = u - 1
+                        while (j > 0 && pc[ps[j]] < pc[y]) { ps[j+1] = ps[j]; j-- }
+                        ps[j+1] = y }
+                    printf "    плагины в этом тике:"
+                    for (u = 1; u <= m && u <= 4; u++) printf "  %s (%d)", ps[u], pc[ps[u]]
+                    printf "\n"
+                } else {
+                    printf "    плагинов в кадрах нет\n"
+                }
+            }
+        }' "$TMPD/s" | tee -a "$OUT"
+
+    say ""
+    say "  паузы GC/сафпоинты, попавшие в эти тики:"
+    awk '
+        FNR == NR { n++; lo[n] = $1; hi[n] = $2; next }
+        /^jdk\.[A-Za-z0-9_.]+ \{/ { ev = $1; sub(/ \{/, "", ev); inp = 1; d = 0; t = 0; next }
+        inp && /^  startTime = / { split($3, a, ":"); t = (a[1] * 3600 + a[2] * 60 + a[3]) * 1000; next }
+        inp && /^  duration = / { d = $3 + 0; next }
+        inp && /^\}$/ {
+            inp = 0
+            if (d < 10) next
+            for (i = 1; i <= n; i++) if (t < hi[i] && t + d > lo[i]) {
+                printf "    %6.1f мс  %s  (в тике %d мс)\n", d, ev, hi[i] - lo[i]; m++; break
+            }
+        }
+        END { if (m == 0) print "    в этих тиках пауз не было" }' "$TMPD/slow" "$TMPD/g" 2>/dev/null | tee -a "$OUT"
+    if [ ! -s "$TMPD/slow" ]; then say ""; say "    (тиков дольше 30 мс нет)"; fi
+
+    rm -rf "$TMPD"
+    trap - RETURN
+    say ""
+    say "готово. Пришли $OUT"
+    ;;
+
 mspt)  # из чего складывается тик: подсистемы, плагины, распределение тиков
     SRC=""
     case "${3:-}" in
@@ -1079,6 +1188,7 @@ mspt)  # из чего складывается тик: подсистемы, п
         function short_plugin(f,   a, n, root) {
             n = split(f, a, ".")
             root = a[1] "." a[2]
+            if (a[1] == "" || root == "." || n < 2) root = f
             return root
         }
         # --- к какой подсистеме относится кадр --------------------------------
