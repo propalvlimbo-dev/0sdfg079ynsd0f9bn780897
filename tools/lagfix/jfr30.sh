@@ -1068,7 +1068,8 @@ slowticks)  # самые долгие тики и что именно в них 
             for (i = 2; i <= nt; i++) { y = ord[i]; j = i - 1
                 while (j > 0 && D[ord[j]] < D[y]) { ord[j+1] = ord[j]; j-- }
                 ord[j+1] = y }
-            printf "  тиков найдено: %d, средний %.1f мс, худший %d мс\n", nt, (T[k] - T[1]) / nt, D[ord[1]]
+            sumd = 0; for (i = 1; i <= nt; i++) sumd += D[i]
+            printf "  тиков найдено: %d, средний %.1f мс, худший %d мс\n", nt, sumd / nt, D[ord[1]]
             printf "  (тик = кластер сэмплов; разрыв больше 12 мс считается границей тика)\n"
             for (i = 1; i <= nt; i++) if (D[i] >= 30) print B[i], B[i] + D[i] > winfile
             print ""
@@ -1088,7 +1089,10 @@ slowticks)  # самые долгие тики и что именно в них 
                 for (u = 2; u <= m; u++) { y = ls[u]; j = u - 1
                     while (j > 0 && lc[ls[j]] < lc[y]) { ls[j+1] = ls[j]; j-- }
                     ls[j+1] = y }
-                printf "    сэмплов в тике: %d (шаг 2 мс), длительность %d мс\n", inside, d
+                want = int(d / iv + 0.5)
+                printf "    длительность %d мс, сэмплов %d из ~%d ожидаемых -> поток был на CPU %d%% времени\n", d, inside, want, (want > 0 ? inside * 100 / want : 0)
+                if (want > 0 && inside * 100 / want < 70)
+                    printf "    >>> остальные %d%% тика поток НЕ работал: ждал диск/сокет/лок или его не пускал планировщик ОС\n", 100 - inside * 100 / want
                 for (u = 1; u <= m && u <= 6; u++)
                     printf "      %4d  %5.1f%%  %s\n", lc[ls[u]], lc[ls[u]] * 100 / inside, ls[u]
                 m = 0; for (x in pc) ps[++m] = x
@@ -1124,6 +1128,81 @@ slowticks)  # самые долгие тики и что именно в них 
 
     rm -rf "$TMPD"
     trap - RETURN
+    say ""
+    say "готово. Пришли $OUT"
+    ;;
+
+sched)  # не пускает ли ОС: сколько времени главный поток ждал на runqueue
+    SEC=${3:-20}
+    case "$SEC" in ''|*[!0-9]*) SEC=20 ;; esac
+    [ "$SEC" -ge 5 ] || SEC=20
+    if [ -z "$PID" ]; then echo "процесс сервера не найден" >&2; exit 1; fi
+    : > "$OUT"
+    TID=${SRV_TID:-}
+    if [ -z "$TID" ]; then
+        for t in /proc/$PID/task/*/; do
+            c=$(cat "$t/comm" 2>/dev/null)
+            case "$c" in "Server thread"|Server*) TID=$(basename "$t"); break ;; esac
+        done
+    fi
+    if [ -z "$TID" ]; then
+        echo "не нашёл поток 'Server thread' среди $(ls /proc/$PID/task 2>/dev/null | wc -l) потоков" >&2
+        echo "вот что есть:" >&2
+        for t in /proc/$PID/task/*/; do printf '  %s %s\n' "$(basename "$t")" "$(cat "$t/comm" 2>/dev/null)" >&2; done | head -10 >&2
+        exit 1
+    fi
+    SF=/proc/$PID/task/$TID/schedstat
+    [ -r "$SF" ] || { echo "нет $SF" >&2; exit 1; }
+
+    say "=== sched: ждал ли главный поток процессор (pid $PID, tid $TID) ==="
+    say ""
+    read -r R1 W1 S1 < "$SF"
+    CPU1=$(awk '/^cpu / { t = 0; for (i = 2; i <= NF; i++) t += $i; print t; exit }' /proc/stat 2>/dev/null)
+    T1=$(date +%s%N)
+    echo "  снимаю ${SEC} с..."
+    sleep "$SEC"
+    read -r R2 W2 S2 < "$SF"
+    CPU2=$(awk '/^cpu / { t = 0; for (i = 2; i <= NF; i++) t += $i; print t; exit }' /proc/stat 2>/dev/null)
+    T2=$(date +%s%N)
+
+    awk -v r1="${R1:-0}" -v r2="${R2:-0}" -v w1="${W1:-0}" -v w2="${W2:-0}" \
+        -v s1="${S1:-0}" -v s2="${S2:-0}" -v t1="$T1" -v t2="$T2" \
+        -v c1="${CPU1:-0}" -v c2="${CPU2:-0}" \
+        -v nproc="$(nproc 2>/dev/null || echo '?')" \
+        -v la="$(cut -d' ' -f1-3 /proc/loadavg 2>/dev/null | tr ' ' '/')" \
+        -v self="$0" '''BEGIN {
+            wall = (t2 - t1) / 1000000000
+            run = (r2 - r1) / 1000000000
+            wait = (w2 - w1) / 1000000000
+            sl = s2 - s1
+            busy = (c2 - c1) / 100
+            printf "  окно: %.1f с\n", wall
+            printf "  главный поток РАБОТАЛ на CPU: %.2f с (%.1f%% времени)\n", run, run * 100 / wall
+            printf "  главный поток ЖДАЛ в очереди ОС: %.2f с (%.1f%% времени)\n", wait, wait * 100 / wall
+            printf "  переключений контекста у потока: %d (%.1f/с)\n", sl, sl / wall
+            printf "  вся машина занята: %.0f%% из %s ядер, load %s\n", busy * 100 / wall, nproc, la
+            print ""
+            if (wait / wall >= 0.10) {
+                print "  >>> ПЛАНИРОВЩИК: поток больше 10% времени стоял в очереди на CPU."
+                print "      Тик растягивается, хотя код быстрый. Лечится не плагинами:"
+                print "      меньше процессов на машине, или больше ядер/лимит CPU."
+            } else if (run / wall >= 0.90) {
+                print "  >>> потолок по CPU: поток почти всегда на процессоре, время уходит в работу"
+            } else {
+                print "  поток не в очереди и не всегда на CPU -> ждёт внутри: диск, сокет, лок"
+                print "  проверь: bash " self " $SERVER_DIR waits 5"
+            }
+        }' | tee -a "$OUT"
+
+    say ""
+    say "  потоки процесса по времени ожидания в очереди (schedstat, топ-5):"
+    for t in /proc/$PID/task/*/; do
+        tt=$(basename "$t")
+        [ -r "$t/schedstat" ] || continue
+        read -r rr ww ss < "$t/schedstat" 2>/dev/null || continue
+        printf '%s %s %s\n' "$ww" "$tt" "$(cat "$t/comm" 2>/dev/null)"
+    done | sort -rn | head -5 | awk '{ printf "    ждал %6.1f с  tid=%s  %s\n", $1 / 1e9, $2, $3 }' | tee -a "$OUT"
+
     say ""
     say "готово. Пришли $OUT"
     ;;
