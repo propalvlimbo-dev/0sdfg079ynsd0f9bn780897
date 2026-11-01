@@ -1019,6 +1019,205 @@ memreport)  # самое плохое из mem.log: когда памяти не
     say ""
     say "готово. Пришли $OUT"
     ;;
+mspt)  # из чего складывается тик: подсистемы, плагины, распределение тиков
+    SRC=""
+    case "${3:-}" in
+        *.jfr) SRC=$3 ;;
+    esac
+    MIN=${3:-5}
+    [ -n "$SRC" ] && MIN=5
+    case "$MIN" in ''|*[!0-9]*) MIN=5 ;; esac
+    [ "$MIN" -ge 1 ] || MIN=5
+    SPAN=$(( MIN * 60 ))
+    if [ -z "$PID" ]; then echo "процесс сервера не найден" >&2; exit 1; fi
+    JCMD=$(tool jcmd) || { echo "не найден jcmd (JDK 21+)" >&2; exit 1; }
+    JFR=$(tool jfr) || { echo "не найден jfr (JDK 21+)" >&2; exit 1; }
+    PART=$SERVER_DIR/now.jfr
+    IV=2
+    : > "$OUT"
+    say "=== mspt: из чего складывается тик (${MIN} мин, выборка ${IV} мс) ==="
+    say ""
+
+    if [ -n "$SRC" ]; then
+        PART=$SRC
+        say "разбираю готовый файл: $PART"
+        say ""
+    else
+    rm -f "$PART"
+    chk=$("$JCMD" "$PID" JFR.check name="$NAME" 2>&1)
+    case "$chk" in
+        *"Could not find"*|"") ;;
+        *) "$JCMD" "$PID" JFR.stop name="$NAME" >/dev/null 2>&1 || true ;;
+    esac
+    SETTINGS=profile
+    HIFILE=$(make_hi_jfc) && SETTINGS=$HIFILE
+    st=$("$JCMD" "$PID" JFR.start name="$NAME" settings="$SETTINGS" duration="$(( SPAN + 120 ))s" \
+         filename="$JFR_FILE" maxage="$(( MIN + 2 ))m" maxsize=1g 2>&1)
+    case "$st" in
+        *[Ss]tarted*) say "запись запущена, храню всё окно ($(( MIN + 2 )) мин)";;
+        *) echo "не смог запустить запись: $st" >&2; exit 1 ;;
+    esac
+    W=0
+    while [ "$W" -lt "$SPAN" ]; do
+        sleep 10; W=$((W + 10)); [ "$W" -gt "$SPAN" ] && W=$SPAN
+        printf '\r  идёт запись: %d%% (%d/%d с)   ' $(( W * 100 / SPAN )) "$W" "$SPAN"
+    done
+    printf '\r                                                        \r'
+    "$JCMD" "$PID" JFR.dump name="$NAME" filename="$PART" >/dev/null 2>&1 || true
+    [ -f "$PART" ] || { echo "файл не создан — пришли: bash $0 $SERVER_DIR status" >&2; exit 1; }
+    say "снимок: $(du -h "$PART" | cut -f1)"
+    say ""
+    fi
+
+    "$JFR" print --events jdk.ExecutionSample --stack-depth 16 "$PART" 2>/dev/null | awk -v iv="$IV" -v out="$OUT" '
+        # --- какие кадры считаем "не серверными" ------------------------------
+        function is_plugin(f,   p) {
+            if (f ~ /^(org\.bukkit|org\.spigotmc|io\.papermc|com\.destroystokyo|net\.minecraft|java|javax|jdk|sun|com\.sun|ca\.spottedleaf|net\.minecraftforge)\./) return 0
+            if (f ~ /^(io\.netty|com\.google|it\.unimi|org\.slf4j|org\.apache|net\.kyori|com\.mojang|org\.joml|org\.yaml|kotlin|org\.jspecify|net\.bytebuddy|com\.github\.benmanes|com\.fasterxml|org\.h2|org\.sqlite|com\.mysql|org\.mariadb|io\.r2dbc|org\.eclipse|com\.zaxxer|org\.spongepowered|net\.md_5|com\.typesafe)\./) return 0
+            return 1
+        }
+        function short_plugin(f,   a, n, root) {
+            n = split(f, a, ".")
+            root = a[1] "." a[2]
+            return root
+        }
+        # --- к какой подсистеме относится кадр --------------------------------
+        function bucket(f) {
+            if (f ~ /tickBlockEntities|RebindableTicking|BoundTickingBlockEntity/) return "блочные сущности: обход"
+            if (f ~ /BlockEntity|Beehive|Hopper|Furnace|Spawner|Barrel|BrewingStand|Dispenser|Dropper|Campfire|Beacon|Conduit|Lectern|Jukebox|ShulkerBox|Chest|EndPortal|EnderChest|BlastFurnace|Smoker|Crafter|Vault|TrialSpawner/) return "блочные сущности: логика"
+            if (f ~ /ChunkEntitySlices|EntityLookup|EntityCollectionBy|ChunkMap|ChunkHolder|ChunkSystem|RegionizedPlayerChunkLoader|isChunkTracked/) return "чанки и трекинг сущностей"
+            if (f ~ /CraftScheduler|CraftTask|mainThreadHeartbeat|parsePending|PriorityQueue/) return "планировщик задач (плагины)"
+            if (f ~ /netty|Connection|PacketUtils|PacketEncoder|PacketDecoder|PlayerConnection|ServerGamePacketListener|ServerCommonPacketListener|io\.papermc\.paper\.network|Varint21|FlushConsolidation/) return "сеть и пакеты"
+            if (f ~ /aiStep|PathNavigation|PathFinder|GoalSelector|goalSelector|Brain|Sensor|Mob\.tick|LivingEntity\.tick|Entity\.tick|ServerLevel\.tickNonPassenger|Navigation/) return "мобы: ИИ и движение"
+            if (f ~ /RedStone|Redstone|Diode|Comparator|Level\.updateNeighborsAt|neighborChanged|updateNeighbourForOutputSignal|Piston|wire/) return "редстоун и блоки"
+            if (f ~ /Fluid|Liquid|FlowingFluid/) return "жидкости"
+            if (f ~ /Explosion|explode|ExplosionDamageCalculator/) return "взрывы"
+            if (f ~ /ChunkGenerator|WorldGen|StructureFeature|ProtoChunk|NoiseChunk|RandomState|FeaturePlacement|Blender/) return "генерация мира"
+            if (f ~ /PalettedContainer|LevelChunk\.getBlockState|LevelChunk\.isTicking|WorldBorder/) return "чтение блоков и граница мира"
+            if (f ~ /craftbukkit|CraftServer|CraftWorld|CraftItem|CraftMeta/) return "Bukkit/CraftBukkit"
+            return "прочее ванильное"
+        }
+        BEGIN { lo = -1 }
+        /^jdk\.ExecutionSample \{/ { inp = 1; th = ""; n = 0; inf = 0; t = 0; next }
+        inp && /^  startTime = / {
+            split($3, a, ":"); t = (a[1] * 3600 + a[2] * 60 + a[3]) * 1000
+            next
+        }
+        inp && /^  sampledThread = "/ { split($0, b, "\""); th = b[2]; next }
+        inp && /stackTrace = \[/ { inf = 1; next }
+        inf && /^  \]/ { inf = 0; next }
+        inf { n++; f[n] = $0; sub(/^ +/, "", f[n]); sub(/ line:.*/, "", f[n]) }
+        inp && /^\}$/ {
+            inp = 0
+            if (th != "Server thread") next
+            if (n < 1) next
+            k++
+            T[k] = t
+            B[k] = bucket(f[1])
+            # плагин: самый глубокий кадр из кода плагина
+            PL[k] = ""
+            for (i = 1; i <= n; i++) if (is_plugin(f[i])) { PL[k] = short_plugin(f[i]); break }
+            # "ледяной" кадр для топа
+            L[k] = f[1]
+            if (lo < 0 || t < lo) lo = t
+            if (t > hi) hi = t
+            next
+        }
+        END {
+            if (k == 0) { print "  сэмплов Server thread нет"; exit }
+            span_ms = hi - lo
+            busy = k * iv
+            printf "  окно: %.0f с\n", span_ms / 1000
+            printf "  сэмплов Server thread: %d, это %.1f с работы (%.1f%% времени)\n", k, busy / 1000, busy * 100 / span_ms
+            ticks = span_ms / 50
+            mspt = busy / ticks
+            printf "  тиков за окно (по 20 TPS): %.0f\n", ticks
+            printf "  ОЦЕНКА MSPT: %.1f мс на тик\n\n", mspt
+
+            # --- распределение тиков по кластерам сэмплов ---
+            for (i = 2; i <= k; i++) { x = T[i]; j = i - 1
+                while (j > 0 && T[j] > x) { T[j+1] = T[j]; j-- }
+                T[j+1] = x }
+            nc = 0; start = T[1]; prev = T[1]
+            for (i = 2; i <= k; i++) {
+                if (T[i] - prev > 12) { nc++; D[nc] = (prev - start) + iv; start = T[i] }
+                prev = T[i]
+            }
+            nc++; D[nc] = (prev - start) + iv
+            print "  длительность тика (кластеры сэмплов, разрешение 2 мс):"
+            for (i = 1; i <= nc; i++) {
+                d = D[i]
+                if (d < 5) b1++
+                else if (d < 10) b2++
+                else if (d < 20) b3++
+                else if (d < 30) b4++
+                else if (d < 50) b5++
+                else b6++
+                if (d > maxd) maxd = d
+                sd += d
+            }
+            printf "    найдено тиков: %d, средний %.1f мс, худший %.0f мс\n", nc, sd / nc, maxd
+            printf "    %5d  %4.1f%%   < 5 мс\n",  b1, b1 * 100 / nc
+            printf "    %5d  %4.1f%%   5-10 мс\n", b2, b2 * 100 / nc
+            printf "    %5d  %4.1f%%   10-20 мс\n", b3, b3 * 100 / nc
+            printf "    %5d  %4.1f%%   20-30 мс\n", b4, b4 * 100 / nc
+            printf "    %5d  %4.1f%%   30-50 мс\n", b5, b5 * 100 / nc
+            printf "    %5d  %4.1f%%   > 50 мс (тик просрочен)\n\n", b6, b6 * 100 / nc
+
+            # --- подсистемы ---
+            print "  подсистемы (доля времени главного потока и вклад в mspt):"
+            for (i = 1; i <= k; i++) bc[B[i]]++
+            m = 0; for (x in bc) bs[++m] = x
+            for (i = 2; i <= m; i++) { y = bs[i]; j = i - 1
+                while (j > 0 && bc[bs[j]] < bc[y]) { bs[j+1] = bs[j]; j-- }
+                bs[j+1] = y }
+            for (i = 1; i <= m; i++)
+                printf "    %5.1f%%  %5.2f мс/тик  %s\n", bc[bs[i]] * 100 / k, bc[bs[i]] * iv / ticks, bs[i]
+            print ""
+
+            # --- плагины ---
+            print "  плагины (вклад в mspt):"
+            np = 0
+            for (i = 1; i <= k; i++) if (PL[i] != "") pc[PL[i]]++
+            m = 0; for (x in pc) ps[++m] = x
+            for (i = 2; i <= m; i++) { y = ps[i]; j = i - 1
+                while (j > 0 && pc[ps[j]] < pc[y]) { ps[j+1] = ps[j]; j-- }
+                ps[j+1] = y }
+            if (m == 0) print "    в кадре главного потока плагинов нет"
+            for (i = 1; i <= m && i <= 12; i++)
+                printf "    %5.1f%%  %5.2f мс/тик  %s\n", pc[ps[i]] * 100 / k, pc[ps[i]] * iv / ticks, ps[i]
+            print ""
+
+            # --- топ кадров ---
+            print "  топ листовых кадров:"
+            for (i = 1; i <= k; i++) lc[L[i]]++
+            m = 0; for (x in lc) ls[++m] = x
+            for (i = 2; i <= m; i++) { y = ls[i]; j = i - 1
+                while (j > 0 && lc[ls[j]] < lc[y]) { ls[j+1] = ls[j]; j-- }
+                ls[j+1] = y }
+            for (i = 1; i <= m && i <= 12; i++)
+                printf "    %5.1f%%  %5.2f мс/тик  %s\n", lc[ls[i]] * 100 / k, lc[ls[i]] * iv / ticks, ls[i]
+        }' | tee -a "$OUT"
+
+    say ""
+    say "--- паузы GC и сафпоинты дольше 20 мс ---"
+    "$JFR" print --events jdk.GCPhasePause,jdk.SafepointBegin,jdk.GarbageCollection "$PART" 2>/dev/null | awk '
+        /^jdk\.[A-Za-z0-9_.]+ \{/ { ev = $1; inp = 1; d = 0; next }
+        inp && /^  duration = / { d = $3 + 0 }
+        inp && /^\}/ { inp = 0; if (d >= 20) { m++; dv[m] = d; evn[m] = ev; s += d } next }
+        END {
+            if (m == 0) { print "  пауз >= 20 мс нет"; exit }
+            for (i = 2; i <= m; i++) { x = dv[i]; y = evn[i]; j = i - 1
+                while (j > 0 && dv[j] < x) { dv[j+1] = dv[j]; evn[j+1] = evn[j]; j-- }
+                dv[j+1] = x; evn[j+1] = y }
+            printf "  всего пауз: %d, суммарно %.0f мс (%.1f %% времени окна)\n", m, s, s * 100 / ('"$SPAN"' * 1000)
+            for (i = 1; i <= m && i <= 8; i++) printf "  %8.1f ms  %s\n", dv[i], evn[i]
+        }' | tee -a "$OUT"
+
+    say ""
+    say "готово. Пришли $OUT"
+    ;;
+
 once)  # ОДНА команда: пишем N минут, потом сами ищем провалы, ожидания и виновников
     MIN=${3:-20}
     case "$MIN" in ''|*[!0-9]*) MIN=20 ;; esac
