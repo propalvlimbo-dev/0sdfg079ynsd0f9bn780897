@@ -802,6 +802,132 @@ spikes)  # где именно секундные всплески главно�
     say ""
     say "готово. Пришли $OUT"
     ;;
+once)  # ОДНА команда: пишем N минут, потом сами ищем провалы, ожидания и виновников
+    MIN=${3:-20}
+    case "$MIN" in ''|*[!0-9]*) MIN=20 ;; esac
+    [ "$MIN" -ge 1 ] || MIN=20
+    SPAN=$(( MIN * 60 ))
+    if [ -z "$PID" ]; then echo "процесс сервера не найден" >&2; exit 1; fi
+    JCMD=$(tool jcmd) || { echo "не найден jcmd (JDK 21+)" >&2; exit 1; }
+    JFR=$(tool jfr) || { echo "не найден jfr (JDK 21+)" >&2; exit 1; }
+    PART=$SERVER_DIR/now.jfr
+    rm -f "$PART"
+    : > "$OUT"
+    say "=== once: пишу ${MIN} мин и разбираю ($(date '+%H:%M:%S')) ==="
+    say ""
+
+    START=1
+    chk=$("$JCMD" "$PID" JFR.check name="$NAME" 2>&1)
+    case "$chk" in
+        *"Could not find"*|"") START=1 ;;
+        *) START=0 ;;
+    esac
+    if [ "$START" = "0" ]; then
+        say "запись уже идёт — использую её (ничего не запускаю)"
+    else
+        SETTINGS=profile; EXTRA=""
+        if HIFILE=$(make_hi_jfc); then SETTINGS=$HIFILE; EXTRA=" (выборка 2 мс)"; fi
+        st=$("$JCMD" "$PID" JFR.start name="$NAME" settings="$SETTINGS" duration="$(( SPAN + 300 ))s" \
+             filename="$JFR_FILE" maxage=15m maxsize=600m 2>&1)
+        case "$st" in
+            *[Ss]tarted*) say "запись запущена$EXTRA, храню последние 15 минут";;
+            *) echo "не смог запустить запись: $st" >&2; exit 1 ;;
+        esac
+        W=0
+        while [ "$W" -lt "$SPAN" ]; do
+            sleep 10; W=$((W + 10)); [ "$W" -gt "$SPAN" ] && W=$SPAN
+            printf '\r  идёт запись: %d%% (%d/%d с)   ' $(( W * 100 / SPAN )) "$W" "$SPAN"
+        done
+        printf '\r                                                        \r'
+    fi
+
+    "$JCMD" "$PID" JFR.dump name="$NAME" filename="$PART" >/dev/null 2>&1 || true
+    [ -f "$PART" ] || { echo "файл не создан — пришли: bash $0 $SERVER_DIR status" >&2; exit 1; }
+    say "снимок: $(du -h "$PART" | cut -f1)"
+    say ""
+
+    say "--- 1. провалы главного потока (секунды, когда он не работал) ---"
+    "$JFR" print --events jdk.ExecutionSample --stack-depth 3 "$PART" 2>/dev/null | awk '
+        BEGIN { lo = -1; hi = -1 }
+        /^jdk\.ExecutionSample \{/ { inp = 1; th = ""; n = 0; inf = 0; next }
+        inp && /^  startTime = / { split($3, a, ":"); t = a[1] * 3600 + a[2] * 60 + a[3]; next }
+        inp && /^  sampledThread = "/ { split($0, b, "\""); th = b[2]; next }
+        inp && /stackTrace = \[/ { inf = 1; next }
+        inf && /^  \]/ { inf = 0; next }
+        inf { n++; if (n <= 3) leaf[n] = $0; sub(/^ +/, "", leaf[n]); sub(/ line:.*/, "", leaf[n]) }
+        inp && /^\}$/ {
+            inp = 0
+            if (th != "Server thread") next
+            s = int(t); cnt[s]++
+            if (lo < 0 || s < lo) lo = s
+            if (s > hi) hi = s
+            if (n >= 1) l1[s, leaf[1]]++
+            next
+        }
+        END {
+            if (hi < 0) { print "  сэмплов Server thread нет: сервер простаивал все окно"; exit }
+            m = 0
+            for (s = lo; s <= hi; s++) if (cnt[s] > 0) { m++; med[m] = cnt[s] }
+            for (i = 2; i <= m; i++) { x = med[i]; j = i - 1
+                while (j > 0 && med[j] > x) { med[j+1] = med[j]; j-- }
+                med[j+1] = x }
+            base = (m > 0) ? med[int((m + 1) / 2)] : 0
+            if (base < 1) base = 1
+            printf "  окно %d с, секунд с работой %d, норма %.0f сэмплов/с\n", hi - lo + 1, m, base
+            print ""
+            gaps = 0
+            for (s = lo + 10; s <= hi; s++) {
+                if (cnt[s] > base / 5) continue
+                prev = 0
+                for (k = s - 10; k < s; k++) prev += cnt[k]
+                if (prev / 10 < base / 2) continue
+                gaps++
+                hh = int(s / 3600); mm = int((s % 3600) / 60); ss = s % 60
+                printf "  ПРОВАЛ %02d:%02d:%02d: %d сэмплов (норма %.0f), перед этим %.1f/с\n", hh, mm, ss, cnt[s], base, prev / 10
+                for (w = s - 1; w <= s + 1; w += 2) {
+                    best = ""; bv = 0
+                    for (f in l1) { split(f, q, SUBSEP); if (q[1] != w) continue; if (l1[f] > bv) { bv = l1[f]; best = q[2] } }
+                    if (best != "") printf "        %s: %dx %s\n", (w < s ? "до   " : "после"), bv, best
+                }
+            }
+            if (gaps == 0) print "  провалов нет: главный поток работал ровно всю запись"
+            else printf "  провалов: %d (суммарно примерно %d с простоя)\n", gaps, gaps
+        }' | tee -a "$OUT"
+
+    say ""
+    say "--- 2. где поток ЖДАЛ дольше 100 мс (диск, сокет, лок, парковка) ---"
+    GAPS=$(mktemp)
+    cp "$OUT" "$GAPS"
+    WAITTXT=$(bash "$0" "$SERVER_DIR" waits 100 "$PART" 2>&1 | sed -n '/событий дольше/,$p' | sed '/готово\. Пришли/,$d')
+    : > "$OUT"; cat "$GAPS" >> "$OUT"; rm -f "$GAPS"
+    printf '%s\n' "$WAITTXT" | tee -a "$OUT"
+
+    say ""
+    say "--- 3. паузы GC и сафпоинты дольше 50 мс ---"
+    "$JFR" print --events jdk.GCPhasePause,jdk.SafepointBegin,jdk.ZAllocationStall,jdk.GarbageCollection "$PART" 2>/dev/null | awk '
+        /^jdk\.[A-Za-z0-9_.]+ \{/ { ev = $1; inp = 1; d = 0; next }
+        inp && /^  duration = / { d = $3 + 0 }
+        inp && /^\}/ { inp = 0; if (d >= 50) { m++; dv[m] = d; evn[m] = ev } next }
+        END {
+            if (m == 0) { print "  пауз >= 50 мс нет"; exit }
+            for (i = 2; i <= m; i++) { x = dv[i]; y = evn[i]; j = i - 1
+                while (j > 0 && dv[j] < x) { dv[j+1] = dv[j]; evn[j+1] = evn[j]; j-- }
+                dv[j+1] = x; evn[j+1] = y }
+            for (i = 1; i <= m && i <= 10; i++) printf "  %8.1f ms  %s\n", dv[i], evn[i]
+        }' | tee -a "$OUT"
+
+    say ""
+    say "--- 4. топ главного потока за всю запись ---"
+    LAST=$("$JFR" print --events jdk.ExecutionSample --stack-depth 2 "$PART" 2>/dev/null | awk '
+        /^  startTime = / { split($3, a, ":"); v = a[1] * 3600 + a[2] * 60 + a[3]; if (v > mx) mx = v }
+        END { printf "%d", mx }')
+    [ -z "$LAST" ] && LAST=0
+    analyze_blame "$PART" "$LAST" "$SPAN" | tee -a "$OUT"
+
+    say ""
+    say "готово. Пришли $OUT"
+    ;;
+
 now)  # снять и разобрать ПРЯМО СЕЙЧАС, не дожидаясь строки в логе
     SPAN=${3:-120}
     if [ -z "$PID" ]; then echo "процесс сервера не найден" >&2; exit 1; fi
