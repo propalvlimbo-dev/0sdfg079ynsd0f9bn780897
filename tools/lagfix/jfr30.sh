@@ -575,6 +575,54 @@ status)  # что сейчас запущено и пишется
     fi
     echo "строк cpu.log: $(grep -c '' "$SERVER_DIR/cpu.log" 2>/dev/null || echo 0)"
     ;;
+tasks)  # кто создаёт задачи в планировщике (виновник очереди CraftScheduler)
+    HFILE=${3:-$SERVER_DIR/now.jfr}
+    [ -f "$HFILE" ] || HFILE=$JFR_FILE
+    [ -f "$HFILE" ] || { echo "нет файла. bash $0 $SERVER_DIR now 120 - сначала сними" >&2; exit 1; }
+    JFR=$(tool jfr) || { echo "не найден jfr (JDK 21+)" >&2; exit 1; }
+    : > "$OUT"
+    say "=== tasks: кто планирует задачи ($(basename "$HFILE")) ==="
+    say ""
+
+    "$JFR" print --events jdk.ObjectAllocationSample --stack-depth 16 "$HFILE" 2>/dev/null | awk '
+        /^jdk\.ObjectAllocationSample \{/ { inp = 1; cls = ""; n = 0; inf = 0; split("", fr); next }
+        inp && /^  objectClass = / { c = $0; sub(/^ +objectClass = /, "", c); sub(/ \(classLoader.*/, "", c); cls = c }
+        inp && /^  weight = / { w = $3 + 0; u = $4 }
+        inp && /stackTrace = \[/ { inf = 1; next }
+        inf && /^  \]/ { inf = 0; next }
+        inf { n++; fr[n] = $0; sub(/^ +/, "", fr[n]); sub(/ line:.*/, "", fr[n]) }
+        inp && /^\}$/ {
+            inp = 0
+            if (cls !~ /CraftTask|CraftScheduler|ServerSchedulerReportingWrapper|ScheduledTask|CraftAsyncTask|BukkitTask/) next
+            # берём замыкание: первый кадр вне серверного/букит-кода — это и есть вызывающий плагин
+            caller = ""
+            for (i = 1; i <= n; i++) {
+                f = fr[i]
+                if (f ~ /^(org\.bukkit|io\.papermc|com\.destroystokyo|net\.minecraft|java\.|javax\.|jdk\.|sun\.|com\.google|it\.unimi|ca\.spottedleaf)/) continue
+                caller = f; break
+            }
+            if (caller == "") caller = "(сервер/якорь без плагина) " fr[2]
+            k = cls "  <- " caller
+            cnt[k]++
+            if (!(k in ex)) { ex[k] = ""; for (i = 1; i <= n && i <= 6; i++) ex[k] = ex[k] (i > 1 ? " <- " : "") fr[i] }
+            next
+        }
+        END {
+            if (length(cnt) == 0) { print "  задач в этом файле не создавалось (или выборка не поймала)"; exit }
+            m = 0; for (k in cnt) ks[++m] = k
+            for (i = 2; i <= m; i++) { x = ks[i]; j = i - 1
+                while (j > 0 && cnt[ks[j]] < cnt[x]) { ks[j+1] = ks[j]; j-- }
+                ks[j+1] = x }
+            print "  сколько задач создал каждый источник:"
+            for (i = 1; i <= m && i <= 12; i++) {
+                printf "  %5d  %s\n", cnt[ks[i]], ks[i]
+                printf "         %s\n", ex[ks[i]]
+            }
+        }' | tee -a "$OUT"
+
+    say ""
+    say "готово. Пришли $OUT"
+    ;;
 now)  # снять и разобрать ПРЯМО СЕЙЧАС, не дожидаясь строки в логе
     SPAN=${3:-120}
     if [ -z "$PID" ]; then echo "процесс сервера не найден" >&2; exit 1; fi

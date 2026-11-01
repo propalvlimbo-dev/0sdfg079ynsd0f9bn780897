@@ -426,3 +426,17 @@ bash jfr30.sh /root/RW_GRIEF now 120
 
 Ограничение: в записи хранятся только последние 3 минуты (`maxage=3m`), так
 что `now` показывает недавнее прошлое, а не весь час.
+
+## tasks: кто заваливает планировщик задачами
+
+```
+bash jfr30.sh /root/RW_GRIEF now 120      # снять текущее
+bash jfr30.sh /root/RW_GRIEF tasks       # кто создаёт задачи
+```
+
+Ищет в сэмплах аллокаций объекты `CraftTask`, `CraftScheduler`,
+`ServerSchedulerReportingWrapper`, `BukkitTask` и по стеку создания называет
+источник: первый кадр вне серверного/Bukkit-кода — это вызывающий плагин.
+Верхушка серверного потока в `CraftScheduler$1.compare` и
+`PriorityQueue.siftDownUsingComparator` означает, что очередь задач выросла до
+тысяч элементов и её разбор идёт каждый тик.
