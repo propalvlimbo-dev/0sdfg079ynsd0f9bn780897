@@ -440,3 +440,22 @@ bash jfr30.sh /root/RW_GRIEF tasks       # кто создаёт задачи
 Верхушка серверного потока в `CraftScheduler$1.compare` и
 `PriorityQueue.siftDownUsingComparator` означает, что очередь задач выросла до
 тысяч элементов и её разбор идёт каждый тик.
+
+## psend: кто слушает исходящие пакеты
+
+```
+bash jfr30.sh /root/RW_GRIEF psend
+```
+
+Сканирует `plugins/*.jar` (весь каталог, ~3 с на 150 МБ) и печатает jar-ы, у
+которых есть метод `onPacketSending` — то есть синхронный слушатель
+`PacketSendEvent`. Именно из-за такого слушателя ProtocolLib перекидывает
+каждый исходящий пакет, отправленный не из главного потока, в главный через
+`BukkitScheduler.runTask` (`NettyChannelInjector.processOutbound`, строка
+`if (hasMainThreadListener(packetType) && !Bukkit.isPrimaryThread())`).
+Каждое такое перекидывание — новый `CraftTask` в приоритетной очереди
+планировщика; когда их десятки тысяч, главный поток тонет в
+`CraftScheduler$1.compare` / `PriorityQueue.siftDownUsingComparator`.
+
+`tasks` показывает объём аллокаций по источникам (MB, доля, MB/мин) и сам
+подсказывает протоколовский случай.

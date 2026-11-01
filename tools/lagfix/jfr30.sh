@@ -584,10 +584,25 @@ tasks)  # кто создаёт задачи в планировщике (вин
     say "=== tasks: кто планирует задачи ($(basename "$HFILE")) ==="
     say ""
 
-    "$JFR" print --events jdk.ObjectAllocationSample --stack-depth 16 "$HFILE" 2>/dev/null | awk '
-        /^jdk\.ObjectAllocationSample \{/ { inp = 1; cls = ""; n = 0; inf = 0; split("", fr); next }
+    "$JFR" print --events jdk.ObjectAllocationSample --stack-depth 16 "$HFILE" 2>/dev/null | awk -v self="$0" '
+        /^jdk\.ObjectAllocationSample \{/ { inp = 1; cls = ""; n = 0; inf = 0; b = 0; next }
+        BEGIN { tmin = -1; tmax = -1 }
         inp && /^  objectClass = / { c = $0; sub(/^ +objectClass = /, "", c); sub(/ \(classLoader.*/, "", c); cls = c }
-        inp && /^  weight = / { w = $3 + 0; u = $4 }
+        inp && /^  weight = / {
+            w = $3 + 0; u = $4
+            if (u ~ /^k/) b = w * 1024
+            else if (u ~ /^M/) b = w * 1048576
+            else if (u ~ /^G/) b = w * 1073741824
+            else b = w
+            next
+        }
+        inp && /^  startTime = / {
+            split($3, a, ":")
+            v = a[1] * 3600 + a[2] * 60 + a[3]
+            if (tmin < 0 || v < tmin) tmin = v
+            if (v > tmax) tmax = v
+            next
+        }
         inp && /stackTrace = \[/ { inf = 1; next }
         inf && /^  \]/ { inf = 0; next }
         inf { n++; fr[n] = $0; sub(/^ +/, "", fr[n]); sub(/ line:.*/, "", fr[n]) }
@@ -604,22 +619,67 @@ tasks)  # кто создаёт задачи в планировщике (вин
             if (caller == "") caller = "(сервер/якорь без плагина) " fr[2]
             k = cls "  <- " caller
             cnt[k]++
+            bytes[k] += b
             if (!(k in ex)) { ex[k] = ""; for (i = 1; i <= n && i <= 6; i++) ex[k] = ex[k] (i > 1 ? " <- " : "") fr[i] }
             next
         }
         END {
             if (length(cnt) == 0) { print "  задач в этом файле не создавалось (или выборка не поймала)"; exit }
+            span = (tmax > tmin && tmin >= 0) ? tmax - tmin : 0
             m = 0; for (k in cnt) ks[++m] = k
             for (i = 2; i <= m; i++) { x = ks[i]; j = i - 1
-                while (j > 0 && cnt[ks[j]] < cnt[x]) { ks[j+1] = ks[j]; j-- }
+                while (j > 0 && bytes[ks[j]] < bytes[x]) { ks[j+1] = ks[j]; j-- }
                 ks[j+1] = x }
-            print "  сколько задач создал каждый источник:"
+            total = 0
+            for (k in bytes) total += bytes[k]
+            printf "  окно наблюдения: %d с\n", span
+            if (total > 0) printf "  всего аллокаций на объекты задач: %.1f MB\n", total / 1048576
+            print ""
+            print "  источник (по объёму аллокаций):"
             for (i = 1; i <= m && i <= 12; i++) {
-                printf "  %5d  %s\n", cnt[ks[i]], ks[i]
-                printf "         %s\n", ex[ks[i]]
+                share = total > 0 ? bytes[ks[i]] * 100 / total : 0
+                if (span > 0) printf "  %7.1f MB  %4.1f%%  %6.2f MB/мин  %s\n", bytes[ks[i]] / 1048576, share, bytes[ks[i]] / 1048576 * 60 / span, ks[i]
+                else printf "  %7.1f MB  %4.1f%%  %s\n", bytes[ks[i]] / 1048576, share, ks[i]
+                printf "           %s\n", ex[ks[i]]
             }
+            print ""
+            top = ks[1]; topshare = total > 0 ? bytes[top] * 100 / total : 0
+            split(top, tp, "  <- ")
+            if (topshare >= 50)
+                printf "  >>> %.0f%% всего объёма даёт ОДИН источник: %s\n", topshare, tp[2]
+            if (tp[2] ~ /com\.comphenix\.protocol/)
+                print "      ProtocolLib планирует задачу на главный поток на КАЖДЫЙ пакет,\n      у которого есть синхронный слушатель, отправленный не из главного потока.\n      Кто слушает исходящие пакеты: bash " self " <папка> psend"
         }' | tee -a "$OUT"
 
+    say ""
+    say "готово. Пришли $OUT"
+    ;;
+psend)  # какие плагины слушают исходящие пакеты через ProtocolLib
+    PD=$SERVER_DIR/plugins
+    [ -d "$PD" ] || { echo "нет каталога $PD" >&2; exit 1; }
+    : > "$OUT"
+    say "=== psend: у кого есть слушатель ИСХОДЯЩИХ пакетов (onPacketSending) ==="
+    say ""
+    TMP=$(mktemp)
+    for j in "$PD"/*.jar; do
+        [ -f "$j" ] || continue
+        c=$(timeout 30 unzip -p "$j" '*.class' 2>/dev/null | grep -ac 'onPacketSending')
+        [ "${c:-0}" -gt 0 ] || continue
+        a=$(timeout 30 unzip -p "$j" '*.class' 2>/dev/null | grep -ac 'com/comphenix/protocol/events/PacketAdapter')
+        printf '%5d %5d %s\n' "$c" "$a" "$(basename "$j")" >> "$TMP"
+    done
+    if [ -s "$TMP" ]; then
+        say "  класс-файлов с onPacketSending | ссылок на PacketAdapter | jar"
+        sort -rn "$TMP" | while read -r c a j; do printf "  %5d  %5d  %s\n" "$c" "$a" "$j"; done | tee -a "$OUT"
+        say ""
+        say "  Плагин с onPacketSending и есть тот, из-за кого ProtocolLib гоняет каждый"
+        say "  исходящий пакет в главный поток. Если он умеет ASYNC-слушатели —"
+        say "  включи их; если это античит вроде Florium — выключи в нём хук ProtocolLib."
+    else
+        say "  onPacketSending не найден ни в одном jar (слушатели могут быть в libs/ или"
+        say "  регистрироваться через прокси-методы) — пришли список: ls $PD"
+    fi
+    rm -f "$TMP"
     say ""
     say "готово. Пришли $OUT"
     ;;
