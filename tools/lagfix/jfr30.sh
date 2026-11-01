@@ -19,7 +19,7 @@ MODE=${2:-start}
 DURATION=${3:-1800}
 NAME=elytrix
 JFR_FILE=$SERVER_DIR/flight.jfr
-OUT=$SERVER_DIR/jfr-report.txt
+OUT=${JFR30_OUT:-$SERVER_DIR/jfr-report.txt}
 
 if [ -z "$SERVER_DIR" ]; then
     echo "использование: bash $0 <папка_сервера> [start|stop|report] [секунд]" >&2
@@ -106,12 +106,39 @@ psi_cpu() {
     [ -r /proc/pressure/cpu ] || { printf 'n/a\n'; return; }
     awk '/^some/ { for (i = 1; i <= NF; i++) if ($i ~ /^avg10=/) { sub(/avg10=/, "", $i); print $i } }' /proc/pressure/cpu
 }
-mem_avail_mb() { awk '/^MemAvailable:/ { print int($2 / 1024) }' /proc/meminfo 2>/dev/null; }
-swap_used_mb() { awk '/^SwapTotal:/ { t = $2 } /^SwapFree:/ { f = $2 } END { print int((t - f) / 1024) }' /proc/meminfo 2>/dev/null; }
-vmstat_get() { awk -v k="$1" '$1 == k { print $2 }' /proc/vmstat 2>/dev/null; }
+MEMINFO=${MEMINFO:-/proc/meminfo}
+VMSTATFILE=${VMSTATFILE:-/proc/vmstat}
+PSIDIR=${PSIDIR:-/proc/pressure}
+mem_avail_mb() { awk '/^MemAvailable:/ { print int($2 / 1024) }' "$MEMINFO" 2>/dev/null; }
+swap_used_mb() { awk '/^SwapTotal:/ { t = $2 } /^SwapFree:/ { f = $2 } END { print int((t - f) / 1024) }' "$MEMINFO" 2>/dev/null; }
+vmstat_get() { awk -v k="$1" '$1 == k { print $2 }' "$VMSTATFILE" 2>/dev/null; }
+mem_block() {  # состояние памяти/свопа и прирост счётчиков за окно $1 секунд
+    local w=${1:-5} p1 s1 f1 k1 p2 s2 f2 k2
+    p1=$(vmstat_get pswpin); s1=$(vmstat_get pswpout)
+    f1=$(vmstat_get pgmajfault); k1=$(vmstat_get pgsteal_kswapd)
+    sleep "$w"
+    p2=$(vmstat_get pswpin); s2=$(vmstat_get pswpout)
+    f2=$(vmstat_get pgmajfault); k2=$(vmstat_get pgsteal_kswapd)
+    P1=${p1:-0} S1=${s1:-0} F1=${f1:-0} K1=${k1:-0}
+    P2=${p2:-0} S2=${s2:-0} F2=${f2:-0} K2=${k2:-0}
+    awk -v w="$w" -v p1="$P1" -v p2="$P2" -v s1="$S1" -v s2="$S2" \
+        -v f1="$F1" -v f2="$F2" -v k1="$K1" -v k2="$K2" \
+        -v avail="$(mem_avail_mb)" -v swap="$(swap_used_mb)" \
+        -v ps="$(psi_get memory)" -v pi="$(psi_get io)" 'BEGIN {
+        si = (p2 - p1) / w; so = (s2 - s1) / w
+        mf = (f2 - f1) / w; rc = (k2 - k1) / w
+        printf "  свободно RAM: %d МБ, своп занят: %d МБ\n", avail, swap
+        printf "  за %d с: swap-out %.1f стр/с, swap-in %.1f стр/с, major faults %.1f/с, reclaim %.1f стр/с\n", w, so, si, mf, rc
+        printf "  PSI memory some avg10=%s%%, PSI io some avg10=%s%%\n", ps, pi
+        if (si >= 20 || mf >= 50 || ps + 0 >= 10)
+            print "  >>> ПАМЯТЬ В ДЕФИЦИТЕ: ядро вытесняет страницы, мир в это время стоит"
+        else
+            print "  память в норме: активного вытеснения нет"
+    }'
+}
 psi_get() {
-    [ -r "/proc/pressure/$1" ] || { printf 'n/a'; return; }
-    awk -v c="avg10=" '$1 == "some" || $1 == "full" { for (i = 1; i <= NF; i++) if (index($i, c) == 1) { v = $i; sub(c, "", v); print v; exit } }' "/proc/pressure/$1"
+    [ -r "$PSIDIR/$1" ] || { printf 'n/a'; return; }
+    awk -v c="avg10=" '$1 == "some" { for (i = 1; i <= NF; i++) if (index($i, c) == 1) { v = $i; sub(c, "", v); print v; exit } }' "$PSIDIR/$1"
 }
 host_cpu() {  # $1=total $2=steal $3=iowait (тики)
     awk '/^cpu / { t = 0; for (i = 2; i <= NF; i++) t += $i; printf "%d %d %d\n", t, $9 + 0, $6 + 0; exit }' /proc/stat
@@ -802,6 +829,87 @@ spikes)  # где именно секундные всплески главно�
     say ""
     say "готово. Пришли $OUT"
     ;;
+memlog)  # дешёвый сторож памяти: пишет строку раз в 5 с, ничего не стоит
+    MIN=${3:-60}
+    case "$MIN" in ''|*[!0-9]*) MIN=60 ;; esac
+    LOG=$SERVER_DIR/mem.log
+    if pgrep -f "jfr30[.]sh .* memloop " >/dev/null 2>&1; then
+        echo "сторож уже работает. остановить: pkill -f 'jfr30[.]sh .* memloop'"
+        exit 0
+    fi
+    : > "$LOG"
+    nohup bash "$0" "$SERVER_DIR" memloop "$MIN" >/dev/null 2>&1 &
+    echo "=== сторож памяти запущен на ${MIN} мин ==="
+    echo "пишет: $LOG (строка раз в 5 с, ~0% CPU)"
+    echo ""
+    echo "когда снова залагивает — просто подожди 1-2 минуты, потом:"
+    echo "  bash $0 $SERVER_DIR memreport"
+    echo "остановить раньше: pkill -f 'jfr30[.]sh .* memloop'"
+    ;;
+memloop)
+    MIN=${3:-60}
+    LOG=$SERVER_DIR/mem.log
+    END=$(( $(date +%s) + MIN * 60 ))
+    p1=$(vmstat_get pswpin); s1=$(vmstat_get pswpout); f1=$(vmstat_get pgmajfault)
+    t1=$(date +%s)
+    echo "# start $(date '+%Y-%m-%d %H:%M:%S') every 5s" >> "$LOG"
+    while [ "$(date +%s)" -lt "$END" ]; do
+        sleep 5
+        t2=$(date +%s); dt=$(( t2 - t1 )); [ "$dt" -le 0 ] && dt=5
+        p2=$(vmstat_get pswpin); s2=$(vmstat_get pswpout); f2=$(vmstat_get pgmajfault)
+        rss=$(awk '/^VmRSS:/ { print int($2 / 1024) }' "/proc/$PID/status" 2>/dev/null)
+        awk -v t="$(date '+%H:%M:%S')" -v dt="$dt" \
+            -v p1="${p1:-0}" -v p2="${p2:-0}" -v s1="${s1:-0}" -v s2="${s2:-0}" \
+            -v f1="${f1:-0}" -v f2="${f2:-0}" \
+            -v avail="$(mem_avail_mb)" -v swap="$(swap_used_mb)" -v rss="${rss:-0}" \
+            -v ps="$(psi_get memory)" -v pi="$(psi_get io)" -v la="$(cut -d' ' -f1-3 /proc/loadavg 2>/dev/null | tr ' ' '/')" 'BEGIN {
+            printf "%s ram=%d swap=%d rss=%d psi=%s psiio=%s sin=%.1f sout=%.1f maj=%.1f load=%s\n", t, avail, swap, rss, ps, pi, (p2-p1)/dt, (s2-s1)/dt, (f2-f1)/dt, la
+        }' >> "$LOG"
+        p1=$p2; s1=$s2; f1=$f2; t1=$t2
+    done
+    ;;
+memreport)  # самое плохое из mem.log: когда памяти не хватало
+    LOG=$SERVER_DIR/mem.log
+    [ -f "$LOG" ] || { echo "нет $LOG. сначала: bash $0 $SERVER_DIR memlog 60" >&2; exit 1; }
+    : > "$OUT"
+    say "=== memreport: память по логу $(basename "$LOG") ==="
+    say ""
+    awk '
+        /^#/ { next }
+        {
+            rows++
+            for (i = 2; i <= NF; i++) { split($i, kv, "="); v[kv[1]] = kv[2] }
+            ps = v["psi"] + 0; si = v["sin"] + 0; mf = v["maj"] + 0
+            if (rows == 1) { first = $1; firstram = v["ram"] }
+            last = $1; lastram = v["ram"]
+            if (v["swap"] + 0 > maxswap) maxswap = v["swap"] + 0
+            if (ps > maxpsi) maxpsi = ps
+            if (si > maxsi) maxsi = si
+            if (mf > maxmf) maxmf = mf
+            score = ps * 3 + si + mf / 5
+            n++; T[n] = $1; S[n] = score; LINE[n] = $0
+        }
+        END {
+            if (rows == 0) { print "  лог пуст"; exit }
+            printf "  строк: %d, с %s до %s\n", rows, first, last
+            printf "  RAM свободно: %d МБ в начале, %d МБ в конце\n", firstram, lastram
+            printf "  своп: максимум %d МБ; PSI memory: максимум %s%%; swap-in: максимум %.1f стр/с; major faults: максимум %.1f/с\n",
+                maxswap, maxpsi, maxsi, maxmf
+            print ""
+            if (maxpsi + 0 >= 10 || maxsi >= 20 || maxmf >= 50)
+                print "  ВЕРДИКТ: памяти не хватало — это и есть причина провалов"
+            else
+                print "  ВЕРДИКТ: память в норме, провалы не отсюда"
+            print ""
+            print "  худшие минуты:"
+            for (i = 2; i <= n; i++) { x = S[i]; y = T[i]; l = LINE[i]; j = i - 1
+                while (j > 0 && S[j] < x) { S[j+1] = S[j]; T[j+1] = T[j]; LINE[j+1] = LINE[j]; j-- }
+                S[j+1] = x; T[j+1] = y; LINE[j+1] = l }
+            for (i = 1; i <= n && i <= 10; i++) { printf "  %s\n", LINE[i] }
+        }' "$LOG" | tee -a "$OUT"
+    say ""
+    say "готово. Пришли $OUT"
+    ;;
 once)  # ОДНА команда: пишем N минут, потом сами ищем провалы, ожидания и виновников
     MIN=${3:-20}
     case "$MIN" in ''|*[!0-9]*) MIN=20 ;; esac
@@ -828,9 +936,9 @@ once)  # ОДНА команда: пишем N минут, потом сами �
         SETTINGS=profile; EXTRA=""
         if HIFILE=$(make_hi_jfc); then SETTINGS=$HIFILE; EXTRA=" (выборка 2 мс)"; fi
         st=$("$JCMD" "$PID" JFR.start name="$NAME" settings="$SETTINGS" duration="$(( SPAN + 300 ))s" \
-             filename="$JFR_FILE" maxage=15m maxsize=600m 2>&1)
+             filename="$JFR_FILE" maxage="$(( MIN + 2 ))m" maxsize=1g 2>&1)
         case "$st" in
-            *[Ss]tarted*) say "запись запущена$EXTRA, храню последние 15 минут";;
+            *[Ss]tarted*) say "запись запущена$EXTRA, храню всё окно ($(( MIN + 2 )) мин)";;
             *) echo "не смог запустить запись: $st" >&2; exit 1 ;;
         esac
         W=0
@@ -896,11 +1004,13 @@ once)  # ОДНА команда: пишем N минут, потом сами �
 
     say ""
     say "--- 2. где поток ЖДАЛ дольше 100 мс (диск, сокет, лок, парковка) ---"
-    GAPS=$(mktemp)
-    cp "$OUT" "$GAPS"
-    WAITTXT=$(bash "$0" "$SERVER_DIR" waits 100 "$PART" 2>&1 | sed -n '/событий дольше/,$p' | sed '/готово\. Пришли/,$d')
-    : > "$OUT"; cat "$GAPS" >> "$OUT"; rm -f "$GAPS"
-    printf '%s\n' "$WAITTXT" | tee -a "$OUT"
+    WAITOUT=$(mktemp)
+    JFR30_OUT=$WAITOUT JAVA_TOOL_OPTIONS="${JAVA_TOOL_OPTIONS:--Xmx1g}" \
+        bash "$0" "$SERVER_DIR" waits 100 "$PART" >/dev/null 2>&1 || true
+    WAITTXT=$(sed -n '/событий дольше/,$p' "$WAITOUT" 2>/dev/null | sed '/готово\. Пришли/,$d')
+    rm -f "$WAITOUT"
+    [ -n "$WAITTXT" ] && printf '%s\n' "$WAITTXT" | tee -a "$OUT"
+    [ -n "$WAITTXT" ] || say "  разбор ожиданий не отработал (файл большой) — смотри блок 5"
 
     say ""
     say "--- 3. паузы GC и сафпоинты дольше 50 мс ---"
@@ -917,7 +1027,11 @@ once)  # ОДНА команда: пишем N минут, потом сами �
         }' | tee -a "$OUT"
 
     say ""
-    say "--- 4. топ главного потока за всю запись ---"
+    say "--- 4. память и своп прямо сейчас ---"
+    mem_block 5 | tee -a "$OUT"
+
+    say ""
+    say "--- 5. топ главного потока за всю запись ---"
     LAST=$("$JFR" print --events jdk.ExecutionSample --stack-depth 2 "$PART" 2>/dev/null | awk '
         /^  startTime = / { split($3, a, ":"); v = a[1] * 3600 + a[2] * 60 + a[3]; if (v > mx) mx = v }
         END { printf "%d", mx }')
