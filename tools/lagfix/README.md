@@ -489,3 +489,16 @@ bash jfr30.sh /root/RW_GRIEF spikes 10 файл.jfr
 
 10 сэмплов при выборке 10 мс = ~100 мс работы в этой секунде; 100 сэмплов =
 ~1 с, то есть тик целиком.
+
+## waits: кто ЖДАЛ (для «тик занял 2 секунды, а CPU не рос»)
+
+```
+bash jfr30.sh /root/RW_GRIEF waits 50
+bash jfr30.sh /root/RW_GRIEF waits 200 файл.jfr
+```
+
+Достаёт из JFR `jdk.FileWrite / FileRead / FileForce / SocketRead / SocketWrite /
+ThreadPark / JavaMonitorEnter / JavaMonitorWait` длиннее порога и печатает
+длительность, поток, путь и стек. Это ответ на случай, когда `spikes` не видит
+всплеска: поток не работал, а ждал диск, сокет (MySQL/сеть) или лок. Выборка
+`jdk.ExecutionSample` такие тики не показывает — она ловит только RUNNABLE.

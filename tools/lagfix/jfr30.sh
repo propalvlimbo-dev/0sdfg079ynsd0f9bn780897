@@ -683,6 +683,59 @@ psend)  # какие плагины слушают исходящие пакет
     say ""
     say "готово. Пришли $OUT"
     ;;
+waits)  # кто тормозил: файлы, сокеты, парковки, локи дольше порога
+    TH=${3:-50}
+    WFILE=${4:-$SERVER_DIR/now.jfr}
+    [ -f "$WFILE" ] || WFILE=$JFR_FILE
+    [ -f "$WFILE" ] || { echo "нет файла. bash $0 $SERVER_DIR now 120" >&2; exit 1; }
+    JFR=$(tool jfr) || { echo "не найден jfr (JDK 21+)" >&2; exit 1; }
+    : > "$OUT"
+    say "=== waits: где поток ЖДАЛ дольше ${TH} мс ($(basename "$WFILE")) ==="
+    say "    (выборка ловит только работающий поток; тик, который 2 с ждал диск/лок, виден тут)"
+    say ""
+    "$JFR" print --events jdk.FileWrite,jdk.FileRead,jdk.FileForce,jdk.SocketRead,jdk.SocketWrite,jdk.ThreadPark,jdk.JavaMonitorEnter,jdk.JavaMonitorWait --stack-depth 12 "$WFILE" 2>/dev/null | awk -v th="$TH" '
+        /^jdk\.[A-Za-z0-9_.]+ \{/ { ev = $1; sub(/ \{/, "", ev); inp = 1; d = 0; thr = ""; n = 0; inf = 0; extra = ""; next }
+        inp && /^  duration = / {
+            v = $3 + 0; u = $4
+            if (u ~ /^ns/) d = v / 1e6
+            else if (u ~ /^us/ || u ~ /^µs/) d = v / 1e3
+            else if (u ~ /^ms/) d = v
+            else if (u ~ /^s/) d = v * 1000
+            else d = v / 1e6
+            next
+        }
+        inp && /^  eventThread = / { split($0, a, "\""); thr = a[2]; next }
+        inp && /^  path = / { pp = $0; sub(/^ +path = /, "", pp); extra = extra " " pp; next }
+        inp && /^  bytesWritten = / { extra = extra " записано=" $3; next }
+        inp && /^  bytesRead = / { extra = extra " прочитано=" $3; next }
+        inp && /^  timeout = / { extra = extra " timeout=" $3 "мс"; next }
+        inp && /stackTrace = \[/ { inf = 1; next }
+        inf && /^  \]/ { inf = 0; next }
+        inf { n++; fr[n] = $0; sub(/^ +/, "", fr[n]); sub(/ line:.*/, "", fr[n]) }
+        inp && /^\}$/ {
+            inp = 0
+            if (d < th) next
+            m++; D[m] = d; E[m] = ev; T[m] = thr; X[m] = extra
+            full = ""; for (i = 1; i <= n && i <= 12; i++) full = full (i > 1 ? " <- " : "") fr[i]
+            F[m] = full
+            next
+        }
+        END {
+            if (m == 0) { printf "  событий дольше %d мс нет: поток не ждал, время ушло на CPU/GC\n", th; exit }
+            for (i = 2; i <= m; i++) {
+                xd = D[i]; xe = E[i]; xt = T[i]; xx = X[i]; xf = F[i]; j = i - 1
+                while (j > 0 && D[j] < xd) { D[j+1] = D[j]; E[j+1] = E[j]; T[j+1] = T[j]; X[j+1] = X[j]; F[j+1] = F[j]; j-- }
+                D[j+1] = xd; E[j+1] = xe; T[j+1] = xt; X[j+1] = xx; F[j+1] = xf
+            }
+            printf "  событий дольше %d мс: %d, самое долгое %.0f мс\n\n", th, m, D[1]
+            for (i = 1; i <= m && i <= 15; i++) {
+                printf "  %8.1f мс  %s  [%s]%s\n", D[i], E[i], T[i], X[i]
+                printf "           %s\n", F[i]
+            }
+        }' | tee -a "$OUT"
+    say ""
+    say "готово. Пришли $OUT"
+    ;;
 spikes)  # где именно секундные всплески главного потока (для «фриз на 1 секунду»)
     N=${3:-10}
     SFILE=${4:-$SERVER_DIR/now.jfr}
