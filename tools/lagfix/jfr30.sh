@@ -564,7 +564,59 @@ status)  # что сейчас запущено и пишется
     echo "замер CPU: $(pgrep -cf "jfr30[.]sh.*cpu ") процессов"
     echo "дампов: $(ls "$SERVER_DIR"/lag-*.jfr 2>/dev/null | wc -l), занимают $(du -sh --exclude=flight.jfr "$SERVER_DIR"/lag-*.jfr 2>/dev/null | tail -1 | cut -f1)"
     echo "лаб-событий: $(grep -c '' "$SERVER_DIR/lag-events.log" 2>/dev/null || echo 0)"
+    if [ -f "$SERVER_DIR/lag-events.log" ]; then
+        CUT=$(date -d '-10 minutes' +%H:%M:%S 2>/dev/null)
+        FRESH=$(awk -v cut="$CUT" '{ t = substr($0, 2, 8); if (t >= cut) c++ } END { print c + 0 }' "$SERVER_DIR/lag-events.log" 2>/dev/null)
+        echo "за последние 10 минут новых: $FRESH"
+        if [ "$FRESH" = "0" ]; then
+            echo "  >>> похоже, /spark tickmonitor не включён — перехват нечего ловить."
+            echo "      в консоли сервера: /spark tickmonitor --threshold-tick 150"
+        fi
+    fi
     echo "строк cpu.log: $(grep -c '' "$SERVER_DIR/cpu.log" 2>/dev/null || echo 0)"
+    ;;
+now)  # снять и разобрать ПРЯМО СЕЙЧАС, не дожидаясь строки в логе
+    SPAN=${3:-120}
+    if [ -z "$PID" ]; then echo "процесс сервера не найден" >&2; exit 1; fi
+    JCMD=$(tool jcmd) || { echo "не найден jcmd (JDK 21+)" >&2; exit 1; }
+    JFR=$(tool jfr) || { echo "не найден jfr (JDK 21+)" >&2; exit 1; }
+    PART=$SERVER_DIR/now.jfr
+    rm -f "$PART"
+    echo "снимаю текущую запись (последние минуты) -> $PART"
+    if ! "$JCMD" "$PID" JFR.dump name="$NAME" filename="$PART" >/dev/null 2>&1; then
+        echo "не удалось снять. Идёт ли запись? bash $0 $SERVER_DIR status" >&2
+        exit 1
+    fi
+    [ -f "$PART" ] || { echo "файл не создан" >&2; exit 1; }
+    echo "готово: $(du -h "$PART" | cut -f1)"
+    echo ""
+
+    LAST=$("$JFR" print --events jdk.ExecutionSample --stack-depth 2 "$PART" 2>/dev/null | awk '
+        /^  startTime = / { split($3, a, ":"); v = a[1] * 3600 + a[2] * 60 + a[3]; if (v > mx) mx = v }
+        END { printf "%d", mx }')
+    [ -z "$LAST" ] && LAST=0
+    printf -v HM '%02d:%02d:%02d' $(( LAST / 3600 )) $(( (LAST % 3600) / 60 )) $(( LAST % 60 ))
+    : > "$OUT"
+    say "=== now: разбор последних ${SPAN} с (до $HM) ==="
+    echo ""
+    analyze_blame "$PART" "$LAST" "$SPAN" | tee -a "$OUT"
+
+    echo ""
+    echo "--- GC, safepoint и ZGC-сталлы в этом же файле ---"
+    "$JFR" print --events jdk.GCPhasePause,jdk.SafepointBegin,jdk.ZAllocationStall,jdk.GarbageCollection "$PART" 2>/dev/null |
+    awk '
+        /^jdk\.[A-Za-z0-9_.]+ \{/ { ev = $1; inp = 1; d = 0; next }
+        inp && /^  duration = / { d = $3 + 0 }
+        inp && /^\}/ { inp = 0; if (d >= 50) { m++; dv[m] = d; evn[m] = ev } next }
+        END {
+            if (m == 0) { print "  событий >= 50 мс нет"; exit }
+            for (i = 2; i <= m; i++) { x = dv[i]; y = evn[i]; j = i - 1
+                while (j > 0 && dv[j] < x) { dv[j+1] = dv[j]; evn[j+1] = evn[j]; j-- }
+                dv[j+1] = x; evn[j+1] = y }
+            for (i = 1; i <= m && i <= 10; i++) printf "  %8.1f ms  %s\n", dv[i], evn[i]
+        }' | tee -a "$OUT"
+    echo ""
+    echo "готово. Пришли $OUT"
     ;;
 top)  # самые тяжёлые лаги из lag-events.log -> разбор каждого
     N=${3:-3}
