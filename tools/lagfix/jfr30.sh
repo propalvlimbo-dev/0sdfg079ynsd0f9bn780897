@@ -829,62 +829,101 @@ spikes)  # где именно секундные всплески главно�
     say ""
     say "готово. Пришли $OUT"
     ;;
-memsplit)  # куда ушла память сервера: RSS vs heap vs metaspace vs direct
-    [ -f /proc/$$/status ] || { echo "нужен /proc" >&2; exit 1; }
+memsplit)  # куда ушла память сервера: heap, metaspace, direct, malloc
     if [ -z "$PID" ]; then echo "процесс сервера не найден" >&2; exit 1; fi
     : > "$OUT"
+    STATFILE=${STATFILE:-/proc/$PID/status}
+    SMAPS=${SMAPS:-/proc/$PID/smaps}
     say "=== memsplit: куда ушла память (pid $PID) ==="
     say ""
-    STATFILE=${STATFILE:-/proc/$PID/status}
     RSS=$(awk '/^VmRSS:/ { print int($2 / 1024) }' "$STATFILE" 2>/dev/null)
     THR=$(awk '/^Threads:/ { print $2 }' "$STATFILE" 2>/dev/null)
     [ -z "$RSS" ] && { echo "нет доступа к $STATFILE" >&2; exit 1; }
     [ -z "$THR" ] && THR=0
-    say "  RSS процесса:        ${RSS} МБ"
-    say "  потоков в процессе:  ${THR}"
+    say "  RSS процесса: ${RSS} МБ, потоков: $THR"
     say ""
 
+    HEAP_C=0; HEAP_U=0; NON_C=0
     JSTAT=$(tool jstat)
     if [ -n "$JSTAT" ]; then
         GCOUT=$("$JSTAT" -gc "$PID" 2>/dev/null)
         if [ -n "$GCOUT" ]; then
-            printf '%s\n' "$GCOUT" | awk -v rss="$RSS" -v thr="$THR" '
+            set -- $(printf '%s\n' "$GCOUT" | awk '
                 NR == 1 { for (i = 1; i <= NF; i++) ix[$i] = i; next }
                 {
                     for (k in ix) v[k] = $(ix[k]) + 0
-                    heapC = (v["S0C"] + v["S1C"] + v["EC"] + v["OC"]) / 1024
-                    heapU = (v["S0U"] + v["S1U"] + v["EU"] + v["OU"]) / 1024
-                    nonC  = (v["MC"] + v["CCSC"]) / 1024
-                    nonU  = (v["MU"] + v["CCSU"]) / 1024
-                    stacks = thr * 0.5
-                    other = rss - heapC - nonC - stacks
-                    printf "  heap:      занято %d МБ, использовано %d МБ\n", heapC, heapU
-                    printf "  metaspace + code cache: занято %d МБ (использовано %d)\n", nonC, nonU
-                    printf "  стеки потоков: ~%d МБ (%d потоков)\n", stacks, thr
-                    printf "  ПРОЧЕЕ:    %d МБ  <- direct-буферы Netty, арены malloc, JIT, прочее нативное\n", other
-                    printf "\n"
-                    if (other >= 1500) {
-                        print "  >>> ВНЕ КУЧИ ВИСИТ " int(other) " МБ. Куча тут не при чём:"
-                        print "      это нативные буферы. Netty по умолчанию может занять до -Xmx"
-                        print "      (у тебя это 7 ГБ) -- и ProtocolLib + packetevents + встроенный"
-                        print "      в античит packetevents гоняют копии каждого пакета."
-                        print "      Лечится: -XX:MaxDirectMemorySize=1024m в start.sh."
-                    } else if (other > 800) {
-                        print "  прочее в пределах разумного, но следи: растёт или стоит."
-                    } else {
-                        print "  вне кучи всё чисто: память сидит в heap, как и должна."
-                    }
-                }'
-        else
-            say "  jstat не дал данных"
+                    printf "%d %d %d\n", (v["S0C"] + v["S1C"] + v["EC"] + v["OC"]) / 1024, \
+                        (v["S0U"] + v["S1U"] + v["EU"] + v["OU"]) / 1024, (v["MC"] + v["CCSC"]) / 1024
+                }')
+            HEAP_C=$1; HEAP_U=$2; NON_C=$3
+            say "  источник: jstat -gc"
         fi
+    fi
+    if [ "$HEAP_C" = "0" ]; then
+        JC=$(tool jcmd)
+        if [ -n "$JC" ]; then
+            HI=$("$JC" "$PID" GC.heap_info 2>/dev/null)
+            if [ -n "$HI" ]; then
+                set -- $(printf '%s\n' "$HI" | awk '
+                    { line = $0 }
+                    /total [0-9]+K, used [0-9]+K/ {
+                        sub(/.*total /, "", line); sub(/K.*/, "", line); t = line
+                        rest = $0; sub(/.*used /, "", rest); sub(/K.*/, "", rest)
+                        heapC = t / 1024; heapU = rest / 1024
+                    }
+                    /Metaspace/ && /used/ {
+                        rest = $0; sub(/.*used /, "", rest); sub(/K.*/, "", rest); mc = rest / 1024
+                        rest2 = $0; sub(/.*committed /, "", rest2); sub(/K.*/, "", rest2); mcc = rest2 / 1024
+                    }
+                    END { printf "%d %d %d\n", heapC, heapU, mcc }')
+                HEAP_C=$1; HEAP_U=$2; NON_C=$3
+                say "  источник: jcmd GC.heap_info"
+            fi
+        fi
+    fi
+    if [ "$HEAP_C" = "0" ]; then
+        say "  ВНИМАНИЕ: ни jstat, ни jcmd не дали данных о куче (нет прав / нет JDK)."
+        say "  Ниже -- разбивка по областям памяти из /proc, её хватает для вывода."
+        say ""
     else
-        say "  нет jstat рядом с java"
+        STACKS=$(( THR / 2 ))
+        OTHER=$(( RSS - HEAP_C - NON_C - STACKS ))
+        say "  heap:            занято ${HEAP_C} МБ, использовано ${HEAP_U} МБ"
+        say "  metaspace+code:  занято ${NON_C} МБ"
+        say "  стеки потоков:   ~${STACKS} МБ (${THR} потоков)"
+        say "  ПРОЧЕЕ (вне JVM-кучи): ${OTHER} МБ"
+        say "                   ^ direct-буферы Netty, арены malloc, JIT, GC-структуры"
+        say ""
+        if [ "$OTHER" -ge 1500 ]; then
+            say "  >>> ВНЕ КУЧИ ${OTHER} МБ. Куча не виновата: Netty direct по умолчанию"
+            say "      может занять до -Xmx (у тебя 7 ГБ) и обычно занимает --"
+            say "      ProtocolLib + packetevents + встроенный в античит packetevents"
+            say "      копируют каждый пакет в свой буфер."
+        elif [ "$OTHER" -ge 700 ]; then
+            say "  прочее в пределах допустимого, но следи: растёт со временем или стоит."
+        else
+            say "  вне кучи чисто: память сидит в heap, как и должна."
+        fi
+        say ""
     fi
 
-    say ""
+    if [ -r "$SMAPS" ]; then
+        say "  крупнейшие области памяти (из /proc/$PID/smaps):"
+        awk '
+            /^[0-9a-f]+-[0-9a-f]+ / {
+                if (NF >= 6) { name = $6; for (i = 7; i <= NF; i++) name = name " " $i }
+                else name = "[anon " $2 "]"
+                next
+            }
+            /^Rss:/ { if (name != "") rss[name] += $2; next }
+            END { for (n in rss) if (rss[n] >= 10240) printf "%d\t%s\n", rss[n] / 1024, n }
+        ' "$SMAPS" 2>/dev/null | sort -rn | head -8 |
+            awk -F'\t' '{ printf "    %6d МБ  %s\n", $1, $2 }' | tee -a "$OUT"
+        say ""
+    fi
+
     say "  всего в системе:"
-    free -m 2>/dev/null | awk 'NR == 1 { print "    " $0 } /^Mem:/ { printf "    RAM: занято %d МБ из %d, свободно %d, кэш %d\n", $3, $2, $4 + $6, $6 } /^Swap:/ { printf "    своп: занято %d МБ из %d\n", $3, $2 }' | tee -a "$OUT"
+    free -m 2>/dev/null | awk 'NR == 1 { print "    " $0 } /^Mem:/ { printf "    RAM: занято %d МБ из %d, свободно %d, кэш %d\n", $3, $2, $4, $6 } /^Swap:/ { printf "    своп: занято %d МБ из %d\n", $3, $2 }' | tee -a "$OUT"
     say ""
     say "  крупнейшие java-процессы (RSS, МБ):"
     ps -eo rss,pid,etime,args --sort=-rss 2>/dev/null | awk 'NR > 1 && $4 ~ /java/ && $1 ~ /^[0-9]+$/ {
@@ -898,6 +937,7 @@ memsplit)  # куда ушла память сервера: RSS vs heap vs metas
     say ""
     say "готово. Пришли $OUT"
     ;;
+
 memlog)  # дешёвый сторож памяти: пишет строку раз в 5 с, ничего не стоит
     MIN=${3:-60}
     case "$MIN" in ''|*[!0-9]*) MIN=60 ;; esac

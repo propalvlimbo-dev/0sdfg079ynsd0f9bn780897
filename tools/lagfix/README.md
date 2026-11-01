@@ -568,3 +568,17 @@ metaspace + code cache, оценку стеков и **разницу** межд
 эта разница больше полутора гигабайт — виновата не куча, а нативные буферы
 (Netty direct, до `-Xmx` по умолчанию), арены malloc или JIT. Рядом —
 `free -m` и шесть самых толстых java-процессов на машине.
+
+## memfix.sh: потолок нативной памяти
+
+```
+bash memfix.sh /root/RW_GRIEF            # direct 1024 МБ, metaspace 768 МБ
+bash memfix.sh /root/RW_GRIEF 1536 1024  # если в логе появится direct OOM
+```
+
+Замер: RSS сервера 11 740 МБ при `-Xmx7168M` — то есть **4.5 ГБ живут вне
+кучи**. Netty (ProtocolLib + packetevents + packetevents внутри античита) по
+умолчанию может занять direct-буферов до `-Xmx`, а metaspace не ограничен
+вовсе. Скрипт вставляет две строки в FLAGS вашего `start.sh`, проверяет
+синтаксис и оставляет `.bak`. Ожидаемый RSS после рестарта ≈ heap + direct +
+metaspace + 300 МБ.
