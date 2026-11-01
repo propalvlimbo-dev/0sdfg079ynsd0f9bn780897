@@ -691,11 +691,33 @@ now)  # снять и разобрать ПРЯМО СЕЙЧАС, не дожи�
     PART=$SERVER_DIR/now.jfr
     rm -f "$PART"
     echo "снимаю текущую запись (последние минуты) -> $PART"
-    if ! "$JCMD" "$PID" JFR.dump name="$NAME" filename="$PART" >/dev/null 2>&1; then
-        echo "не удалось снять. Идёт ли запись? bash $0 $SERVER_DIR status" >&2
-        exit 1
+    "$JCMD" "$PID" JFR.dump name="$NAME" filename="$PART" >/dev/null 2>&1 || true
+    if [ ! -f "$PART" ]; then
+        # запись живёт внутри JVM — после перезапуска сервера её нет
+        echo "  записи нет (она не переживает рестарт сервера). Завожу новую."
+        SETTINGS=profile
+        EXTRA=""
+        if [ "${HI:-0}" = "1" ]; then
+            HIFILE=$(make_hi_jfc) && { SETTINGS=$HIFILE; EXTRA=" (сэмплы 2 мс)"; }
+        fi
+        EXTRA_ARGS=()
+        [ -n "${MAXAGE:-}" ] && EXTRA_ARGS+=("maxage=$MAXAGE")
+        [ -n "${MAXSIZE:-}" ] && EXTRA_ARGS+=("maxsize=$MAXSIZE")
+        st=$("$JCMD" "$PID" JFR.start name="$NAME" settings="$SETTINGS" duration="$(( SPAN + 60 ))s" filename="$JFR_FILE" "${EXTRA_ARGS[@]}" 2>&1)
+        case "$st" in
+            *[Ss]tarted*) : ;;
+            *) echo "не смог запустить запись: $st" >&2; exit 1 ;;
+        esac
+        echo "  запись идёт${EXTRA}, жду ${SPAN} с — это и есть время наблюдения..."
+        W=0
+        while [ "$W" -lt "$SPAN" ]; do
+            sleep 5; W=$((W + 5)); [ "$W" -gt "$SPAN" ] && W=$SPAN
+            printf '\r  собрано: %ss / %ss' "$W" "$SPAN"
+        done
+        printf '\r%s\r' "                                        "
+        "$JCMD" "$PID" JFR.dump name="$NAME" filename="$PART" >/dev/null 2>&1 || true
     fi
-    [ -f "$PART" ] || { echo "файл не создан" >&2; exit 1; }
+    [ -f "$PART" ] || { echo "файл не создан — пришли вывод: bash $0 $SERVER_DIR status" >&2; exit 1; }
     echo "готово: $(du -h "$PART" | cut -f1)"
     echo ""
 
