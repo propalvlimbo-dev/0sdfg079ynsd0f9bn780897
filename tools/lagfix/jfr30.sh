@@ -683,6 +683,72 @@ psend)  # какие плагины слушают исходящие пакет
     say ""
     say "готово. Пришли $OUT"
     ;;
+spikes)  # где именно секундные всплески главного потока (для «фриз на 1 секунду»)
+    N=${3:-10}
+    SFILE=${4:-$SERVER_DIR/now.jfr}
+    [ -f "$SFILE" ] || SFILE=$JFR_FILE
+    [ -f "$SFILE" ] || { echo "нет файла. bash $0 $SERVER_DIR now 120" >&2; exit 1; }
+    JFR=$(tool jfr) || { echo "не найден jfr (JDK 21+)" >&2; exit 1; }
+    : > "$OUT"
+    say "=== spikes: сэмплы Server thread по секундам ($(basename "$SFILE")) ==="
+    say ""
+    "$JFR" print --events jdk.ExecutionSample --stack-depth 4 "$SFILE" 2>/dev/null | awk '
+        /^jdk\.ExecutionSample \{/ { inp = 1; th = ""; n = 0; inf = 0; next }
+        inp && /^  startTime = / { split($3, a, ":"); t = a[1] * 3600 + a[2] * 60 + a[3]; next }
+        inp && /^  sampledThread = "/ { split($0, a, "\""); th = a[2]; next }
+        inp && /stackTrace = \[/ { inf = 1; next }
+        inf && /^  \]/ { inf = 0; next }
+        inf { n++; leaf[n] = $0; sub(/^ +/, "", leaf[n]); sub(/ line:.*/, "", leaf[n]) }
+        inp && /^\}$/ {
+            inp = 0
+            if (th != "Server thread") next
+            s = int(t)
+            cnt[s]++
+            total++
+            if (n >= 1) l1[s, leaf[1]]++
+            if (n >= 2) l2[s, leaf[2]]++
+            if (s < lo || lo == 0) lo = s
+            if (s > hi) hi = s
+            next
+        }
+        END {
+            if (total == 0) { print "  сэмплов Server thread нет"; exit }
+            span = hi - lo + 1
+            m = 0; for (s in cnt) { m++; ss[m] = s + 0; cs[m] = cnt[s] }
+            for (i = 2; i <= m; i++) { x = cs[i]; j = i - 1
+                while (j > 0 && cs[j] > x) { cs[j+1] = cs[j]; j-- }
+                cs[j+1] = x }
+            mid = (m % 2) ? cs[(m+1)/2] : (cs[m/2] + cs[m/2+1]) / 2
+            if (mid < 1) mid = 1
+            mx = 0; for (s in cnt) if (cnt[s] > mx) { mx = cnt[s]; mxs = s }
+            printf "  секунд с сэмплами: %d, всего сэмплов: %d\n", m, total
+            printf "  в среднем %.1f сэмпла/с, медиана %.0f, пик %d\n\n", total / span, mid, mx
+            # сортировка секунд по числу сэмплов
+            for (i = 2; i <= m; i++) { x = ss[i]; j = i - 1
+                while (j > 0 && cnt[ss[j]] < cnt[x + 0]) { ss[j+1] = ss[j]; j-- }
+                ss[j+1] = x }
+            printf "  самые горячие секунды (порог всплеска: 3x медианы = %.0f):\n", mid * 3
+            for (i = 1; i <= m && i <= 10; i++) {
+                s = ss[i]
+                hh = int(s / 3600); mm = int((s % 3600) / 60); ssc = s % 60
+                mark = (cnt[s] >= mid * 3) ? "  <<< ВСПЛЕСК" : ""
+                printf "  %02d:%02d:%02d  %4d сэмплов%s\n", hh, mm, ssc, cnt[s], mark
+                # два самых частых листовых кадра этой секунды
+                delete top; k = 0
+                for (f in l1) { split(f, p, SUBSEP); if (p[1] != s) continue; k++; top[k] = f }
+                for (x1 = 2; x1 <= k; x1++) { y = top[x1]; z = x1 - 1
+                    while (z > 0 && l1[top[z]] < l1[y]) { top[z+1] = top[z]; z-- }
+                    top[z+1] = y }
+                for (x1 = 1; x1 <= k && x1 <= 3; x1++) {
+                    split(top[x1], p, SUBSEP)
+                    printf "        %4d  %s\n", l1[top[x1]], p[2]
+                }
+            }
+            if (m < 3) print "  (секунд мало: окно короче 3 с, статистика грубая)"
+        }' | tee -a "$OUT"
+    say ""
+    say "готово. Пришли $OUT"
+    ;;
 now)  # снять и разобрать ПРЯМО СЕЙЧАС, не дожидаясь строки в логе
     SPAN=${3:-120}
     if [ -z "$PID" ]; then echo "процесс сервера не найден" >&2; exit 1; fi
