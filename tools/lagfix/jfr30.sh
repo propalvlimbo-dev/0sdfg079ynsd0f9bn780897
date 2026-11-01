@@ -198,6 +198,64 @@ analyze_window() {  # $1 файл, $2 lo, $3 hi — печатает событ�
         }' | tee -a "$OUT"
 }
 
+analyze_blame() {  # $1 файл, $2 секунды от начала суток, $3 полуокно
+    local HF=$1 SECS=$2 SP=${3:-6} JF
+    LO=$(( SECS - SP )); [ "$LO" -lt 0 ] && LO=0
+    HI=$(( SECS + SP ))
+    JF=$(tool jfr) || { echo "не найден jfr (JDK 21+)"; return 1; }
+    "$JF" print --events jdk.ExecutionSample,jdk.NativeMethodSample --stack-depth 16 "$HF" 2>/dev/null | awk -v lo="$LO" -v hi="$HI" '
+        /^jdk\.[A-Za-z0-9_.]+ \{/ { ev = $1; inp = 1; th = ""; n = 0; inf = 0; split("", fr); next }
+        inp && /^  startTime = / { st = $3; split(st, a, ":"); sec = a[1] * 3600 + a[2] * 60 + a[3] }
+        inp && /^  sampledThread = "/ { split($0, a, "\""); th = a[2] }
+        inp && /^  eventThread = "/ { if (th == "") { split($0, a, "\""); th = a[2] } }
+        inp && /stackTrace = \[/ { inf = 1; next }
+        inf && /^  \]/ { inf = 0; next }
+        inf { n++; fr[n] = $0; sub(/^ +/, "", fr[n]); sub(/ line:.*/, "", fr[n]) }
+        inp && /^\}$/ {
+            inp = 0
+            if (sec < lo || sec > hi) next
+            total++
+            if (index(th, "Server thread") != 1) next
+            mine++
+            k = ""
+            for (i = 1; i <= n && i <= 4; i++) k = k (i > 1 ? " <- " : "") fr[i]
+            cnt[k]++
+            plug = ""
+            for (i = 1; i <= n; i++) {
+                f = fr[i]
+                if (f ~ /^(net\.minecraft|java\.|javax\.|jdk\.|sun\.|io\.netty|it\.unimi|com\.mojang|ca\.spottedleaf|org\.bukkit|io\.papermc|com\.destroystokyo|gg\.pufferfish|org\.dreeam|org\.spigotmc|com\.google)/) continue
+                plug = f; break
+            }
+            if (plug != "") { pcount[plug]++; if (!(plug in pfirst)) pfirst[plug] = k }
+            next
+        }
+        END {
+            printf "  сэмплов в окне: %d, из них Server thread: %d\n", total, mine
+            if (mine == 0) { print "  по серверному потоку сэмплов нет"; exit }
+            m = 0; for (k in cnt) ks[++m] = k
+            for (i = 2; i <= m; i++) { x = ks[i]; j = i - 1
+                while (j > 0 && cnt[ks[j]] < cnt[x]) { ks[j+1] = ks[j]; j-- }
+                ks[j+1] = x }
+            print ""
+            print "  топ стеков Server thread:"
+            for (i = 1; i <= m && i <= 12; i++) printf "  %4d  %5.1f%%  %s\n", cnt[ks[i]], cnt[ks[i]] * 100 / mine, ks[i]
+            print ""
+            mm = 0; for (q in pcount) pk[++mm] = q
+            if (mm == 0) {
+                print "  кадров из плагинов/библиотек нет: работал только серверный код"
+            } else {
+                for (i = 2; i <= mm; i++) { x = pk[i]; j = i - 1
+                    while (j > 0 && pcount[pk[j]] < pcount[x]) { pk[j+1] = pk[j]; j-- }
+                    pk[j+1] = x }
+                print "  кадры из плагинов/библиотек (вне ванильного кода):"
+                for (i = 1; i <= mm && i <= 10; i++) {
+                    printf "  %4d  %s\n", pcount[pk[i]], pk[i]
+                    printf "        стек: %s\n", pfirst[pk[i]]
+                }
+            }
+        }' | tee -a "$OUT"
+}
+
 case "$MODE" in
 dump)  # снимок идущей записи без остановки
     if [ -z "$PID" ]; then echo "процесс сервера не найден" >&2; exit 1; fi
@@ -439,63 +497,9 @@ blame)  # что делал Server thread в конкретном интерва
     JFR=$(tool jfr) || { echo "не найден jfr (JDK 21+)" >&2; exit 1; }
     IFS=: read -r hh mm ss <<< "$CENTER"
     t=$(( 10#$hh * 3600 + 10#$mm * 60 + 10#$ss ))
-    LO=$(( t - SPAN )); [ "$LO" -lt 0 ] && LO=0
-    HI=$(( t + SPAN ))
     : > "$OUT"
     say "=== blame: $(basename "$HFILE")  окно $CENTER +-${SPAN} с ==="
-
-    "$JFR" print --events jdk.ExecutionSample,jdk.NativeMethodSample --stack-depth 16 "$HFILE" 2>/dev/null | awk -v lo="$LO" -v hi="$HI" '
-        /^jdk\.[A-Za-z0-9_.]+ \{/ { ev = $1; inp = 1; th = ""; n = 0; inf = 0; split("", fr); next }
-        inp && /^  startTime = / { st = $3; split(st, a, ":"); sec = a[1] * 3600 + a[2] * 60 + a[3] }
-        inp && /^  sampledThread = "/ { split($0, a, "\""); th = a[2] }
-        inp && /^  eventThread = "/ { if (th == "") { split($0, a, "\""); th = a[2] } }
-        inp && /stackTrace = \[/ { inf = 1; next }
-        inf && /^  \]/ { inf = 0; next }
-        inf { n++; fr[n] = $0; sub(/^ +/, "", fr[n]); sub(/ line:.*/, "", fr[n]) }
-        inp && /^\}$/ {
-            inp = 0
-            if (sec < lo || sec > hi) next
-            total++
-            if (index(th, "Server thread") != 1) next
-            mine++
-            k = ""
-            for (i = 1; i <= n && i <= 4; i++) k = k (i > 1 ? " <- " : "") fr[i]
-            cnt[k]++
-            plug = ""
-            for (i = 1; i <= n; i++) {
-                f = fr[i]
-                if (f ~ /^(net\.minecraft|java\.|javax\.|jdk\.|sun\.|io\.netty|it\.unimi|com\.mojang|ca\.spottedleaf|org\.bukkit|io\.papermc|com\.destroystokyo|gg\.pufferfish|org\.dreeam|org\.spigotmc|com\.google)/) continue
-                plug = f; break
-            }
-            if (plug != "") { pcount[plug]++; if (!(plug in pfirst)) pfirst[plug] = k }
-            next
-        }
-        END {
-            printf "  сэмплов в окне: %d, из них Server thread: %d\n", total, mine
-            if (mine == 0) { print "  по серверному потоку сэмплов нет"; exit }
-            m = 0; for (k in cnt) ks[++m] = k
-            for (i = 2; i <= m; i++) { x = ks[i]; j = i - 1
-                while (j > 0 && cnt[ks[j]] < cnt[x]) { ks[j+1] = ks[j]; j-- }
-                ks[j+1] = x }
-            print ""
-            print "  топ стеков Server thread:"
-            for (i = 1; i <= m && i <= 12; i++) printf "  %4d  %5.1f%%  %s\n", cnt[ks[i]], cnt[ks[i]] * 100 / mine, ks[i]
-            print ""
-            mm = 0; for (q in pcount) pk[++mm] = q
-            if (mm == 0) {
-                print "  кадров из плагинов/библиотек нет: работал только серверный код"
-            } else {
-                for (i = 2; i <= mm; i++) { x = pk[i]; j = i - 1
-                    while (j > 0 && pcount[pk[j]] < pcount[x]) { pk[j+1] = pk[j]; j-- }
-                    pk[j+1] = x }
-                print "  кадры из плагинов/библиотек (вне ванильного кода):"
-                for (i = 1; i <= mm && i <= 10; i++) {
-                    printf "  %4d  %s\n", pcount[pk[i]], pk[i]
-                    printf "        стек: %s\n", pfirst[pk[i]]
-                }
-            }
-        }' | tee -a "$OUT"
-
+    analyze_blame "$HFILE" "$t" "$SPAN" | tee -a "$OUT"
     say ""
     say "готово. Пришли $OUT"
     ;;
@@ -503,7 +507,7 @@ session)  # один запуск: чистка, запись 90 мин, пер�
     MINUTES=${3:-90}
     echo "=== сессия записи на $MINUTES минут ==="
     echo "1/4 чищу старые процессы и дампы"
-    pkill -f "jfr30.sh $SERVER_DIR watch" 2>/dev/null && echo "   остановлены старые watch"
+    pkill -f "jfr30[.]sh.*watch" 2>/dev/null && echo "   остановлены старые watch"
     rm -f "$SERVER_DIR"/lag-*.jfr "$SERVER_DIR"/part.jfr 2>/dev/null
     echo "2/4 запускаю запись JFR (частая выборка 2 мс, хранить последние 3 минуты)"
     HI=1 MAXAGE=3m MAXSIZE=300m bash "$0" "$SERVER_DIR" start $(( MINUTES * 60 )) || exit 1
@@ -512,7 +516,7 @@ session)  # один запуск: чистка, запись 90 мин, пер�
     nohup bash "$0" "$SERVER_DIR" watch 150 > "$SERVER_DIR/watch.log" 2>&1 &
     echo "   перехват в фоне (лог: $SERVER_DIR/watch.log)"
     echo "4/4 запускаю замер CPU/памяти/steal"
-    pkill -f "jfr30.sh $SERVER_DIR cpu" 2>/dev/null
+    pkill -f "jfr30[.]sh.*cpu " 2>/dev/null
     nohup bash "$0" "$SERVER_DIR" cpu $(( MINUTES * 60 )) > /dev/null 2>&1 &
     echo "   замер в фоне (лог: $SERVER_DIR/cpu.log)"
     echo ""
@@ -556,11 +560,85 @@ status)  # что сейчас запущено и пишется
         "$JCMD" "$PID" JFR.check name="$NAME" 2>&1 | tail -3
     fi
     echo ""
-    echo "перехват: $(pgrep -cf "jfr30.sh $SERVER_DIR watch") процессов"
-    echo "замер CPU: $(pgrep -cf "jfr30.sh $SERVER_DIR cpu") процессов"
+    echo "перехват: $(pgrep -cf "jfr30[.]sh.*watch") процессов"
+    echo "замер CPU: $(pgrep -cf "jfr30[.]sh.*cpu ") процессов"
     echo "дампов: $(ls "$SERVER_DIR"/lag-*.jfr 2>/dev/null | wc -l), занимают $(du -sh --exclude=flight.jfr "$SERVER_DIR"/lag-*.jfr 2>/dev/null | tail -1 | cut -f1)"
     echo "лаб-событий: $(grep -c '' "$SERVER_DIR/lag-events.log" 2>/dev/null || echo 0)"
     echo "строк cpu.log: $(grep -c '' "$SERVER_DIR/cpu.log" 2>/dev/null || echo 0)"
+    ;;
+top)  # самые тяжёлые лаги из lag-events.log -> разбор каждого
+    N=${3:-3}
+    SPAN=${4:-6}
+    [ -f "$SERVER_DIR/lag-events.log" ] || { echo "нет lag-events.log — включён ли /spark tickmonitor?" >&2; exit 1; }
+    : > "$OUT"
+    say "=== top: самые тяжёлые лаги ==="
+
+    # 1. разобрать лог: время + миллисекунды, отсортировать по длительности
+    awk '
+        {
+            t = substr($0, 2, 8)
+            if (t !~ /^[0-9][0-9]:[0-9][0-9]:[0-9][0-9]$/) next
+            if (!match($0, /lasted [0-9]+/)) next
+            v = substr($0, RSTART + 7, RLENGTH - 7) + 0
+            key = t " " v
+            if (key in seen) next
+            seen[key] = 1
+            split(t, a, ":"); sec = a[1] * 3600 + a[2] * 60 + a[3]
+            n++; S[n] = sec; M[n] = v; T[n] = t
+        }
+        END {
+            for (i = 2; i <= n; i++) { x = M[i]; y = S[i]; z = T[i]; j = i - 1
+                while (j > 0 && M[j] < x) { M[j+1] = M[j]; S[j+1] = S[j]; T[j+1] = T[j]; j-- }
+                M[j+1] = x; S[j+1] = y; T[j+1] = z }
+            printf "%d\n", n
+            for (i = 1; i <= n; i++) printf "%d %d %s\n", S[i], M[i], T[i]
+        }' "$SERVER_DIR/lag-events.log" > "$SERVER_DIR/.lags.sorted"
+
+    TOTAL=$(head -1 "$SERVER_DIR/.lags.sorted")
+    say "  разных медленных тиков в логе: $TOTAL"
+    say ""
+
+    # 2. показать топ
+    take=$N
+    [ "$TOTAL" -lt "$take" ] && take=$TOTAL
+    say "  топ-$take по длительности:"
+    sed -n "2,$(( take + 1 ))p" "$SERVER_DIR/.lags.sorted" | awk '{ printf "    %s  %6d ms\n", $3, $2 }' | tee -a "$OUT"
+    say ""
+
+    # 3. разобрать каждый
+    seq=0
+    while read -r sec ms hm; do
+        seq=$(( seq + 1 ))
+        [ "$seq" -gt "$take" ] && break
+        say "----- лог $hm, $ms ms -----"
+
+        best=""; bestt=0
+        for f in "$SERVER_DIR"/lag-*.jfr; do
+            [ -f "$f" ] || continue
+            b=$(basename "$f")
+            ct=$(printf '%s' "$b" | sed -n 's/^lag-[0-9]\{8\}-\([0-9]\{2\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)\.jfr$/\1:\2:\3/p')
+            [ -z "$ct" ] && continue
+            IFS=: read -r ch cm cs <<< "$ct"
+            csec=$(( 10#$ch * 3600 + 10#$cm * 60 + 10#$cs ))
+            d=$(( csec - sec ))
+            # снимок должен быть сделан после лага и не позже 3 минут (maxage)
+            if [ "$d" -ge 0 ] && [ "$d" -le 180 ]; then
+                if [ -z "$best" ] || [ "$d" -lt "$bestt" ]; then best=$f; bestt=$d; fi
+            fi
+        done
+
+        if [ -z "$best" ]; then
+            say "  снимка нет (перехват пропустил этот тик)"
+            say ""
+            continue
+        fi
+        say "  снимок: $(basename "$best") (+${bestt} с)"
+        analyze_blame "$best" "$sec" "$SPAN"
+        say ""
+    done < <(sed -n "2,$(( take + 1 ))p" "$SERVER_DIR/.lags.sorted")
+
+    rm -f "$SERVER_DIR/.lags.sorted"
+    say "готово. Пришли $OUT"
     ;;
 freeze)  # ищем провалы: когда ВСЯ JVM не выдавала ни одного сэмпла
     HFILE=${3:-$(ls -t "$SERVER_DIR"/lag-*.jfr "$SERVER_DIR"/flight.jfr 2>/dev/null | head -1)}
