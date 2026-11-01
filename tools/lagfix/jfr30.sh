@@ -428,6 +428,77 @@ EOF
     say "  потоков в системе: $(ps -eLf 2>/dev/null | tail -n +2 | wc -l)"
     say "  готово. Пришли $OUT"
     ;;
+blame)  # что делал Server thread в конкретном интервале: полные стеки
+    HFILE=${3:-}
+    CENTER=${4:-}
+    SPAN=${5:-5}
+    if [ -z "$HFILE" ] || [ ! -f "$HFILE" ]; then
+        echo "использование: bash $0 <папка> blame <файл.jfr> HH:MM:SS [секунд]" >&2; exit 1
+    fi
+    [ -n "$CENTER" ] || { echo "нужно время: HH:MM:SS" >&2; exit 1; }
+    JFR=$(tool jfr) || { echo "не найден jfr (JDK 21+)" >&2; exit 1; }
+    IFS=: read -r hh mm ss <<< "$CENTER"
+    t=$(( 10#$hh * 3600 + 10#$mm * 60 + 10#$ss ))
+    LO=$(( t - SPAN )); [ "$LO" -lt 0 ] && LO=0
+    HI=$(( t + SPAN ))
+    : > "$OUT"
+    say "=== blame: $(basename "$HFILE")  окно $CENTER +-${SPAN} с ==="
+
+    "$JFR" print --events jdk.ExecutionSample,jdk.NativeMethodSample --stack-depth 16 "$HFILE" 2>/dev/null | awk -v lo="$LO" -v hi="$HI" '
+        /^jdk\.[A-Za-z0-9_.]+ \{/ { ev = $1; inp = 1; th = ""; n = 0; inf = 0; split("", fr); next }
+        inp && /^  startTime = / { st = $3; split(st, a, ":"); sec = a[1] * 3600 + a[2] * 60 + a[3] }
+        inp && /^  sampledThread = "/ { split($0, a, "\""); th = a[2] }
+        inp && /^  eventThread = "/ { if (th == "") { split($0, a, "\""); th = a[2] } }
+        inp && /stackTrace = \[/ { inf = 1; next }
+        inf && /^  \]/ { inf = 0; next }
+        inf { n++; fr[n] = $0; sub(/^ +/, "", fr[n]); sub(/ line:.*/, "", fr[n]) }
+        inp && /^\}$/ {
+            inp = 0
+            if (sec < lo || sec > hi) next
+            total++
+            if (index(th, "Server thread") != 1) next
+            mine++
+            k = ""
+            for (i = 1; i <= n && i <= 4; i++) k = k (i > 1 ? " <- " : "") fr[i]
+            cnt[k]++
+            plug = ""
+            for (i = 1; i <= n; i++) {
+                f = fr[i]
+                if (f ~ /^(net\.minecraft|java\.|javax\.|jdk\.|sun\.|io\.netty|it\.unimi|com\.mojang|ca\.spottedleaf|org\.bukkit|io\.papermc|com\.destroystokyo|gg\.pufferfish|org\.dreeam|org\.spigotmc|com\.google)/) continue
+                plug = f; break
+            }
+            if (plug != "") { pcount[plug]++; if (!(plug in pfirst)) pfirst[plug] = k }
+            next
+        }
+        END {
+            printf "  сэмплов в окне: %d, из них Server thread: %d\n", total, mine
+            if (mine == 0) { print "  по серверному потоку сэмплов нет"; exit }
+            m = 0; for (k in cnt) ks[++m] = k
+            for (i = 2; i <= m; i++) { x = ks[i]; j = i - 1
+                while (j > 0 && cnt[ks[j]] < cnt[x]) { ks[j+1] = ks[j]; j-- }
+                ks[j+1] = x }
+            print ""
+            print "  топ стеков Server thread:"
+            for (i = 1; i <= m && i <= 12; i++) printf "  %4d  %5.1f%%  %s\n", cnt[ks[i]], cnt[ks[i]] * 100 / mine, ks[i]
+            print ""
+            mm = 0; for (q in pcount) pk[++mm] = q
+            if (mm == 0) {
+                print "  кадров из плагинов/библиотек нет: работал только серверный код"
+            } else {
+                for (i = 2; i <= mm; i++) { x = pk[i]; j = i - 1
+                    while (j > 0 && pcount[pk[j]] < pcount[x]) { pk[j+1] = pk[j]; j-- }
+                    pk[j+1] = x }
+                print "  кадры из плагинов/библиотек (вне ванильного кода):"
+                for (i = 1; i <= mm && i <= 10; i++) {
+                    printf "  %4d  %s\n", pcount[pk[i]], pk[i]
+                    printf "        стек: %s\n", pfirst[pk[i]]
+                }
+            }
+        }' | tee -a "$OUT"
+
+    say ""
+    say "готово. Пришли $OUT"
+    ;;
 freeze)  # ищем провалы: когда ВСЯ JVM не выдавала ни одного сэмпла
     HFILE=${3:-$(ls -t "$SERVER_DIR"/lag-*.jfr "$SERVER_DIR"/flight.jfr 2>/dev/null | head -1)}
     MINMS=${4:-500}
