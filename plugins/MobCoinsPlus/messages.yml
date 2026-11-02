@@ -15,7 +15,8 @@ invalid-id: '&fОшибка: Этот идентификатор товара н
 send-coins: '&fВы отправили {target} &x&F&A&D&8&F&C{amount}&f монеты!'
 given-coins: '&fВы получили &x&F&A&D&8&F&C{amount}&f монеты из {player}!'
 negative-coins: '&fУ вас недостаточно монет для совершения этой транзакции!'
-lost-coins: '&fВы умерли и потеряли &x&F&A&D&8&F&C{percent}%&f ваш баланс ромашек! ({amount} coins)'
+lost-coins: '&fВы умерли и потеряли &x&F&A&D&8&F&C{percent}%&f ваш баланс ромашек!
+  ({amount} coins)'
 self-send: '&fВы не можете отправлять монеты себе!'
 self-check: '&fУ вас есть &x&F&A&D&8&F&C{total-coins} &f{currency}!'
 invalid-amount: '&fВы не можете отправить эту сумму денег.'

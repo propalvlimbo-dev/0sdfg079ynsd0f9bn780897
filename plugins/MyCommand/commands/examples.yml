@@ -4,6 +4,14 @@ hub:
   server_name: lobby
   permission-required: false
 
+voice:
+  command: /voice
+  type: TEXT
+  permission-required: false
+  register: true
+  text:
+    - "&x&F&8&B&E&F&BElytrix &7» &fСкачай войс тут: &x&F&8&B&E&F&Bhttps://modrinth.com/plugin/simple-voice-chat"
+
 onlinemax:
   command: /onlinemax
   type: TEXT

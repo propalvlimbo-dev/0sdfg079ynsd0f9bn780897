@@ -7,11 +7,11 @@ VehicleMotionReducer:
   values:
     # Experimental feature
     force_load: false
-
+    
     minecart:
       enabled: true
       # Removes naturally generated minecarts, useful for servers with frequent chunk generation.
       remove_chest: false
-
+    
     boat:
       enabled: true

@@ -144,3 +144,4 @@ command-account-delete-does-not-exist: '&cアカウントの削除に失敗し�
 command-account-delete-warning: '&c注意 この操作により、アカウント &b%account% &cのすべてのアカウント・データが削除されます。これが確実であれば、コマンド &b/points account delete %account% confirm&c.'
 
 # Version Command
+command-take-taken: ''

@@ -1,6 +1,6 @@
 reward_menu:
   '0':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:firework_star
     count: 2
     components:
@@ -11,17 +11,17 @@ reward_menu:
         полеты в радиусе 16 блоков",underlined:0b}],text:""}]'
       minecraft:custom_name: '{extra:[{bold:0b,color:"dark_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Анти
         Полет",underlined:0b}],text:""}'
-      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:painting/variant","minecraft:bundle_contents","minecraft:written_book_content","minecraft:fireworks","minecraft:container","minecraft:block_entity_data","minecraft:bees","minecraft:map_id","minecraft:jukebox_playable","minecraft:firework_explosion","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:container_loot","minecraft:banner_patterns","minecraft:instrument","minecraft:block_state","minecraft:dyed_color","minecraft:stored_enchantments"]}'
       minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
       minecraft:custom_data: '{PublicBukkitValues:{"minecraft:anti_fly":"ANTI_FLY"}}'
     schema_version: 1
   '1':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:shield
     count: 1
     schema_version: 1
   '2':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:totem_of_undying
     count: 1
     components:
@@ -29,12 +29,12 @@ reward_menu:
         эффекты",underlined:0b}],text:""}]'
       minecraft:custom_name: '{extra:[{bold:0b,color:"dark_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Тотем
         Ведьмы",underlined:0b}],text:""}'
-      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:painting/variant","minecraft:bundle_contents","minecraft:written_book_content","minecraft:fireworks","minecraft:container","minecraft:block_entity_data","minecraft:bees","minecraft:map_id","minecraft:jukebox_playable","minecraft:firework_explosion","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:container_loot","minecraft:banner_patterns","minecraft:instrument","minecraft:block_state","minecraft:dyed_color","minecraft:stored_enchantments"]}'
       minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
       minecraft:custom_data: '{PublicBukkitValues:{"minecraft:witch_totem":"WITCH_TOTEM"}}'
     schema_version: 1
   '3':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:flower_banner_pattern
     count: 1
     components:
@@ -47,11 +47,11 @@ reward_menu:
         вам 5 опыта",underlined:0b}],text:""},""]'
       minecraft:custom_name: '{extra:[{bold:0b,color:"yellow",italic:0b,obfuscated:0b,strikethrough:0b,text:"Свиток
         опыта",underlined:0b}],text:""}'
-      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:painting/variant","minecraft:bundle_contents","minecraft:written_book_content","minecraft:fireworks","minecraft:container","minecraft:block_entity_data","minecraft:bees","minecraft:map_id","minecraft:jukebox_playable","minecraft:firework_explosion","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:container_loot","minecraft:banner_patterns","minecraft:instrument","minecraft:block_state","minecraft:dyed_color","minecraft:stored_enchantments"]}'
       minecraft:custom_data: '{PublicBukkitValues:{"minecraft:scroll_of_exp":"SCROLL_OF_EXPERIENCE"}}'
     schema_version: 1
   '4':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:totem_of_undying
     count: 1
     components:
@@ -60,17 +60,17 @@ reward_menu:
         в инвентаре",underlined:0b}],text:""}]'
       minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Тотем
         Драконида",underlined:0b}],text:""}'
-      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:painting/variant","minecraft:bundle_contents","minecraft:written_book_content","minecraft:fireworks","minecraft:container","minecraft:block_entity_data","minecraft:bees","minecraft:map_id","minecraft:jukebox_playable","minecraft:firework_explosion","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:container_loot","minecraft:banner_patterns","minecraft:instrument","minecraft:block_state","minecraft:dyed_color","minecraft:stored_enchantments"]}'
       minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
       minecraft:custom_data: '{PublicBukkitValues:{"minecraft:draconid_totem":"DRACONID_TOTEM"}}'
     schema_version: 1
   '5':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:enchanted_golden_apple
     count: 2
     schema_version: 1
   '6':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:flower_banner_pattern
     count: 1
     components:
@@ -83,11 +83,11 @@ reward_menu:
         вам 5 опыта",underlined:0b}],text:""},""]'
       minecraft:custom_name: '{extra:[{bold:0b,color:"yellow",italic:0b,obfuscated:0b,strikethrough:0b,text:"Свиток
         опыта",underlined:0b}],text:""}'
-      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:painting/variant","minecraft:bundle_contents","minecraft:written_book_content","minecraft:fireworks","minecraft:container","minecraft:block_entity_data","minecraft:bees","minecraft:map_id","minecraft:jukebox_playable","minecraft:firework_explosion","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:container_loot","minecraft:banner_patterns","minecraft:instrument","minecraft:block_state","minecraft:dyed_color","minecraft:stored_enchantments"]}'
       minecraft:custom_data: '{PublicBukkitValues:{"minecraft:scroll_of_exp":"SCROLL_OF_EXPERIENCE"}}'
     schema_version: 1
   '7':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:totem_of_undying
     count: 1
     components:
@@ -96,12 +96,12 @@ reward_menu:
         в инвентаре",underlined:0b}],text:""}]'
       minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Тотем
         Драконида",underlined:0b}],text:""}'
-      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:painting/variant","minecraft:bundle_contents","minecraft:written_book_content","minecraft:fireworks","minecraft:container","minecraft:block_entity_data","minecraft:bees","minecraft:map_id","minecraft:jukebox_playable","minecraft:firework_explosion","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:container_loot","minecraft:banner_patterns","minecraft:instrument","minecraft:block_state","minecraft:dyed_color","minecraft:stored_enchantments"]}'
       minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
       minecraft:custom_data: '{PublicBukkitValues:{"minecraft:draconid_totem":"DRACONID_TOTEM"}}'
     schema_version: 1
   '8':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:firework_star
     count: 1
     components:
@@ -112,11 +112,11 @@ reward_menu:
         ослеплены все сущности.",underlined:0b}],text:""},{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b}],text:""}]'
       minecraft:custom_name: '{extra:[{bold:1b,color:"dark_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Тёмный
         Пульс",underlined:0b}],text:""}'
-      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:painting/variant","minecraft:bundle_contents","minecraft:written_book_content","minecraft:fireworks","minecraft:container","minecraft:block_entity_data","minecraft:bees","minecraft:map_id","minecraft:jukebox_playable","minecraft:firework_explosion","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:container_loot","minecraft:banner_patterns","minecraft:instrument","minecraft:block_state","minecraft:dyed_color","minecraft:stored_enchantments"]}'
       minecraft:custom_data: '{PublicBukkitValues:{"minecraft:dark_pulse":"DARK_PULSE"}}'
     schema_version: 1
   '9':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:netherite_axe
     count: 1
     components:
@@ -125,7 +125,7 @@ reward_menu:
       minecraft:custom_model_data: '{floats:[10001.0f]}'
     schema_version: 1
   '10':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:player_head
     count: 1
     components:
@@ -135,7 +135,7 @@ reward_menu:
       minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
     schema_version: 1
   '11':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:player_head
     count: 1
     components:
@@ -146,7 +146,7 @@ reward_menu:
       minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
     schema_version: 1
   '12':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:player_head
     count: 1
     components:
@@ -156,7 +156,7 @@ reward_menu:
       minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
     schema_version: 1
   '13':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:player_head
     count: 1
     components:
@@ -166,7 +166,7 @@ reward_menu:
       minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
     schema_version: 1
   '14':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:player_head
     count: 1
     components:
@@ -176,7 +176,7 @@ reward_menu:
       minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
     schema_version: 1
   '15':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:player_head
     count: 1
     components:
@@ -186,7 +186,7 @@ reward_menu:
       minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
     schema_version: 1
   '16':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:heart_of_the_sea
     count: 1
     components:
@@ -196,17 +196,17 @@ reward_menu:
         ловушку вокруг игрока",underlined:0b}],text:""},{extra:[{bold:0b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"на
         %duration% секунд",underlined:0b}],text:""}]'
       minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Ловушка",underlined:0b}],text:""}'
-      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:painting/variant","minecraft:bundle_contents","minecraft:written_book_content","minecraft:fireworks","minecraft:container","minecraft:block_entity_data","minecraft:bees","minecraft:map_id","minecraft:jukebox_playable","minecraft:firework_explosion","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:container_loot","minecraft:banner_patterns","minecraft:instrument","minecraft:block_state","minecraft:dyed_color","minecraft:stored_enchantments"]}'
       minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
       minecraft:custom_data: '{PublicBukkitValues:{"minecraft:trap":"TRAP"}}'
     schema_version: 1
   '17':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:golden_apple
     count: 32
     schema_version: 1
   '18':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:player_head
     count: 1
     components:
@@ -215,7 +215,7 @@ reward_menu:
       minecraft:custom_name: '"§7§lГолова Кролика"'
     schema_version: 1
   '19':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:netherite_sword
     count: 1
     components:
@@ -224,7 +224,7 @@ reward_menu:
       minecraft:custom_model_data: '{floats:[10001.0f]}'
     schema_version: 1
   '20':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:potion
     count: 2
     components:
@@ -233,7 +233,7 @@ reward_menu:
         Титанов",underlined:0b}],text:""}'
     schema_version: 1
   '21':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:potion
     count: 1
     components:
@@ -242,7 +242,7 @@ reward_menu:
         ХАЛКА",underlined:0b}],text:""}'
     schema_version: 1
   '22':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:potion
     count: 1
     components:
@@ -250,7 +250,7 @@ reward_menu:
       minecraft:custom_name: '{extra:[{bold:1b,color:"dark_green",italic:0b,obfuscated:0b,strikethrough:0b,text:"Криптонит",underlined:0b}],text:""}'
     schema_version: 1
   '23':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:potion
     count: 1
     components:
@@ -259,7 +259,7 @@ reward_menu:
         Тора",underlined:0b}],text:""}'
     schema_version: 1
   '24':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:potion
     count: 1
     components:
@@ -268,7 +268,7 @@ reward_menu:
         Сила",underlined:0b}],text:""}'
     schema_version: 1
   '25':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:enchanted_book
     count: 1
     components:
@@ -278,7 +278,7 @@ reward_menu:
       minecraft:custom_data: '{PublicBukkitValues:{"really-enchants:woodcutter":"WOODCUTTER_BOOK"}}'
     schema_version: 1
   '26':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:enchanted_book
     count: 1
     components:
@@ -289,7 +289,7 @@ reward_menu:
       minecraft:custom_data: '{PublicBukkitValues:{"really-enchants:drill":"DRILL_BOOK"}}'
     schema_version: 1
   '27':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:shears
     count: 1
     components:
@@ -300,12 +300,12 @@ reward_menu:
       minecraft:custom_name: '{extra:[{bold:1b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Супер
         Ножницы ",underlined:0b},{bold:0b,color:"gray",italic:0b,text:"- "},{color:"gold",italic:0b,text:"3
         "},{color:"gray",italic:0b,text:"использований"}],text:""}'
-      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:painting/variant","minecraft:bundle_contents","minecraft:written_book_content","minecraft:fireworks","minecraft:container","minecraft:block_entity_data","minecraft:bees","minecraft:map_id","minecraft:jukebox_playable","minecraft:firework_explosion","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:container_loot","minecraft:banner_patterns","minecraft:instrument","minecraft:block_state","minecraft:dyed_color","minecraft:stored_enchantments"]}'
       minecraft:enchantments: '{"minecraft:efficiency":25,"minecraft:unbreaking":3}'
       minecraft:custom_data: '{PublicBukkitValues:{"minecraft:shears":"SHEARS"}}'
     schema_version: 1
   '28':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:elytra
     count: 1
     components:
@@ -315,7 +315,7 @@ reward_menu:
       minecraft:enchantments: '{"minecraft:mending":1,"minecraft:thorns":1,"minecraft:unbreaking":5}'
     schema_version: 1
   '29':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:player_head
     count: 1
     components:
@@ -332,12 +332,12 @@ reward_menu:
         +12 Макс. здоровье",underlined:0b}],text:""}]'
       minecraft:custom_name: '{extra:[{bold:1b,color:"blue",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар
         Воды",underlined:0b}],text:""}'
-      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:painting/variant","minecraft:bundle_contents","minecraft:written_book_content","minecraft:fireworks","minecraft:container","minecraft:block_entity_data","minecraft:bees","minecraft:map_id","minecraft:jukebox_playable","minecraft:firework_explosion","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:container_loot","minecraft:banner_patterns","minecraft:instrument","minecraft:block_state","minecraft:dyed_color","minecraft:stored_enchantments"]}'
       minecraft:custom_model_data: '{floats:[5005.0f]}'
       minecraft:custom_data: '{PublicBukkitValues:{"minecraft:water_ball":"WATER_BALL"}}'
     schema_version: 1
   '30':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:player_head
     count: 1
     components:
@@ -356,12 +356,12 @@ reward_menu:
         +0.4 Скорость атаки",underlined:0b}],text:""}]'
       minecraft:custom_name: '{extra:[{bold:1b,color:"dark_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар
         Хаоса",underlined:0b}],text:""}'
-      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:painting/variant","minecraft:bundle_contents","minecraft:written_book_content","minecraft:fireworks","minecraft:container","minecraft:block_entity_data","minecraft:bees","minecraft:map_id","minecraft:jukebox_playable","minecraft:firework_explosion","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:container_loot","minecraft:banner_patterns","minecraft:instrument","minecraft:block_state","minecraft:dyed_color","minecraft:stored_enchantments"]}'
       minecraft:custom_model_data: '{floats:[10001.0f]}'
       minecraft:custom_data: '{PublicBukkitValues:{"minecraft:chaos_ball":"CHAOS_BALL"}}'
     schema_version: 1
   '31':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:player_head
     count: 1
     components:
@@ -378,12 +378,12 @@ reward_menu:
         +1.5 Отбрасывание атаки",underlined:0b}],text:""}]'
       minecraft:custom_name: '{extra:[{bold:1b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар
         Воздуха",underlined:0b}],text:""}'
-      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:painting/variant","minecraft:bundle_contents","minecraft:written_book_content","minecraft:fireworks","minecraft:container","minecraft:block_entity_data","minecraft:bees","minecraft:map_id","minecraft:jukebox_playable","minecraft:firework_explosion","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:container_loot","minecraft:banner_patterns","minecraft:instrument","minecraft:block_state","minecraft:dyed_color","minecraft:stored_enchantments"]}'
       minecraft:custom_model_data: '{floats:[5001.0f]}'
       minecraft:custom_data: '{PublicBukkitValues:{"minecraft:air_ball":"AIR_BALL"}}'
     schema_version: 1
   '32':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:player_head
     count: 1
     components:
@@ -400,12 +400,12 @@ reward_menu:
         +20 Макс. здоровье",underlined:0b}],text:""}]'
       minecraft:custom_name: '{extra:[{bold:1b,color:"light_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар
         Порядка",underlined:0b}],text:""}'
-      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:painting/variant","minecraft:bundle_contents","minecraft:written_book_content","minecraft:fireworks","minecraft:container","minecraft:block_entity_data","minecraft:bees","minecraft:map_id","minecraft:jukebox_playable","minecraft:firework_explosion","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:container_loot","minecraft:banner_patterns","minecraft:instrument","minecraft:block_state","minecraft:dyed_color","minecraft:stored_enchantments"]}'
       minecraft:custom_model_data: '{floats:[5006.0f]}'
       minecraft:custom_data: '{PublicBukkitValues:{"minecraft:harmony_ball":"HARMONY_BALL"}}'
     schema_version: 1
   '33':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:player_head
     count: 1
     components:
@@ -423,12 +423,12 @@ reward_menu:
         +3 Броня",underlined:0b}],text:""}]'
       minecraft:custom_name: '{extra:[{bold:1b,color:"yellow",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар
         Света",underlined:0b}],text:""}'
-      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:painting/variant","minecraft:bundle_contents","minecraft:written_book_content","minecraft:fireworks","minecraft:container","minecraft:block_entity_data","minecraft:bees","minecraft:map_id","minecraft:jukebox_playable","minecraft:firework_explosion","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:container_loot","minecraft:banner_patterns","minecraft:instrument","minecraft:block_state","minecraft:dyed_color","minecraft:stored_enchantments"]}'
       minecraft:custom_model_data: '{floats:[5004.0f]}'
       minecraft:custom_data: '{PublicBukkitValues:{"minecraft:light_ball":"LIGHT_BALL"}}'
     schema_version: 1
   '34':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:player_head
     count: 1
     components:
@@ -443,12 +443,12 @@ reward_menu:
         +4 Макс. здоровье",underlined:0b}],text:""}]'
       minecraft:custom_name: '{extra:[{bold:1b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар
         Огня",underlined:0b}],text:""}'
-      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:painting/variant","minecraft:bundle_contents","minecraft:written_book_content","minecraft:fireworks","minecraft:container","minecraft:block_entity_data","minecraft:bees","minecraft:map_id","minecraft:jukebox_playable","minecraft:firework_explosion","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:container_loot","minecraft:banner_patterns","minecraft:instrument","minecraft:block_state","minecraft:dyed_color","minecraft:stored_enchantments"]}'
       minecraft:custom_model_data: '{floats:[5003.0f]}'
       minecraft:custom_data: '{PublicBukkitValues:{"minecraft:fire_ball":"FIRE_BALL"}}'
     schema_version: 1
   '35':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:player_head
     count: 1
     components:
@@ -465,12 +465,12 @@ reward_menu:
         +4.5 Броня",underlined:0b}],text:""}]'
       minecraft:custom_name: '{extra:[{bold:1b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар
         Земли",underlined:0b}],text:""}'
-      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:painting/variant","minecraft:bundle_contents","minecraft:written_book_content","minecraft:fireworks","minecraft:container","minecraft:block_entity_data","minecraft:bees","minecraft:map_id","minecraft:jukebox_playable","minecraft:firework_explosion","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:container_loot","minecraft:banner_patterns","minecraft:instrument","minecraft:block_state","minecraft:dyed_color","minecraft:stored_enchantments"]}'
       minecraft:custom_model_data: '{floats:[5002.0f]}'
       minecraft:custom_data: '{PublicBukkitValues:{"minecraft:earth_ball":"EARTH_BALL"}}'
     schema_version: 1
   '36':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:clay_ball
     count: 1
     components:
@@ -483,14 +483,14 @@ reward_menu:
       minecraft:custom_data: '{PublicBukkitValues:{"really-auras:damage":"aura"}}'
     schema_version: 1
   '37':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:bow
     count: 1
     components:
       minecraft:enchantments: '{"minecraft:flame":1,"minecraft:infinity":1,"minecraft:mending":1,"minecraft:power":5,"minecraft:punch":5,"minecraft:unbreaking":2}'
     schema_version: 1
   '38':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:popped_chorus_fruit
     count: 1
     components:
@@ -506,7 +506,7 @@ reward_menu:
       minecraft:custom_data: '{PublicBukkitValues:{"really-auras:teleportation":"aura"}}'
     schema_version: 1
   '39':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:potion
     count: 1
     components:
@@ -515,7 +515,7 @@ reward_menu:
         Раздора",underlined:0b}],text:""}'
     schema_version: 1
   '40':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:netherite_sword
     count: 1
     components:
@@ -524,7 +524,7 @@ reward_menu:
       minecraft:enchantments: '{"minecraft:looting":5,"minecraft:unbreaking":5}'
     schema_version: 1
   '41':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:potion
     count: 1
     components:
@@ -533,7 +533,7 @@ reward_menu:
         Разлома",underlined:0b}],text:""}'
     schema_version: 1
   '42':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:netherite_shovel
     count: 1
     components:
@@ -542,7 +542,7 @@ reward_menu:
       minecraft:enchantments: '{"minecraft:efficiency":8,"minecraft:fortune":3,"minecraft:unbreaking":3}'
     schema_version: 1
   '43':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:trident
     count: 1
     components:
@@ -550,12 +550,12 @@ reward_menu:
         рывок к цели, при успешном попадании трезубцем на расстоянии",underlined:0b}],text:""}]'
       minecraft:custom_name: '{extra:[{bold:1b,color:"aqua",italic:0b,obfuscated:0b,strikethrough:0b,text:"Трезубец
         Нептуна",underlined:0b}],text:""}'
-      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:painting/variant","minecraft:bundle_contents","minecraft:written_book_content","minecraft:fireworks","minecraft:container","minecraft:block_entity_data","minecraft:bees","minecraft:map_id","minecraft:jukebox_playable","minecraft:firework_explosion","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:container_loot","minecraft:banner_patterns","minecraft:instrument","minecraft:block_state","minecraft:dyed_color","minecraft:stored_enchantments"]}'
       minecraft:enchantments: '{"minecraft:channeling":1,"minecraft:loyalty":3,"minecraft:mending":1,"minecraft:piercing":5,"minecraft:unbreaking":3}'
       minecraft:custom_data: '{PublicBukkitValues:{"minecraft:neptun_trident":"NEPTUN_TRIDENT"}}'
     schema_version: 1
   '44':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:crossbow
     count: 1
     components:
@@ -564,7 +564,7 @@ reward_menu:
       minecraft:enchantments: '{"minecraft:mending":1,"minecraft:multishot":1,"minecraft:piercing":4,"minecraft:power":5,"minecraft:quick_charge":3,"minecraft:unbreaking":3}'
     schema_version: 1
   '45':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:netherite_axe
     count: 1
     components:
@@ -573,12 +573,12 @@ reward_menu:
         II",underlined:0b}],text:""}]'
       minecraft:custom_name: '{extra:[{bold:1b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Топор
         Кратоса",underlined:0b}],text:""}'
-      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:container","minecraft:map_id","minecraft:jukebox_playable","minecraft:bundle_contents","minecraft:container_loot","minecraft:block_entity_data","minecraft:potion_contents","minecraft:block_state","minecraft:fireworks","minecraft:written_book_content","minecraft:instrument","minecraft:painting/variant","minecraft:charged_projectiles","minecraft:firework_explosion","minecraft:tropical_fish/pattern","minecraft:pot_decorations","minecraft:banner_patterns","minecraft:bees","minecraft:dyed_color","minecraft:stored_enchantments"]}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers","minecraft:unbreakable","minecraft:can_break","minecraft:can_place_on","minecraft:tropical_fish/pattern","minecraft:potion_contents","minecraft:painting/variant","minecraft:bundle_contents","minecraft:written_book_content","minecraft:fireworks","minecraft:container","minecraft:block_entity_data","minecraft:bees","minecraft:map_id","minecraft:jukebox_playable","minecraft:firework_explosion","minecraft:charged_projectiles","minecraft:pot_decorations","minecraft:container_loot","minecraft:banner_patterns","minecraft:instrument","minecraft:block_state","minecraft:dyed_color","minecraft:stored_enchantments"]}'
       minecraft:enchantments: '{"minecraft:fire_aspect":2,"minecraft:sharpness":6,"minecraft:unbreaking":3}'
       minecraft:custom_data: '{PublicBukkitValues:{"minecraft:kratos_axe":"KRATOS_AXE"}}'
     schema_version: 1
   '46':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:netherite_pickaxe
     count: 1
     components:
@@ -587,7 +587,7 @@ reward_menu:
       minecraft:enchantments: '{"minecraft:efficiency":10,"minecraft:unbreaking":3}'
     schema_version: 1
   '47':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:gold_nugget
     count: 1
     components:
@@ -600,7 +600,7 @@ reward_menu:
       minecraft:custom_data: '{PublicBukkitValues:{"really-auras:rich":"aura"}}'
     schema_version: 1
   '48':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:ghast_tear
     count: 1
     components:
@@ -613,7 +613,7 @@ reward_menu:
       minecraft:custom_data: '{PublicBukkitValues:{"really-auras:crystal":"aura"}}'
     schema_version: 1
   '49':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:netherite_sword
     count: 1
     components:
@@ -622,7 +622,7 @@ reward_menu:
       minecraft:enchantments: '{"minecraft:fire_aspect":2,"minecraft:sharpness":6,"minecraft:unbreaking":3}'
     schema_version: 1
   '50':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:white_dye
     count: 1
     components:
@@ -635,7 +635,7 @@ reward_menu:
       minecraft:custom_data: '{PublicBukkitValues:{"really-auras:fall":"aura"}}'
     schema_version: 1
   '51':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:sunflower
     count: 1
     components:
@@ -650,7 +650,7 @@ reward_menu:
       minecraft:custom_data: '{PublicBukkitValues:{"really-auras:hunter":"aura"}}'
     schema_version: 1
   '52':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:enchanted_book
     count: 1
     components:
@@ -661,7 +661,7 @@ reward_menu:
       minecraft:custom_data: '{PublicBukkitValues:{"really-enchants:stealer":"STEALER_BOOK"}}'
     schema_version: 1
   '53':
-    DataVersion: 4556
+    DataVersion: 4671
     id: minecraft:enchanted_book
     count: 1
     components:

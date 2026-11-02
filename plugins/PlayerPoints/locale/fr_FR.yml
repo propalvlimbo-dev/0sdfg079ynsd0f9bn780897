@@ -144,3 +144,4 @@ command-account-delete-does-not-exist: '&cÉchec de la suppression du compte. Le
 command-account-delete-warning: '&cAvis: Cette opération supprimera toutes les données du compte &b%account%&c. Si vous êtes absolument sûr de vous, utilisez &b/points account delete %account% confirm&c.'
 
 # Version Command
+command-take-taken: ''

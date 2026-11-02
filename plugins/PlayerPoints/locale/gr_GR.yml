@@ -142,3 +142,4 @@ command-account-delete-does-not-exist: '&cΑπέτυχε η διαγραφή λ�
 command-account-delete-warning: '&cΑνακοίνωση: Αυτή η λειτουργία θα διαγράψει όλα τα δεδομένα λογαριασμού για το λογαριασμό &b%account%&c. Αν είστε απολύτως σίγουροι γι'' αυτό, χρησιμοποιήστε &b/points account delete %account% confirm&c.'
 
 # Version Command
+command-take-taken: ''

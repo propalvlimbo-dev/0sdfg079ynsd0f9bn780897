@@ -1,0 +1,1 @@
+package org.bukkit; public class Location { public World world; public Location(World w){world=w;} public Location add(double x,double y,double z){return this;} public World getWorld(){return world;} }

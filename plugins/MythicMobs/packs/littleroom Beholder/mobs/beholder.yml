@@ -1,0 +1,138 @@
+﻿#########################################################
+## Developed by Little Room, patreon.com/littleroomdev ##
+#########################################################
+
+LRD_beholder: 
+  Type: GHAST
+  Display: "BEHOLDER"
+  Health: 100
+  Damage: 5
+  BossBar:
+    Enabled: true
+    Title: 'BEHOLDER'
+    Range: 20
+    Color: RED
+    Style: SOLID
+  Modules:
+    ThreatTable: true
+  Options:
+    Silent: true
+    PreventOtherDrops: true
+    KnockbackResistance: 1
+    FollowRange: 32
+    MovementSpeed: 0.05
+    Despawn: NEVER
+  Skills:
+  - model{m=lrd_beholder;usm=true;d=false} @self ~onSpawn
+  - model{m=lrd_beholder;usm=true;d=false} @self ~onLoad
+  - BodyRotation{mh=15;mb=15;rdu=120;rde=10} @self ~onSpawn
+  - brightness{p=glow;em=false;b=15;s=15} @self ~onSpawn
+  - CancelEvent{sync=true} @self ~onAttack
+  - CancelEvent{sync=true} @self ~onShoot
+  - setvar{var=<caster.laser_damage>;val="<caster.damage>";type=INTEGER} @self ~onSpawn
+  - partvis{pid=glow_eyeball_laser_;em=false;v=false} @self ~onSpawn
+  - partvis{pid=broken_tentacle;em=false;v=false} @self ~onSpawn
+  - partvis{pid=dead_body;em=false;v=false;child=true} @self ~onSpawn
+  - partvis{pid=glow_eyeball_laser_;em=false;v=false} @self ~onLoad
+  - partvis{pid=broken_tentacle;em=false;v=false} @self ~onLoad
+  - partvis{pid=dead_body;em=false;v=false;child=true} @self ~onLoad
+  - e:p{p=falling_obsidian_tear;a=2;hs=.15;vs=.15} @modelpart{pid=tentacle_5_1} ~onTimer:5 ?varequals{var=caster.eye_1;val=removed}
+  - e:p{p=falling_obsidian_tear;a=2;hs=.15;vs=.15} @modelpart{pid=tentacle_5_2} ~onTimer:5 ?varequals{var=caster.eye_2;val=removed}
+  - e:p{p=falling_obsidian_tear;a=2;hs=.15;vs=.15} @modelpart{pid=tentacle_5_3} ~onTimer:5 ?varequals{var=caster.eye_3;val=removed}
+  - e:p{p=falling_obsidian_tear;a=2;hs=.15;vs=.15} @modelpart{pid=tentacle_5_4} ~onTimer:5 ?varequals{var=caster.eye_4;val=removed}
+  - e:p{p=falling_obsidian_tear;a=2;hs=.15;vs=.15} @modelpart{pid=tentacle_5_5} ~onTimer:5 ?varequals{var=caster.eye_5;val=removed}
+  - sound{s=littleroom_beholder:beholder.idle;v=5;sc=HOSTILE;p=<random.float.0.9to1.1>;delay=5} @self ~onTimer:60 .5
+  - throw{v=1;vy=-1} @pir{r=2} ~onTimer:1
+  - state{s=overlay_anim;p=4} @self ~onSpawn
+  - state{s=overlay_anim;p=4} @self ~onLoad
+  - skill{s=LR_BEHOLDER_target_too_far_away} @target ~onTimer:1
+  - skill{s=LR_BEHOLDER_maintain_altitude} @self ~onTimer:1
+  - skill{s=LR_BEHOLDER_swoop} @target ~onTimer:20
+  - skill{s=LR_BEHOLDER_damaged} @self ~onDamaged
+  - skill{s=LR_BEHOLDER_bite} @target ~onTimer:10
+  - skill{s=LR_BEHOLDER_eye_laser;repeat=5;repeati=15} @target ~onTimer:240
+  - skill{s=LR_BEHOLDER_laser_dance} @target ~onTimer:20
+  - skill{s=LR_BEHOLDER_evade_arrows} @EIR{r=16;l=false} ~onTimer:1
+  - skill{s=LR_BEHOLDER_death} @self ~onDeath
+  - basedamage{m=1} @trigger ~onSignal:LASERHITFAIL #this controls the laser projectile damage#
+  
+  
+LR_BEHOLDER_target_marker:
+  Type: ARMORSTAND
+  Display: "dummy"
+  Options:
+    Marker: true
+    Invisible: true
+  
+  
+LR_BEHOLDER_explosion_fx:
+  Type: ARMORSTAND
+  Display: "explosive"
+  Options:
+    Invincible: true
+    Invisible: true
+  Skills:
+  - effect:particles{particle=dust_color_transition;color1=#AE1CFF;color2=#3F224F;amount=1;hs=.15;vs=.15;size=2} @self ~onTimer:1
+  - remove{delay=25} @self ~onSpawn
+  
+  
+LR_BEHOLDER_gib_random:
+  Type: ARMORSTAND
+  Display: "GIB"
+  Options:
+    Invincible: true
+    Invisible: true 
+  Skills:
+  - model{m=lrd_beholder_gibs;usm=true;d=false} @self ~onSpawn
+  - effect:particles{particle=dust_color_transition;color1=#AE1CFF;color2=#3F224F;amount=1;hs=.15;vs=.15;size=2} @self ~onTimer:1
+  - e:p{p=falling_obsidian_tear;a=2;hs=.15;vs=.15} @origin ~onTimer:1
+  - partvis{pid=left_horn} @self ~onSpawn
+  - partvis{pid=eye_ball} @self ~onSpawn
+  - randomskill{skills=LR_BEHOLDER_gib_random_1,LR_BEHOLDER_gib_random_2} @self ~onSpawn
+  - remove{delay=25} @self ~onSpawn
+  
+LR_BEHOLDER_gib_eye:
+  Type: ARMORSTAND
+  Display: "GIB"
+  Options:
+    Invincible: true
+    Invisible: true 
+  Skills:
+  - model{m=lrd_beholder_gibs;usm=true;d=false} @self ~onSpawn
+  - brightness{em=false;b=15;s=15} @self ~onSpawn
+  - effect:particles{particle=dust_color_transition;color1=#AE1CFF;color2=#3F224F;amount=1;hs=.15;vs=.15;size=2} @self ~onTimer:1
+  - e:p{p=falling_obsidian_tear;a=2;hs=.15;vs=.15} @origin ~onTimer:1
+  - lunge{v=1;vy=1} @forward{f=1;y=1} ~onSpawn
+  - partvis{pid=left_horn} @self ~onSpawn
+  - partvis{pid=gib;em=false} @self ~onSpawn
+  - remove{delay=25} @self ~onSpawn
+  
+LR_BEHOLDER_gib_horn:
+  Type: ARMORSTAND
+  Display: "GIB"
+  Options:
+    Invincible: true
+    Invisible: true 
+  Skills:
+  - model{m=lrd_beholder_gibs;usm=true;d=false} @self ~onSpawn
+  - effect:particles{particle=dust_color_transition;color1=#AE1CFF;color2=#3F224F;amount=1;hs=.15;vs=.15;size=2} @modelpart{pid=left_horn} ~onTimer:1
+  - e:p{p=falling_obsidian_tear;a=2;hs=.15;vs=.15} @modelpart{pid=left_horn} ~onTimer:1
+  - partvis{pid=eye_ball} @self ~onSpawn
+  - partvis{pid=gib;em=false} @self ~onSpawn
+  - remove{delay=25} @self ~onSpawn
+  
+  
+LR_BEHOLDER_laser_particle:
+  Type: ITEM_DISPLAY
+  Display: "PARTICLE"
+  DisplayOptions:
+    Item: LR_BEHOLDER_LASER_PARTICLE
+    BlockLight: 15
+    SkyLight: 15
+    Billboard: CENTER
+  Skills:
+  - displaytransformation{action=MULTIPLY;transformation=SCALE;value=0.75,0.75,0.75} @self ~onTimer:1
+
+
+
+# 4242BP0MRSON2KAIF4G9OJ

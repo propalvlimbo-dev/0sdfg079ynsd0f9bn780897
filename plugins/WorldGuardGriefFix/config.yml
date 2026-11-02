@@ -1,0 +1,40 @@
+# -------------------------------
+# WorldGuardGriefFix by Overwrite, Afek
+# -------------------------------
+
+# Разрешить ли гриф поршнями?
+enable-pistons: true
+# Разрешить ли гриф вагонетками?
+enable-minecart: true
+# Разрешить ли визеру разрушать блоки в регионе?
+enable-wither: true
+# Разрешить ли головам визера разрушать блоки в регионе?
+enable-wither-skull: true
+# Разрешить ли любому ентити взрывать блоки в регионе?
+enable-any-explosion: true
+# Фикс выпадения сыпучих блоков, после приземления
+enable-falling-block: true
+# Фикс притягивания сущностей удочками
+enable-fishing: true
+
+# Блоки на которые не распространяется гриф теми или иными способами
+excluded-blocks:
+  - DIAMOND_ORE
+  - DIAMOND_BLOCK
+  - IRON_BLOCK
+  - EMERALD_BLOCK
+  - EMERALD_ORE
+
+# Миры на которые не распространяются разрешения грифа
+excluded-worlds:
+  - spawn
+
+# Защищённые регионы
+regions:
+  example:
+    x1: 1
+    y1: 2
+    z1: 1
+    x2: 1
+    y2: 2
+    z2: 3

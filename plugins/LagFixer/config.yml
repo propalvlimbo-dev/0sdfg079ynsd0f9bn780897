@@ -4,7 +4,7 @@
 # =============================================================
 
 main:
-  prefix: "&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &f"
+  prefix: '&7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &f'
   prefix_hover: false
   threads: 1
   monitor_interval: 5
@@ -12,15 +12,15 @@ main:
   updater: false
   warnings: false
   bStats: false
-
+  
   command:
-    permission: "lagfixer.command"
+    permission: lagfixer.command
     aliases:
-      - lf
-      - antilag
-      - clearlag
-      - lag
-
+    - lf
+    - antilag
+    - clearlag
+    - lag
+  
   map:
     enabled: false
     interval: 5

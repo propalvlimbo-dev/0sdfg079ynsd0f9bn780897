@@ -15,12 +15,14 @@ send-supported-versions: false
 # Easier to configure alternative to 'block-protocols'. Uses readable version strings with possible '<' and '>' prefixes.
 # An example to block 1.16.4, everything below 1.16, as well as everything above 1.17.1 would be: ["<1.16", "1.16.4", ">1.17.1"]
 # You can use both this and the block-protocols option at the same time as well.
-block-versions: []
+block-versions:
+  - "<1.21.4"
+  - ">26.3"
 # Block specific Minecraft protocol version numbers.
 # List of all Minecraft protocol versions: https://minecraft.wiki/w/Protocol_version, or use a generator: https://via.krusic22.com
 block-protocols: []
 # Change the blocked disconnect message
-block-disconnect-msg: You are using an unsupported Minecraft version!
+block-disconnect-msg: "&cЗаходи с версии 1.21.4 по 26.3"
 # If you use ProtocolLib, we can't reload without kicking the players.
 # (We don't suggest using reload either, use a plugin manager)
 # You can customize the message we kick people with if you use ProtocolLib here.
@@ -173,11 +175,11 @@ enforce-secure-chat: false
 # Handles items with invalid count values (higher than max stack size) on 1.20.3 servers.
 handle-invalid-item-count: false
 #
-# Hides scoreboard numbers for 1.20.3+ clients on older server versions.
+# Hides sidebar scoreboard numbers for 1.20.3+ clients on older server versions.
 hide-scoreboard-numbers: false
 #
 # Fixes 1.21+ clients on 1.20.5 servers placing water/lava buckets at the wrong location when moving fast, NOTE: This may cause issues with anti-cheat plugins.
-fix-1_21-placement-rotation: true
+fix-1_21-placement-rotation: false
 #
 # If enabled, cancel swing packets sent while having an inventory opened on 1.15.2 and below servers. This can cause false positives with anti-cheat plugins.
 cancel-swing-in-inventory: true

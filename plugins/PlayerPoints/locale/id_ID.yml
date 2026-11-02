@@ -144,3 +144,4 @@ command-account-delete-does-not-exist: '&cGagal menghapus akun. Akun bernama &b%
 command-account-delete-warning: '&cPerhatian: Operasi ini akan menghapus semua data akun untuk akun &b%account%&c. Jika Anda benar-benar yakin akan hal ini, gunakan &b/points account delete %account% confirm&c.'
 
 # Version Command
+command-take-taken: ''

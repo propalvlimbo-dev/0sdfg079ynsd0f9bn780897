@@ -9,7 +9,7 @@ AbilityLimiter:
       speed_multiplier: 0.85
       # Set 0 to disable
       additional_durability_loss: 5
-
+    
     trident_riptide:
       cooldown: 3
       # Option disabled by developer

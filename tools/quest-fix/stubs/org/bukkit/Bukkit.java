@@ -1,0 +1,1 @@
+package org.bukkit; public class Bukkit { public static org.bukkit.plugin.PluginManager manager; public static org.bukkit.plugin.PluginManager getPluginManager(){return manager;} public static java.util.logging.Logger getLogger(){return java.util.logging.Logger.getLogger("test");} }

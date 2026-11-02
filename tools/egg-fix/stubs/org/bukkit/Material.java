@@ -1,0 +1,1 @@
+package org.bukkit; public enum Material { AIR,PIG_SPAWN_EGG; public static Material matchMaterial(String n){try{return valueOf(n);}catch(Exception e){return null;}} public boolean isAir(){return this==AIR;} }

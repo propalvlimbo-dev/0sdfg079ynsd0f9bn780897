@@ -36,8 +36,8 @@ hoverText:
     &fОпыт: &#F8BEFB%player_exp%
 
 cooldown:
-  localCooldown: 2000
-  globalCooldown: 5000
+  localCooldown: 500
+  globalCooldown: 500
   cooldownMessage: "&#F8BEFBЧат &8» &fПодождите &#F8BEFB%time% &fперед отправкой сообщения."
 
 newbieChat:

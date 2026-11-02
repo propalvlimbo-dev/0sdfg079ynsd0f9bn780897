@@ -4,11 +4,12 @@
 Прочитай этот файл ПОЛНОСТЬЮ перед выполнением любой задачи в репозитории
 `propalvlimbo-dev/0sdfg079ynsd0f9bn780897`.
 
-Актуальное базовое состояние на момент создания инструкции:
+Актуальное базовое состояние (синхронизировано с live VDS `dfghjdyjk56` 02.11.2026):
 - Ветка-источник актуальной сборки: `arena/4c55e5a6-0sdfg079ynsd0f9bn780897` (PR #1)
-- Версия `ElytrixFreakModel`: `v3.2.3`
+- Ядро и запуск (`start.sh`): Leaf `1.21.11` (`DataVersion: 4671`, Java 21+, `-Dblib.server.version=1.21.10`, G1GC `PAUSE_MS=200`)
+- Версия `ElytrixFreakModel`: `v3.9.0` (`/аксессуары` + Крылья + Нимб + Кагуне/Повязка Канеки + Сороконожка + Приора)
 - Версия `ElytrixRP`: `v2.5.0`
-- Актуальный `SHA-1` `rp/Elytrix-RP-1.21.zip`: `1ed05ba549ae1789aa82ce5463c7ba203f585e49`
+- Актуальный `SHA-1` `rp/Elytrix-RP-1.21.zip`: `c0e0837e9abd41180cd06a1acd904649e96ea87b` (`8,001,923` байт, `3,302` файла)
 
 --------------------------------------------------------------------------------
 1. КРИТИЧЕСКИЕ ПРАВИЛА GIT И СТАРТА НОВОГО ЧАТА
@@ -46,24 +47,31 @@
 --------------------------------------------------------------------------------
 2. СЕРВЕР VDS (`SH-VM4492`) И ЧТО КАТЕГОРИЧЕСКИ НЕЛЬЗЯ ДЕЛАТЬ НА НЁМ
 --------------------------------------------------------------------------------
-- Ядро на VDS: Pufferfish `1.21.10` (`1.21.10-39-b98b265`, Java 21, Mojang-mapped NMS).
+- Ядро на VDS (`start.sh`): Leaf `1.21.11` (`DataVersion: 4671`, Java 21+, Mojang-mapped NMS).
+  В `start.sh` прописан обязательный флаг `-Dblib.server.version=1.21.10`, чтобы `BLib 1.7.2`,
+  `BCases`, `BMenu` и `VirtualEntityApi` корректно стартовали на `1.21.11`!
 - Путь к сборке сервера на VDS: `/root/RW_GRIEF/`
 - Путь к раздаваемому ресурспаку на VDS: `/root/RP/Elytrix-RP-1.21.zip`
 
 СТРОЖАЙШИЕ ЗАПРЕТЫ:
-1. НИКОГДА НЕ УБИВАЙ И НЕ ТРОГАЙ ПОРТ `:8085`!
+1. НИКОГДА НЕ УБИВАЙ И НЕ ТРОГАЙ ПОРТ `:8085` (и порт API сайта `:20559`, и войс `:24454`)!
    Запрещено писать в командах `fuser -k 8085/tcp`, `kill`, `lsof -ti:8085` и т.п.!
    На порту `:8085` работает сайт проекта `https://elytrix.pw` и раздача ресурспака
    `/root/RP/Elytrix-RP-1.21.zip`. Плагин `ElytrixRP` сам проверяет `:8085` и мирно
    использует внешний веб-сервер.
 
-2. НИКОГДА НЕ КЛАДИ В ДЕПЛОЙ-АРХИВЫ LIVE-ДАННЫЕ И ЧУЖИЕ КЕШИ:
+2. НИКОГДА НЕ КЛАДИ В ДЕПЛОЙ-АРХИВЫ LIVE-ДАННЫЕ, СЕКРЕТЫ И ЧУЖИЕ КЕШИ:
+   - НИКОГДА НЕ перезаписывай на VDS файлы с боевыми паролями/ключами (в публичном Git
+     значения в них заменены на `<REDACTED_ON_PUBLIC_GITHUB>`):
+     * `plugins/UltimateServerProtector/data.yml` (админ-пароли `/pas`!)
+     * `plugins/ElytrixSite/config.yml` (пароль MySQL и секрет сайта!)
+     * `plugins/ElytrixAuthBridge/config.properties` (ключ моста привязки!)
    - НЕ включать `plugins/ModelEngine/config.yml` (чтобы не сбросить боевой конфиг).
    - НЕ включать `plugins/ModelEngine/.data/` и `.data/cache.json`.
    - При упаковке `plugins/ModelEngine/resource pack/` включать ТОЛЬКО `pack.mcmeta`
-     и файлы, содержащие `/elytrix_` (НЕ упаковывать 354 чужих файла `MythicMobs`!).
-   - НЕ перезаписывать живые базы игроков (`LiteBans`, `PlayerPoints`, базы привязки,
-     `LuckPerms` H2 БД), если пользователь прямо не просил поменять именно их.
+     и файлы обновляемых моделей `/elytrix_` (НЕ упаковывать чужие модели `MythicMobs`!).
+   - НЕ перезаписывать живые базы игроков (`LiteBans`, `PlayerPoints`, `BCases/database`,
+     `LuckPerms` H2 БД, `GrimAC/data`), если пользователь прямо не просил поменять именно их.
 
 3. При любом изменении `rp/Elytrix-RP-1.21.zip`:
    - Обязательно вычислить `sha1sum rp/Elytrix-RP-1.21.zip`.
@@ -347,4 +355,40 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
    (см. Шаблон А в разделе 3), которая скачивает архив на VDS, чистит старые кости,
    распаковывает в `/root/RW_GRIEF`, копирует RP в `/root/RP/Elytrix-RP-1.21.zip` и
    проверяет `sha1sum`.
+
+--------------------------------------------------------------------------------
+9. КАРТА АКТУАЛЬНЫХ СИСТЕМ, АКСЕССУАРОВ И ЗАЩИТЫ ИЗ LIVE VDS (`dfghjdyjk56`)
+--------------------------------------------------------------------------------
+1. `ElytrixFreakModel v3.9.0` + `/аксессуары` (`/accessories`, глиф `ꏠ`):
+   - Поддерживает косметическое меню аксессуаров (`elytrixaccessories.admin` и
+     `elytrixaccessories.use` для группы `media`), исходники и генераторы лежат в
+     `tools/accessories-integration/` и `tools/accessories-model/` (подробности в `MODELS_PIPELINE.md`).
+   - Актуальные блюпринты в `plugins/ModelEngine/blueprints/`:
+     * `elytrix_angel_halo.bbmodel` (нимб, 161 куб, `halo_ring` + `halo_aura`)
+     * `elytrix_angel_wings.bbmodel` (крылья, 9 кубов на крыло + 6 падающих перьев)
+     * `elytrix_kaneki_tentacles.bbmodel` (щупальца Кагуне Канеки, 55 костей) + `elytrix_kaneki_mask.bbmodel` / `kaneki_eyepatch_icon`
+     * `elytrix_centipede.bbmodel` (сороконожка, 11 костей `body_root`, `head`, `c1..c9` —
+       ВНИМАНИЕ: в `ModelEngine 4.1.0` парсер `RotationSolver` падает с `UnsupportedOperationException`,
+       если в новой многокостной модели есть кубы с `rotation`, поэтому детали строятся ступенчатыми кубами без поворота кубов!)
+     * `elytrix_priora_{black,white,pink}.bbmodel` (Лада Приора, 2 места)
+
+2. Античит, антиэксплойт и PvP-синхронизация:
+   - `GrimAC` (`plugins/GrimAC/` — кастомный конфиг, сообщения и наказания в стиле Elytrix; `.jar` лежит на VDS).
+   - `LPX 3.9.1 + fix.jar` (`plugins/LPX/config.yml` — защита Netty от пакетных и NBT/item крашей, `disable-item-decoding: SMART`).
+   - `knockbacksync-bukkit-1.3.6-dev-b143.jar` (`plugins/KnockbackSync/config.yml` — синхронизация отдачи по пингу `KEEPALIVE` + `enable_offground_synchronization: true`).
+
+3. Защита администрации, модерация и доступ по версиям:
+   - `UltimateServerProtector-en.jar` (`plugins/UltimateServerProtector/` — пароль `/pas` при входе с админ-правами; `data.yml` на VDS НЕ трогать!).
+   - `LiteBans 2.19.0-bm.jar` (`plugins/LiteBans/` — H2 база банов/мутов).
+   - `ViaVersion-5.12.1.jar` + `ViaBackwards-5.12.1.jar` — вход открыт для клиентов `1.21.4` – `26.3`.
+   - `voicechat-bukkit-2.6.24.jar` — голосовой чат на UDP порту `24454`.
+   - `PlugManX-2.4.1.jar` — горячее управление плагинами (в игноре: `ViaVersion`, `ViaBackwards`, `ProtocolLib`).
+
+4. Гриф-механики, мир и интеграции:
+   - `WorldGuardGriefFix-5.1.jar` (`plugins/WorldGuardGriefFix/config.yml` — разрешён гриф поршнями, вагонетками, визером и взрывами в приватах, кроме мира `spawn` и блоков алмазной/изумрудной/железной руды и блоков).
+   - `WGExtender-fork.jar` (`15,051 B`) + обновлённые лимиты объёма приватов в `WGExtender/config.yml` (`default: 400000`, `vertexpand: true`) + мир `duels` в `WorldGuard/worlds/duels/`.
+   - `ElytrixGodPickup.jar` — запрет подбора предметов в режиме `/god` Essentials.
+   - `Chunky` — предгенерация мира `world` радиусом `2000`.
+   - `fmDonateAlert` — оповещения о покупке доната (`/fmad send`, градиент Elytrix + Title).
+   - `ElytrixSite` (порт API `20559` + MySQL сайта) и `ElytrixAuthBridge` (HTTP-мост бота привязки) — конфиги на VDS НЕ затирать; `.jar` файлы `Chunky`, `ElytrixAuthBridge`, `ElytrixSite`, `GrimAC`, `fmDonateAlert` стоят на VDS (в `dfghjdyjk56` была выгружена вторая половина джарников `I..Z` в `pluginjar1.rar`).
 ================================================================================

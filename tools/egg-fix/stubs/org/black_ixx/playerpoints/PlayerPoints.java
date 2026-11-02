@@ -1,0 +1,1 @@
+package org.black_ixx.playerpoints; public class PlayerPoints { public static PlayerPoints instance; public PlayerPointsAPI api; public static PlayerPoints getInstance(){return instance;} public PlayerPointsAPI getAPI(){return api;} }

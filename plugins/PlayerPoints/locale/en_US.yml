@@ -143,3 +143,4 @@ command-account-create-name-invalid: '&cFailed to create account. Account names 
 command-account-delete-success: '&aSuccessfully deleted account &b%account%&a.'
 command-account-delete-does-not-exist: '&cFailed to delete account. An account named &b%account% &cdoes not exist.'
 command-account-delete-warning: '&cNotice: This operation will delete all account data for the account &b%account%&c. If you are absolutely sure about this, use &b/points account delete %account% confirm&c.'
+command-take-taken: ''

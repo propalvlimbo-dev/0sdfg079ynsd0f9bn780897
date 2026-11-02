@@ -1,0 +1,5 @@
+name: ElytrixGodPickup
+version: '1.0-test'
+main: pw.elytrix.godpickup.GodPickup
+api-version: '1.21'
+depend: [Essentials]

@@ -144,3 +144,4 @@ command-account-delete-does-not-exist: '&c刪除帳戶失敗。名為 &b%account
 command-account-delete-warning: '&c注意： 此操作將刪除帳戶 &b%account% &c的所有帳戶資料。如果您有絕對的把握，請使用 &b/points account delete %account% confirm&c.'
 
 # Version Command
+command-take-taken: ''

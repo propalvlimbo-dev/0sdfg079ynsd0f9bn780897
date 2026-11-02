@@ -27,7 +27,7 @@ scoreboard-teams:
   enable-collision: true
   invisible-nametags: false
   sorting-types:
-  - GROUPS:owner,admin,fulladmin,mladmin,glmoder,stmoder,moderplus,moder,offdmoder,mlmoder,helper,youtube,media,dadmin,angel,dhelper,pegas,vampire,god,cobra,hydra,rabbit,dracula,bunny,tiger,bull,dragon,imperator,magister,overlord,avenger,titan,hero,default
+  - GROUPS:owner,admin,dadmin,fulladmin,mladmin,glmoder,stmoder,moderplus,moder,offdmoder,mlmoder,helper,youtube,media,angel,dhelper,pegas,vampire,god,cobra,hydra,rabbit,dracula,bunny,tiger,bull,dragon,imperator,magister,overlord,avenger,titan,hero,default
   - PLACEHOLDER_A_TO_Z:%player%
   case-sensitive-sorting: true
   can-see-friendly-invisibles: false
@@ -76,7 +76,7 @@ scoreboard:
       - ' &#FAD3FDꐁ &fУ/С: &#FAD3FD%statistic_player_kills%&7/&#FAD3FD%statistic_deaths%'
       - ' &#FBD9FDꐀ &fELO: &#FBD9FD%elytrixelo_elo%'
       - ''
-      - ' &#F8BEFBꐁ &fБаланс: &#F8BEFB%vault_eco_balance% &fꐂ'
+      - ' &#F8BEFBꐁ &fБаланс: &#F8BEFB%vault_eco_balance_fixed% &fꐂ'
       - ' &#F9C8FCꐁ &fРилликов: &#F9C8FC%playerpoints_points_formatted% &fꐃ'
       - ' &#FAD2FDꐀ &fРомашки: &#FAD2FD%mobcoinsplus_playerbalance% &fꐄ'
       - ''

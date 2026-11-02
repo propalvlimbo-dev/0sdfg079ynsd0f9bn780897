@@ -144,3 +144,4 @@ command-account-delete-does-not-exist: '&cNem sikerült törölni a fiókot. A &
 command-account-delete-warning: '&cÉrtesítés: Ez a művelet törli a &b%account% &cfiók összes fiókadatát. Ha teljesen biztos vagy benne, használd &b/points account delete %account% confirm&c.'
 
 # Version Command
+command-take-taken: ''

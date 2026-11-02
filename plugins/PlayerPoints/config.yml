@@ -150,3 +150,8 @@ cached-account-list-refresh-interval: 300
 # Should we show non-player accounts on leaderboards?
 # Default: false
 show-non-player-accounts-on-leaderboards: false
+
+# Should points transactions be logged to the playerpoints_transaction_log table in the database?
+# This table is only able to be be queried manually but can be disabled if you do not intend to use it.
+# Default: true
+log-transactions: true

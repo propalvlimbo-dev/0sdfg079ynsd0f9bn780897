@@ -1,0 +1,1 @@
+package org.bukkit; public class Location {private final World world;private final double x,y,z;public Location(World w,double x,double y,double z){this.world=w;this.x=x;this.y=y;this.z=z;}public World getWorld(){return world;}public double getX(){return x;}public double getY(){return y;}public double getZ(){return z;}}

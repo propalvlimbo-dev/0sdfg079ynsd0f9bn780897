@@ -10,6 +10,708 @@
 # REMEMBER TO KEEP PERIODICAL BACKUPS.
 #
 regions:
+    flyrtiz_yt1:
+        min: {x: -2000, y: -64, z: -2000}
+        max: {x: -1981, y: 319, z: -1973}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [6f2a9a2e-44c9-3854-87d2-c70257bdcbbb]
+        type: cuboid
+        priority: 0
+    dododododoo:
+        min: {x: -1949, y: -64, z: -772}
+        max: {x: -1939, y: 319, z: -761}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [a0e95795-2c73-363d-84bd-3a5490f3617e]
+        type: cuboid
+        priority: 0
+    lo9ly:
+        min: {x: -900, y: -64, z: -197}
+        max: {x: -841, y: 319, z: -146}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [6da2d0ce-b758-32d5-bd7f-9b61a1afc2c8]
+        type: cuboid
+        priority: 0
+    makaretorcahr:
+        min: {x: -854, y: -64, z: -881}
+        max: {x: -848, y: 319, z: -872}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [c37a3300-539c-3a3f-b69c-8a2d109511e6]
+        type: cuboid
+        priority: 0
+    baza:
+        min: {x: -1177, y: -64, z: 201}
+        max: {x: -1145, y: 319, z: 229}
+        members:
+            unique-ids: [773b0f95-5045-393a-af0f-023bca8668d8]
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [6e285fb1-3f90-3ac2-abfa-629681b50d31]
+        type: cuboid
+        priority: 0
+    dl:
+        min: {x: 99, y: -64, z: -644}
+        max: {x: 156, y: 319, z: -583}
+        members:
+            unique-ids: [8749a167-88e6-32ba-a9b6-0f6e9bc8c2b6, 0f3c4a96-0255-353c-ab00-ce29d8e51c3a,
+                e70f0373-8fcf-3ff3-a433-93de32a2a05a, 966af620-2c47-3a00-9a1a-bc807b740d6c]
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [4b70963a-0e4a-3263-a1bd-3ca60d68565b]
+        type: cuboid
+        priority: 0
+    tutuzik:
+        min: {x: 708, y: -64, z: -74}
+        max: {x: 720, y: 319, z: -61}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [2460b61f-2616-366f-91d4-a737a7a96718]
+        type: cuboid
+        priority: 0
+    fin:
+        min: {x: 971, y: -64, z: -1277}
+        max: {x: 1005, y: 319, z: -1243}
+        members:
+            unique-ids: [1532d0b8-c9b4-3a6e-ad7d-e341a2c44885, 1ecbf955-7714-30b8-aacb-1d4735a274f8]
+        flags: {tnt: deny, pvp: deny}
+        owners:
+            unique-ids: [773b0f95-5045-393a-af0f-023bca8668d8, 1532d0b8-c9b4-3a6e-ad7d-e341a2c44885]
+        type: cuboid
+        priority: 0
+    doxing:
+        min: {x: 485, y: -64, z: 239}
+        max: {x: 512, y: 319, z: 262}
+        members:
+            unique-ids: [821ce510-9c51-32c6-a779-fc96367351ac, d1c88907-d824-3380-8057-788e2625ebde,
+                b8d4f939-c9cc-3ca9-a8a1-53aa9fe87475, 928cf94f-26b4-391b-8d10-d367c8d98c32,
+                1ecbf955-7714-30b8-aacb-1d4735a274f8, 1532d0b8-c9b4-3a6e-ad7d-e341a2c44885]
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [773b0f95-5045-393a-af0f-023bca8668d8]
+        type: cuboid
+        priority: 0
+    proverka:
+        min: {x: -34, y: -64, z: -225}
+        max: {x: -26, y: 319, z: -217}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [821ce510-9c51-32c6-a779-fc96367351ac]
+        type: cuboid
+        priority: 0
+    petanis:
+        min: {x: 771, y: -64, z: -762}
+        max: {x: 788, y: 319, z: -743}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [966af620-2c47-3a00-9a1a-bc807b740d6c, e73705ad-0901-3786-89a6-014e5032a919]
+        type: cuboid
+        priority: 0
+    oop1:
+        min: {x: 1107, y: -64, z: -514}
+        max: {x: 1121, y: 319, z: -500}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [5055b753-5b18-3b68-9cd1-33d47ceb486d, 0f3c4a96-0255-353c-ab00-ce29d8e51c3a]
+        type: cuboid
+        priority: 0
+    vovan888alfa3:
+        min: {x: -1998, y: -64, z: -1330}
+        max: {x: -1983, y: 319, z: -1315}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [7d03fb2f-5b44-391f-b114-d74a64d3c772]
+        type: cuboid
+        priority: 0
+    mxyh1337:
+        min: {x: 1839, y: -64, z: 75}
+        max: {x: 1917, y: 319, z: 145}
+        members: {}
+        flags: {potion-splash: deny, tnt: deny, pvp: deny}
+        owners:
+            unique-ids: [37710547-b58e-3d7d-91fe-9d89d514b0ff]
+        type: cuboid
+        priority: 0
+    hata:
+        min: {x: 776, y: -64, z: -536}
+        max: {x: 805, y: 319, z: -507}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [37710547-b58e-3d7d-91fe-9d89d514b0ff]
+        type: cuboid
+        priority: 0
+    lowseal:
+        min: {x: -1309, y: -64, z: -548}
+        max: {x: -1289, y: 319, z: -521}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [e057fd8c-c8b4-347d-aaae-04a93087efa3, b6e50bda-16a7-32b3-a426-fc602c4baac1]
+        type: cuboid
+        priority: 0
+    flyrtiz_yt:
+        min: {x: 1606, y: -64, z: -677}
+        max: {x: 1621, y: 319, z: -666}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [6f2a9a2e-44c9-3854-87d2-c70257bdcbbb]
+        type: cuboid
+        priority: 0
+    farma:
+        min: {x: 479, y: -64, z: 233}
+        max: {x: 516, y: 319, z: 266}
+        members:
+            unique-ids: [821ce510-9c51-32c6-a779-fc96367351ac, d1c88907-d824-3380-8057-788e2625ebde,
+                b8d4f939-c9cc-3ca9-a8a1-53aa9fe87475, 928cf94f-26b4-391b-8d10-d367c8d98c32,
+                1ecbf955-7714-30b8-aacb-1d4735a274f8, 1532d0b8-c9b4-3a6e-ad7d-e341a2c44885]
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [773b0f95-5045-393a-af0f-023bca8668d8]
+        type: cuboid
+        priority: 0
+    qq:
+        min: {x: 1989, y: -64, z: -419}
+        max: {x: 1998, y: 319, z: -407}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [7915da3a-3a2c-36fd-a122-16f74ed74e07]
+        type: cuboid
+        priority: 0
+    anus:
+        min: {x: -776, y: -64, z: 959}
+        max: {x: -761, y: 319, z: 976}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [ce02738f-7f96-30d1-8e0f-d6e8be8e2b5a]
+        type: cuboid
+        priority: 0
+    xvii:
+        min: {x: -2000, y: -64, z: -1455}
+        max: {x: -1972, y: 319, z: -1414}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [928fdda6-2df0-36d2-8572-40033f6354c4]
+        type: cuboid
+        priority: 0
+    otk:
+        min: {x: -1245, y: -64, z: 931}
+        max: {x: -1237, y: 319, z: 941}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [773b0f95-5045-393a-af0f-023bca8668d8]
+        type: cuboid
+        priority: 0
+    fff:
+        min: {x: -1192, y: -64, z: 695}
+        max: {x: -1170, y: 319, z: 715}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [fa844eb4-f54f-36eb-af1f-0033e509c4ce]
+        type: cuboid
+        priority: 0
+    parkyr:
+        min: {x: 517, y: -64, z: -518}
+        max: {x: 569, y: 319, z: -457}
+        members: {}
+        flags:
+            lightning: allow
+            enderpearl: deny
+            chorus-fruit-teleport: deny
+            blocked-cmds: [/fly, /sethome, /tpaccept]
+            invincible: allow
+            tnt: deny
+            pvp: deny
+            mob-spawning: deny
+        owners:
+            unique-ids: [2c77ad33-92ea-36bc-a3e1-47db02b60321]
+        type: cuboid
+        priority: 0
+    jagerblay:
+        min: {x: 327, y: -64, z: 223}
+        max: {x: 352, y: 319, z: 254}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [4808c3dd-6b6d-3740-a2b1-563d8990ade9]
+        type: cuboid
+        priority: 0
+    rututu:
+        min: {x: -707, y: -64, z: 768}
+        max: {x: -689, y: 319, z: 794}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [96b84add-2417-3285-a0cd-da31b28c7530]
+        type: cuboid
+        priority: 0
+    mem4ik7780:
+        min: {x: -548, y: -64, z: -112}
+        max: {x: -542, y: 319, z: -107}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [65a6784d-a6bc-3b5f-ac2a-827bf6b59807]
+        type: cuboid
+        priority: 0
+    ferma:
+        min: {x: -308, y: -64, z: -975}
+        max: {x: -292, y: 319, z: -956}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [773b0f95-5045-393a-af0f-023bca8668d8]
+        type: cuboid
+        priority: 0
+    lo9ly222:
+        min: {x: -903, y: -64, z: -95}
+        max: {x: -836, y: 319, z: -30}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [6da2d0ce-b758-32d5-bd7f-9b61a1afc2c8]
+        type: cuboid
+        priority: 0
+    nnn:
+        min: {x: 1426, y: -64, z: -1116}
+        max: {x: 1439, y: 319, z: -1103}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [7a22f31b-25c7-3904-a4f7-7f45af5a010f]
+        type: cuboid
+        priority: 0
+    '1':
+        min: {x: 1435, y: -64, z: 1785}
+        max: {x: 1465, y: 319, z: 1816}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [249ef128-6f5e-3fb0-8dca-5332258ae0be]
+        type: cuboid
+        priority: 0
+    pimpalas:
+        min: {x: 82, y: -64, z: -3}
+        max: {x: 100, y: 319, z: 11}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [65a6784d-a6bc-3b5f-ac2a-827bf6b59807]
+        type: cuboid
+        priority: 0
+    mitay33:
+        min: {x: -1743, y: -64, z: 542}
+        max: {x: -1723, y: 319, z: 561}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [89d4b824-f767-3757-934e-86c86e3b74c5]
+        type: cuboid
+        priority: 0
+    '123123':
+        min: {x: -980, y: -64, z: -703}
+        max: {x: -973, y: 319, z: -694}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [c71fd445-912f-327a-9eb7-67a58da6905a]
+        type: cuboid
+        priority: 0
+    '5':
+        min: {x: 1770, y: -64, z: 1862}
+        max: {x: 1809, y: 319, z: 1891}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [928fdda6-2df0-36d2-8572-40033f6354c4]
+        type: cuboid
+        priority: 0
+    gggggg:
+        min: {x: 789, y: -64, z: -757}
+        max: {x: 790, y: 319, z: -749}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [966af620-2c47-3a00-9a1a-bc807b740d6c, e73705ad-0901-3786-89a6-014e5032a919]
+        type: cuboid
+        priority: 0
+    nn:
+        min: {x: -1310, y: -64, z: 24}
+        max: {x: -1302, y: 319, z: 42}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [071872da-98ac-3474-9609-85625db4edaf]
+        type: cuboid
+        priority: 0
+    rt:
+        min: {x: -1601, y: -64, z: 1040}
+        max: {x: -1561, y: 319, z: 1086}
+        members:
+            unique-ids: [0f3c4a96-0255-353c-ab00-ce29d8e51c3a]
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [4b70963a-0e4a-3263-a1bd-3ca60d68565b, 5055b753-5b18-3b68-9cd1-33d47ceb486d]
+        type: cuboid
+        priority: 0
+    lelushe4ka:
+        min: {x: -1788, y: -64, z: -1212}
+        max: {x: -1758, y: 319, z: -1177}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [f0daf918-d490-307e-be2b-097c6a2a0827]
+        type: cuboid
+        priority: 0
+    finff:
+        min: {x: 984, y: -64, z: -1266}
+        max: {x: 992, y: 319, z: -1259}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [1532d0b8-c9b4-3a6e-ad7d-e341a2c44885]
+        type: cuboid
+        priority: 0
+    xpvpx:
+        min: {x: -758, y: -64, z: 796}
+        max: {x: -669, y: 319, z: 876}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [9a397e63-55ff-302b-a962-e6b928fce13c]
+        type: cuboid
+        priority: 0
+    end_:
+        min: {x: 1921, y: -64, z: 1911}
+        max: {x: 1999, y: 319, z: 1999}
+        members:
+            unique-ids: [928cf94f-26b4-391b-8d10-d367c8d98c32]
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [773b0f95-5045-393a-af0f-023bca8668d8]
+        type: cuboid
+        priority: 0
+    xxx_777_124:
+        min: {x: 502, y: -64, z: -528}
+        max: {x: 513, y: 319, z: -520}
+        members:
+            unique-ids: [7ba4e02a-ef51-3d64-9df8-417ae2509249]
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [2812816d-193c-3900-8b5f-0115b1aecd9e]
+        type: cuboid
+        priority: 0
+    pol:
+        min: {x: 886, y: -64, z: -835}
+        max: {x: 930, y: 319, z: -797}
+        members:
+            unique-ids: [63caa9f2-225b-4967-8b5b-41c0b802f145, 18497d18-82cb-3594-bb27-1bcf01b4ded5]
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [e70f0373-8fcf-3ff3-a433-93de32a2a05a]
+        type: cuboid
+        priority: 0
+    xxx_777_125:
+        min: {x: -1137, y: -64, z: 31}
+        max: {x: -1091, y: 319, z: 66}
+        members:
+            unique-ids: [7ba4e02a-ef51-3d64-9df8-417ae2509249, 18497d18-82cb-3594-bb27-1bcf01b4ded5]
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [2812816d-193c-3900-8b5f-0115b1aecd9e]
+        type: cuboid
+        priority: 0
+    znatoktopgg:
+        min: {x: -1981, y: -64, z: 718}
+        max: {x: -1969, y: 319, z: 732}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [e172c2bd-632a-39c0-87d7-85cfedea057d]
+        type: cuboid
+        priority: 0
+    labutuz:
+        min: {x: 1904, y: -64, z: 1092}
+        max: {x: 1961, y: 319, z: 1145}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [80539ca6-f947-30d2-a9a3-bc94d55e5b20]
+        type: cuboid
+        priority: 0
+    lox:
+        min: {x: 527, y: -64, z: 240}
+        max: {x: 537, y: 319, z: 259}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [928cf94f-26b4-391b-8d10-d367c8d98c32]
+        type: cuboid
+        priority: 0
+    nov:
+        min: {x: -1365, y: -64, z: -1060}
+        max: {x: -1338, y: 319, z: -1010}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [7a22f31b-25c7-3904-a4f7-7f45af5a010f, 69a6e2f8-99f1-3ee7-94ce-97261b3e47d3,
+                1c2ba6c3-77f0-351a-bbdd-6a476c555d4a]
+        type: cuboid
+        priority: 0
+    oo4:
+        min: {x: -494, y: -64, z: -681}
+        max: {x: -459, y: 319, z: -654}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [5055b753-5b18-3b68-9cd1-33d47ceb486d]
+        type: cuboid
+        priority: 0
+    yup:
+        min: {x: 532, y: -64, z: -1131}
+        max: {x: 583, y: 319, z: -1043}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [e70f0373-8fcf-3ff3-a433-93de32a2a05a]
+        type: cuboid
+        priority: 0
+    vdgetrfv999:
+        min: {x: -46, y: -64, z: -191}
+        max: {x: -35, y: 319, z: -177}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [6e5d9cd5-eab9-30a4-bddc-5728304f6286]
+        type: cuboid
+        priority: 0
+    bazasuper:
+        min: {x: -386, y: -64, z: -833}
+        max: {x: -357, y: 319, z: -804}
+        members:
+            unique-ids: [27c0eaea-dc23-30a1-b795-b1e50902a1e1, 1c2ba6c3-77f0-351a-bbdd-6a476c555d4a,
+                7a22f31b-25c7-3904-a4f7-7f45af5a010f]
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [69a6e2f8-99f1-3ee7-94ce-97261b3e47d3, 856ef735-725b-32dc-a947-2fd946bca1d8]
+        type: cuboid
+        priority: 0
+    top13121:
+        min: {x: -1651, y: -64, z: 803}
+        max: {x: -1642, y: 319, z: 829}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [00346ab2-174f-3015-9f14-1bde8fe308a4]
+        type: cuboid
+        priority: 0
+    vdgetrfv111:
+        min: {x: 33, y: -64, z: -168}
+        max: {x: 103, y: 319, z: -81}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [6e5d9cd5-eab9-30a4-bddc-5728304f6286]
+        type: cuboid
+        priority: 0
+    zov:
+        min: {x: -597, y: -64, z: -972}
+        max: {x: -578, y: 319, z: -957}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [df47733b-de29-3054-b050-84dfe3f1c9c9]
+        type: cuboid
+        priority: 0
+    frekki4:
+        min: {x: -1293, y: -64, z: -1112}
+        max: {x: -1248, y: 319, z: -1074}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [b8d4f939-c9cc-3ca9-a8a1-53aa9fe87475]
+        type: cuboid
+        priority: 0
+    angel_l:
+        min: {x: -1144, y: -64, z: 1008}
+        max: {x: -1101, y: 319, z: 1053}
+        members:
+            unique-ids: [73800cda-c7ca-3679-8e29-852479b0da9b]
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [1ecbf955-7714-30b8-aacb-1d4735a274f8, 928cf94f-26b4-391b-8d10-d367c8d98c32]
+        type: cuboid
+        priority: 0
+    m1:
+        min: {x: -15, y: -64, z: -264}
+        max: {x: -7, y: 319, z: -244}
+        members:
+            unique-ids: [8c533803-cd3c-3c39-914b-25fe74326a97]
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [38b94ee0-5853-3f3f-a924-3c971772e30a, 8c533803-cd3c-3c39-914b-25fe74326a97]
+        type: cuboid
+        priority: 0
+    judelow:
+        min: {x: 1925, y: -64, z: -973}
+        max: {x: 1943, y: 319, z: -952}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [0be855cb-1fc3-3932-b755-d613387c6406]
+        type: cuboid
+        priority: 0
+    vdgetrfv6767:
+        min: {x: 59, y: -64, z: -217}
+        max: {x: 77, y: 319, z: -195}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [6e5d9cd5-eab9-30a4-bddc-5728304f6286]
+        type: cuboid
+        priority: 0
+    ert:
+        min: {x: 548, y: -64, z: -1116}
+        max: {x: 573, y: 319, z: -1056}
+        members:
+            unique-ids: [4b70963a-0e4a-3263-a1bd-3ca60d68565b]
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [e70f0373-8fcf-3ff3-a433-93de32a2a05a]
+        type: cuboid
+        priority: 0
+    xpvpx123:
+        min: {x: -854, y: -64, z: 813}
+        max: {x: -743, y: 319, z: 917}
+        members: {}
+        flags: {mob-damage: allow, tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [9a397e63-55ff-302b-a962-e6b928fce13c]
+        type: cuboid
+        priority: 0
+    j:
+        min: {x: 938, y: -64, z: -530}
+        max: {x: 961, y: 319, z: -515}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [e70f0373-8fcf-3ff3-a433-93de32a2a05a]
+        type: cuboid
+        priority: 0
+    '423432':
+        min: {x: -574, y: -64, z: -668}
+        max: {x: -561, y: 319, z: -652}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [533a85e0-9da8-315e-b4b0-05a4d7198cbb]
+        type: cuboid
+        priority: 0
+    no_gr:
+        min: {x: 460, y: -64, z: 224}
+        max: {x: 526, y: 319, z: 292}
+        members:
+            unique-ids: [f14f0aac-05c7-33ae-aa6f-e89169b48e31, 821ce510-9c51-32c6-a779-fc96367351ac,
+                928cf94f-26b4-391b-8d10-d367c8d98c32, 1ecbf955-7714-30b8-aacb-1d4735a274f8,
+                b8d4f939-c9cc-3ca9-a8a1-53aa9fe87475, 1532d0b8-c9b4-3a6e-ad7d-e341a2c44885]
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [773b0f95-5045-393a-af0f-023bca8668d8]
+        type: cuboid
+        priority: 0
+    k:
+        min: {x: 938, y: -64, z: -539}
+        max: {x: 961, y: 319, z: -515}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [e70f0373-8fcf-3ff3-a433-93de32a2a05a]
+        type: cuboid
+        priority: 0
+    lll:
+        min: {x: -761, y: -64, z: 664}
+        max: {x: -751, y: 319, z: 673}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [0cebe8a4-994d-3314-8788-a5d3c7989bb4]
+        type: cuboid
+        priority: 0
+    bomboclat69:
+        min: {x: 1249, y: -64, z: -197}
+        max: {x: 1249, y: 319, z: -190}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [65a6784d-a6bc-3b5f-ac2a-827bf6b59807]
+        type: cuboid
+        priority: 0
+    alexey:
+        min: {x: 1445, y: -64, z: -1485}
+        max: {x: 1454, y: 319, z: -1475}
+        members:
+            unique-ids: [773b0f95-5045-393a-af0f-023bca8668d8]
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [6e285fb1-3f90-3ac2-abfa-629681b50d31]
+        type: cuboid
+        priority: 0
+    zema_09:
+        min: {x: -2000, y: -64, z: 1910}
+        max: {x: -1894, y: 319, z: 1999}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [47f13ba2-6801-38f9-be5d-124311956789]
+        type: cuboid
+        priority: 0
+    m211:
+        min: {x: -1200, y: -64, z: -673}
+        max: {x: -1142, y: 319, z: -608}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [8c533803-cd3c-3c39-914b-25fe74326a97, e70f0373-8fcf-3ff3-a433-93de32a2a05a,
+                928cf94f-26b4-391b-8d10-d367c8d98c32]
+        type: cuboid
+        priority: 0
+    m1133:
+        min: {x: -1649, y: -64, z: -568}
+        max: {x: -1562, y: 319, z: -475}
+        members:
+            unique-ids: [7a22f31b-25c7-3904-a4f7-7f45af5a010f, e70f0373-8fcf-3ff3-a433-93de32a2a05a,
+                928cf94f-26b4-391b-8d10-d367c8d98c32]
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [8c533803-cd3c-3c39-914b-25fe74326a97]
+        type: cuboid
+        priority: 0
+    trotta:
+        min: {x: -125, y: -64, z: -917}
+        max: {x: -114, y: 319, z: -906}
+        members: {}
+        flags: {tnt: deny, pvp: allow}
+        owners:
+            unique-ids: [46f339a6-020e-3299-bae2-f20eb7ee9e5a]
+        type: cuboid
+        priority: 0
     __global__:
         members: {}
         flags: {creeper-explosion: deny, pvp: allow}

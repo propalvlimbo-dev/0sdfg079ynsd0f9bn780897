@@ -73,14 +73,14 @@ rewards:
     lore:
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fСодержимое:'
-      - '&#F8BEFB&l┃  &7• &#F8BEFB15 рилликов &fꐃ'
+      - '&#F8BEFB&l┃  &7• &#F8BEFBДонат кейс x1'
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
       - '&#F8BEFB&l┃ '
       - '{status}'
     items: []
     commands:
-      - 'p give {player} 15'
+      - 'bcases give {player} donate 1'
 
   free2:
     slot: 11
@@ -91,14 +91,16 @@ rewards:
     lore:
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fСодержимое:'
-      - '&#F8BEFB&l┃  &7• &fКейс с валютой &7(x1)'
+      - '&#F8BEFB&l┃  &7• &#F8BEFBДонат кейс x1'
+      - '&#F8BEFB&l┃  &7• &#F8BEFB150 рилликов &fꐃ'
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
       - '&#F8BEFB&l┃ '
       - '{status}'
     items: []
     commands:
-      - 'bcases give {player} money 1'
+      - 'bcases give {player} donate 1'
+      - 'p give {player} 150'
 
   free3:
     slot: 12
@@ -109,14 +111,16 @@ rewards:
     lore:
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fСодержимое:'
-      - '&#F8BEFB&l┃  &7• &fНабор &#FD00E4&lDRAGON'
+      - '&#F8BEFB&l┃  &7• &#F8BEFBДонат кейс x2'
+      - '&#F8BEFB&l┃  &7• &#F8BEFB200 рилликов &fꐃ'
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
       - '&#F8BEFB&l┃ '
       - '{status}'
     items: []
     commands:
-      - 'kit dragon {player}'
+      - 'bcases give {player} donate 2'
+      - 'p give {player} 200'
 
   free4:
     slot: 13
@@ -127,14 +131,16 @@ rewards:
     lore:
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fСодержимое:'
-      - '&#F8BEFB&l┃  &7• &#F8BEFB35 рилликов &fꐃ'
+      - '&#F8BEFB&l┃  &7• &#F8BEFBДонат кейс x3'
+      - '&#F8BEFB&l┃  &7• &#F8BEFB400 рилликов &fꐃ'
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
       - '&#F8BEFB&l┃ '
       - '{status}'
     items: []
     commands:
-      - 'p give {player} 35'
+      - 'bcases give {player} donate 3'
+      - 'p give {player} 400'
 
   free5:
     slot: 14
@@ -145,14 +151,18 @@ rewards:
     lore:
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fСодержимое:'
-      - '&#F8BEFB&l┃  &7• &fКейс с рилликами &7(x1)'
+      - '&#F8BEFB&l┃  &7• &#F8BEFBДонат кейс x2'
+      - '&#F8BEFB&l┃  &7• &#F8BEFBКейс с Китами x1'
+      - '&#F8BEFB&l┃  &7• &#F8BEFB300 рилликов &fꐃ'
       - '&#F8BEFB&l┃ '
       - '&#F8BEFB&l┃ &fТребуется: &#F8BEFB{need}'
       - '&#F8BEFB&l┃ '
       - '{status}'
     items: []
     commands:
-      - 'bcases give {player} rilik 1'
+      - 'bcases give {player} kits 1'
+      - 'bcases give {player} donate 2'
+      - 'p give {player} 400'
 
   free6:
     slot: 15

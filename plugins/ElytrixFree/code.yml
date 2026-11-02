@@ -22,33 +22,32 @@ kinds:
   common:
     min: 41
     max: 50
-    name: 'Обычная (20 Рилликов)'
+    name: 'Обычная (200 Рилликов)'
     commands:
-      - 'p give {player} 20'
+      - 'p give {player} 200'
   uncommon:
     min: 31
     max: 40
-    name: 'Необычная (35 Рилликов)'
+    name: 'Необычная (350 Рилликов)'
     commands:
-      - 'p give {player} 35'
+      - 'p give {player} 350'
   rare:
     min: 21
     max: 30
-    name: 'Редкая (50 Рилликов + Кейс с валютой)'
+    name: 'Редкая (500 Рилликов + Кейс с валютой)'
     commands:
-      - 'p give {player} 50'
+      - 'p give {player} 500'
       - 'bcases give {player} money 1'
   epic:
     min: 11
     max: 20
-    name: 'Эпическая (85 Рилликов + Кейс с Рилликами)'
+    name: 'Эпическая (850 Рилликов)'
     commands:
-      - 'p give {player} 85'
-      - 'bcases give {player} rilik 1'
+      - 'p give {player} 850'
   legendary:
     min: 1
     max: 10
-    name: 'Легендарная (150 Рилликов + Кейс с Донатом)'
+    name: 'Легендарная (1500 Рилликов + Кейс с Донатом 5)'
     commands:
-      - 'p give {player} 150'
-      - 'bcases give {player} donate 1'
+      - 'p give {player} 1500'
+      - 'bcases give {player} donate 5'

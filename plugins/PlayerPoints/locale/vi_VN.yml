@@ -141,3 +141,4 @@ command-account-delete-does-not-exist: '&cKhông xóa được tài khoản. Tà
 command-account-delete-warning: '&cLưu ý: Thao tác này sẽ xóa tất cả dữ liệu tài khoản cho tài khoản &b%account%&c. Nếu bạn hoàn toàn chắc chắn về điều này, hãy sử dụng lệnh &b/points account delete %account% confirm&c.'
 
 # Version Command
+command-take-taken: ''

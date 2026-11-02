@@ -249,13 +249,13 @@ prizes:
     - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
     - '[BROADCAST] &#F8BEFB ꐀ'
   - chance: 5.0
-    display_name: ꔷ
+    display_name: ангел
     enchanted: false
     material: RED_SHULKER_BOX
     give_commands:
-    - '[CONSOLE] lp user %player_name% parent add fulladmin'
+    - '[CONSOLE] lp user %player_name% parent add angel'
     - '[BROADCAST] &#F8BEFB ꐁ'
-    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл ꔷ'
+    - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл ангелаебать'
     - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &cВСЕ ИЛИ НИЧЕГО'
     - '[BROADCAST] &#F8BEFB ꐁ &fПокупка кейсов на сайте: &#F8BEFBhttps://elytrix.pw'
     - '[BROADCAST] &#F8BEFB ꐀ'
