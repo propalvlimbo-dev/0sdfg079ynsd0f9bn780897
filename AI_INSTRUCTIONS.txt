@@ -27,8 +27,15 @@
    - (Если были ещё более свежие ветки/PR — проверь `git ls-remote origin` и возьми
      самую свежую рабочую ветку сборки).
 
-3. Все изменения коммить и пушь ТОЛЬКО в текущую рабочую ветку сессии:
-   git push origin <имя_текущей_ветки_сессии>
+3. ВАЖНО ПРО ЛИМИТ СНАПШОТОВ ARENA (128 МБ):
+   Суммарный вес сборки с `.jar` и `.zip` архивами превышает 128 МБ относительно
+   базового коммита контейнера, поэтому между ходами локальная рабочая папка может
+   сбрасываться к начальному коммиту, ТОГДА КАК `git push` НА GITHUB СОХРАНЯЕТ ВСЁ!
+   Поэтому:
+   - В начале хода перед правкой файлов всегда проверяй `git log -1` и при сбросе
+     выполняй `git fetch origin <текущая_ветка> && git reset --hard FETCH_HEAD`.
+   - ВСЕГДА делай `git commit` и `git push origin <текущая_ветка>` В ТОМ ЖЕ ХОДЕ,
+     в котором изменил или собрал файлы (не оставляй незапушенные файлы на следующий ход!).
 
 4. В командах скачивания для VDS ВСЕГДА используй ПОЛНЫЙ 40-символьный SHA коммита
    (`git rev-parse HEAD`), а НЕ имя ветки!
@@ -242,4 +249,102 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
      - `plugins/BLib.jar` — JOML (`org.joml.*`) и Guava
      - `plugins/FancyNpcs-2.10.0.jar` — Gson (`com.google.gson.*`)
 - Временные сборочные файлы и тесты всегда держи в `/tmp/...`, не засоряя Git-репозиторий.
+
+--------------------------------------------------------------------------------
+8. КАК ДЕЛАЮТСЯ 3D-МОДЕЛИ (`.bbmodel` + RP JSON) И КАК ВСЁ УПАКОВЫВАЕТСЯ / ЗАЛИВАЕТСЯ
+--------------------------------------------------------------------------------
+Полный конвейер создания и обновления моделей (нимб, крылья, Priora или новые модели),
+который работает без ручного запуска десктопного Blockbench и сервера:
+
+ШАГ 1 — Процедурная генерация `.bbmodel` и текстур на Python (`Pillow` + `json`):
+- Файлы лежат в `plugins/ModelEngine/blueprints/elytrix_<name>.bbmodel`.
+- Формат JSON: Blockbench `4.10` (`"meta": {"format_version": "4.10", "model_format": "free", "box_uv": false}`),
+  `"resolution": {"width": 16, "height": 16}`.
+- Текстура рисуется программно через `PIL.Image` (без нейросетей!), сохраняется в PNG
+  (`assets/modelengine/textures/entity/models/elytrix_<name>.png`) И одновременно
+  кодируется в `data:image/png;base64,...` внутри массива `"textures"` `.bbmodel` с полями:
+  `"uv_width": 16, "uv_height": 16, "internal": true`
+  (благодаря этому UV-координаты всегда идут в диапазоне `0..16` независимо от размера PNG
+  `64x64` или `256x256`).
+- Обязательные поля для парсера `ModelEngine-4.1.0.jar` (`BlockbenchParser`):
+  * в корне `.bbmodel`: `"animation_variable_placeholders": ""`;
+  * в каждой анимации массива `"animations"`: `"uuid"`, `"name"`, `"loop"` (`"loop"` / `"once"`),
+    `"override": false`, `"length"` (float > 0), `"snapping": 24`,
+    `"anim_time_update": ""`, `"blend_weight": ""`, `"start_delay": ""`, `"loop_delay": ""`,
+    `"animators": { "<bone_uuid>": { "name": "<bone_name>", "type": "bone", "keyframes": [...] } }`.
+- Ограничение кубов Minecraft JSON (КРИТИЧНО при генерации геометрии):
+  Каждый куб в экспортируемой JSON-модели Minecraft может быть повёрнут ТОЛЬКО вокруг
+  ОДНОЙ оси (`"x"`, `"y"` или `"z"`) и ТОЛЬКО на углы `-45`, `-22.5`, `0`, `22.5`, `45`!
+  Поэтому круглые формы (как 16-сегментный тор и солнечные лучи в `elytrix_angel_halo`:
+  кости `halo_ring` + `halo_aura`, 161 куб) строятся по тригонометрии с углами, кратными
+  `22.5°`, и флагом `"shade": false` на горизонтальных кубах для равномерного свечения.
+  Наклоны по нескольким осям задаются не на кубе, а на самой КОСТИ (`bone.rotation`)
+  или в кейфреймах анимации (так как кости в `ModelEngine` рендерятся отдельными
+  `ItemDisplay` с полными 3D-кватернионами без ограничений в `22.5°`).
+
+ШАГ 2 — Экспорт костей из `.bbmodel` в формат ресурспака `1.21.4+` / `1.21.10`:
+Поскольку в песочнице сервер не запускается целиком, файлы ресурспака генерируются
+скриптом точь-в-точь по алгоритму `ModelEngine 4.1.0` для каждой видимой кости
+(кроме `hitbox` и пустых корней без кубов):
+1) `assets/modelengine/items/<blueprint>/<bone>.json` (Item Definition 1.21.4+):
+   {
+     "model": {
+       "type": "minecraft:model",
+       "model": "modelengine:<blueprint>/<bone>",
+       "tints": [{"type": "minecraft:custom_model_data", "index": 0, "default": 16777215}]
+     }
+   }
+   (НЕ добавлять `oversized_in_gui`).
+2) `assets/modelengine/models/<blueprint>/<bone>.json` (3D-геометрия кости):
+   - Координаты кубов переводятся относительно `origin` своей кости с центром в `[8, 8, 8]`:
+     `from_local = cube_from - bone_origin + 8.0`,
+     `to_local   = cube_to   - bone_origin + 8.0`,
+     `rot_origin = cube_origin - bone_origin + 8.0`
+     (с учётом инверсии X/Z граней и UV по правилам Blockbench -> Minecraft).
+   - Правило `JavaItemModel.scaleToFit()` (`DIST_DIVIDER = 1/24`):
+     В Minecraft координаты кубов ограничены диапазоном `[-16, 32]` (максимум `24.0`
+     единицы от `[8, 8, 8]`). Если хотя бы одна вершина куба кости выходит дальше `24.0`
+     от `origin` кости (`maxDist > 24.0`), `ModelEngine` при загрузке `.bbmodel` сам
+     ставит `BlueprintBone.scale = ceil(maxDist / 24.0)` (например, `scale = 2` у
+     `right_wing_inner` и `left_wing_inner`), увеличивая `ItemDisplay` в мире в `scale` раз.
+     Значит в JSON модели ВСЕ координаты `from`, `to` и `rotation.origin` этой кости
+     обязаны быть сжаты вокруг `8.0`:
+     `coord_json = (coord_local - 8.0) / scale + 8.0`.
+   - У каждой грани куба указывается `"tintindex": 0` и `"texture": "#0"`, а в блоке
+     `"textures"` — `"0": "modelengine:entity/models/<texture_name>"`, `"particle": "#0"`.
+
+ШАГ 3 — Обязательная авто-верификация через реальный `ModelEngine-4.1.0.jar`:
+Перед сборкой ZIP запускается проверочный Java-класс в `/tmp` с подключёнными в `-cp`
+`plugins/ModelEngine-4.1.0.jar`, `plugins/BLib.jar` и `plugins/FancyNpcs-2.10.0.jar`:
+- Вызывается `Gson` десериализатор `ModelEngine` + `BlockbenchParser.populateBlueprint`
+  на `.bbmodel` файл.
+- Проверяется, что парсер читает модель без единого исключения, а вычисленный внутри
+  `ModelEngine` `BlueprintBone.getScale()` и `JavaItemModel.scaleToFit()` на 100% (`0.000`
+  погрешности) совпадают со сгенерированными JSON в `models/<blueprint>/<bone>.json`.
+
+ШАГ 4 — Чистая пересборка `rp/Elytrix-RP-1.21.zip`:
+- Новые файлы сначала кладутся в `plugins/ModelEngine/resource pack/assets/modelengine/...`
+  (а старые переименованные/слитые JSON костей оттуда удаляются через `git rm`).
+- Сам `rp/Elytrix-RP-1.21.zip` пересобирается скриптом на Python `zipfile`:
+  копируются все записи чистого базового `Elytrix-RP-1.21.zip` (пропуская только старые
+  файлы обновляемых моделей `assets/modelengine/.../elytrix_<name>/...`), после чего
+  дописываются свежие `items`, `models` и `textures`. Так гарантируется 100% сохранность
+  `pack.png`, `blocks.json`, `leather_horse_armor.json` и шейдеров.
+- Вычисляется `sha1sum rp/Elytrix-RP-1.21.zip` и записывается в `plugins/ElytrixRP/config.yml`.
+
+ШАГ 5 — Сборка деплой-архивов и загрузка на GitHub -> VDS:
+1) Python-скрипт собирает `elytrix-freakmodel.zip` (и при необходимости `elytrix-update.zip`)
+   напрямую из файлов репозитория:
+   - включает `plugins/ElytrixFreakModel.jar` (+ `config.yml`), `plugins/ElytrixRP.jar`
+     (+ обновлённый `config.yml`), `plugins/ModelEngine/blueprints/elytrix_*.bbmodel`,
+     отфильтрованные файлы `plugins/ModelEngine/resource pack/` (только `pack.mcmeta` и
+     пути с `/elytrix_`) и `rp/Elytrix-RP-1.21.zip`;
+   - исключает `plugins/ModelEngine/config.yml`, `.data/cache.json` и чужие модели.
+2) Выполняется `git add`, `git commit` и `git push origin <текущая_ветка>` в этом же ходе.
+3) Через `git rev-parse HEAD` берётся полный 40-символьный `COMMIT_SHA`.
+4) Архив открывается пользователю через `present_file`, и в ответ вставляется однострочная
+   команда `curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/<COMMIT_SHA>/elytrix-freakmodel.zip" ...`
+   (см. Шаблон А в разделе 3), которая скачивает архив на VDS, чистит старые кости,
+   распаковывает в `/root/RW_GRIEF`, копирует RP в `/root/RP/Elytrix-RP-1.21.zip` и
+   проверяет `sha1sum`.
 ================================================================================
