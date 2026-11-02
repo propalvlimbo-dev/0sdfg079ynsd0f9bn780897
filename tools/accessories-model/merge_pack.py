@@ -27,6 +27,15 @@ import sys
 import zipfile
 from pathlib import Path
 
+from fpv_shaders import (
+    CLOSE_ACCESSORY_MODELS,
+    CLOSE_TINT_VALUE,
+    SODIUM_IGNORED_SHADERS,
+    WINGS_ACCESSORY_MODELS,
+    WINGS_TINT_VALUE,
+    build_fpv_pack_entries,
+)
+
 # Every ModelEngine model this repository ships.  A model without its
 # ``items/<model>/<bone>.json`` + ``models/<model>/<bone>.json`` + texture inside
 # the served pack is invisible in game, so all of them are validated and their
@@ -182,7 +191,12 @@ def merge(source, destination, assets_dir, title_png, texture_png=None,
             continue
         stale |= {name for name in source_data if name.startswith(prefix) and name not in generated}
 
+    merged_view = {k: v for k, v in source_data.items() if k not in stale}
+    merged_view.update(generated)
+    fpv_updates = build_fpv_pack_entries(merged_view)
+
     additions = dict(generated)
+    additions.update(fpv_updates)
     additions[TITLE] = title_bytes
     additions[FONT] = font_bytes
 
@@ -204,8 +218,12 @@ def merge(source, destination, assets_dir, title_png, texture_png=None,
             raise SystemExit('output pack failed its CRC check')
         final = set(result.namelist())
         for name in generated:
-            if result.read(name) != generated[name]:
+            expected_bytes = additions[name]
+            if result.read(name) != expected_bytes:
                 raise SystemExit('asset was not written: ' + name)
+        for name, expected_bytes in fpv_updates.items():
+            if result.read(name) != expected_bytes:
+                raise SystemExit('fpv shader/tint asset was not written: ' + name)
         for name in KEEP:
             if name != FONT and result.read(name) != source_data[name]:
                 raise SystemExit('system file was modified: ' + name)

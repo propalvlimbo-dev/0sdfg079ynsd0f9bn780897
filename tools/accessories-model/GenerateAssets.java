@@ -91,8 +91,18 @@ public final class GenerateAssets {
 
             Path itemFile = output.resolve("assets/modelengine/items/" + name + "/" + boneName + ".json");
             Files.createDirectories(itemFile.getParent());
+            String tintJson;
+            if ("elytrix_angel_wings".equals(name)) {
+                tintJson = "{\"type\":\"minecraft:constant\",\"value\":-197122}";
+            } else if ("elytrix_kaneki_tentacles".equals(name)
+                    || "elytrix_centipede".equals(name)
+                    || "elytrix_angel_halo".equals(name)) {
+                tintJson = "{\"type\":\"minecraft:constant\",\"value\":-196867}";
+            } else {
+                tintJson = "{\"index\":0,\"default\":16777215,\"type\":\"minecraft:custom_model_data\"}";
+            }
             Files.writeString(itemFile, "{\"model\":{\"model\":\"modelengine:" + name + "/" + boneName
-                    + "\",\"tints\":[{\"index\":0,\"default\":16777215,\"type\":\"minecraft:custom_model_data\"}],"
+                    + "\",\"tints\":[" + tintJson + "],"
                     + "\"type\":\"minecraft:model\"}}", StandardCharsets.UTF_8);
         }
         List<?> textures = (List<?>) assetsClass.getMethod("getTextures").invoke(assets);

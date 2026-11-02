@@ -373,11 +373,21 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
 --------------------------------------------------------------------------------
 9. КАРТА АКТУАЛЬНЫХ СИСТЕМ, АКСЕССУАРОВ И ЗАЩИТЫ ИЗ LIVE VDS (`dfghjdyjk56`)
 --------------------------------------------------------------------------------
-1. `ElytrixFreakModel v3.11.0` + `/аксессуары` (`/accessories`, глиф `ꏠ`):
+1. `ElytrixFreakModel v3.12.0` + `ModelEngine-4.1.0.jar` (uncapped `SIPUSH 8192`) + `/аксессуары` (`/accessories`, глиф `ꏠ`):
    - Поддерживает косметическое меню аксессуаров (`elytrixaccessories.admin` и
      `elytrixaccessories.use` для группы `media`), исходники и генераторы лежат в
      `tools/accessories-integration/` и `tools/accessories-model/` (подробности в `MODELS_PIPELINE.md`).
-   - Актуальные блюпринты в `plugins/ModelEngine/blueprints/` и RP (`SHA-1: f905f3709a013715ddb8d4791a87776b3fd3ea3f`):
+   - Исправлен лимит 12 моделей в `plugins/ModelEngine-4.1.0.jar` (`ModelGeneratorImpl.importModelsInternal`:
+     `BIPUSH 12` -> `SIPUSH 8192`, `tools/accessories-integration/patch_modelengine.py`) + добавлена
+     авто-догрузка блюпринтов на лету `AccessoryController.resolveBlueprint(...)` в `ElytrixFreakModel v3.12.0`,
+     чтобы ни одна модель никогда не выдавала «Модель ещё не загружена».
+   - Реализовано скрытие надетых аксессуаров от 1-го лица при сохранении 100% видимости в `F5` и для всех
+     остальных игроков (`tools/accessories-model/fpv_shaders.py`): маркерные `minecraft:constant` тинты
+     `-196867` (`RGB 252,254,253` -> отсечка `< 1.85m` для кагуне, сколопендры и нимба) и `-197122`
+     (`RGB 252,253,254` -> отсечка `< 2.85m` для крыльев) + GLSL fragment `discard` в `core/entity.{vsh,fsh}` и
+     `core/rendertype_item_entity_translucent_cull.{vsh,fsh}` по всем версиям (`<= 1.21.1`, `1_21_2` для `1.21.2–1.21.5`,
+     `1_21_6` для `1.21.6–1.21.8`, `1_21_9` `#version 330` + `PER_FACE_LIGHTING` для `1.21.9–1.21.11`) + `sodium.ignored_shaders`.
+   - Актуальные блюпринты в `plugins/ModelEngine/blueprints/` и RP (`SHA-1: 5694f7064ac0bd21c8837ac20faf574c59cd729f`):
      * `elytrix_angel_halo.bbmodel` (нимб, 161 куб, `halo_ring` + `halo_aura`)
      * `elytrix_angel_wings.bbmodel` (крылья, 9 кубов на крыло + 6 падающих перьев)
      * `elytrix_kaneki_tentacles.bbmodel` (каноничное Ринкаку Кагуне Канеки Кена из аниме «Токийский Гуль»:

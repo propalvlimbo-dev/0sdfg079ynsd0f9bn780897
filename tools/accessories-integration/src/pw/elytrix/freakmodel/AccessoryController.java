@@ -565,8 +565,49 @@ public final class AccessoryController implements CommandExecutor, Listener {
             + "', привязка к PivotOverride активна");
     }
 
+    static ModelBlueprint resolveBlueprint(String blueprintId) {
+        if (blueprintId == null || blueprintId.isEmpty()) return null;
+        ModelBlueprint existing = ModelEngineAPI.getBlueprint(blueprintId);
+        if (existing != null) return existing;
+        try {
+            java.lang.reflect.Method getApi = ModelEngineAPI.class.getMethod("getAPI");
+            Object api = getApi.invoke(null);
+            if (api == null) return null;
+            Object generator = api.getClass().getMethod("getModelGenerator").invoke(api);
+            Object registry = api.getClass().getMethod("getModelRegistry").invoke(api);
+            if (generator == null || registry == null) return null;
+
+            java.io.File dataFolder = (java.io.File) api.getClass().getMethod("getDataFolder").invoke(api);
+            java.io.File bbFile = dataFolder != null
+                ? new java.io.File(new java.io.File(dataFolder, "blueprints"), blueprintId + ".bbmodel")
+                : new java.io.File("plugins/ModelEngine/blueprints/" + blueprintId + ".bbmodel");
+            if (!bbFile.isFile()) {
+                bbFile = new java.io.File("plugins/ModelEngine/blueprints/" + blueprintId + ".bbmodel");
+            }
+            if (!bbFile.isFile()) return null;
+
+            for (java.lang.reflect.Method m : generator.getClass().getDeclaredMethods()) {
+                Class<?>[] pt = m.getParameterTypes();
+                if (m.getReturnType() == void.class && pt.length == 2
+                        && pt[0] == java.io.File.class
+                        && pt[1].isAssignableFrom(registry.getClass())) {
+                    m.setAccessible(true);
+                    m.invoke(generator, bbFile, registry);
+                    break;
+                }
+            }
+            ModelBlueprint loaded = ModelEngineAPI.getBlueprint(blueprintId);
+            if (loaded != null && host != null) {
+                host.getLogger().info("[Аксессуары] Авто-догружена модель из blueprints: " + blueprintId);
+            }
+            return loaded;
+        } catch (Throwable ignored) {
+            return ModelEngineAPI.getBlueprint(blueprintId);
+        }
+    }
+
     private static GhoulRig spawnRig(Player player, String blueprintId) {
-        ModelBlueprint blueprint = ModelEngineAPI.getBlueprint(blueprintId);
+        ModelBlueprint blueprint = resolveBlueprint(blueprintId);
         if (blueprint == null) return null;
 
         Dummy<Player> dummy = new Dummy<>(player);
@@ -674,12 +715,13 @@ public final class AccessoryController implements CommandExecutor, Listener {
     }
 
     static void logLoadedModels() {
-        if (modelsLogged || host == null) return;
+        if (modelsLogged || host == null || petTicks < 60L) return;
         modelsLogged = true;
         StringBuilder missing = new StringBuilder();
         for (String id : new String[] {"elytrix_angel_wings", "elytrix_angel_halo",
-                                       KANEKI_BLUEPRINT, CENTIPEDE_BLUEPRINT}) {
-            if (ModelEngineAPI.getBlueprint(id) == null) {
+                                       KANEKI_BLUEPRINT, CENTIPEDE_BLUEPRINT,
+                                       "elytrix_priora_black", "elytrix_priora_white", "elytrix_priora_pink"}) {
+            if (resolveBlueprint(id) == null && !id.startsWith("elytrix_priora_")) {
                 if (missing.length() > 0) missing.append(", ");
                 missing.append(id);
             }
@@ -873,7 +915,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
         String blueprint = slot == 12 ? "elytrix_angel_wings" : slot == 13 ? "elytrix_angel_halo"
             : slot == 14 ? KANEKI_BLUEPRINT : slot == 15 ? CENTIPEDE_BLUEPRINT : null;
-        if (blueprint != null && ModelEngineAPI.getBlueprint(blueprint) == null) {
+        if (blueprint != null && resolveBlueprint(blueprint) == null) {
             player.sendMessage("§cМодель ещё не загружена. Обратитесь к администрации.");
             return;
         }
@@ -912,7 +954,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
             player.sendMessage("§7Щупальца Канэки сняты.");
             return;
         }
-        if (ModelEngineAPI.getBlueprint(KANEKI_BLUEPRINT) == null) {
+        if (resolveBlueprint(KANEKI_BLUEPRINT) == null) {
             player.sendMessage("§cМодель кагуне Канэки ещё не загружена. Обратитесь к администрации.");
             return;
         }
@@ -942,7 +984,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
             player.sendMessage("§7Сколопендра снята.");
             return;
         }
-        if (ModelEngineAPI.getBlueprint(CENTIPEDE_BLUEPRINT) == null) {
+        if (resolveBlueprint(CENTIPEDE_BLUEPRINT) == null) {
             player.sendMessage("§cМодель сколопендры ещё не загружена. Обратитесь к администрации.");
             return;
         }

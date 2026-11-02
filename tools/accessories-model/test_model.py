@@ -432,7 +432,84 @@ class PackTests(unittest.TestCase):
                     self.assertEqual(definition['model'],
                                      f'modelengine:{model}/' + Path(name).stem)
                     self.assertEqual(definition['type'], 'minecraft:model')
-                    self.assertEqual(definition['tints'][0]['type'], 'minecraft:custom_model_data')
+                    self.assertEqual(definition['tints'],
+                                     [{'type': 'minecraft:constant', 'value': -196867}])
+
+    def test_first_person_hide_shaders_and_marker_tints(self):
+        with zipfile.ZipFile(self.pack) as pack:
+            names = set(pack.namelist())
+            mcmeta = json.loads(pack.read('pack.mcmeta'))
+            self.assertIn('min_format', mcmeta['pack'])
+            self.assertIn('max_format', mcmeta['pack'])
+            self.assertIn('supported_formats', mcmeta['pack'])
+            overlays = mcmeta['overlays']['entries']
+            self.assertEqual([e['directory'] for e in overlays], ['1_21_2', '1_21_6', '1_21_9'])
+            for entry in overlays:
+                self.assertIn('formats', entry)
+                self.assertIn('min_format', entry)
+                self.assertIn('max_format', entry)
+            self.assertEqual(
+                set(mcmeta['sodium']['ignored_shaders']),
+                {
+                    'entity.vsh', 'entity.fsh',
+                    'rendertype_item_entity_translucent_cull.vsh',
+                    'rendertype_item_entity_translucent_cull.fsh',
+                    'rendertype_entity_translucent.vsh',
+                    'rendertype_entity_translucent.fsh',
+                },
+            )
+            shader_pairs = [
+                ('assets/minecraft/shaders/core/rendertype_entity_translucent', '#version 150'),
+                ('assets/minecraft/shaders/core/rendertype_item_entity_translucent_cull', '#version 150'),
+                ('1_21_2/assets/minecraft/shaders/core/rendertype_entity_translucent', '#version 150'),
+                ('1_21_2/assets/minecraft/shaders/core/entity', '#version 150'),
+                ('1_21_2/assets/minecraft/shaders/core/rendertype_item_entity_translucent_cull', '#version 150'),
+                ('1_21_6/assets/minecraft/shaders/core/entity', '#version 150'),
+                ('1_21_6/assets/minecraft/shaders/core/rendertype_item_entity_translucent_cull', '#version 150'),
+                ('1_21_9/assets/minecraft/shaders/core/entity', '#version 330'),
+                ('1_21_9/assets/minecraft/shaders/core/rendertype_item_entity_translucent_cull', '#version 330'),
+            ]
+            for stem, ver in shader_pairs:
+                vsh = pack.read(stem + '.vsh').decode('utf-8')
+                fsh = pack.read(stem + '.fsh').decode('utf-8')
+                self.assertTrue(vsh.startswith(ver), f'{stem}.vsh version mismatch')
+                self.assertTrue(fsh.startswith(ver), f'{stem}.fsh version mismatch')
+                for src_name, src in ((stem + '.vsh', vsh), (stem + '.fsh', fsh)):
+                    self.assertEqual(src.count('{'), src.count('}'), src_name)
+                    self.assertEqual(src.count('('), src.count(')'), src_name)
+                    ifdefs = sum(1 for ln in src.splitlines() if ln.strip().startswith(('#if ', '#ifdef ', '#ifndef ')))
+                    endifs = sum(1 for ln in src.splitlines() if ln.strip().startswith('#endif'))
+                    self.assertEqual(ifdefs, endifs, src_name)
+                self.assertIn('out float elytrixHideRadius;', vsh)
+                self.assertIn('out float elytrixEyeDist;', vsh)
+                self.assertIn('ivec3(252, 254, 253)', vsh)
+                self.assertIn('ivec3(252, 253, 254)', vsh)
+                self.assertIn('abs(ProjMat[2][3]) > 1e-4', vsh)
+                self.assertIn('in float elytrixHideRadius;', fsh)
+                self.assertIn('in float elytrixEyeDist;', fsh)
+                self.assertIn('elytrixEyeDist < elytrixHideRadius', fsh)
+            # 1.21.9+ entity shader must support PER_FACE_LIGHTING
+            self.assertIn('PER_FACE_LIGHTING', pack.read('1_21_9/assets/minecraft/shaders/core/entity.vsh').decode('utf-8'))
+            self.assertIn('PER_FACE_LIGHTING', pack.read('1_21_9/assets/minecraft/shaders/core/entity.fsh').decode('utf-8'))
+            # Worn wings & halo also carry marker tints; Priora & GUI icons do NOT
+            for n in names:
+                if n.startswith('assets/modelengine/items/elytrix_angel_wings/') and n.endswith('.json'):
+                    self.assertEqual(json.loads(pack.read(n))['model']['tints'],
+                                     [{'type': 'minecraft:constant', 'value': -197122}])
+                elif n.startswith('assets/modelengine/items/elytrix_angel_halo/') and n.endswith('.json'):
+                    self.assertEqual(json.loads(pack.read(n))['model']['tints'],
+                                     [{'type': 'minecraft:constant', 'value': -196867}])
+                elif n.startswith('assets/modelengine/items/elytrix_priora_black/') and n.endswith('.json'):
+                    self.assertEqual(json.loads(pack.read(n))['model']['tints'][0]['type'],
+                                     'minecraft:custom_model_data')
+
+    def test_modelengine_jar_blueprint_cap_removed(self):
+        me_jar = HERE.parent.parent / 'plugins' / 'ModelEngine-4.1.0.jar'
+        with zipfile.ZipFile(me_jar) as zf:
+            cls_bytes = zf.read('com/ticxo/modelengine/core/generator/ModelGeneratorImpl.class')
+        # SIPUSH 8192 = 0x11 0x20 0x00 must be present; BIPUSH 12 = 0x10 0x0C followed by IF_ICMPLT (0xA1) must NOT!
+        self.assertIn(b'\x11\x20\x00\xa1', cls_bytes)
+        self.assertNotIn(b'\x10\x0c\xa1', cls_bytes)
 
     def test_menu_icon_exists(self):
         with zipfile.ZipFile(self.pack) as pack:
