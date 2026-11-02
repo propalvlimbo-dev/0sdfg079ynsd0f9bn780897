@@ -1,0 +1,293 @@
+settings:
+  generate-on-startup: true
+  regenerate-on-every-startup: false
+  reset-progress-on-generate: true
+  rows: 5
+  max-amount-per-task: 3000
+  ignore-custom-items: true
+generator:
+  amount-multiplier: 4.3
+  min-score: 3.0
+  max-score: 68.0
+  custom-pool: {}
+quests:
+  '1':
+    slot: 0
+    type: TASK
+    action: CRAFT
+    material: CRAFTING_TABLE
+    amount: 192
+    name: Верстаки
+  '2':
+    slot: 1
+    type: TASK
+    action: BREAK
+    material: BIRCH_LOG
+    amount: 240
+    name: Берёзовые Брёвна
+  '3':
+    slot: 2
+    type: TASK
+    action: BREAK
+    material: CRIMSON_STEM
+    amount: 176
+    name: Багровые Стебли
+  '4':
+    slot: 3
+    type: TASK
+    action: BRING
+    material: OAK_PLANKS
+    amount: 240
+    name: Дубовые Доски
+  '5':
+    slot: 4
+    type: TASK
+    action: CRAFT
+    material: STICK
+    amount: 240
+    name: Палки
+  '6':
+    slot: 5
+    type: TASK
+    action: BREAK
+    material: OAK_LOG
+    amount: 240
+    name: Дубовые Брёвна
+  '7':
+    slot: 6
+    type: TASK
+    action: CRAFT
+    material: CHEST
+    amount: 144
+    name: Сундуки
+  '8':
+    slot: 7
+    type: TASK
+    action: CRAFT
+    material: BARREL
+    amount: 128
+    name: Бочки
+  '10':
+    slot: 9
+    type: TASK
+    action: BREAK
+    material: SPRUCE_LOG
+    amount: 1088
+    name: Еловые Брёвна
+  '11':
+    slot: 10
+    type: TASK
+    action: BREAK
+    material: JUNGLE_LOG
+    amount: 1024
+    name: Тропические Брёвна
+  '12':
+    slot: 11
+    type: TASK
+    action: CRAFT
+    material: CHEST
+    amount: 704
+    name: Сундуки
+  '13':
+    slot: 12
+    type: TASK
+    action: BREAK
+    material: WARPED_STEM
+    amount: 768
+    name: Искажённые Стебли
+  '14':
+    slot: 13
+    type: TASK
+    action: BREAK
+    material: BIRCH_LOG
+    amount: 1088
+    name: Берёзовые Брёвна
+  '15':
+    slot: 14
+    type: TASK
+    action: BREAK
+    material: CRIMSON_STEM
+    amount: 768
+    name: Багровые Стебли
+  '16':
+    slot: 15
+    type: TASK
+    action: BREAK
+    material: DARK_OAK_LOG
+    amount: 1088
+    name: Тёмно-дубовые Брёвна
+  '17':
+    slot: 16
+    type: TASK
+    action: BREAK
+    material: ACACIA_LOG
+    amount: 1024
+    name: Акациевые Брёвна
+  '19':
+    slot: 18
+    type: TASK
+    action: BREAK
+    material: OAK_LOG
+    amount: 1920
+    name: Дубовые Брёвна
+  '20':
+    slot: 19
+    type: TASK
+    action: CRAFT
+    material: STICK
+    amount: 1856
+    name: Палки
+  '21':
+    slot: 20
+    type: TASK
+    action: CRAFT
+    material: BARREL
+    amount: 1088
+    name: Бочки
+  '22':
+    slot: 21
+    type: TASK
+    action: BREAK
+    material: JUNGLE_LOG
+    amount: 1728
+    name: Тропические Брёвна
+  '23':
+    slot: 22
+    type: TASK
+    action: BRING
+    material: OAK_PLANKS
+    amount: 2048
+    name: Дубовые Доски
+  '24':
+    slot: 23
+    type: TASK
+    action: CRAFT
+    material: CHEST
+    amount: 1216
+    name: Сундуки
+  '25':
+    slot: 24
+    type: TASK
+    action: BREAK
+    material: BIRCH_LOG
+    amount: 1920
+    name: Берёзовые Брёвна
+  '26':
+    slot: 25
+    type: TASK
+    action: BREAK
+    material: DARK_OAK_LOG
+    amount: 1920
+    name: Тёмно-дубовые Брёвна
+  '28':
+    slot: 27
+    type: TASK
+    action: BREAK
+    material: BIRCH_LOG
+    amount: 2816
+    name: Берёзовые Брёвна
+  '29':
+    slot: 28
+    type: TASK
+    action: BREAK
+    material: JUNGLE_LOG
+    amount: 2560
+    name: Тропические Брёвна
+  '30':
+    slot: 29
+    type: TASK
+    action: BREAK
+    material: WARPED_STEM
+    amount: 1984
+    name: Искажённые Стебли
+  '31':
+    slot: 30
+    type: TASK
+    action: BRING
+    material: APPLE
+    amount: 1216
+    name: Яблоки
+  '32':
+    slot: 31
+    type: TASK
+    action: BREAK
+    material: CRIMSON_STEM
+    amount: 1984
+    name: Багровые Стебли
+  '33':
+    slot: 32
+    type: TASK
+    action: CRAFT
+    material: CRAFTING_TABLE
+    amount: 2432
+    name: Верстаки
+  '34':
+    slot: 33
+    type: TASK
+    action: CRAFT
+    material: STICK
+    amount: 2688
+    name: Палки
+  '35':
+    slot: 34
+    type: TASK
+    action: BREAK
+    material: OAK_LOG
+    amount: 2816
+    name: Дубовые Брёвна
+  '37':
+    slot: 36
+    type: TASK
+    action: CRAFT
+    material: BARREL
+    amount: 2048
+    name: Бочки
+  '38':
+    slot: 37
+    type: TASK
+    action: CRAFT
+    material: CHEST
+    amount: 2304
+    name: Сундуки
+  '39':
+    slot: 38
+    type: TASK
+    action: BRING
+    material: APPLE
+    amount: 1536
+    name: Яблоки
+  '40':
+    slot: 39
+    type: TASK
+    action: BREAK
+    material: WARPED_STEM
+    amount: 2560
+    name: Искажённые Стебли
+  '41':
+    slot: 40
+    type: TASK
+    action: BREAK
+    material: CRIMSON_STEM
+    amount: 2560
+    name: Багровые Стебли
+  '42':
+    slot: 41
+    type: TASK
+    action: CRAFT
+    material: CRAFTING_TABLE
+    amount: 3000
+    name: Верстаки
+  '43':
+    slot: 42
+    type: TASK
+    action: BREAK
+    material: JUNGLE_LOG
+    amount: 3000
+    name: Тропические Брёвна
+  '44':
+    slot: 43
+    type: TASK
+    action: BREAK
+    material: ACACIA_LOG
+    amount: 3000
+    name: Акациевые Брёвна

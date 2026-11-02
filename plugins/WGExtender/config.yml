@@ -1,0 +1,84 @@
+claim:
+  # Оставляем true, чтобы приват автоматически расширялся от бедрока до неба (-64..319 = 384 блока в обычном мире)
+  vertexpand: true
+
+  # Лимиты объёма одного региона по привилегиям (Объём = Ширина * Длина * Высота мира 384)
+  blocklimits:
+    enabled: true
+    limits:
+      # --- ИГРОКИ ---
+      default: 400000      # ~32x32
+      hero: 600000         # ~40x40
+      titan: 800000        # ~45x45
+      avenger: 1000000     # ~51x51
+      overlord: 1250000    # ~57x57
+      magister: 1500000    # ~62x62
+      imperator: 1800000   # ~68x68
+
+      # --- ДОНАТ ПРИВИЛЕГИИ ---
+      dragon: 25000000      # ~80x80
+      bull: 3800000        # ~100x100
+      rabbit: 5600000      # ~120x120
+      tiger: 6500000       # ~130x130
+      dracula: 7000000     # ~135x135
+      hydra: 7500000       # ~140x140
+      bunny: 8800000       # ~151x151
+      cobra: 10000000      # ~161x161
+      vampire: 11800000    # ~175x175
+      god: 13500000        # ~187x187
+      pegas: 18000000      # ~216x216
+      dhelper: 25000000    # ~255x255
+      angel: 38000000      # ~315x315
+      dadmin: 2147483647   # Безлимит
+
+      # --- МЕДИА ---
+      yt: 25000000         # ~255x255
+      youtube: 25000000    # ~255x255
+      media: 25000000      # ~255x255
+
+      # --- ПЕРСОНАЛ ---
+      helper: 25000000
+      mlmoder: 38000000
+      moder: 2147483647
+      moderplus: 2147483647
+      stmoder: 2147483647
+      glmoder: 2147483647
+      mladmin: 2147483647
+      fulladmin: 2147483647
+      admin: 2147483647
+      owner: 2147483647
+
+regionprotect:
+  flow:
+    lava: false    # ВАЖНО: Запрещает лаве течь ВНУТРЬ региона снаружи (защита от залива)
+    water: false   # ВАЖНО: Запрещает воде течь ВНУТРЬ региона (защита от затопления)
+    other: false
+  fire:
+    spread:
+      toregion: true # Огонь не перекинется на дом из леса
+      inregion: true # Огонь не будет расползаться внутри дома (камины безопасны)
+    burn: true       # Блоки внутри региона не будут сгорать (защита построек из дерева)
+  explosion:
+    block: false     # Доп. защита блоков от взрывов (хотя WorldGuard сам справляется, это страховка)
+    entity: true     # Защита рамок, стоек и мобов от взрывов ТНТ
+
+autoflags:
+  enabled: true # Включаем авто-флаги при создании региона
+  flags:
+    tnt: deny           # ТНТ не взрывается
+    pvp: allow
+
+restrictcommands:
+  enabled: false # Запрет команд в ЧУЖИХ регионах
+  commands:
+    - sethome
+    - esethome
+    - createhome
+    - ecreatehome
+    - setwarp
+    - tpaccept
+
+extendedwewand: false
+
+misc:
+  pvpmode: default

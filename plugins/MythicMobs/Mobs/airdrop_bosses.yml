@@ -1,0 +1,125 @@
+# =============================================================
+# Боссы АирДропа ElytrixAir
+# =============================================================
+
+AirDrop_ZombieKing:
+  Type: ZOMBIE
+  Display: '§x§F§8§B§E§F§B§lКороль Зомби'
+  Health: 666
+  Damage: 11
+  AIGoalSelectors:
+  - 0 clear
+  - 1 meleeattack
+  - 2 movetowardstarget
+  - 3 randomstroll
+  AITargetSelectors:
+  - 0 clear
+  - 1 attacker
+  - 2 players
+  Equipment:
+  - GOLDEN_HELMET HEAD
+  - NETHERITE_CHESTPLATE CHEST
+  - NETHERITE_LEGGINGS LEGS
+  - NETHERITE_BOOTS FEET
+  - NETHERITE_SWORD HAND
+  Options:
+    AlwaysShowName: true
+    MovementSpeed: 0.28
+    KnockbackResistance: 0.85
+    PreventOtherDrops: true
+    PreventRandomEquipment: true
+    PreventItemPickup: true
+    PreventSunburn: true
+    Persistent: true
+    Despawn: false
+    FollowRange: 35
+  Skills:
+  - potion{type=INCREASE_DAMAGE;duration=100;level=0} @self ~onTimer:120
+  - effect:particles{p=soul_fire_flame;amount=18;hS=0.5;vS=0.9;s=0.02} @self ~onTimer:20
+  - sound{s=entity.zombie_villager.converted;v=0.9;p=0.7} @self ~onSpawn
+
+AirDrop_SpiderBoss:
+  Type: SPIDER
+  Display: '§x§F§8§B§E§F§B§lПаукан'
+  Health: 666
+  Damage: 10
+  AIGoalSelectors:
+  - 0 clear
+  - 1 leapattarget
+  - 2 meleeattack
+  - 3 randomstroll
+  AITargetSelectors:
+  - 0 clear
+  - 1 attacker
+  - 2 players
+  Options:
+    AlwaysShowName: true
+    MovementSpeed: 0.33
+    KnockbackResistance: 0.8
+    PreventOtherDrops: true
+    Persistent: true
+    Despawn: false
+    FollowRange: 35
+  Skills:
+  - potion{type=POISON;duration=80;level=1} @target ~onAttack 0.35
+  - potion{type=SLOW;duration=60;level=1} @target ~onAttack 0.30
+  - effect:particles{p=witch;amount=16;hS=0.6;vS=0.5;s=0.02} @self ~onTimer:20
+  - sound{s=entity.spider.ambient;v=1.2;p=0.6} @self ~onSpawn
+
+AirDrop_HellTiger:
+  Type: WITHER_SKELETON
+  Display: '§x§F§8§B§E§F§B§lАдский тигр'
+  Health: 666
+  Damage: 12
+  AIGoalSelectors:
+  - 0 clear
+  - 1 meleeattack
+  - 2 movetowardstarget
+  - 3 randomstroll
+  AITargetSelectors:
+  - 0 clear
+  - 1 attacker
+  - 2 players
+  Equipment:
+  - NETHERITE_AXE HAND
+  - NETHERITE_CHESTPLATE CHEST
+  - NETHERITE_BOOTS FEET
+  Options:
+    AlwaysShowName: true
+    MovementSpeed: 0.31
+    KnockbackResistance: 0.85
+    PreventOtherDrops: true
+    PreventRandomEquipment: true
+    PreventItemPickup: true
+    Persistent: true
+    Despawn: false
+    FollowRange: 35
+  Skills:
+  - ignite{ticks=80} @target ~onAttack 0.45
+  - effect:particles{p=flame;amount=20;hS=0.5;vS=0.9;s=0.03} @self ~onTimer:20
+  - sound{s=entity.ravager.roar;v=1.0;p=0.8} @self ~onSpawn
+
+mso_lavastone_golem:
+  Type: IRON_GOLEM
+  Display: '§x§F§8§B§E§F§B§lХранитель АирДропа'
+  Health: 666
+  Damage: 12
+  AIGoalSelectors:
+  - 0 clear
+  - 1 meleeattack
+  - 2 movetowardstarget
+  - 3 randomstroll
+  AITargetSelectors:
+  - 0 clear
+  - 1 attacker
+  - 2 players
+  Options:
+    AlwaysShowName: true
+    MovementSpeed: 0.27
+    KnockbackResistance: 0.9
+    PreventOtherDrops: true
+    Persistent: true
+    Despawn: false
+    FollowRange: 35
+  Skills:
+  - effect:particles{p=lava;amount=10;hS=0.6;vS=0.8} @self ~onTimer:20

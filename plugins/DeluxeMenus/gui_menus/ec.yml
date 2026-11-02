@@ -1,0 +1,29 @@
+menu_title: '§fꈁꀀꈂꌄꈂꀁ§fꈃꄆ'
+open_command:
+- ec
+- enderchest
+- eechest
+size: 54
+items:
+  item_21:
+    material: basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHBzOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzM3NGVlMTU0MmM0NTYzZmQ2ZTdkNzJkZTI2ZTczN2NmMThmYmQwNGNjYWIxYjhiMjgzNTNkYTg3MzQ4ZWNmYiJ9fX0=
+    slot: 21
+    display_name: '&fОткрыть &#F8BEFBЭндер-сундук'
+    lore:
+      - ''
+      - '&a➠ Нажмите, чтобы открыть'
+    click_commands:
+      - '[player] nenderchest open'
+  item_23:
+    material: basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTcxNDUxNmU2NTY1YjgxMmZmNWIzOWVhMzljZDI4N2FmZWM4ZmNjMDZkOGYzMDUyMWNjZDhmMWI0Y2JmZGM2YiJ9fX0=
+    slot: 23
+    display_name: '&fПрокачать &#F8BEFBЭндер-сундук'
+    lore:
+      - ''
+      - '&7 Прокачка размера инвентаря'
+      - '&7 на разную длительность'
+      - '&7 по времени'
+      - ''
+      - '&a➠ Нажмите, чтобы открыть меню прокачки'
+    click_commands:
+      - '[player] nenderchest buy'

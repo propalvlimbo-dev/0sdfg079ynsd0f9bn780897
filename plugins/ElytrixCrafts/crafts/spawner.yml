@@ -1,0 +1,55 @@
+menu-slot: 13
+cooldown-hours: 24
+permission: quest.farm
+chain: farm
+result:
+  ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: SPAWNER
+ingredients:
+  '0':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: IRON_BARS
+  '1':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: IRON_BARS
+  '2':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BUBBLE_CORAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Осколок Энда"}],"text":""}'
+      custom-model-data: 1001
+  '3':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: IRON_BARS
+  '4':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHER_STAR
+  '5':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: EXPERIENCE_BOTTLE
+  '6':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BUBBLE_CORAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Осколок Энда"}],"text":""}'
+      custom-model-data: 1001
+  '7':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: EXPERIENCE_BOTTLE
+  '8':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: DIAMOND_SWORD

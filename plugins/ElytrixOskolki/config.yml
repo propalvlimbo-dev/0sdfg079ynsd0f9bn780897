@@ -1,0 +1,31 @@
+# СДЕЛАНО Elytrix
+# КТО БУДЕТ ДЕЛАТЬ ПЛАГИН ПОД СВОЙ, ТОТ ДУРАК!
+shard-item:
+  material: "BUBBLE_CORAL"
+  name: "&5Осколок Энда"
+  custom-model-data: 1001
+  lore: []
+
+messages:
+  no-permission: "&#FF5555У вас нет прав для использования этой команды!"
+  player-not-found: "&#FF5555Игрок не найден или оффлайн."
+  invalid-amount: "&#FF5555Укажите корректное количество (целое число больше 0)."
+  only-players: "Эту команду может выполнять только игрок!"
+
+  give-sender: "&#55FF55Вы выдали игроку &f%player% %amount% &x&f&f&5&5&5&5Осколков&a."
+  give-receiver: "&#55FF55Вам выдано %amount% &x&f&f&5&5&5&5Осколков&a!"
+
+  take-sender: "&#55FF55Вы забрали у игрока &f%player% %amount% &x&f&f&5&5&5&5Осколков&a."
+  take-receiver: "&#FF5555У вас забрали %amount% &x&f&f&5&5&5&5Осколков&c."
+
+  set-sender: "&#55FF55Вы установили баланс осколков игроку &f%player% на &f%amount%&a."
+
+  not-enough-shards: "&#FF5555У игрока &f%player% &cнедостаточно осколков!"
+  reload-success: "&#55FF55Конфигурация плагина успешно перезагружена!"
+
+  help:
+    - "&#F8BEFB/shards give <игрок> <кол-во> &7- Выдать осколки"
+    - "&#F8BEFB/shards take <игрок> <кол-во> &7- Забрать осколки"
+    - "&#F8BEFB/shards set <игрок> <кол-во> &7- Установить точное количество"
+    - "&#F8BEFB/shards balance [игрок] &7- Посмотреть баланс"
+    - "&#F8BEFB/shards reload &7- Перезагрузить конфиг"

@@ -1,0 +1,276 @@
+Name: pvpp
+Cooldown: 0
+Permission: nKits.kits.pvpp
+Order: 0
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: NETHERITE_SWORD
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        minecraft:fire_aspect: 2
+        minecraft:sharpness: 5
+        minecraft:unbreaking: 3
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: BOW
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        minecraft:flame: 1
+        minecraft:infinity: 1
+        minecraft:mending: 1
+        minecraft:power: 5
+        minecraft:punch: 2
+        minecraft:unbreaking: 2
+      repair-cost: 7
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: NETHERITE_PICKAXE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        minecraft:efficiency: 5
+        minecraft:unbreaking: 3
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: NETHERITE_SHOVEL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        minecraft:efficiency: 4
+        minecraft:unbreaking: 3
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: NETHERITE_AXE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        minecraft:efficiency: 5
+        minecraft:sharpness: 5
+        minecraft:unbreaking: 3
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: GOLDEN_CARROT
+    amount: 32
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: GOLDEN_APPLE
+    amount: 16
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: ENDER_PEARL
+    amount: 16
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: ENCHANTED_GOLDEN_APPLE
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: TOTEM_OF_UNDYING
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: TOTEM_OF_UNDYING
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: TOTEM_OF_UNDYING
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: ENDER_PEARL
+    amount: 16
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: POTION
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:strong_strength
+      custom-effects: &id001 []
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: POTION
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:strong_swiftness
+      custom-effects: *id001
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: POTION
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:strong_strength
+      custom-effects: *id001
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: POTION
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:strong_swiftness
+      custom-effects: *id001
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: TIPPED_ARROW
+    amount: 8
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:healing
+      custom-effects: *id001
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: POTION
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:strong_strength
+      custom-effects: *id001
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: POTION
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:strong_swiftness
+      custom-effects: *id001
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: POTION
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:fire_resistance
+      custom-effects: *id001
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: POTION
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:fire_resistance
+      custom-effects: *id001
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: POTION
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:fire_resistance
+      custom-effects: *id001
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: POTION
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:strong_swiftness
+      custom-effects: *id001
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: CHORUS_FRUIT
+    amount: 64
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: ARROW
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: TIPPED_ARROW
+    amount: 16
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:slow_falling
+      custom-effects: *id001
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: END_CRYSTAL
+    amount: 8
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: WIND_CHARGE
+    amount: 16
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: POTION
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:strong_strength
+      custom-effects: *id001
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: POTION
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:fire_resistance
+      custom-effects: *id001
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: OBSIDIAN
+    amount: 12
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: TOTEM_OF_UNDYING
+  Armor:
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: NETHERITE_BOOTS
+    meta:
+      ==: ItemMeta
+      meta-type: ARMOR
+      enchants:
+        minecraft:depth_strider: 3
+        minecraft:feather_falling: 2
+        minecraft:protection: 4
+        minecraft:unbreaking: 3
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: NETHERITE_LEGGINGS
+    meta:
+      ==: ItemMeta
+      meta-type: ARMOR
+      enchants:
+        minecraft:mending: 1
+        minecraft:protection: 4
+        minecraft:unbreaking: 3
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: NETHERITE_CHESTPLATE
+    meta:
+      ==: ItemMeta
+      meta-type: ARMOR
+      enchants:
+        minecraft:protection: 4
+        minecraft:unbreaking: 3
+  - ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: NETHERITE_HELMET
+    meta:
+      ==: ItemMeta
+      meta-type: ARMOR
+      enchants:
+        minecraft:aqua_affinity: 1
+        minecraft:mending: 1
+        minecraft:protection: 4
+        minecraft:respiration: 3
+        minecraft:unbreaking: 3
+      repair-cost: 1

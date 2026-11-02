@@ -1,0 +1,32 @@
+location: world_spawn:55.500:68.000:-12.500
+enabled: true
+display-range: 24
+update-range: 24
+update-interval: 20
+facing: 0.0
+down-origin: false
+pages:
+- lines:
+  - content: '&fТоп боевого пропуска на сервере <#F8BEFB>&lГРИФ #1</#FAD8FC>'
+    height: 0.5
+  - content: '%elytrixtops_bp_1%'
+    height: 0.3
+  - content: '%elytrixtops_bp_2%'
+    height: 0.3
+  - content: '%elytrixtops_bp_3%'
+    height: 0.3
+  - content: '%elytrixtops_bp_4%'
+    height: 0.3
+  - content: '%elytrixtops_bp_5%'
+    height: 0.3
+  - content: '%elytrixtops_bp_6%'
+    height: 0.3
+  - content: '%elytrixtops_bp_7%'
+    height: 0.3
+  - content: '%elytrixtops_bp_8%'
+    height: 0.3
+  - content: '%elytrixtops_bp_9%'
+    height: 0.3
+  - content: '%elytrixtops_bp_10%'
+    height: 0.3
+  actions: {}

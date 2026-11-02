@@ -1,0 +1,24 @@
+mysql:
+  host: 127.0.0.1
+  port: 3306
+  database: s29470_elytrix
+  user: u29470_iHvxVAwYg8
+  password: "<REDACTED_ON_PUBLIC_GITHUB>"
+
+api:
+  port: 20559
+  secret: "<REDACTED_ON_PUBLIC_GITHUB>"
+  ip-whitelist: []
+
+playtime:
+  worlds: []
+  limit: 10
+  include-default: false
+  exclude-groups:
+    - default
+    - support
+    - moderator
+    - curator
+    - admin
+    - owner
+    - developer

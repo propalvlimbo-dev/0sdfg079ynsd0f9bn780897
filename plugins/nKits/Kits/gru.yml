@@ -1,0 +1,65 @@
+Name: gru
+Cooldown: 0
+Permission: nKits.kits.gru
+Order: 0
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:enchantment_glint_override: 1b
+      minecraft:potion_contents: '{custom_color:4915330,custom_effects:[{amplifier:2b,duration:600,id:"minecraft:absorption",show_icon:1b},{amplifier:1b,duration:600,id:"minecraft:slowness",show_icon:1b},{amplifier:1b,duration:600,id:"minecraft:weakness",show_icon:1b},{duration:400,id:"minecraft:mining_fatigue",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"dark_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"Зелье
+        Грю",underlined:0b}],text:""}'
+    schema_version: 1
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  Armor:
+  - null
+  - null
+  - null
+  - null

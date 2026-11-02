@@ -1,0 +1,675 @@
+spawnWorld: world_spawn
+effect_block: world_spawn
+spawnLocation:
+  world: world_spawn
+  x: 0
+  y: 69
+  z: 0
+expColorTag: '&7'
+regionMessage: '&4Регион тут!'
+krov_ball:
+  material: PLAYER_HEAD
+  modelData: 5011
+  texture: ''
+  name: '&4&lШар Крови'
+  cooldown: 60
+  cooldownMessage: '&4&lШар Крови &7» &fПерезарядка &b%time% &fсек'
+  lore:
+  - '&cПроклятие утраты'
+  - '&7'
+  - '&7Пока во второй руке:'
+  - '&a+3.5 &7к броне'
+  - '&a+2 &7к урону'
+  - '&c-10% &7к скорости передвижения'
+  - '&7'
+  notification:
+    sound: true
+    soundType: ENTITY_PLAYER_HURT
+    message: true
+    messageText: '&4&lШар Крови &7» &fВы использовали Шар Крови!'
+    title: false
+    titleName: ''
+    titleText: ''
+darkness_ball:
+  material: PLAYER_HEAD
+  modelData: 5010
+  texture: ''
+  name: '&5&lШар Тьмы'
+  cooldown: 60
+  cooldownMessage: '&5&lШар Тьмы &7» &fПерезарядка &b%time% &fсек'
+  lore:
+  - '&cПроклятие утраты'
+  - '&7'
+  - '&7Пока во второй руке:'
+  - '&a+2 &7к урону'
+  - '&a+30% &7к скорости передвижения'
+  - '&a+6 &7к максимальному здоровью'
+  - '&7'
+  notification:
+    sound: true
+    soundType: ENTITY_WARDEN_DIG
+    message: true
+    messageText: '&5&lШар Тьмы &7» &fВы использовали Шар Тьмы!'
+    title: false
+    titleName: ''
+    titleText: ''
+lightning_ball:
+  material: PLAYER_HEAD
+  modelData: 5009
+  texture: ''
+  name: '&d&lШар Молнии'
+  cooldown: 60
+  cooldownMessage: '&d&lШар Молнии &7» &fПерезарядка &b%time% &fсек'
+  lore:
+  - '&cПроклятие утраты'
+  - '&7'
+  - '&7Пока во второй руке:'
+  - '&a+3 &7к урону'
+  - '&a+25% &7к скорости передвижения'
+  - '&7'
+  notification:
+    sound: true
+    soundType: ENTITY_LIGHTNING_BOLT_THUNDER
+    message: true
+    messageText: '&d&lШар Молнии &7» &fВы использовали Шар Молнии!'
+    title: false
+    titleName: ''
+    titleText: ''
+ice_ball:
+  material: PLAYER_HEAD
+  modelData: 5008
+  texture: ''
+  name: '&#F8BEFB&lШар Роузи'
+  cooldown: 60
+  cooldownMessage: '&#F8BEFB&lШар Роузи &7» &fПерезарядка &#F8BEFB%time% &fсек'
+  lore:
+  - '&cПроклятие утраты'
+  - '&7'
+  - '&7Пока во второй руке:'
+  - '&a+10 &7к максимальному здоровью'
+  - '&a+2.5 &7к броне'
+  - '&7'
+  - '&7При нажатии SHIFT:'
+  - '&#F8BEFBВихрь лепестков Роузи &7в радиусе 8 бл.'
+  - '&aРегенерация II &7владельцу на 4 сек.'
+  notification:
+    sound: true
+    soundType: BLOCK_AMETHYST_BLOCK_CHIME
+    message: true
+    messageText: '&#F8BEFB&lШар Роузи &7» &fВы активировали вихрь лепестков &#F8BEFBElytrix&f!'
+    title: false
+    titleName: ''
+    titleText: ''
+ender_trapka:
+  material: HEART_OF_THE_SEA
+  name: '&5&lЭндер Ловушка'
+  model-data: 101
+  lore:
+  - ''
+  - '&7При нажатии ПКМ:'
+  - '&9Ставит ловушку вокруг игрока'
+  - '&9Запрещает телепортацию хорусом и перлами'
+  duration: 10
+  cooldown: 45
+  radius: 3
+  sphereMaterial: PURPLE_STAINED_GLASS
+  maxTrapsPerPlayer: 1
+  allowedWorlds:
+  - world
+  - world_nether
+  - world_the_end
+  blacklistedBlocks:
+  - BEDROCK
+  - OBSIDIAN
+  - END_PORTAL
+  - END_PORTAL_FRAME
+  - NETHER_PORTAL
+  - CHEST
+  - TRAPPED_CHEST
+  - BARREL
+  - SHULKER_BOX
+  - ENDER_CHEST
+  - HOPPER
+  - DROPPER
+  - DISPENSER
+  - FURNACE
+  - BLAST_FURNACE
+  - SMOKER
+  - BREWING_STAND
+  activateSound: BLOCK_GLASS_PLACE
+  expireSound: BLOCK_GLASS_BREAK
+  cooldownMessage: '&b&lЛовушка &7» &fПерезарядка &b%time% &fсек'
+  expiredMessage: '&b&lЛовушка &7» &aЛовушка исчезла!'
+  insideTrapMessage: '&b&lЛовушка &7» &cНельзя ставить ловушку внутри другой ловушки!'
+  alreadyActiveMessage: '&b&lЛовушка &7» &cУ вас уже есть активная ловушка!'
+  wrongWorldMessage: '&b&lЛовушка &7» &cЛовушку нельзя использовать в этом мире!'
+  notification:
+    sound: false
+    soundType: BLOCK_GLASS_PLACE
+    title: false
+    titleName: ''
+    titleText: ''
+    message: false
+    messageText: ''
+trap:
+  material: HEART_OF_THE_SEA
+  name: '&b&lЛовушка'
+  lore:
+  - '&cПроклятие утраты'
+  - ''
+  - '&7При нажатии ПКМ:'
+  - '&9Ставит ловушку вокруг игрока'
+  duration: 10
+  cooldown: 45
+  radius: 3
+  sphereMaterial: BLUE_STAINED_GLASS
+  maxTrapsPerPlayer: 1
+  allowedWorlds:
+  - world
+  - world_nether
+  - world_the_end
+  blacklistedBlocks:
+  - BEDROCK
+  - OBSIDIAN
+  - END_PORTAL
+  - END_PORTAL_FRAME
+  - NETHER_PORTAL
+  - CHEST
+  - TRAPPED_CHEST
+  - BARREL
+  - SHULKER_BOX
+  - ENDER_CHEST
+  - HOPPER
+  - DROPPER
+  - DISPENSER
+  - FURNACE
+  - BLAST_FURNACE
+  - SMOKER
+  - BREWING_STAND
+  activateSound: BLOCK_GLASS_PLACE
+  expireSound: BLOCK_GLASS_BREAK
+  cooldownMessage: '&b&lЛовушка &7» &fПерезарядка &b%time% &fсек'
+  expiredMessage: '&b&lЛовушка &7» &aЛовушка исчезла!'
+  insideTrapMessage: '&b&lЛовушка &7» &cНельзя ставить ловушку внутри другой ловушки!'
+  alreadyActiveMessage: '&b&lЛовушка &7» &cУ вас уже есть активная ловушка!'
+  wrongWorldMessage: '&b&lЛовушка &7» &cЛовушку нельзя использовать в этом мире!'
+  notification:
+    sound: false
+    soundType: BLOCK_GLASS_PLACE
+    title: false
+    titleName: ''
+    titleText: ''
+    message: false
+    messageText: ''
+fire_ball:
+  material: PLAYER_HEAD
+  modelData: 5003
+  glow: true
+  texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWBiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
+  name: '&c&lШар Огня'
+  lore:
+  - '&cПроклятие утраты '
+  - ''
+  - '&7Когда в руке'
+  - '&7Огнеупорность'
+  - ''
+  - '&7При экипировке в левой руке:'
+  - '&9 +2.5 Урон атаки'
+  - '&9 +0.3 Скорость атаки'
+  - '&9 +4 Макс. здоровье'
+  notification:
+    sound: false
+    soundType: ENTITY_EXPERIENCE_ORB_PICKUP
+    message: true
+    messageText: ''
+    title: false
+    titleName: ''
+    titleText: ''
+air_ball:
+  material: PLAYER_HEAD
+  glow: true
+  modelData: 5001
+  texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWBiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
+  name: '&f&lШар Воздуха'
+  cooldown: 60
+  cooldownMessage: '&f&lШар Воздуха &7» &fПерезарядка &b%time% &fсек'
+  lore:
+  - '&cПроклятие утраты '
+  - ''
+  - '&7Когда во второй руке'
+  - '&7При нажатии SHIFT:'
+  - '&7Левитация II (00:08)'
+  - ''
+  - '&7При экипировке в левой руке:'
+  - '&9 +2.3 Урон атаки'
+  - '&9 +35% Скорость передвижения'
+  - '&9 +1.5 Отбрасывание атаки'
+  notification:
+    sound: false
+    soundType: ENTITY_EXPERIENCE_ORB_PICKUP
+    message: true
+    messageText: ''
+    title: false
+    titleName: ''
+    titleText: ''
+water_ball:
+  material: PLAYER_HEAD
+  modelData: 5005
+  glow: true
+  texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWBiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
+  name: '&9&lШар Воды'
+  cooldown: 120
+  cooldownMessage: '&9&lШар Воды &7» &fПерезарядка &b%time% &fсек'
+  lore:
+  - '&cПроклятие утраты '
+  - ''
+  - '&7Когда во второй руке'
+  - '&7При нажатии SHIFT:'
+  - '&7Подводное дыхание (01:00)'
+  - '&7Грация дельфина (00:10)'
+  - ''
+  - '&7При экипировке в левой руке:'
+  - '&9 +30% Скорость передвижения'
+  - '&9 +12 Макс. здоровье'
+  notification:
+    sound: false
+    soundType: ENTITY_EXPERIENCE_ORB_PICKUP
+    message: true
+    messageText: ''
+    title: false
+    titleName: ''
+    titleText: ''
+earth_ball:
+  material: PLAYER_HEAD
+  modelData: 5002
+  glow: true
+  texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWBiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
+  name: '&x&F&8&B&E&F&B&lШар Земли'
+  cooldown: 60
+  cooldownMessage: '&x&F&8&B&E&F&B&lШар Земли &7» &fПерезарядка &b%time% &fсек'
+  lore:
+  - '&cПроклятие утраты '
+  - ''
+  - '&7Когда во второй руке'
+  - '&7При нажатии SHIFT:'
+  - '&7Спешка II (00:08)'
+  - ''
+  - '&7При экипировке в левой руке:'
+  - '&9 +2 Сопротивление отбрасыванию'
+  - '&9 +4 Прочность брони'
+  - '&9 +4.5 Броня'
+  notification:
+    sound: false
+    soundType: ENTITY_EXPERIENCE_ORB_PICKUP
+    message: true
+    messageText: ''
+    title: false
+    titleName: ''
+    titleText: ''
+harmony_ball:
+  material: PLAYER_HEAD
+  modelData: 5006
+  glow: true
+  texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWBiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
+  name: '&d&lШар Порядка'
+  cooldown: 30
+  cooldownMessage: '&d&lШар Порядка &7» &fПерезарядка &b%time% &fсек'
+  effectDuration: 10
+  lore:
+  - '&cПроклятие утраты '
+  - ''
+  - '&7Когда во второй руке'
+  - '&7При нажатии SHIFT:'
+  - '&7Регенерация II (00:08)'
+  - ''
+  - '&7При экипировке в левой руке:'
+  - '&9 +15% Скорость передвижения'
+  - '&9 +2 Броня'
+  - '&9 +20 Макс. здоровье'
+  notification:
+    sound: false
+    soundType: ENTITY_EXPERIENCE_ORB_PICKUP
+    message: true
+    messageText: ''
+    title: false
+    titleName: ''
+    titleText: ''
+chaos_ball:
+  material: PLAYER_HEAD
+  modelData: 5007
+  glow: true
+  texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWBiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
+  name: '&5&lШар Хаоса'
+  cooldown: 60
+  cooldownMessage: '&5&lШар Хаоса &7» &fПерезарядка &b%time% &fсек'
+  lore:
+  - '&cПроклятие утраты '
+  - ''
+  - '&7Когда во второй руке'
+  - '&7При нажатии SHIFT:'
+  - '&7В радиусе 8 блоков'
+  - '&7Слабость II (00:10)'
+  - ''
+  - '&7При экипировке в левой руке:'
+  - '&9 +2.5 Броня'
+  - '&9 -10 Макс. здоровье'
+  - '&9 +3 Урон атаки'
+  - '&9 +0.4 Скорость атаки'
+  notification:
+    sound: false
+    soundType: ENTITY_EXPERIENCE_ORB_PICKUP
+    message: true
+    messageText: ''
+    title: false
+    titleName: ''
+    titleText: ''
+light_ball:
+  material: PLAYER_HEAD
+  modelData: 5004
+  texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWBiYTczZjYzOWY0YmM0MjJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
+  name: '&f&lШар Света'
+  glow: true
+  cooldown: 60
+  cooldownMessage: '&x&F&A&D&8&F&C&lШар Света &7» &fПерезарядка &b%time% &fсек'
+  lore:
+  - '&cПроклятие утраты '
+  - ''
+  - '&7Когда во второй руке'
+  - '&7При нажатии SHIFT:'
+  - '&7В радиусе 16 блоков'
+  - '&7Светлячок (01:00)'
+  - ''
+  - '&7При экипировке в левой руке:'
+  - '&9 +2 Урон атаки'
+  - '&9 +3.5 Удача'
+  - '&9 +3 Броня'
+  notification:
+    sound: false
+    soundType: ENTITY_EXPERIENCE_ORB_PICKUP
+    message: true
+    messageText: ''
+    title: false
+    titleName: ''
+    titleText: ''
+god_ball:
+  material: PLAYER_HEAD
+  texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjZkNDI3YTg5YzRjYmZkOTk4ODI2YzY0MjViNjNiZmM3ZmJkMmVkZjgxZWI3ZjUyODE4NmJlNjZjNTQ1ZTc5In19fQ==
+  name: '&f&lШАР БОГА'
+  cooldown: 400
+  cooldownMessage: '&f&lШАР БОГА &7» &fПерезарядка &b%time% &fсек'
+  lore:
+  - '&cПроклятие утраты '
+  - ''
+  - '&7Когда во второй руке'
+  - '&7При нажатии SHIFT:'
+  - '&7Сопротивление III (00:06)'
+  - ''
+  - '&7При экипировке в левой руке:'
+  - '&9 +25% Скорость'
+  - '&9 +3 Броня'
+  - '&9 +2.7 Урон'
+  notification:
+    sound: false
+    soundType: ENTITY_EXPERIENCE_ORB_PICKUP
+    message: true
+    messageText: ''
+    title: false
+    titleName: ''
+    titleText: ''
+pegas_ball:
+  material: PLAYER_HEAD
+  texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmU3OGM0NzYyNjc0ZGRlOGIxYTVhMWU4NzNiMzNmMjhlMTNlN2MxMDJiMTkzZjY4MzU0OWIzOGRjNzBlMCJ9fX0=
+  name: '&b&lГолова Пегаса'
+  cooldown: 400
+  cooldownMessage: '&b&lГолова Пегаса &7» &fПерезарядка &b%time% &fсек'
+  lore:
+  - '&cПроклятие утраты '
+  - '&b&lПри нажатии SHIFT:'
+  - '&b&lВы получаете СКОРОСТЬ III (0:10)'
+  - ''
+  - '&7Когда во второстепенной руке:'
+  - '&9+0.3 Скорость атаки'
+  - '&9+15 Максимальное здоровье'
+  - '&9+2.5 Урон'
+  - '&9+5 Броня'
+  notification:
+    sound: false
+    soundType: ENTITY_EXPERIENCE_ORB_PICKUP
+    message: true
+    messageText: ''
+    title: false
+    titleName: ''
+    titleText: ''
+dracula_head:
+  material: PLAYER_HEAD
+  texture: ewogICJ0aW1lc3RhbXAiIDogMTY2NzAwNTExMDk4MCwKICAicHJvZmlsZUlkIiA6ICI1YjcyYmU5MGZiYjg0OGNiODFiZTNhMGVlNmNlOGUzZCIsCiAgInByb2ZpbGVOYW1lIiA6ICJHb3JuZSIsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8yZTlhYzBjYzA1ZjUyODA1MTBmOTE2NzIxZDc4ODI5NTVjNjgzMTRjODkxNzBkZTgzNWQzZDMxNjQwNjAzZTliIgogICAgfQogIH0KfQ==
+  name: '&c&lГолова Люцифера'
+  vampirismChance: 7
+  vampirismHeal: 2.0
+  vampirismDamage: 2.0
+  lore:
+  - '&cПроклятие утраты'
+  - '&r'
+  - '&7Вампиризм'
+  - '&r'
+  - '&7Когда надето на голову:'
+  - '&9+19% Скорость'
+cobra_ball:
+  material: PLAYER_HEAD
+  texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWRhMjgxM2Q0ZjVhY2Q2OWVkNTkwYzFkOGE0NDJiNTk1NTE5ZGNiYzBlMTcxOThhZGZhYWFhZjE1Zjg5YjAifX19
+  name: '&2&lГолова Кобры'
+  poisonDuration: 60
+  poisonLevel: 0
+  lore:
+  - '&cПроклятие утраты'
+  - '&r'
+  - '&7Когда во второй руке:'
+  - '&a+3.0 к Урону'
+  - '&a+20% к Скорости атаки'
+  - '&a+2.5 к Стойкости'
+  - '&aОтравляет врагов ядом'
+bunny_ball:
+  material: PLAYER_HEAD
+  texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGNhMDNmN2U2Mzg1MTJjNzBhNDRjNDI5OTQyZTc4YzM2YTNkYWY5ZDBhNTMyOThhOWU4NjYyYzJiNjMyZTEyOSJ9fX0=
+  name: '&8&lШар BUNNY'
+  lore:
+  - '&cПроклятие утраты'
+  - '&r'
+  - '&7Когда во второй руке:'
+  - '&9+3.9 к Броне'
+  - '&9+21% к Скорости'
+draconid_totem:
+  material: TOTEM_OF_UNDYING
+  name: '&x&F&8&B&E&F&BТотем Драконида'
+  message: '&x&F&8&B&E&F&BТотем Драконида &7» &cПотрачен тотем'
+  lore:
+  - '&7Срабатывает, когда'
+  - '&7лежит в инвентаре'
+witch_totem:
+  material: TOTEM_OF_UNDYING
+  name: '&5Тотем Ведьмы'
+  message: '&5Тотем Ведьмы &7» &aВы сохранили свои эффекты'
+  lore:
+  - '&7Сохраняет эффекты'
+neptun_trident:
+  material: TRIDENT
+  name: '&b&lТрезубец Нептуна'
+  lore:
+  - '&7Даёт рывок к цели, при успешном попадании трезубцем на расстоянии'
+kratos_axe:
+  material: NETHERITE_AXE
+  name: '&c&lТопор Кратоса'
+  lore:
+  - '&7Заговор огня II'
+  - '&7Острота VI'
+  - '&7Прочность III'
+  - '&r'
+  - '&7Когда в руке'
+  - '&cЗамедление II'
+healing_potion:
+  material: POTION
+  name: Целительное зелье
+  lore:
+  - Снимает негативные эффекты
+random_potion:
+  material: POTION
+  name: '&b&lРандомное зелье'
+  lore:
+  - '&9&kРандомное зелье'
+  - '&9Дает 3 случайных эффекта'
+random_egg:
+  material: PIG_SPAWN_EGG
+  name: '&b&lРандомное яйцо'
+  lore:
+  - ''
+  - '  &9Призывает: &k1234567'
+  - ''
+clear_arrow:
+  material: TIPPED_ARROW
+  name: '&f&lКлирик'
+  lore:
+  - '&9Очищает все эффекты c врага'
+heart_of_hydra:
+  material: HEART_OF_THE_SEA
+  name: '&5Сердце Гидры'
+  lore:
+  - При использовании сохраняет ваши вещи
+scroll_of_exp:
+  material: FLOWER_BANNER_PATTERN
+  name: '&fСвиток опыта'
+  maxExp: 3500
+  lore:
+  - ''
+  - '  &f%bar%  '
+  - '  &70 &fꐇ  '
+  - ''
+  - ''
+  - '&9Когда во второй руке:'
+  - '  &fСобирает в себя весь опыт'
+  - ''
+  - '&9Когда в основной руке:'
+  - '&9При нажатии ПКМ:'
+  - '  &fДает вам 5 опыта'
+  - ''
+anti_fly:
+  material: FIREWORK_STAR
+  name: '&5Анти Полет'
+  duration: 10
+  cooldown: 15
+  radius: 16
+  cooldownMessage: '&5Анти Полет &7» &fПерезарядка &b%time% &fсек'
+  victimMessage: '&5Анти Полет &7» &cВы не можете взлететь!'
+  lore:
+  - '&cПроклятье утраты'
+  - ''
+  - '&7Когда во второй руке'
+  - '&7При нажатии SHIFT:'
+  - '&9Запрещает полеты в радиусе 16 блоков'
+  notification:
+    sound: false
+    soundType: ENTITY_EXPERIENCE_ORB_PICKUP
+    message: true
+    messageText: '&5Анти Полет &7» &fВы использовали &5Анти Полет'
+    title: false
+    titleName: ''
+    titleText: ''
+dark_pulse:
+  material: FIREWORK_STAR
+  name: '&5&lТёмный Пульс'
+  cooldown: 60
+  radius: 16
+  blindnessDuration: 200
+  cooldownMessage: '&5&lТёмный Пульс &7» &fПерезарядка &b%time% &fсек'
+  lore:
+  - '&7'
+  - '&7Когда во второй руке'
+  - '&7При нажатии SHIFT:'
+  - '&9В радиусе 16 блоков'
+  - '&9будут ослеплены все сущности.'
+  - '&7'
+  notification:
+    sound: false
+    soundType: ENTITY_EXPERIENCE_ORB_PICKUP
+    message: true
+    messageText: '&5&lТёмный Пульс &7» &fВы использовали &5Тёмный Пульс'
+    title: false
+    titleName: ''
+    titleText: ''
+farm_ball:
+  material: PLAYER_HEAD
+  texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWFmMzI4Yzg3YjA2ODUwOWFjYTk4MzRlZmFjZTE5NzcwNWZlNWQ0ZjA4NzE3MzFiN2IyMWNkOTliOWZkZGMifX19
+  name: '&aШар огородника'
+  cooldown: 30
+  radius: 15
+  replantChance: 80
+  cooldownMessage: '&aШар огородника &8» &fПерезарядка &b%time% &fсек'
+  lore:
+  - '&cПроклятие утраты'
+  - '&7Удача III (На растения)'
+  - ''
+  - '&7Когда во второй руке'
+  - '&7При нажатии SHIFT:'
+  - '&9Выращивает растения вокруг вас'
+  notification:
+    sound: true
+    soundType: ENTITY_EXPERIENCE_ORB_PICKUP
+    message: true
+    messageText: '&aШар Огородника &7» &aВы использовали шар огородника'
+    title: false
+    titleName: ''
+    titleText: ''
+shears:
+  material: SHEARS
+  name: '&x&F&8&B&E&F&B&lСупер Ножницы &7- &x&F&8&B&E&F&B3 &7использований'
+  cooldown: 25
+  lore:
+  - '&7Этими ножницами можно &x&F&8&B&E&F&Bломать &7спавнера'
+  - '&7Время ломания: &x&F&8&B&E&F&B25 секунд'
+  - ''
+  messages:
+    inRegion: '&x&F&8&B&E&F&B&lСупер Ножницы &8» &cТы находишься в регионе, действие невозможно'
+    isBreaking: '&x&F&8&B&E&F&B&lСупер Ножницы &8» &fПодождите &x&F&8&B&E&F&B%time% &fсек.'
+    breakMessage: '&x&F&8&B&E&F&B&lСупер Ножницы &8» &cНожницы сломались!'
+custom_items:
+  angel_ball:
+    name: '&x&F&8&B&E&F&B&lШар Ангела'
+    material: PLAYER_HEAD
+    modelData: 5012
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWJjYjBiNWJmY2EyYmI3NjljYjM4NjM1ZWRlYzBmMTE0NzRiNjdjM2RkMjE2NWFlZGIwNjA0ZTc1YzM2In19fQ==
+    effect: RESISTANCE
+    amplifier: 1
+    duration: 8
+    cooldown: 90
+    cooldownMessage: '&7» &fПерезарядка &x&F&8&B&E&F&BШара Ангела&f: &x&F&8&B&E&F&B%time% &fсек.'
+    lore:
+    - '&cПроклятие утраты'
+    - ''
+    - '&7Когда во второй руке:'
+    - ' &x&5&5&F&F&5&5+3 к Броне'
+    - ' &x&5&5&F&F&5&5+6 к Здоровью'
+    - ' &x&5&5&F&F&5&5+2.5 к Урону'
+    - ' &x&5&5&F&F&5&5+15% к Скорости'
+    - ''
+    - '&7При нажатии SHIFT:'
+    - ' &x&F&8&B&E&F&BСопротивление II (0:08)'
+  dadmin_ball:
+    name: '&x&F&F&3&B&4&E&lШар Д.Админа'
+    material: PLAYER_HEAD
+    modelData: 5013
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWY0YzIxZDE3YWQ2MzYzODdlYTNjNzM2YmZmNmFkZTg5NzMxN2UxMzc0Y2Q1ZDliMWMxNWU2ZTg5NTM0MzIifX19
+    effect: STRENGTH
+    amplifier: 2
+    duration: 8
+    cooldown: 75
+    cooldownMessage: '&7» &fПерезарядка &x&F&F&3&B&4&EШара Д.Админа&f: &x&F&F&3&B&4&E%time% &fсек.'
+    lore:
+    - '&cПроклятие утраты'
+    - ''
+    - '&7Когда во второй руке:'
+    - ' &x&5&5&F&F&5&5+4 к Броне'
+    - ' &x&5&5&F&F&5&5+10 к Здоровью'
+    - ' &x&5&5&F&F&5&5+3.5 к Урону'
+    - ' &x&5&5&F&F&5&5+20% к Скорости'
+    - ''
+    - '&7При нажатии SHIFT:'
+    - ' &x&F&F&3&B&4&EСила III (0:08)'

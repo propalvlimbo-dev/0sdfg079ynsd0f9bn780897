@@ -1,0 +1,67 @@
+Name: nerum
+Cooldown: 0
+Permission: nKits.kits.nerum
+Order: 0
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: GOLDEN_HELMET
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"yellow","text":"Нерушимый
+        Шлем"}],"text":""}'
+      enchants:
+        PROTECTION_ENVIRONMENTAL: 4
+        OXYGEN: 3
+        VANISHING_CURSE: 1
+      repair-cost: 7
+      Unbreakable: true
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  Armor:
+  - null
+  - null
+  - null
+  - null

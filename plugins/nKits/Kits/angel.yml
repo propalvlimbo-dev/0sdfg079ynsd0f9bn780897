@@ -1,0 +1,249 @@
+Name: angel
+Cooldown: 259200
+Permission: nKits.kits.angel
+Order: 0
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:netherite_sword
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"Клинок ANGEL",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:fire_aspect":2,"minecraft:looting":3,"minecraft:mending":1,"minecraft:sharpness":6,"minecraft:sweeping_edge":3,"minecraft:unbreaking":4}'
+      minecraft:custom_model_data: '{floats:[5012.0f]}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:netherite_pickaxe
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"Кирка ANGEL",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:efficiency":8,"minecraft:fortune":4,"minecraft:mending":1,"minecraft:unbreaking":4}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:netherite_axe
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"Секира ANGEL",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:efficiency":8,"minecraft:mending":1,"minecraft:sharpness":5,"minecraft:unbreaking":4}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:netherite_shovel
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"Лопата ANGEL",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:efficiency":8,"minecraft:mending":1,"minecraft:unbreaking":4}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:bow
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"Лук ANGEL",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:flame":1,"minecraft:infinity":1,"minecraft:mending":1,"minecraft:power":7,"minecraft:punch":2,"minecraft:unbreaking":4}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:crossbow
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"Арбалет ANGEL",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:mending":1,"minecraft:multishot":1,"minecraft:quick_charge":3,"minecraft:unbreaking":4}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:elytra
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"Крылья ANGEL",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:mending":1,"minecraft:unbreaking":5}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:firework_rocket
+    count: 64
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:enchanted_golden_apple
+    count: 4
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:golden_apple
+    count: 64
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:golden_carrot
+    count: 64
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:ender_pearl
+    count: 16
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:ender_pearl
+    count: 16
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:totem_of_undying
+    count: 1
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:totem_of_undying
+    count: 1
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:totem_of_undying
+    count: 1
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:experience_bottle
+    count: 64
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:chorus_fruit
+    count: 64
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:tipped_arrow
+    count: 32
+    components:
+      minecraft:potion_contents: '{potion:"minecraft:strong_strength"}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:tipped_arrow
+    count: 32
+    components:
+      minecraft:potion_contents: '{potion:"minecraft:strong_healing"}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:splash_potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{potion:"minecraft:strong_strength"}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:splash_potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{potion:"minecraft:strong_swiftness"}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:splash_potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{potion:"minecraft:long_fire_resistance"}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:arrow
+    count: 64
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:obsidian
+    count: 64
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:quartz_block
+    count: 64
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:white_concrete
+    count: 64
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:end_crystal
+    count: 16
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:respawn_anchor
+    count: 16
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:glowstone
+    count: 64
+    schema_version: 1
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:custom_model_data: '{floats:[5012.0f]}'
+      minecraft:attribute_modifiers: '[{amount:3.0d,id:"elytrix:armor_angel_ball",operation:"add_value",slot:"offhand",type:"minecraft:armor"},{amount:6.0d,id:"elytrix:health_angel_ball",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:2.5d,id:"elytrix:damage_angel_ball",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"},{amount:0.15d,id:"elytrix:speed_angel_ball",operation:"add_multiplied_total",slot:"offhand",type:"minecraft:movement_speed"}]'
+      minecraft:profile: '{id:[I;-51200111,189387961,-152328890,50125012],name:"head",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWJjYjBiNWJmY2EyYmI3NjljYjM4NjM1ZWRlYzBmMTE0NzRiNjdjM2RkMjE2NWFlZGIwNjA0ZTc1YzM2In19fQ=="}]}'
+      minecraft:lore: '[{extra:[{color:"#FF5555",italic:0b,text:"Проклятие утраты"}],italic:0b,text:""},"",{extra:[{color:"#AAAAAA",italic:0b,text:"Когда во второй руке:"}],italic:0b,text:""},{extra:[{bold:1b,color:"#55FF55",italic:0b,text:" +3 к Броне"}],italic:0b,text:""},{extra:[{bold:1b,color:"#55FF55",italic:0b,text:" +6 к Здоровью"}],italic:0b,text:""},{extra:[{bold:1b,color:"#55FF55",italic:0b,text:" +2.5 к Урону"}],italic:0b,text:""},{extra:[{bold:1b,color:"#55FF55",italic:0b,text:" +15% к Скорости"}],italic:0b,text:""},"",{extra:[{color:"#AAAAAA",italic:0b,text:"При нажатии SHIFT:"}],italic:0b,text:""},{extra:[{bold:1b,color:"#F8BEFB",italic:0b,text:" Сопротивление II (0:08)"}],italic:0b,text:""}]'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers"]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"#F8BEFB",italic:0b,text:"Шар Ангела"}],italic:0b,text:""}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:custom_angel_ball":"angel_ball"}}'
+    schema_version: 1
+  - null
+  - null
+  Armor:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:netherite_boots
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"Ботинки ANGEL",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:depth_strider":3,"minecraft:feather_falling":4,"minecraft:mending":1,"minecraft:protection":5,"minecraft:unbreaking":4}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:netherite_leggings
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"Поножи ANGEL",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:mending":1,"minecraft:protection":5,"minecraft:swift_sneak":3,"minecraft:unbreaking":4}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:netherite_chestplate
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"Нагрудник ANGEL",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:mending":1,"minecraft:protection":5,"minecraft:unbreaking":4}'
+    schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:netherite_helmet
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"white",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шлем ANGEL",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:aqua_affinity":1,"minecraft:mending":1,"minecraft:protection":5,"minecraft:respiration":3,"minecraft:unbreaking":4}'
+    schema_version: 1

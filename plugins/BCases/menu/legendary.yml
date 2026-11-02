@@ -1,0 +1,43 @@
+id: bcases:legendary
+provider: bcases:case
+type: CHEST
+size: 54
+title: '&fꈁꀀꈂꍅꈂꀁ&fꈃꄖ'
+items:
+  open_case:
+    slots:
+    - 12-14
+    - 21-23
+    - 30-32
+    material: STRUCTURE_VOID
+    model_data: 10000
+    display_name: <#F8BEFB>&lЛегендарный Кейс</#FFFFFF>
+    ticking: true
+    tick-speed: 20
+    lore:
+    - '&7Тип: &#F8BEFB&lСУПЕР КЕЙС С ДОНАТОМ'
+    - '&7Количество ключей: &f&l%bcases_keys_count_of_type_legendary%'
+    - ''
+    - '&7Гарантированно выпадает только'
+    - '&fДОНАТ &7от &#FD00E4DRAGON &7до &#FBBF24GOD&7!'
+    - '&7Никаких дешёвых привилегий — только жирный лут.'
+    - ''
+    - '&fЦена за 1 шт.: &#55FF5589 руб.'
+    - '&fПокупка &7» &#F8BEFBhttps://elytrix.pw'
+    on_click:
+      requirements:
+      - check: '%bcases_keys_count_of_type_legendary% < 1'
+        commands:
+        - '[MESSAGE] &7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &cУ вас нет ключей от этого кейса! &7Покупка: &#F8BEFBhttps://elytrix.pw'
+        - '[SOUND] BLOCK_NOTE_BLOCK_BASS 1.0 1.0'
+        - '[CLOSE]'
+        - '[BREAK]'
+      - check: '{playing} == true'
+        commands:
+        - '[MESSAGE] &7☁ &#F8BEFBᴇʟʏᴛʀɪx &8» &cЭтот кейс сейчас открывает другой игрок!'
+        - '[CLOSE]'
+        - '[BREAK]'
+        deny_commands:
+        - '[TAKE_KEY] legendary'
+        - '[PLAY] wheel_yz legendary'
+        - '[CLOSE]'

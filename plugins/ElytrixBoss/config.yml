@@ -1,0 +1,136 @@
+max_player: 140
+min_player: 1
+auto-event:
+- '17:30'
+cords:
+  join:
+    world: boss
+    x: -38
+    y: 67
+    z: 963
+  stop:
+    world: world_spawn
+    x: 0.5
+    y: 69
+    z: 0.5
+console-cmd:
+- mm mobs spawn Dwarf_Blacksmith 1 boss,-21,67,963
+reward-cmd:
+- eco give %player% 100000
+admin-stop-cmd:
+- mm mobs kill Dwarf_Blacksmith
+bossbars:
+  starting:
+    enabled: true
+    title: '&x&F&8&B&E&F&B&lБитва с Боссом &8| &bНабор игроков &8(&x&F&8&B&E&F&B%count%&7/&x&F&8&B&E&F&B%max_player%&8) &7/boss join &c(Осталось &4%time% &cсек)'
+    color: WHITE
+    type: SEGMENTED_10
+  fighting:
+    enabled: true
+    title: '&x&F&8&B&E&F&B&lБитва с Боссом &8| &cОдолейте босса!'
+    color: WHITE
+    type: SOLID
+  ending:
+    enabled: true
+    title: '&x&F&8&B&E&F&B&lБитва с Боссом &8| &fБосс убит!'
+    color: WHITE
+    type: SEGMENTED_10
+boss-kill:
+  type-mob: SKELETON
+  world: boss
+Timers:
+  player-join: 180
+  stop-event: 45
+Messages:
+  start:
+    enabled: false
+    text: ''
+  message-by-boss:
+    interval: 15
+    texts:
+    - '&4Опустошитель Снов &8» &cСкоро вы все умрете....'
+    - '&4Опустошитель Снов &8» &cВы познаете мою силу!'
+    - '&4Опустошитель Снов &8» &cВаши души принадлежат мне!'
+    - '&4Опустошитель Снов &8» &cНикто не покинет это место живым!'
+    - '&4Опустошитель Снов &8» &cЯ вижу ваш страх...'
+    - '&4Опустошитель Снов &8» &cВы лишь жалкие смертные!'
+    - '&4Опустошитель Снов &8» &cМоя мощь безгранична!'
+    - '&4Опустошитель Снов &8» &cПришло время вашей погибели!'
+  no_perm:
+    enabled: true
+    text: '&x&F&8&B&E&F&BБитва с Боссом &8» &cУ вас нету прав'
+  aly_joined:
+    enabled: true
+    text: '&x&F&8&B&E&F&BБитва с Боссом &8» &cВы уже на ивенте!'
+  no_reward:
+    enabled: true
+    text: '&x&F&8&B&E&F&BБитва с Боссом &8» &cВы не получили награду так как умерли на ивенте'
+  allow_start:
+    enabled: true
+    text: '&x&F&8&B&E&F&BБитва с Боссом &8» &cВы не можете зайти на ивент так как ивент уже начался'
+  max_player:
+    enabled: true
+    text: '&x&F&8&B&E&F&BБитва с Боссом &8» &cИгроков максимум на ивенте!'
+  min_player:
+    enabled: true
+    text: '&x&F&8&B&E&F&BБитва с Боссом &8» &cНедостаточно игроков для начала битвы!'
+  no_event_started:
+    enabled: true
+    text: '&x&F&8&B&E&F&BБитва с Боссом &8» &cДождитесь начала ивента!'
+  yes_reward:
+    enabled: true
+    text:
+    - '&x&F&8&B&E&F&BБитва с боссом &8» &fВаша награда:'
+    - '&x&F&8&B&E&F&BБитва с боссом &8» &x&F&8&B&E&F&B100.000 &7игровой валюты'
+  no_items_to_join:
+    enabled: true
+    text: '&x&F&8&B&E&F&BБитва с боссом &8» &cДля входа на арену у вас должен быть минимум &bАлмазный сет&c!'
+  boss_killed:
+    enabled: false
+    text: ''
+  admin_no_permission:
+    enabled: true
+    text: '&cУ вас нет прав!'
+  admin_help:
+    enabled: true
+    text: '&x&F&8&B&E&F&BПомощь: /snbossfight admin <start|stop|schedule|reload|edit>'
+  admin_event_started:
+    enabled: false
+    text: ''
+  admin_event_stopped:
+    enabled: true
+    text: '&aИвент остановлен'
+  admin_invalid_argument:
+    enabled: true
+    text: '&cУкажите верный аргумент!'
+  admin_player_only:
+    enabled: true
+    text: '&cЭту команду может использовать только игрок!'
+  fly_disabled:
+    enabled: true
+    text: '&x&F&8&B&E&F&BБитва с Боссом &8» &cВы не можете использовать полет на ивенте!'
+  teleport_blocked:
+    enabled: true
+    text: '&cТелепортация запрещена во время битвы с боссом!'
+  command_blocked:
+    enabled: true
+    text: '&cКоманды запрещены во время ивента!'
+  join_location_not_set:
+    enabled: true
+    text: '&cЛокация для входа не настроена!'
+items-to-join:
+- DIAMOND_CHESTPLATE
+- DIAMOND_LEGGINGS
+- DIAMOND_BOOTS
+- DIAMOND_HELMET
+rewards-menu:
+  title: '&0Редактор наград босса'
+  slots: 54
+rewards:
+  enable: true
+  min-drop: 6
+  max-drop: 12
+settings:
+  command_block: true
+  fly_disable: true
+  block-teleport-during-event: true

@@ -1,0 +1,111 @@
+MagmaImpFlee:
+  Skills:
+  - delay 2400
+  - state{s=dig} @Self
+  - setai{ai=false} @Self
+  - dropitem{i=GOLD_NUGGET;repeat=8;repeatInterval=4} @SelfLocation
+  - teleport{delay=59} @SelfLocation{yOffset=-200}
+  - remove{delay=60} @Self
+MagmaImpBombThrow:
+  Conditions:
+  - targetnotwithin{d=8} true
+  - offgcd true
+  Skills:
+  - gcd{t=100} @Self
+  - setai{ai=false} @Self
+  - state{s=pickobject} @Self
+  - delay 20
+  - partvisibility{m=mso_magma_imp;p=bomb;v=true} @self ~onSpawn
+  - delay 20
+  - state{s=throwobject} @Self
+  - delay 22
+  - sound{s=entity.witch.throw;v=1;p=0.1} @Self
+  - partvisibility{m=mso_magma_imp;p=bomb;v=false} @self ~onSpawn
+  - missile{v=12;vo=1.8;inertia=6;
+      fo=true;origin=@ModelPart{m=mso_magma_imp;p=left_forearm};
+      bullet=MYTHICITEM;bulletMaterial=IMP_BOMB;
+      onStart=[
+        - delay 18
+        - modifyProjectile{trait=INERTIA;value=9999}
+      ];
+      onHit=[
+        - effect:sound{s=entity.player.attack.crit;p=0.5;v=2}
+        - bloodyscreen{d=20}
+        - explosion{yield=2;f=true}
+        - stun{duration=10}
+        - damage{a=6}
+      ];
+      onEnd=[
+        - effect:particles{p=blockdust;material=MAGMA_BLOCK;a=40;hS=0.2;vS=0.2}
+        - explosion{yield=2;f=true}
+      ]} @Target
+  - setai{ai=true} @Self
+  
+#####Warmm
+## Atkpose toggles turret mode
+## atk anim spits particle projectiles.
+## direct contact/ no anim for collision damage
+WarmmTurretMode:
+  Cooldown: 10
+  Skills:
+  - setai{ai=false} @Self
+  - state{s=atkpose} @Self
+  - delay 16
+  - state{s=atkposeloop} @Self
+  - skill{repeat=5;repeatInterval=15;s=[
+    - state{s=atk} @Self
+    - delay 10
+    - projectile{syo=-0.3;sfo=-0.1;v=15;fo=true;origin=@ModelPart{m=mso_warmm;p=head};
+      onTick=[
+        - e:p{p=reddust;color=#801100;a=2;hS=0.1;vS=0.1;hR=1;vR=1} @Origin
+        - e:p{p=reddust;color=#B62203;a=2;hS=0.1;vS=0.1;hR=1;vR=1} @Origin
+        - e:p{p=reddust;color=#D73502;a=2;hS=0.1;vS=0.1;hR=1;vR=1} @Origin
+        - e:p{p=reddust;color=#FC6400;a=2;hS=0.1;vS=0.1;hR=1;vR=1} @Origin
+        - e:p{p=reddust;color=#FF7500;a=2;hS=0.1;vS=0.1;hR=1;vR=1} @Origin
+        - e:p{p=reddust;color=#FAC000;a=2;hS=0.1;vS=0.1;hR=1;vR=1} @Origin
+      ];
+      onHit=[
+        - damage{a=6} @Target
+        - ignite{d=100} @Target
+      ]} @Target
+    ]} @Target
+  - delay 75
+  - state{s=atkposeloop;remove=true} @Self
+  - state{s=lay} @Self
+  - delay 20
+  - state{s=walk} @Self
+  - setai{ai=true}
+WarmmMeleeTick:
+  TargetConditions:
+  - targetwithin{d=2} true
+  Skills:
+  - setNoDamageTicks{ticks=0;delay=1} @Target
+  - damage{a=2} @Target
+TwinklerAttack:
+  Skills:
+  - state{s=atk} @Self
+  - delay 15
+  - ignite{d=40} @Target ?targetwithin{d=2}
+  - damage{a=6} @Target ?targetwithin{d=2}
+TwinklerSpit:
+  TargetConditions:
+  - targetnotwithin{d=6} true
+  Cooldown: 10
+  Skills:
+  - state{s=spit} @Self
+  - setai{ai=false}
+  - setai{ai=true;delay=20}
+  - delay 10
+  - projectile{md=16;v=25;fo=true;origin=@ModelPart{m=mso_twinkler;p=mouth};
+      onTick=[
+        - e:p{p=reddust;color=#801100;a=2;hS=0.1;vS=0.05;hR=1;vR=1} @Origin
+        - e:p{p=reddust;color=#B62203;a=2;hS=0.1;vS=0.05;hR=1;vR=1} @Origin
+        - e:p{p=reddust;color=#D73502;a=2;hS=0.1;vS=0.05;hR=1;vR=1} @Origin
+        - e:p{p=reddust;color=#FC6400;a=2;hS=0.1;vS=0.05;hR=1;vR=1} @Origin
+        - e:p{p=reddust;color=#FF7500;a=2;hS=0.1;vS=0.05;hR=1;vR=1} @Origin
+        - e:p{p=reddust;color=#FAC000;a=2;hS=0.1;vS=0.05;hR=1;vR=1} @Origin
+      ];
+      onHit=[
+        - damage{a=6} @Target
+        - ignite{d=100} @Target
+      ]} @Target

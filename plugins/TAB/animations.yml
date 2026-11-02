@@ -1,0 +1,68 @@
+MyAnimation1:
+  change-interval: 100
+  texts:
+    - '&#F8BEFB-&f--------------'
+    - '&f-&#F8BEFB-&f-------------'
+    - '&f--&#F8BEFB-&f------------'
+    - '&f---&#F8BEFB-&f-----------'
+    - '&f----&#F8BEFB-&f----------'
+    - '&f-----&#F8BEFB-&f---------'
+    - '&f------&#F8BEFB-&f--------'
+    - '&f-------&#F8BEFB-&f-------'
+    - '&f--------&#F8BEFB-&f------'
+    - '&f---------&#F8BEFB-&f-----'
+    - '&f----------&#F8BEFB-&f----'
+    - '&f-----------&#F8BEFB-&f---'
+    - '&f------------&#F8BEFB-&f--'
+    - '&f-------------&#F8BEFB-&f-'
+    - '&f--------------&#F8BEFB-'
+ServerName:
+  change-interval: 300
+  texts:
+    - '&#F8BEFB&lElytrix'
+    - '&#FAD8FC&lElytrix'
+    - '&f&lElytrix'
+web:
+  change-interval: 200
+  texts:
+    - '&#F8BEFBhttps://elytrix.pw'
+    - '&fhttps://elytrix.pw'
+vote:
+  change-interval: 1000
+  texts:
+    - '&#F8BEFBhttps://elytrix.pw'
+    - '&#F8BEFB&nhttps://elytrix.pw'
+Welcome:
+  change-interval: 400
+  texts:
+    - '&#F8BEFB&lElytrix'
+    - '&f&lElytrix'
+time:
+  change-interval: 3000
+  texts:
+    - '&7Время &#F8BEFB%time%'
+    - '&7Дата &#F8BEFB%date%'
+barcolors:
+  change-interval: 1000
+  texts:
+    - PINK
+bossbartext:
+  change-interval: 5000
+  texts:
+    - '&fНовости, раздачи и промокоды в нашем Telegram: &#F8BEFB&nt.me/elytrix_ru'
+    - '&fДонат, кейсы и услуги на нашем сайте: &#F8BEFB&nhttps://elytrix.pw'
+    - '&fНаше сообщество в Discord: &#F8BEFB&ndsc.gg/elytrix &8| &fIP: &#F8BEFBmc.Elytrix.pw'
+barprogress:
+  change-interval: 1000
+  texts:
+    - 100
+    - 90
+    - 80
+    - 70
+    - 60
+    - 50
+    - 40
+    - 30
+    - 20
+    - 10
+    - 0

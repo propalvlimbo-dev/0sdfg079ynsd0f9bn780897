@@ -1,0 +1,6 @@
+_DEFAULT_:
+  tabprefix: " %vcmute_status% &r%luckperms_prefix%"
+  tagprefix: " %vcmute_status% &r%luckperms_prefix%"
+  customtabname: "&7%player_displayname%&r%luckperms_suffix%"
+  tabsuffix: " %nclans_clan_name%"
+  tagsuffix: " %nclans_clan_name%"

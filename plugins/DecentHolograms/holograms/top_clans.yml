@@ -1,0 +1,34 @@
+location: world_spawn:55.500:68.000:13.500
+enabled: true
+display-range: 24
+update-range: 24
+update-interval: 20
+facing: 0.0
+down-origin: false
+pages:
+- lines:
+  - content: '&fТоп кланов на сервере <#F8BEFB>&lГРИФ #1</#FAD8FC>'
+    height: 0.3
+  - content: ''
+    height: 0.3
+  - content: '%elytrixtops_clans_1%'
+    height: 0.3
+  - content: '%elytrixtops_clans_2%'
+    height: 0.3
+  - content: '%elytrixtops_clans_3%'
+    height: 0.3
+  - content: '%elytrixtops_clans_4%'
+    height: 0.3
+  - content: '%elytrixtops_clans_5%'
+    height: 0.3
+  - content: '%elytrixtops_clans_6%'
+    height: 0.3
+  - content: '%elytrixtops_clans_7%'
+    height: 0.3
+  - content: '%elytrixtops_clans_8%'
+    height: 0.3
+  - content: '%elytrixtops_clans_9%'
+    height: 0.3
+  - content: '%elytrixtops_clans_10%'
+    height: 0.3
+  actions: {}

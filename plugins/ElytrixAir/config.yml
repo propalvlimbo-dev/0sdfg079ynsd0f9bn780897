@@ -1,0 +1,122 @@
+##############################################################
+#                                                            #
+#                     t.me/elytrix_ru                           #
+#                                                            #
+##############################################################
+
+spawnCooldown: 6000
+openCooldown: 300
+deleteCooldown: 120
+waitingKill: 900
+# ===== ВЫСОТА ГОЛОГРАММ =====
+# Высота голограммы над блоком аирдропа (в блоках)
+# 1.5 = прямо над сундуком
+# 3.0 = на 3 блока выше
+# 5.0 = высоко над структурой
+hologramHeight: 3.7
+dropItems: 20
+xCords: 1850
+zCords: 1850
+
+schematicPath: "plugins/Schematics/schematic.schem"
+activateMaterial: "RESPAWN_ANCHOR"
+worldName: "world"
+
+# ===== РАСПИСАНИЕ АВТОСПАВНА =====
+# Аирдроп будет спавниться каждые 2 часа начиная с 09:00 по МСК до 01:00
+# Формат времени: 'H:MM' или 'HH:MM'
+schedule:
+  enabled: true
+  timezone: "Europe/Moscow"
+  times:
+    - '9:00'
+    - '11:00'
+    - '13:00'
+    - '15:00'
+    - '17:00'
+    - '19:00'
+    - '21:00'
+    - '23:00'
+    - '1:00'
+# ==================================
+
+zombieBossName: "&#F8BEFB&lКороль Зомби"
+zombieBossMythicMob: "AirDrop_ZombieKing"
+zombieBossHP: 666
+
+spiderBossName: "&#F8BEFB&lПаукан"
+spiderBossMythicMob: "AirDrop_SpiderBoss"
+spiderBossHP: 666
+
+catBossName: "&#F8BEFB&lАдский тигр"
+catBossMythicMob: "AirDrop_HellTiger"
+catBossHP: 666
+
+glowItems: true
+
+hologram:
+  airdropClosed: "%airType%: &cзакрыт\n&7Нажмите ПКМ по якорю для призыва босса"
+  killBoss: "%airType%: &cзакрыт\n&7Для открытия победите босса"
+  killedBoss: "%airType%: &cзакрыт\n&7Открытие через &f%time% &7сек"
+  openedAir: "%airType%: &aоткрыт\n&aАирДроп &7доступен"
+
+tickingBarColor: PINK
+tickingBarStyle: SOLID
+
+spawnBarColor: RED
+spawnBarStyle: SOLID
+
+openBarColor: GREEN
+openBarStyle: SOLID
+
+bossBarColor: RED
+bossBarStyle: SOLID
+
+removeBoss: false
+activateAir: "&#F8BEFBАирДроп &7» &fИгрок &#F8BEFB%player% &fактивировал АирДроп!"
+spawnName: "%airType% §8| &cНе активирован §8| §bx: §7%xCord% §bz: &7%zCord%"
+bossDontKilled: "%airType% §8| §cБосс не убит §8| §bx: §7%xCord% §bz: &7%zCord%"
+tickingName: "%airType% §8| §fОткрытие через §7%time% §fсек §8| §bx: §7%xCord% §bz: &7%zCord%"
+openedName: "%airType% §8| §aОткрыт §8| §bx: §7%xCord% §bz: &7%zCord%"
+
+airDrops:
+  legendaryName: "&#F8BEFB&lЛегендарный Аирдроп"
+  mythicName: "&x&f&2&3&e&4&3&lМифический Аирдроп"
+  epicName: "&x&b&5&3&f&f&c&lЭпический Аирдроп"
+  rareName: "&x&3&9&7&d&f&c&lРедкий Аирдроп"
+  commonName: "&a&lОбычный Аирдроп"
+
+  legendaryChance: 5
+  mythicChance: 10
+  epicChance: 15
+  rareChance: 50
+  commonChance: 60
+
+notification:
+  sound: true
+  soundType: "ENTITY_EXPERIENCE_ORB_PICKUP"
+  message: true
+  messageText:
+    - '&#F8BEFBАирдроп &7» &fПоявился %airType%'
+    - '&#F8BEFBАирдроп &7» &fНаграда за открытие:'
+    - '&#F8BEFBАирдроп &7» &f%reward1%'
+    - '&#F8BEFBАирдроп &7» &f%reward2%'
+    - '&#F8BEFBАирдроп &7» &f%reward3%'
+    - '&#F8BEFBАирдроп &7» &fи еще &#F8BEFB%count% &fнаград!'
+    - '&#F8BEFBАирдроп &7» &fКоординаты &8[&#F8BEFB%xCord%&8; &#F8BEFB%zCord%&8]'
+    - '&#F8BEFBАирдроп &7» &cЗа убийство босса ваш клан'
+    - '&#F8BEFBАирдроп &7» &cполучит клановые &bКоины &fи &bОпыт'
+  title: false
+  titleName: "АирДроп блаблабла"
+  titleText: "Аирдроп: Координаты x: %xCord% z: %zCord%"
+
+exp-at-BossKill: 50
+points-at-BossKill: 50
+
+need-bc: true
+broadcast-on-kill: "&#F8BEFBКланы &7» &fКлан &#F8BEFB%clan_name% &fубил босса на аирдропе и получил награду!\n&#F8BEFBКланы &7» &fКлан получил: &#F8BEFB%exp% опыта &fи &#F8BEFB%points% коинов&f."
+boss-kill-message: "&#F8BEFBАирДроп &7» &fБосс был убит игроком &#F8BEFB%player%"
+
+admin-start: "&#F8BEFBАирДроп &7» &aАирдроп успешно запущен!"
+admin-stop: "&#F8BEFBАирДроп &7» &cАирдроп успешно остановлен!"
+admin-save-loot: "&#F8BEFBАирДроп &7» &aЛут для &#F8BEFB%type% &aсохранён!"

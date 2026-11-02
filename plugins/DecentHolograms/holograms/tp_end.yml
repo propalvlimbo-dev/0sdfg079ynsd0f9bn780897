@@ -1,0 +1,12 @@
+location: world_spawn:53.717:64.116:-41.592
+enabled: true
+display-range: 24
+update-range: 24
+update-interval: 20
+facing: 0.0
+down-origin: false
+pages:
+- lines:
+  - content: '&#F8BEFB&l! &fОткрытие &dЭндер-Мира &fсостоится &#F8BEFB30 августа &fв &#F8BEFB13:00 МСК'
+    height: 0.3
+  actions: {}

@@ -1,0 +1,1 @@
+package org.bukkit.configuration.file; public class FileConfiguration { public String getString(String p,String d){return d;} public java.util.List<String> getStringList(String p){return java.util.List.of();} }

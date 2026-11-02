@@ -1,0 +1,341 @@
+MSO_SkeletonOverlordSpawn:
+  Skills:
+  - model{m=mso_overlord_stage1;n=false;sh=2}
+  - setai{ai=true}
+  - delay 1
+  #- partVisibility{p=sword;v=false}
+  - setstance{stance=ground}
+
+MSO_SkeletonOverlordEnterCombat:
+  Skills:
+  - gcd{ticks=20}
+  - state{s=i_to_m;li=2;lo=2}
+  - delay 20    
+  - skill:MSO_SkeletonOverlordDrawSword
+  - delay 20
+  - particles{p=flame;a=30;hS=2;s=1;directional=true;direction=0,2,0;repeat=50;repeati=1}
+  - delay 5
+  - remapmodel{m=mso_overlord_stage1;n=mso_overlord}
+  - delay 1
+  #- partVisibility{p=sword;v=false}
+
+MSO_SkeletonOverlordLeaveCombat:
+  Skills:
+  - gcd{ticks=20}
+
+MSO_SkeletonOverlordDrawSword:
+  Skills:
+  - gcd{ticks=40}
+  - setai{ai=false}
+  - state{s=draw_sword}
+  - delay 10
+  - changeparent{m=mso_overlord_stage1;p=sword_slot;c=sword}
+  #- partVisibility{p=sword;v=true}
+  #- partVisibility{p=sword2;v=false}
+  - delay 20
+  - setai{ai=true}
+
+MSO_SkeletonOverlordSheathSword:
+  Skills:
+  - gcd{ticks=40}
+  - setai{ai=false}
+  - state{s=shut_sword}
+  - delay 10
+  - changeparent{m=mso_overlord_stage1;p=back_slot;c=sword}
+  #- partVisibility{p=sword;v=false}
+  #- partVisibility{p=sword2;v=true} 
+  - delay 20
+  - setai{ai=true}
+  
+MSO_SkeletonOverlordIntermission:
+  Skills:
+  - gcd{ticks=20}
+  - particles{p=soulfire;a=30;hS=2;s=1;directional=true;direction=0,2,0;repeat=50;repeati=1}
+  - delay 5
+  - remapmodel{m=mso_overlord_stage1;n=mso_overlord_soulfire}
+
+MSO_SkeletonOverlordMelee:
+  Skills:
+  - cancelevent
+  - randomskill{s=MSO_SkeletonOverlordMeleeSwing,MSO_SkeletonOverlordMeleeStab}
+
+MSO_SkeletonOverlordMeleeSwing:
+  Cooldown: 3
+  Conditions:
+  - offgcd
+  - incombat
+  - stance ground
+  TargetConditions:
+  - distance <5
+  Skills:
+  - state{s=quickslash;li=3;lo=2;speed=1} @self
+  - gcd{ticks=40} @self
+  - setai{ai=false} @self
+  - delay 13
+  - effect:sound{cd=5;s=entity.player.attack.sweep;v=0.5;p=0.72} @self
+  - delay 2
+  - totem{ch=3;
+      onStart=[
+        - skill:MSO_SkeletonOverlordMeleeDamage @ENO{r=3}
+      ];int=1;hR=3;md=1} @Forward{f=1.5}
+  - delay 22
+  - setai{ai=true} @self
+  
+MSO_SkeletonOverlordMeleeStab:
+  Cooldown: 3
+  Conditions:
+  - offgcd
+  - incombat
+  - stance ground
+  TargetConditions:
+  - distance <5
+  Skills:
+  - state{s=stab;li=3;lo=2;speed=1} @self
+  - gcd{ticks=40} @self
+  - setai{ai=false} @self
+  - delay 13
+  - effect:sound{cd=5;s=entity.player.attack.sweep;v=0.5;p=0.78} @self
+  - delay 2
+  - totem{ch=3;
+      onStart=[
+        - skill:MSO_SkeletonOverlordMeleeDamage @ENO{r=3}
+      ];int=1;hR=3;md=1} @Forward{f=1.5}
+  - delay 22
+  - setai{ai=true} @self
+  
+MSO_SkeletonOverlordMeleeDamage:
+  Skills:
+  - effect:particles{p=crit;a=55;hS=0.4;vS=0.4;y=1.5}
+  - basedamage{m=1}
+  - skill:MSO_SkeletonOverlordMeleeDamageFire >40%
+  - skill:MSO_SkeletonOverlordMeleeDamageSoul <40%
+  
+MSO_SkeletonOverlordMeleeDamageFire:
+  Skills:
+  - ignite{ticks=100}
+  - effect:particles{p=flame;a=5;hS=0.2;vS=0.2;y=1.5}
+      
+MSO_SkeletonOverlordMeleeDamageSoul:
+  Skills:
+  - potion{type=WITHER;d=100;level=2;ow=true}
+  - effect:particles{p=reddust;size=5;color=#000000;a=5;hS=0.2;vS=0.2;y=1.5}
+  
+MSO_SkeletonOverlordDamaged:
+  Cooldown: 0.5
+  Skills:
+  - skill:MSO_SkeletonOverlordIntermission =40%
+  - sound{s=entity.ender_dragon.hurt;p=1.25;v=1}
+  - sound{s=entity.wither_skeleton.hurt;p=0.65;v=1}
+  - velocity{x=0;y=0;z=0;delay=1}
+  
+MSO_SkeletonOverlordTick:
+  Conditions:
+  - offgcd
+  Skills:
+  - skill:MSO_SkeletonOverlordSwapStance @self <80%
+  - skill:MSO_SkeletonOverlordSlam @RTT
+  - skill:MSO_SkeletonOverlordFireball @RTT
+  - skill:MSO_SkeletonOverlordSummon @self
+    
+MSO_SkeletonOverlordSwapStance:
+  Cooldown: 15
+  Conditions:
+  - offgcd
+  Skills:
+  - skill:MSO_SkeletonOverlordSwapStanceAir
+  
+MSO_SkeletonOverlordSwapStanceGround:
+  Skills:
+  - setai{ai=false}
+  - gcd{ticks=100}
+  - state{s=r_to_m}
+  - stance{stance=changing}
+  - defaultstate{type=IDLE;state=melee}
+  - delay 1
+  - defaultstate{type=WALK;state=walk}
+  - delay 40
+  - skill:MSO_SkeletonOverlordDrawSword
+  - delay 20
+  - stance{stance=ground}
+  - setai{ai=true}
+  
+MSO_SkeletonOverlordSwapStanceAir:
+  Conditions:
+  - stance air castInstead MSO_SkeletonOverlordSwapStanceGround
+  Skills:
+  - setai{ai=false}
+  - gcd{ticks=120}
+  - stance{stance=changing}
+  - skill:MSO_SkeletonOverlordSheathSword
+  - delay 60
+  - state{s=m_to_r}
+  - delay 1
+  - defaultstate{type=IDLE;state=range}
+  - delay 1
+  - defaultstate{type=WALK;state=range}
+  - delay 20
+  - stance{stance=air}
+  - setai{ai=true}
+  
+MSO_SkeletonOverlordSlam:
+  Cooldown: 15
+  Conditions:
+  - offgcd
+  - incombat
+  - stance ground
+  Skills:
+  - skill:MSO_SkeletonOverlordSlam2{slamoffset=0} @LOT
+  
+MSO_SkeletonOverlordSlam2:
+  Skills:
+  - gcd{ticks=80} @self
+  - state{s=smash;li=2;lo=2} @self
+  - setai{ai=false} @self
+  - look{force=true}
+  - delay 48
+  - sound{s=entity.generic.explode;p=0.8}
+  - projectile{
+      i=1;syo=1;tyo=1;v=18;se=false;maxRange=25;d=100;hs=true;hfs=0.01;ho=<skill.slamoffset>;
+      onTick=[
+        - sound{s=entity.firework_rocket.large_blast_far;p=1.7} 0.5
+        - particles{p=largeexplode;hS=1}
+        - summon{type=MSO_SkeletonOverlord-Spike;r=3;ry=0;yr=0} 0.65
+      ];
+      onHit=[
+        - summon{type=MSO_SkeletonOverlord-Spike}
+      ]}
+  - projectile{
+      i=1;syo=1;tyo=1;v=18;se=false;maxRange=25;d=100;hs=true;hfs=0.01;ho=90;
+      onTick=[
+        - sound{s=entity.firework_rocket.large_blast_far;p=1.7} 0.5
+        - particles{p=largeexplode;hS=1}
+        - summon{type=MSO_SkeletonOverlord-Spike;r=3;ry=0;yr=0} 0.25
+      ];
+      onHit=[
+        - summon{type=MSO_SkeletonOverlord-Spike}
+      ]} <40%
+  - projectile{
+      i=1;syo=1;tyo=1;v=18;se=false;maxRange=25;d=100;hs=true;hfs=0.01;ho=-90;
+      onTick=[
+        - sound{s=entity.firework_rocket.large_blast_far;p=1.7} 0.5
+        - particles{p=largeexplode;hS=1}
+        - summon{type=MSO_SkeletonOverlord-Spike;r=3;ry=0;yr=0} 0.25
+      ];
+      onHit=[
+        - summon{type=MSO_SkeletonOverlord-Spike}
+      ]} <40%
+  - projectile{
+      i=1;syo=1;tyo=1;v=18;se=false;maxRange=25;d=100;hs=true;hfs=0.01;ho=180;
+      onTick=[
+        - sound{s=entity.firework_rocket.large_blast_far;p=1.7} 0.5
+        - particles{p=largeexplode;hS=1}
+        - summon{type=MSO_SkeletonOverlord-Spike;r=3;ry=0;yr=0} 0.25
+      ];
+      onHit=[
+        - summon{type=MSO_SkeletonOverlord-Spike}
+      ]} <40%
+  - delay 32
+  - setai{ai=true} @self
+  
+MSO_SkeletonOverlordSlamWeak:
+  Skills:
+  - projectile{
+      i=1;syo=1;tyo=1;v=18;se=false;maxRange=25;d=100;hs=true;hfs=0.01;ho=<skill.slamoffset>;
+      onTick=[
+        - sound{s=entity.firework_rocket.large_blast_far;p=1.7} 0.5
+        - particles{p=largeexplode;hS=1}
+        - summon{type=MSO_SkeletonOverlord-Spike;r=3;ry=0;yr=0} 0.33
+      ];
+      onHit=[
+        - summon{type=MSO_SkeletonOverlord-Spike}
+      ]}
+  
+MSO_SkeletonOverlordFireball:
+  Cooldown: 3
+  Conditions:
+  - offgcd
+  - incombat
+  - stance air
+  Skills:
+  - gcd{ticks=40} @self
+  - state{s=fireball;li=2;lo=2} @self
+  - setai{ai=false} @self
+  - look{force=true}
+  - delay 12
+  - skill:MSO_SkeletonOverlordFireballShootSoulfire @RTT <40%
+  - delay 5
+  - skill:MSO_SkeletonOverlordFireballShootSoulfire @RTT <40%
+  - delay 5
+  - skill:MSO_SkeletonOverlordFireballShootNormal >40%
+  - skill:MSO_SkeletonOverlordFireballShootSoulfire <40%
+  
+MSO_SkeletonOverlordFireballShootNormal:
+  Skills:
+  - missile{inertia=20;i=1;v=16;
+      bullet=MOB;mob=MSO_SkeletonOverlord_Fireball;
+      fo=true;origin=@ModelPart{p=right_hand};
+      onStart=[
+        - sound{s=entity.ghast.shoot;p=0.75}
+      ];
+      onTick=[
+        - particles{p=flame;y=-1;delay=2;hS=0.1;vS=0.1}
+      ];
+      onEnd=[
+        - particles{p=largeexplode}
+        - sound{s=entity.generic.explode}
+        - damage{amount=16} @ENO{r=3}
+      ]} 
+
+MSO_SkeletonOverlordFireballShootSoulfire:
+  Skills:
+  - missile{inertia=16;i=1;v=14;
+      bullet=MOB;mob=MSO_SkeletonOverlord_FireballBlue;
+      fo=true;origin=@ModelPart{p=right_hand};
+      onStart=[
+        - sound{s=entity.ghast.shoot;p=0.70}
+      ];
+      onTick=[
+        - particles{p=soulfire;y=-1;delay=2;hS=0.1;vS=0.1}
+      ];
+      onEnd=[ 
+        - particles{p=largeexplode}
+        - sound{s=entity.generic.explode}
+        - damage{amount=18} @ENO{r=3}
+        - throw{v=5;vy=8} @ENO{r=3}
+      ]} 
+
+MSO_SkeletonOverlordSummon:
+  Cooldown: 15
+  Conditions:
+  - offgcd
+  - incombat
+  - stance air
+  Skills:
+  
+  
+  
+  
+  
+  
+MSO_SkeletonOverlord_SpikeSpawn:
+  Skills:
+  - model{m=mso_vfx_spike;n=false}
+  - skill:MSO_SkeletonOverlord_SpikeEmerge @PIR{r=1}
+  - delay 200
+  - state{s=retract}
+  - delay 80
+  - remove
+  
+MSO_SkeletonOverlord_SpikeEmerge:
+  Skills:
+  - damage{a=10}
+  - throw{v=5;vy=20}
+  
+MSO_SkeletonOverlord_SpikeTick:
+  Skills:
+  - damage{a=10} @PIR{r=0.5}
+  
+MSO_SkeletonOverlord_SpikeDamaged:
+  Skills:
+  - velocity{x=0;y=0;z=0;delay=1}
+  

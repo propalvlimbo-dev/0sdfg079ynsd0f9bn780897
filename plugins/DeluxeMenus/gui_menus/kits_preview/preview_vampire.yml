@@ -1,0 +1,211 @@
+menu_title: §fꈁꀀꈂꍗꈂꀁ§fꈃꄑ
+open_command: kitpreview_vampire
+register_command: true
+size: 54
+items:
+  offhand_item:
+    slot: 36
+    amount: 1
+    material: TOTEM_OF_UNDYING
+  kit_badge:
+    material: red_shulker_box
+    slot: 45
+    display_name: '&#AAAAAAНабор &#FF5555&lVAMPIRE'
+    lore:
+    - '&8Предпросмотр набора'
+    - ''
+    - '&7Слева отображается броня и'
+    - '&7предмет второй руки (шар/тотем).'
+    - '&7Справа — всё содержимое набора!'
+  loot_0:
+    slot: 2
+    amount: 1
+    material: NETHERITE_SWORD
+    display_name: '&c&lОкрававленный Дзангэцу'
+    enchantments:
+    - FIRE_ASPECT;2
+    - SHARPNESS;6
+    - UNBREAKING;3
+  loot_1:
+    slot: 3
+    amount: 1
+    material: NETHERITE_PICKAXE
+    enchantments:
+    - EFFICIENCY;7
+    - FORTUNE;3
+    - UNBREAKING;3
+  loot_2:
+    slot: 4
+    amount: 1
+    material: NETHERITE_AXE
+    enchantments:
+    - EFFICIENCY;7
+    - FORTUNE;3
+    - UNBREAKING;3
+  loot_3:
+    slot: 5
+    amount: 1
+    material: NETHERITE_SHOVEL
+    enchantments:
+    - EFFICIENCY;4
+    - UNBREAKING;3
+  loot_4:
+    slot: 6
+    amount: 32
+    material: GOLDEN_APPLE
+  loot_5:
+    slot: 7
+    amount: 16
+    material: ENDER_PEARL
+  loot_6:
+    slot: 8
+    amount: 16
+    material: ENDER_PEARL
+  loot_7:
+    slot: 11
+    amount: 16
+    material: ENDER_PEARL
+  loot_8:
+    slot: 12
+    amount: 1
+    material: BOW
+    enchantments:
+    - FLAME;1
+    - INFINITY;1
+    - MENDING;1
+    - POWER;5
+    - PUNCH;2
+    - UNBREAKING;2
+  loot_9:
+    slot: 13
+    amount: 64
+    material: GOLDEN_CARROT
+  loot_10:
+    slot: 14
+    amount: 64
+    material: OBSIDIAN
+  loot_11:
+    slot: 15
+    amount: 1
+    material: TOTEM_OF_UNDYING
+  loot_12:
+    slot: 16
+    amount: 1
+    material: TOTEM_OF_UNDYING
+  loot_13:
+    slot: 17
+    amount: 64
+    material: CHORUS_FRUIT
+  loot_14:
+    slot: 20
+    amount: 16
+    material: END_CRYSTAL
+  loot_15:
+    slot: 21
+    amount: 3
+    material: ENCHANTED_GOLDEN_APPLE
+  loot_16:
+    slot: 22
+    amount: 1
+    material: TOTEM_OF_UNDYING
+    display_name: '&6Тотем Драконида'
+    lore:
+    - ''
+    - '&7Срабатывает, когда'
+    - '&7лежит в инвентаре'
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+  loot_17:
+    slot: 23
+    amount: 1
+    material: TOTEM_OF_UNDYING
+    display_name: '&6Тотем Драконида'
+    lore:
+    - ''
+    - '&7Срабатывает, когда'
+    - '&7лежит в инвентаре'
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+  loot_18:
+    slot: 24
+    amount: 64
+    material: TIPPED_ARROW
+  loot_19:
+    slot: 25
+    amount: 64
+    material: TIPPED_ARROW
+  loot_20:
+    slot: 26
+    amount: 48
+    material: TIPPED_ARROW
+  loot_21:
+    slot: 29
+    amount: 64
+    material: ARROW
+  loot_22:
+    slot: 30
+    amount: 1
+    material: RED_SHULKER_BOX
+  loot_23:
+    slot: 31
+    amount: 64
+    material: RED_CONCRETE
+  loot_24:
+    slot: 32
+    amount: 64
+    material: RED_TERRACOTTA
+  loot_25:
+    slot: 33
+    amount: 64
+    material: RED_WOOL
+  loot_26:
+    slot: 34
+    amount: 64
+    material: RED_STAINED_GLASS
+  loot_27:
+    slot: 35
+    amount: 1
+    material: POTION
+    display_name: '&c&lЗелье Алукарда'
+  loot_28:
+    slot: 38
+    amount: 1
+    material: POTION
+    display_name: '&f&lЧесночное Зелье'
+  loot_29:
+    slot: 39
+    amount: 1
+    material: POTION
+    display_name: '&f&lБыстрее ветра'
+  loot_30:
+    slot: 40
+    amount: 1
+    material: ENCHANTED_BOOK
+    lore:
+    - '&7Светлячок (Подсвечивает игрока)'
+  btn_back:
+    material: structure_void
+    slots:
+    - 47
+    - 48
+    display_name: '&#F8BEFB◄ Назад к списку наборов'
+    lore:
+    - '&7Нажмите, чтобы вернуться в &f/kits'
+    click_commands:
+    - '[openguimenu] kits'
+  btn_claim:
+    material: structure_void
+    slots:
+    - 51
+    - 52
+    - 53
+    display_name: '&#55FF55&l✚ ПОЛУЧИТЬ НАБОР &7(&#AAAAAAНабор &#FF5555&lVAMPIRE&7)'
+    lore:
+    - ''
+    - '&7Нажмите, чтобы сразу забрать'
+    - '&7набор &f/kit vampire &7в инвентарь!'
+    click_commands:
+    - '[close]'
+    - '[player] kit vampire'

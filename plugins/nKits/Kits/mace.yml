@@ -1,0 +1,66 @@
+Name: mace
+Cooldown: 0
+Permission: nKits.kits.mace
+Order: 0
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:mace
+    count: 1
+    components:
+      minecraft:repair_cost: '3'
+      minecraft:lore: '[{extra:[{bold:0b,color:"gray",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шустрое
+        Подкрадывание III",underlined:0b}],text:""}]'
+      minecraft:enchantments: '{"minecraft:density":5,"minecraft:wind_burst":3}'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"gold",italic:0b,obfuscated:0b,strikethrough:0b,text:"Булава",underlined:0b}],text:""}'
+    schema_version: 1
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  Armor:
+  - null
+  - null
+  - null
+  - null

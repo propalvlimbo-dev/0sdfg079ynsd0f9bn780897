@@ -1,0 +1,172 @@
+menu_title: '§fꈁꀀꈂꌕꈂꀁ§fꈃꄅ'
+open_command: aura
+register_command: true
+size: 54
+items:
+  'sunflower':
+    material: sunflower
+    slot: 21
+    display_name: '&f&lАура Охотника'
+    lore:
+      - '&#AAAAAAУвеличивает количество'
+      - '&#AAAAAAресурсов с убитого моба'
+      - ''
+      - '&#555555Одновременно работает только одна аура!'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB279 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 279'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 279'
+      - '[console] naura HUNTER %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'clay_ball':
+    material: clay_ball
+    slot: 22
+    display_name: '&#55FFFFАура Твёрдости Брони'
+    lore:
+      - '&#AAAAAAУменьшает входящий урон от игрока'
+      - ''
+      - '&#555555Одновременно работает только одна аура!'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB519 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 519'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 519'
+      - '[console] naura DAMAGE %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'popped_chorus_fruit':
+    material: popped_chorus_fruit
+    slot: 23
+    display_name: '&#AA00AA&lАура Телепортации'
+    lore:
+      - '&#AAAAAAУвеличивает радиус'
+      - '&#AAAAAAтелепортации хоруса'
+      - '&#AAAAAAдо &#F8BEFB16 блоков'
+      - ''
+      - '&#555555Одновременно работает только одна аура!'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB299 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 299'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 299'
+      - '[console] naura TELEPORTATION %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'gold_nugget':
+    material: gold_nugget
+    slot: 30
+    display_name: '&#55FFFFАура Богача'
+    lore:
+      - '&#AAAAAAУвеличивает множитель добычи денег'
+      - '&#AAAAAAс мобов на &#F8BEFB1.0'
+      - ''
+      - '&#555555Одновременно работает только одна аура!'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB259 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 259'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 259'
+      - '[console] naura RICH %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'white_dye':
+    material: white_dye
+    slot: 31
+    display_name: '&#55FFFFАура Защиты От Падения'
+    lore:
+      - '&#AAAAAAУменьшает урона от падения на &#F8BEFB80%'
+      - ''
+      - '&#555555Одновременно работает только одна аура!'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB29 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 29'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 29'
+      - '[console] naura FALL %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'ghast_tear':
+    material: ghast_tear
+    slot: 32
+    display_name: '&#55FFFFАура Защиты От Кристаллов'
+    lore:
+      - '&#AAAAAAУменьшает урона от кристаллов на &#F8BEFB20%'
+      - ''
+      - '&#555555Одновременно работает только одна аура!'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB119 &#FFFFFFꐃ'
+      - ''
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 119'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 119'
+      - '[console] naura CRYSTAL %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'arrow':
+    material: arrow
+    slot: 45
+    display_name: '&#F8BEFBНазад'
+    model_data: 10002
+    click_commands:
+      - '[player] shop'
+  'clock':
+    material: clock
+    slot: 53
+    display_name: '&#F8BEFBИНФОРМАЦИЯ'
+    lore:
+      - ''
+      - '&#555555 &#FFFFFFВаш баланс: &#FAD8FC%playerpoints_points_formatted% &#FFFFFFꐃ'
+      - ''
+      - '&#AAAAAAПополнить баланс можно'
+      - '&#AAAAAAна сайте: &#FAD8FChttps://elytrix.pw'
+    model_data: 100010
+    

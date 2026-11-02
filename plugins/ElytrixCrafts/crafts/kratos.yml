@@ -1,0 +1,90 @@
+menu-slot: 12
+cooldown-hours: 24
+permission: quest.wood
+chain: wood
+result:
+  ==: org.bukkit.inventory.ItemStack
+  v: 2586
+  type: NETHERITE_AXE
+  meta:
+    ==: ItemMeta
+    meta-type: UNSPECIFIC
+    display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"red","text":"Топор
+      Кратоса"}],"text":""}'
+    lore:
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"text":""}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gray","text":"Когда
+      в руке"}],"text":""}'
+    - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"red","text":"Замедление
+      II"}],"text":""}'
+    enchants:
+      FIRE_ASPECT: 2
+      DAMAGE_ALL: 6
+      DURABILITY: 3
+    ItemFlags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+    - HIDE_UNBREAKABLE
+    - HIDE_DESTROYS
+    - HIDE_PLACED_ON
+    - HIDE_POTION_EFFECTS
+    - HIDE_DYE
+    PublicBukkitValues:
+      minecraft:kratos_axe: KRATOS_AXE
+ingredients:
+  '0':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_SWORD
+  '1':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BUBBLE_CORAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Осколок Энда"}],"text":""}'
+      custom-model-data: 1001
+  '2':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHER_STAR
+  '3':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BUBBLE_CORAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Осколок Энда"}],"text":""}'
+      custom-model-data: 1001
+  '4':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: SPAWNER
+  '5':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BUBBLE_CORAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Осколок Энда"}],"text":""}'
+      custom-model-data: 1001
+  '6':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHER_STAR
+  '7':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BUBBLE_CORAL
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_purple","text":"Осколок Энда"}],"text":""}'
+      custom-model-data: 1001
+  '8':
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_AXE

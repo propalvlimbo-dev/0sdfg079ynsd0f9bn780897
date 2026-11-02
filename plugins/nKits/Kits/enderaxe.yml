@@ -1,0 +1,66 @@
+Name: enderaxe
+Cooldown: 0
+Permission: nKits.kits.enderaxe
+Order: 0
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: NETHERITE_AXE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"light_purple","text":"Эндер-Топор"}],"text":""}'
+      custom-model-data: 10000
+      enchants:
+        FIRE_ASPECT: 2
+        DAMAGE_ALL: 4
+        DURABILITY: 3
+      repair-cost: 7
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  Armor:
+  - null
+  - null
+  - null
+  - null

@@ -1,0 +1,18 @@
+location: world_spawn:119.500:67.993:-14.500
+enabled: true
+display-range: 48
+update-range: 48
+update-interval: 20
+facing: 0.0
+down-origin: false
+pages:
+- lines:
+  - content: '&#F8BEFB&lТри в ряд'
+    height: 0.3
+  - content: '&r'
+    height: 0.3
+  - content: '&b&lТекущий джекпот: &#F8BEFB%ncasino_jackpot_5%'
+    height: 0.3
+  - content: '&b&lСтавка: &#F8BEFB1,000'
+    height: 0.3
+  actions: {}

@@ -1,0 +1,200 @@
+alerts:
+    print-to-console: true
+    proxy:
+        send: false
+        receive: false
+
+verbose:
+    print-to-console: false
+
+check-for-updates: false
+
+client-brand:
+    ignored-clients:
+        - "^vanilla$"
+        - "^fabric$"
+        - "^quilt$"
+        - "^lunarclient:v\\d+\\.\\d+\\.\\d+-\\d{4},(?:fabric|forge)$"
+        - "^Feather Fabric$"
+        - "^labymod$"
+    disconnect-blacklisted-forge-versions: true
+
+spectators:
+    hide-regardless: false
+    allowed-worlds:
+        - ""
+
+max-transaction-time: 60
+disable-pong-cancelling: false
+disable-default-resync-handler: false
+cancel-duplicate-packet: true
+ignore-duplicate-packet-rotation: false
+
+Simulation:
+    setback-decay-multiplier: 0.999
+    threshold: 0.01
+    immediate-setback-threshold: 0.15
+    max-advantage: 1.2
+    max-ceiling: 4.5
+    setback-violation-threshold: 1
+
+Phase:
+    setbackvl: 1
+    decay: 0.005
+
+AirLiquidPlace:
+    cancelvl: 0
+
+FabricatedPlace:
+    cancelvl: 5
+
+FarPlace:
+    cancelvl: 5
+
+PositionPlace:
+    cancelvl: 5
+
+RotationPlace:
+    cancelvl: 5
+
+NoSlow:
+    threshold: 0.008
+    setbackvl: 8
+    decay: 0.05
+
+Knockback:
+    setback-decay-multiplier: 0.999
+    threshold: 0.008
+    immediate-setback-threshold: 0.15
+    max-advantage: 1.2
+    max-ceiling: 4.5
+
+Explosion:
+    threshold: 0.008
+    setbackvl: 3
+
+TimerA:
+    setbackvl: 10
+    drift: 120
+
+TimerLimit:
+    ping-abuse-limit-threshold: 1000
+
+NegativeTimer:
+    drift: 1200
+
+VehicleTimer:
+    setbackvl: 10
+
+PacketOrderI:
+    exempt-placing-while-digging: false
+
+Reach:
+    threshold: 0.005
+    block-impossible-hits: true
+    enable-post-packet: false
+
+exploit:
+    allow-sprint-jumping-when-using-elytra: true
+    allow-building-on-ghostblocks: true
+    distance-to-check-if-ghostblocks: 2
+
+debug-pipeline-on-join: false
+experimental-checks: false
+reset-item-usage-on-item-update: true
+reset-item-usage-on-attack: true
+reset-item-usage-on-slot-change: true
+reset-item-usage-on-item-use: true
+packet-spam-threshold: 100
+debug-packet-cancel: false
+max-ping-out-of-flying: 1000
+max-ping-firework-boost: 1000
+update-permission-ticks: -1
+config-flavor: V2
+config-version: 11
+
+Punishments:
+  Simulation:
+    remove-violations-after: 300
+    checks:
+      - "Simulation"
+      - "GroundSpoof"
+      - "Timer"
+      - "TimerLimit"
+      - "NoFall"
+    commands:
+      - "1:1 [log]"
+      #- "150:0 minecraft:kick %player% \n\n&f☁ &#F8BEFBᴇ&#F6BEFBʟ&#F3BEFBʏ&#F1BFFBᴛ&#EEBFFBʀ&#ECBFFBɪ&#E9BFFBx &7» &cОбнаружены аномалии в движении!\n&7Если это произошло случайно, обратитесь в тех.поддержку\n&7Discord: &fdsc.gg/elytrix\n\n"
+  Knockback:
+    remove-violations-after: 300
+    checks:
+      - "Knockback"
+      - "Explosion"
+    commands:
+      - "10:10 [alert]"
+      - "1:1 [log]"
+      #- "40:0 minecraft:kick %player% \n\n&f☁ &#F8BEFBᴇ&#F6BEFBʟ&#F3BEFBʏ&#F1BFFBᴛ&#EEBFFBʀ&#ECBFFBɪ&#E9BFFBx &7» &cОбнаружено изменение отдачи (Anti-KB)!\n&7Если это произошло случайно, обратитесь в тех.поддержку\n&7Discord: &fdsc.gg/elytrix\n\n"
+  Post:
+    remove-violations-after: 300
+    checks:
+      - "Post"
+    commands:
+      - "20:20 [alert]"
+      - "1:1 [log]"
+  BadPackets:
+    remove-violations-after: 300
+    checks:
+      - "BadPackets"
+      - "PacketOrder"
+      - "Crash"
+    commands:
+      - "20:20 [alert]"
+      - "1:1 [log]"
+      #- "50:0 minecraft:kick %player% \n\n&f☁ &#F8BEFBᴇ&#F6BEFBʟ&#F3BEFBʏ&#F1BFFBᴛ&#EEBFFBʀ&#ECBFFBɪ&#E9BFFBx &7» &cОтправка некорректных пакетов игры!\n&7Если это произошло случайно, обратитесь в тех.поддержку\n&7Discord: &fdsc.gg/elytrix\n\n"
+  Reach:
+    remove-violations-after: 300
+    checks:
+      - "Reach"
+    commands:
+      - "5:5 [alert]"
+      - "1:1 [log]"
+  Hitboxes:
+    remove-violations-after: 300
+    checks:
+      - "Hitboxes"
+    commands:
+      - "5:3 [alert]"
+      - "1:1 [log]"
+  Misc:
+    remove-violations-after: 300
+    checks:
+      - "Vehicle"
+      - "NoSlow"
+      - "Sprint"
+      - "MultiActions"
+      - "Place"
+      - "Baritone"
+      - "Break"
+      - "TransactionOrder"
+      - "Elytra"
+      - "Chat"
+      - "Exploit"
+    commands:
+      - "15:10 [alert]"
+      - "1:1 [log]"
+      #- "40:0 minecraft:kick %player% \n\n&f☁ &#F8BEFBᴇ&#F6BEFBʟ&#F3BEFBʏ&#F1BFFBᴛ&#EEBFFBʀ&#ECBFFBɪ&#E9BFFBx &7» &cИспользование запрещенного функционала (%check_name%)!\n&7Если это произошло случайно, обратитесь в тех.поддержку\n&7Discord: &fdsc.gg/elytrix\n\n"
+  Combat:
+    remove-violations-after: 300
+    checks:
+      - "Interact"
+      - "Aim"
+    commands:
+      - "20:40 [alert]"
+      - "1:1 [log]"
+  Autoclicker:
+    remove-violations-after: 300
+    checks:
+      - "Autoclicker"
+    commands:
+      - "20:40 [alert]"
+      - "1:1 [log]"
