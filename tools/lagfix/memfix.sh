@@ -26,9 +26,16 @@ add_flag() {  # $1=флаг
     grep -q -- "$f" "$SH_FILE" && { printf '  =   %s уже стоит\n' "$f"; return; }
     # вставляем строкой после -XX:+AlwaysPreTouch (он есть в обоих вариантах скрипта)
     if grep -q -- '-XX:+AlwaysPreTouch' "$SH_FILE"; then
+        # если строки JVM-флагов заканчиваются на "\", вставленная строка тоже
+        # обязана заканчиваться на "\", иначе java-команда оборвётся на середине
         awk -v ins="$f" '
             { print }
-            !done && /-XX:\+AlwaysPreTouch/ { match($0, /^[ ]*/); printf "%s%s\n", substr($0, 1, RLENGTH), ins; done = 1 }
+            !done && /-XX:\+AlwaysPreTouch/ {
+                match($0, /^[ ]*/)
+                tail = ($0 ~ /\\[ ]*$/) ? " \\" : ""
+                printf "%s%s%s\n", substr($0, 1, RLENGTH), ins, tail
+                done = 1
+            }
         ' "$SH_FILE" > "$SH_FILE.new" && mv "$SH_FILE.new" "$SH_FILE"
     else
         awk -v ins="$f" '
