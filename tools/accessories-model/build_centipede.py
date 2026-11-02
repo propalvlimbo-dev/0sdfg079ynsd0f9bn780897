@@ -1,22 +1,32 @@
 #!/usr/bin/env python3
-"""Builds the Tokyo Ghoul Scolopendra (elytrix_centipede) blueprint, texture & icon.
+"""Builds the Full-Body Crawling Tokyo Ghoul Scolopendra (elytrix_centipede).
 
-Design:
+Design (v6 — Full-Body 3-Wrap Helical Crawl):
 - Canonical Tokyo Ghoul Chinese red-headed centipede (Scolopendra subspinipes mutilans):
   glossy jet-black/obsidian imbricated tergite carapace with blood-crimson rims,
-  fiery scarlet-red cephalic shield with ocelli eye clusters & snapping black-tipped
-  venomous forcipules (fangs), long 2-jointed whip antennae, 24 independent
-  3-segment vermilion/red-orange clawed legs, and forked crimson tail cerci.
-- Coils organically around the player's neck, trapezius, shoulders, and upper
-  chest/collarbone (armor-safe clearance around chestplate & helmet, 100% clear
-  of first-person PvP crosshair, unmistakable from front, back, and both sides).
-- Zero per-cube rotations (all cubes [0, 0, 0]); all 3D orientation is carried
-  by 47 bone transforms + native Blockbench/ModelEngine looping keyframe animation
-  ('idle', 3.2 s seamless loop: body S-wave + metachronal leg scurry + antenna
-  whipping + predatory double-snap fang clacks + tail cerci scissoring).
+  fiery scarlet-red cephalic shield with gleaming ocelli eye clusters & snapping
+  black-tipped venomous forcipules (fangs), 2-jointed whip antennae, 28 vermilion
+  clawed legs (14 pairs), and forked crimson tail cerci.
+- Crawls continuously all over the player's ENTIRE body along a smooth C^infinity
+  3-wrap closed helical trajectory (118+ Blockbench units = ~7.4 blocks per loop):
+    * Wrap 1: Front chest -> Left collarbone -> Top of Left Shoulder -> Nape of Neck
+              / Upper Back -> Top of Right Shoulder -> Front Right Chest
+    * Wrap 2: Diagonally across Belly/Abs -> Left Hip -> Outer Left Thigh (y ~ 7.4)
+              -> Lower Back / Tailbone -> Outer Right Thigh -> Right Hip
+    * Wrap 3: Lower Stomach -> Outside of Left Arm (x ~ -9.1) -> Left & Right
+              Shoulder Blades -> Outside of Right Arm (x ~ +9.1) -> Front Chest!
+- Gimbal-lock-free 2-stage segment rig under static `body_root` ([0,0,0]):
+    * `carrier_01..16` (empty non-root pivot bones, 0 cubes = 0 extra ItemDisplays):
+      carry exact 3D curve position + continuous unwrapped Y-yaw (+1080 deg per loop).
+    * `seg_01..16` (child renderer bones): carry smooth Z-pitch + surface-hugging
+      X-roll so the dorsal obsidian-crimson carapace ALWAYS faces outward from the
+      skin/armor while the 28 legs hug and scurry across the body surface!
+- 100% ZERO per-cube rotations (every cube has rotation [0, 0, 0]) so ModelEngine
+  4.1.0's RotationSolver never crashes on Paper's fastutil.
 """
 import argparse
 import base64
+import bisect
 import io
 import json
 import math
@@ -27,51 +37,53 @@ from PIL import Image, ImageDraw
 
 HERE = Path(__file__).resolve().parent
 MODEL = 'elytrix_centipede'
-ROOT_ORIGIN = [0.0, 22.5, 0.0]
+ROOT_ORIGIN = [0.0, 0.0, 0.0]
 
-# ---------------------------------------------------------------------------
-# 3D Neck & Shoulders Coil Control Points (Blockbench player space)
-# Player stands y=0..32 facing -Z; -X = left shoulder, +X = right shoulder;
-# torso x[-4,4] y[12,24] z[-2,2], arms x[-8,-4] & [4,8] y[12,24] z[-2,2],
-# head x[-4,4] y[24,32] z[-4,4].  +1.0 unit armor clearance everywhere!
-#
-# Head prowls low & menacingly forward over the LEFT shoulder pauldron
-# (well outside x=-4.5 helmet & below/beside y=25.92 eye crosshair), while the
-# body coils across upper back S-curve -> right shoulder -> diagonal chestplate
-# -> forked crimson tail cerci on the lower-left pectoral.
-# ---------------------------------------------------------------------------
-HEAD_POS = (-6.35, 25.05, -2.95)
+NUM_SEGS = 16
+SEG_SPACING = 2.45                      # ~39-unit (2.45-block) giant Tokyo Ghoul scolopendra
+LEG_SEG_INDICES = tuple(range(2, 16))   # seg_02 .. seg_15 carry 14 pairs = 28 legs
 
-COIL_CTRL = [
-    (-6.75, 25.20, -1.15),   # seg_01: forcipular collar on left shoulder front-top
-    (-7.05, 25.25,  0.65),   # seg_02: left shoulder crown
-    (-6.45, 24.95,  2.35),   # seg_03: left posterior shoulder
-    (-4.80, 24.40,  3.65),   # seg_04: left trapezius
-    (-2.45, 24.65,  4.10),   # seg_05: upper back S-wave high crest (behind nape)
-    ( 0.05, 23.60,  4.00),   # seg_06: spine S-wave dip
-    ( 2.65, 24.20,  3.90),   # seg_07: right trapezius rise
-    ( 5.05, 24.85,  3.15),   # seg_08: right posterior shoulder
-    ( 6.85, 25.35,  1.25),   # seg_09: right shoulder crown
-    ( 7.05, 25.25, -0.85),   # seg_10: right anterior shoulder
-    ( 6.05, 24.55, -2.95),   # seg_11: right front shoulder pauldron (clear of arm corner!)
-    ( 4.05, 23.05, -3.75),   # seg_12: upper right chestplate
-    ( 1.55, 21.55, -3.85),   # seg_13: center sternum collar
-    (-1.05, 20.35, -3.70),   # seg_14: lower-left collarbone telson (tail cerci fork)
+ANIM_LENGTH = 10.8                      # 10.8 s per 3-wrap full-body tour (~11 units/s)
+ANIM_STEPS = 108                        # 0.10 s (2 ticks) per keyframe, 109 keys (0..108)
+SUB_ANIM_STEPS = 72                     # 0.15 s (3 ticks) for legs/fangs/antennae/cerci
+
+# 18 waypoints forming 3 smooth counter-clockwise helical wraps around the entire body
+# (Front -Z -> Left -X -> Back +Z -> Right +X -> Front -Z, x3!)
+WAYPOINTS = [
+    # --- WRAP 1: Upper chest, both shoulders & nape of neck ---
+    ( 0.5, 20.5, -3.42),   # 0: center-right upper chest (front)
+    (-4.6, 23.2, -3.12),   # 1: climbing toward left collarbone
+    (-6.4, 25.35, 0.20),   # 2: cresting OVER TOP of left shoulder
+    (-0.5, 24.55, 3.48),   # 3: across nape of neck / upper back
+    ( 6.4, 25.35, 0.40),   # 4: cresting OVER TOP of right shoulder
+    ( 4.8, 20.4, -3.18),   # 5: descending front-right chest
+    # --- WRAP 2: Belly, hips, both upper thighs & lower back ---
+    (-0.8, 15.2, -3.42),   # 6: diagonally across stomach / abs
+    (-5.1, 10.8, -2.55),   # 7: down to left front hip
+    (-5.25, 7.35, 1.20),   # 8: wrapping around outer left upper thigh
+    ( 0.0,  8.85, 3.38),   # 9: across lower back / tailbone (clear of Kagune at y=14.4!)
+    ( 5.25, 7.55, 1.00),   # 10: wrapping around outer right upper thigh
+    ( 4.5, 10.0, -3.08),   # 11: climbing right front thigh / hip
+    # --- WRAP 3: Lower belly, outside of both arms & upper-mid back ---
+    (-1.4, 12.6, -3.42),   # 12: lower belly
+    (-9.15, 16.8, -0.30),  # 13: wrapping around OUTSIDE of left arm
+    (-4.8, 20.9,  3.42),   # 14: climbing left shoulder blade (above Kagune knot!)
+    ( 4.8, 21.3,  3.42),   # 15: across upper-mid back
+    ( 9.15, 18.6,  0.20),  # 16: wrapping around OUTSIDE of right arm
+    ( 5.0, 19.2, -3.18),   # 17: front right ribs -> closes seamlessly into 0!
 ]
-
-NUM_SEGS = 14
-LEG_SEG_INDICES = tuple(range(2, 14))   # seg_02 .. seg_13 carry 12 pairs = 24 legs
-
-ANIM_LENGTH = 3.2
-ANIM_FRAMES = 33                        # 0.10 s step, seamless wrap frame 32 == frame 0
 
 
 def uid(tag: str) -> str:
-    return str(uuid.uuid5(uuid.NAMESPACE_URL, f'elytrix-centipede-v5:{tag}'))
+    return str(uuid.uuid5(uuid.NAMESPACE_URL, f'elytrix-centipede-v6:{tag}'))
+
+
+def _clamp8(v: float) -> int:
+    return max(0, min(255, int(round(v))))
 
 
 # ---------------------------------------------------------------------------
-# Vector & Matrix Math (exact match to ModelEngine 4.1.0 rotateZYX)
+# Vector & Matrix Math (exact match to Blockbench / ModelEngine rotateZYX)
 # ---------------------------------------------------------------------------
 def _vadd(a, b):
     return (a[0] + b[0], a[1] + b[1], a[2] + b[2])
@@ -128,124 +140,194 @@ def _mvec(m, v):
 
 
 def euler_zyx_to_matrix(euler):
-    """Blockbench / ModelEngine bone rotation matrix: R = Rz(ez) * Ry(ey) * Rx(ex)."""
     rx, ry, rz = euler
     return _mmul(_mmul(_rot_axis(2, rz), _rot_axis(1, ry)), _rot_axis(0, rx))
 
 
-def matrix_to_euler_zyx(m):
-    """Exact inverse of R = Rz(ez) * Ry(ey) * Rx(ex), in degrees."""
-    sy = max(-1.0, min(1.0, -m[2][0]))
-    ry = math.asin(sy)
-    cy = math.cos(ry)
-    if abs(cy) > 1e-6:
-        rx = math.atan2(m[2][1], m[2][2])
-        rz = math.atan2(m[1][0], m[0][0])
-    else:
-        rx = math.atan2(-m[1][2], m[1][1])
-        rz = 0.0
-    return [round(math.degrees(rx), 4), round(math.degrees(ry), 4), round(math.degrees(rz), 4)]
-
-
 # ---------------------------------------------------------------------------
-# Centripetal Catmull-Rom Spine & Surface-Hugging Frames
+# Smooth Closed 3-Wrap Full-Body Curve & Continuous Gimbal-Free Frame Field
 # ---------------------------------------------------------------------------
-def _catmull_rom(p0, p1, p2, p3, t, alpha=0.5):
-    def tj(ti, a, b):
-        return ti + max(1e-5, math.dist(a, b)) ** alpha
-
-    t0 = 0.0
-    t1 = tj(t0, p0, p1)
-    t2 = tj(t1, p1, p2)
-    t3 = tj(t2, p2, p3)
-    tt = t1 + (t2 - t1) * t
-
-    def lerp(a, b, ta, tb, x):
-        w = (x - ta) / max(1e-9, tb - ta)
-        return tuple(a[i] + (b[i] - a[i]) * w for i in range(3))
-
-    a1 = lerp(p0, p1, t0, t1, tt)
-    a2 = lerp(p1, p2, t1, t2, tt)
-    a3 = lerp(p2, p3, t2, t3, tt)
-    b1 = lerp(a1, a2, t0, t2, tt)
-    b2 = lerp(a2, a3, t1, t3, tt)
-    return lerp(b1, b2, t1, t2, tt)
-
-
-def sample_collar_stations():
-    """Returns 15 smooth stations: [head_pos, seg_01, ..., seg_14] with frames."""
-    pts = [HEAD_POS] + list(COIL_CTRL)
-    ghost_start = _vadd(pts[0], _vsub(pts[0], pts[1]))
-    ghost_end = _vadd(pts[-1], _vsub(pts[-1], pts[-2]))
-    ext = [ghost_start] + pts + [ghost_end]
-
-    dense = []
-    steps_per_seg = 24
-    for i in range(len(pts) - 1):
-        for s in range(steps_per_seg):
-            dense.append(_catmull_rom(ext[i], ext[i + 1], ext[i + 2], ext[i + 3], s / steps_per_seg))
-    dense.append(pts[-1])
-
-    cum = [0.0]
-    for i in range(1, len(dense)):
-        cum.append(cum[-1] + math.dist(dense[i - 1], dense[i]))
-    total_len = cum[-1]
-
-    stations_pos = []
-    count = NUM_SEGS + 1
-    for idx in range(count):
-        target = total_len * (idx / (count - 1))
-        lo = 0
-        while lo + 1 < len(cum) and cum[lo + 1] < target:
-            lo += 1
-        hi = min(len(cum) - 1, lo + 1)
-        w = 0.0 if hi == lo else (target - cum[lo]) / max(1e-9, cum[hi] - cum[lo])
-        p = tuple(dense[lo][k] + (dense[hi][k] - dense[lo][k]) * w for k in range(3))
-        stations_pos.append(p)
-
-    stations = []
-    for idx, p in enumerate(stations_pos):
-        if idx == 0:
-            # Sleek horizontal predatory prowl straight ahead (-Z) over left shoulder!
-            # Keeps antennae & fangs 100% out of the player's eyes / first-person crosshair.
-            fwd = _vnorm((0.06, -0.05, -0.995))
-        elif idx == len(stations_pos) - 1:
-            fwd = _vnorm(_vsub(stations_pos[idx - 1], stations_pos[idx]))
-        else:
-            fwd = _vnorm(_vsub(stations_pos[idx - 1], stations_pos[idx + 1]))
-
-        z_axis = _vmul(fwd, -1.0)
-
-        anchor_x = max(-4.2, min(4.2, p[0] * 0.65))
-        anchor = (anchor_x, 21.0, 0.0)
-        radial = _vsub(p, anchor)
-        raw_up = (0.0, 1.0, 0.0) if idx == 0 else _vnorm(_vadd(_vnorm(radial), (0.0, 0.72, 0.0)))
-
-        x_axis = _vnorm(_vcross(raw_up, z_axis))
-        y_axis = _vnorm(_vcross(z_axis, x_axis))
-
-        rot_mat = (
-            (x_axis[0], y_axis[0], z_axis[0]),
-            (x_axis[1], y_axis[1], z_axis[1]),
-            (x_axis[2], y_axis[2], z_axis[2]),
+def _catmull_rom_closed(pts, u: float):
+    n = len(pts)
+    s = (u % 1.0) * n
+    i = int(math.floor(s)) % n
+    t = s - math.floor(s)
+    p0, p1, p2, p3 = pts[(i - 1) % n], pts[i], pts[(i + 1) % n], pts[(i + 2) % n]
+    t2, t3 = t * t, t * t * t
+    return tuple(
+        0.5 * (
+            2.0 * p1[k]
+            + (-p0[k] + p2[k]) * t
+            + (2.0 * p0[k] - 5.0 * p1[k] + 4.0 * p2[k] - p3[k]) * t2
+            + (-p0[k] + 3.0 * p1[k] - 3.0 * p2[k] + p3[k]) * t3
         )
-        euler = matrix_to_euler_zyx(rot_mat)
-        stations.append({
-            'pos': [round(v, 4) for v in p],
-            'rot': euler,
-            'mat': rot_mat,
-        })
-    return stations
+        for k in range(3)
+    )
+
+
+def _smooth_surface_push(pt):
+    """Smoothly repels points outside the player's torso, legs, and arms (with armor clearance)."""
+    x, y, z = pt
+    # Torso & upper-leg superellipsoid clearance (+armor margin)
+    if 4.5 <= y <= 24.6:
+        wy = 1.0 if y <= 23.6 else max(0.0, (24.6 - y) / 1.0)
+        sx = x / 5.02
+        sz = z / 3.48
+        r4 = (sx ** 4 + sz ** 4) ** 0.25
+        if 1e-6 < r4 < 1.0:
+            scale = 1.0 + wy * (1.0 / r4 - 1.0)
+            x *= scale
+            z *= scale
+    # Left & right arms superellipsoid clearance (x ~ +-6.25, y ~ 18.0)
+    for sign in (-1.0, 1.0):
+        cx = sign * 6.25
+        cy = 18.0
+        dx = (x - cx) / 2.98
+        dy = (y - cy) / 7.15
+        dz = z / 3.35
+        r4 = (dx ** 4 + dy ** 4 + dz ** 4) ** 0.25
+        if 1e-6 < r4 < 1.0:
+            inv = 1.0 / r4
+            x = cx + (x - cx) * inv
+            y = cy + (y - cy) * inv
+            z = z * inv
+    # Head box clearance (y >= 24.0, |x| < 4.5, |z| < 4.5)
+    if y > 23.9:
+        hx = x / 4.55
+        hz = z / 4.55
+        hr4 = (hx ** 4 + hz ** 4) ** 0.25
+        if 1e-6 < hr4 < 1.0 and y > 24.2:
+            inv = 1.0 / hr4
+            x *= inv
+            z *= inv
+    return (x, y, z)
+
+
+class FullBodyTrack:
+    """Arc-length parameterized C^inf closed 3-wrap track with unwrapped (yaw, pitch, roll)."""
+
+    def __init__(self, dense_n: int = 1800, arc_n: int = 1440):
+        raw = [_smooth_surface_push(_catmull_rom_closed(WAYPOINTS, i / dense_n))
+               for i in range(dense_n)]
+        for sigma in (22.0, 14.0):
+            sm = []
+            w_rad = int(3 * sigma)
+            for i in range(dense_n):
+                sx = sy = sz = sw = 0.0
+                for d in range(-w_rad, w_rad + 1):
+                    w = math.exp(-0.5 * (d / sigma) ** 2)
+                    px, py, pz = raw[(i + d) % dense_n]
+                    sx += w * px
+                    sy += w * py
+                    sz += w * pz
+                    sw += w
+                sm.append(_smooth_surface_push((sx / sw, sy / sw, sz / sw)))
+            raw = sm
+
+        curve = []
+        for i in range(dense_n):
+            sx = sy = sz = sw = 0.0
+            for d in range(-36, 37):
+                w = math.exp(-0.5 * (d / 12.0) ** 2)
+                px, py, pz = raw[(i + d) % dense_n]
+                sx += w * px
+                sy += w * py
+                sz += w * pz
+                sw += w
+            curve.append((sx / sw, sy / sw, sz / sw))
+
+        cum = [0.0]
+        for i in range(1, dense_n + 1):
+            cum.append(cum[-1] + math.dist(curve[i - 1], curve[i % dense_n]))
+        self.total_length = cum[-1]
+
+        def sample_raw_arc(s_mod: float):
+            target = (s_mod % 1.0) * self.total_length
+            idx = max(0, min(dense_n - 1, bisect.bisect_right(cum, target) - 1))
+            denom = cum[idx + 1] - cum[idx]
+            t = (target - cum[idx]) / denom if denom > 1e-9 else 0.0
+            a, b = curve[idx], curve[(idx + 1) % dense_n]
+            return (a[0] + (b[0] - a[0]) * t,
+                    a[1] + (b[1] - a[1]) * t,
+                    a[2] + (b[2] - a[2]) * t)
+
+        self.arc_n = arc_n
+        self.pts = [sample_raw_arc(i / arc_n) for i in range(arc_n)]
+
+        # Precompute periodic pitch & roll, and unwrapped yaw over [0, 1]
+        self.yaws = []
+        self.pitches = []
+        self.rolls = []
+        self.frames = []
+        prev_yaw = None
+        prev_roll = None
+        for i in range(arc_n + 1):
+            idx = i % arc_n
+            p = self.pts[idx]
+            p_prev = self.pts[(idx - 1) % arc_n]
+            p_next = self.pts[(idx + 1) % arc_n]
+            fwd = _vnorm(_vsub(p_next, p_prev))  # local +X = forward toward head!
+
+            yc = max(8.5, min(22.5, p[1]))
+            n_raw = _vnorm((p[0] / 7.5, (p[1] - yc) / 6.5, p[2] / 3.4))
+            proj = _vdot(n_raw, fwd)
+            up = _vnorm(_vsub(n_raw, _vmul(fwd, proj)))   # local +Y = dorsal carapace UP!
+            right = _vcross(fwd, up)                      # local +Z = right flank!
+
+            pitch = math.degrees(math.asin(max(-1.0, min(1.0, fwd[1]))))
+            yaw = math.degrees(math.atan2(-fwd[2], fwd[0]))
+            if prev_yaw is not None:
+                yaw = prev_yaw + ((yaw - prev_yaw + 180.0) % 360.0 - 180.0)
+            prev_yaw = yaw
+
+            m0 = _mmul(_rot_axis(1, yaw), _rot_axis(2, pitch))
+            u0 = (m0[0][1], m0[1][1], m0[2][1])
+            r0 = (m0[0][2], m0[1][2], m0[2][2])
+            roll = math.degrees(math.atan2(_vdot(up, r0), _vdot(up, u0)))
+            if prev_roll is not None:
+                roll = prev_roll + ((roll - prev_roll + 180.0) % 360.0 - 180.0)
+            prev_roll = roll
+
+            self.yaws.append(yaw)
+            self.pitches.append(pitch)
+            self.rolls.append(roll)
+            self.frames.append((fwd, up, right))
+
+        self.yaw_winding = round((self.yaws[-1] - self.yaws[0]) / 360.0) * 360.0
+        self.roll_winding = round((self.rolls[-1] - self.rolls[0]) / 360.0) * 360.0
+
+    def eval(self, s_continuous: float):
+        """Evaluates (pos, yaw, pitch, roll, frame_mat) smoothly for ANY real s_continuous."""
+        laps = math.floor(s_continuous)
+        frac = s_continuous - laps
+        f_idx = frac * self.arc_n
+        i0 = int(math.floor(f_idx))
+        if i0 >= self.arc_n:
+            i0 = self.arc_n - 1
+            w = 1.0
+        else:
+            w = f_idx - i0
+        i1 = i0 + 1
+
+        p0 = self.pts[i0 % self.arc_n]
+        p1 = self.pts[i1 % self.arc_n]
+        pos = tuple(p0[k] + (p1[k] - p0[k]) * w for k in range(3))
+
+        yaw = (self.yaws[i0] + (self.yaws[i1] - self.yaws[i0]) * w) + laps * self.yaw_winding
+        pitch = self.pitches[i0] + (self.pitches[i1] - self.pitches[i0]) * w
+        roll = (self.rolls[i0] + (self.rolls[i1] - self.rolls[i0]) * w) + laps * self.roll_winding
+
+        mat = _mmul(_rot_axis(1, yaw), _mmul(_rot_axis(2, pitch), _rot_axis(0, roll)))
+        return pos, yaw, pitch, roll, mat
 
 
 # ---------------------------------------------------------------------------
-# 128x128 Procedural Pixel-Art Texture (Canonical Tokyo Ghoul Obsidian + Crimson)
-# UV space is 16x16 (8 px per UV unit).
+# 128x128 Procedural Pixel-Art Texture (Oriented for Local +X Forward, +-Z Width!)
 # ---------------------------------------------------------------------------
 UV_REGIONS = {
-    'tergite_top':   (0.0,  0.0,  8.0,  4.0),   # 0..64 x 0..32: jet-black carapace + crimson rim
+    'tergite_top':   (0.0,  0.0,  8.0,  4.0),   # 0..64 x 0..32: obsidian carapace + lateral crimson rims
     'tergite_ridge': (0.0,  4.0,  8.0,  6.0),   # 0..64 x 32..48: glossy obsidian dorsal crown + ruby lip
-    'tergite_side':  (0.0,  6.0,  8.0,  8.0),   # 0..64 x 48..64: obsidian upper + blood-crimson rim
+    'tergite_side':  (0.0,  6.0,  8.0,  8.0),   # 0..64 x 48..64: obsidian upper + blood-crimson lower rim
     'sternite':      (0.0,  8.0,  8.0, 10.5),   # 0..64 x 64..84: dark mahogany-crimson belly
     'pleuron':       (0.0, 10.5,  8.0, 13.0),   # 0..64 x 84..104: dark chitin socket
     'claw_black':    (0.0, 13.0,  8.0, 16.0),   # 0..64 x 104..128: glossy pitch-black venom tips/claws
@@ -255,10 +337,6 @@ UV_REGIONS = {
     'leg_orange':    (8.0,  8.0, 16.0, 12.0),   # 64..128 x 64..96: vermilion/red-orange cylindrical limb
     'antenna_ring':  (8.0, 12.0, 16.0, 16.0),   # 64..128 x 96..128: segmented red-orange antennomeres
 }
-
-
-def _clamp8(v):
-    return max(0, min(255, int(round(v))))
 
 
 def build_texture() -> Image.Image:
@@ -273,88 +351,86 @@ def build_texture() -> Image.Image:
             + math.cos((x + y) * 0.53) * 0.20
         )
 
-    # 1. Tergite Top (x: 0..64, y: 0..32) — Deep glossy jet-black plate + sharp blood-crimson rims
+    # 1. Tergite Top (x: 0..64 along X length: x=0 posterior -> x=63 anterior;
+    #                 y: 0..32 across Z width: y=0 & y=31 are left/right crimson margins!)
     for y in range(0, 32):
-        v = y / 31.0
+        lat = (y - 15.5) / 15.5
+        alat = abs(lat)
         for x in range(0, 64):
-            u = (x - 31.5) / 31.5
-            au = abs(u)
+            u_len = x / 63.0   # 0 = posterior overlap lip, 1 = anterior
             g = micro_grain(x, y) * 3.5
-
-            # Deep obsidian-ebony chitin core (#0B070E .. #160E1B)
             r, gr, b = 13.0 + g, 8.0 + g * 0.4, 15.0 + g * 0.6
 
-            # Crisp blood-crimson lateral margin (au > 0.78)
-            if au > 0.76:
-                edge_t = min(1.0, (au - 0.76) / 0.24) ** 1.25
-                r = r * (1.0 - edge_t) + 188.0 * edge_t
-                gr = gr * (1.0 - edge_t) + 16.0 * edge_t
-                b = b * (1.0 - edge_t) + 30.0 * edge_t
+            # Crisp blood-crimson lateral margins (alat > 0.74)
+            if alat > 0.74:
+                edge_t = min(1.0, (alat - 0.74) / 0.26) ** 1.2
+                r = r * (1.0 - edge_t) + 196.0 * edge_t
+                gr = gr * (1.0 - edge_t) + 18.0 * edge_t
+                b = b * (1.0 - edge_t) + 32.0 * edge_t
 
-            # Sharp posterior ruby-crimson imbricated rim (y >= 26)
-            if v > 0.81:
-                lip_t = ((v - 0.81) / 0.19) ** 1.2
-                r = r * (1.0 - lip_t * 0.9) + 196.0 * lip_t * 0.9
+            # Sharp posterior ruby-crimson imbricated rim (u_len < 0.20)
+            if u_len < 0.20:
+                lip_t = ((0.20 - u_len) / 0.20) ** 1.2
+                r = r * (1.0 - lip_t * 0.9) + 202.0 * lip_t * 0.9
                 gr = gr * (1.0 - lip_t * 0.9) + 20.0 * lip_t * 0.9
-                b = b * (1.0 - lip_t * 0.9) + 34.0 * lip_t * 0.9
+                b = b * (1.0 - lip_t * 0.9) + 36.0 * lip_t * 0.9
 
-            # Anterior overlap occlusion
-            if v < 0.16:
-                occ = 0.45 + 0.55 * (v / 0.16)
+            # Anterior overlap occlusion (u_len > 0.84)
+            if u_len > 0.84:
+                occ = 0.48 + 0.52 * ((1.0 - u_len) / 0.16)
                 r, gr, b = r * occ, gr * occ, b * occ
 
-            # Paramedian longitudinal grooves
-            groove = math.exp(-((au - 0.32) / 0.04) ** 2)
+            # Paramedian longitudinal grooves along length
+            groove = math.exp(-((alat - 0.32) / 0.045) ** 2)
             r *= 1.0 - 0.40 * groove
             gr *= 1.0 - 0.40 * groove
             b *= 1.0 - 0.35 * groove
 
-            # Glossy wet-chitin specular sheen down the black carapace
-            spec = math.exp(-(u / 0.16) ** 2) * math.exp(-((v - 0.50) / 0.28) ** 2)
+            # Glossy wet-chitin specular sheen down dorsal spine
+            spec = math.exp(-(lat / 0.18) ** 2) * math.exp(-((u_len - 0.50) / 0.28) ** 2)
             r += 64.0 * spec
             gr += 50.0 * spec
             b += 68.0 * spec
-
             px[x, y] = (_clamp8(r), _clamp8(gr), _clamp8(b), 255)
 
-    # 2. Tergite Raised Dorsal Ridge (x: 0..64, y: 32..48) — Pure glossy obsidian + thin crimson rear edge
+    # 2. Tergite Raised Dorsal Ridge (x: 0..64, y: 32..48)
     for y in range(32, 48):
-        v = (y - 32) / 15.0
+        lat = ((y - 32) - 7.5) / 7.5
         for x in range(0, 64):
-            u = (x - 31.5) / 31.5
+            u_len = x / 63.0
             g = micro_grain(x, y) * 3.0
             r, gr, b = 16.0 + g, 10.0 + g * 0.4, 20.0 + g * 0.6
-            if v > 0.82:
-                lt = (v - 0.82) / 0.18
-                r = r * (1.0 - lt) + 172.0 * lt
+            if u_len < 0.18:
+                lt = (0.18 - u_len) / 0.18
+                r = r * (1.0 - lt) + 184.0 * lt
                 gr = gr * (1.0 - lt) + 18.0 * lt
-                b = b * (1.0 - lt) + 30.0 * lt
-            spec = math.exp(-(u / 0.22) ** 2) * (0.4 + 0.6 * math.sin(v * math.pi))
+                b = b * (1.0 - lt) + 32.0 * lt
+            spec = math.exp(-(lat / 0.26) ** 2) * (0.4 + 0.6 * math.sin(u_len * math.pi))
             r += 58.0 * spec
             gr += 46.0 * spec
             b += 64.0 * spec
             px[x, y] = (_clamp8(r), _clamp8(gr), _clamp8(b), 255)
 
-    # 3. Tergite Lateral Rim (x: 0..64, y: 48..64) — Obsidian upper shell + glowing crimson lower margin
+    # 3. Tergite Lateral Rim (x: 0..64, y: 48..64)
     for y in range(48, 64):
         v = (y - 48) / 15.0
         for x in range(0, 64):
             g = micro_grain(x, y) * 4.0
             rim = max(0.0, (v - 0.35) / 0.65) ** 1.15
-            r = 16.0 * (1.0 - rim) + 182.0 * rim + g
+            r = 16.0 * (1.0 - rim) + 188.0 * rim + g
             gr = 9.0 * (1.0 - rim) + 18.0 * rim
-            b = 16.0 * (1.0 - rim) + 30.0 * rim
+            b = 16.0 * (1.0 - rim) + 32.0 * rim
             px[x, y] = (_clamp8(r), _clamp8(gr), _clamp8(b), 255)
 
     # 4. Ventral Sternite Belly (x: 0..64, y: 64..84)
     for y in range(64, 84):
-        v = (y - 64) / 19.0
+        lat = abs(((y - 64) - 9.5) / 9.5)
+        cyl = 1.0 - 0.42 * (lat ** 1.6)
         for x in range(0, 64):
-            u = abs((x - 31.5) / 31.5)
-            cyl = 1.0 - 0.42 * (u ** 1.6)
-            r = (68.0 + 22.0 * math.sin(v * math.pi)) * cyl
-            gr = (16.0 + 6.0 * math.sin(v * math.pi)) * cyl
-            b = (20.0 + 6.0 * math.sin(v * math.pi)) * cyl
+            u = x / 63.0
+            r = (68.0 + 22.0 * math.sin(u * math.pi)) * cyl
+            gr = (16.0 + 6.0 * math.sin(u * math.pi)) * cyl
+            b = (20.0 + 6.0 * math.sin(u * math.pi)) * cyl
             px[x, y] = (_clamp8(r), _clamp8(gr), _clamp8(b), 255)
 
     # 5. Pleuron Socket Chitin (x: 0..64, y: 84..104)
@@ -376,28 +452,27 @@ def build_texture() -> Image.Image:
 
     # 7. Fiery Crimson Cephalic Head Shield (x: 64..128, y: 0..32)
     for y in range(0, 32):
-        v = y / 31.0
+        lat = (y - 15.5) / 15.5
+        alat = abs(lat)
         for x in range(64, 128):
-            u = (x - 95.5) / 31.5
-            au = abs(u)
+            u = (x - 64) / 63.0
             g = micro_grain(x, y) * 5.0
-            dome = (1.0 - 0.42 * (au ** 1.8)) * (1.0 - 0.22 * ((v - 0.45) ** 2) * 3.0)
-            r = 148.0 + 104.0 * dome + g
-            gr = 14.0 + 32.0 * (dome ** 1.6) + g * 0.3
+            dome = (1.0 - 0.40 * (alat ** 1.8)) * (1.0 - 0.22 * ((u - 0.55) ** 2) * 3.0)
+            r = 152.0 + 102.0 * dome + g
+            gr = 14.0 + 34.0 * (dome ** 1.6) + g * 0.3
             b = 18.0 + 24.0 * (dome ** 1.6) + g * 0.3
 
-            suture = math.exp(-(au / 0.04) ** 2) * (1.0 if v > 0.42 else 0.0)
-            suture = max(suture, math.exp(-((au - (0.44 - v) * 0.75) / 0.045) ** 2) * (1.0 if v <= 0.44 else 0.0))
-            r *= 1.0 - 0.30 * suture
-            gr *= 1.0 - 0.36 * suture
+            suture = math.exp(-(alat / 0.045) ** 2) * (1.0 if u < 0.58 else 0.0)
+            r *= 1.0 - 0.28 * suture
+            gr *= 1.0 - 0.34 * suture
 
-            spec = math.exp(-((u + 0.14) / 0.22) ** 2) * math.exp(-((v - 0.38) / 0.22) ** 2)
+            spec = math.exp(-((lat + 0.12) / 0.22) ** 2) * math.exp(-((u - 0.62) / 0.22) ** 2)
             r += 56.0 * spec
             gr += 66.0 * spec
             b += 50.0 * spec
             px[x, y] = (_clamp8(r), _clamp8(gr), _clamp8(b), 255)
 
-    # 8. Ocelli Eye Cluster (x: 64..96, y: 32..64) — 4 gleaming black ocelli + silver-crimson glints
+    # 8. Ocelli Eye Cluster (x: 64..96, y: 32..64)
     for y in range(32, 64):
         for x in range(64, 96):
             px[x, y] = (18, 6, 10, 255)
@@ -414,13 +489,13 @@ def build_texture() -> Image.Image:
     for y in range(32, 64):
         v = (y - 32) / 31.0
         for x in range(96, 128):
-            u = (x - 111.5) / 15.5
-            cyl = 1.0 - 0.44 * (u * u)
-            venom = min(1.0, max(0.0, (v - 0.25) / 0.65)) ** 1.25
-            r = (232.0 * (1.0 - venom) + 12.0 * venom) * cyl
+            u = (x - 96) / 31.0
+            cyl = 1.0 - 0.42 * ((v - 0.5) * 2.0) ** 2
+            venom = min(1.0, max(0.0, (u - 0.30) / 0.62)) ** 1.25
+            r = (236.0 * (1.0 - venom) + 12.0 * venom) * cyl
             gr = (30.0 * (1.0 - venom) + 7.0 * venom) * cyl
             b = (26.0 * (1.0 - venom) + 12.0 * venom) * cyl
-            spec = math.exp(-(u / 0.22) ** 2) * 42.0
+            spec = math.exp(-(((v - 0.45) * 2.0) / 0.25) ** 2) * 42.0
             px[x, y] = (_clamp8(r + spec), _clamp8(gr + spec * 0.7), _clamp8(b + spec * 0.8), 255)
 
     # 10. Jointed Vermilion / Red-Orange Legs & Cerci (x: 64..128, y: 64..96)
@@ -458,14 +533,12 @@ def build_texture() -> Image.Image:
 
 # ---------------------------------------------------------------------------
 # Crisp 32x32 Pixel-Art Menu Icon (centipede_icon.png)
-# Matches kaneki_tentacles_icon.png style with dark outline + vivid silhouette
 # ---------------------------------------------------------------------------
 def build_menu_icon() -> Image.Image:
     size = 32
     img = Image.new('RGBA', (size, size), (0, 0, 0, 0))
     px = img.load()
 
-    # S-curve spine from bottom-right tail to top-left predatory crimson head
     pts = []
     for i in range(61):
         t = i / 60.0
@@ -475,7 +548,6 @@ def build_menu_icon() -> Image.Image:
         cy = 16.5 + math.sin(ang) * rad * 0.88
         pts.append((cx, cy, t))
 
-    # Vermilion-orange jointed legs
     for idx in range(4, 55, 5):
         cx, cy, t = pts[idx]
         nx_p, ny_p, _ = pts[min(60, idx + 1)]
@@ -491,7 +563,6 @@ def build_menu_icon() -> Image.Image:
                 if 1 <= lx < size - 1 and 1 <= ly < size - 1:
                     px[lx, ly] = (252, 84, 28, 255) if step < 4 else (196, 30, 28, 255)
 
-    # Forked crimson tail cerci at pts[0]
     tx0, ty0, _ = pts[0]
     tx1, ty1, _ = pts[3]
     dx, dy = tx0 - tx1, ty0 - ty1
@@ -504,7 +575,6 @@ def build_menu_icon() -> Image.Image:
             if 1 <= fx < size - 1 and 1 <= fy < size - 1:
                 px[fx, fy] = (232, 44, 34, 255)
 
-    # Obsidian-black carapace segments with blood-crimson imbricated joints + bright scarlet head
     for idx, (cx, cy, t) in enumerate(pts):
         is_head = t > 0.88
         half_w = 2.55 if is_head else (1.75 + 0.65 * math.sin(t * math.pi))
@@ -520,11 +590,10 @@ def build_menu_icon() -> Image.Image:
                     elif seg_rim or d > half_w - 0.72:
                         px[xx, yy] = (176, 20, 34, 255)
                     elif d < 0.75 and idx % 3 == 1:
-                        px[xx, yy] = (68, 52, 74, 255)   # wet chitin glint
+                        px[xx, yy] = (68, 52, 74, 255)
                     else:
-                        px[xx, yy] = (20, 12, 22, 255)   # jet-black obsidian plate
+                        px[xx, yy] = (20, 12, 22, 255)
 
-    # Curved black fangs & orange whip antennae on head (pts[-1])
     hx, hy, _ = pts[-1]
     hx0, hy0, _ = pts[-4]
     fx, fy = hx - hx0, hy - hy0
@@ -543,7 +612,6 @@ def build_menu_icon() -> Image.Image:
             if 1 <= ax < size - 1 and 1 <= ay < size - 1:
                 px[ax, ay] = (255, 92, 34, 255)
 
-    # Clean 1px dark crimson-black silhouette outline for crisp inventory contrast
     outline = Image.new('RGBA', (size, size), (0, 0, 0, 0))
     opx = outline.load()
     for y in range(size):
@@ -559,6 +627,7 @@ def build_menu_icon() -> Image.Image:
 
 # ---------------------------------------------------------------------------
 # Cube & Bone Builders (strictly cube rotation = [0, 0, 0]!)
+# Local bone convention: +X = forward toward head, +Y = dorsal up, +-Z = flanks
 # ---------------------------------------------------------------------------
 def make_cube(tag: str, pivot, local_lo, local_hi, face_regions: dict):
     lo = [round(pivot[i] + min(local_lo[i], local_hi[i]), 4) for i in range(3)]
@@ -600,235 +669,239 @@ def make_bone(name: str, origin, rotation, cubes, children=None):
     }
 
 
-def local_to_world(parent_origin, parent_mat, local_offset):
-    w = _mvec(parent_mat, local_offset)
-    return [round(parent_origin[i] + w[i], 4) for i in range(3)]
-
-
 # ---------------------------------------------------------------------------
-# Full Scolopendra Rig Construction
+# Full Scolopendra Rig Construction (53 drawn bones + 17 empty carrier/root pivots)
 # ---------------------------------------------------------------------------
 def build_rig():
-    stations = sample_collar_stations()
-    head_st = stations[0]
-    seg_stations = stations[1:]
-
     all_elements = []
-    seg_bones = []
-    anim_meta = {'segs': [], 'legs': [], 'head': None, 'fangs': [], 'antennae': [], 'cerci': []}
+    carrier_bones = []
+    anim_meta = {
+        'carriers': [],
+        'segs': [],
+        'legs': [],
+        'head': 'head',
+        'fangs': [],
+        'antennae': [],
+        'cerci': [],
+    }
 
-    for idx, st in enumerate(seg_stations, start=1):
+    zero = [0.0, 0.0, 0.0]
+
+    for idx in range(1, NUM_SEGS + 1):
+        carrier_name = f'carrier_{idx:02d}'
         seg_name = f'seg_{idx:02d}'
-        origin = st['pos']
-        rot = st['rot']
-        mat = st['mat']
 
         u = (idx - 1) / (NUM_SEGS - 1)
         taper = math.sin(math.pi * (0.16 + 0.72 * u))
-        half_w = round(1.38 + 0.44 * taper, 3)
-        half_len = 1.40 if idx < NUM_SEGS else 1.20
+        half_w = round(1.36 + 0.44 * taper, 3)     # width along +-Z
+        half_len = 1.36 if idx < NUM_SEGS else 1.18  # length along +-X (+X = forward)
 
         seg_cubes = [
             make_cube(
-                f'{seg_name}_plate', origin,
-                (-half_w, -0.30, -half_len), (half_w, 0.60, half_len + 0.18),
+                f'{seg_name}_plate', zero,
+                (-half_len - 0.16, -0.28, -half_w), (half_len, 0.58, half_w),
                 {'up': 'tergite_top', 'down': 'sternite', 'default': 'tergite_side'},
             ),
             make_cube(
-                f'{seg_name}_ridge', origin,
-                (-half_w * 0.70, 0.56, -half_len * 0.88), (half_w * 0.70, 1.00, half_len + 0.24),
-                {'up': 'tergite_ridge', 'down': 'tergite_ridge', 'default': 'tergite_ridge'},
+                f'{seg_name}_ridge', zero,
+                (-half_len - 0.22, 0.54, -half_w * 0.68), (half_len * 0.88, 0.96, half_w * 0.68),
+                {'default': 'tergite_ridge'},
             ),
             make_cube(
-                f'{seg_name}_belly', origin,
-                (-half_w * 0.66, -0.72, -half_len * 0.82), (half_w * 0.66, -0.26, half_len * 0.82),
+                f'{seg_name}_belly', zero,
+                (-half_len * 0.80, -0.68, -half_w * 0.65), (half_len * 0.80, -0.24, half_w * 0.65),
                 {'up': 'sternite', 'down': 'sternite', 'default': 'pleuron'},
             ),
         ]
         all_elements.extend(seg_cubes)
         child_bones = []
 
+        # 28 Jointed Vermilion Legs extending laterally along +-Z and gripping downward (-Y)
         if idx in LEG_SEG_INDICES:
-            leg_scale = 0.90 + 0.22 * taper
-            for side_tag, sx in (('l', -1.0), ('r', 1.0)):
+            leg_scale = 0.88 + 0.22 * taper
+            for side_tag, sz in (('l', -1.0), ('r', 1.0)):
                 leg_name = f'leg_{side_tag}_{idx:02d}'
-                hip_origin = local_to_world(origin, mat, (sx * (half_w - 0.16), -0.16, 0.0))
-                leg_rest_rot = [0.0, sx * -8.0, sx * -10.0]
-                L1 = 1.28 * leg_scale
-                L2 = 2.30 * leg_scale
-                L3 = 2.92 * leg_scale
+                hip_origin = [0.0, -0.16, round(sz * (half_w - 0.14), 4)]
+                leg_rest_rot = [sz * 8.0, sz * -6.0, 0.0]
+                L1 = 1.24 * leg_scale
+                L2 = 2.22 * leg_scale
+                L3 = 2.82 * leg_scale
                 leg_cubes = [
                     make_cube(
                         f'{leg_name}_femur', hip_origin,
-                        (0.0, -0.18, -0.26), (sx * L1, 0.34, 0.26),
+                        (-0.25, -0.18, 0.0), (0.25, 0.32, sz * L1),
                         {'default': 'leg_orange'},
                     ),
                     make_cube(
                         f'{leg_name}_tibia', hip_origin,
-                        (sx * (L1 - 0.18), -0.74, -0.22), (sx * L2, 0.16, 0.22),
+                        (-0.21, -0.72, sz * (L1 - 0.18)), (0.21, 0.15, sz * L2),
                         {'default': 'leg_orange'},
                     ),
                     make_cube(
                         f'{leg_name}_claw', hip_origin,
-                        (sx * (L2 - 0.22), -1.52, -0.17), (sx * L3, -0.58, 0.17),
-                        {'down': 'claw_black', 'default': 'leg_orange',
-                         'east': 'claw_black' if sx > 0 else 'leg_orange',
-                         'west': 'claw_black' if sx < 0 else 'leg_orange'},
+                        (-0.16, -1.46, sz * (L2 - 0.22)), (0.16, -0.54, sz * L3),
+                        {'down': 'claw_black', 'default': 'leg_orange'},
                     ),
                 ]
                 all_elements.extend(leg_cubes)
                 child_bones.append(make_bone(leg_name, hip_origin, leg_rest_rot, leg_cubes))
-                anim_meta['legs'].append((leg_name, idx, sx))
+                anim_meta['legs'].append((leg_name, idx, sz))
 
+        # Predatory Fiery Crimson Head + Snapping Fangs + 2-Stage Whip Antennae on seg_01
         if idx == 1:
-            seg1_inv = _mtranspose(mat)
-            head_rel_mat = _mmul(seg1_inv, head_st['mat'])
-            head_rel_rot = matrix_to_euler_zyx(head_rel_mat)
-            h_origin = head_st['pos']
-            h_mat = head_st['mat']
-
+            h_origin = [2.25, 0.04, 0.0]
             head_cubes = [
                 make_cube(
                     'head_shield', h_origin,
-                    (-1.72, -0.32, -1.80), (1.72, 0.68, 1.15),
+                    (-1.12, -0.32, -1.70), (1.82, 0.66, 1.70),
                     {'up': 'head_top', 'down': 'sternite', 'default': 'head_top'},
                 ),
                 make_cube(
                     'head_dome', h_origin,
-                    (-1.22, 0.62, -1.38), (1.22, 1.08, 0.92),
+                    (-0.90, 0.60, -1.20), (1.38, 1.05, 1.20),
                     {'default': 'head_top'},
                 ),
                 make_cube(
                     'head_brow', h_origin,
-                    (-1.24, -0.18, -2.38), (1.24, 0.50, -1.68),
+                    (1.68, -0.18, -1.22), (2.38, 0.48, 1.22),
                     {'default': 'head_top'},
                 ),
                 make_cube(
                     'head_eyes_l', h_origin,
-                    (-1.88, 0.06, -1.65), (-1.48, 0.58, -0.82),
+                    (0.80, 0.06, -1.86), (1.64, 0.56, -1.46),
                     {'default': 'eye_cluster'},
                 ),
                 make_cube(
                     'head_eyes_r', h_origin,
-                    (1.48, 0.06, -1.65), (1.88, 0.58, -0.82),
+                    (0.80, 0.06, 1.46), (1.64, 0.56, 1.86),
                     {'default': 'eye_cluster'},
                 ),
             ]
             all_elements.extend(head_cubes)
             head_children = []
 
-            # Bold, wide-flaring venomous forcipules (fang_l, fang_r) with hooking black venom tips!
-            for side_tag, sx in (('l', -1.0), ('r', 1.0)):
+            # Venomous forcipules (fang_l at -Z, fang_r at +Z) curving forward (+X) & inward
+            for side_tag, sz in (('l', -1.0), ('r', 1.0)):
                 fang_name = f'fang_{side_tag}'
-                f_origin = local_to_world(h_origin, h_mat, (sx * 1.38, -0.28, -1.55))
-                f_rot = [6.0, sx * -16.0, 0.0]
+                f_origin = [h_origin[0] + 1.52, h_origin[1] - 0.26, sz * 1.35]
+                f_rot = [0.0, sz * -16.0, -5.0]
                 fang_cubes = [
                     make_cube(
                         f'{fang_name}_base', f_origin,
-                        (-sx * 0.10, -0.28, -1.25), (sx * 0.98, 0.28, 0.18),
+                        (-0.18, -0.26, -sz * 0.10), (1.22, 0.26, sz * 0.94),
                         {'default': 'fang_crimson'},
                     ),
                     make_cube(
                         f'{fang_name}_mid', f_origin,
-                        (sx * 0.16, -0.24, -2.28), (sx * 0.88, 0.22, -1.10),
+                        (1.08, -0.22, sz * 0.14), (2.22, 0.20, sz * 0.84),
                         {'default': 'fang_crimson'},
                     ),
                     make_cube(
                         f'{fang_name}_tip', f_origin,
-                        (-sx * 0.62, -0.20, -2.95), (sx * 0.42, 0.16, -2.12),
+                        (2.06, -0.18, -sz * 0.58), (2.88, 0.15, sz * 0.40),
                         {'default': 'claw_black'},
                     ),
                 ]
                 all_elements.extend(fang_cubes)
                 head_children.append(make_bone(fang_name, f_origin, f_rot, fang_cubes))
-                anim_meta['fangs'].append((fang_name, sx))
+                anim_meta['fangs'].append((fang_name, sz))
 
-            # 2-Stage Whip Antennae angled forward & outward-left (100% clear of player eyes!)
-            for side_tag, sx in (('l', -1.0), ('r', 1.0)):
+            # 2-Stage Whip Antennae probing forward (+X) and outward (+-Z)
+            for side_tag, sz in (('l', -1.0), ('r', 1.0)):
                 a1_name = f'ant_{side_tag}1'
                 a2_name = f'ant_{side_tag}2'
-                a1_origin = local_to_world(h_origin, h_mat, (sx * 0.82, 0.20, -2.28))
-                # Left antenna flares outward (-X, +28 deg yaw), right antenna sweeps straight forward (-6 deg yaw)
-                yaw_base = 28.0 if sx < 0 else -8.0
-                a1_rot = [-6.0, yaw_base, sx * -5.0]
-                a1_mat = _mmul(h_mat, euler_zyx_to_matrix(a1_rot))
-
+                a1_origin = [h_origin[0] + 2.24, h_origin[1] + 0.18, sz * 0.78]
+                a1_rot = [0.0, sz * -22.0, 8.0]
                 a1_cubes = [
-                    make_cube(f'{a1_name}_s1', a1_origin, (-0.23, -0.20, -1.05), (0.23, 0.22, 0.08),
+                    make_cube(f'{a1_name}_s1', a1_origin, (-0.08, -0.18, -0.22), (1.02, 0.20, 0.22),
                               {'default': 'antenna_ring'}),
-                    make_cube(f'{a1_name}_s2', a1_origin, (-0.20, -0.16, -2.05), (0.20, 0.20, -0.98),
+                    make_cube(f'{a1_name}_s2', a1_origin, (0.96, -0.15, -0.19), (2.00, 0.18, 0.19),
                               {'default': 'antenna_ring'}),
-                    make_cube(f'{a1_name}_s3', a1_origin, (-0.18, -0.14, -2.95), (0.18, 0.18, -1.98),
+                    make_cube(f'{a1_name}_s3', a1_origin, (1.94, -0.13, -0.17), (2.88, 0.16, 0.17),
                               {'default': 'antenna_ring'}),
                 ]
-                a2_origin = local_to_world(a1_origin, a1_mat, (0.0, 0.02, -2.88))
-                a2_rot = [12.0, 14.0 if sx < 0 else -12.0, 0.0]
+                a1_mat = euler_zyx_to_matrix(a1_rot)
+                tip_off = _mvec(a1_mat, (2.82, 0.0, 0.0))
+                a2_origin = [round(a1_origin[k] + tip_off[k], 4) for k in range(3)]
+                a2_rot = [0.0, sz * -14.0, -10.0]
                 a2_cubes = [
-                    make_cube(f'{a2_name}_s1', a2_origin, (-0.16, -0.14, -0.98), (0.16, 0.16, 0.06),
+                    make_cube(f'{a2_name}_s1', a2_origin, (-0.06, -0.13, -0.15), (0.96, 0.15, 0.15),
                               {'default': 'antenna_ring'}),
-                    make_cube(f'{a2_name}_s2', a2_origin, (-0.13, -0.16, -1.92), (0.13, 0.12, -0.92),
+                    make_cube(f'{a2_name}_s2', a2_origin, (0.90, -0.14, -0.12), (1.88, 0.11, 0.12),
                               {'default': 'antenna_ring'}),
-                    make_cube(f'{a2_name}_tip', a2_origin, (-0.10, -0.20, -2.78), (0.10, 0.08, -1.86),
-                              {'north': 'claw_black', 'default': 'antenna_ring'}),
+                    make_cube(f'{a2_name}_tip', a2_origin, (1.82, -0.18, -0.09), (2.72, 0.08, 0.09),
+                              {'east': 'claw_black', 'default': 'antenna_ring'},
+                    ),
                 ]
                 all_elements.extend(a1_cubes + a2_cubes)
                 a2_bone = make_bone(a2_name, a2_origin, a2_rot, a2_cubes)
                 a1_bone = make_bone(a1_name, a1_origin, a1_rot, a1_cubes, [a2_bone])
                 head_children.append(a1_bone)
-                anim_meta['antennae'].append((a1_name, a2_name, sx))
+                anim_meta['antennae'].append((a1_name, a2_name, sz))
 
-            child_bones.append(make_bone('head', h_origin, head_rel_rot, head_cubes, head_children))
-            anim_meta['head'] = 'head'
+            child_bones.append(make_bone('head', h_origin, zero, head_cubes, head_children))
 
+        # Forked Tail Cerci trailing behind (-X) on seg_16
         if idx == NUM_SEGS:
-            for side_tag, sx in (('l', -1.0), ('r', 1.0)):
+            for side_tag, sz in (('l', -1.0), ('r', 1.0)):
                 c_name = f'cercus_{side_tag}'
-                c_origin = local_to_world(origin, mat, (sx * 0.74, 0.05, 1.10))
-                c_rot = [8.0, sx * 24.0, sx * 6.0]
+                c_origin = [-1.12, 0.05, sz * 0.72]
+                c_rot = [0.0, sz * 22.0, 6.0]
                 c_cubes = [
-                    make_cube(f'{c_name}_s1', c_origin, (-0.28, -0.22, -0.10), (0.28, 0.28, 1.45),
+                    make_cube(f'{c_name}_s1', c_origin, (-1.42, -0.20, -0.26), (0.10, 0.26, 0.26),
                               {'default': 'leg_orange'}),
-                    make_cube(f'{c_name}_s2', c_origin, (-0.22, -0.18, 1.35), (0.22, 0.24, 2.78),
+                    make_cube(f'{c_name}_s2', c_origin, (-2.74, -0.17, -0.20), (-1.32, 0.22, 0.20),
                               {'default': 'fang_crimson'}),
-                    make_cube(f'{c_name}_tip', c_origin, (-0.16, -0.16, 2.68), (0.16, 0.18, 3.88),
-                              {'south': 'claw_black', 'default': 'claw_black'}),
+                    make_cube(f'{c_name}_tip', c_origin, (-3.82, -0.15, -0.15), (-2.64, 0.16, 0.15),
+                              {'west': 'claw_black', 'default': 'claw_black'}),
                 ]
                 all_elements.extend(c_cubes)
                 child_bones.append(make_bone(c_name, c_origin, c_rot, c_cubes))
-                anim_meta['cerci'].append((c_name, sx))
+                anim_meta['cerci'].append((c_name, sz))
 
-        seg_bones.append(make_bone(seg_name, origin, rot, seg_cubes, child_bones))
+        seg_bone = make_bone(seg_name, zero, zero, seg_cubes, child_bones)
+        carrier_bone = make_bone(carrier_name, zero, zero, [], [seg_bone])
+        carrier_bones.append(carrier_bone)
+        anim_meta['carriers'].append((carrier_name, idx))
         anim_meta['segs'].append((seg_name, idx))
 
-    root = make_bone('body_root', ROOT_ORIGIN, [0.0, 0.0, 0.0], [], seg_bones)
+    root = make_bone('body_root', ROOT_ORIGIN, zero, [], carrier_bones)
     return root, all_elements, anim_meta
 
 
 # ---------------------------------------------------------------------------
-# Full Living Animation ('idle', 3.2 s seamless loop, deltas only!)
+# Full-Body Crawl Keyframe Generator (Exact ModelEngine 4.1.0 Sign Laws!)
+#
+# Verified from BlockbenchParser.class lines 161-162 & 192-197:
+# - Non-root child with rest origin [0,0,0] -> target Blockbench pos [X, Y, Z]:
+#     POSITION keyframe = [-X, +Y, +Z]
+# - Bone with rest rotation [rx, ry, rz] -> target Blockbench rot [Rx, Ry, Rz]:
+#     ROTATION keyframe = [rx - Rx, ry - Ry, Rz - rz]
+#   (and for delta [dx, dy, dz] added to rest: keyframe = [-dx, -dy, +dz])
 # ---------------------------------------------------------------------------
-def _rot_keys(bone_name: str, fn):
+def _make_rot_series(bone_name: str, steps: int, fn, close_exact: bool = True):
     keys = []
-    for step in range(ANIM_FRAMES):
-        t = ANIM_LENGTH * step / (ANIM_FRAMES - 1)
-        rx, ry, rz = fn(t)
+    for step in range(steps + 1):
+        t = ANIM_LENGTH * step / steps
+        kx, ky, kz = fn(t, step / steps)
         keys.append({
             'channel': 'rotation',
-            'data_points': [{'x': str(round(rx, 3)), 'y': str(round(ry, 3)), 'z': str(round(rz, 3))}],
+            'data_points': [{'x': str(round(kx, 3)), 'y': str(round(ky, 3)), 'z': str(round(kz, 3))}],
             'uuid': uid(f'rkey:{bone_name}:{step}'),
             'time': round(t, 4),
             'color': -1,
             'interpolation': 'linear',
         })
-    keys[-1]['data_points'] = [dict(p) for p in keys[0]['data_points']]
+    if close_exact:
+        keys[-1]['data_points'] = [dict(p) for p in keys[0]['data_points']]
     return keys
 
 
-def _pos_keys(bone_name: str, fn):
+def _make_pos_series(bone_name: str, steps: int, fn):
     keys = []
-    for step in range(ANIM_FRAMES):
-        t = ANIM_LENGTH * step / (ANIM_FRAMES - 1)
-        px, py, pz = fn(t)
+    for step in range(steps + 1):
+        t = ANIM_LENGTH * step / steps
+        px, py, pz = fn(t, step / steps)
         keys.append({
             'channel': 'position',
             'data_points': [{'x': str(round(px, 3)), 'y': str(round(py, 3)), 'z': str(round(pz, 3))}],
@@ -841,22 +914,20 @@ def _pos_keys(bone_name: str, fn):
     return keys
 
 
-def _fang_strike_envelope(t: float) -> float:
-    """Periodic predatory double-clack at t=1.04s & 1.32s, plus quick snap at t=2.56s.
-    Negative -> flare wide open; positive -> snap shut so black venom tips cross!
-    """
-    w = 2.0 * math.pi * t / ANIM_LENGTH
-    base = -0.45 * math.sin(w) - 0.22 * math.sin(2.0 * w)
+def _fang_strike_envelope(u_norm: float) -> float:
+    w = 2.0 * math.pi * u_norm
+    base = -0.40 * math.sin(3.0 * w) - 0.20 * math.sin(6.0 * w)
     snap = 0.0
-    for center, width, amp in ((1.04, 0.085, 1.55), (1.32, 0.085, 1.40), (2.56, 0.095, 1.25)):
-        dt = ((t - center + ANIM_LENGTH / 2.0) % ANIM_LENGTH) - ANIM_LENGTH / 2.0
-        snap += amp * math.exp(-((dt / width) ** 2))
+    for center in (0.14, 0.22, 0.48, 0.56, 0.81, 0.89):
+        du = ((u_norm - center + 0.5) % 1.0) - 0.5
+        snap += 1.45 * math.exp(-((du / 0.024) ** 2))
     return base + snap
 
 
-def build_animation(anim_meta: dict):
-    w1 = 2.0 * math.pi / ANIM_LENGTH
+def build_animation(anim_meta: dict, track: FullBodyTrack):
     animators = {}
+    ds_seg = SEG_SPACING / track.total_length
+    ds_head = 2.35 / track.total_length
 
     def add_anim(bone_name: str, keyframes: list):
         animators[uid(f'bone:{bone_name}')] = {
@@ -865,96 +936,115 @@ def build_animation(anim_meta: dict):
             'keyframes': keyframes,
         }
 
-    # 1. Body S-Wave Undulation across all 14 tergites
-    for seg_name, idx in anim_meta['segs']:
-        phase = idx * 0.54
-        amp = 0.85 + 0.25 * math.cos((idx - 1) * math.pi / 6.5)
+    # 1. Carrier (3D full-body position + unwrapped Y-yaw) & Segment (pitch + surface roll + S-wave)
+    for idx in range(1, NUM_SEGS + 1):
+        carrier_name = f'carrier_{idx:02d}'
+        seg_name = f'seg_{idx:02d}'
+        s_offset = -(idx - 1) * ds_seg
+        wave_phase = idx * 0.62
 
-        def seg_rot(t, ph=phase, a=amp):
-            s = 2.0 * w1 * t - ph
-            rx = 2.4 * a * math.sin(s + 0.7)
-            ry = 5.4 * a * math.sin(s)
-            rz = 5.8 * a * math.cos(s)
-            return rx, ry, rz
+        def carrier_pos(_t, u_norm, s0=s_offset):
+            pos, _, _, _, _ = track.eval(s0 + u_norm)
+            # Blockbench [X, Y, Z] -> ModelEngine non-root POSITION [-X, +Y, +Z]
+            return (-pos[0], pos[1], pos[2])
 
-        def seg_pos(t, ph=phase, i=idx):
-            s = 2.0 * w1 * t - ph
-            return (
-                0.15 * math.sin(s),
-                0.10 * math.sin(2.0 * w1 * t - i * 0.4 + 1.1),
-                0.12 * math.cos(s),
-            )
+        def carrier_rot(_t, u_norm, s0=s_offset):
+            _, yaw, _, _, _ = track.eval(s0 + u_norm)
+            # Rest [0,0,0] -> target [0, yaw, 0] => key = [0, -yaw, 0] (unwrapped +1080 deg!)
+            return (0.0, -yaw, 0.0)
 
-        add_anim(seg_name, _rot_keys(seg_name, seg_rot) + _pos_keys(seg_name, seg_pos))
+        def seg_rot(_t, u_norm, s0=s_offset, ph=wave_phase):
+            _, _, pitch, roll, _ = track.eval(s0 + u_norm)
+            # Subtle organic lateral S-undulation while crawling (6 waves per 10.8s lap)
+            s_wave = 6.0 * 2.0 * math.pi * u_norm - ph
+            wiggle_yaw = 4.5 * math.sin(s_wave)
+            wiggle_roll = 3.0 * math.cos(s_wave)
+            # Target Blockbench [Rx, Ry, Rz] = [roll + wiggle_roll, wiggle_yaw, pitch]
+            # Keyframe = [-Rx, -Ry, +Rz]
+            return (-(roll + wiggle_roll), -wiggle_yaw, pitch)
 
-    # 2. True Metachronal Scurrying Wave on all 24 Legs (4 step cycles per 3.2 s)
-    for leg_name, idx, sx in anim_meta['legs']:
-        side_offset = 0.0 if sx < 0 else math.pi
-        leg_phase = idx * 0.68 + side_offset
+        add_anim(
+            carrier_name,
+            _make_pos_series(carrier_name, ANIM_STEPS, carrier_pos)
+            + _make_rot_series(carrier_name, ANIM_STEPS, carrier_rot, close_exact=False),
+        )
+        add_anim(seg_name, _make_rot_series(seg_name, ANIM_STEPS, seg_rot, close_exact=True))
 
-        def leg_rot(t, ph=leg_phase, side=sx):
-            phi = 4.0 * w1 * t - ph
-            swing = side * 17.5 * math.sin(phi)
-            lift_wave = max(0.0, math.cos(phi))
-            roll_lift = side * (18.5 * lift_wave - 3.5)
-            pitch_twist = 4.8 * math.sin(phi)
-            return pitch_twist, swing, roll_lift
+    # 2. Curve-Following Predatory Head Steering + Snapping Lunge
+    def head_rot(_t, u_norm):
+        _, yaw1, pitch1, _, mat1 = track.eval(u_norm)
+        _, _, _, _, mat_h = track.eval(u_norm + ds_head)
+        # Relative forward vector of s_head in seg_01's local frame:
+        fwd_h = (mat_h[0][0], mat_h[1][0], mat_h[2][0])
+        rel_fwd = _mvec(_mtranspose(mat1), fwd_h)
+        steer_yaw = math.degrees(math.atan2(-rel_fwd[2], max(0.2, rel_fwd[0])))
+        steer_pitch = math.degrees(math.asin(max(-0.85, min(0.85, rel_fwd[1]))))
 
-        add_anim(leg_name, _rot_keys(leg_name, leg_rot))
+        w = 2.0 * math.pi * u_norm
+        strike = max(0.0, _fang_strike_envelope(u_norm))
+        scan_yaw = steer_yaw * 0.75 + 7.5 * math.sin(5.0 * w)
+        scan_pitch = steer_pitch * 0.75 - 4.0 * strike + 2.5 * math.cos(6.0 * w)
+        scan_roll = 4.0 * math.sin(6.0 * w)
+        return (-scan_roll, -scan_yaw, scan_pitch)
 
-    # 3. Alert Predatory Head Scan & Strike Lunge
-    def head_rot(t):
-        strike = max(0.0, _fang_strike_envelope(t))
-        rx = -3.2 * math.sin(2.0 * w1 * t) + 5.0 * strike
-        ry = 8.5 * math.sin(w1 * t) + 3.8 * math.sin(3.0 * w1 * t)
-        rz = 4.2 * math.cos(2.0 * w1 * t)
-        return rx, ry, rz
+    add_anim(anim_meta['head'], _make_rot_series(anim_meta['head'], ANIM_STEPS, head_rot, close_exact=True))
 
-    add_anim(anim_meta['head'], _rot_keys(anim_meta['head'], head_rot))
+    # 3. Fast Metachronal Scurrying Wave on all 28 Legs (14 step cycles per 10.8s lap!)
+    for leg_name, idx, sz in anim_meta['legs']:
+        side_offset = 0.0 if sz < 0 else math.pi
+        leg_phase = idx * 0.72 + side_offset
+
+        def leg_rot(_t, u_norm, ph=leg_phase, side=sz):
+            phi = 14.0 * 2.0 * math.pi * u_norm - ph
+            d_yaw = side * 19.5 * math.sin(phi)
+            lift = max(0.0, math.cos(phi))
+            d_rx = -side * (20.0 * lift - 3.5)
+            d_rz = 4.5 * math.sin(phi)
+            return (-d_rx, -d_yaw, d_rz)
+
+        add_anim(leg_name, _make_rot_series(leg_name, SUB_ANIM_STEPS, leg_rot, close_exact=True))
 
     # 4. Snapping / Clacking Venomous Forcipules (fang_l, fang_r)
-    # Note: ModelEngine applies rotation keyframe as eff_ry = rest_ry - key_y.
-    # For left fang (sx=-1, rest_ry=+16 outward-left), snapping inward-right requires eff_ry < +16 => key_y > 0 (+).
-    # For right fang (sx=+1, rest_ry=-16 outward-right), snapping inward-left requires eff_ry > -16 => key_y < 0 (-).
-    # Therefore key_y = -sx * 24.0 * env makes BOTH fangs flare wide when env<0 and SNAP SHUT when env>0!
-    for fang_name, sx in anim_meta['fangs']:
-        def fang_rot(t, side=sx):
-            env = _fang_strike_envelope(t)
-            quiver = 2.0 * math.sin(6.0 * w1 * t)
-            clack_yaw = -side * (24.0 * env + quiver)
-            pitch = -3.5 * env
-            return pitch, clack_yaw, 0.0
+    for fang_name, sz in anim_meta['fangs']:
+        def fang_rot(_t, u_norm, side=sz):
+            env = _fang_strike_envelope(u_norm)
+            quiver = 2.2 * math.sin(18.0 * 2.0 * math.pi * u_norm)
+            # Inward snap: for left fang (sz=-1, at -Z), inward (+Z) around Y is negative Ry delta;
+            # for right fang (sz=+1, at +Z), inward (-Z) around Y is positive Ry delta.
+            d_ry = side * (22.0 * env + quiver)
+            d_rz = -3.5 * env
+            return (0.0, -d_ry, d_rz)
 
-        add_anim(fang_name, _rot_keys(fang_name, fang_rot))
+        add_anim(fang_name, _make_rot_series(fang_name, SUB_ANIM_STEPS, fang_rot, close_exact=True))
 
-    # 5. Multi-Jointed Whip Antennae
-    for a1_name, a2_name, sx in anim_meta['antennae']:
-        asym = 0.0 if sx < 0 else 1.35
+    # 5. Multi-Jointed Whip Antennae Probing Ahead
+    for a1_name, a2_name, sz in anim_meta['antennae']:
+        asym = 0.0 if sz < 0 else 1.35
 
-        def ant_base(t, side=sx, off=asym):
-            rx = 7.5 * math.sin(2.0 * w1 * t + off) + 3.0 * math.sin(5.0 * w1 * t - off)
-            ry = side * (11.5 * math.sin(2.0 * w1 * t + off * 0.7) + 4.5 * math.cos(3.0 * w1 * t + off))
-            rz = side * 4.0 * math.sin(3.0 * w1 * t + off)
-            return rx, ry, rz
+        def ant_base(_t, u_norm, side=sz, off=asym):
+            w = 2.0 * math.pi * u_norm
+            d_ry = side * (12.5 * math.sin(7.0 * w + off) + 5.0 * math.cos(11.0 * w + off))
+            d_rz = 8.5 * math.sin(6.0 * w + off) + 3.5 * math.sin(13.0 * w - off)
+            return (0.0, -d_ry, d_rz)
 
-        def ant_tip(t, side=sx, off=asym):
-            rx = 11.5 * math.sin(2.0 * w1 * t + off - 0.85) + 6.0 * math.sin(6.0 * w1 * t + off)
-            ry = side * (16.5 * math.sin(2.0 * w1 * t + off * 0.7 - 0.95) + 7.5 * math.cos(5.0 * w1 * t - off))
-            rz = side * 5.5 * math.cos(4.0 * w1 * t + off)
-            return rx, ry, rz
+        def ant_tip(_t, u_norm, side=sz, off=asym):
+            w = 2.0 * math.pi * u_norm
+            d_ry = side * (17.5 * math.sin(7.0 * w + off - 0.9) + 7.5 * math.cos(13.0 * w - off))
+            d_rz = 12.0 * math.sin(6.0 * w + off - 0.8) + 5.5 * math.sin(15.0 * w + off)
+            return (0.0, -d_ry, d_rz)
 
-        add_anim(a1_name, _rot_keys(a1_name, ant_base))
-        add_anim(a2_name, _rot_keys(a2_name, ant_tip))
+        add_anim(a1_name, _make_rot_series(a1_name, SUB_ANIM_STEPS, ant_base, close_exact=True))
+        add_anim(a2_name, _make_rot_series(a2_name, SUB_ANIM_STEPS, ant_tip, close_exact=True))
 
     # 6. Forked Tail Cerci Scissoring & Warning Flick
-    for c_name, sx in anim_meta['cerci']:
-        def cercus_rot(t, side=sx):
-            rx = 6.5 * math.sin(2.0 * w1 * t + 0.6) + 3.0 * math.sin(4.0 * w1 * t)
-            ry = side * (11.5 * math.sin(2.0 * w1 * t) - 4.5 * math.cos(4.0 * w1 * t))
-            rz = side * 4.0 * math.sin(3.0 * w1 * t)
-            return rx, ry, rz
+    for c_name, sz in anim_meta['cerci']:
+        def cercus_rot(_t, u_norm, side=sz):
+            w = 2.0 * math.pi * u_norm
+            d_ry = side * (11.5 * math.sin(6.0 * w) - 4.5 * math.cos(12.0 * w))
+            d_rz = 6.5 * math.sin(6.0 * w + 0.6)
+            return (0.0, -d_ry, d_rz)
 
-        add_anim(c_name, _rot_keys(c_name, cercus_rot))
+        add_anim(c_name, _make_rot_series(c_name, SUB_ANIM_STEPS, cercus_rot, close_exact=True))
 
     return {
         'uuid': uid('animation:idle'),
@@ -1000,8 +1090,9 @@ def build_model():
         'uuid': uid('texture'),
         'source': 'data:image/png;base64,' + base64.b64encode(raw.getvalue()).decode('ascii'),
     }
+    track = FullBodyTrack()
     root, elements, anim_meta = build_rig()
-    anim = build_animation(anim_meta)
+    anim = build_animation(anim_meta, track)
     blueprint = {
         'meta': {'format_version': '4.10', 'model_format': 'free', 'box_uv': False},
         'name': MODEL,
@@ -1017,23 +1108,22 @@ def build_model():
 
 
 # ---------------------------------------------------------------------------
-# Sub-Quad Textured 3D Preview Renderer (faithful obsidian + crimson rims!)
+# Faithful ModelEngine 4.1.0 Transform Preview Renderer (Exact Sign Laws!)
 # ---------------------------------------------------------------------------
 def _eval_anim_at(model: dict, anim_time: float):
-    rot_delta = {}
-    pos_delta = {}
+    rot_key = {}
+    pos_key = {}
     if not model.get('animations'):
-        return rot_delta, pos_delta
+        return rot_key, pos_key
     anim = model['animations'][0]
     t = anim_time % anim['length']
     for animator in anim['animators'].values():
         bname = animator['name']
-        for ch, store in (('rotation', rot_delta), ('position', pos_delta)):
+        for ch, store in (('rotation', rot_key), ('position', pos_key)):
             kfs = [k for k in animator['keyframes'] if k['channel'] == ch]
             if not kfs:
                 continue
-            lo = kfs[0]
-            hi = kfs[-1]
+            lo, hi = kfs[0], kfs[-1]
             for i in range(len(kfs) - 1):
                 if kfs[i]['time'] <= t <= kfs[i + 1]['time']:
                     lo, hi = kfs[i], kfs[i + 1]
@@ -1046,7 +1136,7 @@ def _eval_anim_at(model: dict, anim_time: float):
                 float(p0['y']) + (float(p1['y']) - float(p0['y'])) * w,
                 float(p0['z']) + (float(p1['z']) - float(p0['z'])) * w,
             ]
-    return rot_delta, pos_delta
+    return rot_key, pos_key
 
 
 def _bilerp3(p00, p10, p11, p01, u, v):
@@ -1056,38 +1146,42 @@ def _bilerp3(p00, p10, p11, p01, u, v):
     )
 
 
-def render_view(model: dict, texture: Image.Image, size=(560, 500), yaw=25.0, pitch=16.0,
-                scale=18.5, centre=(0.0, 23.2, 0.0), anim_time=None, draw_player=True,
+def render_view(model: dict, texture: Image.Image, size=(560, 560), yaw=25.0, pitch=14.0,
+                scale=15.0, centre=(0.0, 17.5, 0.0), anim_time=0.0, draw_player=True,
                 title='') -> Image.Image:
     img = Image.new('RGB', size, (18, 20, 30))
     draw = ImageDraw.Draw(img)
     tex_px = texture.load()
     tw, th = texture.size
 
-    rot_d, pos_d = ({}, {}) if anim_time is None else _eval_anim_at(model, anim_time)
-
+    rot_k, pos_k = _eval_anim_at(model, anim_time)
     chains = {}
 
-    def walk(nodes, chain):
+    def walk(nodes, chain, is_root=True):
         for node in nodes:
             if not isinstance(node, dict):
                 continue
             bname = node['name']
-            rd = rot_d.get(bname, [0.0, 0.0, 0.0])
-            pd = pos_d.get(bname, [0.0, 0.0, 0.0])
+            rk = rot_k.get(bname, [0.0, 0.0, 0.0])
+            pk = [0.0, 0.0, 0.0] if is_root else pos_k.get(bname, [0.0, 0.0, 0.0])
+            # Exact BlockbenchParser + KeyframeTypes equations:
             eff_euler = [
-                node['rotation'][0] + rd[0],
-                node['rotation'][1] - rd[1],
-                node['rotation'][2] - rd[2],
+                node['rotation'][0] - rk[0],
+                node['rotation'][1] - rk[1],
+                node['rotation'][2] + rk[2],
             ]
-            eff_pos = [node['origin'][0] + pd[0], node['origin'][1] + pd[1], node['origin'][2] - pd[2]]
+            eff_pos = [
+                node['origin'][0] - pk[0],
+                node['origin'][1] + pk[1],
+                node['origin'][2] + pk[2],
+            ]
             own = chain + [(tuple(node['origin']), tuple(eff_pos), euler_zyx_to_matrix(eff_euler))]
             for ch in node.get('children', []):
                 if isinstance(ch, str):
                     chains[ch] = own
-            walk([c for c in node.get('children', []) if isinstance(c, dict)], own)
+            walk([c for c in node.get('children', []) if isinstance(c, dict)], own, is_root=False)
 
-    walk(model['outliner'], [])
+    walk(model['outliner'], [], is_root=True)
 
     cy, sy = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
     cp, sp = math.cos(math.radians(pitch)), math.sin(math.radians(pitch))
@@ -1105,10 +1199,12 @@ def render_view(model: dict, texture: Image.Image, size=(560, 500), yaw=25.0, pi
 
     if draw_player:
         player_boxes = [
-            ((-4.0, 12.0, -2.0), (4.0, 24.0, 2.0), (54, 62, 82)),
-            ((-8.0, 12.0, -2.0), (-4.0, 24.0, 2.0), (46, 54, 72)),
-            ((4.0, 12.0, -2.0), (8.0, 24.0, 2.0), (46, 54, 72)),
-            ((-4.0, 24.0, -4.0), (4.0, 32.0, 4.0), (68, 76, 98)),
+            ((-4.0, 0.0, -2.0), (0.0, 12.0, 2.0), (42, 48, 66)),
+            ((0.0, 0.0, -2.0), (4.0, 12.0, 2.0), (46, 52, 70)),
+            ((-4.0, 12.0, -2.0), (4.0, 24.0, 2.0), (58, 66, 88)),
+            ((-8.0, 12.0, -2.0), (-4.0, 24.0, 2.0), (48, 56, 76)),
+            ((4.0, 12.0, -2.0), (8.0, 24.0, 2.0), (48, 56, 76)),
+            ((-4.0, 24.0, -4.0), (4.0, 32.0, 4.0), (72, 80, 104)),
             ((-2.8, 27.2, -4.05), (-1.2, 28.2, -3.95), (160, 185, 225)),
             ((1.2, 27.2, -4.05), (2.8, 28.2, -3.95), (160, 185, 225)),
         ]
@@ -1170,8 +1266,11 @@ def render_view(model: dict, texture: Image.Image, size=(560, 500), yaw=25.0, pi
             q3 = [corners[k] for k in keys]
             proj_full = [cam_proj(p) for p in q3]
             p2_full = [p[0] for p in proj_full]
-            area = ((p2_full[1][0] - p2_full[0][0]) * (p2_full[2][1] - p2_full[0][1])
-                    - (p2_full[1][1] - p2_full[0][1]) * (p2_full[2][0] - p2_full[0][0]))
+            area = ((p2_full[1][0] - p2[0][0]) * (p2_full[2][1] - p2_full[0][1])
+                    - (p2_full[1][1] - p2_full[0][1]) * (p2_full[2][0] - p2_full[0][0])) if False else (
+                (p2_full[1][0] - p2_full[0][0]) * (p2_full[2][1] - p2_full[0][1])
+                - (p2_full[1][1] - p2_full[0][1]) * (p2_full[2][0] - p2_full[0][0])
+            )
             if area >= 0:
                 continue
 
@@ -1214,18 +1313,18 @@ def render_view(model: dict, texture: Image.Image, size=(560, 500), yaw=25.0, pi
 
 def render_preview_sheet(model: dict, texture: Image.Image, out_path: Path):
     panels = [
-        render_view(model, texture, yaw=-24.0, pitch=18.0, scale=20.5, centre=(0.0, 23.8, 0.0),
-                    anim_time=1.04, title='FRONT-LEFT 3/4 (Вид спереди: плечо, ключица и грудь)'),
-        render_view(model, texture, yaw=162.0, pitch=20.0, scale=20.5, centre=(0.0, 24.0, 0.0),
-                    anim_time=1.04, title='BACK 3/4 (S-изгиб по шее, лопаткам и плечам)'),
-        render_view(model, texture, yaw=-82.0, pitch=14.0, scale=20.5, centre=(0.0, 24.0, 0.0),
-                    anim_time=0.40, title='LEFT SHOULDER (Голова сколопендры над плечом)'),
-        render_view(model, texture, yaw=0.0, pitch=86.0, scale=21.0, centre=(0.0, 23.5, 0.0),
-                    anim_time=1.04, title='TOP COLLAR VIEW (Обхват шеи и плеч сверху)'),
-        render_view(model, texture, yaw=-22.0, pitch=26.0, scale=36.0, centre=(-5.8, 25.0, -3.2),
-                    anim_time=0.25, draw_player=False, title='ANIM t=0.25s: Жвалы широко раскрыты + волна лап'),
-        render_view(model, texture, yaw=-22.0, pitch=26.0, scale=36.0, centre=(-5.8, 25.0, -3.2),
-                    anim_time=1.04, draw_player=False, title='ANIM t=1.04s: Бросок и смыкание ядовитых жвал!'),
+        render_view(model, texture, yaw=-24.0, pitch=14.0, scale=14.5, centre=(0.0, 16.5, 0.0),
+                    anim_time=0.8, title='t=0.8s (Спереди: грудь -> левое плечо -> шея)'),
+        render_view(model, texture, yaw=158.0, pitch=16.0, scale=14.5, centre=(0.0, 16.5, 0.0),
+                    anim_time=1.8, title='t=1.8s (Со спины: шея -> правое плечо -> грудь)'),
+        render_view(model, texture, yaw=-28.0, pitch=12.0, scale=14.5, centre=(0.0, 16.5, 0.0),
+                    anim_time=4.4, title='t=4.4s (Живот -> левое бедро и ноги!)'),
+        render_view(model, texture, yaw=155.0, pitch=14.0, scale=14.5, centre=(0.0, 16.5, 0.0),
+                    anim_time=5.8, title='t=5.8s (Поясница и бёдра со спины)'),
+        render_view(model, texture, yaw=-52.0, pitch=14.0, scale=14.5, centre=(0.0, 16.5, 0.0),
+                    anim_time=8.2, title='t=8.2s (Ползёт по левой руке на лопатки!)'),
+        render_view(model, texture, yaw=48.0, pitch=14.0, scale=14.5, centre=(0.0, 16.5, 0.0),
+                    anim_time=9.8, title='t=9.8s (Огибает правую руку обратно на грудь!)'),
     ]
     pw, ph = panels[0].size
     sheet = Image.new('RGB', (pw * 2, ph * 3), (12, 14, 22))
@@ -1244,6 +1343,8 @@ def main():
     blueprint, texture = build_model()
     bb_path = args.out_dir / f'{MODEL}.bbmodel'
     tex_path = args.out_dir / f'{MODEL}.png'
+    tex_dest = args.out_dir / 'assets' / 'modelengine' / 'textures' / 'entity' / 'models'
+    tex_dest.mkdir(parents=True, exist_ok=True)
     icon_dir = args.out_dir / 'assets' / 'reallyworld'
     (icon_dir / 'items').mkdir(parents=True, exist_ok=True)
     (icon_dir / 'models' / 'item' / 'freak').mkdir(parents=True, exist_ok=True)
@@ -1251,6 +1352,7 @@ def main():
 
     bb_path.write_text(json.dumps(blueprint, separators=(',', ':')), encoding='utf-8')
     texture.save(tex_path, format='PNG', optimize=True)
+    texture.save(tex_dest / f'{MODEL}.png', format='PNG', optimize=True)
 
     icon_img = build_menu_icon()
     icon_img.save(icon_dir / 'textures' / 'item' / 'freak' / 'centipede_icon.png', format='PNG', optimize=True)
@@ -1273,7 +1375,8 @@ def main():
 
     if args.preview:
         render_preview_sheet(blueprint, texture, args.out_dir / 'bug_preview.png')
-    print(f'Built {bb_path.name}: {len(blueprint["elements"])} cubes, '
+    rotated = sum(1 for e in blueprint['elements'] if any(abs(v) > 1e-9 for v in e['rotation']))
+    print(f'Built {bb_path.name}: {len(blueprint["elements"])} cubes (rotated={rotated}), '
           f'{len(blueprint["animations"][0]["animators"])} animated bones, '
           f'texture {texture.width}x{texture.height}')
 

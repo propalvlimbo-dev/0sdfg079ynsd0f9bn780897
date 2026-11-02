@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build and verify ElytrixFreakModel v3.10.0 with upgraded Scolopendra rig."""
+"""Build and verify ElytrixFreakModel v3.11.0 with full-body Scolopendra & Kaneki Rinkaku Kagune."""
 import hashlib
 import os
 import re
@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
 BASE = ROOT / 'plugins/ElytrixFreakModel.jar'
 ENTRY = 'pw/elytrix/freakmodel/ElytrixFreakModelPlugin.class'
-TARGET_VERSION = '3.10.0'
+TARGET_VERSION = '3.11.0'
 JAVA = os.environ.get('JAVA', 'java')
 ECJ = os.environ.get('ECJ')
 

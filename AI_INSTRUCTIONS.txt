@@ -93,7 +93,7 @@
 ШАБЛОН А — Если обновлялись `ElytrixFreakModel`, модели `ModelEngine` или ресурспак
 (архив `elytrix-freakmodel.zip`, подставь реальный `<COMMIT_SHA>`):
 
-curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/<COMMIT_SHA>/elytrix-freakmodel.zip" -o /tmp/elytrix-freakmodel.zip && rm -rf "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_angel_halo" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_angel_halo" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_angel_wings" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_angel_wings" && unzip -oq /tmp/elytrix-freakmodel.zip -d /root/RW_GRIEF && mkdir -p /root/RP && cp -f /root/RW_GRIEF/rp/Elytrix-RP-1.21.zip /root/RP/Elytrix-RP-1.21.zip && chmod 644 /root/RP/Elytrix-RP-1.21.zip && rm -f /tmp/elytrix-freakmodel.zip && sha1sum /root/RP/Elytrix-RP-1.21.zip
+curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/<COMMIT_SHA>/elytrix-freakmodel.zip" -o /tmp/elytrix-freakmodel.zip && rm -rf "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_angel_halo" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_angel_halo" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_angel_wings" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_angel_wings" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_centipede" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_centipede" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_kaneki_tentacles" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_kaneki_tentacles" && unzip -oq /tmp/elytrix-freakmodel.zip -d /root/RW_GRIEF && mkdir -p /root/RP && cp -f /root/RW_GRIEF/rp/Elytrix-RP-1.21.zip /root/RP/Elytrix-RP-1.21.zip && chmod 644 /root/RP/Elytrix-RP-1.21.zip && rm -f /tmp/elytrix-freakmodel.zip && sha1sum /root/RP/Elytrix-RP-1.21.zip
 
 После выполнения этой команды напомни пользователю сверить выведенный `SHA-1`
 и ввести в консоли сервера: `restart`.
@@ -202,6 +202,20 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
      (`setCanTick(true)`, `setCanMove(false)`).
    - Сохранять крутящиеся и поворачивающиеся колёса, только скорость в ActionBar,
      запрет выдачи машины обычным игрокам через `/priora` и админ-команду `/clearpriora`.
+
+9. В `AccessoryController` (`elytrix_centipede` и `elytrix_kaneki_tentacles`, v3.11.0+):
+   - НИКОГДА не используй кубы с поворотом (`rotation != [0, 0, 0]`) в `elytrix_centipede`
+     и `elytrix_kaneki_tentacles`! В `ModelEngine 4.1.0` на живом сервере Paper `fastutil`
+     смешение `PlaneGroup` (например `[0,0,0]` + `[45,0,0]` в одной кости) роняет
+     `RotationSolver.lambda$fetch$6` с `UnsupportedOperationException: remove`, из-за чего
+     весь блюпринт не загружается! Всю кривизну задавать ТОЛЬКО вращением костей.
+   - Оба гуль-аксессуара спавнятся на отдельных изолированных `new Dummy<>(player)` (НЕ через
+     `WornAngelRig`, чтобы у Кагуне не сыпались розовые ангельские партиклы и модель не
+     пряталась от 1-го лица!).
+   - При любом телепорте (`PlayerTeleportEvent`, `PlayerChangedWorldEvent`, `PlayerRespawnEvent`
+     или скачке `> 24` блоков) ОБЯЗАТЕЛЬНО уничтожать старый `Dummy` и пересоздавать свежий
+     через `2` тика, а также каждый тик перепроверять актуальный `PivotOverrideRegistry.getOrCreate(player)`
+     (так как `WornAngelRig.destroyAll()` при снятии нимба/крыльев удаляет старый `PivotOverride`).
 
 --------------------------------------------------------------------------------
 6. ЗАКРЕПЛЁННЫЕ ТРЕБОВАНИЯ ПО ИГРОВОМУ РЕЖИМУ, МЕНЮ И ПЛАГИНАМ (НЕ ЛОМАТЬ!)
@@ -359,19 +373,22 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
 --------------------------------------------------------------------------------
 9. КАРТА АКТУАЛЬНЫХ СИСТЕМ, АКСЕССУАРОВ И ЗАЩИТЫ ИЗ LIVE VDS (`dfghjdyjk56`)
 --------------------------------------------------------------------------------
-1. `ElytrixFreakModel v3.10.0` + `/аксессуары` (`/accessories`, глиф `ꏠ`):
+1. `ElytrixFreakModel v3.11.0` + `/аксессуары` (`/accessories`, глиф `ꏠ`):
    - Поддерживает косметическое меню аксессуаров (`elytrixaccessories.admin` и
      `elytrixaccessories.use` для группы `media`), исходники и генераторы лежат в
      `tools/accessories-integration/` и `tools/accessories-model/` (подробности в `MODELS_PIPELINE.md`).
-   - Актуальные блюпринты в `plugins/ModelEngine/blueprints/` и RP (`SHA-1: a6b1e4b5070e7352bd11fc5ea859d1be22d7e655`):
+   - Актуальные блюпринты в `plugins/ModelEngine/blueprints/` и RP (`SHA-1: f905f3709a013715ddb8d4791a87776b3fd3ea3f`):
      * `elytrix_angel_halo.bbmodel` (нимб, 161 куб, `halo_ring` + `halo_aura`)
      * `elytrix_angel_wings.bbmodel` (крылья, 9 кубов на крыло + 6 падающих перьев)
-     * `elytrix_kaneki_tentacles.bbmodel` (щупальца Кагуне Канеки, 55 костей) + `kaneki_tentacles_icon`
-     * `elytrix_centipede.bbmodel` (сколопендра канона Токийского Гуля вокруг шеи и плеч:
-       48 костей / 47 анимированных `seg_01..seg_14`, 24 лапки `leg_l/r_02..13`, голова `head`,
-       клыки `fang_l/r`, усики `ant_l1/l2/r1/r2`, церки `cercus_l/r`, 143 куба с `rotation: [0,0,0]`,
-       текстура `128x128` чёрно-багрового хитина, живая loop-анимация `'idle'` `3.2s`, иконка `centipede_icon`;
-       спавнится на изолированном `Dummy<Player>` с `PlayerBodyTracker` + `PivotOverride` + `scale = 1.0`)
+     * `elytrix_kaneki_tentacles.bbmodel` (каноничное Ринкаку Кагуне Канеки Кена из аниме «Токийский Гуль»:
+       4 гибких хвоста из единого спинного мешка Какухо `root_knot`, 55 рисуемых костей, 171 куб с `rotation: [0,0,0]`,
+       текстура `128x128` с багрово-чёрными чешуйками и прожилками Rc-клеток, живая волновая loop-анимация `'idle'` `4.0s`,
+       иконка `kaneki_tentacles_icon`; спавнится на собственном `Dummy<Player>` без розовой пыльцы крыльев)
+     * `elytrix_centipede.bbmodel` (сколопендра Токийского Гуля, ползающая ПО ВСЕМУ ТЕЛУ игрока:
+       спиральный 3-витковый маршрут на `10.8s` по бёдрам, животу, груди, плечам, шее, рукам и спине;
+       двухступенчатая защита от гимбал-лока `carrier_01..16` + `seg_01..16`, 28 лапок `leg_l/r_02..15`,
+       голова `head`, клыки `fang_l/r`, 2-звенные усики `ant_l1/l2/r1/r2`, церки `cercus_l/r`, 161 куб с `rotation: [0,0,0]`,
+       текстура `128x128`, иконка `centipede_icon`; переживает любые телепорты и смену миров за счёт авто-респавна `Dummy`)
      * `elytrix_priora_{black,white,pink}.bbmodel` (Лада Приора, 2 места)
 
 2. Античит, антиэксплойт и PvP-синхронизация:

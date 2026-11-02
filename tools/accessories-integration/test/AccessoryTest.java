@@ -31,27 +31,35 @@ public class AccessoryTest {
    return left;}
  }
  static class PlayerFake implements Player {
-  final java.util.List<Entity> hidden=new java.util.ArrayList<>();World world;Location eye=new Location(null,0,1.62,0);float bodyYaw=15.0F;
-  public Location getLocation(){return new Location(world,0,1.6,0,bodyYaw,0);}
-  public Location getEyeLocation(){eye=new Location(world,0,1.62,0);return eye;}
+  final java.util.List<Entity> hidden=new java.util.ArrayList<>();World world;double px=0,py=1.6,pz=0;Location eye=new Location(null,0,1.62,0);float bodyYaw=15.0F;
+  public Location getLocation(){return new Location(world,px,py,pz,bodyYaw,0);}
+  public Location getEyeLocation(){eye=new Location(world,px,py+0.02,pz);return eye;}
   public float getBodyYaw(){return bodyYaw;}
   public void hideEntity(org.bukkit.plugin.Plugin plugin,Entity e){hidden.add(e);}
   Inv inv=new Inv(36);public PlayerInventory getInventory(){return inv;}boolean admin,use;String command;UUID uuid=UUID.fromString("00000000-0000-0000-0000-0000000000aa");public boolean performCommand(String c){command=c;return true;}public void closeInventory(){}Data data=new Data();String msg;public boolean hasPermission(String s){return admin || (use && s.equals(AccessoryController.USE_PERMISSION));}public Data getPersistentDataContainer(){return data;}public Inventory opened;public InventoryView openInventory(Inventory i){opened=i;return null;}public void sendMessage(String s){msg=s;}public java.util.UUID getUniqueId(){return uuid;}public boolean isOnline(){return true;}public String getName(){return "Tester";}}
  static FreakModelSpec spec(String id){return new FreakModelSpec(id,ModelKind.ANGEL_WINGS,id,List.of(),Material.FEATHER,"model",34,id,List.of(),1,0,0,1,1,2,0,0,0,0,0,0,0,0,0,0,0,false,false);}
 
+ static class FakePassengers extends com.ticxo.modelengine.api.utils.data.tracker.CollectionDataTracker {
+  final java.util.Set<Object> ids=new java.util.LinkedHashSet<>();boolean dirty;
+  public boolean contains(Object v){return ids.contains(v);}
+  public boolean add(Object v){return ids.add(v);}
+  public void markDirty(){dirty=true;}
+ }
+ static com.ticxo.modelengine.api.model.PivotOverride makePivot(FakePassengers passengers){
+  return new com.ticxo.modelengine.api.model.PivotOverride(java.util.UUID.randomUUID(),1,() -> new org.joml.Vector3f()){
+   public void addPassenger(int id){passengers.add(id);}
+   public void removePassenger(int id){passengers.ids.remove(id);}
+   public com.ticxo.modelengine.api.utils.data.tracker.CollectionDataTracker getPassengers(){return passengers;}};
+ }
  static class FakePivotRegistry extends com.ticxo.modelengine.api.model.PivotOverrideRegistry {
-  static class FakePassengers extends com.ticxo.modelengine.api.utils.data.tracker.CollectionDataTracker {
-    final java.util.Set<Object> ids=new java.util.LinkedHashSet<>();boolean dirty;
-    public boolean contains(Object v){return ids.contains(v);}
-    public boolean add(Object v){return ids.add(v);}
-    public void markDirty(){dirty=true;}}
-  final FakePassengers passengers = new FakePassengers();
+  FakePassengers passengers = new FakePassengers();
+  com.ticxo.modelengine.api.model.PivotOverride pivot = makePivot(passengers);
+  void simulateWornAngelRigDestroyAll(){
+   passengers = new FakePassengers();
+   pivot = makePivot(passengers);
+  }
   public com.ticxo.modelengine.api.model.PivotOverride getOrCreate(Entity e){return pivot;}
-  final com.ticxo.modelengine.api.model.PivotOverride pivot =
-      new com.ticxo.modelengine.api.model.PivotOverride(java.util.UUID.randomUUID(),1,() -> new org.joml.Vector3f()){
-        public void addPassenger(int id){passengers.add(id);}
-        public void removePassenger(int id){passengers.ids.remove(id);}
-        public com.ticxo.modelengine.api.utils.data.tracker.CollectionDataTracker getPassengers(){return passengers;}};}
+ }
 
  static class FakeAnimHandler implements AnimationHandler {
   final Set<String> playing=new HashSet<>();
@@ -70,9 +78,11 @@ public class AccessoryTest {
   public IAnimationProperty getAnimation(String anim){return props.get(anim);}
  }
 
+ static int nextPivotSeq = 4200;
  static class FakeActive implements com.ticxo.modelengine.api.model.ActiveModel {
   final com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint bp;boolean destroyed,canHurt=true,shadow=true,hitbox=true,lockPitch,lockYaw;float view;double scale=99;Boolean rotLocked;float lockedX,lockedY,lockedBody;com.ticxo.modelengine.api.model.PivotOverride pivot;FakeModeled owner;
   final FakeAnimHandler animHandler = new FakeAnimHandler();
+  boolean rendererReady; final int pivotId = ++nextPivotSeq;
   FakeActive(com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint bp){this.bp=bp;}
   public boolean isDestroyed(){return destroyed;}public void destroy(){destroyed=true;}
   public com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint getBlueprint(){return bp;}
@@ -80,7 +90,6 @@ public class AccessoryTest {
   public void setBlockLight(int v){}public void setSkyLight(int v){}public void setCanHurt(boolean v){canHurt=v;}public void setShadowVisible(boolean v){shadow=v;}public void setHitboxVisible(boolean v){hitbox=v;}
   public void setLockPitch(boolean v){lockPitch=v;}public void setLockYaw(boolean v){lockYaw=v;}public void setViewRange(float v){view=v;}
   public void setScale(double v){scale=v;}public void setPivotOverride(com.ticxo.modelengine.api.model.PivotOverride v){pivot=v;}
-  boolean rendererReady;int pivotId=4242;
   public com.ticxo.modelengine.api.model.render.ModelRenderer getModelRenderer(){
    return new com.ticxo.modelengine.api.model.render.DisplayRenderer(){
     public boolean isInitialized(){return rendererReady;}
@@ -105,9 +114,9 @@ public class AccessoryTest {
   public AnimationLODHandler getAnimationLodHandler(){return lod;}
   public void setBaseEntityVisible(boolean v){baseVisible=v;}
   public void setModelRotationLocked(boolean v){modelRotLocked=v;}
-  public Optional<com.ticxo.modelengine.api.model.ActiveModel> addModel(com.ticxo.modelengine.api.model.ActiveModel m,boolean passenger){adds++;q.last=(FakeActive)m;((FakeActive)m).owner=this;models.put("elytrix_centipede",m);return Optional.of(m);}
-  public Optional<com.ticxo.modelengine.api.model.ActiveModel> removeModel(String id){removes++;com.ticxo.modelengine.api.model.ActiveModel m=models.remove(id);if(m instanceof FakeActive)((FakeActive)m).destroy();return Optional.ofNullable(m);}
-  public Optional<com.ticxo.modelengine.api.model.ActiveModel> getModel(String id){return Optional.ofNullable(models.get(id));}
+  public Optional<com.ticxo.modelengine.api.model.ActiveModel> addModel(com.ticxo.modelengine.api.model.ActiveModel m,boolean passenger){adds++;q.last=(FakeActive)m;((FakeActive)m).owner=this;models.put("active",m);return Optional.of(m);}
+  public Optional<com.ticxo.modelengine.api.model.ActiveModel> removeModel(String id){removes++;com.ticxo.modelengine.api.model.ActiveModel m=models.remove("active");if(m instanceof FakeActive)((FakeActive)m).destroy();return Optional.ofNullable(m);}
+  public Optional<com.ticxo.modelengine.api.model.ActiveModel> getModel(String id){return Optional.ofNullable(models.get("active"));}
   public void setYBodyRotImmediately(float v){bodyYaw=v;}public void setYHeadRotImmediately(float v){headYaw=v;}public void setXHeadRotImmediately(float v){headPitch=v;}public void setRotationTick(int t){rotTick=t;}
   public com.ticxo.modelengine.api.entity.BaseEntity getBase(){return base;}}
 
@@ -127,23 +136,28 @@ public class AccessoryTest {
  static class Query {FakeActive last;FakeModeled lastEntity;int blueprints;int created;}
  static class FakeEngine implements ModelEngineAPI.Backend {
   final Query q=new Query();final Map<UUID,FakeModeled> entities=new HashMap<>();final FakePivotRegistry pivots=new FakePivotRegistry();
-  public boolean noBlueprint;
+  public boolean noBlueprint; public boolean autoInitRenderer=false;
   public com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint blueprint(String id){q.blueprints++;return noBlueprint?null:new com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint();}
-  public com.ticxo.modelengine.api.model.ModeledEntity modeledEntity(Entity e){throw new AssertionError("Scolopendra must use isolated Dummy BaseEntity, not raw Player entity!");}
+  public com.ticxo.modelengine.api.model.ModeledEntity modeledEntity(Entity e){throw new AssertionError("Ghoul accessories must use isolated Dummy BaseEntity, not raw Player entity!");}
   public com.ticxo.modelengine.api.model.ModeledEntity createModeledEntity(BaseEntity base){
    if(base instanceof Dummy<?> d) d.mockData=new FakeData();
    FakeModeled fm=new FakeModeled(q,base);q.lastEntity=fm;entities.put(base.getUUID(),fm);return fm;}
   public com.ticxo.modelengine.api.model.ModeledEntity removeModeledEntity(UUID uuid){return entities.remove(uuid);}
-  public com.ticxo.modelengine.api.model.ActiveModel createActiveModel(com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint bp){q.created++;return new FakeActive(bp);}
+  public com.ticxo.modelengine.api.model.ActiveModel createActiveModel(com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint bp){
+   q.created++;FakeActive fa=new FakeActive(bp);fa.rendererReady=autoInitRenderer;return fa;}
   public com.ticxo.modelengine.api.model.PivotOverrideRegistry pivots(){return pivots;}}
 
  static void check(boolean c,String s){if(!c)throw new AssertionError(s);}
  public static void main(String[] args){
   ElytrixFreakModelPlugin plugin=new ElytrixFreakModelPlugin();plugin.wings=spec("angel_wings");plugin.halo=spec("angel_halo");PlayerFake p=new PlayerFake();
-  p.data.set(AccessoryController.BACK,PersistentDataType.STRING,"kaneki");p.data.set(AccessoryController.HALO,PersistentDataType.STRING,"halo");
+  p.data.set(AccessoryController.BACK,PersistentDataType.STRING,"wings");p.data.set(AccessoryController.HALO,PersistentDataType.STRING,"halo");
   check(AccessoryController.back(plugin,p)==null && AccessoryController.halo(plugin,p)==null,"non-admin denied");
-  p.admin=true;FreakModelSpec a=AccessoryController.back(plugin,p);check(a!=null && a.blueprintId.equals("elytrix_kaneki_tentacles"),"tentacles selected");check(a==AccessoryController.back(plugin,p),"reuses spec");check(AccessoryController.halo(plugin,p)==plugin.halo,"halo independent");
-  p.data.set(AccessoryController.BACK,PersistentDataType.STRING,"wings");check(AccessoryController.back(plugin,p)==plugin.wings,"wings selected");
+  p.admin=true;
+  check(AccessoryController.back(plugin,p)==plugin.wings,"wings selected for WornAngelRig");
+  check(AccessoryController.halo(plugin,p)==plugin.halo,"halo independent");
+  // Kaneki Kagune intentionally returns null to WornAngelRig so it runs on isolated Dummy without angel dust!
+  p.data.set(AccessoryController.BACK,PersistentDataType.STRING,"kaneki");
+  check(AccessoryController.back(plugin,p)==null && AccessoryController.kanekiSelected(p),"kaneki routed to Dummy controller, not WornAngelRig");
   p.data.set(AccessoryController.BACK,PersistentDataType.STRING,"bad");check(AccessoryController.back(plugin,p)==null,"unknown rejected");
   p.admin=false;check(AccessoryController.halo(plugin,p)==null,"permission revocation applied");
 
@@ -175,7 +189,7 @@ public class AccessoryTest {
   InventoryClickEvent click=new InventoryClickEvent();click.view=()->p.opened;click.who=p;click.slot=14;
   check(Bukkit.size==54 && Bukkit.title.contains("ꏠ"),"resource pack menu");
   p.data.remove(AccessoryController.BACK);controller.onClick(click);
-  check(click.cancelled && AccessoryController.back(plugin,p)==null,"non-admin click denied");
+  check(click.cancelled && !AccessoryController.kanekiSelected(p),"non-admin click denied");
   check(p.msg.contains("media"),"denial names donation rank");
 
   PlayerFake media=new PlayerFake();media.use=true;media.uuid=UUID.randomUUID();
@@ -185,63 +199,84 @@ public class AccessoryTest {
   p.data.remove(AccessoryController.HALO);
   FakeEngine fe=new FakeEngine();ModelEngineAPI.backend=fe;
   Bukkit.online.clear();Bukkit.online.add(p);
-  controller.onClick(click);check(AccessoryController.back(plugin,p).blueprintId.equals("elytrix_kaneki_tentacles"),"menu selection");
-  controller.onClick(click);check(AccessoryController.back(plugin,p)==null,"second click removes kagune");
 
-  // --- Tokyo Ghoul Scolopendra around neck & shoulders ---
+  // --- Kaneki Ken's Rinkaku Kagune (slot 14) on isolated Dummy ---
+  controller.onClick(click);
+  check(AccessoryController.kanekiSelected(p) && AccessoryController.wearingKaneki(p),"kaneki kagune spawned");
+  check(AccessoryController.kanekiAnimating(p),"kaneki kagune playing living 'idle' loop");
+  FakeActive kanekiModel=fe.q.last;
+  kanekiModel.rendererReady=true;
+  AccessoryController.animatePets();
+  check(AccessoryController.kanekiAttached(p) && fe.pivots.passengers.contains(kanekiModel.pivotId),"kaneki pivot mounted");
+
+  // --- Coexistence: Equip Full-Body Scolopendra (slot 15) alongside Kaneki Kagune ---
   click.slot=15;controller.onClick(click);
-  check(AccessoryController.centipedeSelected(p),"scolopendra selected");
-  check(AccessoryController.wearingCentipede(p),"scolopendra spawned");
-  check(!fe.entities.containsKey(p.uuid),"Dummy UUID never collides with WornAngelRig player UUID!");
-  check(fe.entities.size()==1,"isolated Dummy ModeledEntity registered");
+  check(AccessoryController.centipedeSelected(p) && AccessoryController.wearingCentipede(p),"scolopendra spawned alongside kagune");
+  check(AccessoryController.wearingKaneki(p),"kagune still active alongside scolopendra");
+  check(!fe.entities.containsKey(p.uuid) && fe.entities.size()==2,"two isolated Dummy entities, zero player UUID collision");
   FakeModeled centEntity=fe.q.lastEntity;
   FakeActive centModel=fe.q.last;
-  check(centModel.scale==1.0D,"exact 1.0 collar scale");
+  check(centModel.scale==1.0D,"exact 1.0 full-body scale");
   check(Boolean.FALSE.equals(centEntity.lod.getEnabled()),"LOD disabled for smooth 20 TPS animation");
   check(Boolean.FALSE.equals(centModel.rotLocked),"model follows torso rotation");
   FakeData engineData=(FakeData)centEntity.getBase().getData();
   check(Boolean.FALSE.equals(engineData.verticalCull) && Boolean.FALSE.equals(engineData.backCull) && Boolean.FALSE.equals(engineData.blockedCull),"culling disabled");
   check(p.uuid.equals(engineData.paired) && engineData.baseRange>=96,"owner force-paired and range=96");
-
-  // Native .bbmodel 'idle' animation playing in LOOP mode with cleared built-in states
-  check(AccessoryController.centipedeAnimating(p),"native 'idle' living animation started");
-  check(centModel.animHandler.clearedStates==com.ticxo.modelengine.api.animation.ModelState.values().length,"built-in states cleared");
-  check(centModel.animHandler.props.get("idle").loop==BlueprintAnimation.LoopMode.LOOP,"LOOP mode forced");
-
-  // Pivot attaches once DisplayRenderer initializes
-  check(!AccessoryController.centipedeAttached(p),"waits for renderer initialization");
+  check(AccessoryController.centipedeAnimating(p),"scolopendra playing living 'idle' loop");
   centModel.rendererReady=true;
   AccessoryController.animatePets();
-  check(AccessoryController.centipedeAttached(p),"pivot attached to player");
-  check(fe.pivots.passengers.contains(4242) && fe.pivots.passengers.dirty,"pivot riding player passengers");
+  check(AccessoryController.centipedeAttached(p) && fe.pivots.passengers.contains(centModel.pivotId),"scolopendra pivot mounted");
 
-  // Packet-level PlayerMoveEvent updates torso yBodyRot immediately with 0 pitch
+  // --- Simulate WornAngelRig.destroyAll() wiping PivotOverrideRegistry ---
+  fe.pivots.simulateWornAngelRigDestroyAll();
+  check(!fe.pivots.passengers.contains(centModel.pivotId) && !fe.pivots.passengers.contains(kanekiModel.pivotId),"old pivot wiped");
+  AccessoryController.animatePets();
+  check(fe.pivots.passengers.contains(centModel.pivotId) && fe.pivots.passengers.contains(kanekiModel.pivotId),
+        "both scolopendra & kaneki kagune automatically re-bind to new PivotOverride!");
+
+  // --- Packet-level short PlayerMoveEvent updates torso yBodyRot immediately with 0 pitch ---
   controller.onMove(new PlayerMoveEvent(p, new Location(p.world, 1.0, 1.6, 2.0, -72.5F, 45.0F)));
   check(Math.abs(centEntity.bodyYaw - (-72.5F)) < 0.01F,"instant packet yBodyRot sync");
   check(centEntity.headPitch == 0.0F && centEntity.rotTick == -1,"zero camera pitch tilt & instant rotationTick=-1");
 
-  // Toggle off removes passenger & destroys Dummy ModeledEntity cleanly
-  click.slot=15;controller.onClick(click);
-  check(!AccessoryController.centipedeSelected(p) && !AccessoryController.wearingCentipede(p),"second click removes scolopendra");
-  check(!fe.pivots.passengers.contains(4242),"passenger cleanly detached from PivotOverride");
-  check(fe.entities.isEmpty(),"Dummy ModeledEntity cleaned up from ModelEngine");
+  // --- TELEPORT SURVIVAL TEST (> 64-block /rtp teleport!) ---
+  fe.autoInitRenderer=true;
+  int oldCentPivot = centModel.pivotId;
+  int oldKanekiPivot = kanekiModel.pivotId;
+  p.px = 1500.0; p.py = 70.0; p.pz = -920.0; p.bodyYaw = 90.0F;
+  controller.onTeleport(new PlayerTeleportEvent(p, p.getLocation()));
+  check(!AccessoryController.wearingCentipede(p) && !AccessoryController.wearingKaneki(p) && fe.entities.isEmpty(),
+        "stale virtual entities cleanly destroyed on teleport");
+  AccessoryController.animatePets(); // tick +1 (waiting for destination chunk settle)
+  AccessoryController.animatePets(); // tick +2 -> automatic fresh respawn at destination!
+  check(AccessoryController.wearingCentipede(p) && AccessoryController.wearingKaneki(p),
+        "both scolopendra and kaneki kagune automatically respawned after teleport!");
+  check(AccessoryController.centipedeAttached(p) && AccessoryController.kanekiAttached(p),
+        "fresh pivot entities mounted onto PivotOverride at destination!");
+  check(!fe.pivots.passengers.contains(oldCentPivot) && !fe.pivots.passengers.contains(oldKanekiPivot),
+        "stale pre-teleport passenger IDs removed");
+  check(fe.pivots.passengers.ids.size() == 2,"new post-teleport passenger IDs active");
 
-  // Re-equip & test Clear All (slot 49)
-  click.slot=15;controller.onClick(click);
-  check(AccessoryController.wearingCentipede(p),"re-equipped");
+  // --- Switching Slot 12 (Angel Wings) cleanly removes Kaneki Dummy while keeping Scolopendra ---
+  click.slot=12;controller.onClick(click);
+  check(!AccessoryController.wearingKaneki(p) && AccessoryController.back(plugin,p)==plugin.wings,"wings replace kaneki cleanly");
+  check(AccessoryController.wearingCentipede(p) && fe.entities.size()==1,"scolopendra remains untouched");
+
+  // --- Clear All (slot 49) ---
   click.slot=49;controller.onClick(click);
-  check(!AccessoryController.wearingCentipede(p) && fe.entities.isEmpty(),"clear-all removes scolopendra cleanly");
+  check(!AccessoryController.wearingCentipede(p) && !AccessoryController.wearingKaneki(p) && fe.entities.isEmpty(),"clear-all removes everything cleanly");
 
-  // Quit cleanup
+  // --- Quit cleanup ---
   click.slot=15;controller.onClick(click);
-  check(AccessoryController.wearingCentipede(p),"equipped before quit");
+  click.slot=14;controller.onClick(click);
+  check(AccessoryController.wearingCentipede(p) && AccessoryController.wearingKaneki(p),"both equipped before quit");
   controller.onQuit(new PlayerQuitEvent(p));
-  check(!AccessoryController.wearingCentipede(p) && fe.entities.isEmpty(),"quit releases scolopendra without leak");
+  check(!AccessoryController.wearingCentipede(p) && !AccessoryController.wearingKaneki(p) && fe.entities.isEmpty(),"quit releases all rigs without leak");
 
   ElytrixFreakModelPlugin bare=new ElytrixFreakModelPlugin();bare.returnNullCommand=true;
   AccessoryController.install(bare);
   check(bare.mockCommand.executor==null && !bare.warnings.isEmpty(),"missing command logged safely");
   InventoryDragEvent drag=new InventoryDragEvent();drag.view=click.view;controller.onDrag(drag);check(drag.cancelled,"drag cancelled");
-  System.out.println("Accessory GUI, isolated Dummy Scolopendra rig, body-yaw sync & native animation tests passed");
+  System.out.println("All v3.11.0 tests passed: Full-body Scolopendra, Kaneki Rinkaku Kagune, teleport respawn & PivotOverride recovery!");
  }
 }

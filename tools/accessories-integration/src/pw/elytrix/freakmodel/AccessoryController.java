@@ -25,6 +25,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -49,21 +50,23 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 /**
- * Server-side accessories menu & controller: Angel Wings, Divine Halo, Kaneki Kagune,
- * and the Tokyo Ghoul Scolopendra (elytrix_centipede) coiled around neck & shoulders.
+ * Server-side accessories menu & unified controller (v3.11.0):
+ * Angel Wings, Divine Halo, Kaneki Ken's Rinkaku Kagune (elytrix_kaneki_tentacles),
+ * and the Full-Body Crawling Tokyo Ghoul Scolopendra (elytrix_centipede).
  *
- * <p>Architecture highlights for the Scolopendra:
+ * <p>Key guarantees:
  * <ul>
- *   <li>Uses an isolated {@link Dummy} base entity so its UUID and entityId never
- *       collide with {@code WornAngelRig}'s {@code PlayerAuraAttachment(player)} —
- *       wings, halo, kagune, and scolopendra can be toggled in any combination.</li>
- *   <li>Rides the player's {@link PivotOverride} via passenger packet mounting for
- *       zero rubberbanding, while {@link PlayerBodyTracker} locks rotation strictly
- *       to the player's torso {@code yBodyRot} (zero camera pitch tilt, zero turn lag).</li>
- *   <li>Plays the blueprint's native multithreaded {@code "idle"} keyframe animation
- *       (14 undulating tergites + 24 metachronal scurrying legs + snapping venomous
- *       fangs + 2-stage whip antennae + scissoring tail cerci), dynamically scaling
- *       animation speed with movement speed.</li>
+ *   <li>Both {@code elytrix_centipede} and {@code elytrix_kaneki_tentacles} run on
+ *       isolated {@link Dummy} base entities so neither collides with
+ *       {@code WornAngelRig}'s {@code PlayerAuraAttachment(player)} nor triggers
+ *       angel feather particles.</li>
+ *   <li>Teleport, cross-world, respawn, and &gt;24-block NMS jumps cleanly destroy
+ *       stale virtual {@link DisplayRenderer} entities and respawn fresh ones at the
+ *       destination after 2 ticks, eliminating 4-chunk view-distance despawns.</li>
+ *   <li>Every tick verifies {@link PivotOverrideRegistry#getOrCreate} and passenger
+ *       containment (with a 40-tick warmup + 20-tick periodic {@code markDirty()}),
+ *       recovering seamlessly even if {@code WornAngelRig.destroyAll()} removes the
+ *       player's {@link PivotOverride}.</li>
  * </ul>
  */
 public final class AccessoryController implements CommandExecutor, Listener {
@@ -73,44 +76,65 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final NamespacedKey PET = new NamespacedKey("elytrixaccessories", "pet");
     static final String PET_CHOICE = "centipede";
     static final String CENTIPEDE_BLUEPRINT = "elytrix_centipede";
-    static final String CENTIPEDE_ANIM = "idle";
+    static final String KANEKI_BLUEPRINT = "elytrix_kaneki_tentacles";
+    static final String IDLE_ANIM = "idle";
     static final String MEDIA_GROUP = "media";
     static final String USE_PERMISSION = "elytrixaccessories.use";
     static final int VIEW_RANGE = 96;
-    static final long RE_PAIR_TICKS = 100;
+    static final long RE_PAIR_TICKS = 40L;
+    static final int WARMUP_SYNC_TICKS = 40;
+    static final double TELEPORT_JUMP_DIST_SQ = 24.0D * 24.0D;
 
     private static boolean mediaGranted;
     private static ElytrixFreakModelPlugin host;
-    private static final java.util.Map<java.util.UUID, Pet> PETS = new java.util.HashMap<>();
+    private static final java.util.Map<java.util.UUID, GhoulRig> PETS = new java.util.HashMap<>();
+    private static final java.util.Map<java.util.UUID, GhoulRig> KAGUNES = new java.util.HashMap<>();
     private static final java.util.Map<java.util.UUID, PlayerBodyTracker> TRACKERS = new java.util.HashMap<>();
+    private static final java.util.Map<java.util.UUID, Long> TELEPORT_RESPAWN_AT = new java.util.HashMap<>();
     private static final java.util.Set<String> REPORTED = new java.util.HashSet<>();
     static long petTicks;
-    private static FreakModelSpec cachedTentacles;
     private static boolean modelsLogged;
 
     private AccessoryController() {}
 
-    /** Live neck/shoulder scolopendra bound to one player. */
-    private static final class Pet {
+    /** Isolated Dummy-backed ModelEngine rig (Scolopendra or Kaneki Rinkaku Kagune). */
+    private static final class GhoulRig {
+        final String blueprintId;
         final Dummy<Player> dummy;
         final ModeledEntity entity;
         final ActiveModel model;
-        final PivotOverride pivot;
+        PivotOverride pivot;
         IAnimationProperty animProperty;
         boolean statesCleared;
         boolean attached;
         int attachedPivotId = -1;
+        int warmupTicks = WARMUP_SYNC_TICKS;
         boolean ownerSees;
         long pairedAt;
-        boolean rescued;
-        int lostTicks;
+        World lastWorld;
+        double lastX;
+        double lastY;
+        double lastZ;
+        boolean hasLastPos;
         boolean loggedReady;
 
-        Pet(Dummy<Player> dummy, ModeledEntity entity, ActiveModel model, PivotOverride pivot) {
+        GhoulRig(String blueprintId, Dummy<Player> dummy, ModeledEntity entity,
+                 ActiveModel model, PivotOverride pivot, Location spawnLoc) {
+            this.blueprintId = blueprintId;
             this.dummy = dummy;
             this.entity = entity;
             this.model = model;
             this.pivot = pivot;
+            recordLocation(spawnLoc);
+        }
+
+        void recordLocation(Location loc) {
+            if (loc == null) return;
+            this.lastWorld = loc.getWorld();
+            this.lastX = loc.getX();
+            this.lastY = loc.getY();
+            this.lastZ = loc.getZ();
+            this.hasLastPos = true;
         }
     }
 
@@ -145,7 +169,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
     }
 
     static boolean allowed(Player player) {
-        return player.hasPermission("elytrixaccessories.admin") || player.hasPermission(USE_PERMISSION);
+        return player != null
+            && (player.hasPermission("elytrixaccessories.admin") || player.hasPermission(USE_PERMISSION));
     }
 
     static void reportOnce(String what, Throwable failure) {
@@ -179,32 +204,26 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return headChoice(player).equals("halo") ? plugin.findModel("angel_halo") : null;
     }
 
+    /**
+     * WornAngelRig resolver for the back slot: ONLY Angel Wings use WornAngelRig.
+     * Kaneki Ken's Rinkaku Kagune runs on our own isolated Dummy GhoulRig so it never
+     * emits celestial angel dust, never conflicts with Halo removal, and survives all teleports.
+     */
     public static FreakModelSpec back(ElytrixFreakModelPlugin plugin, Player player) {
         if (!allowed(player)) return null;
         String selection = get(player, BACK);
         if (selection.equals("wings")) return plugin.findModel("angel_wings");
-        if (selection.equals("kaneki")) return kaneki(plugin);
         return null;
     }
 
-    static FreakModelSpec kaneki(ElytrixFreakModelPlugin plugin) {
-        FreakModelSpec configured = plugin.findModel("elytrix_kaneki_tentacles");
-        if (configured != null) return configured;
-        FreakModelSpec base = plugin.findModel("angel_wings");
-        if (base == null) return null;
-        if (cachedTentacles != null) return cachedTentacles;
-        cachedTentacles = new FreakModelSpec("elytrix_kaneki_tentacles", base.kind, "elytrix_kaneki_tentacles",
-            java.util.List.of(), org.bukkit.Material.RED_DYE, "kaneki_tentacles_icon", 35,
-            "Щупальца Канэки", java.util.List.of(), 1.0F, 0.0F, 0.0D, 0.9F, 0.9F, 1, 0,
-            0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0F, 0.0D, false, false);
-        return cachedTentacles;
-    }
-
     public static boolean kanekiSelected(Player player) {
-        return allowed(player) && get(player, BACK).equals("kaneki");
+        return player != null
+            && player.isOnline()
+            && !player.isDead()
+            && player.getGameMode() != GameMode.SPECTATOR
+            && allowed(player)
+            && get(player, BACK).equals("kaneki");
     }
-
-    // ------------------------------------------------------------------ scolopendra
 
     public static boolean centipedeSelected(Player player) {
         return player != null
@@ -215,21 +234,38 @@ public final class AccessoryController implements CommandExecutor, Listener {
             && get(player, PET).equals(PET_CHOICE);
     }
 
+    static boolean wearingKaneki(Player player) {
+        GhoulRig rig = KAGUNES.get(player.getUniqueId());
+        return rig != null && !rig.model.isDestroyed() && !rig.entity.isDestroyed();
+    }
+
     static boolean wearingCentipede(Player player) {
-        Pet pet = PETS.get(player.getUniqueId());
-        return pet != null && !pet.model.isDestroyed() && !pet.entity.isDestroyed();
+        GhoulRig rig = PETS.get(player.getUniqueId());
+        return rig != null && !rig.model.isDestroyed() && !rig.entity.isDestroyed();
     }
 
     static boolean centipedeAttached(Player player) {
-        Pet pet = PETS.get(player.getUniqueId());
-        return pet != null && pet.attached;
+        GhoulRig rig = PETS.get(player.getUniqueId());
+        return rig != null && rig.attached;
+    }
+
+    static boolean kanekiAttached(Player player) {
+        GhoulRig rig = KAGUNES.get(player.getUniqueId());
+        return rig != null && rig.attached;
     }
 
     static boolean centipedeAnimating(Player player) {
-        Pet pet = PETS.get(player.getUniqueId());
-        if (pet == null || pet.model.isDestroyed()) return false;
-        AnimationHandler handler = pet.model.getAnimationHandler();
-        return handler != null && handler.isPlayingAnimation(CENTIPEDE_ANIM);
+        GhoulRig rig = PETS.get(player.getUniqueId());
+        if (rig == null || rig.model.isDestroyed()) return false;
+        AnimationHandler handler = rig.model.getAnimationHandler();
+        return handler != null && handler.isPlayingAnimation(IDLE_ANIM);
+    }
+
+    static boolean kanekiAnimating(Player player) {
+        GhoulRig rig = KAGUNES.get(player.getUniqueId());
+        if (rig == null || rig.model.isDestroyed()) return false;
+        AnimationHandler handler = rig.model.getAnimationHandler();
+        return handler != null && handler.isPlayingAnimation(IDLE_ANIM);
     }
 
     private static PlayerBodyTracker trackerFor(Player player) {
@@ -240,15 +276,15 @@ public final class AccessoryController implements CommandExecutor, Listener {
         });
     }
 
-    static boolean ensureOwnerSees(Player player, Pet pet) {
-        if (player == null || pet == null || pet.model == null || pet.model.isDestroyed()) return false;
-        ModeledEntity entity = pet.entity;
+    static boolean ensureOwnerSees(Player player, GhoulRig rig) {
+        if (player == null || rig == null || rig.model == null || rig.model.isDestroyed()) return false;
+        ModeledEntity entity = rig.entity;
         if (entity == null || entity.isDestroyed()) return false;
         try {
-            if (pet.dummy != null) {
-                pet.dummy.setDetectingPlayers(true);
-                pet.dummy.setRenderRadius(VIEW_RANGE);
-                pet.dummy.setForceViewing(player, true);
+            if (rig.dummy != null) {
+                rig.dummy.setDetectingPlayers(true);
+                rig.dummy.setRenderRadius(VIEW_RANGE);
+                rig.dummy.setForceViewing(player, true);
             }
             AnimationLODHandler lod = entity.getAnimationLodHandler();
             if (lod != null) lod.setEnabled(Boolean.FALSE);
@@ -284,7 +320,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         try {
             renderer = model.getModelRenderer();
         } catch (Throwable failure) {
-            reportOnce("питомец", failure);
+            reportOnce("рендерер аксессуара", failure);
             return -1;
         }
         if (!(renderer instanceof DisplayRenderer)) return -1;
@@ -294,184 +330,243 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return pivotEntity == null ? -1 : pivotEntity.getId();
     }
 
-    static boolean attachPivotToPlayer(Pet pet) {
-        if (pet == null || pet.pivot == null) return false;
-        int id = resolvePivotEntityId(pet.model);
+    /**
+     * Ensures the model's DisplayRenderer pivot is bound to the player's CURRENT
+     * PivotOverride (recovering if WornAngelRig.destroyAll() removed an older one)
+     * and keeps passengers synced across warmup & periodic intervals.
+     */
+    static boolean ensurePivotMounted(Player player, GhoulRig rig) {
+        if (player == null || rig == null || rig.model == null || rig.model.isDestroyed()) return false;
+        PivotOverrideRegistry registry = ModelEngineAPI.getPivotOverrideRegistry();
+        PivotOverride latest = registry == null ? null : registry.getOrCreate(player);
+        if (latest != null && latest != rig.pivot) {
+            detachPivotFromPlayer(rig);
+            rig.pivot = latest;
+            rig.model.setPivotOverride(latest);
+            rig.attached = false;
+            rig.warmupTicks = WARMUP_SYNC_TICKS;
+        }
+        if (rig.pivot == null) return false;
+        int id = resolvePivotEntityId(rig.model);
         if (id < 0) return false;
-        pet.attachedPivotId = id;
-        if (!pet.pivot.getPassengers().contains(id)) pet.pivot.addPassenger(id);
-        pet.pivot.getPassengers().markDirty();
+        boolean idChanged = (rig.attachedPivotId != id);
+        if (idChanged && rig.attachedPivotId >= 0) {
+            try {
+                rig.pivot.removePassenger(rig.attachedPivotId);
+            } catch (Throwable ignored) {
+            }
+        }
+        rig.attachedPivotId = id;
+        boolean alreadyContained = rig.pivot.getPassengers() != null && rig.pivot.getPassengers().contains(id);
+        if (!alreadyContained) {
+            rig.pivot.addPassenger(id);
+        }
+        boolean shouldMarkDirty = !rig.attached || !alreadyContained || idChanged
+            || rig.warmupTicks > 0 || (petTicks % 20L == 0L);
+        if (shouldMarkDirty && rig.pivot.getPassengers() != null) {
+            rig.pivot.getPassengers().markDirty();
+        }
+        if (rig.warmupTicks > 0) rig.warmupTicks--;
+        rig.attached = true;
         return true;
     }
 
-    private static void detachPivotFromPlayer(Pet pet) {
-        if (pet == null || pet.pivot == null) return;
+    private static void detachPivotFromPlayer(GhoulRig rig) {
+        if (rig == null || rig.pivot == null) return;
         try {
-            int id = pet.attachedPivotId >= 0 ? pet.attachedPivotId : resolvePivotEntityId(pet.model);
+            int id = rig.attachedPivotId >= 0 ? rig.attachedPivotId : resolvePivotEntityId(rig.model);
             if (id >= 0) {
-                pet.pivot.removePassenger(id);
-                if (pet.pivot.getPassengers() != null) pet.pivot.getPassengers().markDirty();
+                rig.pivot.removePassenger(id);
+                if (rig.pivot.getPassengers() != null) rig.pivot.getPassengers().markDirty();
             }
         } catch (Throwable ignored) {
         }
     }
 
-    private static void syncPetTransform(Player player, Pet pet, float bodyYaw) {
-        if (player == null || pet == null || pet.entity == null || pet.entity.isDestroyed()) return;
+    private static boolean hasTeleportJumped(Location now, GhoulRig rig) {
+        if (now == null || rig == null || !rig.hasLastPos) return false;
+        if (now.getWorld() != rig.lastWorld) return true;
+        double dx = now.getX() - rig.lastX;
+        double dy = now.getY() - rig.lastY;
+        double dz = now.getZ() - rig.lastZ;
+        return (dx * dx + dy * dy + dz * dz) > TELEPORT_JUMP_DIST_SQ;
+    }
+
+    private static void syncRigTransform(Player player, GhoulRig rig, float bodyYaw) {
+        if (player == null || rig == null || rig.entity == null || rig.entity.isDestroyed()) return;
         float safeYaw = Float.isFinite(bodyYaw) ? bodyYaw : 0.0F;
         try {
             Location loc = player.getLocation();
-            if (pet.dummy != null) {
-                if (loc != null) pet.dummy.syncLocation(loc);
-                pet.dummy.setYBodyRot(safeYaw);
-                pet.dummy.setYHeadRot(safeYaw);
-                pet.dummy.setXHeadRot(0.0F);
-                BodyRotationController rot = pet.dummy.getBodyRotationController();
+            if (rig.dummy != null) {
+                if (loc != null) {
+                    rig.dummy.syncLocation(loc);
+                    rig.recordLocation(loc);
+                }
+                rig.dummy.setYBodyRot(safeYaw);
+                rig.dummy.setYHeadRot(safeYaw);
+                rig.dummy.setXHeadRot(0.0F);
+                BodyRotationController rot = rig.dummy.getBodyRotationController();
                 if (rot != null) {
                     rot.setYBodyRot(safeYaw);
                     rot.setYHeadRot(safeYaw);
                     rot.setXHeadRot(0.0F);
                 }
             }
-            PlayerAuraAttachment.syncModeledEntityImmediately(pet.entity, safeYaw);
+            PlayerAuraAttachment.syncModeledEntityImmediately(rig.entity, safeYaw);
         } catch (Throwable failure) {
-            reportOnce("поворот сколопендры", failure);
+            reportOnce("поворот аксессуара", failure);
         }
     }
 
-    private static void ensureLivingAnimation(Pet pet, double horizSpeed) {
-        if (pet == null || pet.model == null || pet.model.isDestroyed()) return;
+    private static void ensureLivingAnimation(GhoulRig rig, double horizSpeed) {
+        if (rig == null || rig.model == null || rig.model.isDestroyed()) return;
         AnimationHandler handler;
         try {
-            handler = pet.model.getAnimationHandler();
+            handler = rig.model.getAnimationHandler();
         } catch (Throwable failure) {
-            reportOnce("анимация сколопендры", failure);
+            reportOnce("анимация аксессуара", failure);
             return;
         }
         if (handler == null) return;
-        if (!pet.statesCleared) {
-            pet.statesCleared = true;
+        if (!rig.statesCleared) {
+            rig.statesCleared = true;
             for (ModelState state : ModelState.values()) {
                 handler.setDefaultProperty(new AnimationHandler.DefaultProperty(state, "", 0.0D, 0.0D, 1.0D));
             }
         }
-        double targetSpeed = 1.0D + Math.min(0.75D, Math.max(0.0D, horizSpeed) * 2.2D);
-        if (!handler.isPlayingAnimation(CENTIPEDE_ANIM) || pet.animProperty == null) {
-            IAnimationProperty prop = handler.playAnimation(CENTIPEDE_ANIM, 0.0D, 0.0D, targetSpeed, true);
+        double speedBoost = KANEKI_BLUEPRINT.equals(rig.blueprintId) ? 2.5D : 1.8D;
+        double targetSpeed = 1.0D + Math.min(0.85D, Math.max(0.0D, horizSpeed) * speedBoost);
+        if (!handler.isPlayingAnimation(IDLE_ANIM) || rig.animProperty == null) {
+            IAnimationProperty prop = handler.playAnimation(IDLE_ANIM, 0.0D, 0.0D, targetSpeed, true);
             if (prop != null) {
                 prop.setForceLoopMode(BlueprintAnimation.LoopMode.LOOP);
                 prop.setSpeed(targetSpeed);
             }
-            pet.animProperty = prop;
+            rig.animProperty = prop;
         } else {
-            pet.animProperty.setSpeed(targetSpeed);
+            rig.animProperty.setSpeed(targetSpeed);
         }
     }
 
-    static void syncPet(Player player) {
-        if (player == null || !player.isOnline()) return;
-        boolean want = centipedeSelected(player);
-        Pet pet = PETS.get(player.getUniqueId());
-        if (want && (pet == null || pet.model.isDestroyed() || pet.entity.isDestroyed())) {
-            if (pet != null) removePet(player.getUniqueId(), pet);
-            pet = spawnPet(player);
-            if (pet != null) PETS.put(player.getUniqueId(), pet);
-        } else if (!want && pet != null) {
-            removePet(player.getUniqueId(), pet);
+    private static void syncSingleSlot(Player player, boolean want, String blueprintId,
+                                       java.util.Map<java.util.UUID, GhoulRig> store) {
+        java.util.UUID uuid = player.getUniqueId();
+        GhoulRig rig = store.get(uuid);
+        if (!want) {
+            if (rig != null) removeRig(uuid, rig, store);
             return;
         }
-        if (!want || pet == null) return;
-        rescuesIfLost(pet, player);
-        if (!pet.ownerSees || petTicks - pet.pairedAt > RE_PAIR_TICKS) {
-            pet.ownerSees = ensureOwnerSees(player, pet);
-            pet.pairedAt = petTicks;
+        Long cooldownUntil = TELEPORT_RESPAWN_AT.get(uuid);
+        if (cooldownUntil != null && petTicks < cooldownUntil.longValue()) {
+            if (rig != null) removeRig(uuid, rig, store);
+            return;
         }
-        if (!pet.attached) pet.attached = attachPivotToPlayer(pet);
+        if (rig != null && hasTeleportJumped(player.getLocation(), rig)) {
+            removeRig(uuid, rig, store);
+            rig = null;
+        }
+        if (rig == null || rig.model.isDestroyed() || rig.entity.isDestroyed()) {
+            if (rig != null) removeRig(uuid, rig, store);
+            rig = spawnRig(player, blueprintId);
+            if (rig != null) store.put(uuid, rig);
+        }
+        if (rig == null) return;
+        if (!rig.ownerSees || petTicks - rig.pairedAt >= RE_PAIR_TICKS) {
+            rig.ownerSees = ensureOwnerSees(player, rig);
+            rig.pairedAt = petTicks;
+        }
+        ensurePivotMounted(player, rig);
         PlayerBodyTracker tracker = trackerFor(player);
-        syncPetTransform(player, pet, tracker.getBodyYaw());
-        ensureLivingAnimation(pet, tracker.getHorizSpeedBlocksPerTick());
-        logPetReady(pet, pivotDistance(pet.model, player));
+        syncRigTransform(player, rig, tracker.getBodyYaw());
+        ensureLivingAnimation(rig, tracker.getHorizSpeedBlocksPerTick());
+        logRigReady(rig);
+    }
+
+    static void syncPet(Player player) {
+        syncPlayerRigs(player);
+    }
+
+    static void syncPlayerRigs(Player player) {
+        if (player == null || !player.isOnline()) return;
+        syncSingleSlot(player, centipedeSelected(player), CENTIPEDE_BLUEPRINT, PETS);
+        syncSingleSlot(player, kanekiSelected(player), KANEKI_BLUEPRINT, KAGUNES);
     }
 
     static void animatePets() {
         petTicks++;
-        if (PETS.isEmpty()) return;
-        for (java.util.Map.Entry<java.util.UUID, Pet> entry : new java.util.ArrayList<>(PETS.entrySet())) {
-            java.util.UUID uuid = entry.getKey();
-            Pet pet = entry.getValue();
-            try {
-                if (pet.model.isDestroyed() || pet.entity.isDestroyed()) {
-                    removePet(uuid, pet);
-                    continue;
+        if (!TELEPORT_RESPAWN_AT.isEmpty()) {
+            for (java.util.Map.Entry<java.util.UUID, Long> e : new java.util.ArrayList<>(TELEPORT_RESPAWN_AT.entrySet())) {
+                if (petTicks < e.getValue().longValue()) continue;
+                TELEPORT_RESPAWN_AT.remove(e.getKey());
+                Player p = Bukkit.getPlayer(e.getKey());
+                if (p != null && p.isOnline()) {
+                    try {
+                        syncPlayerRigs(p);
+                    } catch (Throwable failure) {
+                        reportOnce("респавн аксессуаров после телепорта", failure);
+                    }
                 }
-                Player wearer = Bukkit.getPlayer(uuid);
-                if (wearer == null || !wearer.isOnline() || wearer.isDead()
-                        || wearer.getGameMode() == GameMode.SPECTATOR) {
-                    removePet(uuid, pet);
-                    continue;
-                }
-                if (!pet.attached) pet.attached = attachPivotToPlayer(pet);
-                PlayerBodyTracker tracker = trackerFor(wearer);
-                tracker.stepServerTick(wearer);
-                syncPetTransform(wearer, pet, tracker.getBodyYaw());
-                ensureLivingAnimation(pet, tracker.getHorizSpeedBlocksPerTick());
-                logPetReady(pet, pivotDistance(pet.model, wearer));
-            } catch (Throwable failure) {
-                reportOnce("питомец", failure);
             }
         }
+        if (PETS.isEmpty() && KAGUNES.isEmpty()) return;
+
+        java.util.Set<java.util.UUID> activePlayers = new java.util.LinkedHashSet<>();
+        activePlayers.addAll(PETS.keySet());
+        activePlayers.addAll(KAGUNES.keySet());
+
+        for (java.util.UUID uuid : activePlayers) {
+            Player wearer = Bukkit.getPlayer(uuid);
+            if (wearer == null || !wearer.isOnline() || wearer.isDead()
+                    || wearer.getGameMode() == GameMode.SPECTATOR) {
+                releaseByUuid(uuid);
+                continue;
+            }
+            PlayerBodyTracker tracker = trackerFor(wearer);
+            tracker.stepServerTick(wearer);
+            tickActiveRig(uuid, wearer, tracker, PETS, centipedeSelected(wearer));
+            tickActiveRig(uuid, wearer, tracker, KAGUNES, kanekiSelected(wearer));
+        }
     }
 
-    private static void logPetReady(Pet pet, double pivotDistance) {
-        if (pet.loggedReady || !pet.attached) return;
-        pet.loggedReady = true;
+    private static void tickActiveRig(java.util.UUID uuid, Player wearer, PlayerBodyTracker tracker,
+                                      java.util.Map<java.util.UUID, GhoulRig> store, boolean stillWanted) {
+        GhoulRig rig = store.get(uuid);
+        if (rig == null) return;
+        try {
+            if (!stillWanted || rig.model.isDestroyed() || rig.entity.isDestroyed()) {
+                removeRig(uuid, rig, store);
+                return;
+            }
+            if (hasTeleportJumped(wearer.getLocation(), rig)) {
+                schedulePostTeleportRespawn(wearer, 1L);
+                return;
+            }
+            if (!rig.ownerSees || petTicks - rig.pairedAt >= RE_PAIR_TICKS) {
+                rig.ownerSees = ensureOwnerSees(wearer, rig);
+                rig.pairedAt = petTicks;
+            }
+            ensurePivotMounted(wearer, rig);
+            syncRigTransform(wearer, rig, tracker.getBodyYaw());
+            ensureLivingAnimation(rig, tracker.getHorizSpeedBlocksPerTick());
+            logRigReady(rig);
+        } catch (Throwable failure) {
+            reportOnce("тик аксессуара", failure);
+        }
+    }
+
+    private static void logRigReady(GhoulRig rig) {
+        if (rig.loggedReady || !rig.attached) return;
+        rig.loggedReady = true;
         if (host == null) return;
-        host.getLogger().info("[Аксессуары] сколопендра: живая анимация '" + CENTIPEDE_ANIM
-            + "', модель привязана к шее и плечам игрока"
-            + ", " + (pet.ownerSees ? "владелец в трекинге, куллинг выключен"
-                                    : "ожидание трекинга владельца")
-            + (pivotDistance < 0.0D ? ""
-                                    : String.format(java.util.Locale.ROOT,
-                                        ", pivot в %.2f блока", pivotDistance)));
+        String label = KANEKI_BLUEPRINT.equals(rig.blueprintId)
+            ? "кагуне Канэки Кена"
+            : "сколопендра (по всему телу)";
+        host.getLogger().info("[Аксессуары] " + label + ": живая анимация '" + IDLE_ANIM
+            + "', привязка к PivotOverride активна");
     }
 
-    private static void rescuesIfLost(Pet pet, Player player) {
-        if (pet.rescued || !pet.attached) return;
-        double distance = pivotDistance(pet.model, player);
-        if (distance < 0.0D || distance < 8.0D) {
-            pet.lostTicks = 0;
-            return;
-        }
-        if (++pet.lostTicks < 3) return;
-        pet.rescued = true;
-        try {
-            removePet(player.getUniqueId(), pet);
-        } catch (Throwable ignored) {
-        }
-        if (host != null) host.getLogger().warning("[Аксессуары] сколопендра отстала от игрока на "
-            + String.format(java.util.Locale.ROOT, "%.1f", distance) + " блока — пересоздал модель");
-    }
-
-    static double pivotDistance(ActiveModel model, Player player) {
-        try {
-            ModelRenderer renderer = model.getModelRenderer();
-            if (!(renderer instanceof DisplayRenderer)) return -1.0D;
-            DisplayRenderer display = (DisplayRenderer) renderer;
-            DisplayRenderer.Pivot pivot = display.getPivot();
-            if (pivot == null || pivot.getPosition() == null) return -1.0D;
-            Object position = pivot.getPosition().get();
-            if (!(position instanceof org.joml.Vector3f)) return -1.0D;
-            org.joml.Vector3f p = (org.joml.Vector3f) position;
-            org.bukkit.Location loc = player.getLocation();
-            double dx = p.x - loc.getX(), dy = p.y - loc.getY(), dz = p.z - loc.getZ();
-            return Math.sqrt(dx * dx + dy * dy + dz * dz);
-        } catch (Throwable ignored) {
-            return -1.0D;
-        }
-    }
-
-    private static Pet spawnPet(Player player) {
-        ModelBlueprint blueprint = ModelEngineAPI.getBlueprint(CENTIPEDE_BLUEPRINT);
+    private static GhoulRig spawnRig(Player player, String blueprintId) {
+        ModelBlueprint blueprint = ModelEngineAPI.getBlueprint(blueprintId);
         if (blueprint == null) return null;
 
         Dummy<Player> dummy = new Dummy<>(player);
@@ -495,7 +590,6 @@ public final class AccessoryController implements CommandExecutor, Listener {
 
         ModeledEntity entity = ModelEngineAPI.createModeledEntity(dummy);
         if (entity == null) {
-            // Fallback for mock harnesses that only implement getOrCreateModeledEntity(Entity)
             entity = ModelEngineAPI.getOrCreateModeledEntity(player);
         }
         if (entity == null || entity.isDestroyed()) return null;
@@ -524,51 +618,67 @@ public final class AccessoryController implements CommandExecutor, Listener {
         model.setModelRotationLocked(Boolean.FALSE);
         PlayerAuraAttachment.syncModeledEntityImmediately(entity, bodyYaw);
 
-        Pet pet = new Pet(dummy, entity, model, pivot);
-        pet.ownerSees = ensureOwnerSees(player, pet);
-        pet.pairedAt = petTicks;
-        pet.attached = attachPivotToPlayer(pet);
-        ensureLivingAnimation(pet, tracker.getHorizSpeedBlocksPerTick());
-        return pet;
+        GhoulRig rig = new GhoulRig(blueprintId, dummy, entity, model, pivot, loc);
+        rig.ownerSees = ensureOwnerSees(player, rig);
+        rig.pairedAt = petTicks;
+        ensurePivotMounted(player, rig);
+        ensureLivingAnimation(rig, tracker.getHorizSpeedBlocksPerTick());
+        return rig;
     }
 
-    private static void removePet(java.util.UUID playerUuid, Pet pet) {
-        PETS.remove(playerUuid);
-        if (pet == null) return;
-        detachPivotFromPlayer(pet);
+    private static void removeRig(java.util.UUID playerUuid, GhoulRig rig,
+                                  java.util.Map<java.util.UUID, GhoulRig> store) {
+        store.remove(playerUuid);
+        if (rig == null) return;
+        detachPivotFromPlayer(rig);
         try {
-            if (!pet.entity.isDestroyed()) pet.entity.removeModel(CENTIPEDE_BLUEPRINT);
+            if (!rig.entity.isDestroyed()) rig.entity.removeModel(rig.blueprintId);
         } catch (Throwable ignored) {
         }
         try {
-            if (!pet.model.isDestroyed()) pet.model.destroy();
+            if (!rig.model.isDestroyed()) rig.model.destroy();
         } catch (Throwable ignored) {
         }
         try {
-            if (pet.dummy != null) {
-                pet.dummy.setRemoved(true);
-                ModelEngineAPI.removeModeledEntity(pet.dummy.getUUID());
+            if (rig.dummy != null) {
+                rig.dummy.setRemoved(true);
+                ModelEngineAPI.removeModeledEntity(rig.dummy.getUUID());
             }
-            if (!pet.entity.isDestroyed() && pet.dummy != null
-                    && pet.entity.getBase() == pet.dummy) {
-                pet.entity.destroy();
+            if (!rig.entity.isDestroyed() && rig.dummy != null
+                    && rig.entity.getBase() == rig.dummy) {
+                rig.entity.destroy();
             }
         } catch (Throwable ignored) {
         }
+    }
+
+    private static void releaseByUuid(java.util.UUID uuid) {
+        GhoulRig pet = PETS.get(uuid);
+        if (pet != null) removeRig(uuid, pet, PETS);
+        GhoulRig kagune = KAGUNES.get(uuid);
+        if (kagune != null) removeRig(uuid, kagune, KAGUNES);
     }
 
     static void releasePet(Player player) {
         if (player == null) return;
-        Pet pet = PETS.get(player.getUniqueId());
-        if (pet != null) removePet(player.getUniqueId(), pet);
+        releaseByUuid(player.getUniqueId());
+    }
+
+    private static void schedulePostTeleportRespawn(Player player, long delayTicks) {
+        if (player == null) return;
+        java.util.UUID uuid = player.getUniqueId();
+        releaseByUuid(uuid);
+        if (centipedeSelected(player) || kanekiSelected(player)) {
+            TELEPORT_RESPAWN_AT.put(uuid, Long.valueOf(petTicks + Math.max(1L, delayTicks)));
+        }
     }
 
     static void logLoadedModels() {
         if (modelsLogged || host == null) return;
         modelsLogged = true;
         StringBuilder missing = new StringBuilder();
-        for (String id : new String[] {"angel_wings", "angel_halo", "elytrix_kaneki_tentacles",
-                                       CENTIPEDE_BLUEPRINT}) {
+        for (String id : new String[] {"elytrix_angel_wings", "elytrix_angel_halo",
+                                       KANEKI_BLUEPRINT, CENTIPEDE_BLUEPRINT}) {
             if (ModelEngineAPI.getBlueprint(id) == null) {
                 if (missing.length() > 0) missing.append(", ");
                 missing.append(id);
@@ -576,7 +686,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
         try {
             if (missing.length() == 0) {
-                host.getLogger().info("[Аксессуары] ModelEngine загрузил все модели: крылья, нимб, кагуне, сколопендра");
+                host.getLogger().info("[Аксессуары] ModelEngine загрузил все модели: крылья, нимб, кагуне Канэки, сколопендра");
             } else {
                 host.getLogger().warning("[Аксессуары] ModelEngine не загрузил: " + missing
                     + " — проверь plugins/ModelEngine/blueprints и лог ModelEngine");
@@ -590,9 +700,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
             logLoadedModels();
             for (Player player : Bukkit.getOnlinePlayers()) {
                 try {
-                    syncPet(player);
+                    syncPlayerRigs(player);
                 } catch (Throwable failure) {
-                    reportOnce("питомец", failure);
+                    reportOnce("синхронизация аксессуаров", failure);
                 }
             }
         } catch (Throwable ignored) {
@@ -602,29 +712,40 @@ public final class AccessoryController implements CommandExecutor, Listener {
     // ------------------------------------------------------------------ player lifecycle events
 
     @EventHandler public void onMove(PlayerMoveEvent event) {
+        if (event.isCancelled()) return;
         Player player = event.getPlayer();
         if (player == null) return;
-        Pet pet = PETS.get(player.getUniqueId());
-        if (pet == null || pet.model.isDestroyed()) return;
+        java.util.UUID uuid = player.getUniqueId();
+        GhoulRig pet = PETS.get(uuid);
+        GhoulRig kagune = KAGUNES.get(uuid);
+        if ((pet == null || pet.model.isDestroyed()) && (kagune == null || kagune.model.isDestroyed())) {
+            return;
+        }
         Location to = event.getTo();
         if (to == null) return;
+        if ((pet != null && hasTeleportJumped(to, pet)) || (kagune != null && hasTeleportJumped(to, kagune))) {
+            PlayerBodyTracker tracker = trackerFor(player);
+            tracker.resetToYaw(to.getYaw());
+            schedulePostTeleportRespawn(player, 2L);
+            return;
+        }
         PlayerBodyTracker tracker = trackerFor(player);
         tracker.stepFromPacket(player, to);
-        syncPetTransform(player, pet, tracker.getBodyYaw());
+        float yaw = tracker.getBodyYaw();
+        if (pet != null) syncRigTransform(player, pet, yaw);
+        if (kagune != null) syncRigTransform(player, kagune, yaw);
     }
 
     @EventHandler public void onTeleport(PlayerTeleportEvent event) {
+        if (event.isCancelled()) return;
         Player player = event.getPlayer();
         if (player == null) return;
-        Pet pet = PETS.get(player.getUniqueId());
-        if (pet == null) return;
         Location to = event.getTo();
         if (to != null) {
             PlayerBodyTracker tracker = trackerFor(player);
             tracker.resetToYaw(to.getYaw());
-            syncPetTransform(player, pet, tracker.getBodyYaw());
         }
-        pet.attached = false;
+        schedulePostTeleportRespawn(player, 2L);
     }
 
     @EventHandler public void onArmSwing(PlayerAnimationEvent event) {
@@ -637,20 +758,29 @@ public final class AccessoryController implements CommandExecutor, Listener {
     @EventHandler public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         if (player == null) return;
-        releasePet(player);
-        TRACKERS.remove(player.getUniqueId());
+        java.util.UUID uuid = player.getUniqueId();
+        releaseByUuid(uuid);
+        TELEPORT_RESPAWN_AT.remove(uuid);
+        TRACKERS.remove(uuid);
     }
 
     @EventHandler public void onDeath(PlayerDeathEvent event) {
-        releasePet(event.getEntity());
+        Player player = event.getEntity();
+        if (player == null) return;
+        releaseByUuid(player.getUniqueId());
+        TELEPORT_RESPAWN_AT.remove(player.getUniqueId());
     }
 
     @EventHandler public void onRespawn(PlayerRespawnEvent event) {
-        releasePet(event.getPlayer());
+        Player player = event.getPlayer();
+        if (player == null) return;
+        schedulePostTeleportRespawn(player, 2L);
     }
 
     @EventHandler public void onWorldChange(PlayerChangedWorldEvent event) {
-        releasePet(event.getPlayer());
+        Player player = event.getPlayer();
+        if (player == null) return;
+        schedulePostTeleportRespawn(player, 2L);
     }
 
     // ------------------------------------------------------------------ menu
@@ -687,9 +817,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
         boolean allowed = allowed(player);
         if (allowed) {
             try {
-                syncPet(player);
+                syncPlayerRigs(player);
             } catch (Throwable failure) {
-                reportOnce("питомец", failure);
+                reportOnce("меню синхронизация", failure);
             }
         }
         String hint = allowed ? "§dНажми, чтобы выбрать" : "§cДоступно с доната §dmedia";
@@ -705,11 +835,11 @@ public final class AccessoryController implements CommandExecutor, Listener {
             halo ? lore(chosen, "§7Нимб на голову", "§7Нажми ещё раз — снять")
                  : lore(hint, "§7Нимб на голову")));
         menu.setItem(14, item(Material.RED_DYE, "§x§F§A§D§8§F§C§lЩупальца Канэки", "kaneki_tentacles_icon",
-            kagune ? lore(chosen, "§7Анимированный аксессуар для спины", "§7Нажми ещё раз — снять")
-                   : lore(hint, "§7Анимированный аксессуар для спины")));
+            kagune ? lore(chosen, "§7Кагуне Ринкаку Канэки Кена (Токийский Гуль)", "§74 живых алых хвоста из какухо на спине", "§7Нажми ещё раз — снять")
+                   : lore(hint, "§7Кагуне Ринкаку Канэки Кена (Токийский Гуль)", "§74 живых алых хвоста из какухо на спине")));
         menu.setItem(15, item(Material.SPIDER_EYE, "§x§F§A§D§8§F§C§lСколопендра Гуля", "centipede_icon",
-            bug ? lore(chosen, "§7Обвивает шею и плечи", "§7Живая волна тела, лап, усиков и жвал", "§7Нажми ещё раз — снять")
-                : lore(hint, "§7Обвивает шею и плечи", "§7Живая волна тела, лап, усиков и жвал")));
+            bug ? lore(chosen, "§7Живая сколопендра ползает по всему телу", "§7Грудь, плечи, шея, спина, руки и бёдра", "§7Нажми ещё раз — снять")
+                : lore(hint, "§7Живая сколопендра ползает по всему телу", "§7Грудь, плечи, шея, спина, руки и бёдра")));
         menu.setItem(49, item(Material.BARRIER, "§cСнять всё", null,
             lore("§dНажми, чтобы снять", "§7Убирает все надетые аксессуары")));
         player.openInventory(menu);
@@ -742,29 +872,73 @@ public final class AccessoryController implements CommandExecutor, Listener {
             return;
         }
         String blueprint = slot == 12 ? "elytrix_angel_wings" : slot == 13 ? "elytrix_angel_halo"
-            : slot == 14 ? "elytrix_kaneki_tentacles" : slot == 15 ? CENTIPEDE_BLUEPRINT : null;
+            : slot == 14 ? KANEKI_BLUEPRINT : slot == 15 ? CENTIPEDE_BLUEPRINT : null;
         if (blueprint != null && ModelEngineAPI.getBlueprint(blueprint) == null) {
-            player.sendMessage("§cМодель ещё не загружена. Обратитесь к администрации."); return;
+            player.sendMessage("§cМодель ещё не загружена. Обратитесь к администрации.");
+            return;
         }
-        if (slot == 12) { toggleBack(player, "wings", "Крылья"); }
-        else if (slot == 14) { toggleBack(player, "kaneki", "Щупальца Канэки"); }
+        if (slot == 12) { toggleWings(player); }
+        else if (slot == 14) { toggleKaneki(player); }
         else if (slot == 13) { toggleHead(player, "halo", "Нимб", "надет", "снят"); }
         else if (slot == 15) { togglePet(player); }
         else if (slot == 49) {
-            set(player, BACK, ""); setHead(player, "");
+            set(player, BACK, "");
+            setHead(player, "");
             set(player, PET, "");
-            Pet pet = PETS.get(player.getUniqueId());
-            if (pet != null) removePet(player.getUniqueId(), pet);
+            TELEPORT_RESPAWN_AT.remove(player.getUniqueId());
+            releaseByUuid(player.getUniqueId());
             player.sendMessage("§7Все аксессуары сняты.");
         } else return;
         openMenu(player);
     }
 
+    private static void toggleWings(Player player) {
+        if (get(player, BACK).equals("wings")) {
+            set(player, BACK, "");
+            player.sendMessage("§7Крылья сняты.");
+            return;
+        }
+        set(player, BACK, "wings");
+        GhoulRig kagune = KAGUNES.get(player.getUniqueId());
+        if (kagune != null) removeRig(player.getUniqueId(), kagune, KAGUNES);
+        player.sendMessage("§dКрылья надеты.");
+    }
+
+    private static void toggleKaneki(Player player) {
+        if (get(player, BACK).equals("kaneki")) {
+            set(player, BACK, "");
+            GhoulRig kagune = KAGUNES.get(player.getUniqueId());
+            if (kagune != null) removeRig(player.getUniqueId(), kagune, KAGUNES);
+            player.sendMessage("§7Щупальца Канэки сняты.");
+            return;
+        }
+        if (ModelEngineAPI.getBlueprint(KANEKI_BLUEPRINT) == null) {
+            player.sendMessage("§cМодель кагуне Канэки ещё не загружена. Обратитесь к администрации.");
+            return;
+        }
+        set(player, BACK, "kaneki");
+        TELEPORT_RESPAWN_AT.remove(player.getUniqueId());
+        try {
+            syncPlayerRigs(player);
+        } catch (Throwable failure) {
+            reportOnce("кагуне Канэки", failure);
+            set(player, BACK, "");
+            player.sendMessage("§cЩупальца Канэки не появились: " + failure.getClass().getSimpleName());
+            return;
+        }
+        if (!wearingKaneki(player)) {
+            set(player, BACK, "");
+            player.sendMessage("§cЩупальца Канэки не появились: модель не загрузилась.");
+            return;
+        }
+        player.sendMessage("§dКагуне Канэки Кена пробуждено.");
+    }
+
     private static void togglePet(Player player) {
         if (get(player, PET).equals(PET_CHOICE)) {
             set(player, PET, "");
-            Pet pet = PETS.get(player.getUniqueId());
-            if (pet != null) removePet(player.getUniqueId(), pet);
+            GhoulRig pet = PETS.get(player.getUniqueId());
+            if (pet != null) removeRig(player.getUniqueId(), pet, PETS);
             player.sendMessage("§7Сколопендра снята.");
             return;
         }
@@ -773,8 +947,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
             return;
         }
         set(player, PET, PET_CHOICE);
+        TELEPORT_RESPAWN_AT.remove(player.getUniqueId());
         try {
-            syncPet(player);
+            syncPlayerRigs(player);
         } catch (Throwable failure) {
             reportOnce("сколопендра", failure);
             set(player, PET, "");
@@ -786,17 +961,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
             player.sendMessage("§cСколопендра не появилась: модель не загрузилась.");
             return;
         }
-        player.sendMessage("§dСколопендра обвилась вокруг шеи и плеч.");
-    }
-
-    private static void toggleBack(Player player, String choice, String name) {
-        if (get(player, BACK).equals(choice)) {
-            set(player, BACK, "");
-            player.sendMessage("§7" + name + " сняты.");
-        } else {
-            set(player, BACK, choice);
-            player.sendMessage("§d" + name + " надеты.");
-        }
+        player.sendMessage("§dСколопендра Гуля выпущена и ползает по всему телу.");
     }
 
     private static void toggleHead(Player player, String choice, String name, String on, String off) {
