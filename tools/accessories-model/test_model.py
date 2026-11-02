@@ -406,7 +406,7 @@ class BlueprintTests(unittest.TestCase):
 
 
 class CentipedeBlueprintTests(unittest.TestCase):
-    """The flying centipede: an animal above the head, animated in code."""
+    """Tokyo Ghoul Scolopendra coiled around the player's neck & shoulders."""
 
     @classmethod
     def setUpClass(cls):
@@ -418,13 +418,6 @@ class CentipedeBlueprintTests(unittest.TestCase):
                      for name, bone in cls.bones.items()}
 
     def test_children_are_bones_not_dangling_ids(self):
-        """A child bone must be a nested object.
-
-        The blueprint used to list its children as plain UUID strings while the
-        bones themselves lived in the outliner: the parser then looks for an
-        *element* with that id, fails, and drops the whole model - the centipede
-        never showed up in game.
-        """
         def walk(node):
             for bone in node:
                 self.assertIsInstance(bone, dict, 'outliner children must be bone objects')
@@ -437,67 +430,57 @@ class CentipedeBlueprintTests(unittest.TestCase):
                 walk([c for c in bone.get('children', []) if isinstance(c, dict)])
         walk(self.model['outliner'])
 
-    def test_shape(self):
+    def test_anatomy_and_bones(self):
         self.assertEqual(self.model['model_identifier'], PET)
-        self.assertEqual(self.model['animations'], [], 'the crawl wave is code, not a clip')
-        self.assertEqual(len(self.bones), 11)
-        self.assertEqual(set(self.bones),
-                         {'body_root'} | {f'c{i}' for i in range(1, 10)} | {'head'})
-        self.assertEqual(len(self.model['elements']), 68)
-        for name, bone in self.bones.items():
+        expected_bones = (
+            {'body_root', 'head', 'fang_l', 'fang_r', 'ant_l1', 'ant_l2', 'ant_r1', 'ant_r2',
+             'cercus_l', 'cercus_r'}
+            | {f'seg_{i:02d}' for i in range(1, 15)}
+            | {f'leg_{s}_{i:02d}' for i in range(2, 14) for s in ('l', 'r')}
+        )
+        self.assertEqual(set(self.bones), expected_bones)
+        self.assertEqual(len(self.model['elements']), 143)
+        for name in self.bones:
             if name == 'body_root':
-                self.assertEqual(self.cubes[name], [], 'the root is a pivot, not a limb')
+                self.assertEqual(self.cubes[name], [], 'root is a pure pivot')
             else:
-                self.assertGreaterEqual(len(self.cubes[name]), 2, f'{name} is a real segment')
+                self.assertGreaterEqual(len(self.cubes[name]), 3, f'{name} has multi-cube sculpt')
 
-    def test_no_cube_is_rotated(self):
-        """ModelEngine 4.1.0 drops a blueprint whose bones carry rotated cubes.
-
-        Its ``RotationSolver.fetch`` calls ``Set.removeAll`` on an immutable set
-        (``AbstractSet.removeAll`` -> ``UnsupportedOperationException: remove``,
-        RotationSolver.java:255), which aborts ``BlockbenchParser.populateModel``
-        and throws the whole model away - the animal was invisible in game for
-        exactly this reason.  Angled limbs are built from stacked axis-aligned
-        boxes instead, so every cube must stay at zero rotation.
-        """
+    def test_no_cube_is_rotated_and_uvs_in_0_16(self):
         rotated = [(c['name'], c['rotation']) for c in self.model['elements']
                    if any(abs(angle) > 1e-9 for angle in c.get('rotation', [0, 0, 0]))]
         self.assertEqual(rotated, [], 'rotated cubes crash the ModelEngine parser')
+        for c in self.model['elements']:
+            for side, face in c['faces'].items():
+                for uv_val in face['uv']:
+                    self.assertTrue(0.0 <= uv_val <= 16.0, f'{c["name"]}.{side} UV out of 0..16: {face["uv"]}')
 
-    def test_it_hovers_above_the_head(self):
-        low = min(c['from'][1] for c in self.model['elements'])
-        high = max(c['to'][1] for c in self.model['elements'])
-        self.assertGreater(low, 32.0, 'above the top of the head (32), never inside it')
-        self.assertLess(high, 42.0, 'close enough to read as a pet over the player')
-        self.assertEqual(self.model['outliner'][0]['name'], 'body_root')
+    def test_wraps_around_neck_and_shoulders(self):
+        seg_pts = [self.bones[f'seg_{i:02d}']['origin'] for i in range(1, 15)]
+        xs = [p[0] for p in seg_pts]
+        ys = [p[1] for p in seg_pts]
+        zs = [p[2] for p in seg_pts]
+        self.assertLess(min(xs), -6.5, 'wraps over left shoulder')
+        self.assertGreater(max(xs), 6.5, 'wraps over right shoulder')
+        self.assertGreater(max(zs), 3.6, 'sweeps behind upper back / nape')
+        self.assertLess(min(zs), -3.5, 'curls across front collarbone / chest')
+        self.assertTrue(all(19.5 <= y <= 26.2 for y in ys), f'sits in collar/shoulder band: {ys}')
 
-    def test_it_is_long_along_the_body(self):
-        """An animal, not a hat: it stretches head-to-tail and stays narrow."""
-        width = max(c['to'][0] for c in self.model['elements']) - min(c['from'][0] for c in self.model['elements'])
-        height = max(c['to'][1] for c in self.model['elements']) - min(c['from'][1] for c in self.model['elements'])
-        length = max(c['to'][2] for c in self.model['elements']) - min(c['from'][2] for c in self.model['elements'])
-        self.assertGreater(length, 2.5 * width, 'much longer than wide')
-        self.assertLess(height, width, 'flat, like a bug crawling on a surface')
-        starts = [self.bones[f'c{i}']['origin'] for i in range(1, 10)]
-        zs = [p[2] for p in starts]
-        self.assertEqual(zs, sorted(zs), 'segments follow each other without a jump')
-        gaps = [b - a for a, b in zip(zs, zs[1:])]
-        self.assertLess(max(gaps) - min(gaps), 0.2, 'the body is evenly segmented')
-
-    def test_it_has_a_head_in_front(self):
-        head = [c for c in self.cubes['head']]
-        body_front = min(self.bones['c1']['origin'][2], min(c['from'][2] for c in self.cubes['c1']))
-        self.assertLess(min(c['from'][2] for c in head), body_front, 'the head leads the body')
-        eyes = [c for c in head if 'eye' in c['name']]
-        self.assertGreaterEqual(len(eyes), 2, 'two eyes, otherwise it is just a tube')
+    def test_full_living_loop_animation(self):
+        anims = self.model['animations']
+        self.assertEqual(len(anims), 1)
+        idle = anims[0]
+        self.assertEqual(idle['name'], 'idle')
+        self.assertEqual(idle['loop'], 'loop')
+        self.assertFalse(idle['override'])
+        self.assertEqual(len(idle['animators']), 47, 'every drawn bone is animated')
+        for animator in idle['animators'].values():
+            rot_keys = [k for k in animator['keyframes'] if k['channel'] == 'rotation']
+            self.assertGreaterEqual(len(rot_keys), 16)
+            self.assertEqual(rot_keys[0]['data_points'], rot_keys[-1]['data_points'],
+                             f'{animator["name"]}: loop seam mismatch')
 
     def test_modelengine_itself_can_import_the_blueprint(self):
-        """Runs the real ModelEngine 4.1.0 parser over this blueprint.
-
-        Skipped unless JAVA and ECJ are set (see generate_assets.sh).  This is the
-        only check that proves the file is importable at all: a blueprint the
-        engine rejects produces no model, and no resource pack can make up for it.
-        """
         java, ecj = os.environ.get('JAVA'), os.environ.get('ECJ')
         if not java or not ecj:
             self.skipTest('set JAVA and ECJ to run the real ModelEngine parser')
@@ -509,14 +492,14 @@ class CentipedeBlueprintTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, output)
         self.assertNotIn('UnsupportedOperationException', output)
         generated = {p.stem for p in (out / 'assets/modelengine/items' / PET).glob('*.json')}
-        self.assertEqual(len(generated), 10, 'ModelEngine must emit one item model per bone')
+        self.assertEqual(len(generated), 47, 'ModelEngine must emit one item model per drawn bone')
         self.assertEqual(generated, {n for n in self.bones if self.cubes[n]})
 
     def test_generated_assets_cover_every_bone(self):
         base = HERE / 'assets' / 'modelengine'
         bones = [name for name, bone in self.bones.items()
                  if any(isinstance(c, str) for c in bone['children'])]
-        self.assertEqual(len(bones), 10)
+        self.assertEqual(len(bones), 47)
         for bone in bones:
             model = json.loads((base / 'models' / PET / f'{bone}.json').read_text())
             definition = json.loads((base / 'items' / PET / f'{bone}.json').read_text())
@@ -524,10 +507,10 @@ class CentipedeBlueprintTests(unittest.TestCase):
             self.assertEqual(model['textures']['0'], f'modelengine:entity/models/{PET}')
             self.assertEqual(len(model['elements']), len(self.cubes[bone]))
         texture = Image.open(base / 'textures' / 'entity' / 'models' / f'{PET}.png')
-        self.assertEqual(texture.size, (64, 64))
+        self.assertEqual(texture.size, (128, 128))
         self.assertEqual(texture.mode, 'RGBA')
-        self.assertGreater(sum(1 for px in texture.getdata() if px[3] > 0), 400,
-                           'the shell and the head are painted')
+        self.assertGreater(sum(1 for px in texture.getdata() if px[3] > 0), 10000,
+                           'the obsidian carapace, crimson head and orange legs are painted')
 
 
 class ModelAssetsTests(unittest.TestCase):
@@ -587,7 +570,7 @@ class PackTests(unittest.TestCase):
                                 name == f'assets/modelengine/textures/entity/models/{m}.png'
                                 for m in MODELS)
                          or name.startswith('assets/reallyworld/')
-                         and 'kaneki_tentacles_icon' in name}
+                         and any(ic in name for ic in ('kaneki_tentacles_icon', 'centipede_icon'))}
             self.assertEqual(generated, expected)
             for name in generated:
                 source = HERE / 'assets' / name[len('assets/'):]
@@ -613,24 +596,25 @@ class PackTests(unittest.TestCase):
                     self.assertEqual(definition['tints'][0]['type'], 'minecraft:custom_model_data')
 
     def test_menu_icon_exists(self):
-        """The menu puts the icon on a RED_DYE; without these files the slot shows
-        the purple/black missing-texture checkerboard."""
+        """Both Kaneki Kagune and Tokyo Ghoul Scolopendra menu icons must exist."""
         with zipfile.ZipFile(self.pack) as pack:
             names = set(pack.namelist())
-            for name in ('assets/reallyworld/items/kaneki_tentacles_icon.json',
-                         'assets/reallyworld/models/item/freak/kaneki_tentacles_icon.json',
-                         ICON):
-                self.assertIn(name, names)
-            definition = json.loads(pack.read('assets/reallyworld/items/kaneki_tentacles_icon.json'))
-            self.assertEqual(definition['model']['model'], 'reallyworld:item/freak/kaneki_tentacles_icon')
-            model = json.loads(pack.read('assets/reallyworld/models/item/freak/kaneki_tentacles_icon.json'))
-            self.assertEqual(model['parent'], 'minecraft:item/generated')
-            self.assertEqual(model['textures'],
-                             {'layer0': 'reallyworld:item/freak/kaneki_tentacles_icon'})
-            image = Image.open(io.BytesIO(pack.read(ICON)))
-            self.assertEqual(image.size, (32, 32))
-            self.assertEqual(image.mode, 'RGBA')
-            self.assertGreater(sum(1 for px in image.getdata() if px[3] > 0), 120, 'icon is drawn')
+            for icon_id in ('kaneki_tentacles_icon', 'centipede_icon'):
+                item_path = f'assets/reallyworld/items/{icon_id}.json'
+                model_path = f'assets/reallyworld/models/item/freak/{icon_id}.json'
+                tex_path = f'assets/reallyworld/textures/item/freak/{icon_id}.png'
+                for name in (item_path, model_path, tex_path):
+                    self.assertIn(name, names)
+                definition = json.loads(pack.read(item_path))
+                self.assertEqual(definition['model']['model'], f'reallyworld:item/freak/{icon_id}')
+                model = json.loads(pack.read(model_path))
+                self.assertEqual(model['parent'], 'minecraft:item/generated')
+                self.assertEqual(model['textures'],
+                                 {'layer0': f'reallyworld:item/freak/{icon_id}'})
+                image = Image.open(io.BytesIO(pack.read(tex_path)))
+                self.assertEqual(image.size, (32, 32))
+                self.assertEqual(image.mode, 'RGBA')
+                self.assertGreater(sum(1 for px in image.getdata() if px[3] > 0), 120, 'icon is drawn')
 
     def test_title_glyph_registered_once(self):
         with zipfile.ZipFile(self.pack) as pack:
@@ -653,15 +637,14 @@ class PackTests(unittest.TestCase):
             added = new_names - old_names
             allowed_changes = {FONT} | {n for n in changed
                                         if any(m in n for m in MODELS)
-                                        or 'kaneki_tentacles_icon' in n}
+                                        or any(ic in n for ic in ('kaneki_tentacles_icon', 'centipede_icon'))}
             self.assertLessEqual(changed, allowed_changes,
-                                 'only the tentacle model, its icon and the font may change')
-            # the title bitmap may be new or redrawn, everything else is model data
+                                 'only accessory models, their icons and the font may change')
             self.assertIn(TITLE, new_names, 'the menu title bitmap must survive the merge')
             allowed = {n for n in added if n.startswith('assets/modelengine/')
                        and any(m in n for m in MODELS)}
             allowed |= {n for n in added if n.startswith('assets/reallyworld/')
-                        and 'kaneki_tentacles_icon' in n}
+                        and any(ic in n for ic in ('kaneki_tentacles_icon', 'centipede_icon'))}
             # the centipede assets are new in this release: they may be added
             self.assertTrue(allowed or not added)
             self.assertLessEqual(added - {TITLE}, allowed)

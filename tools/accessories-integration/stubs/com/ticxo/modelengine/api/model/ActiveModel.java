@@ -1,4 +1,5 @@
 package com.ticxo.modelengine.api.model;
+import com.ticxo.modelengine.api.animation.handler.AnimationHandler;
 import com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint;
 import com.ticxo.modelengine.api.model.bone.ModelBone;
 import com.ticxo.modelengine.api.model.render.ModelRenderer;
@@ -7,6 +8,7 @@ public interface ActiveModel {
     boolean isDestroyed();
     void destroy();
     ModelBlueprint getBlueprint();
+    AnimationHandler getAnimationHandler();
     java.util.Optional<ModelBone> getBone(String id);
     ModelRenderer getModelRenderer();
     ModeledEntity getModeledEntity();

@@ -126,11 +126,11 @@ with zipfile.ZipFile(rpzip) as z:
            if n.startswith("assets/modelengine/models/elytrix_centipede/") and n.endswith(".json")}
 new = {os.path.basename(n)[:-5] for n in have
        if "/models/elytrix_centipede/" in n and n.endswith(".json")}
-print(f"  кости: было {sorted(old)}")
-print(f"         стало {sorted(new)}")
-gone = old - new
-if gone:
-    print(f"  пропали кости, на которые ссылается плагин: {sorted(gone)} — прерываю"); sys.exit(4)
+print(f"  кости: было {len(old)}, стало {len(new)}")
+required = {'head', 'fang_l', 'fang_r'} | {f'seg_{i:02d}' for i in range(1, 15)}
+missing = required - new
+if missing:
+    print(f"  не хватает обязательных костей сороконожки: {sorted(missing)} — прерываю"); sys.exit(4)
 
 tmp = rpzip + ".new"
 kept = 0

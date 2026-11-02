@@ -1,21 +1,28 @@
 package pw.elytrix.freakmodel;
 
 import com.ticxo.modelengine.api.ModelEngineAPI;
-import com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint;
-import com.ticxo.modelengine.api.model.ActiveModel;
-import com.ticxo.modelengine.api.model.ModeledEntity;
+import com.ticxo.modelengine.api.animation.BlueprintAnimation;
+import com.ticxo.modelengine.api.animation.ModelState;
+import com.ticxo.modelengine.api.animation.handler.AnimationHandler;
+import com.ticxo.modelengine.api.animation.property.IAnimationProperty;
 import com.ticxo.modelengine.api.entity.BaseEntity;
 import com.ticxo.modelengine.api.entity.CullType;
+import com.ticxo.modelengine.api.entity.Dummy;
 import com.ticxo.modelengine.api.entity.data.BukkitEntityData;
 import com.ticxo.modelengine.api.entity.data.IEntityData;
+import com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint;
+import com.ticxo.modelengine.api.lod.AnimationLODHandler;
+import com.ticxo.modelengine.api.model.ActiveModel;
+import com.ticxo.modelengine.api.model.ModeledEntity;
 import com.ticxo.modelengine.api.model.PivotOverride;
-import com.ticxo.modelengine.api.nms.entity.wrapper.TrackedEntity;
 import com.ticxo.modelengine.api.model.PivotOverrideRegistry;
-import com.ticxo.modelengine.api.model.bone.ManualAnimator;
-import com.ticxo.modelengine.api.model.bone.ModelBone;
 import com.ticxo.modelengine.api.model.render.DisplayRenderer;
 import com.ticxo.modelengine.api.model.render.ModelRenderer;
+import com.ticxo.modelengine.api.nms.entity.wrapper.BodyRotationController;
+import com.ticxo.modelengine.api.nms.entity.wrapper.TrackedEntity;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
@@ -25,8 +32,15 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.player.PlayerAnimationEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -35,68 +49,72 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 /**
- * Server-side accessories menu: wings, halo, kagune and the flying centipede.
+ * Server-side accessories menu & controller: Angel Wings, Divine Halo, Kaneki Kagune,
+ * and the Tokyo Ghoul Scolopendra (elytrix_centipede) coiled around neck & shoulders.
  *
- * <p>The centipede is a ModelEngine mesh that rides on the player: after the
- * model is added, its pivot entity has to be registered as a passenger of the
- * player's {@link PivotOverride}.  That single call is what makes the animal
- * follow the player at all — without it the model exists but is never moved, so
- * nothing is visible.  The registration is retried every tick, because the
- * renderer is only ready a moment after the model is added.
+ * <p>Architecture highlights for the Scolopendra:
+ * <ul>
+ *   <li>Uses an isolated {@link Dummy} base entity so its UUID and entityId never
+ *       collide with {@code WornAngelRig}'s {@code PlayerAuraAttachment(player)} —
+ *       wings, halo, kagune, and scolopendra can be toggled in any combination.</li>
+ *   <li>Rides the player's {@link PivotOverride} via passenger packet mounting for
+ *       zero rubberbanding, while {@link PlayerBodyTracker} locks rotation strictly
+ *       to the player's torso {@code yBodyRot} (zero camera pitch tilt, zero turn lag).</li>
+ *   <li>Plays the blueprint's native multithreaded {@code "idle"} keyframe animation
+ *       (14 undulating tergites + 24 metachronal scurrying legs + snapping venomous
+ *       fangs + 2-stage whip antennae + scissoring tail cerci), dynamically scaling
+ *       animation speed with movement speed.</li>
+ * </ul>
  */
 public final class AccessoryController implements CommandExecutor, Listener {
     static final NamespacedKey BACK = new NamespacedKey("elytrixaccessories", "back");
     static final NamespacedKey HALO = new NamespacedKey("elytrixaccessories", "halo");
-    /** Head slot: only "halo" lives here.  HALO is kept as the legacy spelling. */
     static final NamespacedKey HEAD = new NamespacedKey("elytrixaccessories", "head");
-    /** Pet slot: "centipede" or "" (nothing).  The animal flies above the head. */
     static final NamespacedKey PET = new NamespacedKey("elytrixaccessories", "pet");
     static final String PET_CHOICE = "centipede";
-    /** Blueprint of the flying centipede. */
     static final String CENTIPEDE_BLUEPRINT = "elytrix_centipede";
-    /** Donation rank that is allowed to wear the accessories, besides the staff. */
+    static final String CENTIPEDE_ANIM = "idle";
     static final String MEDIA_GROUP = "media";
     static final String USE_PERMISSION = "elytrixaccessories.use";
+    static final int VIEW_RANGE = 96;
+    static final long RE_PAIR_TICKS = 100;
+
     private static boolean mediaGranted;
     private static ElytrixFreakModelPlugin host;
     private static final java.util.Map<java.util.UUID, Pet> PETS = new java.util.HashMap<>();
-    /** Players whose pet bones already carry the crawl animator. */
-    private static final java.util.Set<java.util.UUID> PET_ANIMATED = new java.util.HashSet<>();
-    /** Bones of the centipede blueprint that carry the crawl wave. */
-    static final int PET_BONES = 11;
-    /** Tracking range, in blocks: 96 is the value the working wings rig uses. */
-    static final int VIEW_RANGE = 96;
-    /** Ticks the model stays in the wearer's tracking set before it is refreshed. */
-    static final long RE_PAIR_TICKS = 100;
-    /** Advances once per server tick; used for the refresh timer. */
+    private static final java.util.Map<java.util.UUID, PlayerBodyTracker> TRACKERS = new java.util.HashMap<>();
+    private static final java.util.Set<String> REPORTED = new java.util.HashSet<>();
     static long petTicks;
-    /** Shared clock of the crawl wave, advanced once per server tick. */
-    static double crawlPhase;
-    private AccessoryController() {}
     private static FreakModelSpec cachedTentacles;
+    private static boolean modelsLogged;
 
-    /** One live pet: the model, the pivot it must ride, and whether that worked. */
+    private AccessoryController() {}
+
+    /** Live neck/shoulder scolopendra bound to one player. */
     private static final class Pet {
+        final Dummy<Player> dummy;
+        final ModeledEntity entity;
         final ActiveModel model;
         final PivotOverride pivot;
+        IAnimationProperty animProperty;
+        boolean statesCleared;
         boolean attached;
-        /** The wearer is in the model's tracking set and culling is switched off. */
+        int attachedPivotId = -1;
         boolean ownerSees;
         long pairedAt;
-        /** One automatic rebuild per pet if the pivot stops following the player. */
         boolean rescued;
         int lostTicks;
-        /** The ready line is written once per wearer, not every tick. */
-        boolean loggedBones;
-        Pet(ActiveModel model, PivotOverride pivot) {
+        boolean loggedReady;
+
+        Pet(Dummy<Player> dummy, ModeledEntity entity, ActiveModel model, PivotOverride pivot) {
+            this.dummy = dummy;
+            this.entity = entity;
             this.model = model;
             this.pivot = pivot;
         }
     }
 
     public static void install(ElytrixFreakModelPlugin plugin) {
-        // Никогда не бросаем исключение из onEnable: если оно улетит, ядро выключит
-        // весь ElytrixFreakModel, и вместе с меню умрут крылья, нимб и кагуне.
         try {
             AccessoryController controller = new AccessoryController();
             host = plugin;
@@ -107,45 +125,29 @@ public final class AccessoryController implements CommandExecutor, Listener {
                 command.setExecutor(controller);
             }
             Bukkit.getPluginManager().registerEvents(controller, plugin);
-            // Питомец живёт отдельно от рига крыльев: свой такт, чтобы его можно
-            // было надеть и снять, даже когда на спине и на голове ничего нет.
-            Bukkit.getScheduler().runTaskTimer(plugin, AccessoryController::tickAll, 40L, 5L);
-            // Every tick only for the crawl wave and the pivot attachment retry.
-            Bukkit.getScheduler().runTaskTimer(plugin, AccessoryController::animatePets, 5L, 1L);
+            Bukkit.getScheduler().runTaskTimer(plugin, AccessoryController::tickAll, 20L, 5L);
+            Bukkit.getScheduler().runTaskTimer(plugin, AccessoryController::animatePets, 2L, 1L);
             grantDonationAccess();
         } catch (Throwable failure) {
             plugin.getLogger().warning("[Аксессуары] меню не подключилось: " + failure);
         }
     }
 
-    /**
-     * Donators of the «media» rank must be able to take the accessories, so the
-     * node is written into LuckPerms once at start-up instead of asking the owner
-     * to type the command.  Idempotent, and silently skipped without LuckPerms.
-     */
     private static void grantDonationAccess() {
         if (mediaGranted) return;
         try {
             if (!Bukkit.getPluginManager().isPluginEnabled("LuckPerms")) return;
-            // If LuckPerms is still enabling, its command does not exist yet and the
-            // dispatch answers false: keep the flag down so the next menu open retries.
             if (!Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
                 "lp group " + MEDIA_GROUP + " permission set " + USE_PERMISSION + " true")) return;
             mediaGranted = true;
         } catch (Throwable ignored) {
-            // no LuckPerms / different core API: the node can still be set by hand
         }
     }
 
-    /** Staff, or the donation rank (the permission that {@link #grantDonationAccess} sets). */
     static boolean allowed(Player player) {
         return player.hasPermission("elytrixaccessories.admin") || player.hasPermission(USE_PERMISSION);
     }
 
-    /** Accessories already reported, so a broken model logs once and not every tick. */
-    private static final java.util.Set<String> REPORTED = new java.util.HashSet<>();
-
-    /** Logs a broken accessory once per start-up, with the real cause for the owner. */
     static void reportOnce(String what, Throwable failure) {
         if (!REPORTED.add(what)) return;
         try {
@@ -153,7 +155,6 @@ public final class AccessoryController implements CommandExecutor, Listener {
                 host.getLogger().warning("[Аксессуары] " + what + " не работает: " + failure);
             }
         } catch (Throwable ignored) {
-            // logging must never throw on top of the original failure
         }
     }
 
@@ -167,15 +168,12 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (v.isEmpty()) data.remove(k); else data.set(k, PersistentDataType.STRING, v);
     }
 
-    /** What sits on the head right now: "halo" or "" (nothing). */
     static String headChoice(Player player) {
         String choice = get(player, HEAD);
         if (choice.isEmpty()) choice = get(player, HALO);
-        // v23-v26 stored "mask"/"eyepatch" here; that accessory is gone for good
         return choice.equals("halo") ? choice : "";
     }
 
-    /** Only the halo goes through the wing rig. */
     public static FreakModelSpec halo(ElytrixFreakModelPlugin plugin, Player player) {
         if (!allowed(player)) return null;
         return headChoice(player).equals("halo") ? plugin.findModel("angel_halo") : null;
@@ -189,12 +187,6 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return null;
     }
 
-    /**
-     * The kagune has its own spec instead of a copy of the wings one. The worn
-     * rig only reads the blueprint id, the scale and the interpolation, so an
-     * explicit accessory spec keeps the tentacles from inheriting numbers that
-     * were tuned for feathers (and from silently picking up a future wings tweak).
-     */
     static FreakModelSpec kaneki(ElytrixFreakModelPlugin plugin) {
         FreakModelSpec configured = plugin.findModel("elytrix_kaneki_tentacles");
         if (configured != null) return configured;
@@ -208,106 +200,75 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return cachedTentacles;
     }
 
-    /** True when this player should be wearing the kagune. */
     public static boolean kanekiSelected(Player player) {
         return allowed(player) && get(player, BACK).equals("kaneki");
     }
 
-    // ------------------------------------------------------------------ centipede
+    // ------------------------------------------------------------------ scolopendra
 
-    /** True when this player should be followed by the centipede. */
     public static boolean centipedeSelected(Player player) {
-        return allowed(player) && get(player, PET).equals(PET_CHOICE);
+        return player != null
+            && player.isOnline()
+            && !player.isDead()
+            && player.getGameMode() != GameMode.SPECTATOR
+            && allowed(player)
+            && get(player, PET).equals(PET_CHOICE);
     }
 
-    /** Test hook: is the centipede model alive for this player right now? */
     static boolean wearingCentipede(Player player) {
         Pet pet = PETS.get(player.getUniqueId());
-        return pet != null && !pet.model.isDestroyed();
+        return pet != null && !pet.model.isDestroyed() && !pet.entity.isDestroyed();
     }
 
-    /** Test hook: did the model's pivot get registered as a passenger of the player? */
     static boolean centipedeAttached(Player player) {
         Pet pet = PETS.get(player.getUniqueId());
         return pet != null && pet.attached;
     }
 
-    /** Test hook: the angles the crawl animator asks for at a given phase. */
-    static float[] crawlAngles(int index, boolean head, boolean root, double phase) {
-        double p = phase - index * 0.62D;
-        if (root) return new float[] {0.0F, (float) (26.0D * Math.sin(phase * 0.17D)), 0.0F};
-        if (head) return new float[] {(float) (7.0D * Math.sin(phase * 0.80D + 1.0D)),
-            (float) (18.0D * Math.sin(phase * 0.55D)), 0.0F};
-        return new float[] {(float) (4.0D * Math.sin(p * 0.5D)),
-            (float) (15.0D * Math.sin(p)), (float) (5.0D * Math.sin(p + 1.1D))};
+    static boolean centipedeAnimating(Player player) {
+        Pet pet = PETS.get(player.getUniqueId());
+        if (pet == null || pet.model.isDestroyed()) return false;
+        AnimationHandler handler = pet.model.getAnimationHandler();
+        return handler != null && handler.isPlayingAnimation(CENTIPEDE_ANIM);
     }
 
-    /** One bone of the animal: the head looks around, the body carries the wave. */
-    private static final class Crawl implements ManualAnimator {
-        private final int index;
-        private final boolean head;
-        private final boolean root;
-        Crawl(int index, boolean head, boolean root) {
-            this.index = index;
-            this.head = head;
-            this.root = root;
-        }
-        @Override public boolean applyBoneDefaultLocal() {
-            return true;                       // keep the pivot the blueprint asks for
-        }
-        @Override public void animate(ModelBone bone) {
-            float[] angles = crawlAngles(index, head, root, crawlPhase);
-            float pitch = angles[0], yaw = angles[1], roll = angles[2];
-            bone.getLocalTransform().mutateSafe(transform ->
-                transform.mutateLeftEuler(vector -> vector.set(pitch, yaw, roll)));
-        }
+    private static PlayerBodyTracker trackerFor(Player player) {
+        return TRACKERS.computeIfAbsent(player.getUniqueId(), uuid -> {
+            PlayerBodyTracker t = new PlayerBodyTracker();
+            t.resetToPlayer(player);
+            return t;
+        });
     }
 
-    /**
-     * Makes the wearer actually receive their own model, and stops ModelEngine
-     * from culling it away.
-     *
-     * <p>Two things were missing for the centipede, and both are the reason it
-     * existed on the server yet was never on the player's screen:
-     * <ul>
-     *   <li>ModelEngine sends a model to the players that <em>track</em> the base
-     *       entity - and a player never tracks themself. The wearer therefore saw
-     *       nothing while everyone around did. The wings rig fixes this with
-     *       {@code TrackedEntity.addForcedPairing(player)}; the pet needs the
-     *       same call.</li>
-     *   <li>By default the engine drops a model that sits too far above or
-     *       behind its base (vertical/back/blocked cull). A bug hovering two
-     *       blocks above the head is exactly what that culling throws away, so
-     *       all three are switched off.</li>
-     * </ul>
-     */
-    static boolean ensureOwnerSees(Player player, ActiveModel model) {
-        if (player == null || model == null || model.isDestroyed()) return false;
-        ModeledEntity entity;
-        try {
-            entity = model.getModeledEntity();
-        } catch (Throwable failure) {
-            reportOnce("видимость", failure);
-            return false;
-        }
+    static boolean ensureOwnerSees(Player player, Pet pet) {
+        if (player == null || pet == null || pet.model == null || pet.model.isDestroyed()) return false;
+        ModeledEntity entity = pet.entity;
         if (entity == null || entity.isDestroyed()) return false;
         try {
+            if (pet.dummy != null) {
+                pet.dummy.setDetectingPlayers(true);
+                pet.dummy.setRenderRadius(VIEW_RANGE);
+                pet.dummy.setForceViewing(player, true);
+            }
+            AnimationLODHandler lod = entity.getAnimationLodHandler();
+            if (lod != null) lod.setEnabled(Boolean.FALSE);
             BaseEntity base = entity.getBase();
             if (base == null) return false;
             IEntityData data = base.getData();
-            if (data == null) return false;
-            data.setVerticalCull(false);          // a flying pet is above the head
-            data.setBackCull(false);              // and behind the player's back
-            data.setBlockedCull(false);           // walls must not hide it either
-            data.setCullInterval(1);
-            data.setVerticalCullType(CullType.NO_CULL);
-            data.setBackCullType(CullType.NO_CULL);
-            data.setBlockedCullType(CullType.NO_CULL);
-            if (data instanceof BukkitEntityData) {
-                TrackedEntity tracked = ((BukkitEntityData) data).getTracked();
-                if (tracked != null) {
-                    tracked.addForcedPairing(player.getUniqueId());
-                    if (tracked.getBaseRange() < VIEW_RANGE) tracked.setBaseRange(VIEW_RANGE);
+            if (data != null) {
+                data.setVerticalCull(false);
+                data.setBackCull(false);
+                data.setBlockedCull(false);
+                data.setCullInterval(1);
+                data.setVerticalCullType(CullType.NO_CULL);
+                data.setBackCullType(CullType.NO_CULL);
+                data.setBlockedCullType(CullType.NO_CULL);
+                if (data instanceof BukkitEntityData) {
+                    TrackedEntity tracked = ((BukkitEntityData) data).getTracked();
+                    if (tracked != null) {
+                        tracked.addForcedPairing(player.getUniqueId());
+                        if (tracked.getBaseRange() < VIEW_RANGE) tracked.setBaseRange(VIEW_RANGE);
+                    }
                 }
             }
             return true;
@@ -317,118 +278,163 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
     }
 
-    /**
-     * Registers the model's pivot entity as a passenger of the player's pivot
-     * override.  This is the step that actually makes a ModelEngine model ride on
-     * an entity: without it the model is created, its bones exist, and nothing is
-     * ever visible because the pivot never moves with the player.
-     */
-    static boolean attachPivotToPlayer(ActiveModel model, PivotOverride pivot) {
-        if (model == null || model.isDestroyed() || pivot == null) return false;
+    static int resolvePivotEntityId(ActiveModel model) {
+        if (model == null || model.isDestroyed()) return -1;
         ModelRenderer renderer;
         try {
             renderer = model.getModelRenderer();
         } catch (Throwable failure) {
             reportOnce("питомец", failure);
-            return false;
+            return -1;
         }
-        if (!(renderer instanceof DisplayRenderer)) return false;
+        if (!(renderer instanceof DisplayRenderer)) return -1;
         DisplayRenderer display = (DisplayRenderer) renderer;
-        if (!display.isInitialized()) return false;      // ready a moment after addModel
+        if (!display.isInitialized()) return -1;
         DisplayRenderer.Pivot pivotEntity = display.getPivot();
-        if (pivotEntity == null) return false;
-        int id = pivotEntity.getId();
-        if (!pivot.getPassengers().contains(id)) pivot.addPassenger(id);
-        pivot.getPassengers().markDirty();               // resends the passenger packet
+        return pivotEntity == null ? -1 : pivotEntity.getId();
+    }
+
+    static boolean attachPivotToPlayer(Pet pet) {
+        if (pet == null || pet.pivot == null) return false;
+        int id = resolvePivotEntityId(pet.model);
+        if (id < 0) return false;
+        pet.attachedPivotId = id;
+        if (!pet.pivot.getPassengers().contains(id)) pet.pivot.addPassenger(id);
+        pet.pivot.getPassengers().markDirty();
         return true;
     }
 
-    /** Spawns or removes the pet and keeps the crawl animators + pivot attachment. */
+    private static void detachPivotFromPlayer(Pet pet) {
+        if (pet == null || pet.pivot == null) return;
+        try {
+            int id = pet.attachedPivotId >= 0 ? pet.attachedPivotId : resolvePivotEntityId(pet.model);
+            if (id >= 0) {
+                pet.pivot.removePassenger(id);
+                if (pet.pivot.getPassengers() != null) pet.pivot.getPassengers().markDirty();
+            }
+        } catch (Throwable ignored) {
+        }
+    }
+
+    private static void syncPetTransform(Player player, Pet pet, float bodyYaw) {
+        if (player == null || pet == null || pet.entity == null || pet.entity.isDestroyed()) return;
+        float safeYaw = Float.isFinite(bodyYaw) ? bodyYaw : 0.0F;
+        try {
+            Location loc = player.getLocation();
+            if (pet.dummy != null) {
+                if (loc != null) pet.dummy.syncLocation(loc);
+                pet.dummy.setYBodyRot(safeYaw);
+                pet.dummy.setYHeadRot(safeYaw);
+                pet.dummy.setXHeadRot(0.0F);
+                BodyRotationController rot = pet.dummy.getBodyRotationController();
+                if (rot != null) {
+                    rot.setYBodyRot(safeYaw);
+                    rot.setYHeadRot(safeYaw);
+                    rot.setXHeadRot(0.0F);
+                }
+            }
+            PlayerAuraAttachment.syncModeledEntityImmediately(pet.entity, safeYaw);
+        } catch (Throwable failure) {
+            reportOnce("поворот сколопендры", failure);
+        }
+    }
+
+    private static void ensureLivingAnimation(Pet pet, double horizSpeed) {
+        if (pet == null || pet.model == null || pet.model.isDestroyed()) return;
+        AnimationHandler handler;
+        try {
+            handler = pet.model.getAnimationHandler();
+        } catch (Throwable failure) {
+            reportOnce("анимация сколопендры", failure);
+            return;
+        }
+        if (handler == null) return;
+        if (!pet.statesCleared) {
+            pet.statesCleared = true;
+            for (ModelState state : ModelState.values()) {
+                handler.setDefaultProperty(new AnimationHandler.DefaultProperty(state, "", 0.0D, 0.0D, 1.0D));
+            }
+        }
+        double targetSpeed = 1.0D + Math.min(0.75D, Math.max(0.0D, horizSpeed) * 2.2D);
+        if (!handler.isPlayingAnimation(CENTIPEDE_ANIM) || pet.animProperty == null) {
+            IAnimationProperty prop = handler.playAnimation(CENTIPEDE_ANIM, 0.0D, 0.0D, targetSpeed, true);
+            if (prop != null) {
+                prop.setForceLoopMode(BlueprintAnimation.LoopMode.LOOP);
+                prop.setSpeed(targetSpeed);
+            }
+            pet.animProperty = prop;
+        } else {
+            pet.animProperty.setSpeed(targetSpeed);
+        }
+    }
+
     static void syncPet(Player player) {
         if (player == null || !player.isOnline()) return;
         boolean want = centipedeSelected(player);
         Pet pet = PETS.get(player.getUniqueId());
-        if (want && (pet == null || pet.model.isDestroyed())) {
+        if (want && (pet == null || pet.model.isDestroyed() || pet.entity.isDestroyed())) {
+            if (pet != null) removePet(player.getUniqueId(), pet);
             pet = spawnPet(player);
             if (pet != null) PETS.put(player.getUniqueId(), pet);
         } else if (!want && pet != null) {
-            removePet(player, pet);
+            removePet(player.getUniqueId(), pet);
             return;
         }
         if (!want || pet == null) return;
         rescuesIfLost(pet, player);
         if (!pet.ownerSees || petTicks - pet.pairedAt > RE_PAIR_TICKS) {
-            pet.ownerSees = ensureOwnerSees(player, pet.model);
+            pet.ownerSees = ensureOwnerSees(player, pet);
             pet.pairedAt = petTicks;
         }
-        if (!pet.attached) pet.attached = attachPivotToPlayer(pet.model, pet.pivot);
-        int bound = attachCrawl(player.getUniqueId(), pet.model);
-        logPetReady(pet, bound, pivotDistance(pet.model, player));
+        if (!pet.attached) pet.attached = attachPivotToPlayer(pet);
+        PlayerBodyTracker tracker = trackerFor(player);
+        syncPetTransform(player, pet, tracker.getBodyYaw());
+        ensureLivingAnimation(pet, tracker.getHorizSpeedBlocksPerTick());
+        logPetReady(pet, pivotDistance(pet.model, player));
     }
 
-    /** Called every tick: moves the wave, attaches the pivot, rescues a dead model. */
     static void animatePets() {
-        crawlPhase += 0.27D;
         petTicks++;
         if (PETS.isEmpty()) return;
         for (java.util.Map.Entry<java.util.UUID, Pet> entry : new java.util.ArrayList<>(PETS.entrySet())) {
+            java.util.UUID uuid = entry.getKey();
             Pet pet = entry.getValue();
             try {
-                if (pet.model.isDestroyed()) {
-                    PETS.remove(entry.getKey());
-                    PET_ANIMATED.remove(entry.getKey());
+                if (pet.model.isDestroyed() || pet.entity.isDestroyed()) {
+                    removePet(uuid, pet);
                     continue;
                 }
-                if (!pet.attached) pet.attached = attachPivotToPlayer(pet.model, pet.pivot);
-                Player wearer = Bukkit.getPlayer(entry.getKey());
-                logPetReady(pet, attachCrawl(entry.getKey(), pet.model),
-                            wearer == null ? -1.0D : pivotDistance(pet.model, wearer));
+                Player wearer = Bukkit.getPlayer(uuid);
+                if (wearer == null || !wearer.isOnline() || wearer.isDead()
+                        || wearer.getGameMode() == GameMode.SPECTATOR) {
+                    removePet(uuid, pet);
+                    continue;
+                }
+                if (!pet.attached) pet.attached = attachPivotToPlayer(pet);
+                PlayerBodyTracker tracker = trackerFor(wearer);
+                tracker.stepServerTick(wearer);
+                syncPetTransform(wearer, pet, tracker.getBodyYaw());
+                ensureLivingAnimation(pet, tracker.getHorizSpeedBlocksPerTick());
+                logPetReady(pet, pivotDistance(pet.model, wearer));
             } catch (Throwable failure) {
                 reportOnce("питомец", failure);
             }
         }
     }
 
-    /** Hooks the crawl wave onto every bone; returns how many of the 11 were found. */
-    private static int attachCrawl(java.util.UUID id, ActiveModel model) {
-        if (model == null || model.isDestroyed()) return 0;
-        if (PET_ANIMATED.contains(id)) return PET_BONES;
-        int bound = hookBone(model, "body_root", new Crawl(0, false, true)) ? 1 : 0;
-        bound += hookBone(model, "head", new Crawl(0, true, false)) ? 1 : 0;
-        for (int index = 1; index <= 9; index++) {
-            bound += hookBone(model, "c" + index, new Crawl(index, false, false)) ? 1 : 0;
-        }
-        if (bound == PET_BONES) PET_ANIMATED.add(id);
-        return bound;
-    }
-
-    /**
-     * Writes one line per wearer once the animal is complete, so the log alone
-     * answers «видно её или нет»: bones bound, and whether the pivot rides the
-     * player.  A model with unbound bones still shows, but it will not crawl.
-     */
-    private static void logPetReady(Pet pet, int bound, double pivotDistance) {
-        if (pet.loggedBones || bound < PET_BONES) return;
-        pet.loggedBones = true;
+    private static void logPetReady(Pet pet, double pivotDistance) {
+        if (pet.loggedReady || !pet.attached) return;
+        pet.loggedReady = true;
         if (host == null) return;
-        host.getLogger().info("[Аксессуары] сороконожка: кости " + bound + "/" + PET_BONES
-            + ", " + (pet.attached ? "модель едет на игроке"
-                                   : "pivot пока не прикрепился, повторяю каждый тик")
+        host.getLogger().info("[Аксессуары] сколопендра: живая анимация '" + CENTIPEDE_ANIM
+            + "', модель привязана к шее и плечам игрока"
             + ", " + (pet.ownerSees ? "владелец в трекинге, куллинг выключен"
-                                    : "владелец НЕ в трекинге — модель ему не отправлена")
-            + (pivotDistance < 0.0D ? ", позиция pivot неизвестна"
+                                    : "ожидание трекинга владельца")
+            + (pivotDistance < 0.0D ? ""
                                     : String.format(java.util.Locale.ROOT,
-                                        ", pivot в %.2f блока от игрока", pivotDistance)));
+                                        ", pivot в %.2f блока", pivotDistance)));
     }
 
-    /**
-     * Rebuilds the model once if its pivot has stopped following the player.
-     *
-     * <p>A live model whose pivot froze (renderer re-initialised under it, chunk
-     * reload, teleport across worlds) stays on the server forever and is never
-     * seen again. One silent respawn turns that into a short blink instead of a
-     * permanent "нету".
-     */
     private static void rescuesIfLost(Pet pet, Player player) {
         if (pet.rescued || !pet.attached) return;
         double distance = pivotDistance(pet.model, player);
@@ -439,15 +445,13 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (++pet.lostTicks < 3) return;
         pet.rescued = true;
         try {
-            removePet(player, pet);
+            removePet(player.getUniqueId(), pet);
         } catch (Throwable ignored) {
-            // the next sync spawns a fresh one anyway
         }
-        if (host != null) host.getLogger().warning("[Аксессуары] сороконожка отстала от игрока на "
+        if (host != null) host.getLogger().warning("[Аксессуары] сколопендра отстала от игрока на "
             + String.format(java.util.Locale.ROOT, "%.1f", distance) + " блока — пересоздал модель");
     }
 
-    /** Distance between the model's pivot and the player, in blocks (diagnostics). */
     static double pivotDistance(ActiveModel model, Player player) {
         try {
             ModelRenderer renderer = model.getModelRenderer();
@@ -466,82 +470,99 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
     }
 
-    private static boolean hookBone(ActiveModel model, String boneId, ManualAnimator animator) {
-        try {
-            java.util.Optional<ModelBone> bone = model.getBone(boneId);
-            if (bone == null || bone.isEmpty()) return false;
-            bone.get().setManualAnimator(animator);
-            return true;
-        } catch (Throwable ignored) {
-            return false;
-        }
-    }
-
     private static Pet spawnPet(Player player) {
         ModelBlueprint blueprint = ModelEngineAPI.getBlueprint(CENTIPEDE_BLUEPRINT);
         if (blueprint == null) return null;
-        ModeledEntity entity = ModelEngineAPI.getOrCreateModeledEntity(player);
+
+        Dummy<Player> dummy = new Dummy<>(player);
+        Location loc = player.getLocation();
+        if (loc != null) dummy.syncLocation(loc);
+        dummy.setDetectingPlayers(true);
+        dummy.setRenderRadius(VIEW_RANGE);
+        dummy.setForceViewing(player, true);
+
+        PlayerBodyTracker tracker = trackerFor(player);
+        float bodyYaw = tracker.getBodyYaw();
+        dummy.setYBodyRot(bodyYaw);
+        dummy.setYHeadRot(bodyYaw);
+        dummy.setXHeadRot(0.0F);
+        BodyRotationController rot = dummy.getBodyRotationController();
+        if (rot != null) {
+            rot.setYBodyRot(bodyYaw);
+            rot.setYHeadRot(bodyYaw);
+            rot.setXHeadRot(0.0F);
+        }
+
+        ModeledEntity entity = ModelEngineAPI.createModeledEntity(dummy);
+        if (entity == null) {
+            // Fallback for mock harnesses that only implement getOrCreateModeledEntity(Entity)
+            entity = ModelEngineAPI.getOrCreateModeledEntity(player);
+        }
         if (entity == null || entity.isDestroyed()) return null;
+        entity.setBaseEntityVisible(false);
+        entity.setModelRotationLocked(false);
+        AnimationLODHandler lod = entity.getAnimationLodHandler();
+        if (lod != null) lod.setEnabled(Boolean.FALSE);
+
         ActiveModel model = ModelEngineAPI.createActiveModel(blueprint);
         if (model == null) return null;
-        // Same numbers the angel rig uses, plus enough light for the animal to be
-        // visible at night: it would otherwise be a black silhouette after dusk.
         model.setBlockLight(15);
         model.setSkyLight(15);
-        // The blueprint is a real bug: 0.14 blocks thick and one block long. At
-        // first person that is a line above the head, so the pet is scaled up to
-        // read as an animal (~0.2 x 1.5 blocks) without becoming a monument.
-        model.setScale(1.5D);
+        model.setScale(1.0D);
         model.setCanHurt(false);
         model.setShadowVisible(false);
         model.setHitboxVisible(false);
         model.setLockPitch(true);
         model.setLockYaw(true);
-        model.setViewRange(3.0F);
+        model.setViewRange(2.5F);
+
         PivotOverrideRegistry registry = ModelEngineAPI.getPivotOverrideRegistry();
         PivotOverride pivot = registry == null ? null : registry.getOrCreate(player);
         if (pivot != null) model.setPivotOverride(pivot);
-        entity.addModel(model, false);        // same as the halo/wings rig: not a passenger model
-        // follow the player's facing instead of standing still towards world north
-        model.setModelRotationLocked(false);
-        Pet pet = new Pet(model, pivot);
-        pet.attached = attachPivotToPlayer(model, pivot);
+
+        entity.addModel(model, false);
+        model.setModelRotationLocked(Boolean.FALSE);
+        PlayerAuraAttachment.syncModeledEntityImmediately(entity, bodyYaw);
+
+        Pet pet = new Pet(dummy, entity, model, pivot);
+        pet.ownerSees = ensureOwnerSees(player, pet);
+        pet.pairedAt = petTicks;
+        pet.attached = attachPivotToPlayer(pet);
+        ensureLivingAnimation(pet, tracker.getHorizSpeedBlocksPerTick());
         return pet;
     }
 
-    private static void removePet(Player player, Pet pet) {
-        PETS.remove(player.getUniqueId());
-        PET_ANIMATED.remove(player.getUniqueId());
-        try {
-            ModeledEntity entity = ModelEngineAPI.getModeledEntity(player);
-            if (entity != null && !entity.isDestroyed()) entity.removeModel(CENTIPEDE_BLUEPRINT);
-        } catch (Throwable ignored) {
-            // destroyed below anyway
-        }
-        try {
-            if (!pet.model.isDestroyed()) pet.model.destroy();
-            if (pet.pivot != null && !pet.attached) pet.pivot.getPassengers().markDirty();
-        } catch (Throwable ignored) {
-            // already gone
-        }
-    }
-
-    /** Forgets a pet of a player who logged out: the model must not leak. */
-    static void releasePet(Player player) {
-        Pet pet = PETS.remove(player.getUniqueId());
-        PET_ANIMATED.remove(player.getUniqueId());
+    private static void removePet(java.util.UUID playerUuid, Pet pet) {
+        PETS.remove(playerUuid);
         if (pet == null) return;
+        detachPivotFromPlayer(pet);
+        try {
+            if (!pet.entity.isDestroyed()) pet.entity.removeModel(CENTIPEDE_BLUEPRINT);
+        } catch (Throwable ignored) {
+        }
         try {
             if (!pet.model.isDestroyed()) pet.model.destroy();
         } catch (Throwable ignored) {
-            // nothing else to do
+        }
+        try {
+            if (pet.dummy != null) {
+                pet.dummy.setRemoved(true);
+                ModelEngineAPI.removeModeledEntity(pet.dummy.getUUID());
+            }
+            if (!pet.entity.isDestroyed() && pet.dummy != null
+                    && pet.entity.getBase() == pet.dummy) {
+                pet.entity.destroy();
+            }
+        } catch (Throwable ignored) {
         }
     }
 
-    /** True once the start-up model report was written to the log. */
-    private static boolean modelsLogged;
+    static void releasePet(Player player) {
+        if (player == null) return;
+        Pet pet = PETS.get(player.getUniqueId());
+        if (pet != null) removePet(player.getUniqueId(), pet);
+    }
 
-    /** Names every accessory blueprint ModelEngine actually loaded (once, at start-up). */
     static void logLoadedModels() {
         if (modelsLogged || host == null) return;
         modelsLogged = true;
@@ -555,17 +576,15 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
         try {
             if (missing.length() == 0) {
-                host.getLogger().info("[Аксессуары] ModelEngine загрузил все модели: крылья, нимб, кагуне, сороконожка");
+                host.getLogger().info("[Аксессуары] ModelEngine загрузил все модели: крылья, нимб, кагуне, сколопендра");
             } else {
                 host.getLogger().warning("[Аксессуары] ModelEngine не загрузил: " + missing
                     + " — проверь plugins/ModelEngine/blueprints и лог ModelEngine");
             }
         } catch (Throwable ignored) {
-            // diagnostics must never break the game loop
         }
     }
 
-    /** Keeps every pet in sync; called every five ticks from install(). */
     static void tickAll() {
         try {
             logLoadedModels();
@@ -577,8 +596,61 @@ public final class AccessoryController implements CommandExecutor, Listener {
                 }
             }
         } catch (Throwable ignored) {
-            // a broken model must never take the server tick down with it
         }
+    }
+
+    // ------------------------------------------------------------------ player lifecycle events
+
+    @EventHandler public void onMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+        if (player == null) return;
+        Pet pet = PETS.get(player.getUniqueId());
+        if (pet == null || pet.model.isDestroyed()) return;
+        Location to = event.getTo();
+        if (to == null) return;
+        PlayerBodyTracker tracker = trackerFor(player);
+        tracker.stepFromPacket(player, to);
+        syncPetTransform(player, pet, tracker.getBodyYaw());
+    }
+
+    @EventHandler public void onTeleport(PlayerTeleportEvent event) {
+        Player player = event.getPlayer();
+        if (player == null) return;
+        Pet pet = PETS.get(player.getUniqueId());
+        if (pet == null) return;
+        Location to = event.getTo();
+        if (to != null) {
+            PlayerBodyTracker tracker = trackerFor(player);
+            tracker.resetToYaw(to.getYaw());
+            syncPetTransform(player, pet, tracker.getBodyYaw());
+        }
+        pet.attached = false;
+    }
+
+    @EventHandler public void onArmSwing(PlayerAnimationEvent event) {
+        Player player = event.getPlayer();
+        if (player == null) return;
+        PlayerBodyTracker tracker = TRACKERS.get(player.getUniqueId());
+        if (tracker != null) tracker.notifyArmSwing();
+    }
+
+    @EventHandler public void onQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        if (player == null) return;
+        releasePet(player);
+        TRACKERS.remove(player.getUniqueId());
+    }
+
+    @EventHandler public void onDeath(PlayerDeathEvent event) {
+        releasePet(event.getEntity());
+    }
+
+    @EventHandler public void onRespawn(PlayerRespawnEvent event) {
+        releasePet(event.getPlayer());
+    }
+
+    @EventHandler public void onWorldChange(PlayerChangedWorldEvent event) {
+        releasePet(event.getPlayer());
     }
 
     // ------------------------------------------------------------------ menu
@@ -608,17 +680,12 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return out;
     }
 
-    /** Rewrites the whole menu, so a click can flip a button and show the new state. */
     static void openMenu(Player player) {
         Holder holder = new Holder();
-        // The same frame, slot overlay and spacing glyphs as DeluxeMenus /shop.
-        // ꏠ is the dedicated "АКСЕССУАРЫ" title added to the resource pack.
         Inventory menu = Bukkit.createInventory(holder, 54, "§fꈁꀀꈂꌀꈂꀁ§fꈃꏠ");
         holder.inventory = menu;
         boolean allowed = allowed(player);
         if (allowed) {
-            // An accessory failure must never take the whole menu down: that is
-            // exactly how v3.6.0 answered /аксессуары with a command exception.
             try {
                 syncPet(player);
             } catch (Throwable failure) {
@@ -640,22 +707,20 @@ public final class AccessoryController implements CommandExecutor, Listener {
         menu.setItem(14, item(Material.RED_DYE, "§x§F§A§D§8§F§C§lЩупальца Канэки", "kaneki_tentacles_icon",
             kagune ? lore(chosen, "§7Анимированный аксессуар для спины", "§7Нажми ещё раз — снять")
                    : lore(hint, "§7Анимированный аксессуар для спины")));
-        menu.setItem(15, item(Material.SPIDER_EYE, "§x§F§A§D§8§F§C§lСороконожка", null,
-            bug ? lore(chosen, "§7Живая сороконожка над головой", "§7Ползает и покачивается", "§7Нажми ещё раз — снять")
-                : lore(hint, "§7Живая сороконожка над головой", "§7Ползает и покачивается")));
-        // 49 — нижний ряд, середина: кнопка «Снять всё» в самом низу меню
+        menu.setItem(15, item(Material.SPIDER_EYE, "§x§F§A§D§8§F§C§lСколопендра Гуля", "centipede_icon",
+            bug ? lore(chosen, "§7Обвивает шею и плечи", "§7Живая волна тела, лап, усиков и жвал", "§7Нажми ещё раз — снять")
+                : lore(hint, "§7Обвивает шею и плечи", "§7Живая волна тела, лап, усиков и жвал")));
         menu.setItem(49, item(Material.BARRIER, "§cСнять всё", null,
-            lore("§dНажми, чтобы снять", "§7Убирает и спину, и голову")));
+            lore("§dНажми, чтобы снять", "§7Убирает все надетые аксессуары")));
         player.openInventory(menu);
     }
 
     @Override public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) { sender.sendMessage("Только для игроков."); return true; }
-        grantDonationAccess();          // LuckPerms is certainly up by the time a player opens this
+        grantDonationAccess();
         try {
             openMenu(player);
         } catch (Throwable failure) {
-            // the command must answer, never explode in the server console
             reportOnce("меню", failure);
             player.sendMessage("§cМеню аксессуаров не открылось, причина записана в лог.");
         }
@@ -664,7 +729,6 @@ public final class AccessoryController implements CommandExecutor, Listener {
 
     private static void setHead(Player player, String choice) {
         set(player, HEAD, choice);
-        // a node written by the older build must not resurrect the halo on top
         set(player, HALO, "");
     }
 
@@ -682,7 +746,6 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (blueprint != null && ModelEngineAPI.getBlueprint(blueprint) == null) {
             player.sendMessage("§cМодель ещё не загружена. Обратитесь к администрации."); return;
         }
-        // one click wears it, the same click takes it off again
         if (slot == 12) { toggleBack(player, "wings", "Крылья"); }
         else if (slot == 14) { toggleBack(player, "kaneki", "Щупальца Канэки"); }
         else if (slot == 13) { toggleHead(player, "halo", "Нимб", "надет", "снят"); }
@@ -691,7 +754,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
             set(player, BACK, ""); setHead(player, "");
             set(player, PET, "");
             Pet pet = PETS.get(player.getUniqueId());
-            if (pet != null) removePet(player, pet);
+            if (pet != null) removePet(player.getUniqueId(), pet);
             player.sendMessage("§7Все аксессуары сняты.");
         } else return;
         openMenu(player);
@@ -701,29 +764,29 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (get(player, PET).equals(PET_CHOICE)) {
             set(player, PET, "");
             Pet pet = PETS.get(player.getUniqueId());
-            if (pet != null) removePet(player, pet);
-            player.sendMessage("§7Сороконожка улетела.");
+            if (pet != null) removePet(player.getUniqueId(), pet);
+            player.sendMessage("§7Сколопендра снята.");
             return;
         }
         if (ModelEngineAPI.getBlueprint(CENTIPEDE_BLUEPRINT) == null) {
-            player.sendMessage("§cМодель сороконожки ещё не загружена. Обратитесь к администрации.");
+            player.sendMessage("§cМодель сколопендры ещё не загружена. Обратитесь к администрации.");
             return;
         }
         set(player, PET, PET_CHOICE);
         try {
             syncPet(player);
         } catch (Throwable failure) {
-            reportOnce("сороконожка", failure);
+            reportOnce("сколопендра", failure);
             set(player, PET, "");
-            player.sendMessage("§cСороконожка не приползла: " + failure.getClass().getSimpleName());
+            player.sendMessage("§cСколопендра не появилась: " + failure.getClass().getSimpleName());
             return;
         }
         if (!wearingCentipede(player)) {
             set(player, PET, "");
-            player.sendMessage("§cСороконожка не приползла: модель не загрузилась.");
+            player.sendMessage("§cСколопендра не появилась: модель не загрузилась.");
             return;
         }
-        player.sendMessage("§dСороконожка приползла.");
+        player.sendMessage("§dСколопендра обвилась вокруг шеи и плеч.");
     }
 
     private static void toggleBack(Player player, String choice, String name) {

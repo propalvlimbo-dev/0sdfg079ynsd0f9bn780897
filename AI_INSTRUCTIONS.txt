@@ -359,17 +359,19 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
 --------------------------------------------------------------------------------
 9. КАРТА АКТУАЛЬНЫХ СИСТЕМ, АКСЕССУАРОВ И ЗАЩИТЫ ИЗ LIVE VDS (`dfghjdyjk56`)
 --------------------------------------------------------------------------------
-1. `ElytrixFreakModel v3.9.0` + `/аксессуары` (`/accessories`, глиф `ꏠ`):
+1. `ElytrixFreakModel v3.10.0` + `/аксессуары` (`/accessories`, глиф `ꏠ`):
    - Поддерживает косметическое меню аксессуаров (`elytrixaccessories.admin` и
      `elytrixaccessories.use` для группы `media`), исходники и генераторы лежат в
      `tools/accessories-integration/` и `tools/accessories-model/` (подробности в `MODELS_PIPELINE.md`).
-   - Актуальные блюпринты в `plugins/ModelEngine/blueprints/`:
+   - Актуальные блюпринты в `plugins/ModelEngine/blueprints/` и RP (`SHA-1: a6b1e4b5070e7352bd11fc5ea859d1be22d7e655`):
      * `elytrix_angel_halo.bbmodel` (нимб, 161 куб, `halo_ring` + `halo_aura`)
      * `elytrix_angel_wings.bbmodel` (крылья, 9 кубов на крыло + 6 падающих перьев)
-     * `elytrix_kaneki_tentacles.bbmodel` (щупальца Кагуне Канеки, 55 костей) + `elytrix_kaneki_mask.bbmodel` / `kaneki_eyepatch_icon`
-     * `elytrix_centipede.bbmodel` (сороконожка, 11 костей `body_root`, `head`, `c1..c9` —
-       ВНИМАНИЕ: в `ModelEngine 4.1.0` парсер `RotationSolver` падает с `UnsupportedOperationException`,
-       если в новой многокостной модели есть кубы с `rotation`, поэтому детали строятся ступенчатыми кубами без поворота кубов!)
+     * `elytrix_kaneki_tentacles.bbmodel` (щупальца Кагуне Канеки, 55 костей) + `kaneki_tentacles_icon`
+     * `elytrix_centipede.bbmodel` (сколопендра канона Токийского Гуля вокруг шеи и плеч:
+       48 костей / 47 анимированных `seg_01..seg_14`, 24 лапки `leg_l/r_02..13`, голова `head`,
+       клыки `fang_l/r`, усики `ant_l1/l2/r1/r2`, церки `cercus_l/r`, 143 куба с `rotation: [0,0,0]`,
+       текстура `128x128` чёрно-багрового хитина, живая loop-анимация `'idle'` `3.2s`, иконка `centipede_icon`;
+       спавнится на изолированном `Dummy<Player>` с `PlayerBodyTracker` + `PivotOverride` + `scale = 1.0`)
      * `elytrix_priora_{black,white,pink}.bbmodel` (Лада Приора, 2 места)
 
 2. Античит, антиэксплойт и PvP-синхронизация:
