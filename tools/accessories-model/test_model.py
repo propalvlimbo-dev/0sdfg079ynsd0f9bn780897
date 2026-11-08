@@ -23,7 +23,8 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 MODEL = 'elytrix_kaneki_tentacles'
 PET = 'elytrix_centipede'
-MODELS = (MODEL, PET)
+MINI_ME = 'elytrix_mini_me'
+MODELS = (MODEL, PET, MINI_ME)
 TITLE = 'assets/reallyworld/textures/gui/title/elytrix_accessories.png'
 FONT = 'assets/minecraft/font/default.json'
 GLYPH = 'ꏠ'
@@ -410,7 +411,11 @@ class PackTests(unittest.TestCase):
                                 name == f'assets/modelengine/textures/entity/models/{m}.png'
                                 for m in MODELS)
                          or name.startswith('assets/reallyworld/')
-                         and any(ic in name for ic in ('kaneki_tentacles_icon', 'centipede_icon'))}
+                         and any(ic in name for ic in (
+                             'kaneki_tentacles_icon', 'centipede_icon', 'mini_me_icon',
+                             'content_acc_hub.png', 'content_acc_two.png', 'content_acc_one.png',
+                             'elytrix_acc_back.png', 'elytrix_acc_hats.png', 'elytrix_acc_pets.png',
+                         ))}
             self.assertEqual(generated, expected)
             for name in generated:
                 source = HERE / 'assets' / name[len('assets/'):]
@@ -514,7 +519,7 @@ class PackTests(unittest.TestCase):
     def test_menu_icon_exists(self):
         with zipfile.ZipFile(self.pack) as pack:
             names = set(pack.namelist())
-            for icon_id in ('kaneki_tentacles_icon', 'centipede_icon'):
+            for icon_id in ('kaneki_tentacles_icon', 'centipede_icon', 'mini_me_icon'):
                 item_path = f'assets/reallyworld/items/{icon_id}.json'
                 model_path = f'assets/reallyworld/models/item/freak/{icon_id}.json'
                 tex_path = f'assets/reallyworld/textures/item/freak/{icon_id}.png'
@@ -533,6 +538,7 @@ class PackTests(unittest.TestCase):
 
     def test_title_glyph_registered_once(self):
         with zipfile.ZipFile(self.pack) as pack:
+            names = set(pack.namelist())
             providers = json.loads(pack.read(FONT))['providers']
             entries = [p for p in providers if GLYPH in p.get('chars', [])]
             self.assertEqual(len(entries), 1)
@@ -540,6 +546,19 @@ class PackTests(unittest.TestCase):
             self.assertEqual(entries[0]['height'], 32)
             self.assertEqual(entries[0]['file'], 'reallyworld:gui/title/elytrix_accessories.png')
             self.assertEqual(len(pack.read(TITLE)), 286)
+            for ch, expected_file in (
+                ('ꏡ', 'reallyworld:gui/content/content_acc_hub.png'),
+                ('ꏢ', 'reallyworld:gui/content/content_acc_two.png'),
+                ('ꏣ', 'reallyworld:gui/content/content_acc_one.png'),
+                ('ꏤ', 'reallyworld:gui/title/elytrix_acc_back.png'),
+                ('ꏥ', 'reallyworld:gui/title/elytrix_acc_hats.png'),
+                ('ꏦ', 'reallyworld:gui/title/elytrix_acc_pets.png'),
+            ):
+                matched = [p for p in providers if ch in p.get('chars', [])]
+                self.assertEqual(len(matched), 1, f'provider count for {ch!r}')
+                self.assertEqual(matched[0]['file'], expected_file)
+                zp = 'assets/' + expected_file.replace(':', '/textures/')
+                self.assertIn(zp, names)
 
     def test_system_files_and_mythicmobs_untouched(self):
         with zipfile.ZipFile(self.pack) as new:
@@ -554,6 +573,72 @@ class PackTests(unittest.TestCase):
                 self.assertTrue(
                     any(n.startswith(f'assets/modelengine/models/{preserved}/') for n in new_names),
                     f'preserved ModelEngine model missing: {preserved}')
+
+
+class MiniMeBlueprintTest(unittest.TestCase):
+    """Verifies the procedural shoulder-dancing miniature skin pet (`elytrix_mini_me`)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.model = json.loads((HERE / f'{MINI_ME}.bbmodel').read_text(encoding='utf-8'))
+
+    def test_blockbench_4_10_free_and_zero_cube_rotations(self):
+        self.assertEqual(self.model['meta'], {'format_version': '4.10', 'model_format': 'free', 'box_uv': False})
+        self.assertEqual(self.model['resolution'], {'width': 16, 'height': 16})
+        self.assertEqual(len(self.model['elements']), 6)
+        for cube in self.model['elements']:
+            self.assertEqual(cube['rotation'], [0.0, 0.0, 0.0], cube['name'])
+            self.assertTrue(all(a < b for a, b in zip(cube['from'], cube['to'])))
+            for face_name, face in cube['faces'].items():
+                self.assertEqual(face['texture'], 0)
+                self.assertTrue(all(0.0 <= v <= 16.0 for v in face['uv']), (cube['name'], face_name))
+        tex_meta = self.model['textures'][0]
+        self.assertEqual((tex_meta['uv_width'], tex_meta['uv_height']), (16, 16))
+        self.assertTrue(tex_meta['internal'])
+
+    def test_exact_white_skin_and_asymmetric_cyan_face(self):
+        tex = Image.open(HERE / f'{MINI_ME}.png').convert('RGBA')
+        self.assertEqual(tex.size, (64, 64))
+        expected_cyan = {(1, 2), (6, 3), (1, 5), (4, 5), (2, 6), (3, 6)}
+        for gy in range(8):
+            for gx in range(8):
+                rgba = tex.getpixel((gx * 4 + 2, gy * 4 + 2))
+                if (gx, gy) in expected_cyan:
+                    self.assertEqual(rgba, (91, 251, 255, 255), f'cyan pixel mismatch at {(gx, gy)}')
+                else:
+                    self.assertEqual(rgba, (255, 255, 255, 255), f'white pixel mismatch at {(gx, gy)}')
+
+    def test_shoulder_placement_and_seamless_dance_loop(self):
+        xs = [v for c in self.model['elements'] for v in (c['from'][0], c['to'][0])]
+        ys = [v for c in self.model['elements'] for v in (c['from'][1], c['to'][1])]
+        self.assertGreater(min(xs), 6.0, 'clears player head and shoulder')
+        self.assertLess(max(xs), 13.0, 'stays cleanly near shoulder')
+        self.assertGreaterEqual(min(ys), 23.5, 'starts at shoulder height')
+        self.assertLessEqual(max(ys), 34.0, 'clears overhead halo')
+        clips = self.model['animations']
+        self.assertEqual(len(clips), 1)
+        clip = clips[0]
+        self.assertEqual(clip['name'], 'idle')
+        self.assertEqual(clip['loop'], 'loop')
+        self.assertEqual(len(clip['animators']), 8)
+        for anim in clip['animators'].values():
+            by_chan = {}
+            for kf in anim['keyframes']:
+                by_chan.setdefault(kf['channel'], []).append(kf)
+            for chan, kfs in by_chan.items():
+                self.assertEqual(kfs[0]['data_points'], kfs[-1]['data_points'], (anim['name'], chan))
+
+    def test_modelengine_itself_can_import_mini_me_blueprint(self):
+        java, ecj = os.environ.get('JAVA'), os.environ.get('ECJ')
+        if not java or not ecj:
+            self.skipTest('set JAVA and ECJ to run the real ModelEngine parser')
+        out = Path(tempfile.mkdtemp()) / 'assets'
+        result = subprocess.run(
+            ['sh', str(HERE / 'generate_assets.sh'), str(HERE / f'{MINI_ME}.bbmodel'), str(out)],
+            capture_output=True, text=True, timeout=300, env=dict(os.environ, JAVA=java, ECJ=ecj))
+        output = result.stdout + result.stderr
+        self.assertEqual(result.returncode, 0, output)
+        self.assertNotIn('UnsupportedOperationException', output)
 
 
 if __name__ == '__main__':

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build and verify ElytrixFreakModel v3.12.0 with auto-blueprint loader, full-body Scolopendra & Kaneki Rinkaku Kagune."""
+"""Build and verify ElytrixFreakModel v3.13.0 with 3-section menu (Спина/Шапки/Питомцы) & dancing Mini-Me shoulder pet."""
 import hashlib
 import os
 import re
@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
 BASE = ROOT / 'plugins/ElytrixFreakModel.jar'
 ENTRY = 'pw/elytrix/freakmodel/ElytrixFreakModelPlugin.class'
-TARGET_VERSION = '3.12.0'
+TARGET_VERSION = '3.13.0'
 JAVA = os.environ.get('JAVA', 'java')
 ECJ = os.environ.get('ECJ')
 

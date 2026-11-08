@@ -27,6 +27,7 @@ import sys
 import zipfile
 from pathlib import Path
 
+from build_mini_me import ACC_FONT_PROVIDERS
 from fpv_shaders import (
     CLOSE_ACCESSORY_MODELS,
     CLOSE_TINT_VALUE,
@@ -40,7 +41,7 @@ from fpv_shaders import (
 # ``items/<model>/<bone>.json`` + ``models/<model>/<bone>.json`` + texture inside
 # the served pack is invisible in game, so all of them are validated and their
 # stale files are replaced.
-MODELS = ('elytrix_kaneki_tentacles', 'elytrix_centipede')
+MODELS = ('elytrix_kaneki_tentacles', 'elytrix_centipede', 'elytrix_mini_me')
 GLYPH = 'ꏠ'
 FONT = 'assets/minecraft/font/default.json'
 TITLE = 'assets/reallyworld/textures/gui/title/elytrix_accessories.png'
@@ -51,6 +52,7 @@ PROVIDER = {
     'height': 32,
     'chars': [GLYPH],
 }
+ALL_PROVIDERS = [PROVIDER] + list(ACC_FONT_PROVIDERS)
 REQUIRED = [
     'pack.png',
     'assets/minecraft/items/leather_horse_armor.json',
@@ -79,20 +81,24 @@ def collect_assets(directory):
 
 def font_entry(font, replace):
     providers = font['providers']
-    found = []
-    for index, provider in enumerate(providers):
-        chars = provider.get('chars', [])
-        if any(GLYPH in row for row in chars) or GLYPH in provider.get('advances', {}):
-            found.append(index)
-    if len(found) > 1:
-        raise ValueError('glyph is registered more than once')
-    if found and not replace:
-        raise ValueError('glyph already registered but the pack was not built for it')
-    if found:
-        providers[found[0]] = dict(PROVIDER)
-    else:
-        providers.insert(0, dict(PROVIDER))
-    return font, bool(found)
+    any_replaced = False
+    for target_prov in ALL_PROVIDERS:
+        ch = target_prov['chars'][0]
+        found = []
+        for index, provider in enumerate(providers):
+            chars = provider.get('chars', [])
+            if any(ch in row for row in chars) or ch in provider.get('advances', {}):
+                found.append(index)
+        if len(found) > 1:
+            raise ValueError(f'glyph {ch!r} is registered more than once')
+        if found and not replace:
+            raise ValueError(f'glyph {ch!r} already registered but replace was not enabled')
+        if found:
+            providers[found[0]] = dict(target_prov)
+            any_replaced = True
+        else:
+            providers.insert(0, dict(target_prov))
+    return font, any_replaced
 
 
 def models_in(files):

@@ -20,6 +20,7 @@ import com.ticxo.modelengine.api.model.render.DisplayRenderer;
 import com.ticxo.modelengine.api.model.render.ModelRenderer;
 import com.ticxo.modelengine.api.nms.entity.wrapper.BodyRotationController;
 import com.ticxo.modelengine.api.nms.entity.wrapper.TrackedEntity;
+import java.util.Locale;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -50,23 +51,11 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 /**
- * Server-side accessories menu & unified controller (v3.11.0):
- * Angel Wings, Divine Halo, Kaneki Ken's Rinkaku Kagune (elytrix_kaneki_tentacles),
- * and the Full-Body Crawling Tokyo Ghoul Scolopendra (elytrix_centipede).
- *
- * <p>Key guarantees:
+ * Server-side 3-section accessories menu & unified ModelEngine controller (v3.13.0):
  * <ul>
- *   <li>Both {@code elytrix_centipede} and {@code elytrix_kaneki_tentacles} run on
- *       isolated {@link Dummy} base entities so neither collides with
- *       {@code WornAngelRig}'s {@code PlayerAuraAttachment(player)} nor triggers
- *       angel feather particles.</li>
- *   <li>Teleport, cross-world, respawn, and &gt;24-block NMS jumps cleanly destroy
- *       stale virtual {@link DisplayRenderer} entities and respawn fresh ones at the
- *       destination after 2 ticks, eliminating 4-chunk view-distance despawns.</li>
- *   <li>Every tick verifies {@link PivotOverrideRegistry#getOrCreate} and passenger
- *       containment (with a 40-tick warmup + 20-tick periodic {@code markDirty()}),
- *       recovering seamlessly even if {@code WornAngelRig.destroyAll()} removes the
- *       player's {@link PivotOverride}.</li>
+ *   <li><b>Спина</b>: Ангельские крылья ({@code angel_wings}) и Щупальца Канэки ({@code elytrix_kaneki_tentacles})</li>
+ *   <li><b>Шапки</b>: Божественный нимб ({@code angel_halo})</li>
+ *   <li><b>Питомцы</b>: Танцующий возле плеча Мини-скин ({@code elytrix_mini_me}) и Сколопендра Гуля ({@code elytrix_centipede})</li>
  * </ul>
  */
 public final class AccessoryController implements CommandExecutor, Listener {
@@ -74,16 +63,32 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final NamespacedKey HALO = new NamespacedKey("elytrixaccessories", "halo");
     static final NamespacedKey HEAD = new NamespacedKey("elytrixaccessories", "head");
     static final NamespacedKey PET = new NamespacedKey("elytrixaccessories", "pet");
-    static final String PET_CHOICE = "centipede";
+
+    static final String PET_CENTIPEDE = "centipede";
+    static final String PET_CHOICE = PET_CENTIPEDE;
+    static final String PET_MINI_ME = "mini_me";
+
     static final String CENTIPEDE_BLUEPRINT = "elytrix_centipede";
+    static final String MINI_ME_BLUEPRINT = "elytrix_mini_me";
     static final String KANEKI_BLUEPRINT = "elytrix_kaneki_tentacles";
+
     static final String IDLE_ANIM = "idle";
     static final String MEDIA_GROUP = "media";
     static final String USE_PERMISSION = "elytrixaccessories.use";
+    static final int BACK_ARROW_CMD = 10002;
     static final int VIEW_RANGE = 96;
     static final long RE_PAIR_TICKS = 40L;
     static final int WARMUP_SYNC_TICKS = 40;
     static final double TELEPORT_JUMP_DIST_SQ = 24.0D * 24.0D;
+
+    static final String TITLE_HUB = "§fꈁꀀꈂꏡꈂꀁ§fꈃꏠ";
+    static final String TITLE_BACK = "§fꈁꀀꈂꏢꈂꀁ§fꈃꏤ";
+    static final String TITLE_HATS = "§fꈁꀀꈂꏣꈂꀁ§fꈃꏥ";
+    static final String TITLE_PETS = "§fꈁꀀꈂꏢꈂꀁ§fꈃꏦ";
+
+    enum Section {
+        HUB, BACK, HATS, PETS
+    }
 
     private static boolean mediaGranted;
     private static ElytrixFreakModelPlugin host;
@@ -97,7 +102,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
 
     private AccessoryController() {}
 
-    /** Isolated Dummy-backed ModelEngine rig (Scolopendra or Kaneki Rinkaku Kagune). */
+    /** Isolated Dummy-backed ModelEngine rig (Mini-Me Dancer, Scolopendra, or Kaneki Rinkaku Kagune). */
     private static final class GhoulRig {
         final String blueprintId;
         final Dummy<Player> dummy;
@@ -199,6 +204,23 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return choice.equals("halo") ? choice : "";
     }
 
+    static String petChoice(Player player) {
+        String choice = get(player, PET);
+        if (PET_MINI_ME.equals(choice) || PET_CENTIPEDE.equals(choice)) return choice;
+        return "";
+    }
+
+    static String desiredPetBlueprint(Player player) {
+        if (player == null || !player.isOnline() || player.isDead()
+                || player.getGameMode() == GameMode.SPECTATOR || !allowed(player)) {
+            return null;
+        }
+        String choice = petChoice(player);
+        if (PET_MINI_ME.equals(choice)) return MINI_ME_BLUEPRINT;
+        if (PET_CENTIPEDE.equals(choice)) return CENTIPEDE_BLUEPRINT;
+        return null;
+    }
+
     public static FreakModelSpec halo(ElytrixFreakModelPlugin plugin, Player player) {
         if (!allowed(player)) return null;
         return headChoice(player).equals("halo") ? plugin.findModel("angel_halo") : null;
@@ -226,27 +248,39 @@ public final class AccessoryController implements CommandExecutor, Listener {
     }
 
     public static boolean centipedeSelected(Player player) {
-        return player != null
-            && player.isOnline()
-            && !player.isDead()
-            && player.getGameMode() != GameMode.SPECTATOR
-            && allowed(player)
-            && get(player, PET).equals(PET_CHOICE);
+        return CENTIPEDE_BLUEPRINT.equals(desiredPetBlueprint(player));
+    }
+
+    public static boolean miniMeSelected(Player player) {
+        return MINI_ME_BLUEPRINT.equals(desiredPetBlueprint(player));
     }
 
     static boolean wearingKaneki(Player player) {
         GhoulRig rig = KAGUNES.get(player.getUniqueId());
-        return rig != null && !rig.model.isDestroyed() && !rig.entity.isDestroyed();
+        return rig != null && KANEKI_BLUEPRINT.equals(rig.blueprintId)
+            && !rig.model.isDestroyed() && !rig.entity.isDestroyed();
     }
 
     static boolean wearingCentipede(Player player) {
         GhoulRig rig = PETS.get(player.getUniqueId());
-        return rig != null && !rig.model.isDestroyed() && !rig.entity.isDestroyed();
+        return rig != null && CENTIPEDE_BLUEPRINT.equals(rig.blueprintId)
+            && !rig.model.isDestroyed() && !rig.entity.isDestroyed();
+    }
+
+    static boolean wearingMiniMe(Player player) {
+        GhoulRig rig = PETS.get(player.getUniqueId());
+        return rig != null && MINI_ME_BLUEPRINT.equals(rig.blueprintId)
+            && !rig.model.isDestroyed() && !rig.entity.isDestroyed();
     }
 
     static boolean centipedeAttached(Player player) {
         GhoulRig rig = PETS.get(player.getUniqueId());
-        return rig != null && rig.attached;
+        return rig != null && CENTIPEDE_BLUEPRINT.equals(rig.blueprintId) && rig.attached;
+    }
+
+    static boolean miniMeAttached(Player player) {
+        GhoulRig rig = PETS.get(player.getUniqueId());
+        return rig != null && MINI_ME_BLUEPRINT.equals(rig.blueprintId) && rig.attached;
     }
 
     static boolean kanekiAttached(Player player) {
@@ -256,7 +290,14 @@ public final class AccessoryController implements CommandExecutor, Listener {
 
     static boolean centipedeAnimating(Player player) {
         GhoulRig rig = PETS.get(player.getUniqueId());
-        if (rig == null || rig.model.isDestroyed()) return false;
+        if (rig == null || !CENTIPEDE_BLUEPRINT.equals(rig.blueprintId) || rig.model.isDestroyed()) return false;
+        AnimationHandler handler = rig.model.getAnimationHandler();
+        return handler != null && handler.isPlayingAnimation(IDLE_ANIM);
+    }
+
+    static boolean miniMeAnimating(Player player) {
+        GhoulRig rig = PETS.get(player.getUniqueId());
+        if (rig == null || !MINI_ME_BLUEPRINT.equals(rig.blueprintId) || rig.model.isDestroyed()) return false;
         AnimationHandler handler = rig.model.getAnimationHandler();
         return handler != null && handler.isPlayingAnimation(IDLE_ANIM);
     }
@@ -434,7 +475,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
                 handler.setDefaultProperty(new AnimationHandler.DefaultProperty(state, "", 0.0D, 0.0D, 1.0D));
             }
         }
-        double speedBoost = KANEKI_BLUEPRINT.equals(rig.blueprintId) ? 2.5D : 1.8D;
+        double speedBoost = KANEKI_BLUEPRINT.equals(rig.blueprintId)
+            ? 2.5D
+            : (MINI_ME_BLUEPRINT.equals(rig.blueprintId) ? 1.5D : 1.8D);
         double targetSpeed = 1.0D + Math.min(0.85D, Math.max(0.0D, horizSpeed) * speedBoost);
         if (!handler.isPlayingAnimation(IDLE_ANIM) || rig.animProperty == null) {
             IAnimationProperty prop = handler.playAnimation(IDLE_ANIM, 0.0D, 0.0D, targetSpeed, true);
@@ -448,11 +491,11 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
     }
 
-    private static void syncSingleSlot(Player player, boolean want, String blueprintId,
+    private static void syncSingleSlot(Player player, String desiredBlueprintId,
                                        java.util.Map<java.util.UUID, GhoulRig> store) {
         java.util.UUID uuid = player.getUniqueId();
         GhoulRig rig = store.get(uuid);
-        if (!want) {
+        if (desiredBlueprintId == null || desiredBlueprintId.isEmpty()) {
             if (rig != null) removeRig(uuid, rig, store);
             return;
         }
@@ -461,13 +504,14 @@ public final class AccessoryController implements CommandExecutor, Listener {
             if (rig != null) removeRig(uuid, rig, store);
             return;
         }
-        if (rig != null && hasTeleportJumped(player.getLocation(), rig)) {
+        if (rig != null && (!desiredBlueprintId.equals(rig.blueprintId)
+                || hasTeleportJumped(player.getLocation(), rig))) {
             removeRig(uuid, rig, store);
             rig = null;
         }
         if (rig == null || rig.model.isDestroyed() || rig.entity.isDestroyed()) {
             if (rig != null) removeRig(uuid, rig, store);
-            rig = spawnRig(player, blueprintId);
+            rig = spawnRig(player, desiredBlueprintId);
             if (rig != null) store.put(uuid, rig);
         }
         if (rig == null) return;
@@ -488,8 +532,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
 
     static void syncPlayerRigs(Player player) {
         if (player == null || !player.isOnline()) return;
-        syncSingleSlot(player, centipedeSelected(player), CENTIPEDE_BLUEPRINT, PETS);
-        syncSingleSlot(player, kanekiSelected(player), KANEKI_BLUEPRINT, KAGUNES);
+        syncSingleSlot(player, desiredPetBlueprint(player), PETS);
+        syncSingleSlot(player, kanekiSelected(player) ? KANEKI_BLUEPRINT : null, KAGUNES);
     }
 
     static void animatePets() {
@@ -523,18 +567,23 @@ public final class AccessoryController implements CommandExecutor, Listener {
             }
             PlayerBodyTracker tracker = trackerFor(wearer);
             tracker.stepServerTick(wearer);
-            tickActiveRig(uuid, wearer, tracker, PETS, centipedeSelected(wearer));
-            tickActiveRig(uuid, wearer, tracker, KAGUNES, kanekiSelected(wearer));
+            tickActiveRig(uuid, wearer, tracker, PETS, desiredPetBlueprint(wearer));
+            tickActiveRig(uuid, wearer, tracker, KAGUNES, kanekiSelected(wearer) ? KANEKI_BLUEPRINT : null);
         }
     }
 
     private static void tickActiveRig(java.util.UUID uuid, Player wearer, PlayerBodyTracker tracker,
-                                      java.util.Map<java.util.UUID, GhoulRig> store, boolean stillWanted) {
+                                      java.util.Map<java.util.UUID, GhoulRig> store,
+                                      String expectedBlueprintId) {
         GhoulRig rig = store.get(uuid);
         if (rig == null) return;
         try {
-            if (!stillWanted || rig.model.isDestroyed() || rig.entity.isDestroyed()) {
+            if (expectedBlueprintId == null || !expectedBlueprintId.equals(rig.blueprintId)
+                    || rig.model.isDestroyed() || rig.entity.isDestroyed()) {
                 removeRig(uuid, rig, store);
+                if (expectedBlueprintId != null) {
+                    syncSingleSlot(wearer, expectedBlueprintId, store);
+                }
                 return;
             }
             if (hasTeleportJumped(wearer.getLocation(), rig)) {
@@ -560,7 +609,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (host == null) return;
         String label = KANEKI_BLUEPRINT.equals(rig.blueprintId)
             ? "кагуне Канэки Кена"
-            : "сколопендра (по всему телу)";
+            : (MINI_ME_BLUEPRINT.equals(rig.blueprintId)
+                ? "танцующий мини-скин у плеча"
+                : "сколопендра (по всему телу)");
         host.getLogger().info("[Аксессуары] " + label + ": живая анимация '" + IDLE_ANIM
             + "', привязка к PivotOverride активна");
     }
@@ -709,7 +760,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (player == null) return;
         java.util.UUID uuid = player.getUniqueId();
         releaseByUuid(uuid);
-        if (centipedeSelected(player) || kanekiSelected(player)) {
+        if (desiredPetBlueprint(player) != null || kanekiSelected(player)) {
             TELEPORT_RESPAWN_AT.put(uuid, Long.valueOf(petTicks + Math.max(1L, delayTicks)));
         }
     }
@@ -719,7 +770,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         modelsLogged = true;
         StringBuilder missing = new StringBuilder();
         for (String id : new String[] {"elytrix_angel_wings", "elytrix_angel_halo",
-                                       KANEKI_BLUEPRINT, CENTIPEDE_BLUEPRINT,
+                                       KANEKI_BLUEPRINT, CENTIPEDE_BLUEPRINT, MINI_ME_BLUEPRINT,
                                        "elytrix_priora_black", "elytrix_priora_white", "elytrix_priora_pink"}) {
             if (resolveBlueprint(id) == null && !id.startsWith("elytrix_priora_")) {
                 if (missing.length() > 0) missing.append(", ");
@@ -728,7 +779,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
         try {
             if (missing.length() == 0) {
-                host.getLogger().info("[Аксессуары] ModelEngine загрузил все модели: крылья, нимб, кагуне Канэки, сколопендра");
+                host.getLogger().info("[Аксессуары] ModelEngine загрузил все модели: крылья, нимб, кагуне Канэки, сколопендра, мини-скин");
             } else {
                 host.getLogger().warning("[Аксессуары] ModelEngine не загрузил: " + missing
                     + " — проверь plugins/ModelEngine/blueprints и лог ModelEngine");
@@ -825,20 +876,27 @@ public final class AccessoryController implements CommandExecutor, Listener {
         schedulePostTeleportRespawn(player, 2L);
     }
 
-    // ------------------------------------------------------------------ menu
+    // ------------------------------------------------------------------ 3-section menu (Спина, Шапки, Питомцы)
 
     private static final class Holder implements InventoryHolder {
+        final Section section;
         private Inventory inventory;
+
+        Holder(Section section) {
+            this.section = section;
+        }
+
         @Override public Inventory getInventory() { return inventory; }
     }
 
-    private static ItemStack item(Material mat, String title, String model, String... lore) {
+    private static ItemStack item(Material mat, String title, String model, Integer cmd, String... lore) {
         ItemStack result = new ItemStack(mat);
         ItemMeta meta = result.getItemMeta();
         if (meta != null) {
             meta.setDisplayName(title);
             meta.setLore(java.util.Arrays.asList(lore));
             if (model != null) meta.setItemModel(new NamespacedKey("reallyworld", model));
+            if (cmd != null) meta.setCustomModelData(cmd);
             result.setItemMeta(meta);
         }
         return result;
@@ -852,10 +910,67 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return out;
     }
 
+    private static String activeBackLabel(Player player, boolean allowed) {
+        if (!allowed) return "§8Недоступно";
+        String back = get(player, BACK);
+        if ("wings".equals(back)) return "§dАнгельские крылья";
+        if ("kaneki".equals(back)) return "§dЩупальца Канэки";
+        return "§8Не выбрано";
+    }
+
+    private static String activeHatLabel(Player player, boolean allowed) {
+        if (!allowed) return "§8Недоступно";
+        return "halo".equals(headChoice(player)) ? "§dБожественный нимб" : "§8Не выбрано";
+    }
+
+    private static String activePetLabel(Player player, boolean allowed) {
+        if (!allowed) return "§8Недоступно";
+        String pet = petChoice(player);
+        if (PET_MINI_ME.equals(pet)) return "§dМини-скин";
+        if (PET_CENTIPEDE.equals(pet)) return "§dСколопендра Гуля";
+        return "§8Не выбрано";
+    }
+
+    private static void placeSectionTabs(Inventory menu, Player player, boolean allowed, Section current) {
+        String openHint = "§a● Открыт раздел";
+        String switchHint = "§x§F§8§B§E§F§BНажми, чтобы перейти";
+        menu.setItem(12, item(Material.FEATHER, "§x§F§A§D§8§F§C§lСпина", "angel_wings", null,
+            lore(current == Section.BACK ? openHint : switchHint,
+                "§7Крылья и кагуне на спину",
+                "§7Надето: " + activeBackLabel(player, allowed))));
+        menu.setItem(13, item(Material.NETHER_STAR, "§x§F§A§D§8§F§C§lШапки", "angel_halo", null,
+            lore(current == Section.HATS ? openHint : switchHint,
+                "§7Нимбы и украшения на голову",
+                "§7Надето: " + activeHatLabel(player, allowed))));
+        menu.setItem(14, item(Material.WHITE_DYE, "§x§F§A§D§8§F§C§lПитомцы", "mini_me_icon", null,
+            lore(current == Section.PETS ? openHint : switchHint,
+                "§7Живые спутники и танцующий мини-скин",
+                "§7Надето: " + activePetLabel(player, allowed))));
+    }
+
+    private static void placeBackAndClear(Inventory menu, boolean includeBackArrow) {
+        if (includeBackArrow) {
+            menu.setItem(45, item(Material.ARROW, "§x§F§8§B§E§F§BНазад", null, Integer.valueOf(BACK_ARROW_CMD),
+                lore("§dНажми, чтобы вернуться", "§7Возврат к разделам аксессуаров")));
+        }
+        menu.setItem(49, item(Material.BARRIER, "§cСнять всё", null, null,
+            lore("§dНажми, чтобы снять", "§7Убирает все надетые аксессуары")));
+    }
+
     static void openMenu(Player player) {
-        Holder holder = new Holder();
-        Inventory menu = Bukkit.createInventory(holder, 54, "§fꈁꀀꈂꌀꈂꀁ§fꈃꏠ");
+        openMenu(player, Section.HUB);
+    }
+
+    static void openMenu(Player player, Section section) {
+        Section target = section == null ? Section.HUB : section;
+        String title = target == Section.BACK ? TITLE_BACK
+            : target == Section.HATS ? TITLE_HATS
+            : target == Section.PETS ? TITLE_PETS
+            : TITLE_HUB;
+        Holder holder = new Holder(target);
+        Inventory menu = Bukkit.createInventory(holder, 54, title);
         holder.inventory = menu;
+
         boolean allowed = allowed(player);
         if (allowed) {
             try {
@@ -864,34 +979,78 @@ public final class AccessoryController implements CommandExecutor, Listener {
                 reportOnce("меню синхронизация", failure);
             }
         }
+
         String hint = allowed ? "§dНажми, чтобы выбрать" : "§cДоступно с доната §dmedia";
         String chosen = allowed ? "§a● Сейчас надето" : "§8● Недоступно";
-        String back = get(player, BACK);
-        String head = headChoice(player);
-        boolean wings = back.equals("wings"), kagune = back.equals("kaneki");
-        boolean halo = head.equals("halo"), bug = allowed && get(player, PET).equals(PET_CHOICE);
-        menu.setItem(12, item(Material.FEATHER, "§x§F§A§D§8§F§C§lАнгельские крылья", "angel_wings",
-            wings ? lore(chosen, "§7Аксессуар для спины", "§7Не занимает слот брони", "§7Нажми ещё раз — снять")
-                  : lore(hint, "§7Аксессуар для спины", "§7Не занимает слот брони")));
-        menu.setItem(13, item(Material.NETHER_STAR, "§x§F§A§D§8§F§C§lБожественный нимб", "angel_halo",
-            halo ? lore(chosen, "§7Нимб на голову", "§7Нажми ещё раз — снять")
-                 : lore(hint, "§7Нимб на голову")));
-        menu.setItem(14, item(Material.RED_DYE, "§x§F§A§D§8§F§C§lЩупальца Канэки", "kaneki_tentacles_icon",
-            kagune ? lore(chosen, "§7Кагуне Ринкаку Канэки Кена (Токийский Гуль)", "§74 живых алых хвоста из какухо на спине", "§7Нажми ещё раз — снять")
-                   : lore(hint, "§7Кагуне Ринкаку Канэки Кена (Токийский Гуль)", "§74 живых алых хвоста из какухо на спине")));
-        menu.setItem(15, item(Material.SPIDER_EYE, "§x§F§A§D§8§F§C§lСколопендра Гуля", "centipede_icon",
-            bug ? lore(chosen, "§7Живая сколопендра ползает по всему телу", "§7Грудь, плечи, шея, спина, руки и бёдра", "§7Нажми ещё раз — снять")
-                : lore(hint, "§7Живая сколопендра ползает по всему телу", "§7Грудь, плечи, шея, спина, руки и бёдра")));
-        menu.setItem(49, item(Material.BARRIER, "§cСнять всё", null,
-            lore("§dНажми, чтобы снять", "§7Убирает все надетые аксессуары")));
+        String openSectionHint = "§x§F§8§B§E§F§BНажми, чтобы открыть раздел";
+
+        if (target == Section.HUB) {
+            menu.setItem(20, item(Material.FEATHER, "§x§F§A§D§8§F§C§lСпина", "angel_wings", null,
+                lore(openSectionHint,
+                    "§7Крылья и кагуне на спину",
+                    "§7Надето: " + activeBackLabel(player, allowed),
+                    "")));
+            menu.setItem(22, item(Material.NETHER_STAR, "§x§F§A§D§8§F§C§lШапки", "angel_halo", null,
+                lore(openSectionHint,
+                    "§7Нимбы и украшения на голову",
+                    "§7Надето: " + activeHatLabel(player, allowed),
+                    "")));
+            menu.setItem(24, item(Material.WHITE_DYE, "§x§F§A§D§8§F§C§lПитомцы", "mini_me_icon", null,
+                lore(openSectionHint,
+                    "§7Живые спутники и танцующий мини-скин",
+                    "§7Надето: " + activePetLabel(player, allowed),
+                    "")));
+            placeBackAndClear(menu, false);
+        } else if (target == Section.BACK) {
+            placeSectionTabs(menu, player, allowed, Section.BACK);
+            String back = get(player, BACK);
+            boolean wings = allowed && "wings".equals(back);
+            boolean kagune = allowed && "kaneki".equals(back);
+            menu.setItem(30, item(Material.FEATHER, "§x§F§A§D§8§F§C§lАнгельские крылья", "angel_wings", null,
+                wings ? lore(chosen, "§7Аксессуар для спины", "§7Не занимает слот брони", "§7Нажми ещё раз — снять")
+                      : lore(hint, "§7Аксессуар для спины", "§7Не занимает слот брони")));
+            menu.setItem(32, item(Material.RED_DYE, "§x§F§A§D§8§F§C§lЩупальца Канэки", "kaneki_tentacles_icon", null,
+                kagune ? lore(chosen, "§7Кагуне Ринкаку Канэки Кена (Токийский Гуль)", "§74 живых алых хвоста из какухо на спине", "§7Нажми ещё раз — снять")
+                       : lore(hint, "§7Кагуне Ринкаку Канэки Кена (Токийский Гуль)", "§74 живых алых хвоста из какухо на спине")));
+            placeBackAndClear(menu, true);
+        } else if (target == Section.HATS) {
+            placeSectionTabs(menu, player, allowed, Section.HATS);
+            boolean halo = allowed && "halo".equals(headChoice(player));
+            menu.setItem(31, item(Material.NETHER_STAR, "§x§F§A§D§8§F§C§lБожественный нимб", "angel_halo", null,
+                halo ? lore(chosen, "§7Нимб на голову", "§7Нажми ещё раз — снять")
+                     : lore(hint, "§7Нимб на голову")));
+            placeBackAndClear(menu, true);
+        } else if (target == Section.PETS) {
+            placeSectionTabs(menu, player, allowed, Section.PETS);
+            String pet = petChoice(player);
+            boolean miniMe = allowed && PET_MINI_ME.equals(pet);
+            boolean bug = allowed && PET_CENTIPEDE.equals(pet);
+            menu.setItem(30, item(Material.WHITE_DYE, "§x§F§A§D§8§F§C§lМини-скин", "mini_me_icon", null,
+                miniMe ? lore(chosen, "§7Твой маленький скин возле плеча", "§7Зажигательно танцует рядом с тобой", "§7Нажми ещё раз — снять")
+                       : lore(hint, "§7Твой маленький скин возле плеча", "§7Зажигательно танцует рядом с тобой")));
+            menu.setItem(32, item(Material.SPIDER_EYE, "§x§F§A§D§8§F§C§lСколопендра Гуля", "centipede_icon", null,
+                bug ? lore(chosen, "§7Живая сколопендра ползает по всему телу", "§7Грудь, плечи, шея, спина, руки и бёдра", "§7Нажми ещё раз — снять")
+                    : lore(hint, "§7Живая сколопендра ползает по всему телу", "§7Грудь, плечи, шея, спина, руки и бёдра")));
+            placeBackAndClear(menu, true);
+        }
+
         player.openInventory(menu);
+    }
+
+    private static Section parseSectionArg(String[] args) {
+        if (args == null || args.length == 0 || args[0] == null) return Section.HUB;
+        String key = args[0].trim().toLowerCase(Locale.ROOT);
+        if (key.equals("спина") || key.equals("back")) return Section.BACK;
+        if (key.equals("шапки") || key.equals("шапка") || key.equals("hats") || key.equals("head")) return Section.HATS;
+        if (key.equals("питомцы") || key.equals("питомец") || key.equals("pets") || key.equals("pet")) return Section.PETS;
+        return Section.HUB;
     }
 
     @Override public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) { sender.sendMessage("Только для игроков."); return true; }
         grantDonationAccess();
         try {
-            openMenu(player);
+            openMenu(player, parseSectionArg(args));
         } catch (Throwable failure) {
             reportOnce("меню", failure);
             player.sendMessage("§cМеню аксессуаров не открылось, причина записана в лог.");
@@ -905,33 +1064,77 @@ public final class AccessoryController implements CommandExecutor, Listener {
     }
 
     @EventHandler public void onClick(InventoryClickEvent event) {
-        if (!(event.getView().getTopInventory().getHolder() instanceof Holder)) return;
+        if (!(event.getView().getTopInventory().getHolder() instanceof Holder holder)) return;
         event.setCancelled(true);
         if (!(event.getWhoClicked() instanceof Player player)) return;
         int slot = event.getRawSlot();
+        Section current = holder.section;
+
+        // Navigation clicks (open to everyone so players can browse all 3 sections!)
+        if (current == Section.HUB) {
+            if (slot == 20) { openMenu(player, Section.BACK); return; }
+            if (slot == 22) { openMenu(player, Section.HATS); return; }
+            if (slot == 24) { openMenu(player, Section.PETS); return; }
+        } else {
+            if (slot == 45) { openMenu(player, Section.HUB); return; }
+            if (slot == 12) { openMenu(player, Section.BACK); return; }
+            if (slot == 13) { openMenu(player, Section.HATS); return; }
+            if (slot == 14) { openMenu(player, Section.PETS); return; }
+        }
+
+        // Action clicks require permission
+        boolean isActionSlot = (slot == 49)
+            || (current == Section.BACK && (slot == 30 || slot == 32))
+            || (current == Section.HATS && slot == 31)
+            || (current == Section.PETS && (slot == 30 || slot == 32));
+        if (!isActionSlot) return;
+
         if (!allowed(player)) {
             player.sendMessage("§cАксессуары доступны с доната §d" + MEDIA_GROUP + "§c.");
             return;
         }
-        String blueprint = slot == 12 ? "elytrix_angel_wings" : slot == 13 ? "elytrix_angel_halo"
-            : slot == 14 ? KANEKI_BLUEPRINT : slot == 15 ? CENTIPEDE_BLUEPRINT : null;
-        if (blueprint != null && resolveBlueprint(blueprint) == null) {
-            player.sendMessage("§cМодель ещё не загружена. Обратитесь к администрации.");
-            return;
-        }
-        if (slot == 12) { toggleWings(player); }
-        else if (slot == 14) { toggleKaneki(player); }
-        else if (slot == 13) { toggleHead(player, "halo", "Нимб", "надет", "снят"); }
-        else if (slot == 15) { togglePet(player); }
-        else if (slot == 49) {
+
+        if (slot == 49) {
             set(player, BACK, "");
             setHead(player, "");
             set(player, PET, "");
             TELEPORT_RESPAWN_AT.remove(player.getUniqueId());
             releaseByUuid(player.getUniqueId());
             player.sendMessage("§7Все аксессуары сняты.");
-        } else return;
-        openMenu(player);
+            openMenu(player, current);
+            return;
+        }
+
+        String requiredBlueprint = null;
+        if (current == Section.BACK && slot == 30) requiredBlueprint = "elytrix_angel_wings";
+        else if (current == Section.BACK && slot == 32) requiredBlueprint = KANEKI_BLUEPRINT;
+        else if (current == Section.HATS && slot == 31) requiredBlueprint = "elytrix_angel_halo";
+        else if (current == Section.PETS && slot == 30) requiredBlueprint = MINI_ME_BLUEPRINT;
+        else if (current == Section.PETS && slot == 32) requiredBlueprint = CENTIPEDE_BLUEPRINT;
+
+        if (requiredBlueprint != null && resolveBlueprint(requiredBlueprint) == null) {
+            player.sendMessage("§cМодель ещё не загружена. Обратитесь к администрации.");
+            return;
+        }
+
+        if (current == Section.BACK && slot == 30) {
+            toggleWings(player);
+        } else if (current == Section.BACK && slot == 32) {
+            toggleKaneki(player);
+        } else if (current == Section.HATS && slot == 31) {
+            toggleHead(player, "halo", "Нимб", "надет", "снят");
+        } else if (current == Section.PETS && slot == 30) {
+            togglePetChoice(player, PET_MINI_ME, MINI_ME_BLUEPRINT,
+                "Мини-скин",
+                "§dМини-скин вызван и танцует возле плеча!",
+                "§7Мини-скин убран.");
+        } else if (current == Section.PETS && slot == 32) {
+            togglePetChoice(player, PET_CENTIPEDE, CENTIPEDE_BLUEPRINT,
+                "Сколопендра",
+                "§dСколопендра Гуля выпущена и ползает по всему телу.",
+                "§7Сколопендра снята.");
+        }
+        openMenu(player, current);
     }
 
     private static void toggleWings(Player player) {
@@ -976,34 +1179,36 @@ public final class AccessoryController implements CommandExecutor, Listener {
         player.sendMessage("§dКагуне Канэки Кена пробуждено.");
     }
 
-    private static void togglePet(Player player) {
-        if (get(player, PET).equals(PET_CHOICE)) {
+    private static void togglePetChoice(Player player, String choice, String blueprintId,
+                                        String shortName, String equippedMsg, String removedMsg) {
+        if (petChoice(player).equals(choice)) {
             set(player, PET, "");
             GhoulRig pet = PETS.get(player.getUniqueId());
             if (pet != null) removeRig(player.getUniqueId(), pet, PETS);
-            player.sendMessage("§7Сколопендра снята.");
+            player.sendMessage(removedMsg);
             return;
         }
-        if (resolveBlueprint(CENTIPEDE_BLUEPRINT) == null) {
-            player.sendMessage("§cМодель сколопендры ещё не загружена. Обратитесь к администрации.");
+        if (resolveBlueprint(blueprintId) == null) {
+            player.sendMessage("§cМодель (" + shortName + ") ещё не загружена. Обратитесь к администрации.");
             return;
         }
-        set(player, PET, PET_CHOICE);
+        set(player, PET, choice);
         TELEPORT_RESPAWN_AT.remove(player.getUniqueId());
         try {
             syncPlayerRigs(player);
         } catch (Throwable failure) {
-            reportOnce("сколопендра", failure);
+            reportOnce(shortName, failure);
             set(player, PET, "");
-            player.sendMessage("§cСколопендра не появилась: " + failure.getClass().getSimpleName());
+            player.sendMessage("§c" + shortName + " не появился: " + failure.getClass().getSimpleName());
             return;
         }
-        if (!wearingCentipede(player)) {
+        boolean spawned = PET_MINI_ME.equals(choice) ? wearingMiniMe(player) : wearingCentipede(player);
+        if (!spawned) {
             set(player, PET, "");
-            player.sendMessage("§cСколопендра не появилась: модель не загрузилась.");
+            player.sendMessage("§c" + shortName + " не появился: модель не загрузилась.");
             return;
         }
-        player.sendMessage("§dСколопендра Гуля выпущена и ползает по всему телу.");
+        player.sendMessage(equippedMsg);
     }
 
     private static void toggleHead(Player player, String choice, String name, String on, String off) {

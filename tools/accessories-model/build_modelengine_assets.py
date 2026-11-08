@@ -103,17 +103,24 @@ def build(bbmodel, out_dir, model_name=None):
             'elements': elements,
             'display': {'gui': {'rotation': [-150.0, -45.0, 180.0]}},
         }
+        from fpv_shaders import CLOSE_ACCESSORY_MODELS, CLOSE_TINT_VALUE, WINGS_ACCESSORY_MODELS, WINGS_TINT_VALUE
+        if name in CLOSE_ACCESSORY_MODELS:
+            tints = [{'type': 'minecraft:constant', 'value': CLOSE_TINT_VALUE}]
+        elif name in WINGS_ACCESSORY_MODELS:
+            tints = [{'type': 'minecraft:constant', 'value': WINGS_TINT_VALUE}]
+        else:
+            tints = [{'index': 0, 'default': 16777215, 'type': 'minecraft:custom_model_data'}]
         definition = {
             'model': {
                 'model': f'modelengine:{name}/{bone["name"]}',
-                'tints': [{'index': 0, 'default': 16777215, 'type': 'minecraft:custom_model_data'}],
+                'tints': tints,
                 'type': 'minecraft:model',
             }
         }
         model_path = models / f'{bone["name"]}.json'
         item_path = items / f'{bone["name"]}.json'
         model_path.write_text(json.dumps(body, separators=(',', ':')) + '\n', encoding='utf-8')
-        item_path.write_text(json.dumps(definition, separators=(',', ':')) + '\n', encoding='utf-8')
+        item_path.write_text(json.dumps(definition, separators=(',', ':')), encoding='utf-8')
         written.extend((model_path, item_path))
 
     # the texture travels inside the blueprint as a data URI

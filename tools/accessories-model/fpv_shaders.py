@@ -32,6 +32,7 @@ CLOSE_ACCESSORY_MODELS = (
     'elytrix_kaneki_tentacles',
     'elytrix_centipede',
     'elytrix_angel_halo',
+    'elytrix_mini_me',
 )
 WINGS_ACCESSORY_MODELS = (
     'elytrix_angel_wings',

@@ -177,31 +177,54 @@ public class AccessoryTest {
   pm.enabled.clear();
 
   p.admin=false;check(controller.onCommand(p,new Command(),"аксессуары",new String[0]),"command handled");
-  check(p.opened!=null,"menu visible to non-admin");
-  check(Bukkit.slots.get(14).meta.model.equals(new NamespacedKey("reallyworld","kaneki_tentacles_icon")),"tentacle menu icon");
-  check(Bukkit.slots.get(15).meta.model.equals(new NamespacedKey("reallyworld","centipede_icon")),"custom scolopendra menu icon");
-  check(Bukkit.slots.get(12).meta.model.equals(new NamespacedKey("reallyworld","angel_wings")),"wings icon");
-  check(Bukkit.slots.get(31)==null && Bukkit.slots.get(30)==null,"no obsolete buttons");
+  check(p.opened!=null,"hub menu visible to non-admin");
+  check(Bukkit.size==54 && Bukkit.title.equals(AccessoryController.TITLE_HUB),"hub RP title");
+  check(Bukkit.slots.get(20).meta.title.contains("Спина") && Bukkit.slots.get(20).meta.model.equals(new NamespacedKey("reallyworld","angel_wings")),"hub Спина card");
+  check(Bukkit.slots.get(22).meta.title.contains("Шапки") && Bukkit.slots.get(22).meta.model.equals(new NamespacedKey("reallyworld","angel_halo")),"hub Шапки card");
+  check(Bukkit.slots.get(24).meta.title.contains("Питомцы") && Bukkit.slots.get(24).meta.model.equals(new NamespacedKey("reallyworld","mini_me_icon")),"hub Питомцы card");
   ItemStack clearAll=Bukkit.slots.get(49);
   check(clearAll!=null && clearAll.getType()==Material.BARRIER && clearAll.meta.title.contains("Снять всё"),"clear-all button");
-  check(Bukkit.slots.size()==5,"four accessories and clear-all");
+  check(Bukkit.slots.size()==4,"three category cards and clear-all on hub");
 
-  InventoryClickEvent click=new InventoryClickEvent();click.view=()->p.opened;click.who=p;click.slot=14;
-  check(Bukkit.size==54 && Bukkit.title.contains("ꏠ"),"resource pack menu");
-  p.data.remove(AccessoryController.BACK);controller.onClick(click);
-  check(click.cancelled && !AccessoryController.kanekiSelected(p),"non-admin click denied");
+  // Non-admin can browse all 3 sections freely, and gets media message only when clicking an item!
+  InventoryClickEvent click=new InventoryClickEvent();click.view=()->p.opened;click.who=p;
+  click.slot=20;controller.onClick(click);
+  check(Bukkit.title.equals(AccessoryController.TITLE_BACK),"opened Спина section");
+  check(Bukkit.slots.get(30).meta.model.equals(new NamespacedKey("reallyworld","angel_wings")),"wings in Спина");
+  check(Bukkit.slots.get(32).meta.model.equals(new NamespacedKey("reallyworld","kaneki_tentacles_icon")),"kaneki in Спина");
+  check(Integer.valueOf(10002).equals(Bukkit.slots.get(45).meta.cmd),"back arrow CMD 10002");
+
+  // Tab switch from Спина -> Шапки -> Питомцы -> Назад -> Hub
+  click.slot=13;controller.onClick(click);
+  check(Bukkit.title.equals(AccessoryController.TITLE_HATS) && Bukkit.slots.get(31).meta.model.equals(new NamespacedKey("reallyworld","angel_halo")),"halo in Шапки");
+  click.slot=14;controller.onClick(click);
+  check(Bukkit.title.equals(AccessoryController.TITLE_PETS),"opened Питомцы via tab");
+  check(Bukkit.slots.get(30).meta.model.equals(new NamespacedKey("reallyworld","mini_me_icon")),"mini_me in Питомцы");
+  check(Bukkit.slots.get(32).meta.model.equals(new NamespacedKey("reallyworld","centipede_icon")),"scolopendra in Питомцы");
+
+  // Non-admin equip click denied with media rank hint
+  p.data.remove(AccessoryController.PET);
+  click.slot=30;controller.onClick(click);
+  check(click.cancelled && !AccessoryController.miniMeSelected(p),"non-admin equip click denied");
   check(p.msg.contains("media"),"denial names donation rank");
+  click.slot=45;controller.onClick(click);
+  check(Bukkit.title.equals(AccessoryController.TITLE_HUB),"back arrow returns to hub");
 
   PlayerFake media=new PlayerFake();media.use=true;media.uuid=UUID.randomUUID();
   check(AccessoryController.allowed(media),"media permission unlocks menu");
 
-  p.admin=true;ModelEngineAPI.backend=null;controller.onClick(click);check(!p.data.m.containsKey(AccessoryController.BACK),"missing engine denied");
-  p.data.remove(AccessoryController.HALO);
+  // Direct section command `/аксессуары спина`
+  p.admin=true;p.data.remove(AccessoryController.HALO);p.data.remove(AccessoryController.BACK);
+  controller.onCommand(p,new Command(),"аксессуары",new String[]{"спина"});
+  check(Bukkit.title.equals(AccessoryController.TITLE_BACK),"direct Спина command arg");
+  ModelEngineAPI.backend=null;click.slot=32;controller.onClick(click);
+  check(!p.data.m.containsKey(AccessoryController.BACK),"missing engine denied");
+
   FakeEngine fe=new FakeEngine();ModelEngineAPI.backend=fe;
   Bukkit.online.clear();Bukkit.online.add(p);
 
-  // --- Kaneki Ken's Rinkaku Kagune (slot 14) on isolated Dummy ---
-  controller.onClick(click);
+  // --- 1. Kaneki Ken's Rinkaku Kagune (Спина slot 32) on isolated Dummy ---
+  click.slot=32;controller.onClick(click);
   check(AccessoryController.kanekiSelected(p) && AccessoryController.wearingKaneki(p),"kaneki kagune spawned");
   check(AccessoryController.kanekiAnimating(p),"kaneki kagune playing living 'idle' loop");
   FakeActive kanekiModel=fe.q.last;
@@ -209,11 +232,23 @@ public class AccessoryTest {
   AccessoryController.animatePets();
   check(AccessoryController.kanekiAttached(p) && fe.pivots.passengers.contains(kanekiModel.pivotId),"kaneki pivot mounted");
 
-  // --- Coexistence: Equip Full-Body Scolopendra (slot 15) alongside Kaneki Kagune ---
-  click.slot=15;controller.onClick(click);
-  check(AccessoryController.centipedeSelected(p) && AccessoryController.wearingCentipede(p),"scolopendra spawned alongside kagune");
-  check(AccessoryController.wearingKaneki(p),"kagune still active alongside scolopendra");
+  // --- 2. Equip Dancing Mini-Me Shoulder Pet (Питомцы slot 30) alongside Kaneki Kagune ---
+  click.slot=14;controller.onClick(click); // switch to Питомцы
+  click.slot=30;controller.onClick(click); // equip Мини-скин!
+  check(AccessoryController.miniMeSelected(p) && AccessoryController.wearingMiniMe(p),"dancing mini-me spawned alongside kagune");
+  check(AccessoryController.miniMeAnimating(p),"mini-me playing dance 'idle' loop");
+  check(AccessoryController.wearingKaneki(p),"kagune still active alongside mini-me");
   check(!fe.entities.containsKey(p.uuid) && fe.entities.size()==2,"two isolated Dummy entities, zero player UUID collision");
+  FakeActive miniModel=fe.q.last;
+  miniModel.rendererReady=true;
+  AccessoryController.animatePets();
+  check(AccessoryController.miniMeAttached(p) && fe.pivots.passengers.contains(miniModel.pivotId),"mini-me pivot mounted");
+
+  // --- 3. Direct Pet Swap in Питомцы: Мини-скин (slot 30) -> Сколопендра Гуля (slot 32) ---
+  click.slot=32;controller.onClick(click);
+  check(!AccessoryController.wearingMiniMe(p) && miniModel.destroyed,"old mini-me Dummy cleanly destroyed on pet swap");
+  check(AccessoryController.centipedeSelected(p) && AccessoryController.wearingCentipede(p),"scolopendra spawned cleanly");
+  check(AccessoryController.wearingKaneki(p) && fe.entities.size()==2,"kagune untouched during pet swap");
   FakeModeled centEntity=fe.q.lastEntity;
   FakeActive centModel=fe.q.last;
   check(centModel.scale==1.0D,"exact 1.0 full-body scale");
@@ -227,56 +262,74 @@ public class AccessoryTest {
   AccessoryController.animatePets();
   check(AccessoryController.centipedeAttached(p) && fe.pivots.passengers.contains(centModel.pivotId),"scolopendra pivot mounted");
 
-  // --- Simulate WornAngelRig.destroyAll() wiping PivotOverrideRegistry ---
-  fe.pivots.simulateWornAngelRigDestroyAll();
-  check(!fe.pivots.passengers.contains(centModel.pivotId) && !fe.pivots.passengers.contains(kanekiModel.pivotId),"old pivot wiped");
+  // Swap back to Мини-скин (slot 30) so we test PivotOverride wipe & teleport survival with Мини-скин!
+  click.slot=30;controller.onClick(click);
+  check(AccessoryController.wearingMiniMe(p) && !AccessoryController.wearingCentipede(p) && centModel.destroyed,"swapped back to mini-me cleanly");
+  FakeModeled miniEntity=fe.q.lastEntity;
+  miniModel=fe.q.last;
+  miniModel.rendererReady=true;
   AccessoryController.animatePets();
-  check(fe.pivots.passengers.contains(centModel.pivotId) && fe.pivots.passengers.contains(kanekiModel.pivotId),
-        "both scolopendra & kaneki kagune automatically re-bind to new PivotOverride!");
 
-  // --- Packet-level short PlayerMoveEvent updates torso yBodyRot immediately with 0 pitch ---
+  // --- 4. Simulate WornAngelRig.destroyAll() wiping PivotOverrideRegistry ---
+  fe.pivots.simulateWornAngelRigDestroyAll();
+  check(!fe.pivots.passengers.contains(miniModel.pivotId) && !fe.pivots.passengers.contains(kanekiModel.pivotId),"old pivot wiped");
+  AccessoryController.animatePets();
+  check(fe.pivots.passengers.contains(miniModel.pivotId) && fe.pivots.passengers.contains(kanekiModel.pivotId),
+        "both mini-me & kaneki kagune automatically re-bind to new PivotOverride!");
+
+  // --- 5. Packet-level short PlayerMoveEvent updates torso yBodyRot immediately with 0 pitch ---
   controller.onMove(new PlayerMoveEvent(p, new Location(p.world, 1.0, 1.6, 2.0, -72.5F, 45.0F)));
-  check(Math.abs(centEntity.bodyYaw - (-72.5F)) < 0.01F,"instant packet yBodyRot sync");
-  check(centEntity.headPitch == 0.0F && centEntity.rotTick == -1,"zero camera pitch tilt & instant rotationTick=-1");
+  check(Math.abs(miniEntity.bodyYaw - (-72.5F)) < 0.01F,"instant packet yBodyRot sync");
+  check(miniEntity.headPitch == 0.0F && miniEntity.rotTick == -1,"zero camera pitch tilt & instant rotationTick=-1");
 
-  // --- TELEPORT SURVIVAL TEST (> 64-block /rtp teleport!) ---
+  // --- 6. TELEPORT SURVIVAL TEST (> 64-block /rtp teleport!) ---
   fe.autoInitRenderer=true;
-  int oldCentPivot = centModel.pivotId;
+  int oldMiniPivot = miniModel.pivotId;
   int oldKanekiPivot = kanekiModel.pivotId;
   p.px = 1500.0; p.py = 70.0; p.pz = -920.0; p.bodyYaw = 90.0F;
   controller.onTeleport(new PlayerTeleportEvent(p, p.getLocation()));
-  check(!AccessoryController.wearingCentipede(p) && !AccessoryController.wearingKaneki(p) && fe.entities.isEmpty(),
+  check(!AccessoryController.wearingMiniMe(p) && !AccessoryController.wearingKaneki(p) && fe.entities.isEmpty(),
         "stale virtual entities cleanly destroyed on teleport");
-  AccessoryController.animatePets(); // tick +1 (waiting for destination chunk settle)
+  AccessoryController.animatePets(); // tick +1
   AccessoryController.animatePets(); // tick +2 -> automatic fresh respawn at destination!
-  check(AccessoryController.wearingCentipede(p) && AccessoryController.wearingKaneki(p),
-        "both scolopendra and kaneki kagune automatically respawned after teleport!");
-  check(AccessoryController.centipedeAttached(p) && AccessoryController.kanekiAttached(p),
+  check(AccessoryController.wearingMiniMe(p) && AccessoryController.wearingKaneki(p),
+        "both dancing mini-me and kaneki kagune automatically respawned after teleport!");
+  check(AccessoryController.miniMeAttached(p) && AccessoryController.kanekiAttached(p),
         "fresh pivot entities mounted onto PivotOverride at destination!");
-  check(!fe.pivots.passengers.contains(oldCentPivot) && !fe.pivots.passengers.contains(oldKanekiPivot),
+  check(!fe.pivots.passengers.contains(oldMiniPivot) && !fe.pivots.passengers.contains(oldKanekiPivot),
         "stale pre-teleport passenger IDs removed");
   check(fe.pivots.passengers.ids.size() == 2,"new post-teleport passenger IDs active");
 
-  // --- Switching Slot 12 (Angel Wings) cleanly removes Kaneki Dummy while keeping Scolopendra ---
-  click.slot=12;controller.onClick(click);
+  // --- 7. Switching to Angel Wings (Спина slot 30) cleanly removes Kaneki Dummy while keeping Mini-Me ---
+  click.slot=12;controller.onClick(click); // tab to Спина
+  click.slot=30;controller.onClick(click); // equip Angel Wings
   check(!AccessoryController.wearingKaneki(p) && AccessoryController.back(plugin,p)==plugin.wings,"wings replace kaneki cleanly");
-  check(AccessoryController.wearingCentipede(p) && fe.entities.size()==1,"scolopendra remains untouched");
+  check(AccessoryController.wearingMiniMe(p) && fe.entities.size()==1,"mini-me remains untouched alongside wings");
 
-  // --- Clear All (slot 49) ---
+  // --- 8. Also equip Halo in Шапки (slot 31) -> Wings + Halo + Mini-Me all 3 active together! ---
+  click.slot=13;controller.onClick(click); // tab to Шапки
+  click.slot=31;controller.onClick(click); // equip Halo
+  check(AccessoryController.halo(plugin,p)==plugin.halo && AccessoryController.back(plugin,p)==plugin.wings && AccessoryController.wearingMiniMe(p),
+        "Спина (Wings) + Шапки (Halo) + Питомцы (Mini-Me) all active simultaneously!");
+
+  // --- 9. Clear All (slot 49) ---
   click.slot=49;controller.onClick(click);
-  check(!AccessoryController.wearingCentipede(p) && !AccessoryController.wearingKaneki(p) && fe.entities.isEmpty(),"clear-all removes everything cleanly");
+  check(!AccessoryController.wearingMiniMe(p) && AccessoryController.back(plugin,p)==null && AccessoryController.halo(plugin,p)==null && fe.entities.isEmpty(),
+        "clear-all removes back, hat, and pet cleanly");
 
-  // --- Quit cleanup ---
-  click.slot=15;controller.onClick(click);
-  click.slot=14;controller.onClick(click);
-  check(AccessoryController.wearingCentipede(p) && AccessoryController.wearingKaneki(p),"both equipped before quit");
+  // --- 10. Quit cleanup ---
+  click.slot=14;controller.onClick(click); // Питомцы
+  click.slot=30;controller.onClick(click); // Mini-Me
+  click.slot=12;controller.onClick(click); // Спина
+  click.slot=32;controller.onClick(click); // Kaneki
+  check(AccessoryController.wearingMiniMe(p) && AccessoryController.wearingKaneki(p),"both equipped before quit");
   controller.onQuit(new PlayerQuitEvent(p));
-  check(!AccessoryController.wearingCentipede(p) && !AccessoryController.wearingKaneki(p) && fe.entities.isEmpty(),"quit releases all rigs without leak");
+  check(!AccessoryController.wearingMiniMe(p) && !AccessoryController.wearingKaneki(p) && fe.entities.isEmpty(),"quit releases all rigs without leak");
 
   ElytrixFreakModelPlugin bare=new ElytrixFreakModelPlugin();bare.returnNullCommand=true;
   AccessoryController.install(bare);
   check(bare.mockCommand.executor==null && !bare.warnings.isEmpty(),"missing command logged safely");
   InventoryDragEvent drag=new InventoryDragEvent();drag.view=click.view;controller.onDrag(drag);check(drag.cancelled,"drag cancelled");
-  System.out.println("All v3.11.0 tests passed: Full-body Scolopendra, Kaneki Rinkaku Kagune, teleport respawn & PivotOverride recovery!");
+  System.out.println("All v3.13.0 tests passed: 3-section menu (Спина/Шапки/Питомцы), Dancing Mini-Me shoulder pet, Scolopendra, Kaneki Kagune & teleport recovery!");
  }
 }

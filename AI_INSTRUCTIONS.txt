@@ -380,15 +380,22 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
      `tools/accessories-integration/` и `tools/accessories-model/` (подробности в `MODELS_PIPELINE.md`).
    - Исправлен лимит 12 моделей в `plugins/ModelEngine-4.1.0.jar` (`ModelGeneratorImpl.importModelsInternal`:
      `BIPUSH 12` -> `SIPUSH 8192`, `tools/accessories-integration/patch_modelengine.py`) + добавлена
-     авто-догрузка блюпринтов на лету `AccessoryController.resolveBlueprint(...)` в `ElytrixFreakModel v3.12.0`,
+     авто-догрузка блюпринтов на лету `AccessoryController.resolveBlueprint(...)` в `ElytrixFreakModel v3.13.0`,
      чтобы ни одна модель никогда не выдавала «Модель ещё не загружена».
+   - Меню `/accessories` (`/аксессуары`) разбито на 3 раздела с нативными RP-оверлеями слотов (`ꏡ`, `ꏢ`, `ꏣ`)
+     и пиксельными заголовками из `title_00.png` (`ꏤ` `СПИНА`, `ꏥ` `ШАПКИ`, `ꏦ` `ПИТОМЦЫ`), вкладками быстрого
+     переключения (`12, 13, 14`) и кнопкой `Назад` (`ARROW CMD 10002`, слот `45`):
+     * `Спина`: `Ангельские крылья` (`angel_wings`) и `Щупальца Канэки` (`elytrix_kaneki_tentacles`)
+     * `Шапки`: `Божественный нимб` (`angel_halo`)
+     * `Питомцы`: `Мини-скин` (`elytrix_mini_me` — танцующий возле плеча маленький белый скин с бирюзовым лицом `#5BFBFF`)
+       и `Сколопендра Гуля` (`elytrix_centipede`)
    - Реализовано скрытие надетых аксессуаров от 1-го лица при сохранении 100% видимости в `F5` и для всех
      остальных игроков (`tools/accessories-model/fpv_shaders.py`): маркерные `minecraft:constant` тинты
-     `-196867` (`RGB 252,254,253` -> отсечка `< 1.85m` для кагуне, сколопендры и нимба) и `-197122`
+     `-196867` (`RGB 252,254,253` -> отсечка `< 1.85m` для кагуне, сколопендры, мини-скина и нимба) и `-197122`
      (`RGB 252,253,254` -> отсечка `< 2.85m` для крыльев) + GLSL fragment `discard` в `core/entity.{vsh,fsh}` и
      `core/rendertype_item_entity_translucent_cull.{vsh,fsh}` по всем версиям (`<= 1.21.1`, `1_21_2` для `1.21.2–1.21.5`,
      `1_21_6` для `1.21.6–1.21.8`, `1_21_9` `#version 330` + `PER_FACE_LIGHTING` для `1.21.9–1.21.11`) + `sodium.ignored_shaders`.
-   - Актуальные блюпринты в `plugins/ModelEngine/blueprints/` и RP (`SHA-1: 5694f7064ac0bd21c8837ac20faf574c59cd729f`):
+   - Актуальные блюпринты в `plugins/ModelEngine/blueprints/` и RP (`SHA-1: 694d30c32bc048267695cc555189be1733d99c6d`):
      * `elytrix_angel_halo.bbmodel` (нимб, 161 куб, `halo_ring` + `halo_aura`)
      * `elytrix_angel_wings.bbmodel` (крылья, 9 кубов на крыло + 6 падающих перьев)
      * `elytrix_kaneki_tentacles.bbmodel` (каноничное Ринкаку Кагуне Канеки Кена из аниме «Токийский Гуль»:
@@ -400,6 +407,9 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
        двухступенчатая защита от гимбал-лока `carrier_01..16` + `seg_01..16`, 28 лапок `leg_l/r_02..15`,
        голова `head`, клыки `fang_l/r`, 2-звенные усики `ant_l1/l2/r1/r2`, церки `cercus_l/r`, 161 куб с `rotation: [0,0,0]`,
        текстура `128x128`, иконка `centipede_icon`; переживает любые телепорты и смену миров за счёт авто-респавна `Dummy`)
+     * `elytrix_mini_me.bbmodel` (танцующий возле правого плеча мини-скин владельца `scale=0.27`, 6 кубов с `rotation: [0,0,0]`,
+       8 артикулированных костей `body_root -> dancer -> pelvis -> torso/head/right_arm/left_arm + right_leg/left_leg`,
+       бесшовная 8-битная танцевальная анимация `'idle'` `3.2s`, текстура `64x64` `#FFFFFF` + `#5BFBFF`, иконка `mini_me_icon`)
      * `elytrix_priora_{black,white,pink}.bbmodel` (Лада Приора, 2 места)
 
 2. Античит, антиэксплойт и PvP-синхронизация:
