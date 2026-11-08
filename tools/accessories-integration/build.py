@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
 BASE = ROOT / 'plugins/ElytrixFreakModel.jar'
 ENTRY = 'pw/elytrix/freakmodel/ElytrixFreakModelPlugin.class'
-TARGET_VERSION = '3.17.1'
+TARGET_VERSION = '3.17.2'
 JAVA = os.environ.get('JAVA', 'java')
 ECJ = os.environ.get('ECJ')
 

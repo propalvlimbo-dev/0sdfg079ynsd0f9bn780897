@@ -41,18 +41,25 @@ anticheat:
       hide-itemmeta: false
       hide-itemmeta-with-visual-effects: false
 chunks:
-  auto-save-interval: 18000
-  delay-chunk-unloads-by: 15s
+  auto-save-interval: 6000
+  delay-chunk-unloads-by: 5s
   entity-per-chunk-save-limit:
     arrow: 16
+    breeze_wind_charge: 8
+    dragon_fireball: 8
+    egg: 8
     ender_pearl: 8
     experience_orb: 16
     fireball: 8
+    shulker_bullet: 8
     small_fireball: 8
     snowball: 8
+    trident: 8
+    wind_charge: 8
+    wither_skull: 8
   fixed-chunk-inhabited-time: -1
   flush-regions-on-save: false
-  max-auto-save-chunks-per-tick: 6
+  max-auto-save-chunks-per-tick: 8
   prevent-moving-into-unloaded-chunks: true
 collisions:
   allow-player-cramming-damage: false
@@ -132,10 +139,25 @@ entities:
         cobblestone: 300
         netherrack: 300
         cobbled_deepslate: 300
+        stone: 300
+        deepslate: 300
+        andesite: 300
+        diorite: 300
+        granite: 300
+        tuff: 300
+        basalt: 300
+        blackstone: 300
+        end_stone: 300
         dirt: 400
+        grass_block: 400
         sand: 400
         gravel: 400
         rotten_flesh: 400
+        bone: 400
+        arrow: 400
+        string: 400
+        spider_eye: 400
+        wheat_seeds: 300
         bamboo: 300
         kelp: 300
     count-all-mobs-for-spawning: false
@@ -149,14 +171,14 @@ entities:
         hard: 56
         soft: 24
       creature:
-        hard: 72
-        soft: 28
+        hard: 56
+        soft: 24
       misc:
-        hard: 64
+        hard: 56
         soft: 24
       monster:
-        hard: 72
-        soft: 28
+        hard: 56
+        soft: 24
       underground_water_creature:
         hard: 56
         soft: 24
@@ -167,8 +189,15 @@ entities:
         hard: 56
         soft: 24
     despawn-time:
-      llama_spit: disabled
-      snowball: disabled
+      breeze_wind_charge: 200
+      dragon_fireball: 300
+      egg: 200
+      fireball: 300
+      llama_spit: 200
+      small_fireball: 300
+      snowball: 200
+      wind_charge: 200
+      wither_skull: 300
     disable-mob-spawner-spawn-egg-transformation: false
     duplicate-uuid:
       mode: SAFE_REGEN

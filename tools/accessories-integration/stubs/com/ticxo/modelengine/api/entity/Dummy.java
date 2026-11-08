@@ -17,6 +17,10 @@ public class Dummy<T> implements BaseEntity {
     public IEntityData mockData;
     private final DefaultBodyRotationController rot = new DefaultBodyRotationController(this);
 
+    public Dummy() {
+        this.original = null;
+    }
+
     public Dummy(T original) {
         this.original = original;
     }

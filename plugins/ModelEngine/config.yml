@@ -1,8 +1,8 @@
 Model-Engine:
   Print-Script-Warnings: false
   Use-State-Machine: false
-  Engine-Threads: 4
-  Max-Engine-Threads: 10
+  Engine-Threads: 2
+  Max-Engine-Threads: 3
   Sync-Client-Tick-End: true
   Load-On-World-Load: false
   Unload-On-World-Unload: false
@@ -15,7 +15,7 @@ Model-Engine:
   Render-Fire-On-Model: false
   MineSkin-API-Key: ''
   User-Limb:
-    Eager-Generate-Skins: true
+    Eager-Generate-Skins: false
     Default-Classic-Skin: Steve
     Default-Slim-Skin: Alex
     Default-Skins:
@@ -51,7 +51,7 @@ Model-Generator:
   Create-MC-META: true
   Item-Model: LEATHER_HORSE_ARMOR
   Item-Models: []
-  Max-Generator-Threads: 10
+  Max-Generator-Threads: 3
   Use-New-Rotation: false
   Merge-Item-Models: false
   Disabled-Overlays: []
@@ -59,9 +59,9 @@ Network-Optimization:
   Bundle-Everything: false
   Bundle-Size: 512
   Override-Move-To-Method: true
-  Cull-Interval: 1
-  Culling-Threads: 4
-  Max-Culling-Threads: 10
+  Cull-Interval: 2
+  Culling-Threads: 2
+  Max-Culling-Threads: 3
   Vertical-Render-Distance:
     Enabled: true
     Vertical-Render-Distance: 32

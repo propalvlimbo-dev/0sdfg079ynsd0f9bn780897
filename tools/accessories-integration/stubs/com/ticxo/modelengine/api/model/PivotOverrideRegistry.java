@@ -11,4 +11,5 @@ import org.bukkit.entity.Entity;
  */
 public class PivotOverrideRegistry {
     public PivotOverride getOrCreate(Entity entity) { return null; }
+    public void remove(java.util.UUID uuid) {}
 }

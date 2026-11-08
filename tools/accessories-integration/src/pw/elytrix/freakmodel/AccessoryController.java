@@ -14,6 +14,7 @@ import com.ticxo.modelengine.api.generator.blueprint.ModelBlueprint;
 import com.ticxo.modelengine.api.lod.AnimationLODHandler;
 import com.ticxo.modelengine.api.model.ActiveModel;
 import com.ticxo.modelengine.api.model.ModeledEntity;
+import com.ticxo.modelengine.api.model.ModelUpdaters;
 import com.ticxo.modelengine.api.model.PivotOverride;
 import com.ticxo.modelengine.api.model.PivotOverrideRegistry;
 import com.ticxo.modelengine.api.model.render.DisplayRenderer;
@@ -33,6 +34,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -245,7 +247,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
     /** Isolated Dummy-backed ModelEngine rig (Mini-Me Dancer, Scolopendra, or Kaneki Rinkaku Kagune). */
     private static final class GhoulRig {
         final String blueprintId;
-        final Dummy<Player> dummy;
+        final Dummy<?> dummy;
         final ModeledEntity entity;
         final ActiveModel model;
         PivotOverride pivot;
@@ -267,7 +269,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         String lastEmoteAnim;
         String lastEmoteSound;
 
-        GhoulRig(String blueprintId, Dummy<Player> dummy, ModeledEntity entity,
+        GhoulRig(String blueprintId, Dummy<?> dummy, ModeledEntity entity,
                  ActiveModel model, PivotOverride pivot, Location spawnLoc) {
             this.blueprintId = blueprintId;
             this.dummy = dummy;
@@ -1033,7 +1035,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         ModelBlueprint blueprint = resolveBlueprint(blueprintId);
         if (blueprint == null) return null;
 
-        Dummy<Player> dummy = new Dummy<>(player);
+        Dummy<Void> dummy = new Dummy<>();
         Location loc = player.getLocation();
         if (loc != null) dummy.syncLocation(loc);
         dummy.setDetectingPlayers(true);
@@ -1058,6 +1060,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
         if (entity == null || entity.isDestroyed()) return null;
         entity.setBaseEntityVisible(false);
+        entity.setSaved(false);
         entity.setModelRotationLocked(false);
         AnimationLODHandler lod = entity.getAnimationLodHandler();
         if (lod != null) lod.setEnabled(Boolean.FALSE);
@@ -1108,9 +1111,17 @@ public final class AccessoryController implements CommandExecutor, Listener {
                 rig.dummy.setRemoved(true);
                 ModelEngineAPI.removeModeledEntity(rig.dummy.getUUID());
             }
-            if (!rig.entity.isDestroyed() && rig.dummy != null
-                    && rig.entity.getBase() == rig.dummy) {
-                rig.entity.destroy();
+            if (rig.entity != null && rig.dummy != null && rig.entity.getBase() == rig.dummy) {
+                if (!rig.entity.isDestroyed()) {
+                    rig.entity.destroy();
+                }
+                ModelEngineAPI api = ModelEngineAPI.getAPI();
+                if (api != null) {
+                    ModelUpdaters updaters = api.getModelUpdaters();
+                    if (updaters != null) {
+                        updaters.forceRemoveModeledEntity(rig.entity);
+                    }
+                }
             }
         } catch (Throwable ignored) {
         }
@@ -1221,13 +1232,21 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (tracker != null) tracker.notifyArmSwing();
     }
 
-    @EventHandler public void onQuit(PlayerQuitEvent event) {
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         if (player == null) return;
         java.util.UUID uuid = player.getUniqueId();
         releaseByUuid(uuid);
         TELEPORT_RESPAWN_AT.remove(uuid);
         TRACKERS.remove(uuid);
+        try {
+            if (WornAngelRig.getActiveBinding(uuid) == null) {
+                PivotOverrideRegistry registry = ModelEngineAPI.getPivotOverrideRegistry();
+                if (registry != null) registry.remove(uuid);
+            }
+        } catch (Throwable ignored) {
+        }
     }
 
     @EventHandler public void onDeath(PlayerDeathEvent event) {

@@ -8,6 +8,7 @@ public interface ModeledEntity {
     boolean isDestroyed();
     void destroy();
     void setBaseEntityVisible(boolean visible);
+    default void setSaved(boolean saved) {}
     void setModelRotationLocked(boolean locked);
     Optional<ActiveModel> addModel(ActiveModel model, boolean passenger);
     Optional<ActiveModel> removeModel(String modelId);

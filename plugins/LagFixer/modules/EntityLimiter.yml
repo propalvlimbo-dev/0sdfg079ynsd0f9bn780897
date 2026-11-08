@@ -19,7 +19,7 @@ EntityLimiter:
     - HORSE
     ignore_models: true
     creatures: 20
-    items: 64
+    items: 48
     vehicles: 5
     projectiles: 12
     reasons:
@@ -30,11 +30,11 @@ EntityLimiter:
     - SPAWNER_EGG
     overflow_purge:
       enabled: true
-      interval: 45
+      interval: 30
       limit_multiplier: 1.5
       types:
         creatures: true
-        items: false
+        items: true
         vehicles: true
         projectiles: true
         named: false
