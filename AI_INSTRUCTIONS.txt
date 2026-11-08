@@ -66,6 +66,7 @@
      * `plugins/UltimateServerProtector/data.yml` (админ-пароли `/pas`!)
      * `plugins/ElytrixSite/config.yml` (пароль MySQL и секрет сайта!)
      * `plugins/ElytrixAuthBridge/config.properties` (ключ моста привязки!)
+     * `config/paper-global.yml` (`proxies.velocity.secret` — боевой ключ связки с Velocity! Настройки потоков в нём менять ТОЛЬКО точечно через `sed`, НЕ класть файл целиком в архивы!)
    - НЕ включать `plugins/ModelEngine/config.yml` (чтобы не сбросить боевой конфиг).
    - НЕ включать `plugins/ModelEngine/.data/` и `.data/cache.json`.
    - При упаковке `plugins/ModelEngine/resource pack/` включать ТОЛЬКО `pack.mcmeta`
