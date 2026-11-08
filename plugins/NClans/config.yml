@@ -93,7 +93,7 @@ memberHeadLore:
   - '&r  &7Нажмите, для подробной информации&r'
   - '&r  &7 и редактирования прав'
 infoLore:
-  - "&fНазвание клана: &#F8BEFB%name%"
+  - "&fНазвание клана: %name%"
   - "&fУровень: &#F8BEFBУровень %currentLvl% &f(&#F8BEFB%currentExp%&8/&#F8BEFB%needExp% &8exp&f)"
   - "&fКоинов: &#F8BEFB%points%"
   - "&fУчастники: &#F8BEFB%currentMembers%&f/&#F8BEFB%maxMembers% &f(&#F8BEFB%onlineMembers% &aонлайн&f)"
@@ -180,7 +180,7 @@ messages:
   alreadyInClan:
     - "&#F8BEFBКланы &7» &cТы уже в клане"
   unvalidName:
-    - "&#F8BEFBКланы &7» &cНекорректное название клана"
+    - "&#F8BEFBКланы &7» &cНекорректное название клана &7(цветовые коды запрещены — цвет зависит от уровня клана)"
   unvalidLength:
     - "&#F8BEFBКланы &7» &cНекорректное название клана"
   alreadyCreated:

@@ -247,19 +247,7 @@ items:
     - 44
     display_name: '&#FFFFFFꕡ %player_name% &#555555| &#AAAAAAНавсегда: &#FF3B4E&l3000 &#AAAAAAрублей'
     lore:
-    - '&#AAAAAA&l┇ &#FF3B4E&l♛ ВЫСШАЯ ДОНАТ-АДМИН ПРИВИЛЕГИЯ ♛'
-    - '&#AAAAAA&l┇ &#FFFFFFЭксклюзивный набор с булавой - &#FF3B4E&l/kit dadmin'
-    - '&#AAAAAA&l┇ &#FFFFFFДоступ к наборам &#FFFFFF&lANGEL&#AAAAAA, &#FACC15&lD.HELPER&#AAAAAA, &#F8BEFB&lPLUSPRO'
-    - '&#AAAAAA&l┇ &#FFFFFFНаказания без задержек - &#FF3B4E&l/tempban, /tempmute, /kick, /warn'
-    - '&#AAAAAA&l┇ &#FFFFFFПроверка на читы и репорты - &#FF3B4E&l/check, /reports, /spec'
-    - '&#AAAAAA&l┇ &#FFFFFFВаниш, бессмертие, телепортация - &#FF3B4E&l/v, /god, /tp, /gm 3'
-    - '&#AAAAAA&l┇ &#FF3B4E&l+ &#F8BEFBИммунитет &#FFFFFFот мутов/банов и доступ в админ-чат'
-    - '&#AAAAAA&l┇ &#FF3B4E&l+ &#FFFFFFВыдача привилегий игрокам - &#FF3B4E&l/grant'
-    - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
-    - '&#AAAAAA&l┇ &#FF3B4E&l+ x6.0 &#FFFFFFвалюты за мобов и убийства'
-    - '&#AAAAAA&l┇ &#FF3B4E&l+ 999 &#FFFFFFслотов на аукционе и безлимит приватов/домов'
-    - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
-    - '&#AAAAAA&l┇ &#FFFFFFКрасный админ-префикс &#FFFFFFꕡ &#FFFFFFв чате и табе'
+    - '&#AAAAAA&l┇ &#FF3B4E&lВСЕ ПРАВА'
     - ''
     - '&#FF3B4E➥ &#FFFFFFПокупка на сайте &#F8BEFB&lhttps://elytrix.pw'
     click_commands:

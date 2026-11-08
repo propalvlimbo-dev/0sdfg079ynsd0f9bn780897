@@ -44,7 +44,7 @@ items-cooldowns:
     - CONSUME
     checked-meta:
     - MATERIAL
-    base64: H4sIAAAAAAACA+NiYGBm4HZJLEkMSy0qzszPY2DgkuJgYMpMYRDLzcxLTS5KTCuxSs/PSUnNi08sKMhJZWRgdc4vzSthZAAAKVnRWDwAAAA=
+    base64: H4sIAAAAAAAA/+NiYGBm4HZJLEkMSy0qzszPY2AQsudgYMpMYRDLzcxLTS5KTCuxSs/PSUnNi08sKMhJZWZgTc4vzSthYGBgZAAA2Z5EEz8AAAA=
     time: 5
     set-material-cooldown: true
   ENCHANTED_GOLDEN_APPLE:
@@ -53,7 +53,7 @@ items-cooldowns:
     - CONSUME
     checked-meta:
     - MATERIAL
-    base64: H4sIAAAAAAACA+NiYGBm4HZJLEkMSy0qzszPY2DgkuJgYMpMYVDIzcxLTS5KTCuxSs1LzkjMK0lNiU/Pz0lJzYtPLCjISWVkYHXOL80rYWQAABIquQJGAAAA
+    base64: H4sIAAAAAAAA/wXBwQ2AIAwF0K/ExOjNCZzDixdn8EqaUpUEC8G6P+9NgMN8kNEp9YtZgWUf0ceA9Y0qXOmyTZQfUpPg75yCqKdSkjgMnH81AB0a2VocpEkAAAA=
     time: 10
     set-material-cooldown: true
   ENDER_PEARL:
@@ -63,7 +63,7 @@ items-cooldowns:
     - RIGHT_CLICK_BLOCK
     checked-meta:
     - MATERIAL
-    base64: H4sIAAAAAAACA+NiYGBm4HZJLEkMSy0qzszPY2DgkuJgYMpMYRDNzcxLTS5KTCuxSs1LSS2KL0hNLMphZGB1zi/NK2FkAAB6jFx5OwAAAA==
+    base64: H4sIAAAAAAAA/+NiYGBm4HZJLEkMSy0qzszPY2AQsudgYMpMYRDNzcxLTS5KTCuxSs1LSS2KL0hNLMphZmBNzi/NK2FgYGBkAAB72IPJPgAAAA==
     time: 15
     set-material-cooldown: true
   CHORUS_FRUIT:
@@ -72,7 +72,7 @@ items-cooldowns:
     - CONSUME
     checked-meta:
     - MATERIAL
-    base64: H4sIAAAAAAACA+NiYGBm4HZJLEkMSy0qzszPY2DgkuJgYMpMYRDLzcxLTS5KTCuxSs7ILyotjk8rKs0sYWRgdc4vzQPSAGpDd/c8AAAA
+    base64: H4sIAAAAAAAA/+NiYGBm4HZJLEkMSy0qzszPY2AQsudgYMpMYRDLzcxLTS5KTCuxSs7ILyotjk8rKs0sYWZgTc4vzSthYGBgZAAA6VEA7j8AAAA=
     time: 5
     set-material-cooldown: true
   FIREWORK_ROCKET:
@@ -82,7 +82,7 @@ items-cooldowns:
     - RIGHT_CLICK_BLOCK
     checked-meta:
     - MATERIAL
-    base64: H4sIAAAAAAACA+NiYGBm4HZJLEkMSy0qzszPY2DgkuJgYMpMYZDMzcxLTS5KTCuxSsssSi3PL8qOL8pPzk4tYWRgdc4vzQPSAJ6Sq4s/AAAA
+    base64: H4sIAAAAAAAA/+NiYGBm4HZJLEkMSy0qzszPY2AQsudgYMpMYZDMzcxLTS5KTCuxSsssSi3PL8qOL8pPzk4tYWZgTc4vzSthYGBgZAAA+Tuef0IAAAA=
     time: 8
     set-material-cooldown: true
 preventable-items: {}
@@ -95,6 +95,7 @@ ignored-worlds:
 prevent-start-if-damager:
 - GAMEMODE
 - VANISH
+- GOD
 prevent-start-if-target:
 - GAMEMODE
 - VANISH

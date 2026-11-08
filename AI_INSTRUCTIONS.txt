@@ -416,7 +416,10 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
 4. Гриф-механики, мир и интеграции:
    - `WorldGuardGriefFix-5.1.jar` (`plugins/WorldGuardGriefFix/config.yml` — разрешён гриф поршнями, вагонетками, визером и взрывами в приватах, кроме мира `spawn` и блоков алмазной/изумрудной/железной руды и блоков).
    - `WGExtender-fork.jar` (`15,051 B`) + обновлённые лимиты объёма приватов в `WGExtender/config.yml` (`default: 400000`, `vertexpand: true`) + мир `duels` в `WorldGuard/worlds/duels/`.
-   - `ElytrixGodPickup.jar` — запрет подбора предметов в режиме `/god` Essentials.
+   - `ElytrixGodPickup.jar` (`v2.0.0`, `tools/god-fix/`) — полная блокировка любых действий в режиме `/god` (`/egod`, `/godmode`, `/tgm`, `/ungod`, API) + строгий кулдаун `5.0 сек.` после выключения `/god` (запрет ударов, стрельбы, открытия сундуков/контейнеров, подбора/выброса предметов, ломания/установки блоков, использования предметов и повторного включения `/god` во время КД, с защитой от релога и от `/god <чужой_ник>`).
+   - `hJobs.jar` (`tools/bugfix-suite/`) — потокобезопасный SQLite WAL (`dbLock`), предзагрузка на `PlayerJoinEvent`, синхронный lazy-load `ensurePlayerStatsLoaded`, монотонный `MAX(sold_total)` UPSERT и автосохранение при продаже в GUI (НЕ затирать `plugins/hJobs/database.db` на VDS!).
+   - `NClans-1.jar` (`tools/bugfix-suite/`) — запрет ручных цветовых/HEX-кодов в названиях кланов (`ValidatorUtil.getValidClanName`), автоочистка старых названий в `Clan.<init>`/`setName`, цвет строго по уровню клана (`levels.yml` 1..100) и `O(1)` кеш `LevelConfiguration` (НЕ затирать `plugins/NClans/clans.yml` на VDS!).
+   - `GreatCombat-1.9.jar` + `plugins/GreatCombat/config.yml` (`tools/bugfix-suite/`) — Base64 коды предметов под `1.21.11` (`DataVersion: 4671`), защита `ItemUtils.decode` от отключения плагина + честные КД предметов в PvP без обхода через OP/`*`.
    - `Chunky` — предгенерация мира `world` радиусом `2000`.
    - `fmDonateAlert` — оповещения о покупке доната (`/fmad send`, градиент Elytrix + Title).
    - `ElytrixSite` (порт API `20559` + MySQL сайта) и `ElytrixAuthBridge` (HTTP-мост бота привязки) — конфиги на VDS НЕ затирать; `.jar` файлы `Chunky`, `ElytrixAuthBridge`, `ElytrixSite`, `GrimAC`, `fmDonateAlert` стоят на VDS (в `dfghjdyjk56` была выгружена вторая половина джарников `I..Z` в `pluginjar1.rar`).
