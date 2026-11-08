@@ -14,6 +14,7 @@ public interface Player extends HumanEntity, Entity {
     org.bukkit.inventory.InventoryView openInventory(Inventory inv);
     boolean isOnline();
     default boolean isDead() { return false; }
+    default boolean isSneaking() { return false; }
     default GameMode getGameMode() { return GameMode.SURVIVAL; }
     default float getBodyYaw() { return 0.0F; }
     String getName();

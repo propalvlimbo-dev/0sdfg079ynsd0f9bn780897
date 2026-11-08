@@ -82,6 +82,15 @@ def _bones(model):
         yield from walk(root)
 
 
+def _runtime_bone_name(raw_name: str) -> str:
+    """Matches ModelEngine 4.1.0 DefaultBehaviorParser.readOptions prefix stripping."""
+    low = raw_name.lower()
+    for prefix in ('fhi_', 'fh_', 'hi_', 'h_'):
+        if low.startswith(prefix):
+            return low[len(prefix):]
+    return low
+
+
 def build(bbmodel, out_dir, model_name=None):
     bbmodel = Path(bbmodel)
     model = json.loads(bbmodel.read_text(encoding='utf-8'))
@@ -96,6 +105,7 @@ def build(bbmodel, out_dir, model_name=None):
     written = []
     for bone, cubes in _bones(model):
         pivot = bone['origin']
+        bone_id = _runtime_bone_name(bone['name'])
         # ModelEngine sorts the cubes of a bone by their UUID (verified against the
         # working kagune assets: the order is neither the outliner order nor its
         # reverse, it is the UUID order).
@@ -114,13 +124,13 @@ def build(bbmodel, out_dir, model_name=None):
             tints = [{'index': 0, 'default': 16777215, 'type': 'minecraft:custom_model_data'}]
         definition = {
             'model': {
-                'model': f'modelengine:{name}/{bone["name"]}',
+                'model': f'modelengine:{name}/{bone_id}',
                 'tints': tints,
                 'type': 'minecraft:model',
             }
         }
-        model_path = models / f'{bone["name"]}.json'
-        item_path = items / f'{bone["name"]}.json'
+        model_path = models / f'{bone_id}.json'
+        item_path = items / f'{bone_id}.json'
         model_path.write_text(json.dumps(body, separators=(',', ':')) + '\n', encoding='utf-8')
         item_path.write_text(json.dumps(definition, separators=(',', ':')), encoding='utf-8')
         written.extend((model_path, item_path))

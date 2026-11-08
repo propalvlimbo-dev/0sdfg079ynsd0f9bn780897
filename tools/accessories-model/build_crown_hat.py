@@ -4,20 +4,24 @@ its 32x32 pixel-art menu icon (`reallyworld:crown_icon`), and a multi-angle
 verification preview strip.
 
 100% pure procedural Python + Pillow + NumPy — zero AI generation:
-  1. Exact In-Game Head Fit (`чётка на голове`):
+  1. Exact In-Game 3D Head-Glued Rig (`приклеена к голове` — full `yaw` + `pitch`):
        - Calibrated directly to vanilla Minecraft's `PlayerRenderer` (`0.9375` scale):
-           * Bare player head:  X/Z in [-3.75, +3.75], Y in [22.50, 30.00]
-           * 2nd-layer skin hat: X/Z in [-4.22, +4.22], Y up to 30.47
-       - The golden circlet's inner wall sits at ±4.24 (0.02 BB clearance outside even a
-         full 2nd-layer skin hat — zero clipping/z-fighting AND zero air gap!) and its
-         lower rim wraps down to Y = 28.55 around the player's forehead & temples, with a
-         rich dark-crimson velvet cap resting flush on Y = 30.02.
+           * Exact player neck / head rotation joint: `[0.0, 22.50, 0.0]` (`1.40625m`)
+           * Bare player head:  X/Z in `[-3.75, +3.75]`, Y in `[22.50, 30.00]`
+           * 2nd-layer skin hat: X/Z in `[-4.22, +4.22]`, Y up to `30.47`
+       - Root bone `hi_crown_root` uses ModelEngine 4.1.0's built-in `hi_` inherited `Head`
+         behavior (`DefaultBehaviorParser` -> `BoneBehaviorTypes.HEAD`, `inherited = true`)
+         pivoted at the exact player neck joint `[0.0, 22.50, 0.0]`, with `setLockPitch(false)`
+         and live packet-level `xHeadRot = playerPitch` + `sneak` neck-drop compensation
+         (`-2.34` BB units when crouching). Looking straight up (`-90°`), straight ahead (`0°`),
+         or straight down (`+90°`) swings the crown along the exact same 3D head arc with
+         0.00mm detachment!
   2. Subtle Royal Animation (`небольшая анимация`, `idle` loop 3.6s @ 20 TPS):
-       - The crown band itself stays rock-steady on the player's head (`dy <= 0.05` BB)
-         so it never floats or drifts off the brow.
+       - `hi_crown_root` and `crown_body` have ZERO wobble/drift (`0.00` BB relative motion)
+         so the golden circlet stays 100% superglued to the player's forehead & temples.
        - Inset faceted jewels (`crown_gems`) gently pulse with a subtle gleam, while four
          delicate 3D golden/diamond glint stars (`glint_n`, `glint_e`, `glint_s`, `glint_w`)
-         twinkle, rotate, and shimmer in staggered waves right above the crown's spires.
+         twinkle, rotate, and shimmer in staggered waves in the tilted head's own local frame.
   3. Blockbench `4.10` `free` blueprint (`elytrix_royal_crown.bbmodel`):
        - `resolution` 16x16, `uv_width`/`uv_height` = 16, `internal: true`, all UVs in `0..16`
        - Zero per-cube rotations (`rotation: [0.0, 0.0, 0.0]` on every cube)
@@ -161,8 +165,14 @@ def _pt(x: float, y: float, z: float) -> list[float]:
     return [round(x, 4), round(y, 4), round(z, 4)]
 
 
-# Bone origins calibrated to exact Minecraft PlayerRenderer (0.9375 scale) head top Y = 30.00!
-ROOT_ORIG = [0.0, 29.8, 0.0]
+# Bone origins calibrated to exact Minecraft PlayerRenderer (0.9375 scale):
+#   - NECK_ORIG = [0.0, 22.50, 0.0] is the exact vanilla HumanoidModel.head neck pivot
+#     (24px * 0.9375 = 22.50 BB = 1.40625m). Using `hi_crown_root` at [0.0, 22.50, 0.0]
+#     makes ModelEngine's HeadImpl (inherited=true) rotate the entire crown in full 3D
+#     (yaw + pitch) along the exact same head arc as the player's skull!
+ROOT_BONE_NAME = 'hi_crown_root'
+ROOT_ORIG = [0.0, 22.50, 0.0]
+SNEAK_NECK_OFFSET_Y = -2.34  # Crouching neck drop (-5.9375 BB) minus Pose.CROUCHING passenger drop (-3.60 BB)
 BODY_ORIG = [0.0, 29.8, 0.0]
 GEMS_ORIG = [0.0, 29.8, 0.0]
 GLINT_ORIGINS = {
@@ -174,22 +184,15 @@ GLINT_ORIGINS = {
 
 
 # ---------------------------------------------------------------------------
-# 3. Subtle Royal Animation (`idle`, 3.6s seamless loop @ 20 TPS)
+# 3. Subtle Royal Animation (`idle` 3.6s + `sneak` crouch neck-offset loop)
 # ---------------------------------------------------------------------------
 def eval_crown_pose(u: float) -> dict:
     """Evaluates bone transforms at normalized loop phase u in [0, 1).
-    Keeps the crown circlet rock-steady on the player's head (`dy <= 0.05` BB)
-    while jewels gently gleam and 4 tiny royal sparkles twinkle above the peaks.
+    `hi_crown_root` and `crown_body` stay 100% locked (0.00mm / 0.00 deg drift)
+    to the player's head, while inset jewels gently gleam and 4 delicate royal
+    sparkles twinkle above the spires in the tilted head's local coordinate frame.
     """
     tau = 2.0 * math.pi
-
-    # Ultra-subtle regal poise so the crown stays 100% locked onto the brow/head!
-    root_dy = 0.04 * math.sin(tau * u)
-    root_rot = [
-        0.35 * math.sin(tau * u),
-        0.90 * math.sin(tau * u),
-        0.45 * math.cos(tau * u),
-    ]
 
     # Subtle jewel gleam pulse (scales radially by only ±1.8% around GEMS_ORIG)
     gem_pulse = 1.0 + 0.018 * math.sin(tau * 2.0 * u)
@@ -223,8 +226,8 @@ def eval_crown_pose(u: float) -> dict:
         }
 
     return {
-        'root_pos': [0.0, round(root_dy, 4), 0.0],
-        'root_rot': [round(v, 4) for v in root_rot],
+        'root_pos': [0.0, 0.0, 0.0],
+        'root_rot': [0.0, 0.0, 0.0],
         'gems_scale': gems_scale,
         'glints': glints,
     }
@@ -243,15 +246,13 @@ def _vec_kf(channel: str, tag: str, t: float, x: float, y: float, z: float) -> d
 
 
 def build_idle_animators() -> dict:
-    bones = ['crown_root', 'crown_gems', 'glint_n', 'glint_e', 'glint_s', 'glint_w']
+    bones = ['crown_gems', 'glint_n', 'glint_e', 'glint_s', 'glint_w']
     kfs = {b: [] for b in bones}
     for s in range(IDLE_STEPS + 1):
         u_eval = 0.0 if s == IDLE_STEPS else (s / IDLE_STEPS)
         t = IDLE_LENGTH * (s / IDLE_STEPS)
         pose = eval_crown_pose(u_eval)
 
-        kfs['crown_root'].append(_vec_kf('position', 'idle:crown_root', t, *pose['root_pos']))
-        kfs['crown_root'].append(_vec_kf('rotation', 'idle:crown_root', t, *pose['root_rot']))
         kfs['crown_gems'].append(_vec_kf('scale', 'idle:crown_gems', t, *pose['gems_scale']))
 
         for gname in ('glint_n', 'glint_e', 'glint_s', 'glint_w'):
@@ -263,6 +264,22 @@ def build_idle_animators() -> dict:
     return {
         uid(f'bone:{b}'): {'name': b, 'type': 'bone', 'keyframes': kfs[b]}
         for b in bones
+    }
+
+
+def build_sneak_animators() -> dict:
+    """Shifts `hi_crown_root` neck pivot down by -2.34 BB while crouching (`Shift`)
+    so the crown stays flush on the crouched skull as well as standing!
+    """
+    return {
+        uid(f'bone:{ROOT_BONE_NAME}'): {
+            'name': ROOT_BONE_NAME,
+            'type': 'bone',
+            'keyframes': [
+                _vec_kf('position', f'sneak:{ROOT_BONE_NAME}', 0.0, 0.0, SNEAK_NECK_OFFSET_Y, 0.0),
+                _vec_kf('position', f'sneak:{ROOT_BONE_NAME}', 0.2, 0.0, SNEAK_NECK_OFFSET_Y, 0.0),
+            ],
+        }
     }
 
 
@@ -421,7 +438,7 @@ def build_blueprint() -> tuple[dict, Image.Image]:
         }
 
     outliner = [
-        bone('crown_root', ROOT_ORIG, [
+        bone(ROOT_BONE_NAME, ROOT_ORIG, [
             bone('crown_body', BODY_ORIG, body_uuids),
             bone('crown_gems', GEMS_ORIG, gems_uuids),
             *glint_bones,
@@ -483,22 +500,40 @@ def build_blueprint() -> tuple[dict, Image.Image]:
             'uuid': uid('tex:0'),
             'source': 'data:image/png;base64,' + base64.b64encode(raw.getvalue()).decode('ascii'),
         }],
-        'animations': [{
-            'uuid': uid('anim:idle'),
-            'name': 'idle',
-            'loop': 'loop',
-            'override': False,
-            'length': IDLE_LENGTH,
-            'snapping': 20,
-            'selected': True,
-            'saved': True,
-            'path': '',
-            'anim_time_update': '',
-            'blend_weight': '',
-            'start_delay': '',
-            'loop_delay': '',
-            'animators': build_idle_animators(),
-        }],
+        'animations': [
+            {
+                'uuid': uid('anim:idle'),
+                'name': 'idle',
+                'loop': 'loop',
+                'override': False,
+                'length': IDLE_LENGTH,
+                'snapping': 20,
+                'selected': True,
+                'saved': True,
+                'path': '',
+                'anim_time_update': '',
+                'blend_weight': '',
+                'start_delay': '',
+                'loop_delay': '',
+                'animators': build_idle_animators(),
+            },
+            {
+                'uuid': uid('anim:sneak'),
+                'name': 'sneak',
+                'loop': 'loop',
+                'override': False,
+                'length': 0.2,
+                'snapping': 20,
+                'selected': False,
+                'saved': True,
+                'path': '',
+                'anim_time_update': '',
+                'blend_weight': '',
+                'start_delay': '',
+                'loop_delay': '',
+                'animators': build_sneak_animators(),
+            },
+        ],
     }
     return blueprint, texture
 
@@ -622,16 +657,17 @@ def render_preview(blueprint: dict, texture: Image.Image, icon: Image.Image, out
     tex_arr = np.array(texture)
     by_name = {el['name']: el for el in blueprint['elements']}
 
-    # (u, cam_yaw, cam_pitch, show_head)
+    # (u, cam_yaw, cam_pitch, head_pitch_deg, label)
+    # head_pitch_deg matches Bukkit Location.getPitch(): negative = looking UP, positive = looking DOWN!
     stages = [
-        (0.08,  22.0, -12.0, True),   # 1. Front-3/4 view on exact 0.9375-scaled player head (+ north glint)
-        (0.33, -38.0, -16.0, True),   # 2. Side-3/4 view showing temple wrap & east glint
-        (0.58, 155.0, -14.0, True),   # 3. Back-3/4 view showing rear fit & south glint
-        (0.08,  28.0, -44.0, False),  # 4. Top-down 3/4 closeup showing crimson velvet cap & 8 spires
+        (0.08, -32.0, -10.0, -48.0, 'PITCH -48° (UP)'),     # 1. Looking UP (-48 deg): crown swings back & up on skull!
+        (0.08,  24.0, -12.0,   0.0, 'PITCH 0° (LEVEL)'),    # 2. Looking LEVEL (0 deg): flush on forehead & temples!
+        (0.33, -32.0, -14.0, +48.0, 'PITCH +48° (DOWN)'),   # 3. Looking DOWN (+48 deg): crown swings forward & down!
+        (0.58, -68.0,  -8.0, +72.0, 'PITCH +72° (STEEP)'),  # 4. Steep DOWN (+72 deg) side view: 0.00mm detachment!
     ]
 
-    for idx, (u, cam_yaw, cam_pitch, show_head) in enumerate(stages):
-        bg = (196, 186, 152, 255) if idx in (0, 3) else (32, 38, 52, 255)
+    for idx, (u, cam_yaw, cam_pitch, head_pitch_deg, label) in enumerate(stages):
+        bg = (196, 186, 152, 255) if idx == 1 else (32, 38, 52, 255)
         panel = Image.new('RGBA', (panel_w, panel_h), bg)
         pose = eval_crown_pose(u)
 
@@ -640,9 +676,9 @@ def render_preview(blueprint: dict, texture: Image.Image, icon: Image.Image, out
         cy_m, sy_m = math.cos(ay), math.sin(ay)
         cp_m, sp_m = math.cos(ap), math.sin(ap)
 
-        scale_px = 16.5 if show_head else 18.5
-        center_y_world = 28.2 if show_head else 30.8
-        center_y_px = 176.0 if show_head else 160.0
+        scale_px = 14.5
+        center_y_world = 26.8
+        center_y_px = 172.0
 
         def proj(pt):
             dx, dy, dz = pt[0], pt[1] - center_y_world, pt[2]
@@ -652,28 +688,6 @@ def render_preview(blueprint: dict, texture: Image.Image, icon: Image.Image, out
             zw = dy * sp_m + z1 * cp_m
             return (panel_w * 0.5 - xw * scale_px, center_y_px - yw * scale_px, zw)
 
-        faces_to_draw = []
-
-        if show_head:
-            # Exact Minecraft PlayerRenderer (0.9375 scale): head X/Z in [-3.75..3.75], Y in [22.50..30.00]!
-            ref_boxes = [
-                ([-7.5, 18.0, -1.875], [7.5, 22.5, 1.875], (56, 64, 82)),
-                ([-3.75, 22.5, -3.75], [3.75, 30.0, 3.75], (88, 98, 120)),
-            ]
-            for low, high, base_rgb in ref_boxes:
-                cs = [
-                    np.array([low[0], low[1], low[2]]), np.array([high[0], low[1], low[2]]),
-                    np.array([high[0], high[1], low[2]]), np.array([low[0], high[1], low[2]]),
-                    np.array([low[0], low[1], high[2]]), np.array([high[0], low[1], high[2]]),
-                    np.array([high[0], high[1], high[2]]), np.array([low[0], high[1], high[2]]),
-                ]
-                for idxs, sm in (((2, 1, 0, 3), 1.0), ((7, 4, 5, 6), 0.86), ((6, 5, 1, 2), 0.92), ((3, 0, 4, 7), 0.90), ((7, 6, 2, 3), 1.05)):
-                    p2d = [proj(cs[k]) for k in idxs]
-                    cross = (p2d[1][0] - p2d[0][0]) * (p2d[2][1] - p2d[0][1]) - (p2d[1][1] - p2d[0][1]) * (p2d[2][0] - p2d[0][0])
-                    if cross <= 0:
-                        col = tuple(min(255, int(c * sm)) for c in base_rgb) + (255,)
-                        faces_to_draw.append((sum(p[2] for p in p2d) / 4.0, [(s[0], s[1]) for s in p2d], col, (42, 48, 64, 255)))
-
         def bone_tf(parent_tf, orig, pos, rot, scale):
             o = np.array(orig)
             t = np.array(pos)
@@ -681,7 +695,40 @@ def render_preview(blueprint: dict, texture: Image.Image, icon: Image.Image, out
             sc = np.array(scale)
             return lambda p: parent_tf(o + t + m @ (sc * (p - o)))
 
-        tf_root = bone_tf(lambda p: p, ROOT_ORIG, pose['root_pos'], pose['root_rot'], [1.0, 1.0, 1.0])
+        # In Blockbench coords (-Z = front), Bukkit +pitch (looking down) = -rx rotation around NECK [0, 22.50, 0]!
+        head_rx_bb = -head_pitch_deg
+        tf_neck = bone_tf(lambda p: p, ROOT_ORIG, [0.0, 0.0, 0.0], [head_rx_bb, 0.0, 0.0], [1.0, 1.0, 1.0])
+
+        faces_to_draw = []
+
+        # 1) Stationary torso/shoulders below neck Y = 22.50
+        torso_boxes = [
+            ([-7.5, 16.5, -1.875], [7.5, 22.5, 1.875], (56, 64, 82), lambda p: p),
+        ]
+        # 2) Pitching player head + front eyes rotating around exact neck joint [0.0, 22.50, 0.0]!
+        head_boxes = [
+            ([-3.75, 22.5, -3.75], [3.75, 30.0, 3.75], (96, 108, 132), tf_neck),
+            ([-2.70, 25.2, -3.79], [-1.05, 26.2, -3.74], (235, 242, 255), tf_neck),
+            ([1.05,  25.2, -3.79], [2.70,  26.2, -3.74], (235, 242, 255), tf_neck),
+        ]
+        for low, high, base_rgb, box_tf in torso_boxes + head_boxes:
+            cs = [
+                box_tf(np.array([low[0], low[1], low[2]])), box_tf(np.array([high[0], low[1], low[2]])),
+                box_tf(np.array([high[0], high[1], low[2]])), box_tf(np.array([low[0], high[1], low[2]])),
+                box_tf(np.array([low[0], low[1], high[2]])), box_tf(np.array([high[0], low[1], high[2]])),
+                box_tf(np.array([high[0], high[1], high[2]])), box_tf(np.array([low[0], high[1], high[2]])),
+            ]
+            for idxs, sm in (((2, 1, 0, 3), 1.0), ((7, 4, 5, 6), 0.86), ((6, 5, 1, 2), 0.92), ((3, 0, 4, 7), 0.90), ((7, 6, 2, 3), 1.05), ((0, 1, 5, 4), 0.82)):
+                p2d = [proj(cs[k]) for k in idxs]
+                cross = (p2d[1][0] - p2d[0][0]) * (p2d[2][1] - p2d[0][1]) - (p2d[1][1] - p2d[0][1]) * (p2d[2][0] - p2d[0][0])
+                if cross <= 0:
+                    col = tuple(min(255, int(c * sm)) for c in base_rgb) + (255,)
+                    z_avg = sum(p[2] for p in p2d) / 4.0
+                    if base_rgb[0] > 200:
+                        z_avg -= 0.25
+                    faces_to_draw.append((z_avg, [(s[0], s[1]) for s in p2d], col, (42, 48, 64, 255) if base_rgb[0] < 200 else None))
+
+        tf_root = bone_tf(tf_neck, ROOT_ORIG, pose['root_pos'], pose['root_rot'], [1.0, 1.0, 1.0])
         tf_body = bone_tf(tf_root, BODY_ORIG, [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [1.0, 1.0, 1.0])
         tf_gems = bone_tf(tf_root, GEMS_ORIG, [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], pose['gems_scale'])
         tf_glints = {

@@ -37,10 +37,11 @@ public class AccessoryTest {
  }
  static class PlayerFake implements Player {
   final FakeWorld fakeWorld=new FakeWorld();
-  final java.util.List<Entity> hidden=new java.util.ArrayList<>();World world=fakeWorld;double px=0,py=1.6,pz=0;Location eye=new Location(null,0,1.62,0);float bodyYaw=15.0F;
-  public Location getLocation(){return new Location(world,px,py,pz,bodyYaw,0);}
+  final java.util.List<Entity> hidden=new java.util.ArrayList<>();World world=fakeWorld;double px=0,py=1.6,pz=0;Location eye=new Location(null,0,1.62,0);float bodyYaw=15.0F,pitch=0.0F;boolean sneaking;
+  public Location getLocation(){return new Location(world,px,py,pz,bodyYaw,pitch);}
   public Location getEyeLocation(){eye=new Location(world,px,py+0.02,pz);return eye;}
   public float getBodyYaw(){return bodyYaw;}
+  public boolean isSneaking(){return sneaking;}
   public void hideEntity(org.bukkit.plugin.Plugin plugin,Entity e){hidden.add(e);}
   Inv inv=new Inv(36);public PlayerInventory getInventory(){return inv;}boolean admin,use;String name="Tester";String command;UUID uuid=UUID.fromString("00000000-0000-0000-0000-0000000000aa");public boolean performCommand(String c){command=c;return true;}public void closeInventory(){}Data data=new Data();String msg;final java.util.List<String> messages=new java.util.ArrayList<>();public boolean hasPermission(String s){return admin && s.equals(AccessoryController.ADMIN_PERMISSION);}public Data getPersistentDataContainer(){return data;}public Inventory opened;public InventoryView openInventory(Inventory i){opened=i;return null;}public void sendMessage(String s){msg=s;messages.add(s);}public java.util.UUID getUniqueId(){return uuid;}public boolean isOnline(){return true;}public String getName(){return name;}}
  static FreakModelSpec spec(String id){return new FreakModelSpec(id,ModelKind.ANGEL_WINGS,id,List.of(),Material.FEATHER,"model",34,id,List.of(),1,0,0,1,1,2,0,0,0,0,0,0,0,0,0,0,0,false,false);}
@@ -380,13 +381,29 @@ public class AccessoryTest {
         "Корона Dummy spawned flush on head & playing subtle 'idle' shimmer animation!");
   FakeModeled crownEntity=fe.q.lastEntity;
   FakeActive crownModel=fe.q.last;
+  check(!crownModel.lockPitch && mellModel.lockPitch && kanekiModel.lockPitch,
+        "Корона unlocks 3D head pitch tracking (lockPitch=false) while pets & kagune stay pitch-locked!");
   crownModel.rendererReady=true;
   AccessoryController.animatePets();
   check(AccessoryController.crownAttached(p) && fe.pivots.passengers.contains(crownModel.pivotId),
         "Корона pivot mounted on player PivotOverride");
+  // Test full 3D head tracking: looking DOWN (+35.0 deg) AND looking UP (-55.0 deg) + sneak crouch offset!
   controller.onMove(new PlayerMoveEvent(p, new Location(p.world, 0.5, 1.6, 0.5, 128.0F, 35.0F)));
-  check(Math.abs(crownEntity.bodyYaw - 128.0F) < 0.01F && crownEntity.headPitch == 0.0F,
-        "Корона follows horizontal head yaw cleanly with 0 pitch swing!");
+  check(Math.abs(crownEntity.bodyYaw - 128.0F) < 0.01F && Math.abs(crownEntity.headYaw - 128.0F) < 0.01F
+        && Math.abs(crownEntity.headPitch - 35.0F) < 0.01F && crownEntity.rotTick == -1,
+        "Корона tracks looking DOWN (+35 deg pitch + 128 deg yaw) on exact packet tick!");
+  controller.onMove(new PlayerMoveEvent(p, new Location(p.world, 0.5, 1.6, 0.5, -42.0F, -55.0F)));
+  check(Math.abs(crownEntity.bodyYaw - (-42.0F)) < 0.01F && Math.abs(crownEntity.headYaw - (-42.0F)) < 0.01F
+        && Math.abs(crownEntity.headPitch - (-55.0F)) < 0.01F && crownEntity.rotTick == -1,
+        "Корона tracks looking UP (-55 deg pitch + -42 deg yaw) on exact packet tick!");
+  p.sneaking = true;
+  controller.onSneak(new PlayerToggleSneakEvent(p, true));
+  check(crownModel.animHandler.isPlayingAnimation("sneak") && crownModel.animHandler.isPlayingAnimation("idle"),
+        "sneaking activates neck-drop 'sneak' offset while keeping 'idle' shimmer active!");
+  p.sneaking = false;
+  controller.onSneak(new PlayerToggleSneakEvent(p, false));
+  check(!crownModel.animHandler.isPlayingAnimation("sneak") && crownModel.animHandler.isPlayingAnimation("idle"),
+        "releasing sneak stops 'sneak' offset cleanly!");
 
   // --- 3b. Buy & Swap to Грозовая молния (4000 ꐃ, Шапки slot 33 -> 13500 ꐃ) -> cleanly replaces Корона! ---
   click.slot=33;controller.onClick(click); // buy & equip Грозовая молния!
@@ -402,6 +419,7 @@ public class AccessoryTest {
         "Грозовая молния plays both 'idle' storm loop AND immediate 'strike' slam animation on equip!");
   FakeModeled lightningEntity=fe.q.lastEntity;
   FakeActive lightningModel=fe.q.last;
+  check(lightningModel.lockPitch,"Грозовая молния keeps lockPitch=true so stormcloud stays level overhead!");
   lightningModel.rendererReady=true;
   AccessoryController.animatePets();
   check(AccessoryController.lightningHatAttached(p) && fe.pivots.passengers.contains(lightningModel.pivotId),
@@ -532,6 +550,6 @@ public class AccessoryTest {
   AccessoryController.install(bare);
   check(bare.mockCommand.executor==null && !bare.warnings.isEmpty(),"missing command logged safely");
   InventoryDragEvent drag=new InventoryDragEvent();drag.view=click.view;controller.onDrag(drag);check(drag.cancelled,"drag cancelled");
-  System.out.println("All v3.19.0 tests passed: public /accessories (/acc, /акс) Риллики shop + Корона (4500 ꐃ, чётко на голове) + Грозовая молния (4000 ꐃ) + all 9 3D models!");
+  System.out.println("All v3.20.0 tests passed: public /accessories (/acc, /акс) Риллики shop + Корона (4500 ꐃ, 3D yaw+pitch glued to head) + Грозовая молния (4000 ꐃ) + all 9 3D models!");
  }
 }

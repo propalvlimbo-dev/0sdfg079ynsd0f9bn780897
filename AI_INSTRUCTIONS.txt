@@ -375,7 +375,7 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
 --------------------------------------------------------------------------------
 9. КАРТА АКТУАЛЬНЫХ СИСТЕМ, АКСЕССУАРОВ И ЗАЩИТЫ ИЗ LIVE VDS (`dfghjdyjk56`)
 --------------------------------------------------------------------------------
-1. `ElytrixFreakModel v3.17.2` + `ModelEngine-4.1.0.jar` (uncapped `SIPUSH 8192` + `MojangAPI.CLIENT` leak-free) + `/аксессуары` (`/accessories`, `/acc`, `/акс`, глиф `ꏠ`):
+1. `ElytrixFreakModel v3.20.0` + `ModelEngine-4.1.0.jar` (uncapped `SIPUSH 8192` + `MojangAPI.CLIENT` leak-free) + `/аксессуары` (`/accessories`, `/acc`, `/акс`, глиф `ꏠ`):
    - Открытый для **ВСЕХ** игроков магазин и гардероб 3D-аксессуаров за донат-валюту **Риллики** (`PlayerPoints`, глиф `ꐃ`)
      в точном стиле `/shop` (слот `53` `ИНФОРМАЦИЯ` на часах `Material.CLOCK CMD 100010` с живым балансом `Ваш баланс: <баланс> ꐃ`,
      сообщения `Недостаточно рилликов!` / `Покупка успешно совершена!`, двойное сохранение покупок навсегда в `PDC` игрока
@@ -393,7 +393,7 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
      Исходники и генераторы лежат в `tools/accessories-integration/` и `tools/accessories-model/` (подробности в `MODELS_PIPELINE.md`).
    - Исправлен лимит 12 моделей в `plugins/ModelEngine-4.1.0.jar` (`ModelGeneratorImpl.importModelsInternal`:
      `BIPUSH 12` -> `SIPUSH 8192`, `tools/accessories-integration/patch_modelengine.py`) + добавлена
-     авто-догрузка блюпринтов на лету `AccessoryController.resolveBlueprint(...)` в `ElytrixFreakModel v3.19.0`,
+     авто-догрузка блюпринтов на лету `AccessoryController.resolveBlueprint(...)` в `ElytrixFreakModel v3.20.0`,
      чтобы ни одна модель никогда не выдавала «Модель ещё не загружена».
    - Меню `/accessories` (`/аксессуары`) разбито на 3 раздела с нативными RP-оверлеями слотов (`ꏡ`, `ꏢ`, `ꏣ`, `ꏧ`, `ꏨ`)
      и пиксельными заголовками из `title_00.png` (`ꏤ` `СПИНА`, `ꏥ` `ШАПКИ`, `ꏦ` `ПИТОМЦЫ`), вкладками быстрого
@@ -401,7 +401,7 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
      * `Спина` (`ꏢ`, слоты `30, 32`): `Ангельские крылья` (`angel_wings`) и `Щупальца Канэки` (`elytrix_kaneki_tentacles`)
      * `Шапки` (`ꏧ`, `content_acc_three.png`, слоты `29, 31, 33`):
        - `[29]` `Божественный нимб` (`angel_halo`, `3500 ꐃ`)
-       - `[31]` `Корона` (`elytrix_royal_crown`, `reallyworld:crown_icon`, `4500 ꐃ` — золотая 3D-корона с рубинами, сапфирами, бархатным сводом и мягким переливом бликов, сидит чётко на голове!)
+       - `[31]` `Корона` (`elytrix_royal_crown`, `reallyworld:crown_icon`, `4500 ꐃ` — золотая 3D-корона с рубинами, сапфирами, бархатным сводом и мягким переливом бликов; полностью приклеена к голове в 3D по `yaw + pitch` вокруг шейного шарнира `[0.0, 22.50, 0.0]` + компенсация `Shift`/`sneak`!)
        - `[33]` `Грозовая молния` (`elytrix_lightning_hat`, `reallyworld:lightning_hat_icon`, `4000 ꐃ` — грозовая туча + стеклянная 3D-молния с анимацией удара прямо над макушкой головы!)
      * `Питомцы` (`ꏨ`, `content_acc_four.png`, слоты `28, 30, 32, 34`):
        - `[28]` `Мини-Роузи` (`elytrix_mini_me` — танцующий возле правого плеча маленький белый скин с бирюзовым лицом `#5BFBFF`, `reallyworld:mini_me_icon`)
@@ -420,11 +420,14 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
      * точная полуширина голой головы = `X/Z = ±3.75` (`4 × 0.9375`), второй слой скина (шляпа) = `±4.22`.
    - Актуальные блюпринты в `plugins/ModelEngine/blueprints/` и RP (`SHA-1: 0cf77a7a1d3c52d8a5b3b7fcb8b417911a3b165d`):
      * `elytrix_angel_halo.bbmodel` (нимб, 161 куб, `halo_ring` + `halo_aura`)
-     * `elytrix_royal_crown.bbmodel` (шапка `Корона` v1, `tools/accessories-model/build_crown_hat.py`:
-       золотой обруч `Y = 28.55..30.98`, `±3.82..±4.38`, охватывающий лоб и виски строго вплотную к голове `Y = 30.00`
-       без зазора и без z-fighting со вторым слоем скина, тёмно-бордовый бархатный свод `velvet_cap_*`, 8 резных
-       золотых зубцов с жемчужинами `Y = 30.98..33.48`, гранёные рубины, сапфиры и бриллианты `crown_gems` и 4 мерцающие
-       искорки-блика `glint_n/e/s/w`; 63 куба с `rotation: [0,0,0]`, плавная 20-TPS анимация `'idle'` `3.6s`, иконка `crown_icon`)
+     * `elytrix_royal_crown.bbmodel` (шапка `Корона` v2, `tools/accessories-model/build_crown_hat.py`:
+       корневая кость `hi_crown_root` с пивотом строго в шейном суставе игрока `[0.0, 22.50, 0.0]` (`DefaultBehaviorParser` ->
+       `BoneBehaviorTypes.HEAD`, `inherited = true`) + `setLockPitch(false)` и пакетная синхронизация `xHeadRot = loc.getPitch()`
+       в `AccessoryController v3.20.0`, благодаря чему при подъёме и опускании головы (`-90°..+90°`) корона вращается по той же
+       3D-дуге черепа с `0.00мм` отрыва; анимация `'sneak'` (`-2.34` BB по Y) компенсирует присед на `Shift`; золотой обруч
+       `Y = 28.55..30.98`, `±3.82..±4.38`, тёмно-бордовый бархатный свод `velvet_cap_*`, 8 резных золотых зубцов с жемчужинами
+       `Y = 30.98..33.48`, гранёные рубины, сапфиры и бриллианты `crown_gems` и 4 мерцающие искорки-блика `glint_n/e/s/w`;
+       63 куба с `rotation: [0,0,0]`, 2 анимации `'idle'` `3.6s` и `'sneak'` `0.2s`, иконка `crown_icon`)
      * `elytrix_lightning_hat.bbmodel` (шапка `Грозовая молния` v3, `tools/accessories-model/build_lightning_hat.py`:
        объёмное кучево-грозовое облако `storm_cloud` в спокойных серо-синих тонах `#566478`..`#7689A3` с полностью чистым
        неокрашенным дном, полупрозрачная стеклянная 3D-молния `bolt_main` в стиле матового белого и ледяного витражного

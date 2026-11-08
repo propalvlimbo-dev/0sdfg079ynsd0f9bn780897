@@ -72,6 +72,8 @@ Blockbench в песочнице нет, нейросетевой арт зап�
 | `elytrix_kaneki_tentacles` | 112 | 1 | 1 | 64×64 |
 | `elytrix_centipede` (до замены) | 68 | 1 | **0** | 64×64 |
 | `elytrix_centipede` (новая, v3) | **119** | 11 (`body_root`, `c1…c9`, `head`) | 2 (`idle`, `crawl`) | 128×128 |
+| `elytrix_lightning_hat` (v3) | 56 | 10 (`storm_cloud`, `bolt_main`, `fork_*`, `arc_*`, `impact_*`) | 2 (`idle`, `strike`) | 128×128 |
+| `elytrix_royal_crown` (v2, 3D head `hi_crown_root` `[0, 22.50, 0]`) | 63 | 6 (`crown_body`, `crown_gems`, `glint_n/e/s/w`) | 2 (`idle`, `sneak`) | 128×128 |
 
 ### Про `shade: false` и `scale = 2`
 В **отгружаемом** паке этих значений нет:

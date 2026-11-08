@@ -45,6 +45,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -53,11 +54,11 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 /**
- * Server-side 3-section accessories shop & unified ModelEngine controller (v3.19.0):
+ * Server-side 3-section accessories shop & unified ModelEngine controller (v3.20.0):
  * open to ALL players, with permanent unlocks purchased for Риллики (PlayerPoints) just like {@code /shop}!
  * <ul>
  *   <li><b>Спина</b>: Ангельские крылья ({@code 6000 ꐃ}) и Щупальца Канэки ({@code 7500 ꐃ})</li>
- *   <li><b>Шапки</b>: Божественный нимб ({@code 3500 ꐃ}), Корона ({@code 4500 ꐃ}) и Грозовая молния ({@code 4000 ꐃ})</li>
+ *   <li><b>Шапки</b>: Божественный нимб ({@code 3500 ꐃ}), Корона ({@code 4500 ꐃ}, полная 3D-привязка к голове {@code yaw + pitch}) и Грозовая молния ({@code 4000 ꐃ})</li>
  *   <li><b>Питомцы</b>: Мини-Роузи ({@code 2000 ꐃ}), Милый котёнок ({@code 2500 ꐃ}),
  *       Сколопендра Гуля ({@code 4500 ꐃ}) и Меллстрой ({@code 5000 ꐃ})</li>
  * </ul>
@@ -87,6 +88,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
 
     static final String IDLE_ANIM = "idle";
     static final String STRIKE_ANIM = "strike";
+    static final String SNEAK_ANIM = "sneak";
     static final String ADMIN_PERMISSION = "elytrixfreakmodel.admin";
     static final int BACK_ARROW_CMD = 10002;
     static final int INFO_CLOCK_CMD = 100010;
@@ -818,11 +820,44 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return (dx * dx + dy * dy + dz * dz) > TELEPORT_JUMP_DIST_SQ;
     }
 
-    private static void syncRigTransform(Player player, GhoulRig rig, float bodyYaw) {
+    private static void syncModeledEntityRotImmediately(ModeledEntity entity, float yaw, float pitch) {
+        if (entity == null || !Float.isFinite(yaw)) return;
+        float safePitch = Float.isFinite(pitch) ? pitch : 0.0F;
+        entity.setYBodyRotImmediately(yaw);
+        entity.setYHeadRotImmediately(yaw);
+        entity.setXHeadRotImmediately(safePitch);
+        entity.setRotationTick(-1);
+    }
+
+    private static void ensureCrownSneakPose(GhoulRig rig, boolean sneaking) {
+        if (rig == null || !CROWN_BLUEPRINT.equals(rig.blueprintId)
+                || rig.model == null || rig.model.isDestroyed()) {
+            return;
+        }
+        try {
+            AnimationHandler handler = rig.model.getAnimationHandler();
+            if (handler == null) return;
+            boolean playing = handler.isPlayingAnimation(SNEAK_ANIM);
+            if (sneaking && !playing) {
+                IAnimationProperty prop = handler.playAnimation(SNEAK_ANIM, 0.04D, 0.04D, 1.0D, true);
+                if (prop != null) {
+                    prop.setForceLoopMode(BlueprintAnimation.LoopMode.LOOP);
+                }
+            } else if (!sneaking && playing) {
+                handler.forceStopAnimation(SNEAK_ANIM);
+            }
+        } catch (Throwable ignored) {
+        }
+    }
+
+    private static void syncRigTransform(Player player, GhoulRig rig, float bodyYaw, Location locOverride) {
         if (player == null || rig == null || rig.entity == null || rig.entity.isDestroyed()) return;
         float safeYaw = Float.isFinite(bodyYaw) ? bodyYaw : 0.0F;
         try {
-            Location loc = player.getLocation();
+            Location loc = locOverride != null ? locOverride : player.getLocation();
+            float safePitch = (CROWN_BLUEPRINT.equals(rig.blueprintId) && loc != null && Float.isFinite(loc.getPitch()))
+                ? loc.getPitch()
+                : 0.0F;
             if (rig.dummy != null) {
                 if (loc != null) {
                     rig.dummy.syncLocation(loc);
@@ -830,15 +865,15 @@ public final class AccessoryController implements CommandExecutor, Listener {
                 }
                 rig.dummy.setYBodyRot(safeYaw);
                 rig.dummy.setYHeadRot(safeYaw);
-                rig.dummy.setXHeadRot(0.0F);
+                rig.dummy.setXHeadRot(safePitch);
                 BodyRotationController rot = rig.dummy.getBodyRotationController();
                 if (rot != null) {
                     rot.setYBodyRot(safeYaw);
                     rot.setYHeadRot(safeYaw);
-                    rot.setXHeadRot(0.0F);
+                    rot.setXHeadRot(safePitch);
                 }
             }
-            PlayerAuraAttachment.syncModeledEntityImmediately(rig.entity, safeYaw);
+            syncModeledEntityRotImmediately(rig.entity, safeYaw, safePitch);
         } catch (Throwable failure) {
             reportOnce("поворот аксессуара", failure);
         }
@@ -906,8 +941,13 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
         ensurePivotMounted(player, rig);
         PlayerBodyTracker tracker = trackerFor(player);
-        syncRigTransform(player, rig, tracker.getBodyYaw());
+        Location loc = player.getLocation();
+        boolean isHeadRig = LIGHTNING_HAT_BLUEPRINT.equals(rig.blueprintId)
+            || CROWN_BLUEPRINT.equals(rig.blueprintId);
+        float rigYaw = (isHeadRig && loc != null) ? loc.getYaw() : tracker.getBodyYaw();
+        syncRigTransform(player, rig, rigYaw, loc);
         ensureLivingAnimation(rig, tracker.getHorizSpeedBlocksPerTick());
+        ensureCrownSneakPose(rig, player.isSneaking());
         logRigReady(rig);
     }
 
@@ -988,8 +1028,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
             boolean isHeadRig = LIGHTNING_HAT_BLUEPRINT.equals(rig.blueprintId)
                 || CROWN_BLUEPRINT.equals(rig.blueprintId);
             float rigYaw = (isHeadRig && loc != null) ? loc.getYaw() : bodyYaw;
-            syncRigTransform(wearer, rig, rigYaw);
+            syncRigTransform(wearer, rig, rigYaw, loc);
             ensureLivingAnimation(rig, tracker.getHorizSpeedBlocksPerTick());
+            ensureCrownSneakPose(rig, wearer.isSneaking());
             if (MELLSTROY_BLUEPRINT.equals(rig.blueprintId)) {
                 tickMellstroyEmote(wearer, rig, bodyYaw);
             } else if (LIGHTNING_HAT_BLUEPRINT.equals(rig.blueprintId)) {
@@ -1114,7 +1155,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
             : LIGHTNING_HAT_BLUEPRINT.equals(rig.blueprintId)
                 ? "шапка Грозовая молния (анимация удара)"
                 : CROWN_BLUEPRINT.equals(rig.blueprintId)
-                    ? "шапка Корона (чётко на голове, перелив)"
+                    ? "шапка Корона (приклеена к голове yaw+pitch, перелив)"
                     : MINI_ME_BLUEPRINT.equals(rig.blueprintId)
                         ? "танцующая Мини-Роузи у плеча"
                         : KITTEN_BLUEPRINT.equals(rig.blueprintId)
@@ -1181,15 +1222,21 @@ public final class AccessoryController implements CommandExecutor, Listener {
         PlayerBodyTracker tracker = trackerFor(player);
         boolean isHeadRig = LIGHTNING_HAT_BLUEPRINT.equals(blueprintId)
             || CROWN_BLUEPRINT.equals(blueprintId);
-        float initialYaw = (isHeadRig && loc != null) ? loc.getYaw() : tracker.getBodyYaw();
+        boolean tracksHeadPitch = CROWN_BLUEPRINT.equals(blueprintId);
+        float initialYaw = (isHeadRig && loc != null && Float.isFinite(loc.getYaw()))
+            ? loc.getYaw()
+            : tracker.getBodyYaw();
+        float initialPitch = (tracksHeadPitch && loc != null && Float.isFinite(loc.getPitch()))
+            ? loc.getPitch()
+            : 0.0F;
         dummy.setYBodyRot(initialYaw);
         dummy.setYHeadRot(initialYaw);
-        dummy.setXHeadRot(0.0F);
+        dummy.setXHeadRot(initialPitch);
         BodyRotationController rot = dummy.getBodyRotationController();
         if (rot != null) {
             rot.setYBodyRot(initialYaw);
             rot.setYHeadRot(initialYaw);
-            rot.setXHeadRot(0.0F);
+            rot.setXHeadRot(initialPitch);
         }
 
         ModeledEntity entity = ModelEngineAPI.createModeledEntity(dummy);
@@ -1211,7 +1258,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         model.setCanHurt(false);
         model.setShadowVisible(false);
         model.setHitboxVisible(false);
-        model.setLockPitch(true);
+        model.setLockPitch(!tracksHeadPitch);
         model.setLockYaw(true);
         model.setViewRange(2.5F);
 
@@ -1221,13 +1268,14 @@ public final class AccessoryController implements CommandExecutor, Listener {
 
         entity.addModel(model, false);
         model.setModelRotationLocked(Boolean.FALSE);
-        PlayerAuraAttachment.syncModeledEntityImmediately(entity, initialYaw);
+        syncModeledEntityRotImmediately(entity, initialYaw, initialPitch);
 
         GhoulRig rig = new GhoulRig(blueprintId, dummy, entity, model, pivot, loc);
         rig.ownerSees = ensureOwnerSees(player, rig);
         rig.pairedAt = petTicks;
         ensurePivotMounted(player, rig);
         ensureLivingAnimation(rig, tracker.getHorizSpeedBlocksPerTick());
+        ensureCrownSneakPose(rig, player.isSneaking());
         return rig;
     }
 
@@ -1355,9 +1403,19 @@ public final class AccessoryController implements CommandExecutor, Listener {
         PlayerBodyTracker tracker = trackerFor(player);
         tracker.stepFromPacket(player, to);
         float yaw = tracker.getBodyYaw();
-        if (pet != null) syncRigTransform(player, pet, yaw);
-        if (kagune != null) syncRigTransform(player, kagune, yaw);
-        if (hat != null) syncRigTransform(player, hat, to.getYaw());
+        if (pet != null) syncRigTransform(player, pet, yaw, to);
+        if (kagune != null) syncRigTransform(player, kagune, yaw, to);
+        if (hat != null) syncRigTransform(player, hat, to.getYaw(), to);
+    }
+
+    @EventHandler public void onSneak(PlayerToggleSneakEvent event) {
+        if (event.isCancelled()) return;
+        Player player = event.getPlayer();
+        if (player == null) return;
+        GhoulRig hat = HATS.get(player.getUniqueId());
+        if (hat != null && CROWN_BLUEPRINT.equals(hat.blueprintId)) {
+            ensureCrownSneakPose(hat, event.isSneaking());
+        }
     }
 
     @EventHandler public void onTeleport(PlayerTeleportEvent event) {
@@ -1607,7 +1665,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
             menu.setItem(31, item(Material.GOLD_INGOT, "§x§F§A§D§8§F§C§lКорона", "crown_icon", null,
                 shopAccessoryLore(player, AccessoryItem.CROWN, crown,
                     "§7Золотая корона с рубинами и сапфирами",
-                    "§7Сидит чётко на голове и мягко переливается!")));
+                    "§7Движется вместе с головой и переливается!")));
             menu.setItem(33, item(Material.BLAZE_ROD, "§x§F§A§D§8§F§C§lГрозовая молния", "lightning_hat_icon", null,
                 shopAccessoryLore(player, AccessoryItem.LIGHTNING_HAT, lightning,
                     "§7Грозовая туча и 3D-молния над головой",
