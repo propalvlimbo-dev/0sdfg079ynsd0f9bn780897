@@ -105,7 +105,7 @@ public final class BugfixVerificationSuite {
         System.out.println("[OK] Bytecode StackMapTable verification passed for all 13 target classes.");
     }
 
-    private static Player mockPlayer(UUID uuid, String name, List<String> messages, AtomicBoolean closedInv) {
+    private static Player mockPlayer(UUID uuid, String name, List<String> messages, AtomicBoolean closedInv, AtomicBoolean canPickup) {
         InvocationHandler h = (proxy, method, mArgs) -> {
             switch (method.getName()) {
                 case "getUniqueId":
@@ -114,6 +114,11 @@ public final class BugfixVerificationSuite {
                     return name;
                 case "hasPermission":
                     return false;
+                case "setCanPickupItems":
+                    canPickup.set((Boolean) mArgs[0]);
+                    return null;
+                case "getCanPickupItems":
+                    return canPickup.get();
                 case "sendMessage":
                     if (mArgs != null && mArgs.length > 0 && mArgs[0] != null) {
                         messages.add(String.valueOf(mArgs[0]));
@@ -168,11 +173,13 @@ public final class BugfixVerificationSuite {
         List<String> msgs2 = new ArrayList<>();
         AtomicBoolean closed1 = new AtomicBoolean(false);
         AtomicBoolean closed2 = new AtomicBoolean(false);
+        AtomicBoolean canPickup1 = new AtomicBoolean(true);
+        AtomicBoolean canPickup2 = new AtomicBoolean(true);
         AtomicBoolean god1 = new AtomicBoolean(false);
         AtomicBoolean god2 = new AtomicBoolean(false);
 
-        Player p1 = mockPlayer(u1, "AdminOne", msgs1, closed1);
-        Player p2 = mockPlayer(u2, "EnemyTwo", msgs2, closed2);
+        Player p1 = mockPlayer(u1, "AdminOne", msgs1, closed1, canPickup1);
+        Player p2 = mockPlayer(u2, "EnemyTwo", msgs2, closed2, canPickup2);
         IUser iu1 = mockUser(p1, god1);
         IUser iu2 = mockUser(p2, god2);
 
@@ -181,6 +188,7 @@ public final class BugfixVerificationSuite {
 
         long t0 = System.currentTimeMillis();
         assertTrue(plugin.evaluateState(p1, t0) == GodPickup.Restriction.NONE, "Initially NONE");
+        assertTrue(canPickup1.get(), "Initially canPickupItems == true");
 
         // 1. Prevent /god <otherPlayer> griefing
         GodStatusChangeEvent griefAttempt = new GodStatusChangeEvent(iu2, iu1, true);
@@ -193,6 +201,7 @@ public final class BugfixVerificationSuite {
         plugin.onGodStatusChange(enableEvt);
         assertTrue(!enableEvt.isCancelled(), "Self /god enable must succeed");
         assertTrue(closed1.get(), "Inventory must be closed immediately on /god enable");
+        assertTrue(!canPickup1.get(), "NMS canPickupItems must be false immediately on /god enable");
         assertTrue(plugin.evaluateState(p1, t0 + 10) == GodPickup.Restriction.ACTIVE_GOD, "Must be ACTIVE_GOD");
 
         // 3. Verify attacks, chests, pickups, blocks, interacts, and abuse commands are blocked in /god
@@ -248,19 +257,24 @@ public final class BugfixVerificationSuite {
         plugin.onGodStatusChange(panicReEnable);
         assertTrue(panicReEnable.isCancelled(), "Panic re-enabling /god during 5s cooldown must be cancelled");
 
-        // 6. After 5,001 ms: restriction expires cleanly
+        // 6. After 5,001 ms: restriction expires cleanly and canPickupItems is restored to true
+        assertTrue(!canPickup1.get(), "canPickupItems must still be false during 5s post-god cooldown");
         assertTrue(plugin.evaluateState(p1, afterOff + 5050) == GodPickup.Restriction.NONE,
                 "Restriction must clear after 5000ms");
+        assertTrue(canPickup1.get(), "canPickupItems must be restored to true after 5000ms");
 
         // 7. Silent API bypass test (god turned off without GodStatusChangeEvent + relog test)
         god1.set(true);
         assertTrue(plugin.evaluateState(p1, afterOff + 6000) == GodPickup.Restriction.ACTIVE_GOD, "API god on");
+        assertTrue(!canPickup1.get(), "canPickupItems false on API god on");
         plugin.onQuit(new PlayerQuitEvent(p1));
+        assertTrue(canPickup1.get(), "canPickupItems restored before playerdata save on quit");
         god1.set(false); // Disconnected & god cleared externally
         plugin.onJoin(new PlayerJoinEvent(p1));
         long joinNow = System.currentTimeMillis();
         assertTrue(plugin.evaluateState(p1, joinNow + 500) == GodPickup.Restriction.POST_GOD_COOLDOWN,
                 "Relogging out of /god must still enforce full 5s post-god cooldown");
+        assertTrue(!canPickup1.get(), "canPickupItems re-disabled on rejoin during 5s post-god cooldown");
 
         System.out.println("[OK] ElytrixGodPickup lockdown + 5.0s cooldown + anti-bypass tests passed.");
     }

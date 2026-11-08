@@ -12,6 +12,7 @@ import hashlib
 import os
 import re
 import shutil
+import struct
 import subprocess
 import sys
 import tempfile
@@ -192,6 +193,8 @@ public interface LivingEntity extends Entity, ProjectileSource {
     double getHealth();
     double getMaxHealth();
     void setHealth(double h);
+    void setCanPickupItems(boolean pickup);
+    boolean getCanPickupItems();
 }
 """,
     "org/bukkit/entity/HumanEntity.java": """
@@ -1048,10 +1051,6 @@ public class PlayerLeashEntityEvent extends Event implements Cancellable {
     @Override public void setCancelled(boolean b) { c = b; }
 }
 """,
-    "org/bukkit/event/player/PlayerLeashEntityEvent.java": """
-package org.bukkit.event.player;
-public class PlayerLeashEntityEvent extends org.bukkit.event.entity.PlayerLeashEntityEvent {}
-""",
     "org/bukkit/event/player/PlayerUnleashEntityEvent.java": """
 package org.bukkit.event.player;
 import org.bukkit.event.Cancellable;
@@ -1149,6 +1148,76 @@ def verify_greatcombat_config_b64():
         dv = int.from_bytes(nbt[pos + len(dv_marker):pos + len(dv_marker) + 4], "big")
         assert dv == 4671, f"Entry #{idx} has DataVersion {dv}, expected 4671 (1.21.11)"
     print("[OK] All 5 GreatCombat/config.yml Base64 item entries verified as DataVersion 4671 (1.21.11).")
+
+
+def parse_constant_pool_classes(data: bytes) -> set:
+    pos = 8
+    cp_count = struct.unpack_from(">H", data, pos)[0]
+    pos += 2
+    cp = [None] * cp_count
+    i = 1
+    while i < cp_count:
+        tag = data[pos]
+        pos += 1
+        if tag == 1:
+            ln = struct.unpack_from(">H", data, pos)[0]
+            pos += 2
+            cp[i] = ("utf8", data[pos:pos + ln].decode("utf-8", "replace"))
+            pos += ln
+        elif tag in (3, 4):
+            pos += 4
+        elif tag in (5, 6):
+            pos += 8
+            i += 1
+        elif tag in (7, 8, 16, 19, 20):
+            idx = struct.unpack_from(">H", data, pos)[0]
+            pos += 2
+            cp[i] = (tag, idx)
+        elif tag in (9, 10, 11, 12, 17, 18):
+            a, b = struct.unpack_from(">HH", data, pos)
+            pos += 4
+            cp[i] = (tag, a, b)
+        elif tag == 15:
+            pos += 3
+        i += 1
+    out = set()
+    for item in cp:
+        if item and item[0] == 7:
+            out.add(cp[item[1]][1])
+    return out
+
+
+def verify_constant_pool_against_live_plugins(cand_god: Path, cand_hjobs: Path, cand_nclans: Path, cand_gc: Path):
+    known = set()
+    skip = {"ElytrixGodPickup.jar"}
+    for jar in sorted((ROOT / "plugins").glob("*.jar")):
+        if jar.name in skip:
+            continue
+        try:
+            with zipfile.ZipFile(jar, "r") as z:
+                for n in z.namelist():
+                    if n.endswith(".class"):
+                        known.add(n[:-6])
+                        try:
+                            known |= parse_constant_pool_classes(z.read(n))
+                        except Exception:
+                            pass
+        except Exception:
+            pass
+
+    for cand in (cand_god, cand_hjobs, cand_nclans, cand_gc):
+        with zipfile.ZipFile(cand, "r") as z:
+            own = {n[:-6] for n in z.namelist() if n.endswith(".class")}
+            for n in z.namelist():
+                if not n.endswith(".class"):
+                    continue
+                for ref in sorted(parse_constant_pool_classes(z.read(n))):
+                    if ref.startswith("org/bukkit/") and ref not in own and ref not in known:
+                        raise RuntimeError(
+                            f"FATAL: {cand.name}:{n} references unknown Bukkit class '{ref}' "
+                            f"not present in any live server plugin!"
+                        )
+    print("[OK] Constant-pool gate passed: 100% of org.bukkit.* classes verified against live server plugins.")
 
 
 def build_zip_replacing(src_jar: Path, out_jar: Path, replacements: dict, removals: set = None):
@@ -1360,6 +1429,8 @@ def main():
         run(JAVA, "-Xverify:all", "-cp", verify_cp,
             "BugfixVerificationSuite",
             str(cand_god), str(cand_hjobs), str(cand_nclans), str(cand_gc))
+
+        verify_constant_pool_against_live_plugins(cand_god, cand_hjobs, cand_nclans, cand_gc)
 
         # 7. Atomically install verified JARs into plugins/
         targets = [

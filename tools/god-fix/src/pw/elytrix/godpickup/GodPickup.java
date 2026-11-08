@@ -36,6 +36,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.PlayerLeashEntityEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
@@ -56,7 +57,6 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLeashEntityEvent;
 import org.bukkit.event.player.PlayerPickupArrowEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
@@ -71,7 +71,7 @@ import org.bukkit.projectiles.ProjectileSource;
 
 /**
  * Complete Essentials /god (/egod, /godmode, /tgm, /ungod, API) action lockdown
- * + strict 5,000 ms post-god cooldown with zero relog/API/command bypasses.
+ * + strict 5,000 ms post-god cooldown with NMS pickup flag sync + LOWEST & HIGHEST guards.
  */
 public final class GodPickup extends JavaPlugin implements Listener {
 
@@ -116,6 +116,7 @@ public final class GodPickup extends JavaPlugin implements Listener {
     private final Map<UUID, Boolean> lastGodState = new ConcurrentHashMap<>();
     private final Map<UUID, Long> cooldownUntil = new ConcurrentHashMap<>();
     private final Set<UUID> wasGodOnQuit = ConcurrentHashMap.newKeySet();
+    private final Set<UUID> pickupDisabledByUs = ConcurrentHashMap.newKeySet();
     private final Map<UUID, Long> lastNotifyAt = new ConcurrentHashMap<>();
 
     /** Test hook for unit tests without live Bukkit server. */
@@ -136,15 +137,23 @@ public final class GodPickup extends JavaPlugin implements Listener {
             IUser user = this.essentials.getUser(p);
             return user != null && user.isGodModeEnabled();
         };
+        long now = System.currentTimeMillis();
         for (Player online : Bukkit.getOnlinePlayers()) {
-            lastGodState.put(online.getUniqueId(), queryEssentialsGod(online));
+            evaluateState(online, now);
         }
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getScheduler().runTaskTimer(this, this::pollOnlinePlayers, 2L, 2L);
+        getLogger().info("ElytrixGodPickup v2.0.1 enabled (full /god lockdown + 5.0s cooldown).");
     }
 
     @Override
     public void onDisable() {
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            if (pickupDisabledByUs.remove(online.getUniqueId())) {
+                online.setCanPickupItems(true);
+            }
+        }
+        pickupDisabledByUs.clear();
         lastGodState.clear();
         lastNotifyAt.clear();
     }
@@ -168,6 +177,19 @@ public final class GodPickup extends JavaPlugin implements Listener {
         }
     }
 
+    private void syncCanPickupFlag(Player player, boolean restricted) {
+        UUID uuid = player.getUniqueId();
+        if (restricted) {
+            if (pickupDisabledByUs.add(uuid)) {
+                player.setCanPickupItems(false);
+            } else {
+                player.setCanPickupItems(false);
+            }
+        } else if (pickupDisabledByUs.remove(uuid)) {
+            player.setCanPickupItems(true);
+        }
+    }
+
     public Restriction evaluateState(Player player, long now) {
         if (player == null) {
             return Restriction.NONE;
@@ -177,6 +199,7 @@ public final class GodPickup extends JavaPlugin implements Listener {
         Boolean previous = lastGodState.put(uuid, currentlyGod);
 
         if (currentlyGod) {
+            syncCanPickupFlag(player, true);
             return Restriction.ACTIVE_GOD;
         }
         if (Boolean.TRUE.equals(previous)) {
@@ -186,10 +209,12 @@ public final class GodPickup extends JavaPlugin implements Listener {
         Long until = cooldownUntil.get(uuid);
         if (until != null) {
             if (now < until) {
+                syncCanPickupFlag(player, true);
                 return Restriction.POST_GOD_COOLDOWN;
             }
             cooldownUntil.remove(uuid, until);
         }
+        syncCanPickupFlag(player, false);
         return Restriction.NONE;
     }
 
@@ -198,8 +223,7 @@ public final class GodPickup extends JavaPlugin implements Listener {
         if (until == null) {
             return 0L;
         }
-        long rem = until - now;
-        return Math.max(0L, rem);
+        return Math.max(0L, until - now);
     }
 
     private boolean blockIfRestricted(Player player, Cancellable event, boolean notify) {
@@ -295,6 +319,7 @@ public final class GodPickup extends JavaPlugin implements Listener {
                 return;
             }
             lastGodState.put(targetId, Boolean.TRUE);
+            syncCanPickupFlag(target, true);
             target.closeInventory();
             if (isEnabled()) {
                 Bukkit.getScheduler().runTask(this, target::closeInventory);
@@ -302,6 +327,7 @@ public final class GodPickup extends JavaPlugin implements Listener {
         } else {
             lastGodState.put(targetId, Boolean.FALSE);
             cooldownUntil.put(targetId, now + POST_GOD_COOLDOWN_MS);
+            syncCanPickupFlag(target, true);
             target.closeInventory();
             target.sendMessage(PREFIX + "Режим " + ACCENT + "/god \u00a7fвыключен. Подождите " + ACCENT + "5.0 сек. \u00a7fперед действиями!");
         }
@@ -317,6 +343,7 @@ public final class GodPickup extends JavaPlugin implements Listener {
         if (wasGodOnQuit.remove(uuid) && !currentlyGod) {
             cooldownUntil.merge(uuid, now + POST_GOD_COOLDOWN_MS, Math::max);
         }
+        evaluateState(player, now);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -327,6 +354,10 @@ public final class GodPickup extends JavaPlugin implements Listener {
         if (queryEssentialsGod(player) || Boolean.TRUE.equals(lastGodState.remove(uuid))) {
             wasGodOnQuit.add(uuid);
             cooldownUntil.merge(uuid, now + POST_GOD_COOLDOWN_MS, Math::max);
+        }
+        // Restore vanilla CanPickUpLoot before world saves playerdata/<uuid>.dat
+        if (pickupDisabledByUs.remove(uuid)) {
+            player.setCanPickupItems(true);
         }
         lastNotifyAt.remove(uuid);
     }
@@ -396,10 +427,20 @@ public final class GodPickup extends JavaPlugin implements Listener {
         }
     }
 
+    // Combat: LOWEST + HIGHEST guards
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onDamageByEntity(EntityDamageByEntityEvent event) {
+        handleDamage(event, true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onDamageByEntityHighest(EntityDamageByEntityEvent event) {
+        handleDamage(event, false);
+    }
+
+    private void handleDamage(EntityDamageByEntityEvent event, boolean notify) {
         Player attacker = resolvePlayerDamager(event.getDamager());
-        if (attacker != null && blockIfRestricted(attacker, event, true)) {
+        if (attacker != null && blockIfRestricted(attacker, event, notify)) {
             return;
         }
         if (event.getEntity() instanceof Player) {
@@ -430,8 +471,18 @@ public final class GodPickup extends JavaPlugin implements Listener {
         blockIfRestricted(event.getPlayer(), event, true);
     }
 
+    // Interactions: LOWEST + HIGHEST guards (ignoreCancelled = false so AIR clicks are caught)
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
     public void onInteract(PlayerInteractEvent event) {
+        handleInteract(event, true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
+    public void onInteractHighest(PlayerInteractEvent event) {
+        handleInteract(event, false);
+    }
+
+    private void handleInteract(PlayerInteractEvent event, boolean notify) {
         Player player = event.getPlayer();
         long now = System.currentTimeMillis();
         Restriction state = evaluateState(player, now);
@@ -441,7 +492,7 @@ public final class GodPickup extends JavaPlugin implements Listener {
         event.setCancelled(true);
         event.setUseInteractedBlock(Event.Result.DENY);
         event.setUseItemInHand(Event.Result.DENY);
-        if (event.getAction() != Action.PHYSICAL) {
+        if (notify && event.getAction() != Action.PHYSICAL) {
             sendRestrictionNotice(player, state, now);
         }
     }
@@ -461,11 +512,20 @@ public final class GodPickup extends JavaPlugin implements Listener {
         blockIfRestricted(event.getPlayer(), event, true);
     }
 
+    // Chests & Inventories: LOWEST + HIGHEST guards
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onInventoryOpen(InventoryOpenEvent event) {
         HumanEntity human = event.getPlayer();
         if (human instanceof Player) {
             blockIfRestricted((Player) human, event, true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onInventoryOpenHighest(InventoryOpenEvent event) {
+        HumanEntity human = event.getPlayer();
+        if (human instanceof Player) {
+            blockIfRestricted((Player) human, event, false);
         }
     }
 
@@ -477,6 +537,14 @@ public final class GodPickup extends JavaPlugin implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onInventoryClickHighest(InventoryClickEvent event) {
+        HumanEntity human = event.getWhoClicked();
+        if (human instanceof Player) {
+            blockIfRestricted((Player) human, event, false);
+        }
+    }
+
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onInventoryDrag(InventoryDragEvent event) {
         HumanEntity human = event.getWhoClicked();
@@ -485,15 +553,26 @@ public final class GodPickup extends JavaPlugin implements Listener {
         }
     }
 
+    // Item & Arrow Pickups: NMS setCanPickupItems(false) + LOWEST + HIGHEST guards
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onAttemptPickup(PlayerAttemptPickupItemEvent event) {
-        if (blockIfRestricted(event.getPlayer(), event, false)) {
-            event.setFlyAtPlayer(false);
-        }
+        blockIfRestricted(event.getPlayer(), event, false);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onAttemptPickupHighest(PlayerAttemptPickupItemEvent event) {
+        blockIfRestricted(event.getPlayer(), event, false);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntityPickup(EntityPickupItemEvent event) {
+        if (event.getEntity() instanceof Player) {
+            blockIfRestricted((Player) event.getEntity(), event, false);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onEntityPickupHighest(EntityPickupItemEvent event) {
         if (event.getEntity() instanceof Player) {
             blockIfRestricted((Player) event.getEntity(), event, false);
         }
@@ -504,9 +583,19 @@ public final class GodPickup extends JavaPlugin implements Listener {
         blockIfRestricted(event.getPlayer(), event, false);
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onArrowPickupHighest(PlayerPickupArrowEvent event) {
+        blockIfRestricted(event.getPlayer(), event, false);
+    }
+
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onDrop(PlayerDropItemEvent event) {
         blockIfRestricted(event.getPlayer(), event, true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onDropHighest(PlayerDropItemEvent event) {
+        blockIfRestricted(event.getPlayer(), event, false);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -519,14 +608,29 @@ public final class GodPickup extends JavaPlugin implements Listener {
         blockIfRestricted(event.getPlayer(), event, true);
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onConsumeHighest(PlayerItemConsumeEvent event) {
+        blockIfRestricted(event.getPlayer(), event, false);
+    }
+
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         blockIfRestricted(event.getPlayer(), event, true);
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockBreakHighest(BlockBreakEvent event) {
+        blockIfRestricted(event.getPlayer(), event, false);
+    }
+
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         blockIfRestricted(event.getPlayer(), event, true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockPlaceHighest(BlockPlaceEvent event) {
+        blockIfRestricted(event.getPlayer(), event, false);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
