@@ -201,7 +201,7 @@ default_items:
     modelData: 10001
     headId: "klcxzlzcx"
     commands:
-      - "console;ik give kn4 %player%"
+      - "console;cloudenchants give lightner %player%"
     lore:
       - "&7Светлячок (Подсчвечивает игрока при ударе)"
       - ""
@@ -245,7 +245,7 @@ default_items:
     modelData: 0
     headId: ""
     commands:
-      - "console;ik give payk %player%"
+      - "console;ik give паучее_чутьё %player%"
     lore:
       - "&9Скорость III (1:00)"
       - "&9Спешка (0:15)"
@@ -273,7 +273,7 @@ default_items:
     modelData: 10001
     headId: "klcxzlzcx"
     commands:
-      - "console;ik give chaos %player%"
+      - "console;ik give пасхальный_топор %player%"
     lore:
       - "&7Заговор огня II"
       - "&7Острота VI"
@@ -299,7 +299,7 @@ default_items:
     modelData: 10001
     headId: "klcxzlzcx"
     commands:
-      - "console;ik give farm %player%"
+      - "console;ik give фарм_меч %player%"
     lore:
       - "&7Добыча V"
       - "&7Прочность V"
@@ -320,7 +320,7 @@ default_items:
     modelData: 10001
     headId: "klcxzlzcx"
     commands:
-      - "console;ik give kn3 %player%"
+      - "console;cloudenchants give drill %player%"
     lore:
       - "&7Бур (Копает 3x3)"
       - " "
@@ -363,7 +363,7 @@ default_items:
     modelData: 5005
     headId: ""
     commands:
-      - "console;ik give water %player%"
+      - "console;ik give шар_воды %player%"
     lore:
       - "&cПроклятие утраты "
       - ""
@@ -393,7 +393,7 @@ default_items:
     modelData: 5002
     headId: ""
     commands:
-      - "console;ik give dirt %player%"
+      - "console;ik give шар_земли %player%"
     lore:
       - "&cПроклятие утраты "
       - ""
@@ -423,7 +423,7 @@ default_items:
     modelData: 10001
     headId: "klcxzlzcx"
     commands:
-      - "console;ik give frost %player%"
+      - "console;ik give фростморн %player%"
     lore:
       - "&7Заговор Огня X"
       - "&7Острота VI"
@@ -467,7 +467,7 @@ default_items:
     modelData: 0
     headId: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGNhMDNmN2U2Mzg1MTJjNzBhNDRjNDI5OTQyZTc4YzM2YTNkYWY5ZDBhNTMyOThhOWU4NjYyYzJiNjMyZTEyOSJ9fX0="
     commands:
-      - "console;ik give ШарБанни %player%"
+      - "console;ik give шар_bunny %player%"
     lore:
       - "&cПроклятье утраты"
       - "&7Когда во второй руке:"
@@ -489,7 +489,7 @@ default_items:
     modelData: 5006
     headId: ""
     commands:
-      - "console;ik give order %player%"
+      - "console;ik give шар_порядка %player%"
     lore:
       - "&cПроклятие утраты "
       - ""
@@ -519,7 +519,7 @@ default_items:
     modelData: 0
     headId: "ewogICJ0aW1lc3RhbXAiIDogMTY0MDM0NTUwMTk5MSwKICAicHJvZmlsZUlkIiA6ICI2MmJiNjAyZjE0Nzk0NzZiYjlkMmQ0MWZiNDc0NDA1YSIsCiAgInByb2ZpbGVOYW1lIiA6ICJTb2NpYWxpc21vIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzJjMTYyYzE2ZTAxNDMzYjNkYTY2NzRkNjQyYzNlYWI0YmU5ZTZkNzFlMjBhMzMyNTU2NGM0ZDAzYTgxMjYwNmEiCiAgICB9LAogICAgIkNBUEUiIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzIzNDBjMGUwM2RkMjRhMTFiMTVhOGIzM2MyYTdlOWUzMmFiYjIwNTFiMjQ4MWQwYmE3ZGVmZDYzNWNhN2E5MzMiCiAgICB9CiAgfQp9"
     commands:
-      - "console;ik give ШарТигра %player%"
+      - "console;ik give шар_tiger %player%"
     lore:
       - "&cПроклятье утраты"
       - "&7Когда во второй руке:"
@@ -630,7 +630,7 @@ default_items:
     modelData: 10001
     headId: "klcxzlzcx"
     commands:
-      - "console;ik give elytra %player%"
+      - "console;ik give крылья_ангела %player%"
     lore:
       - "&7Починка"
       - "&7Шипы I"
@@ -708,7 +708,7 @@ special_items:
     modelData: 10001
     headId: "klcxzlzcx"
     commands:
-      - "console;ik give kn2 %player%"
+      - "console;cloudenchants give telepation %player%"
     lore:
       - "&x&F&8&B&E&F&BРандом книга"
       - "&7Телепатия"
@@ -729,7 +729,7 @@ special_items:
     modelData: 10001
     headId: "klcxzlzcx"
     commands:
-      - "console;ik give kn3 %player%"
+      - "console;cloudenchants give drill %player%"
     lore:
       - "&x&F&8&B&E&F&BРандом книга"
       - "&7Бур"
@@ -750,7 +750,7 @@ special_items:
     modelData: 5007
     headId: "klcxzlzcx"
     commands:
-      - "console;ik give chaos1 %player%"
+      - "console;ik give шар_хаоса %player%"
     lore:
       - "&cПроклятие утраты "
       - ""
@@ -783,7 +783,7 @@ special_items:
     modelData: 5001
     headId: "klcxzlzcx"
     commands:
-      - "console;ik give air %player%"
+      - "console;ik give шар_воздуха %player%"
     lore:
       - "&cПроклятие утраты "
       - ""

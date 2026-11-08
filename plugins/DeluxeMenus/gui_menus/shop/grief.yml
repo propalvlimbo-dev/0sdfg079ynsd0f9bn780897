@@ -16,17 +16,17 @@ items:
       - ''
       - '&#AAAAAA===================================='
       - ''
-      - '&#FFFFFFЦена: &#F8BEFB399 &#FFFFFFꐃ'
+      - '&#FFFFFFЦена: &#F8BEFB159 &#FFFFFFꐃ'
       - ''
     click_requirement:
       requirements:
         points_check:
           type: javascript
-          expression: '%playerpoints_points% >= 399'
+          expression: '%playerpoints_points% >= 159'
       deny_commands:
         - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
     click_commands:
-      - '[console] p take %player_name% 399'
+      - '[console] p take %player_name% 159'
       - '[console] minecraft:give %player_name% minecraft:wind_charge 32'
       - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
   'shield':

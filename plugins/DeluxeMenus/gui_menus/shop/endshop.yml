@@ -38,7 +38,7 @@ items:
           type: javascript
           expression: '%elytrixoskolki_amount% >= 25'
       deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно Осколков Энда!'
     click_commands:
       - '[console] smileoskolki take %player_name% 25'
       - '[console] kit enderaxe %player_name%'
@@ -66,7 +66,7 @@ items:
           type: javascript
           expression: '%elytrixoskolki_amount% >= 10'
       deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно Осколков Энда!'
     click_commands:
       - '[console] smileoskolki take %player_name% 10'
       - '[console] rwitems ENDER_TRAP %player_name%'
@@ -92,7 +92,7 @@ items:
           type: javascript
           expression: '%elytrixoskolki_amount% >= 35'
       deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно Осколков Энда!'
     click_commands:
       - '[console] smileoskolki take %player_name% 35'
       - '[console] kit nerum %player_name%'
@@ -115,7 +115,7 @@ items:
           type: javascript
           expression: '%elytrixoskolki_amount% >= 15'
       deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно Осколков Энда!'
     click_commands:
       - '[console] smileoskolki take %player_name% 15'
       - '[console] effect give %player_name% speed 3600 1'
@@ -138,7 +138,7 @@ items:
           type: javascript
           expression: '%elytrixoskolki_amount% >= 15'
       deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно Осколков Энда!'
     click_commands:
       - '[console] smileoskolki take %player_name% 15'
       - '[console] effect give %player_name% invisibility 3600'
@@ -161,7 +161,7 @@ items:
           type: javascript
           expression: '%elytrixoskolki_amount% >= 15'
       deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно Осколков Энда!'
     click_commands:
       - '[console] smileoskolki take %player_name% 15'
       - '[console] effect give %player_name% fire_resistance 3600'
@@ -184,7 +184,7 @@ items:
           type: javascript
           expression: '%elytrixoskolki_amount% >= 10'
       deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно Осколков Энда!'
     click_commands:
       - '[console] smileoskolki take %player_name% 10'
       - '[console] effect give %player_name% luck 3600'
@@ -207,7 +207,7 @@ items:
           type: javascript
           expression: '%elytrixoskolki_amount% >= 15'
       deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно Осколков Энда!'
     click_commands:
       - '[console] smileoskolki take %player_name% 15'
       - '[console] effect give %player_name% jump_boost 3600 0'
@@ -230,7 +230,7 @@ items:
           type: javascript
           expression: '%elytrixoskolki_amount% >= 25'
       deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно Осколков Энда!'
     click_commands:
       - '[console] smileoskolki take %player_name% 25'
       - '[console] effect give %player_name% regeneration 1800 1'
@@ -253,7 +253,7 @@ items:
           type: javascript
           expression: '%elytrixoskolki_amount% >= 15'
       deny_commands:
-        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно Осколков Энда!'
     click_commands:
       - '[console] smileoskolki take %player_name% 15'
       - '[console] effect give %player_name% strength 3600 1'

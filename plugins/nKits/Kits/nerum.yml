@@ -23,7 +23,7 @@ Inventory:
       display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"yellow","text":"Нерушимый
         Шлем"}],"text":""}'
       enchants:
-        PROTECTION_ENVIRONMENTAL: 4
+        PROTECTION_ENVIRONMENTAL: 5
         OXYGEN: 3
         VANISHING_CURSE: 1
       repair-cost: 7

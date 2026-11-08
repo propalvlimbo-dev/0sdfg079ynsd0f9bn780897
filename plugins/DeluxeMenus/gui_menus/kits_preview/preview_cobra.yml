@@ -39,6 +39,24 @@ items:
     - PROTECTION;4
     - RESPIRATION;3
     - UNBREAKING;3
+  offhand_item:
+    slot: 36
+    amount: 1
+    material: basehead-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWRhMjgxM2Q0ZjVhY2Q2OWVkNTkwYzFkOGE0NDJiNTk1NTE5ZGNiYzBlMTcxOThhZGZhYWFhZjE1Zjg5YjAifX19
+    display_name: '&#00AA00&lШар Кобры'
+    lore:
+    - '&#FF5555Проклятие утраты'
+    - ''
+    - '&#AAAAAAКогда во второй руке:'
+    - '&#55FF55&l +3.0 к Урону'
+    - '&#55FF55&l +20% к Скорости атаки'
+    - '&#55FF55&l +2.5 к Стойкости'
+    - '&#55FF55&l Отравляет врагов ядом'
+    enchantments:
+    - VANISHING_CURSE;1
+    item_flags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
   kit_badge:
     material: lime_shulker_box
     slot: 45

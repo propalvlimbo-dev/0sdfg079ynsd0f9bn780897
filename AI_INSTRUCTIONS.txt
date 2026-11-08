@@ -246,7 +246,7 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
   аккаунта включена (`auth.http.enabled: true`, логику привязки НЕ трогать!), NPC `ХАЛЯВА`
   стоит на `world_spawn` (`7.5, 69, -3.5`).
 - `/shop` (`plugins/DeluxeMenus/gui_menus/shop/grief.yml`): в категории «Всё для грифа»
-  добавлен `Заряд ветра` (`wind_charge`) `32 шт.` за `399` рилликов (`slot: 4`) — сохранять!
+  добавлен `Заряд ветра` (`wind_charge`) `32 шт.` за `159` рилликов (`slot: 4`) — сохранять!
 - Прочие меню и механики:
   - `NClans` и `/repairexp` (`ElytrixRepairExp`) без стеклянных панелей-заполнителей, с HEX.
   - `/potion` (`hPotions`): стакание зелий без дюпов.
@@ -416,7 +416,14 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
 4. Гриф-механики, мир и интеграции:
    - `WorldGuardGriefFix-5.1.jar` (`plugins/WorldGuardGriefFix/config.yml` — разрешён гриф поршнями, вагонетками, визером и взрывами в приватах, кроме мира `spawn` и блоков алмазной/изумрудной/железной руды и блоков).
    - `WGExtender-fork.jar` (`15,051 B`) + обновлённые лимиты объёма приватов в `WGExtender/config.yml` (`default: 400000`, `vertexpand: true`) + мир `duels` в `WorldGuard/worlds/duels/`.
-   - `ElytrixGodPickup.jar` (`v2.0.0`, `tools/god-fix/`) — полная блокировка любых действий в режиме `/god` (`/egod`, `/godmode`, `/tgm`, `/ungod`, API) + строгий кулдаун `5.0 сек.` после выключения `/god` (запрет ударов, стрельбы, открытия сундуков/контейнеров, подбора/выброса предметов, ломания/установки блоков, использования предметов и повторного включения `/god` во время КД, с защитой от релога и от `/god <чужой_ник>`).
+   - `ElytrixGodPickup.jar` (`v2.1.0`, `tools/god-fix/`) — правила `/god` и `/fly` (100% рефлексивные хуки без прямых импортов `Essentials`/`WorldGuard`/`NMascot`, безопасно для `PlugManX`):
+     * В `/god` и `/fly`: разрешено бить мобов; запрещён подбор предметов (`setCanPickupItems(false)` с чистым восстановлением); запрещено открывать сундуки/контейнеры ВЕЗДЕ, КРОМЕ собственного региона WorldGuard игрока (`owners`/`members`); удар по игрокам запрещён во время `/god` и `/fly`, а также ровно `5.0 сек.` после выключения `/god` или `/fly` (с защитой от паник-реэнэйбла, релога и подрыва кристаллов).
+     * На ивенте `Талисман` (`NMascot`): запрещено включать `/fly` и `/god`, а активные `/fly` и `/god` автоматически выключаются при входе в регион талисмана.
+   - `Duels-3.5.3.jar` (`ElytrixDuelTeleportFix`, `tools/bugfix-suite/`) — устранён редкий сбой телепортации на дуэль: `DuelListener.on(PlayerTeleportEvent)` пропускает телепорты с метадатой `"Duels-Teleport"` даже после `addPlayers`, перед телепортом снимаются транспорт/планирование/сон и открытый инвентарь, ставится chunk-ticket на `60` тиков и работают страховочные проверки на `3/12/25` тиках.
+   - `ElytrixItems.jar` (`ElytrixAirTrapGuard`, `tools/bugfix-suite/`) — запрещено активировать ловушки (`TrapItem` и `EnderTrapItem`) в радиусе `20` блоков от активного АирДропа (`ElytrixAir`) без списания предмета и кулдауна.
+   - `NMascot-1.0.jar` (`ElytrixMascotGuard`, `tools/bugfix-suite/`) — автоматическое снятие `/fly` и `/god` в активной зоне талисмана без мёртвых ссылок на `CMI`.
+   - `ItemKeep-1.0-SNAPSHOT.jar` + `plugins/ItemKeep/data.yml` + `plugins/ElytrixDealer/items.yml` + `plugins/CloudQuests/quests/*/{seller.yml,rewards.yml}` — исправлены чары `Цыганского щита` у Барыги и чары наградных инструментов в шалкерах `/quest1` (`DataVersion: 4556` + клонирование `ItemStack` + гарантия чар в `ElytrixItemKeepFix` + выброс при полном инвентаре; НЕ затирать `plugins/CloudQuests/data.db` на VDS!).
+   - `plugins/nKits/Kits/{nerum.yml,cobra.yml}` + `plugins/DeluxeMenus/gui_menus/{shop/endshop.yml,kits_preview/preview_cobra.yml}` — у Странника (`/endshop`) шлем Нериума выдает Защиту V (`PROTECTION_ENVIRONMENTAL: 5`), а в ките Кобры (`/kit cobra` + превью) убраны дубли поножей/ботинок и добавлен `Шар Кобры` (`COBRA_BALL`).
    - `hJobs.jar` (`tools/bugfix-suite/`) — потокобезопасный SQLite WAL (`dbLock`), предзагрузка на `PlayerJoinEvent`, синхронный lazy-load `ensurePlayerStatsLoaded`, монотонный `MAX(sold_total)` UPSERT и автосохранение при продаже в GUI (НЕ затирать `plugins/hJobs/database.db` на VDS!).
    - `NClans-1.jar` (`tools/bugfix-suite/`) — запрет ручных цветовых/HEX-кодов в названиях кланов (`ValidatorUtil.getValidClanName`), автоочистка старых названий в `Clan.<init>`/`setName`, цвет строго по уровню клана (`levels.yml` 1..100) и `O(1)` кеш `LevelConfiguration` (НЕ затирать `plugins/NClans/clans.yml` на VDS!).
    - `GreatCombat-1.9.jar` + `plugins/GreatCombat/config.yml` (`tools/bugfix-suite/`) — Base64 коды предметов под `1.21.11` (`DataVersion: 4671`), защита `ItemUtils.decode` от отключения плагина + честные КД предметов в PvP без обхода через OP/`*`.

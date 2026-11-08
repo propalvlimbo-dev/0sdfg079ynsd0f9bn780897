@@ -19,7 +19,7 @@ items:
       - '&x&F&8&B&E&F&BНажмите, чтобы купить предмет'
     price: 50000
     limit: 4
-    command: 'si give везунчик 1 {player}'
+    command: 'ik give кирка_везунчик {player}'
   
   farm_ball:
     slot: 21
@@ -39,7 +39,7 @@ items:
       - '&x&F&8&B&E&F&BНажмите, чтобы купить предмет'
     price: 150000
     limit: 2
-    command: 'si give шар_огородника 1 {player}'
+    command: 'nitems FARM_BALL {player}'
   
   fishing_rod:
     slot: 22
@@ -58,7 +58,7 @@ items:
       - '&x&F&8&B&E&F&BНажмите, чтобы купить предмет'
     price: 50000
     limit: 3
-    command: 'si give рыбачок 1 {player}'
+    command: 'ik give рыбачок {player}'
   
   beacon:
     slot: 23
@@ -106,7 +106,7 @@ items:
       - '&x&F&8&B&E&F&BНажмите, чтобы купить предмет'
     price: 70000
     limit: 2
-    command: 'si give лопата_песочника 1 {player}'
+    command: 'ik give лопата_песочника {player}'
   
   byr:
     slot: 30
@@ -121,7 +121,7 @@ items:
       - '&x&F&8&B&E&F&BНажмите, чтобы купить предмет'
     price: 90000
     limit: 2
-    command: 'topkaenchants DRILL_BOOK {player}'
+    command: 'cloudenchants give drill {player}'
   
   smoker:
     slot: 31
@@ -139,7 +139,7 @@ items:
       - '&x&F&8&B&E&F&BНажмите, чтобы купить предмет'
     price: 80000
     limit: 5
-    command: 'rwfurnaces give combination_smoker {player}'
+    command: 'nfurnace:nfurnace {player} SMOKER COMBINATION'
   
   cobweb:
     slot: 32

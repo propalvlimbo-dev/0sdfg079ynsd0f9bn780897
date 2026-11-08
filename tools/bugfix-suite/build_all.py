@@ -46,7 +46,20 @@ public final class Bukkit {
     public static Player getPlayer(String name) { return null; }
     public static Player getPlayer(UUID id) { return null; }
     public static World getWorld(String name) { return null; }
+    public static org.bukkit.command.PluginCommand getPluginCommand(String name) { return null; }
     public static Inventory createInventory(InventoryHolder owner, int size, String title) { return null; }
+}
+""",
+    "org/bukkit/GameMode.java": """
+package org.bukkit;
+public enum GameMode { CREATIVE, SURVIVAL, ADVENTURE, SPECTATOR }
+""",
+    "org/bukkit/Chunk.java": """
+package org.bukkit;
+import org.bukkit.plugin.Plugin;
+public interface Chunk {
+    boolean addPluginChunkTicket(Plugin plugin);
+    boolean removePluginChunkTicket(Plugin plugin);
 }
 """,
     "org/bukkit/Server.java": """
@@ -61,19 +74,39 @@ public interface Server {
 """,
     "org/bukkit/World.java": """
 package org.bukkit;
+import java.util.concurrent.CompletableFuture;
 import org.bukkit.entity.Item;
+import org.bukkit.metadata.Metadatable;
 import org.bukkit.inventory.ItemStack;
-public interface World {
+public interface World extends Metadatable {
+    String getName();
     Item dropItemNaturally(Location loc, ItemStack item);
+    boolean isChunkLoaded(int x, int z);
+    Chunk getChunkAt(int x, int z);
+    CompletableFuture<Chunk> getChunkAtAsync(int x, int z);
 }
 """,
     "org/bukkit/Location.java": """
 package org.bukkit;
-public class Location {
-    public World getWorld() { return null; }
-    public int getBlockX() { return 0; }
-    public int getBlockY() { return 0; }
-    public int getBlockZ() { return 0; }
+public class Location implements Cloneable {
+    private World world;
+    private double x, y, z;
+    public Location() {}
+    public Location(World world, double x, double y, double z) {
+        this.world = world; this.x = x; this.y = y; this.z = z;
+    }
+    public World getWorld() { return world; }
+    public double getX() { return x; }
+    public double getY() { return y; }
+    public double getZ() { return z; }
+    public int getBlockX() { return (int) Math.floor(x); }
+    public int getBlockY() { return (int) Math.floor(y); }
+    public int getBlockZ() { return (int) Math.floor(z); }
+    public double distanceSquared(Location o) {
+        double dx = x - o.x, dy = y - o.y, dz = z - o.z;
+        return dx * dx + dy * dy + dz * dz;
+    }
+    @Override public Location clone() { return new Location(world, x, y, z); }
 }
 """,
     "org/bukkit/Material.java": """
@@ -83,8 +116,15 @@ public enum Material {
     EMERALD_ORE, EMERALD, DIAMOND_ORE, DIAMOND, LAPIS_ORE, LAPIS_LAZULI, COAL_ORE, COAL,
     WHEAT, CARROT, POTATO, BEETROOT, MELON, MELON_SLICE, PUMPKIN, COD, SALMON, PUFFERFISH,
     TROPICAL_FISH, SNOW_BLOCK, SNOW, SNOWBALL, PLAYER_HEAD, GOLDEN_APPLE, ENCHANTED_GOLDEN_APPLE,
-    ENDER_PEARL, CHORUS_FRUIT, FIREWORK_ROCKET;
+    ENDER_PEARL, ENDER_EYE, CHORUS_FRUIT, FIREWORK_ROCKET, END_CRYSTAL, EXPERIENCE_BOTTLE,
+    POTION, SPLASH_POTION, LINGERING_POTION, WIND_CHARGE, EGG, TRIDENT, SHIELD, ELYTRA,
+    ENCHANTED_BOOK, FISHING_ROD, NETHERITE_PICKAXE, NETHERITE_AXE, NETHERITE_SWORD,
+    CHEST, TRAPPED_CHEST, BARREL, SHULKER_BOX, FURNACE, BLAST_FURNACE, SMOKER, HOPPER,
+    DISPENSER, DROPPER, BREWING_STAND, LECTERN, CHISELED_BOOKSHELF, DECORATED_POT, CRAFTER,
+    ENDER_CHEST, CRAFTING_TABLE, ANVIL, CHIPPED_ANVIL, DAMAGED_ANVIL, ENCHANTING_TABLE,
+    TRIAL_KEY, OMINOUS_TRIAL_KEY, VAULT;
     public boolean isItem() { return true; }
+    public boolean isEdible() { return this == GOLDEN_APPLE || this == ENCHANTED_GOLDEN_APPLE || this == CHORUS_FRUIT; }
     public static Material matchMaterial(String name) {
         if (name == null) return null;
         try { return valueOf(name.trim().toUpperCase()); } catch (IllegalArgumentException e) { return null; }
@@ -133,7 +173,10 @@ public abstract class Command {
 """,
     "org/bukkit/command/PluginCommand.java": """
 package org.bukkit.command;
-public final class PluginCommand extends Command {}
+public final class PluginCommand extends Command {
+    public void setExecutor(CommandExecutor executor) {}
+    public void setTabCompleter(TabCompleter completer) {}
+}
 """,
     "org/bukkit/command/CommandExecutor.java": """
 package org.bukkit.command;
@@ -172,16 +215,33 @@ public interface ProjectileSource {}
 package org.bukkit.entity;
 public interface AnimalTamer {}
 """,
+    "org/bukkit/metadata/Metadatable.java": """
+package org.bukkit.metadata;
+import java.util.List;
+import org.bukkit.plugin.Plugin;
+public interface Metadatable {
+    void setMetadata(String metadataKey, MetadataValue newMetadataValue);
+    List<MetadataValue> getMetadata(String metadataKey);
+    boolean hasMetadata(String metadataKey);
+    void removeMetadata(String metadataKey, Plugin owningPlugin);
+}
+""",
     "org/bukkit/entity/Entity.java": """
 package org.bukkit.entity;
 import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-public interface Entity extends CommandSender {
+import org.bukkit.metadata.Metadatable;
+public interface Entity extends CommandSender, Metadatable {
     UUID getUniqueId();
     Location getLocation();
     World getWorld();
+    boolean isDead();
+    boolean isInsideVehicle();
+    boolean leaveVehicle();
+    boolean eject();
+    boolean teleport(Location location);
 }
 """,
     "org/bukkit/entity/LivingEntity.java": """
@@ -195,20 +255,47 @@ public interface LivingEntity extends Entity, ProjectileSource {
     void setHealth(double h);
     void setCanPickupItems(boolean pickup);
     boolean getCanPickupItems();
+    boolean isGliding();
+    void setGliding(boolean gliding);
+    boolean isSleeping();
 }
+""",
+    "org/bukkit/entity/Mob.java": """
+package org.bukkit.entity;
+public interface Mob extends LivingEntity {}
+""",
+    "org/bukkit/entity/Slime.java": """
+package org.bukkit.entity;
+public interface Slime extends Mob {}
+""",
+    "org/bukkit/entity/ThrownPotion.java": """
+package org.bukkit.entity;
+public interface ThrownPotion extends Projectile {}
+""",
+    "org/bukkit/entity/ArmorStand.java": """
+package org.bukkit.entity;
+public interface ArmorStand extends LivingEntity {}
+""",
+    "org/bukkit/entity/Hanging.java": """
+package org.bukkit.entity;
+public interface Hanging extends Entity {}
 """,
     "org/bukkit/entity/HumanEntity.java": """
 package org.bukkit.entity;
+import org.bukkit.GameMode;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 public interface HumanEntity extends LivingEntity, AnimalTamer {
     PlayerInventory getInventory();
+    InventoryView getOpenInventory();
     InventoryView openInventory(Inventory inv);
     void closeInventory();
     ItemStack getItemInHand();
     void setFoodLevel(int level);
+    GameMode getGameMode();
+    void wakeup(boolean setSpawnLocation);
 }
 """,
     "org/bukkit/entity/Player.java": """
@@ -216,6 +303,12 @@ package org.bukkit.entity;
 import org.bukkit.OfflinePlayer;
 public interface Player extends HumanEntity, OfflinePlayer {
     void setCooldown(org.bukkit.Material material, int ticks);
+    boolean isFlying();
+    void setFlying(boolean value);
+    boolean getAllowFlight();
+    void setAllowFlight(boolean flight);
+    boolean isSneaking();
+    void sendActionBar(String message);
 }
 """,
     "org/bukkit/entity/Item.java": """
@@ -250,10 +343,44 @@ public interface Tameable extends LivingEntity {
 """,
     "org/bukkit/block/Block.java": """
 package org.bukkit.block;
+import org.bukkit.Location;
 import org.bukkit.Material;
-public interface Block {
+import org.bukkit.metadata.Metadatable;
+public interface Block extends Metadatable {
     Material getType();
+    Location getLocation();
+    BlockState getState();
 }
+""",
+    "org/bukkit/block/BlockState.java": """
+package org.bukkit.block;
+import org.bukkit.Location;
+import org.bukkit.metadata.Metadatable;
+public interface BlockState extends Metadatable {
+    Location getLocation();
+}
+""",
+    "org/bukkit/block/Container.java": """
+package org.bukkit.block;
+import org.bukkit.inventory.InventoryHolder;
+public interface Container extends BlockState, InventoryHolder {}
+""",
+    "org/bukkit/block/DoubleChest.java": """
+package org.bukkit.block;
+import org.bukkit.Location;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
+public class DoubleChest implements InventoryHolder {
+    @Override public Inventory getInventory() { return null; }
+    public InventoryHolder getLeftSide() { return null; }
+    public InventoryHolder getRightSide() { return null; }
+    public Location getLocation() { return null; }
+}
+""",
+    "org/bukkit/block/ShulkerBox.java": """
+package org.bukkit.block;
+import org.bukkit.inventory.InventoryHolder;
+public interface ShulkerBox extends BlockState, InventoryHolder {}
 """,
     "org/bukkit/inventory/InventoryHolder.java": """
 package org.bukkit.inventory;
@@ -263,10 +390,15 @@ public interface InventoryHolder {
 """,
     "org/bukkit/inventory/Inventory.java": """
 package org.bukkit.inventory;
+import org.bukkit.Location;
+import org.bukkit.event.inventory.InventoryType;
 public interface Inventory {
     int getSize();
     ItemStack getItem(int index);
     void setItem(int index, ItemStack item);
+    InventoryHolder getHolder();
+    InventoryType getType();
+    Location getLocation();
 }
 """,
     "org/bukkit/inventory/PlayerInventory.java": """
@@ -285,16 +417,78 @@ public interface EntityEquipment {
 """,
     "org/bukkit/inventory/InventoryView.java": """
 package org.bukkit.inventory;
-public abstract class InventoryView {}
+import org.bukkit.event.inventory.InventoryType;
+public abstract class InventoryView {
+    public Inventory getTopInventory() { return null; }
+    public InventoryType getType() { return InventoryType.CHEST; }
+}
+""",
+    "org/bukkit/enchantments/Enchantment.java": """
+package org.bukkit.enchantments;
+public abstract class Enchantment {
+    public static final Enchantment PROTECTION = new Enchantment() {};
+    public static final Enchantment THORNS = new Enchantment() {};
+    public static final Enchantment VANISHING_CURSE = new Enchantment() {};
+    public static final Enchantment EFFICIENCY = new Enchantment() {};
+    public static final Enchantment FORTUNE = new Enchantment() {};
+    public static final Enchantment UNBREAKING = new Enchantment() {};
+    public static final Enchantment MENDING = new Enchantment() {};
+    public static final Enchantment LUCK_OF_THE_SEA = new Enchantment() {};
+    public static final Enchantment LURE = new Enchantment() {};
+    public static final Enchantment SHARPNESS = new Enchantment() {};
+    public static final Enchantment FIRE_ASPECT = new Enchantment() {};
+    public static final Enchantment LOOTING = new Enchantment() {};
+    public static final Enchantment SWEEPING_EDGE = new Enchantment() {};
+    public static final Enchantment IMPALING = new Enchantment() {};
+    public static final Enchantment RIPTIDE = new Enchantment() {};
+    public static final Enchantment LOYALTY = new Enchantment() {};
+    public static final Enchantment CHANNELING = new Enchantment() {};
+}
+""",
+    "org/bukkit/potion/PotionType.java": """
+package org.bukkit.potion;
+public enum PotionType {
+    STRENGTH, SWIFTNESS, STRONG_STRENGTH, STRONG_SWIFTNESS, HEALING, INSTANT_HEAL
+}
 """,
     "org/bukkit/inventory/meta/ItemMeta.java": """
 package org.bukkit.inventory.meta;
 import java.util.List;
+import org.bukkit.enchantments.Enchantment;
 public interface ItemMeta {
+    boolean hasDisplayName();
     String getDisplayName();
     void setDisplayName(String name);
     void setLore(List<String> lore);
     void setCustomModelData(Integer data);
+    boolean hasEnchants();
+    boolean addEnchant(Enchantment ench, int level, boolean ignoreLevelRestriction);
+    void setUnbreakable(boolean unbreakable);
+}
+""",
+    "org/bukkit/inventory/meta/BlockStateMeta.java": """
+package org.bukkit.inventory.meta;
+import org.bukkit.block.BlockState;
+public interface BlockStateMeta extends ItemMeta {
+    BlockState getBlockState();
+    void setBlockState(BlockState blockState);
+}
+""",
+    "org/bukkit/inventory/meta/EnchantmentStorageMeta.java": """
+package org.bukkit.inventory.meta;
+import org.bukkit.enchantments.Enchantment;
+public interface EnchantmentStorageMeta extends ItemMeta {
+    boolean hasStoredEnchants();
+    boolean addStoredEnchant(Enchantment ench, int level, boolean ignoreLevelRestriction);
+}
+""",
+    "org/bukkit/inventory/meta/PotionMeta.java": """
+package org.bukkit.inventory.meta;
+import org.bukkit.potion.PotionType;
+public interface PotionMeta extends ItemMeta {
+    PotionType getBasePotionType();
+    void setBasePotionType(PotionType type);
+    boolean hasCustomEffects();
 }
 """,
     "org/bukkit/inventory/ItemStack.java": """
@@ -303,13 +497,18 @@ import org.bukkit.Material;
 import org.bukkit.inventory.meta.ItemMeta;
 public class ItemStack implements Cloneable {
     private final Material type;
+    private ItemMeta meta;
     public ItemStack(Material type) { this.type = type; }
     public Material getType() { return type; }
-    public ItemMeta getItemMeta() { return null; }
-    public boolean setItemMeta(ItemMeta meta) { return true; }
+    public ItemMeta getItemMeta() { return meta; }
+    public boolean setItemMeta(ItemMeta meta) { this.meta = meta; return true; }
     public byte[] serializeAsBytes() { return new byte[0]; }
     public static ItemStack deserializeBytes(byte[] bytes) { return new ItemStack(Material.STONE); }
-    @Override public ItemStack clone() { return new ItemStack(type); }
+    @Override public ItemStack clone() {
+        ItemStack copy = new ItemStack(type);
+        copy.meta = this.meta;
+        return copy;
+    }
 }
 """,
     "org/bukkit/potion/PotionEffectType.java": """
@@ -327,6 +526,7 @@ public interface ConfigurationSection {
     default int getInt(String path) { return 0; }
     default int getInt(String path, int def) { return def; }
     default boolean getBoolean(String path) { return false; }
+    default List<?> getList(String path) { return Collections.emptyList(); }
     default List<String> getStringList(String path) { return Collections.emptyList(); }
     default ConfigurationSection getConfigurationSection(String path) { return null; }
     default Set<String> getKeys(boolean deep) { return Collections.emptySet(); }
@@ -358,6 +558,7 @@ import org.bukkit.Server;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 public interface Plugin extends TabExecutor {
+    String getName();
     File getDataFolder();
     Logger getLogger();
     boolean isEnabled();
@@ -386,6 +587,7 @@ public abstract class JavaPlugin extends PluginBase {
     public void onEnable() {}
     public void onDisable() {}
     public void saveDefaultConfig() {}
+    @Override public String getName() { return getClass().getSimpleName(); }
     @Override public File getDataFolder() { return new File("/tmp"); }
     @Override public Logger getLogger() { return logger; }
     @Override public boolean isEnabled() { return false; }
@@ -396,14 +598,49 @@ public abstract class JavaPlugin extends PluginBase {
     @Override public List<String> onTabComplete(CommandSender s, Command c, String l, String[] a) { return null; }
 }
 """,
+    "org/bukkit/event/EventException.java": """
+package org.bukkit.event;
+public class EventException extends Exception {
+    private static final long serialVersionUID = 1L;
+    public EventException() {}
+    public EventException(Throwable t) { super(t); }
+}
+""",
+    "org/bukkit/event/server/ServerEvent.java": """
+package org.bukkit.event.server;
+import org.bukkit.event.Event;
+public abstract class ServerEvent extends Event {}
+""",
+    "org/bukkit/event/server/PluginEvent.java": """
+package org.bukkit.event.server;
+import org.bukkit.plugin.Plugin;
+public abstract class PluginEvent extends ServerEvent {
+    public Plugin getPlugin() { return null; }
+}
+""",
+    "org/bukkit/event/server/PluginEnableEvent.java": """
+package org.bukkit.event.server;
+public class PluginEnableEvent extends PluginEvent {}
+""",
+    "org/bukkit/plugin/EventExecutor.java": """
+package org.bukkit.plugin;
+import org.bukkit.event.Event;
+import org.bukkit.event.EventException;
+import org.bukkit.event.Listener;
+public interface EventExecutor {
+    void execute(Listener listener, Event event) throws EventException;
+}
+""",
     "org/bukkit/plugin/PluginManager.java": """
 package org.bukkit.plugin;
 import org.bukkit.event.Event;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 public interface PluginManager {
     Plugin getPlugin(String name);
     void disablePlugin(Plugin plugin);
     void registerEvents(Listener listener, Plugin plugin);
+    void registerEvent(Class<? extends Event> event, Listener listener, EventPriority priority, EventExecutor executor, Plugin plugin, boolean ignoreCancelled);
     void callEvent(Event event);
 }
 """,
@@ -488,8 +725,12 @@ public enum Action { LEFT_CLICK_BLOCK, RIGHT_CLICK_BLOCK, LEFT_CLICK_AIR, RIGHT_
 """,
     "org/bukkit/event/block/BlockEvent.java": """
 package org.bukkit.event.block;
+import org.bukkit.block.Block;
 import org.bukkit.event.Event;
-public abstract class BlockEvent extends Event {}
+public abstract class BlockEvent extends Event {
+    protected Block block;
+    public final Block getBlock() { return block; }
+}
 """,
     "org/bukkit/event/block/BlockBreakEvent.java": """
 package org.bukkit.event.block;
@@ -629,12 +870,18 @@ public class ProjectileLaunchEvent extends EntityEvent implements Cancellable {
 """,
     "org/bukkit/event/entity/EntityChangeBlockEvent.java": """
 package org.bukkit.event.entity;
+import org.bukkit.block.Block;
 import org.bukkit.event.Cancellable;
 public class EntityChangeBlockEvent extends EntityEvent implements Cancellable {
-    private boolean c;
+    private Block block; private boolean c;
+    public Block getBlock() { return block; }
     @Override public boolean isCancelled() { return c; }
     @Override public void setCancelled(boolean b) { c = b; }
 }
+""",
+    "org/bukkit/event/entity/EntityUnleashEvent.java": """
+package org.bukkit.event.entity;
+public class EntityUnleashEvent extends EntityEvent {}
 """,
     "org/bukkit/event/entity/EntityResurrectEvent.java": """
 package org.bukkit.event.entity;
@@ -654,10 +901,45 @@ public class PlayerDeathEvent extends EntityEvent {
     @Override public Player getEntity() { return (Player) entity; }
 }
 """,
+    "org/bukkit/event/entity/PotionSplashEvent.java": """
+package org.bukkit.event.entity;
+import java.util.Collection;
+import java.util.Collections;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.ThrownPotion;
+import org.bukkit.event.Cancellable;
+public class PotionSplashEvent extends EntityEvent implements Cancellable {
+    private boolean c;
+    public ThrownPotion getPotion() { return (ThrownPotion) entity; }
+    public Collection<LivingEntity> getAffectedEntities() { return Collections.emptyList(); }
+    public void setIntensity(LivingEntity entity, double intensity) {}
+    @Override public boolean isCancelled() { return c; }
+    @Override public void setCancelled(boolean b) { c = b; }
+}
+""",
+    "org/bukkit/event/entity/AreaEffectCloudApplyEvent.java": """
+package org.bukkit.event.entity;
+import java.util.Collections;
+import java.util.List;
+import org.bukkit.entity.AreaEffectCloud;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.Cancellable;
+public class AreaEffectCloudApplyEvent extends EntityEvent implements Cancellable {
+    private boolean c;
+    @Override public AreaEffectCloud getEntity() { return (AreaEffectCloud) entity; }
+    public List<LivingEntity> getAffectedEntities() { return Collections.emptyList(); }
+    @Override public boolean isCancelled() { return c; }
+    @Override public void setCancelled(boolean b) { c = b; }
+}
+""",
     "org/bukkit/event/hanging/HangingEvent.java": """
 package org.bukkit.event.hanging;
+import org.bukkit.entity.Hanging;
 import org.bukkit.event.Event;
-public abstract class HangingEvent extends Event {}
+public abstract class HangingEvent extends Event {
+    protected Hanging hanging;
+    public Hanging getEntity() { return hanging; }
+}
 """,
     "org/bukkit/event/hanging/HangingBreakByEntityEvent.java": """
 package org.bukkit.event.hanging;
@@ -681,18 +963,39 @@ public class HangingPlaceEvent extends HangingEvent implements Cancellable {
     @Override public void setCancelled(boolean b) { c = b; }
 }
 """,
+    "org/bukkit/event/inventory/InventoryType.java": """
+package org.bukkit.event.inventory;
+public enum InventoryType {
+    CHEST, ENDER_CHEST, WORKBENCH, ANVIL, ENCHANTING, CRAFTING, CREATIVE, PLAYER, MERCHANT
+}
+""",
+    "org/bukkit/event/inventory/InventoryAction.java": """
+package org.bukkit.event.inventory;
+public enum InventoryAction {
+    NOTHING, PICKUP_ALL, COLLECT_TO_CURSOR, MOVE_TO_OTHER_INVENTORY
+}
+""",
     "org/bukkit/event/inventory/InventoryEvent.java": """
 package org.bukkit.event.inventory;
 import org.bukkit.event.Event;
-public class InventoryEvent extends Event {}
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
+public class InventoryEvent extends Event {
+    protected Inventory inv;
+    protected InventoryView view;
+    public Inventory getInventory() { return inv; }
+    public InventoryView getView() { return view; }
+}
 """,
     "org/bukkit/event/inventory/InventoryOpenEvent.java": """
 package org.bukkit.event.inventory;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.Cancellable;
+import org.bukkit.inventory.Inventory;
 public class InventoryOpenEvent extends InventoryEvent implements Cancellable {
     private final HumanEntity player; private boolean c;
     public InventoryOpenEvent(HumanEntity p) { this.player = p; }
+    public InventoryOpenEvent(HumanEntity p, Inventory inv) { this.player = p; this.inv = inv; }
     public HumanEntity getPlayer() { return player; }
     @Override public boolean isCancelled() { return c; }
     @Override public void setCancelled(boolean b) { c = b; }
@@ -716,11 +1019,17 @@ import org.bukkit.inventory.ItemStack;
 public class InventoryClickEvent extends InventoryInteractEvent {
     public Inventory getClickedInventory() { return null; }
     public ItemStack getCurrentItem() { return null; }
+    public boolean isShiftClick() { return false; }
+    public InventoryAction getAction() { return InventoryAction.NOTHING; }
 }
 """,
     "org/bukkit/event/inventory/InventoryDragEvent.java": """
 package org.bukkit.event.inventory;
-public class InventoryDragEvent extends InventoryInteractEvent {}
+import java.util.Collections;
+import java.util.Set;
+public class InventoryDragEvent extends InventoryInteractEvent {
+    public Set<Integer> getRawSlots() { return Collections.emptySet(); }
+}
 """,
     "org/bukkit/event/player/PlayerEvent.java": """
 package org.bukkit.event.player;
@@ -812,9 +1121,11 @@ public class PlayerInteractEvent extends PlayerEvent implements Cancellable {
 """,
     "org/bukkit/event/player/PlayerInteractEntityEvent.java": """
 package org.bukkit.event.player;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.Cancellable;
 public class PlayerInteractEntityEvent extends PlayerEvent implements Cancellable {
-    private boolean c;
+    private Entity clicked; private boolean c;
+    public Entity getRightClicked() { return clicked; }
     @Override public boolean isCancelled() { return c; }
     @Override public void setCancelled(boolean b) { c = b; }
 }
@@ -868,7 +1179,24 @@ public interface SkullMeta extends ItemMeta {}
 """,
     "org/bukkit/metadata/MetadataValue.java": """
 package org.bukkit.metadata;
-public interface MetadataValue {}
+import org.bukkit.plugin.Plugin;
+public interface MetadataValue {
+    default Object value() { return null; }
+    default Plugin getOwningPlugin() { return null; }
+}
+""",
+    "org/bukkit/metadata/FixedMetadataValue.java": """
+package org.bukkit.metadata;
+import org.bukkit.plugin.Plugin;
+public class FixedMetadataValue implements MetadataValue {
+    private final Plugin plugin;
+    private final Object val;
+    public FixedMetadataValue(Plugin owningPlugin, Object value) {
+        this.plugin = owningPlugin; this.val = value;
+    }
+    @Override public Object value() { return val; }
+    @Override public Plugin getOwningPlugin() { return plugin; }
+}
 """,
     "org/bukkit/persistence/PersistentDataType.java": """
 package org.bukkit.persistence;
@@ -997,18 +1325,34 @@ public class PlayerItemHeldEvent extends PlayerEvent {
 """,
     "org/bukkit/event/player/PlayerFishEvent.java": """
 package org.bukkit.event.player;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.Cancellable;
 public class PlayerFishEvent extends PlayerEvent implements Cancellable {
-    private boolean c;
+    private Entity caught; private boolean c;
+    public Entity getCaught() { return caught; }
+    @Override public boolean isCancelled() { return c; }
+    @Override public void setCancelled(boolean b) { c = b; }
+}
+""",
+    "org/bukkit/event/player/PlayerToggleFlightEvent.java": """
+package org.bukkit.event.player;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
+public class PlayerToggleFlightEvent extends PlayerEvent implements Cancellable {
+    private final boolean flying; private boolean c;
+    public PlayerToggleFlightEvent(Player p, boolean flying) { super(p); this.flying = flying; }
+    public boolean isFlying() { return flying; }
     @Override public boolean isCancelled() { return c; }
     @Override public void setCancelled(boolean b) { c = b; }
 }
 """,
     "org/bukkit/event/player/PlayerBucketEvent.java": """
 package org.bukkit.event.player;
+import org.bukkit.block.Block;
 import org.bukkit.event.Cancellable;
 public abstract class PlayerBucketEvent extends PlayerEvent implements Cancellable {
-    private boolean c;
+    private Block block; private boolean c;
+    public final Block getBlock() { return block; }
     @Override public boolean isCancelled() { return c; }
     @Override public void setCancelled(boolean b) { c = b; }
 }
@@ -1023,29 +1367,35 @@ public class PlayerBucketFillEvent extends PlayerBucketEvent {}
 """,
     "org/bukkit/event/player/PlayerBucketEntityEvent.java": """
 package org.bukkit.event.player;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.Cancellable;
 public class PlayerBucketEntityEvent extends PlayerEvent implements Cancellable {
-    private boolean c;
+    private Entity entity; private boolean c;
+    public Entity getEntity() { return entity; }
     @Override public boolean isCancelled() { return c; }
     @Override public void setCancelled(boolean b) { c = b; }
 }
 """,
     "org/bukkit/event/player/PlayerShearEntityEvent.java": """
 package org.bukkit.event.player;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.Cancellable;
 public class PlayerShearEntityEvent extends PlayerEvent implements Cancellable {
-    private boolean c;
+    private Entity what; private boolean c;
+    public Entity getEntity() { return what; }
     @Override public boolean isCancelled() { return c; }
     @Override public void setCancelled(boolean b) { c = b; }
 }
 """,
     "org/bukkit/event/entity/PlayerLeashEntityEvent.java": """
 package org.bukkit.event.entity;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 public class PlayerLeashEntityEvent extends Event implements Cancellable {
-    private Player player; private boolean c;
+    private Entity entity; private Player player; private boolean c;
+    public Entity getEntity() { return entity; }
     public Player getPlayer() { return player; }
     @Override public boolean isCancelled() { return c; }
     @Override public void setCancelled(boolean b) { c = b; }
@@ -1053,9 +1403,12 @@ public class PlayerLeashEntityEvent extends Event implements Cancellable {
 """,
     "org/bukkit/event/player/PlayerUnleashEntityEvent.java": """
 package org.bukkit.event.player;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-public class PlayerUnleashEntityEvent extends PlayerEvent implements Cancellable {
-    private boolean c;
+import org.bukkit.event.entity.EntityUnleashEvent;
+public class PlayerUnleashEntityEvent extends EntityUnleashEvent implements Cancellable {
+    private Player player; private boolean c;
+    public Player getPlayer() { return player; }
     @Override public boolean isCancelled() { return c; }
     @Override public void setCancelled(boolean b) { c = b; }
 }
@@ -1187,7 +1540,16 @@ def parse_constant_pool_classes(data: bytes) -> set:
     return out
 
 
-def verify_constant_pool_against_live_plugins(cand_god: Path, cand_hjobs: Path, cand_nclans: Path, cand_gc: Path):
+def verify_constant_pool_against_live_plugins(*cands: Path):
+    newly_compiled_entries = {
+        "pw/elytrix/godpickup/GodPickup.class",
+        "com/hokokrtet/hjobs/manager/DatabaseManager.class",
+        "wtf/n1zamu/utils/ValidatorUtil.class",
+        "me/realized/duels/util/ElytrixDuelTeleportFix.class",
+        "topka/simbay/rwitems/utils/ElytrixAirTrapGuard.class",
+        "ru/Travka/util/ElytrixMascotGuard.class",
+        "ru/penatov/itemkeep/data/ElytrixItemKeepFix.class",
+    }
     known = set()
     skip = {"ElytrixGodPickup.jar"}
     for jar in sorted((ROOT / "plugins").glob("*.jar")):
@@ -1196,7 +1558,7 @@ def verify_constant_pool_against_live_plugins(cand_god: Path, cand_hjobs: Path, 
         try:
             with zipfile.ZipFile(jar, "r") as z:
                 for n in z.namelist():
-                    if n.endswith(".class"):
+                    if n.endswith(".class") and n not in newly_compiled_entries:
                         known.add(n[:-6])
                         try:
                             known |= parse_constant_pool_classes(z.read(n))
@@ -1205,7 +1567,7 @@ def verify_constant_pool_against_live_plugins(cand_god: Path, cand_hjobs: Path, 
         except Exception:
             pass
 
-    for cand in (cand_god, cand_hjobs, cand_nclans, cand_gc):
+    for cand in cands:
         with zipfile.ZipFile(cand, "r") as z:
             own = {n[:-6] for n in z.namelist() if n.endswith(".class")}
             for n in z.namelist():
@@ -1217,7 +1579,7 @@ def verify_constant_pool_against_live_plugins(cand_god: Path, cand_hjobs: Path, 
                             f"FATAL: {cand.name}:{n} references unknown Bukkit class '{ref}' "
                             f"not present in any live server plugin!"
                         )
-    print("[OK] Constant-pool gate passed: 100% of org.bukkit.* classes verified against live server plugins.")
+    print(f"[OK] Constant-pool gate passed: 100% of org.bukkit.* classes verified across {len(cands)} JARs.")
 
 
 def build_zip_replacing(src_jar: Path, out_jar: Path, replacements: dict, removals: set = None):
@@ -1254,8 +1616,13 @@ def main():
         god_cls = td / "god_cls"
         hjobs_cls = td / "hjobs_cls"
         nclans_cls = td / "nclans_cls"
+        duels_cls = td / "duels_cls"
+        eitems_cls = td / "eitems_cls"
+        nmascot_cls = td / "nmascot_cls"
+        itemkeep_cls = td / "itemkeep_cls"
         test_cls = td / "test_cls"
-        for d in (stub_src, stub_cls, patch_cls, god_cls, hjobs_cls, nclans_cls, test_cls):
+        for d in (stub_src, stub_cls, patch_cls, god_cls, hjobs_cls, nclans_cls,
+                  duels_cls, eitems_cls, nmascot_cls, itemkeep_cls, test_cls):
             d.mkdir(parents=True, exist_ok=True)
 
         # 1. Write & compile stubs + PatchAllPlugins
@@ -1267,10 +1634,10 @@ def main():
             stub_files.append(str(p))
 
         blib = str(ROOT / "plugins/BLib.jar")
-        ess_jar = str(ROOT / "plugins/EssentialsX-2.22.0.jar")
+        ess_jar = str(next((ROOT / "plugins").glob("EssentialsX-*.jar")))
         vault_jar = str(ROOT / "plugins/Vault.jar")
-        wg_jar = str(ROOT / "plugins/worldguard-bukkit-7.0.16-beta-01-dist.jar")
-        we_jar = str(ROOT / "plugins/FastAsyncWorldEdit-Paper-2.15.0.jar")
+        wg_jar = str(next((ROOT / "plugins").glob("worldguard-bukkit-*.jar")))
+        we_jar = str(next((ROOT / "plugins").glob("FastAsyncWorldEdit-Paper-*.jar")))
 
         run(JAVA, "-jar", ECJ, "-21", "-encoding", "UTF-8", "-proc:none",
             "-cp", blib, "-d", str(stub_cls), *stub_files)
@@ -1279,9 +1646,9 @@ def main():
 
         patch_cp = f"{patch_cls}{os.pathsep}{blib}"
 
-        # 2. Build ElytrixGodPickup.jar (Fix 4)
+        # 2. Build ElytrixGodPickup.jar (v2.1.0 — /god + /fly + WG own-region chests + mob combat + Talisman)
         run(JAVA, "-jar", ECJ, "-21", "-encoding", "UTF-8", "-proc:none",
-            "-cp", f"{stub_cls}{os.pathsep}{ess_jar}",
+            "-cp", str(stub_cls),
             "-d", str(god_cls),
             str(GOD_DIR / "src/pw/elytrix/godpickup/GodPickup.java"))
 
@@ -1405,13 +1772,113 @@ def main():
         cand_gc = td / "GreatCombat-1.9.jar"
         build_zip_replacing(src_gc, cand_gc, gc_replacements)
 
-        # 6. Compile & execute BugfixVerificationSuite under strict JVM -Xverify:all!
+        # 6. Patch Duels-3.5.3.jar (Fix #4 — duel teleport race + Metadata guard + watchdog retry)
+        src_duels = ROOT / "plugins/Duels-3.5.3.jar"
+        run(JAVA, "-jar", ECJ, "-21", "-encoding", "UTF-8", "-proc:none",
+            "-cp", f"{stub_cls}{os.pathsep}{src_duels}",
+            "-d", str(duels_cls),
+            str(HERE / "src/me/realized/duels/util/ElytrixDuelTeleportFix.java"))
+
+        with zipfile.ZipFile(src_duels, "r") as z:
+            (td / "duels_perf_in.class").write_bytes(z.read("me/realized/duels/util/ElytrixDuelPerf.class"))
+            (td / "duels_lst_in.class").write_bytes(z.read("me/realized/duels/duel/DuelManager$DuelListener.class"))
+
+        run(JAVA, "-cp", patch_cp, "PatchAllPlugins", "duels-perf",
+            str(td / "duels_perf_in.class"), str(td / "duels_perf_out.class"))
+        run(JAVA, "-cp", patch_cp, "PatchAllPlugins", "duels-listener",
+            str(td / "duels_lst_in.class"), str(td / "duels_lst_out.class"))
+
+        duels_replacements = {
+            "me/realized/duels/util/ElytrixDuelPerf.class": (td / "duels_perf_out.class").read_bytes(),
+            "me/realized/duels/duel/DuelManager$DuelListener.class": (td / "duels_lst_out.class").read_bytes(),
+        }
+        for cls_file in sorted(duels_cls.rglob("*.class")):
+            duels_replacements[cls_file.relative_to(duels_cls).as_posix()] = cls_file.read_bytes()
+        cand_duels = td / "Duels-3.5.3.jar"
+        build_zip_replacing(src_duels, cand_duels, duels_replacements)
+
+        # 7. Patch ElytrixItems.jar (Fix #5 — forbid TrapItem / EnderTrapItem near active AirDrop)
+        src_eitems = ROOT / "plugins/ElytrixItems.jar"
+        run(JAVA, "-jar", ECJ, "-21", "-encoding", "UTF-8", "-proc:none",
+            "-cp", f"{stub_cls}{os.pathsep}{src_eitems}",
+            "-d", str(eitems_cls),
+            str(HERE / "src/topka/simbay/rwitems/utils/ElytrixAirTrapGuard.java"))
+
+        with zipfile.ZipFile(src_eitems, "r") as z:
+            (td / "eitems_trap_in.class").write_bytes(z.read("topka/simbay/rwitems/items/ItemEffects$TrapItem.class"))
+            eitems_plugin_yml = z.read("plugin.yml").decode("utf-8")
+
+        run(JAVA, "-cp", patch_cp, "PatchAllPlugins", "elytrixitems-trap",
+            str(td / "eitems_trap_in.class"), str(td / "eitems_trap_out.class"))
+
+        if "ElytrixAir" not in eitems_plugin_yml:
+            eitems_plugin_yml = eitems_plugin_yml.replace(
+                "softdepend:\n- WorldGuard\n- WorldEdit",
+                "softdepend:\n- WorldGuard\n- WorldEdit\n- ElytrixAir"
+            )
+
+        eitems_replacements = {
+            "topka/simbay/rwitems/items/ItemEffects$TrapItem.class": (td / "eitems_trap_out.class").read_bytes(),
+            "plugin.yml": eitems_plugin_yml.encode("utf-8"),
+        }
+        for cls_file in sorted(eitems_cls.rglob("*.class")):
+            eitems_replacements[cls_file.relative_to(eitems_cls).as_posix()] = cls_file.read_bytes()
+        cand_eitems = td / "ElytrixItems.jar"
+        build_zip_replacing(src_eitems, cand_eitems, eitems_replacements)
+
+        # 8. Patch NMascot-1.0.jar (Fix #6 — disable /fly and /god in active Talisman region)
+        src_nmascot = ROOT / "plugins/NMascot-1.0.jar"
+        run(JAVA, "-jar", ECJ, "-21", "-encoding", "UTF-8", "-proc:none",
+            "-cp", f"{stub_cls}{os.pathsep}{src_nmascot}",
+            "-d", str(nmascot_cls),
+            str(HERE / "src/ru/Travka/util/ElytrixMascotGuard.java"))
+
+        with zipfile.ZipFile(src_nmascot, "r") as z:
+            (td / "nmascot_move_in.class").write_bytes(z.read("ru/Travka/listener/PlayerMoveListener.class"))
+
+        run(JAVA, "-cp", patch_cp, "PatchAllPlugins", "nmascot-move",
+            str(td / "nmascot_move_in.class"), str(td / "nmascot_move_out.class"))
+
+        nmascot_replacements = {
+            "ru/Travka/listener/PlayerMoveListener.class": (td / "nmascot_move_out.class").read_bytes(),
+        }
+        for cls_file in sorted(nmascot_cls.rglob("*.class")):
+            nmascot_replacements[cls_file.relative_to(nmascot_cls).as_posix()] = cls_file.read_bytes()
+        cand_nmascot = td / "NMascot-1.0.jar"
+        build_zip_replacing(src_nmascot, cand_nmascot, nmascot_replacements)
+
+        # 9. Patch ItemKeep-1.0-SNAPSHOT.jar (Fixes #1 & #8 — clone items, guarantee enchants, drop overflow)
+        src_itemkeep = ROOT / "plugins/ItemKeep-1.0-SNAPSHOT.jar"
+        run(JAVA, "-jar", ECJ, "-21", "-encoding", "UTF-8", "-proc:none",
+            "-cp", f"{stub_cls}{os.pathsep}{src_itemkeep}",
+            "-d", str(itemkeep_cls),
+            str(HERE / "src/ru/penatov/itemkeep/data/ElytrixItemKeepFix.java"))
+
+        with zipfile.ZipFile(src_itemkeep, "r") as z:
+            (td / "ik_dm_in.class").write_bytes(z.read("ru/penatov/itemkeep/data/DataManager.class"))
+
+        run(JAVA, "-cp", patch_cp, "PatchAllPlugins", "itemkeep-datamanager",
+            str(td / "ik_dm_in.class"), str(td / "ik_dm_out.class"))
+
+        itemkeep_replacements = {
+            "ru/penatov/itemkeep/data/DataManager.class": (td / "ik_dm_out.class").read_bytes(),
+        }
+        for cls_file in sorted(itemkeep_cls.rglob("*.class")):
+            itemkeep_replacements[cls_file.relative_to(itemkeep_cls).as_posix()] = cls_file.read_bytes()
+        cand_itemkeep = td / "ItemKeep-1.0-SNAPSHOT.jar"
+        build_zip_replacing(src_itemkeep, cand_itemkeep, itemkeep_replacements)
+
+        # 10. Compile & execute BugfixVerificationSuite under strict JVM -Xverify:all!
         verify_cp = os.pathsep.join([
             str(test_cls),
             str(cand_god),
             str(cand_hjobs),
             str(cand_nclans),
             str(cand_gc),
+            str(cand_duels),
+            str(cand_eitems),
+            str(cand_nmascot),
+            str(cand_itemkeep),
             str(stub_cls),
             ess_jar,
             blib,
@@ -1428,16 +1895,24 @@ def main():
 
         run(JAVA, "-Xverify:all", "-cp", verify_cp,
             "BugfixVerificationSuite",
-            str(cand_god), str(cand_hjobs), str(cand_nclans), str(cand_gc))
+            str(cand_god), str(cand_hjobs), str(cand_nclans), str(cand_gc),
+            str(cand_duels), str(cand_eitems), str(cand_nmascot), str(cand_itemkeep))
 
-        verify_constant_pool_against_live_plugins(cand_god, cand_hjobs, cand_nclans, cand_gc)
+        verify_constant_pool_against_live_plugins(
+            cand_god, cand_hjobs, cand_nclans, cand_gc,
+            cand_duels, cand_eitems, cand_nmascot, cand_itemkeep
+        )
 
-        # 7. Atomically install verified JARs into plugins/
+        # 11. Atomically install verified JARs into plugins/
         targets = [
             (cand_god, ROOT / "plugins/ElytrixGodPickup.jar"),
             (cand_hjobs, ROOT / "plugins/hJobs.jar"),
             (cand_nclans, ROOT / "plugins/NClans-1.jar"),
             (cand_gc, ROOT / "plugins/GreatCombat-1.9.jar"),
+            (cand_duels, ROOT / "plugins/Duels-3.5.3.jar"),
+            (cand_eitems, ROOT / "plugins/ElytrixItems.jar"),
+            (cand_nmascot, ROOT / "plugins/NMascot-1.0.jar"),
+            (cand_itemkeep, ROOT / "plugins/ItemKeep-1.0-SNAPSHOT.jar"),
         ]
         for src_cand, dst_jar in targets:
             tmp_dst = dst_jar.with_suffix(".jar.tmp")

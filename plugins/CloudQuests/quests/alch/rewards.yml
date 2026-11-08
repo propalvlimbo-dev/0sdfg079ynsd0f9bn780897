@@ -15,22 +15,22 @@ rewards:
   '1':
     material: PINK_SHULKER_BOX
     commands:
-    - si give alch_1 1 %player%
+    - ik give среднийджамшут_1 %player%
     slot: 8
   '2':
     material: LIME_SHULKER_BOX
     commands:
-    - si give alch_2 1 %player%
+    - ik give среднийджамшут_2 %player%
     slot: 17
   '3':
     material: YELLOW_SHULKER_BOX
     commands:
-    - si give alch_3 1 %player%
+    - ik give среднийджамшут_3 %player%
     slot: 26
   '4':
     material: LIGHT_BLUE_SHULKER_BOX
     commands:
-    - si give alch_4 1 %player%
+    - ik give среднийджамшут_4 %player%
     slot: 35
   '5':
     material: RED_SHULKER_BOX

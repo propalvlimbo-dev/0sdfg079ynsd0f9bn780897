@@ -53,6 +53,21 @@ public final class PatchAllPlugins {
             case "gc-playerlistener":
                 out = patchGreatCombatPlayerListener(in);
                 break;
+            case "duels-perf":
+                out = patchDuelsPerf(in);
+                break;
+            case "duels-listener":
+                out = patchDuelsListener(in);
+                break;
+            case "elytrixitems-trap":
+                out = patchElytrixItemsTrap(in);
+                break;
+            case "nmascot-move":
+                out = patchNMascotMove(in);
+                break;
+            case "itemkeep-datamanager":
+                out = patchItemKeepDataManager(in);
+                break;
             default:
                 throw new IllegalArgumentException("Unknown mode: " + mode);
         }
@@ -630,6 +645,165 @@ public final class PatchAllPlugins {
                     };
                 }
                 return mv;
+            }
+        }, 0);
+        return cw.toByteArray();
+    }
+
+    // 6A. Duels ElytrixDuelPerf: delegate tryTeleport(...) to ElytrixDuelTeleportFix.tryTeleport(...)
+    private static byte[] patchDuelsPerf(byte[] in) {
+        ClassReader cr = new ClassReader(in);
+        ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
+        final String targetDesc =
+                "(Lme/realized/duels/DuelsPlugin;Lme/realized/duels/util/Loadable;Lorg/bukkit/entity/Player;Lorg/bukkit/Location;)V";
+        cr.accept(new ClassVisitor(Opcodes.ASM9, cw) {
+            @Override
+            public MethodVisitor visitMethod(int access, String name, String desc, String sig, String[] ex) {
+                if ("tryTeleport".equals(name) && targetDesc.equals(desc)) {
+                    MethodVisitor mv = super.visitMethod(access, name, desc, sig, ex);
+                    mv.visitCode();
+                    mv.visitVarInsn(Opcodes.ALOAD, 0);
+                    mv.visitVarInsn(Opcodes.ALOAD, 1);
+                    mv.visitVarInsn(Opcodes.ALOAD, 2);
+                    mv.visitVarInsn(Opcodes.ALOAD, 3);
+                    mv.visitMethodInsn(Opcodes.INVOKESTATIC,
+                            "me/realized/duels/util/ElytrixDuelTeleportFix",
+                            "tryTeleport",
+                            targetDesc,
+                            false);
+                    mv.visitInsn(Opcodes.RETURN);
+                    mv.visitMaxs(0, 0);
+                    mv.visitEnd();
+                    return null;
+                }
+                return super.visitMethod(access, name, desc, sig, ex);
+            }
+        }, 0);
+        return cw.toByteArray();
+    }
+
+    // 6B. Duels DuelManager$DuelListener: honor "Duels-Teleport" metadata inside on(PlayerTeleportEvent)
+    private static byte[] patchDuelsListener(byte[] in) {
+        ClassReader cr = new ClassReader(in);
+        ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
+        cr.accept(new ClassVisitor(Opcodes.ASM9, cw) {
+            @Override
+            public MethodVisitor visitMethod(int access, String name, String desc, String sig, String[] ex) {
+                MethodVisitor mv = super.visitMethod(access, name, desc, sig, ex);
+                if ("on".equals(name) && "(Lorg/bukkit/event/player/PlayerTeleportEvent;)V".equals(desc)) {
+                    return new MethodVisitor(Opcodes.ASM9, mv) {
+                        @Override
+                        public void visitMethodInsn(int op, String owner, String mName, String mDesc, boolean itf) {
+                            if (op == Opcodes.INVOKEVIRTUAL
+                                    && "me/realized/duels/arena/ArenaManagerImpl".equals(owner)
+                                    && "isInMatch".equals(mName)
+                                    && "(Lorg/bukkit/entity/Player;)Z".equals(mDesc)) {
+                                super.visitMethodInsn(Opcodes.INVOKESTATIC,
+                                        "me/realized/duels/util/ElytrixDuelTeleportFix",
+                                        "shouldBlockTeleportInMatch",
+                                        "(Lme/realized/duels/arena/ArenaManagerImpl;Lorg/bukkit/entity/Player;)Z",
+                                        false);
+                            } else {
+                                super.visitMethodInsn(op, owner, mName, mDesc, itf);
+                            }
+                        }
+                    };
+                }
+                return mv;
+            }
+        }, 0);
+        return cw.toByteArray();
+    }
+
+    // 7. ElytrixItems ItemEffects$TrapItem: block trap activation near active AirDrop before cooldown/item consumption
+    private static byte[] patchElytrixItemsTrap(byte[] in) {
+        ClassReader cr = new ClassReader(in);
+        ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
+        cr.accept(new ClassVisitor(Opcodes.ASM9, cw) {
+            @Override
+            public MethodVisitor visitMethod(int access, String name, String desc, String sig, String[] ex) {
+                MethodVisitor mv = super.visitMethod(access, name, desc, sig, ex);
+                if ("execute".equals(name) && "(Lorg/bukkit/event/player/PlayerInteractEvent;)V".equals(desc)) {
+                    return new MethodVisitor(Opcodes.ASM9, mv) {
+                        @Override
+                        public void visitMethodInsn(int op, String owner, String mName, String mDesc, boolean itf) {
+                            if (op == Opcodes.INVOKESTATIC
+                                    && "topka/simbay/rwitems/items/ItemRegistry$Items".equals(owner)
+                                    && "getItem".equals(mName)
+                                    && "(Lorg/bukkit/inventory/ItemStack;Ltopka/simbay/rwitems/items/ItemRegistry$Items;)Ltopka/simbay/rwitems/items/ItemRegistry$Items;".equals(mDesc)) {
+                                super.visitVarInsn(Opcodes.ALOAD, 1);
+                                super.visitMethodInsn(Opcodes.INVOKESTATIC,
+                                        "topka/simbay/rwitems/utils/ElytrixAirTrapGuard",
+                                        "validateTrapUse",
+                                        "(Lorg/bukkit/inventory/ItemStack;Ltopka/simbay/rwitems/items/ItemRegistry$Items;Lorg/bukkit/event/player/PlayerInteractEvent;)Ltopka/simbay/rwitems/items/ItemRegistry$Items;",
+                                        false);
+                            } else {
+                                super.visitMethodInsn(op, owner, mName, mDesc, itf);
+                            }
+                        }
+                    };
+                }
+                return mv;
+            }
+        }, 0);
+        return cw.toByteArray();
+    }
+
+    // 8. NMascot PlayerMoveListener: disable both /fly and /god in active Talisman region without dead CMI call
+    private static byte[] patchNMascotMove(byte[] in) {
+        ClassReader cr = new ClassReader(in);
+        ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
+        cr.accept(new ClassVisitor(Opcodes.ASM9, cw) {
+            @Override
+            public MethodVisitor visitMethod(int access, String name, String desc, String sig, String[] ex) {
+                if ("onMove".equals(name) && "(Lorg/bukkit/event/player/PlayerMoveEvent;)V".equals(desc)) {
+                    MethodVisitor mv = super.visitMethod(access, name, desc, sig, ex);
+                    mv.visitCode();
+                    mv.visitVarInsn(Opcodes.ALOAD, 1);
+                    mv.visitMethodInsn(Opcodes.INVOKESTATIC,
+                            "ru/Travka/util/ElytrixMascotGuard",
+                            "onPlayerMove",
+                            "(Lorg/bukkit/event/player/PlayerMoveEvent;)V",
+                            false);
+                    mv.visitInsn(Opcodes.RETURN);
+                    mv.visitMaxs(0, 0);
+                    mv.visitEnd();
+                    return null;
+                }
+                return super.visitMethod(access, name, desc, sig, ex);
+            }
+        }, 0);
+        return cw.toByteArray();
+    }
+
+    // 9. ItemKeep DataManager: clone items, guarantee shield/quest shulker enchants, and drop overflow items
+    private static byte[] patchItemKeepDataManager(byte[] in) {
+        ClassReader cr = new ClassReader(in);
+        ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
+        cr.accept(new ClassVisitor(Opcodes.ASM9, cw) {
+            @Override
+            public MethodVisitor visitMethod(int access, String name, String desc, String sig, String[] ex) {
+                if ("giveItem".equals(name) && "(Lorg/bukkit/entity/Player;Ljava/lang/String;)V".equals(desc)) {
+                    MethodVisitor mv = super.visitMethod(access, name, desc, sig, ex);
+                    mv.visitCode();
+                    mv.visitVarInsn(Opcodes.ALOAD, 0);
+                    mv.visitFieldInsn(Opcodes.GETFIELD,
+                            "ru/penatov/itemkeep/data/DataManager",
+                            "dataConfig",
+                            "Lorg/bukkit/configuration/file/FileConfiguration;");
+                    mv.visitVarInsn(Opcodes.ALOAD, 1);
+                    mv.visitVarInsn(Opcodes.ALOAD, 2);
+                    mv.visitMethodInsn(Opcodes.INVOKESTATIC,
+                            "ru/penatov/itemkeep/data/ElytrixItemKeepFix",
+                            "giveItem",
+                            "(Lorg/bukkit/configuration/file/FileConfiguration;Lorg/bukkit/entity/Player;Ljava/lang/String;)V",
+                            false);
+                    mv.visitInsn(Opcodes.RETURN);
+                    mv.visitMaxs(0, 0);
+                    mv.visitEnd();
+                    return null;
+                }
+                return super.visitMethod(access, name, desc, sig, ex);
             }
         }, 0);
         return cw.toByteArray();
