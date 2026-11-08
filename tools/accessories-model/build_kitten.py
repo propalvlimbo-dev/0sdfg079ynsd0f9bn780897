@@ -31,9 +31,14 @@ HERE = Path(__file__).resolve().parent
 MODEL = 'elytrix_cute_kitten'
 ICON = 'kitten_icon'
 
-CX = -6.20       # Centered squarely on the player's left shoulder pad (x = -8.0 .. -4.0)
+CX = -7.35       # Shifted slightly further left onto the player's left shoulder
 BASE_Y = 24.00   # Resting directly on top of the shoulder (y = 24.0)
 CZ = -0.35
+KITTEN_SCALE = 1.28  # ~28% larger in every dimension (~2.1x visual volume)
+
+
+def _pt(dx: float, dy: float, dz: float) -> list:
+    return [CX + dx * KITTEN_SCALE, BASE_Y + dy * KITTEN_SCALE, CZ + dz * KITTEN_SCALE]
 
 ANIM_LENGTH = 3.6
 ANIM_STEPS = 72  # 20 ticks/sec -> 73 keyframes (0..72 inclusive)
@@ -254,7 +259,7 @@ def eval_kitten_pose(u_norm: float) -> dict:
     nya_wave = _smooth_bump(u, 0.58, 0.19)
 
     # 1. Cozy purr-breathing bounce on `kitten_root`
-    dy = 0.18 * (0.5 - 0.5 * math.cos(w3)) + 0.15 * nya_wave
+    dy = (0.18 * (0.5 - 0.5 * math.cos(w3)) + 0.15 * nya_wave) * KITTEN_SCALE
     torso_rot = (2.5 * math.sin(w2) - 4.0 * nya_wave, 4.0 * math.sin(w1), 2.5 * math.cos(w2))
 
     # 2. Heart-melting curious head-tilt, happy nod & look-around
@@ -423,55 +428,55 @@ def build_blueprint():
     raw = io.BytesIO()
     texture.save(raw, format='PNG', optimize=True)
 
-    torso_orig = [CX, BASE_Y + 0.30, CZ]
-    head_orig = [CX, BASE_Y + 2.90, CZ - 0.10]
-    ear_r_orig = [CX + 1.02, BASE_Y + 5.55, CZ - 0.10]
-    ear_l_orig = [CX - 1.02, BASE_Y + 5.55, CZ - 0.10]
-    paw_r_orig = [CX + 0.72, BASE_Y + 1.95, CZ - 0.80]
-    paw_l_orig = [CX - 0.72, BASE_Y + 1.95, CZ - 0.80]
-    t1_orig = [CX, BASE_Y + 0.55, CZ + 1.15]
-    t2_orig = [CX, BASE_Y + 1.05, CZ + 2.15]
-    t3_orig = [CX, BASE_Y + 2.25, CZ + 2.45]
+    torso_orig = _pt(0.00, 0.30, 0.00)
+    head_orig = _pt(0.00, 2.90, -0.10)
+    ear_r_orig = _pt(1.02, 5.55, -0.10)
+    ear_l_orig = _pt(-1.02, 5.55, -0.10)
+    paw_r_orig = _pt(0.72, 1.95, -0.80)
+    paw_l_orig = _pt(-0.72, 1.95, -0.80)
+    t1_orig = _pt(0.00, 0.55, 1.15)
+    t2_orig = _pt(0.00, 1.05, 2.15)
+    t3_orig = _pt(0.00, 2.25, 2.45)
 
     c_body = _cube(
         'body_cube',
-        [CX - 1.15, BASE_Y + 0.20, CZ - 1.00],
-        [CX + 1.15, BASE_Y + 2.85, CZ + 1.20],
+        _pt(-1.15, 0.20, -1.00),
+        _pt(1.15, 2.85, 1.20),
         torso_orig,
         _uniform_faces(UV_WHITE, back_uv=UV_TABBY),
     )
     c_chest = _cube(
         'chest_tuft',
-        [CX - 0.75, BASE_Y + 1.05, CZ - 1.22],
-        [CX + 0.75, BASE_Y + 2.50, CZ - 0.92],
+        _pt(-0.75, 1.05, -1.22),
+        _pt(0.75, 2.50, -0.92),
         torso_orig,
         _uniform_faces(UV_WHITE),
     )
     c_collar = _cube(
         'collar_cube',
-        [CX - 0.98, BASE_Y + 2.55, CZ - 1.12],
-        [CX + 0.98, BASE_Y + 2.92, CZ + 0.92],
+        _pt(-0.98, 2.55, -1.12),
+        _pt(0.98, 2.92, 0.92),
         torso_orig,
         _uniform_faces(UV_COLLAR),
     )
     c_bell = _cube(
         'bell_cube',
-        [CX - 0.28, BASE_Y + 2.22, CZ - 1.40],
-        [CX + 0.28, BASE_Y + 2.74, CZ - 1.00],
+        _pt(-0.28, 2.22, -1.40),
+        _pt(0.28, 2.74, -1.00),
         torso_orig,
         _uniform_faces(UV_BELL, down_uv=UV_BELL),
     )
     c_hind_r = _cube(
         'hind_r_cube',
-        [CX + 0.25, BASE_Y, CZ - 1.12],
-        [CX + 1.22, BASE_Y + 0.78, CZ + 0.95],
+        _pt(0.25, 0.00, -1.12),
+        _pt(1.22, 0.78, 0.95),
         torso_orig,
         _uniform_faces(UV_WHITE, down_uv=UV_BEANS),
     )
     c_hind_l = _cube(
         'hind_l_cube',
-        [CX - 1.22, BASE_Y, CZ - 1.12],
-        [CX - 0.25, BASE_Y + 0.78, CZ + 0.95],
+        _pt(-1.22, 0.00, -1.12),
+        _pt(-0.25, 0.78, 0.95),
         torso_orig,
         _uniform_faces(UV_WHITE, down_uv=UV_BEANS),
     )
@@ -480,88 +485,88 @@ def build_blueprint():
     head_faces['north'] = {'uv': [0.0, 0.0, 8.0, 7.0], 'texture': 0}
     c_head = _cube(
         'head_cube',
-        [CX - 1.55, BASE_Y + 2.90, CZ - 1.55],
-        [CX + 1.55, BASE_Y + 5.62, CZ + 1.30],
+        _pt(-1.55, 2.90, -1.55),
+        _pt(1.55, 5.62, 1.30),
         head_orig,
         head_faces,
     )
     c_cheek_r = _cube(
         'cheek_r_cube',
-        [CX + 1.55, BASE_Y + 3.05, CZ - 1.15],
-        [CX + 1.88, BASE_Y + 4.08, CZ + 0.35],
+        _pt(1.55, 3.05, -1.15),
+        _pt(1.88, 4.08, 0.35),
         head_orig,
         _uniform_faces(UV_WHITE),
     )
     c_cheek_l = _cube(
         'cheek_l_cube',
-        [CX - 1.88, BASE_Y + 3.05, CZ - 1.15],
-        [CX - 1.55, BASE_Y + 4.08, CZ + 0.35],
+        _pt(-1.88, 3.05, -1.15),
+        _pt(-1.55, 4.08, 0.35),
         head_orig,
         _uniform_faces(UV_WHITE),
     )
 
     c_ear_r_base = _cube(
         'ear_r_base',
-        [CX + 0.52, BASE_Y + 5.55, CZ - 0.60],
-        [CX + 1.48, BASE_Y + 6.45, CZ + 0.25],
+        _pt(0.52, 5.55, -0.60),
+        _pt(1.48, 6.45, 0.25),
         ear_r_orig,
         _uniform_faces(UV_WHITE, north_uv=UV_EAR_FRONT, back_uv=UV_TABBY),
     )
     c_ear_r_tip = _cube(
         'ear_r_tip',
-        [CX + 0.70, BASE_Y + 6.45, CZ - 0.50],
-        [CX + 1.32, BASE_Y + 7.02, CZ + 0.15],
+        _pt(0.70, 6.45, -0.50),
+        _pt(1.32, 7.02, 0.15),
         ear_r_orig,
         _uniform_faces(UV_WHITE, back_uv=UV_TABBY),
     )
     c_ear_l_base = _cube(
         'ear_l_base',
-        [CX - 1.48, BASE_Y + 5.55, CZ - 0.60],
-        [CX - 0.52, BASE_Y + 6.45, CZ + 0.25],
+        _pt(-1.48, 5.55, -0.60),
+        _pt(-0.52, 6.45, 0.25),
         ear_l_orig,
         _uniform_faces(UV_WHITE, north_uv=UV_EAR_FRONT, back_uv=UV_TABBY),
     )
     c_ear_l_tip = _cube(
         'ear_l_tip',
-        [CX - 1.32, BASE_Y + 6.45, CZ - 0.50],
-        [CX - 0.70, BASE_Y + 7.02, CZ + 0.15],
+        _pt(-1.32, 6.45, -0.50),
+        _pt(-0.70, 7.02, 0.15),
         ear_l_orig,
         _uniform_faces(UV_WHITE, back_uv=UV_TABBY),
     )
 
     c_paw_r = _cube(
         'paw_r_cube',
-        [CX + 0.35, BASE_Y, CZ - 1.28],
-        [CX + 1.08, BASE_Y + 2.00, CZ - 0.48],
+        _pt(0.35, 0.00, -1.28),
+        _pt(1.08, 2.00, -0.48),
         paw_r_orig,
         _uniform_faces(UV_WHITE, down_uv=UV_BEANS),
     )
     c_paw_l = _cube(
         'paw_l_cube',
-        [CX - 1.08, BASE_Y, CZ - 1.28],
-        [CX - 0.35, BASE_Y + 2.00, CZ - 0.48],
+        _pt(-1.08, 0.00, -1.28),
+        _pt(-0.35, 2.00, -0.48),
         paw_l_orig,
         _uniform_faces(UV_WHITE, down_uv=UV_BEANS),
     )
 
     c_t1 = _cube(
         'tail_1_cube',
-        [CX - 0.32, BASE_Y + 0.35, CZ + 1.10],
-        [CX + 0.32, BASE_Y + 1.25, CZ + 2.28],
+        _pt(-0.32, 0.35, 1.10),
+        _pt(0.32, 1.25, 2.28),
         t1_orig,
         _uniform_faces(UV_TAIL),
     )
     c_t2 = _cube(
         'tail_2_cube',
-        [CX - 0.30, BASE_Y + 0.95, CZ + 2.05],
-        [CX + 0.30, BASE_Y + 2.35, CZ + 2.75],
+        _pt(-0.30, 0.95, 2.05),
+        _pt(0.30, 2.35, 2.75),
         t2_orig,
         _uniform_faces(UV_TAIL),
     )
     c_t3 = _cube(
         'tail_3_cube',
-        [CX - 0.33, BASE_Y + 2.20, CZ + 2.10],
-        [CX + 0.33, BASE_Y + 3.55, CZ + 2.82],
+        _pt(-0.33, 2.20, 2.10),
+        _pt(0.33, 3.55, 2.82),
         t3_orig,
         _uniform_faces(UV_WHITE, back_uv=UV_TAIL),
     )
@@ -762,7 +767,7 @@ def render_preview(blueprint: dict, texture: Image.Image, icon: Image.Image, out
             xw = pt[0] * math.cos(ang) - pt[2] * math.sin(ang)
             zw = pt[0] * math.sin(ang) + pt[2] * math.cos(ang)
             yw = pt[1] - 0.14 * zw
-            return (ox0 + 72.0 - xw * 12.5, 212.0 - (yw - 18.0) * 12.5, zw)
+            return (ox0 + 62.0 - xw * 11.4, 214.0 - (yw - 18.0) * 11.4, zw)
 
         ref_boxes = [
             ([-4, 24, -4], [4, 32, 4], (64, 70, 92, 255)),
@@ -831,7 +836,7 @@ def render_preview(blueprint: dict, texture: Image.Image, icon: Image.Image, out
                     faces_to_draw.append((z_avg, [(s[0], s[1]) for s in p2d], col, (165, 152, 178, 180)))
 
         r_pos = np.array(pose['root_pos'])
-        torso_o = np.array([CX, BASE_Y + 0.30, CZ])
+        torso_o = np.array(_pt(0.00, 0.30, 0.00))
         m_torso = rot_mat(*pose['torso_rot'])
         tf_torso = lambda p: torso_o + r_pos + m_torso @ (p - torso_o)
 
@@ -840,14 +845,14 @@ def render_preview(blueprint: dict, texture: Image.Image, icon: Image.Image, out
             m = rot_mat(*angles)
             return lambda p: parent_tf(o + m @ (p - o))
 
-        tf_head = child_tf(tf_torso, [CX, BASE_Y + 2.90, CZ - 0.10], pose['head_rot'])
-        tf_er = child_tf(tf_head, [CX + 1.02, BASE_Y + 5.55, CZ - 0.10], pose['ear_r_rot'])
-        tf_el = child_tf(tf_head, [CX - 1.02, BASE_Y + 5.55, CZ - 0.10], pose['ear_l_rot'])
-        tf_pr = child_tf(tf_torso, [CX + 0.72, BASE_Y + 1.95, CZ - 0.80], pose['paw_r_rot'])
-        tf_pl = child_tf(tf_torso, [CX - 0.72, BASE_Y + 1.95, CZ - 0.80], pose['paw_l_rot'])
-        tf_t1 = child_tf(tf_torso, [CX, BASE_Y + 0.55, CZ + 1.15], pose['tail_1_rot'])
-        tf_t2 = child_tf(tf_t1, [CX, BASE_Y + 1.05, CZ + 2.15], pose['tail_2_rot'])
-        tf_t3 = child_tf(tf_t2, [CX, BASE_Y + 2.25, CZ + 2.45], pose['tail_3_rot'])
+        tf_head = child_tf(tf_torso, _pt(0.00, 2.90, -0.10), pose['head_rot'])
+        tf_er = child_tf(tf_head, _pt(1.02, 5.55, -0.10), pose['ear_r_rot'])
+        tf_el = child_tf(tf_head, _pt(-1.02, 5.55, -0.10), pose['ear_l_rot'])
+        tf_pr = child_tf(tf_torso, _pt(0.72, 1.95, -0.80), pose['paw_r_rot'])
+        tf_pl = child_tf(tf_torso, _pt(-0.72, 1.95, -0.80), pose['paw_l_rot'])
+        tf_t1 = child_tf(tf_torso, _pt(0.00, 0.55, 1.15), pose['tail_1_rot'])
+        tf_t2 = child_tf(tf_t1, _pt(0.00, 1.05, 2.15), pose['tail_2_rot'])
+        tf_t3 = child_tf(tf_t2, _pt(0.00, 2.25, 2.45), pose['tail_3_rot'])
 
         for cn in ('body_cube', 'chest_tuft', 'collar_cube', 'bell_cube', 'hind_r_cube', 'hind_l_cube'):
             add_cube(cn, tf_torso)

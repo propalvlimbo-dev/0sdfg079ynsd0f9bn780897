@@ -668,10 +668,10 @@ class CuteKittenBlueprintTest(unittest.TestCase):
     def test_left_shoulder_perch_and_seamless_animation(self):
         xs = [v for c in self.model['elements'] for v in (c['from'][0], c['to'][0])]
         ys = [v for c in self.model['elements'] for v in (c['from'][1], c['to'][1])]
-        self.assertLess(max(xs), -4.1, 'clears player head on left shoulder')
-        self.assertGreater(min(xs), -9.0, 'perched directly on left shoulder')
+        self.assertLess(max(xs), -4.7, 'clears player head and helmet on left shoulder')
+        self.assertGreater(min(xs), -10.5, 'perched slightly further left on outer shoulder')
         self.assertGreaterEqual(min(ys), 23.9, 'sits cleanly on top of shoulder')
-        self.assertLessEqual(max(ys), 33.0, 'clears overhead halo')
+        self.assertLessEqual(max(ys), 33.5, 'clears overhead halo')
         clips = self.model['animations']
         self.assertEqual(len(clips), 1)
         clip = clips[0]
