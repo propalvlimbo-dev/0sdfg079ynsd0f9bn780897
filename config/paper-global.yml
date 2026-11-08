@@ -28,8 +28,8 @@ chunk-loading-basic:
   player-max-chunk-load-rate: 50.0
   player-max-chunk-send-rate: 45.0
 chunk-system:
-  io-threads: 1
-  worker-threads: 2
+  io-threads: -1
+  worker-threads: -1
 collisions:
   enable-player-collisions: true
   send-full-pos-for-hard-colliding-entities: true
