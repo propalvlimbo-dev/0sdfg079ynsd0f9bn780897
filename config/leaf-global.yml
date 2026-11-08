@@ -8,7 +8,7 @@ async:
     enabled: true
     max-threads: 2
     keepalive: 60
-    queue-size: 4096
+    queue-size: 1024
     reject-policy: CALLER_RUNS
   async-playerdata-save:
     enabled: false
@@ -74,8 +74,8 @@ performance:
   optimize-waypoint: false
   optimized-powered-rails: true
   reduce-packets:
-    reduce-entity-move-packets: false
-    reduce-entity-motion-packets: false
+    reduce-entity-move-packets: true
+    reduce-entity-motion-packets: true
     disable-useless-particles: true
   skip-ai-for-non-aware-mob: true
   datapack:
@@ -107,12 +107,12 @@ performance:
       spawn-chance: 25.0
   create-snapshot-on-retrieving-blockstate: false
   use-virtual-thread:
-    bukkit-async-scheduler: true
+    bukkit-async-scheduler: false
     folia-async-scheduler: false
-    async-chat-executor: true
-    download-pool: true
-    auth-pool: true
-    paper-configuration-pool: true
+    async-chat-executor: false
+    download-pool: false
+    auth-pool: false
+    paper-configuration-pool: false
 fixes:
   vanilla-bug-fix:
     mc-270656: false
@@ -194,10 +194,10 @@ misc:
     enable-for-lava: false
   region-format:
     format-name: MCA
-    compress-level: 6
+    compress-level: 4
     io-thread-count: 2
     io-flush-delay: -1
-    linear-use-virtual-thread: true
+    linear-use-virtual-thread: false
   remove-change-non-editable-sign-warning: true
   remove-spigot-check-bungee-config: false
   secure-seed:

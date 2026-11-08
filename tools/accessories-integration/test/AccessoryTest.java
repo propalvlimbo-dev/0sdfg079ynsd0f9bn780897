@@ -345,7 +345,7 @@ public class AccessoryTest {
   check(Boolean.FALSE.equals(centModel.rotLocked),"model follows torso rotation");
   FakeData engineData=(FakeData)centEntity.getBase().getData();
   check(Boolean.FALSE.equals(engineData.verticalCull) && Boolean.FALSE.equals(engineData.backCull) && Boolean.FALSE.equals(engineData.blockedCull),"culling disabled");
-  check(p.uuid.equals(engineData.paired) && engineData.baseRange>=96,"owner force-paired and range=96");
+  check(p.uuid.equals(engineData.paired) && engineData.baseRange>=48,"owner force-paired and range=48");
   check(AccessoryController.centipedeAnimating(p),"scolopendra playing living 'idle' loop");
   centModel.rendererReady=true;
   AccessoryController.animatePets();

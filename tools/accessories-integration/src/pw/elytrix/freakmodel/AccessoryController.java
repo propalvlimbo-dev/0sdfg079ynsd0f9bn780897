@@ -82,7 +82,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final String ADMIN_PERMISSION = "elytrixfreakmodel.admin";
     static final int BACK_ARROW_CMD = 10002;
     static final int INFO_CLOCK_CMD = 100010;
-    static final int VIEW_RANGE = 96;
+    static final int VIEW_RANGE = 48;
     static final long RE_PAIR_TICKS = 40L;
     static final int WARMUP_SYNC_TICKS = 40;
     static final double TELEPORT_JUMP_DIST_SQ = 24.0D * 24.0D;

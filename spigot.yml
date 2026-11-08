@@ -26,7 +26,7 @@ settings:
     attackDamage:
       max: 2048.0
   player-shuffle: 0
-  netty-threads: 8
+  netty-threads: 4
   user-cache-size: 5000
   log-villager-deaths: false
   log-named-deaths: false
@@ -123,11 +123,11 @@ world-settings:
     arrow-despawn-rate: 300
     trident-despawn-rate: 600
     entity-tracking-range:
-      players: 72
-      animals: 40
-      monsters: 40
+      players: 48
+      animals: 36
+      monsters: 36
       misc: 24
-      display: 64
+      display: 48
       other: 32
     item-despawn-rate: 3600
     seed-village: 10387312

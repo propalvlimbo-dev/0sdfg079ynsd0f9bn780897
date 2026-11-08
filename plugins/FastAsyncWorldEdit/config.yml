@@ -12,10 +12,10 @@ region-restrictions: true
 # FAWE will cancel non admin edits when memory consumption exceeds this %
 #  - Bypass with `/wea` or `//fast` or `fawe.bypass`
 #  - Disable with 100 or -1.
-max-memory-percent: 95
+max-memory-percent: 80
 # When percent memory usage reaches this threshold some aspects of editing will be slowed down:
 #  - FAWE-Asynchronous chunk loading when writing changes (see queue.async-chunk-load-write)
-slower-memory-percent: 80
+slower-memory-percent: 65
 
 # Enable or disable core components
 enabled-components:
@@ -171,7 +171,7 @@ queue:
     # Delay sending progress in milliseconds (so quick edits don't spam)
     delay: 5000
   # This should equal the number of processors you have
-  parallel-threads: 12
+  parallel-threads: 3
   # When doing edits that effect more than this many chunks:
   #  - FAWE will start placing before all calculations are finished
   #  - A larger value will use slightly less CPU time
@@ -179,7 +179,7 @@ queue:
   #  - A value too small may break some operations (deform?)
   #  - Values smaller than the configured parallel-threads are not accepted
   #  - It is recommended this option be at least 4x greater than parallel-threads
-  target-size: 96
+  target-size: 32
   # Increase or decrease queue intensity (ms) [-50,50]:
   #     0 = balance of performance / stability
   #     -10 = Allocate 10ms less for chunk placement
@@ -192,10 +192,10 @@ queue:
   #  - A good (relatively) safe way to set this is
   #  - Use 128 x GB of RAM / number of players expected to be using WE at the same time
   #  - Paper and derivatives only. (requires delay-chunk-unloads-by to be set).
-  preload-chunk-count: 512
+  preload-chunk-count: 64
   # If pooling is enabled (reduces GC, higher memory usage)
   #  - Enable to improve performance at the expense of memory
-  pool: true
+  pool: false
   # If chunk loading for writing edits to the world should be performed asynchronously to FAWE
   #  - Enable to improve performance at the expense of memory
   #  - If experience out of memory crashed, disable this or reduce slower-memory-percent
@@ -206,7 +206,7 @@ queue:
   #  - Higher performance at the expense of memory
   #  - I.e. target-size=400, parallel-threads=8 and threads-target-size=25 means target-size of 100 per thread
   #  - Defaults to 100 * 2 / parallel-threads
-  thread-target-size-percent: 16
+  thread-target-size-percent: 34
 
 history:
   # Should history be saved on disk:
