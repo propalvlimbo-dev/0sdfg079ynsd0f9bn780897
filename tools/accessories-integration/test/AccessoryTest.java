@@ -198,14 +198,16 @@ public class AccessoryTest {
   click.slot=13;controller.onClick(click);
   check(Bukkit.title.equals(AccessoryController.TITLE_HATS) && Bukkit.slots.get(31).meta.model.equals(new NamespacedKey("reallyworld","angel_halo")),"halo in Шапки");
   click.slot=14;controller.onClick(click);
-  check(Bukkit.title.equals(AccessoryController.TITLE_PETS),"opened Питомцы via tab");
-  check(Bukkit.slots.get(30).meta.model.equals(new NamespacedKey("reallyworld","mini_me_icon")),"mini_me in Питомцы");
-  check(Bukkit.slots.get(32).meta.model.equals(new NamespacedKey("reallyworld","centipede_icon")),"scolopendra in Питомцы");
+  check(Bukkit.title.equals(AccessoryController.TITLE_PETS) && Bukkit.title.contains("ꏧ"),"opened Питомцы via tab with 3-slot ꏧ content glyph");
+  check(Bukkit.slots.get(29).meta.title.contains("Мини-Роузи") && !Bukkit.slots.get(29).meta.title.contains("Мини-скин"),"renamed to Мини-Роузи");
+  check(Bukkit.slots.get(29).meta.model.equals(new NamespacedKey("reallyworld","mini_me_icon")),"mini_me in Питомцы slot 29");
+  check(Bukkit.slots.get(31).meta.title.contains("Милый котёнок") && Bukkit.slots.get(31).meta.model.equals(new NamespacedKey("reallyworld","kitten_icon")),"kitten in Питомцы slot 31");
+  check(Bukkit.slots.get(33).meta.model.equals(new NamespacedKey("reallyworld","centipede_icon")),"scolopendra in Питомцы slot 33");
 
   // Non-admin equip click denied with media rank hint
   p.data.remove(AccessoryController.PET);
-  click.slot=30;controller.onClick(click);
-  check(click.cancelled && !AccessoryController.miniMeSelected(p),"non-admin equip click denied");
+  click.slot=31;controller.onClick(click);
+  check(click.cancelled && !AccessoryController.kittenSelected(p),"non-admin equip click denied");
   check(p.msg.contains("media"),"denial names donation rank");
   click.slot=45;controller.onClick(click);
   check(Bukkit.title.equals(AccessoryController.TITLE_HUB),"back arrow returns to hub");
@@ -232,21 +234,31 @@ public class AccessoryTest {
   AccessoryController.animatePets();
   check(AccessoryController.kanekiAttached(p) && fe.pivots.passengers.contains(kanekiModel.pivotId),"kaneki pivot mounted");
 
-  // --- 2. Equip Dancing Mini-Me Shoulder Pet (Питомцы slot 30) alongside Kaneki Kagune ---
+  // --- 2. Equip Dancing Мини-Роузи Shoulder Pet (Питомцы slot 29) alongside Kaneki Kagune ---
   click.slot=14;controller.onClick(click); // switch to Питомцы
-  click.slot=30;controller.onClick(click); // equip Мини-скин!
-  check(AccessoryController.miniMeSelected(p) && AccessoryController.wearingMiniMe(p),"dancing mini-me spawned alongside kagune");
-  check(AccessoryController.miniMeAnimating(p),"mini-me playing dance 'idle' loop");
-  check(AccessoryController.wearingKaneki(p),"kagune still active alongside mini-me");
+  click.slot=29;controller.onClick(click); // equip Мини-Роузи!
+  check(p.msg.contains("Мини-Роузи") && !p.msg.contains("Мини-скин"),"chat message says Мини-Роузи");
+  check(AccessoryController.miniMeSelected(p) && AccessoryController.wearingMiniMe(p),"dancing Мини-Роузи spawned alongside kagune");
+  check(AccessoryController.miniMeAnimating(p),"Мини-Роузи playing dance 'idle' loop");
+  check(AccessoryController.wearingKaneki(p),"kagune still active alongside Мини-Роузи");
   check(!fe.entities.containsKey(p.uuid) && fe.entities.size()==2,"two isolated Dummy entities, zero player UUID collision");
   FakeActive miniModel=fe.q.last;
   miniModel.rendererReady=true;
   AccessoryController.animatePets();
-  check(AccessoryController.miniMeAttached(p) && fe.pivots.passengers.contains(miniModel.pivotId),"mini-me pivot mounted");
+  check(AccessoryController.miniMeAttached(p) && fe.pivots.passengers.contains(miniModel.pivotId),"Мини-Роузи pivot mounted");
 
-  // --- 3. Direct Pet Swap in Питомцы: Мини-скин (slot 30) -> Сколопендра Гуля (slot 32) ---
-  click.slot=32;controller.onClick(click);
-  check(!AccessoryController.wearingMiniMe(p) && miniModel.destroyed,"old mini-me Dummy cleanly destroyed on pet swap");
+  // --- 2b. Direct Pet Swap in Питомцы: Мини-Роузи (slot 29) -> Милый котёнок (slot 31) ---
+  click.slot=31;controller.onClick(click);
+  check(!AccessoryController.wearingMiniMe(p) && miniModel.destroyed,"old Мини-Роузи Dummy cleanly destroyed on swap to kitten");
+  check(AccessoryController.kittenSelected(p) && AccessoryController.wearingKitten(p) && AccessoryController.kittenAnimating(p),"Милый котёнок spawned & animating");
+  FakeActive kittenModel=fe.q.last;
+  kittenModel.rendererReady=true;
+  AccessoryController.animatePets();
+  check(AccessoryController.kittenAttached(p) && fe.pivots.passengers.contains(kittenModel.pivotId),"kitten pivot mounted");
+
+  // --- 3. Direct Pet Swap in Питомцы: Милый котёнок (slot 31) -> Сколопендра Гуля (slot 33) ---
+  click.slot=33;controller.onClick(click);
+  check(!AccessoryController.wearingKitten(p) && kittenModel.destroyed,"old kitten Dummy cleanly destroyed on pet swap");
   check(AccessoryController.centipedeSelected(p) && AccessoryController.wearingCentipede(p),"scolopendra spawned cleanly");
   check(AccessoryController.wearingKaneki(p) && fe.entities.size()==2,"kagune untouched during pet swap");
   FakeModeled centEntity=fe.q.lastEntity;
@@ -262,64 +274,64 @@ public class AccessoryTest {
   AccessoryController.animatePets();
   check(AccessoryController.centipedeAttached(p) && fe.pivots.passengers.contains(centModel.pivotId),"scolopendra pivot mounted");
 
-  // Swap back to Мини-скин (slot 30) so we test PivotOverride wipe & teleport survival with Мини-скин!
-  click.slot=30;controller.onClick(click);
-  check(AccessoryController.wearingMiniMe(p) && !AccessoryController.wearingCentipede(p) && centModel.destroyed,"swapped back to mini-me cleanly");
-  FakeModeled miniEntity=fe.q.lastEntity;
-  miniModel=fe.q.last;
-  miniModel.rendererReady=true;
+  // Swap to Милый котёнок (slot 31) so we test PivotOverride wipe & teleport survival with Милый котёнок!
+  click.slot=31;controller.onClick(click);
+  check(AccessoryController.wearingKitten(p) && !AccessoryController.wearingCentipede(p) && centModel.destroyed,"swapped to kitten cleanly");
+  FakeModeled kittenEntity=fe.q.lastEntity;
+  kittenModel=fe.q.last;
+  kittenModel.rendererReady=true;
   AccessoryController.animatePets();
 
   // --- 4. Simulate WornAngelRig.destroyAll() wiping PivotOverrideRegistry ---
   fe.pivots.simulateWornAngelRigDestroyAll();
-  check(!fe.pivots.passengers.contains(miniModel.pivotId) && !fe.pivots.passengers.contains(kanekiModel.pivotId),"old pivot wiped");
+  check(!fe.pivots.passengers.contains(kittenModel.pivotId) && !fe.pivots.passengers.contains(kanekiModel.pivotId),"old pivot wiped");
   AccessoryController.animatePets();
-  check(fe.pivots.passengers.contains(miniModel.pivotId) && fe.pivots.passengers.contains(kanekiModel.pivotId),
-        "both mini-me & kaneki kagune automatically re-bind to new PivotOverride!");
+  check(fe.pivots.passengers.contains(kittenModel.pivotId) && fe.pivots.passengers.contains(kanekiModel.pivotId),
+        "both kitten & kaneki kagune automatically re-bind to new PivotOverride!");
 
   // --- 5. Packet-level short PlayerMoveEvent updates torso yBodyRot immediately with 0 pitch ---
   controller.onMove(new PlayerMoveEvent(p, new Location(p.world, 1.0, 1.6, 2.0, -72.5F, 45.0F)));
-  check(Math.abs(miniEntity.bodyYaw - (-72.5F)) < 0.01F,"instant packet yBodyRot sync");
-  check(miniEntity.headPitch == 0.0F && miniEntity.rotTick == -1,"zero camera pitch tilt & instant rotationTick=-1");
+  check(Math.abs(kittenEntity.bodyYaw - (-72.5F)) < 0.01F,"instant packet yBodyRot sync");
+  check(kittenEntity.headPitch == 0.0F && kittenEntity.rotTick == -1,"zero camera pitch tilt & instant rotationTick=-1");
 
   // --- 6. TELEPORT SURVIVAL TEST (> 64-block /rtp teleport!) ---
   fe.autoInitRenderer=true;
-  int oldMiniPivot = miniModel.pivotId;
+  int oldKittenPivot = kittenModel.pivotId;
   int oldKanekiPivot = kanekiModel.pivotId;
   p.px = 1500.0; p.py = 70.0; p.pz = -920.0; p.bodyYaw = 90.0F;
   controller.onTeleport(new PlayerTeleportEvent(p, p.getLocation()));
-  check(!AccessoryController.wearingMiniMe(p) && !AccessoryController.wearingKaneki(p) && fe.entities.isEmpty(),
+  check(!AccessoryController.wearingKitten(p) && !AccessoryController.wearingKaneki(p) && fe.entities.isEmpty(),
         "stale virtual entities cleanly destroyed on teleport");
   AccessoryController.animatePets(); // tick +1
   AccessoryController.animatePets(); // tick +2 -> automatic fresh respawn at destination!
-  check(AccessoryController.wearingMiniMe(p) && AccessoryController.wearingKaneki(p),
-        "both dancing mini-me and kaneki kagune automatically respawned after teleport!");
-  check(AccessoryController.miniMeAttached(p) && AccessoryController.kanekiAttached(p),
+  check(AccessoryController.wearingKitten(p) && AccessoryController.wearingKaneki(p),
+        "both cute kitten and kaneki kagune automatically respawned after teleport!");
+  check(AccessoryController.kittenAttached(p) && AccessoryController.kanekiAttached(p),
         "fresh pivot entities mounted onto PivotOverride at destination!");
-  check(!fe.pivots.passengers.contains(oldMiniPivot) && !fe.pivots.passengers.contains(oldKanekiPivot),
+  check(!fe.pivots.passengers.contains(oldKittenPivot) && !fe.pivots.passengers.contains(oldKanekiPivot),
         "stale pre-teleport passenger IDs removed");
   check(fe.pivots.passengers.ids.size() == 2,"new post-teleport passenger IDs active");
 
-  // --- 7. Switching to Angel Wings (Спина slot 30) cleanly removes Kaneki Dummy while keeping Mini-Me ---
+  // --- 7. Switching to Angel Wings (Спина slot 30) cleanly removes Kaneki Dummy while keeping Милый котёнок ---
   click.slot=12;controller.onClick(click); // tab to Спина
   click.slot=30;controller.onClick(click); // equip Angel Wings
   check(!AccessoryController.wearingKaneki(p) && AccessoryController.back(plugin,p)==plugin.wings,"wings replace kaneki cleanly");
-  check(AccessoryController.wearingMiniMe(p) && fe.entities.size()==1,"mini-me remains untouched alongside wings");
+  check(AccessoryController.wearingKitten(p) && fe.entities.size()==1,"kitten remains untouched alongside wings");
 
-  // --- 8. Also equip Halo in Шапки (slot 31) -> Wings + Halo + Mini-Me all 3 active together! ---
+  // --- 8. Also equip Halo in Шапки (slot 31) -> Wings + Halo + Милый котёнок all 3 active together! ---
   click.slot=13;controller.onClick(click); // tab to Шапки
   click.slot=31;controller.onClick(click); // equip Halo
-  check(AccessoryController.halo(plugin,p)==plugin.halo && AccessoryController.back(plugin,p)==plugin.wings && AccessoryController.wearingMiniMe(p),
-        "Спина (Wings) + Шапки (Halo) + Питомцы (Mini-Me) all active simultaneously!");
+  check(AccessoryController.halo(plugin,p)==plugin.halo && AccessoryController.back(plugin,p)==plugin.wings && AccessoryController.wearingKitten(p),
+        "Спина (Wings) + Шапки (Halo) + Питомцы (Милый котёнок) all active simultaneously!");
 
   // --- 9. Clear All (slot 49) ---
   click.slot=49;controller.onClick(click);
-  check(!AccessoryController.wearingMiniMe(p) && AccessoryController.back(plugin,p)==null && AccessoryController.halo(plugin,p)==null && fe.entities.isEmpty(),
+  check(!AccessoryController.wearingKitten(p) && AccessoryController.back(plugin,p)==null && AccessoryController.halo(plugin,p)==null && fe.entities.isEmpty(),
         "clear-all removes back, hat, and pet cleanly");
 
   // --- 10. Quit cleanup ---
   click.slot=14;controller.onClick(click); // Питомцы
-  click.slot=30;controller.onClick(click); // Mini-Me
+  click.slot=29;controller.onClick(click); // Мини-Роузи
   click.slot=12;controller.onClick(click); // Спина
   click.slot=32;controller.onClick(click); // Kaneki
   check(AccessoryController.wearingMiniMe(p) && AccessoryController.wearingKaneki(p),"both equipped before quit");
@@ -330,6 +342,6 @@ public class AccessoryTest {
   AccessoryController.install(bare);
   check(bare.mockCommand.executor==null && !bare.warnings.isEmpty(),"missing command logged safely");
   InventoryDragEvent drag=new InventoryDragEvent();drag.view=click.view;controller.onDrag(drag);check(drag.cancelled,"drag cancelled");
-  System.out.println("All v3.13.0 tests passed: 3-section menu (Спина/Шапки/Питомцы), Dancing Mini-Me shoulder pet, Scolopendra, Kaneki Kagune & teleport recovery!");
+  System.out.println("All v3.14.0 tests passed: 3-section menu (Спина/Шапки/Питомцы), Мини-Роузи, Милый котёнок, Scolopendra, Kaneki Kagune & teleport recovery!");
  }
 }

@@ -579,12 +579,13 @@ def build_mini_me_icon() -> Image.Image:
 # 4. Native Elytrix RP GUI Overlays & Pixel-Font Section Titles
 # ---------------------------------------------------------------------------
 ACC_FONT_PROVIDERS = [
-    {'type': 'bitmap', 'file': 'reallyworld:gui/content/content_acc_hub.png', 'ascent': 31, 'height': 256, 'chars': ['ꏡ']},
-    {'type': 'bitmap', 'file': 'reallyworld:gui/content/content_acc_two.png', 'ascent': 31, 'height': 256, 'chars': ['ꏢ']},
-    {'type': 'bitmap', 'file': 'reallyworld:gui/content/content_acc_one.png', 'ascent': 31, 'height': 256, 'chars': ['ꏣ']},
-    {'type': 'bitmap', 'file': 'reallyworld:gui/title/elytrix_acc_back.png',  'ascent': 26, 'height': 32,  'chars': ['ꏤ']},
-    {'type': 'bitmap', 'file': 'reallyworld:gui/title/elytrix_acc_hats.png',  'ascent': 26, 'height': 32,  'chars': ['ꏥ']},
-    {'type': 'bitmap', 'file': 'reallyworld:gui/title/elytrix_acc_pets.png',  'ascent': 26, 'height': 32,  'chars': ['ꏦ']},
+    {'type': 'bitmap', 'file': 'reallyworld:gui/content/content_acc_hub.png',   'ascent': 31, 'height': 256, 'chars': ['ꏡ']},
+    {'type': 'bitmap', 'file': 'reallyworld:gui/content/content_acc_two.png',   'ascent': 31, 'height': 256, 'chars': ['ꏢ']},
+    {'type': 'bitmap', 'file': 'reallyworld:gui/content/content_acc_one.png',   'ascent': 31, 'height': 256, 'chars': ['ꏣ']},
+    {'type': 'bitmap', 'file': 'reallyworld:gui/title/elytrix_acc_back.png',    'ascent': 26, 'height': 32,  'chars': ['ꏤ']},
+    {'type': 'bitmap', 'file': 'reallyworld:gui/title/elytrix_acc_hats.png',    'ascent': 26, 'height': 32,  'chars': ['ꏥ']},
+    {'type': 'bitmap', 'file': 'reallyworld:gui/title/elytrix_acc_pets.png',    'ascent': 26, 'height': 32,  'chars': ['ꏦ']},
+    {'type': 'bitmap', 'file': 'reallyworld:gui/content/content_acc_three.png', 'ascent': 31, 'height': 256, 'chars': ['ꏧ']},
 ]
 
 
@@ -633,9 +634,10 @@ def build_gui_assets(rp_zip_path: Path, out_assets_dir: Path) -> dict:
     title_dir.mkdir(parents=True, exist_ok=True)
 
     layouts = {
-        'content_acc_hub.png': [20, 22, 24, 49],                   # Hub: Спина [20], Шапки [22], Питомцы [24] + Снять всё [49]
-        'content_acc_two.png': [12, 13, 14, 30, 32, 45, 49],       # Section tabs [12,13,14] + 2 items [30,32] + Назад [45] + Снять всё [49]
-        'content_acc_one.png': [12, 13, 14, 31, 45, 49],           # Section tabs [12,13,14] + 1 item  [31]    + Назад [45] + Снять всё [49]
+        'content_acc_hub.png':   [20, 22, 24, 49],                   # Hub: Спина [20], Шапки [22], Питомцы [24] + Снять всё [49]
+        'content_acc_two.png':   [12, 13, 14, 30, 32, 45, 49],       # Section tabs [12,13,14] + 2 items [30,32] + Назад [45] + Снять всё [49]
+        'content_acc_one.png':   [12, 13, 14, 31, 45, 49],           # Section tabs [12,13,14] + 1 item  [31]    + Назад [45] + Снять всё [49]
+        'content_acc_three.png': [12, 13, 14, 29, 31, 33, 45, 49],   # Section tabs [12,13,14] + 3 items [29,31,33] + Назад [45] + Снять всё [49]
     }
     written = {}
     for filename, slots in layouts.items():

@@ -51,11 +51,11 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 /**
- * Server-side 3-section accessories menu & unified ModelEngine controller (v3.13.0):
+ * Server-side 3-section accessories menu & unified ModelEngine controller (v3.14.0):
  * <ul>
  *   <li><b>Спина</b>: Ангельские крылья ({@code angel_wings}) и Щупальца Канэки ({@code elytrix_kaneki_tentacles})</li>
  *   <li><b>Шапки</b>: Божественный нимб ({@code angel_halo})</li>
- *   <li><b>Питомцы</b>: Танцующий возле плеча Мини-скин ({@code elytrix_mini_me}) и Сколопендра Гуля ({@code elytrix_centipede})</li>
+ *   <li><b>Питомцы</b>: Мини-Роузи ({@code elytrix_mini_me}), Милый котёнок ({@code elytrix_cute_kitten}) и Сколопендра Гуля ({@code elytrix_centipede})</li>
  * </ul>
  */
 public final class AccessoryController implements CommandExecutor, Listener {
@@ -67,9 +67,11 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final String PET_CENTIPEDE = "centipede";
     static final String PET_CHOICE = PET_CENTIPEDE;
     static final String PET_MINI_ME = "mini_me";
+    static final String PET_KITTEN = "kitten";
 
     static final String CENTIPEDE_BLUEPRINT = "elytrix_centipede";
     static final String MINI_ME_BLUEPRINT = "elytrix_mini_me";
+    static final String KITTEN_BLUEPRINT = "elytrix_cute_kitten";
     static final String KANEKI_BLUEPRINT = "elytrix_kaneki_tentacles";
 
     static final String IDLE_ANIM = "idle";
@@ -84,7 +86,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final String TITLE_HUB = "§fꈁꀀꈂꏡꈂꀁ§fꈃꏠ";
     static final String TITLE_BACK = "§fꈁꀀꈂꏢꈂꀁ§fꈃꏤ";
     static final String TITLE_HATS = "§fꈁꀀꈂꏣꈂꀁ§fꈃꏥ";
-    static final String TITLE_PETS = "§fꈁꀀꈂꏢꈂꀁ§fꈃꏦ";
+    static final String TITLE_PETS = "§fꈁꀀꈂꏧꈂꀁ§fꈃꏦ";
 
     enum Section {
         HUB, BACK, HATS, PETS
@@ -206,7 +208,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
 
     static String petChoice(Player player) {
         String choice = get(player, PET);
-        if (PET_MINI_ME.equals(choice) || PET_CENTIPEDE.equals(choice)) return choice;
+        if (PET_MINI_ME.equals(choice) || PET_KITTEN.equals(choice) || PET_CENTIPEDE.equals(choice)) {
+            return choice;
+        }
         return "";
     }
 
@@ -217,6 +221,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
         String choice = petChoice(player);
         if (PET_MINI_ME.equals(choice)) return MINI_ME_BLUEPRINT;
+        if (PET_KITTEN.equals(choice)) return KITTEN_BLUEPRINT;
         if (PET_CENTIPEDE.equals(choice)) return CENTIPEDE_BLUEPRINT;
         return null;
     }
@@ -255,6 +260,10 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return MINI_ME_BLUEPRINT.equals(desiredPetBlueprint(player));
     }
 
+    public static boolean kittenSelected(Player player) {
+        return KITTEN_BLUEPRINT.equals(desiredPetBlueprint(player));
+    }
+
     static boolean wearingKaneki(Player player) {
         GhoulRig rig = KAGUNES.get(player.getUniqueId());
         return rig != null && KANEKI_BLUEPRINT.equals(rig.blueprintId)
@@ -273,6 +282,12 @@ public final class AccessoryController implements CommandExecutor, Listener {
             && !rig.model.isDestroyed() && !rig.entity.isDestroyed();
     }
 
+    static boolean wearingKitten(Player player) {
+        GhoulRig rig = PETS.get(player.getUniqueId());
+        return rig != null && KITTEN_BLUEPRINT.equals(rig.blueprintId)
+            && !rig.model.isDestroyed() && !rig.entity.isDestroyed();
+    }
+
     static boolean centipedeAttached(Player player) {
         GhoulRig rig = PETS.get(player.getUniqueId());
         return rig != null && CENTIPEDE_BLUEPRINT.equals(rig.blueprintId) && rig.attached;
@@ -281,6 +296,11 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static boolean miniMeAttached(Player player) {
         GhoulRig rig = PETS.get(player.getUniqueId());
         return rig != null && MINI_ME_BLUEPRINT.equals(rig.blueprintId) && rig.attached;
+    }
+
+    static boolean kittenAttached(Player player) {
+        GhoulRig rig = PETS.get(player.getUniqueId());
+        return rig != null && KITTEN_BLUEPRINT.equals(rig.blueprintId) && rig.attached;
     }
 
     static boolean kanekiAttached(Player player) {
@@ -298,6 +318,13 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static boolean miniMeAnimating(Player player) {
         GhoulRig rig = PETS.get(player.getUniqueId());
         if (rig == null || !MINI_ME_BLUEPRINT.equals(rig.blueprintId) || rig.model.isDestroyed()) return false;
+        AnimationHandler handler = rig.model.getAnimationHandler();
+        return handler != null && handler.isPlayingAnimation(IDLE_ANIM);
+    }
+
+    static boolean kittenAnimating(Player player) {
+        GhoulRig rig = PETS.get(player.getUniqueId());
+        if (rig == null || !KITTEN_BLUEPRINT.equals(rig.blueprintId) || rig.model.isDestroyed()) return false;
         AnimationHandler handler = rig.model.getAnimationHandler();
         return handler != null && handler.isPlayingAnimation(IDLE_ANIM);
     }
@@ -609,9 +636,11 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (host == null) return;
         String label = KANEKI_BLUEPRINT.equals(rig.blueprintId)
             ? "кагуне Канэки Кена"
-            : (MINI_ME_BLUEPRINT.equals(rig.blueprintId)
-                ? "танцующий мини-скин у плеча"
-                : "сколопендра (по всему телу)");
+            : MINI_ME_BLUEPRINT.equals(rig.blueprintId)
+                ? "танцующая Мини-Роузи у плеча"
+                : KITTEN_BLUEPRINT.equals(rig.blueprintId)
+                    ? "милый котёнок на плече"
+                    : "сколопендра (по всему телу)";
         host.getLogger().info("[Аксессуары] " + label + ": живая анимация '" + IDLE_ANIM
             + "', привязка к PivotOverride активна");
     }
@@ -770,7 +799,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         modelsLogged = true;
         StringBuilder missing = new StringBuilder();
         for (String id : new String[] {"elytrix_angel_wings", "elytrix_angel_halo",
-                                       KANEKI_BLUEPRINT, CENTIPEDE_BLUEPRINT, MINI_ME_BLUEPRINT,
+                                       KANEKI_BLUEPRINT, CENTIPEDE_BLUEPRINT, MINI_ME_BLUEPRINT, KITTEN_BLUEPRINT,
                                        "elytrix_priora_black", "elytrix_priora_white", "elytrix_priora_pink"}) {
             if (resolveBlueprint(id) == null && !id.startsWith("elytrix_priora_")) {
                 if (missing.length() > 0) missing.append(", ");
@@ -779,7 +808,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
         try {
             if (missing.length() == 0) {
-                host.getLogger().info("[Аксессуары] ModelEngine загрузил все модели: крылья, нимб, кагуне Канэки, сколопендра, мини-скин");
+                host.getLogger().info("[Аксессуары] ModelEngine загрузил все модели: крылья, нимб, кагуне Канэки, сколопендра, Мини-Роузи, котёнок");
             } else {
                 host.getLogger().warning("[Аксессуары] ModelEngine не загрузил: " + missing
                     + " — проверь plugins/ModelEngine/blueprints и лог ModelEngine");
@@ -926,7 +955,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
     private static String activePetLabel(Player player, boolean allowed) {
         if (!allowed) return "§8Недоступно";
         String pet = petChoice(player);
-        if (PET_MINI_ME.equals(pet)) return "§dМини-скин";
+        if (PET_MINI_ME.equals(pet)) return "§dМини-Роузи";
+        if (PET_KITTEN.equals(pet)) return "§dМилый котёнок";
         if (PET_CENTIPEDE.equals(pet)) return "§dСколопендра Гуля";
         return "§8Не выбрано";
     }
@@ -944,7 +974,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
                 "§7Надето: " + activeHatLabel(player, allowed))));
         menu.setItem(14, item(Material.WHITE_DYE, "§x§F§A§D§8§F§C§lПитомцы", "mini_me_icon", null,
             lore(current == Section.PETS ? openHint : switchHint,
-                "§7Живые спутники и танцующий мини-скин",
+                "§7Мини-Роузи, милый котёнок и спутники",
                 "§7Надето: " + activePetLabel(player, allowed))));
     }
 
@@ -997,7 +1027,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
                     "")));
             menu.setItem(24, item(Material.WHITE_DYE, "§x§F§A§D§8§F§C§lПитомцы", "mini_me_icon", null,
                 lore(openSectionHint,
-                    "§7Живые спутники и танцующий мини-скин",
+                    "§7Мини-Роузи, милый котёнок и спутники",
                     "§7Надето: " + activePetLabel(player, allowed),
                     "")));
             placeBackAndClear(menu, false);
@@ -1024,11 +1054,15 @@ public final class AccessoryController implements CommandExecutor, Listener {
             placeSectionTabs(menu, player, allowed, Section.PETS);
             String pet = petChoice(player);
             boolean miniMe = allowed && PET_MINI_ME.equals(pet);
+            boolean kitten = allowed && PET_KITTEN.equals(pet);
             boolean bug = allowed && PET_CENTIPEDE.equals(pet);
-            menu.setItem(30, item(Material.WHITE_DYE, "§x§F§A§D§8§F§C§lМини-скин", "mini_me_icon", null,
-                miniMe ? lore(chosen, "§7Твой маленький скин возле плеча", "§7Зажигательно танцует рядом с тобой", "§7Нажми ещё раз — снять")
-                       : lore(hint, "§7Твой маленький скин возле плеча", "§7Зажигательно танцует рядом с тобой")));
-            menu.setItem(32, item(Material.SPIDER_EYE, "§x§F§A§D§8§F§C§lСколопендра Гуля", "centipede_icon", null,
+            menu.setItem(29, item(Material.WHITE_DYE, "§x§F§A§D§8§F§C§lМини-Роузи", "mini_me_icon", null,
+                miniMe ? lore(chosen, "§7Маленькая копия Роузи возле плеча", "§7Зажигательно танцует рядом с тобой", "§7Нажми ещё раз — снять")
+                       : lore(hint, "§7Маленькая копия Роузи возле плеча", "§7Зажигательно танцует рядом с тобой")));
+            menu.setItem(31, item(Material.PINK_DYE, "§x§F§A§D§8§F§C§lМилый котёнок", "kitten_icon", null,
+                kitten ? lore(chosen, "§7Пушистый котёнок сидит прямо на плече", "§7Наклоняет головку и машет лапкой", "§7Нажми ещё раз — снять")
+                       : lore(hint, "§7Пушистый котёнок сидит прямо на плече", "§7Наклоняет головку и машет лапкой")));
+            menu.setItem(33, item(Material.SPIDER_EYE, "§x§F§A§D§8§F§C§lСколопендра Гуля", "centipede_icon", null,
                 bug ? lore(chosen, "§7Живая сколопендра ползает по всему телу", "§7Грудь, плечи, шея, спина, руки и бёдра", "§7Нажми ещё раз — снять")
                     : lore(hint, "§7Живая сколопендра ползает по всему телу", "§7Грудь, плечи, шея, спина, руки и бёдра")));
             placeBackAndClear(menu, true);
@@ -1086,7 +1120,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         boolean isActionSlot = (slot == 49)
             || (current == Section.BACK && (slot == 30 || slot == 32))
             || (current == Section.HATS && slot == 31)
-            || (current == Section.PETS && (slot == 30 || slot == 32));
+            || (current == Section.PETS && (slot == 29 || slot == 31 || slot == 33));
         if (!isActionSlot) return;
 
         if (!allowed(player)) {
@@ -1109,8 +1143,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (current == Section.BACK && slot == 30) requiredBlueprint = "elytrix_angel_wings";
         else if (current == Section.BACK && slot == 32) requiredBlueprint = KANEKI_BLUEPRINT;
         else if (current == Section.HATS && slot == 31) requiredBlueprint = "elytrix_angel_halo";
-        else if (current == Section.PETS && slot == 30) requiredBlueprint = MINI_ME_BLUEPRINT;
-        else if (current == Section.PETS && slot == 32) requiredBlueprint = CENTIPEDE_BLUEPRINT;
+        else if (current == Section.PETS && slot == 29) requiredBlueprint = MINI_ME_BLUEPRINT;
+        else if (current == Section.PETS && slot == 31) requiredBlueprint = KITTEN_BLUEPRINT;
+        else if (current == Section.PETS && slot == 33) requiredBlueprint = CENTIPEDE_BLUEPRINT;
 
         if (requiredBlueprint != null && resolveBlueprint(requiredBlueprint) == null) {
             player.sendMessage("§cМодель ещё не загружена. Обратитесь к администрации.");
@@ -1123,12 +1158,17 @@ public final class AccessoryController implements CommandExecutor, Listener {
             toggleKaneki(player);
         } else if (current == Section.HATS && slot == 31) {
             toggleHead(player, "halo", "Нимб", "надет", "снят");
-        } else if (current == Section.PETS && slot == 30) {
+        } else if (current == Section.PETS && slot == 29) {
             togglePetChoice(player, PET_MINI_ME, MINI_ME_BLUEPRINT,
-                "Мини-скин",
-                "§dМини-скин вызван и танцует возле плеча!",
-                "§7Мини-скин убран.");
-        } else if (current == Section.PETS && slot == 32) {
+                "Мини-Роузи",
+                "§dМини-Роузи вызвана и танцует возле плеча!",
+                "§7Мини-Роузи убрана.");
+        } else if (current == Section.PETS && slot == 31) {
+            togglePetChoice(player, PET_KITTEN, KITTEN_BLUEPRINT,
+                "Милый котёнок",
+                "§dМилый котёнок уютно устроился на плече!",
+                "§7Милый котёнок убран.");
+        } else if (current == Section.PETS && slot == 33) {
             togglePetChoice(player, PET_CENTIPEDE, CENTIPEDE_BLUEPRINT,
                 "Сколопендра",
                 "§dСколопендра Гуля выпущена и ползает по всему телу.",
@@ -1202,7 +1242,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
             player.sendMessage("§c" + shortName + " не появился: " + failure.getClass().getSimpleName());
             return;
         }
-        boolean spawned = PET_MINI_ME.equals(choice) ? wearingMiniMe(player) : wearingCentipede(player);
+        boolean spawned = PET_MINI_ME.equals(choice) ? wearingMiniMe(player)
+            : PET_KITTEN.equals(choice) ? wearingKitten(player)
+            : wearingCentipede(player);
         if (!spawned) {
             set(player, PET, "");
             player.sendMessage("§c" + shortName + " не появился: модель не загрузилась.");
