@@ -12,20 +12,21 @@ FLAGS=(
     "-Xms${HEAP_MIN}" "-Xmx${HEAP_MAX}"
     -XX:+UseG1GC
     -XX:+ParallelRefProcEnabled
-    -XX:MaxGCPauseMillis=200
+    -XX:MaxGCPauseMillis=80
     -XX:+UnlockExperimentalVMOptions
     -XX:+ExplicitGCInvokesConcurrent
     -XX:+PerfDisableSharedMem
     -XX:MaxMetaspaceSize=768M
     -XX:MaxDirectMemorySize=2G
     -Djdk.nio.maxCachedBufferSize=262144
+    -Dio.netty.eventLoopThreads=4
     -XX:G1NewSizePercent=30
     -XX:G1MaxNewSizePercent=40
     -XX:G1HeapRegionSize=8M
-    -XX:G1ReservePercent=20
+    -XX:G1ReservePercent=15
     -XX:G1HeapWastePercent=5
     -XX:G1MixedGCCountTarget=4
-    -XX:InitiatingHeapOccupancyPercent=15
+    -XX:InitiatingHeapOccupancyPercent=25
     -XX:G1MixedGCLiveThresholdPercent=90
     -XX:G1RSetUpdatingPauseTimePercent=5
     -XX:SurvivorRatio=32

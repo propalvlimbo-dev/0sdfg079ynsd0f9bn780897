@@ -6,7 +6,7 @@ async:
     enabled: true
   async-pathfinding:
     enabled: true
-    max-threads: 4
+    max-threads: 2
     keepalive: 60
     queue-size: 4096
     reject-policy: CALLER_RUNS
@@ -195,7 +195,7 @@ misc:
   region-format:
     format-name: MCA
     compress-level: 6
-    io-thread-count: 6
+    io-thread-count: 2
     io-flush-delay: -1
     linear-use-virtual-thread: true
   remove-change-non-editable-sign-warning: true
