@@ -58,6 +58,8 @@ def _element(cube, pivot):
             continue
         faces[side] = {'uv': list(face['uv']), 'tintindex': 0, 'rotation': 0, 'texture': '#0'}
     element = {'from': low, 'to': high, 'faces': faces}
+    if cube.get('shade') is False:
+        element['shade'] = False
     rotation = _rotation(cube, pivot)
     if rotation is not None:
         element['rotation'] = rotation

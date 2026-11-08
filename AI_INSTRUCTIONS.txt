@@ -380,7 +380,7 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
      `tools/accessories-integration/` и `tools/accessories-model/` (подробности в `MODELS_PIPELINE.md`).
    - Исправлен лимит 12 моделей в `plugins/ModelEngine-4.1.0.jar` (`ModelGeneratorImpl.importModelsInternal`:
      `BIPUSH 12` -> `SIPUSH 8192`, `tools/accessories-integration/patch_modelengine.py`) + добавлена
-     авто-догрузка блюпринтов на лету `AccessoryController.resolveBlueprint(...)` в `ElytrixFreakModel v3.15.0`,
+     авто-догрузка блюпринтов на лету `AccessoryController.resolveBlueprint(...)` в `ElytrixFreakModel v3.16.0`,
      чтобы ни одна модель никогда не выдавала «Модель ещё не загружена».
    - Меню `/accessories` (`/аксессуары`) разбито на 3 раздела с нативными RP-оверлеями слотов (`ꏡ`, `ꏢ`, `ꏣ`, `ꏧ`, `ꏨ`)
      и пиксельными заголовками из `title_00.png` (`ꏤ` `СПИНА`, `ꏥ` `ШАПКИ`, `ꏦ` `ПИТОМЦЫ`), вкладками быстрого
@@ -390,7 +390,7 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
      * `Питомцы` (`ꏨ`, `content_acc_four.png`, слоты `28, 30, 32, 34`):
        - `[28]` `Мини-Роузи` (`elytrix_mini_me` — танцующий возле правого плеча маленький белый скин с бирюзовым лицом `#5BFBFF`, `reallyworld:mini_me_icon`)
        - `[30]` `Милый котёнок` (`elytrix_cute_kitten` — пушистый белый котёнок `1.28x` на левом плече с голубыми глазками, розовыми ушками, ошейником с колокольчиком и анимацией наклона головы и махания лапкой, `reallyworld:kitten_icon`)
-       - `[32]` `Меллстрой` (`elytrix_mellstroy` — мини-Меллстрой у левого плеча в белой кепке Rolex козырьком назад, чёрной футболке D&G с тропическим принтом, массивной золотой цепи с кулоном и золотых часах Rolex; танцует свой фирменный мемный танец и каждые 30–50 секунд произносит смешные коронные фразы вроде `«Да-да, нет-нет — да будет свет!»` в чат + во всплывающем `TextDisplay`-облачке над головой, `reallyworld:mellstroy_icon`)
+       - `[32]` `Меллстрой` (`elytrix_mellstroy` — мини-Меллстрой у левого плеча в белой кепке Rolex козырьком назад, чёрной футболке D&G с тропическим принтом, массивной золотой цепи с кулоном и золотых часах Rolex; БЕЗ спама в чат и БЕЗ голограмм `TextDisplay` — все 6 всплывающих фраз `ДА БУДЕТ СВЕТ!`, `АМ-АМ-АМ!`, `ПОШЛА ВОЗНЯ!`, `БАБКИ РУЛЯТСЯ!`, `ТАНЦУЕМ ВСЕ!`, `ПОМОГИТЕ!` вшиты прямо в 3D-модель в стиле таблички `BAN` у шара `D.Admin` с `shade: false` и синхронизированы с настоящими голосовыми репликами Меллстроя `reallyworld:mellstroy.*` в Ogg Vorbis, `reallyworld:mellstroy_icon`)
        - `[34]` `Сколопендра Гуля` (`elytrix_centipede`, `reallyworld:centipede_icon`)
    - Реализовано скрытие надетых аксессуаров от 1-го лица при сохранении 100% видимости в `F5` и для всех
      остальных игроков (`tools/accessories-model/fpv_shaders.py`): маркерные `minecraft:constant` тинты
@@ -398,7 +398,7 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
      (`RGB 252,253,254` -> отсечка `< 2.85m` для крыльев) + GLSL fragment `discard` в `core/entity.{vsh,fsh}` и
      `core/rendertype_item_entity_translucent_cull.{vsh,fsh}` по всем версиям (`<= 1.21.1`, `1_21_2` для `1.21.2–1.21.5`,
      `1_21_6` для `1.21.6–1.21.8`, `1_21_9` `#version 330` + `PER_FACE_LIGHTING` для `1.21.9–1.21.11`) + `sodium.ignored_shaders`.
-   - Актуальные блюпринты в `plugins/ModelEngine/blueprints/` и RP (`SHA-1: b8e04610c8bac93ef2c1aee074168ac1765ae150`):
+   - Актуальные блюпринты в `plugins/ModelEngine/blueprints/` и RP (`SHA-1: 11e05b3f9830ecdd54ad9b34aef71e84048a79b7`):
      * `elytrix_angel_halo.bbmodel` (нимб, 161 куб, `halo_ring` + `halo_aura`)
      * `elytrix_angel_wings.bbmodel` (крылья, 9 кубов на крыло + 6 падающих перьев)
      * `elytrix_kaneki_tentacles.bbmodel` (каноничное Ринкаку Кагуне Канеки Кена из аниме «Токийский Гуль»:
@@ -415,9 +415,11 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
        бесшовная 8-битная танцевальная анимация `'idle'` `3.2s`, текстура `64x64` `#FFFFFF` + `#5BFBFF`, иконка `mini_me_icon`)
      * `elytrix_cute_kitten.bbmodel` (милый пушистый белый котёнок на левом плече `scale=1.28`, `CX=-7.35`, 20 кубов с `rotation: [0,0,0]`,
        анимация `'idle'` `3.6s`, текстура `64x64`, иконка `kitten_icon`)
-     * `elytrix_mellstroy.bbmodel` (мини-Меллстрой у левого плеча `scale=0.34`, `CX=-8.85`, 12 кубов с `rotation: [0,0,0]`,
-       белая кепка Rolex назад, чёрная футболка D&G с тропическим принтом, золотая цепь с кулоном и золотые часы Rolex,
-       4-секундный мемный танец `'idle'` + периодические реплики и `TextDisplay`-облачко над головой, иконка `mellstroy_icon`)
+     * `elytrix_mellstroy.bbmodel` (мини-Меллстрой у левого плеча `scale=0.34`, `CX=-8.85`, 18 кубов с `rotation: [0,0,0]`,
+       текстура `128x128`, белая кепка Rolex назад, чёрная футболка D&G с тропическим принтом, золотая цепь с кулоном и золотые часы Rolex,
+       4-секундный мемный танец `'idle'` + 6 встроенных в 3D-модель `D.Admin BAN`-табличек `badge_svet`, `badge_amam`, `badge_voznya`,
+       `badge_babki`, `badge_tancuem`, `badge_miliciya` с `shade: false`, `scale: [0,0,0]` в `idle` и анимациями `say_*` `override: true`,
+       синхронизированными с настоящей озвучкой `reallyworld:mellstroy.{privet,amam,voznya,babki,tancuem,miliciya}`, иконка `mellstroy_icon`)
      * `elytrix_priora_{black,white,pink}.bbmodel` (Лада Приора, 2 места)
 
 2. Античит, антиэксплойт и PvP-синхронизация:

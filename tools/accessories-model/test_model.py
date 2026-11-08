@@ -418,6 +418,7 @@ class PackTests(unittest.TestCase):
                              'content_acc_hub.png', 'content_acc_two.png', 'content_acc_one.png',
                              'content_acc_three.png', 'content_acc_four.png',
                              'elytrix_acc_back.png', 'elytrix_acc_hats.png', 'elytrix_acc_pets.png',
+                             'sounds.json', 'sounds/mellstroy/',
                          ))}
             self.assertEqual(generated, expected)
             for name in generated:
@@ -538,6 +539,25 @@ class PackTests(unittest.TestCase):
                 self.assertEqual(image.size, (32, 32))
                 self.assertEqual(image.mode, 'RGBA')
                 self.assertGreater(sum(1 for px in image.getdata() if px[3] > 0), 120)
+
+    def test_mellstroy_voice_sounds_and_unshaded_badges_in_pack(self):
+        with zipfile.ZipFile(self.pack) as pack:
+            names = set(pack.namelist())
+            self.assertIn('assets/reallyworld/sounds.json', names)
+            sounds = json.loads(pack.read('assets/reallyworld/sounds.json'))
+            for clip in ('privet', 'amam', 'voznya', 'babki', 'tancuem', 'miliciya'):
+                self.assertIn(f'mellstroy.{clip}', sounds)
+                ogg_entry = f'assets/reallyworld/sounds/mellstroy/{clip}.ogg'
+                self.assertIn(ogg_entry, names)
+                raw = pack.read(ogg_entry)
+                self.assertTrue(raw.startswith(b'OggS'))
+                self.assertIn(b'vorbis', raw[:256])
+            for badge_bone in ('badge_svet', 'badge_amam', 'badge_voznya', 'badge_babki', 'badge_tancuem', 'badge_miliciya'):
+                model_json = json.loads(pack.read(f'assets/modelengine/models/elytrix_mellstroy/{badge_bone}.json'))
+                self.assertEqual(len(model_json['elements']), 1)
+                self.assertIs(model_json['elements'][0].get('shade'), False, badge_bone)
+                item_json = json.loads(pack.read(f'assets/modelengine/items/elytrix_mellstroy/{badge_bone}.json'))
+                self.assertEqual(item_json['model']['tints'], [{'type': 'minecraft:constant', 'value': -196867}])
 
     def test_title_glyph_registered_once(self):
         with zipfile.ZipFile(self.pack) as pack:
@@ -701,7 +721,8 @@ class CuteKittenBlueprintTest(unittest.TestCase):
 
 
 class MellstroyBlueprintTest(unittest.TestCase):
-    """Verifies the procedural Mellstroy shoulder pet (`elytrix_mellstroy`)."""
+    """Verifies the procedural Mellstroy shoulder pet (`elytrix_mellstroy`),
+    its 6 `D.Admin BAN`-style 3D pop-up phrase badges, and its real voice clips."""
 
     @classmethod
     def setUpClass(cls):
@@ -710,7 +731,11 @@ class MellstroyBlueprintTest(unittest.TestCase):
     def test_blockbench_4_10_free_and_zero_cube_rotations(self):
         self.assertEqual(self.model['meta'], {'format_version': '4.10', 'model_format': 'free', 'box_uv': False})
         self.assertEqual(self.model['resolution'], {'width': 16, 'height': 16})
-        self.assertEqual(len(self.model['elements']), 12)
+        self.assertEqual(len(self.model['elements']), 18)
+        badge_cubes = [c for c in self.model['elements'] if c['name'].startswith('badge_')]
+        self.assertEqual(len(badge_cubes), 6)
+        for c in badge_cubes:
+            self.assertIs(c.get('shade'), False, f'{c["name"]} must use shade=false like dadmin_ban')
         for cube in self.model['elements']:
             self.assertEqual(cube['rotation'], [0.0, 0.0, 0.0], cube['name'])
             self.assertTrue(all(a < b for a, b in zip(cube['from'], cube['to'])))
@@ -718,28 +743,57 @@ class MellstroyBlueprintTest(unittest.TestCase):
                 self.assertEqual(face['texture'], 0)
                 self.assertTrue(all(0.0 <= v <= 16.0 for v in face['uv']), (cube['name'], face_name))
         tex_meta = self.model['textures'][0]
+        self.assertEqual((tex_meta['width'], tex_meta['height']), (128, 128))
         self.assertEqual((tex_meta['uv_width'], tex_meta['uv_height']), (16, 16))
         self.assertTrue(tex_meta['internal'])
 
-    def test_shoulder_placement_and_meme_dance_loop(self):
-        xs = [v for c in self.model['elements'] for v in (c['from'][0], c['to'][0])]
-        ys = [v for c in self.model['elements'] for v in (c['from'][1], c['to'][1])]
+    def test_shoulder_placement_and_ban_style_popup_animations(self):
+        body_cubes = [c for c in self.model['elements'] if not c['name'].startswith('badge_')]
+        xs = [v for c in body_cubes for v in (c['from'][0], c['to'][0])]
+        ys = [v for c in body_cubes for v in (c['from'][1], c['to'][1])]
         self.assertLess(max(xs), -5.8, 'clears player head & helmet')
         self.assertGreater(min(xs), -12.2, 'stays beside outer shoulder')
         self.assertGreaterEqual(min(ys), 23.5, 'starts at shoulder height')
         self.assertLessEqual(max(ys), 35.5, 'clears central overhead halo')
+
         clips = self.model['animations']
-        self.assertEqual(len(clips), 1)
-        clip = clips[0]
-        self.assertEqual(clip['name'], 'idle')
-        self.assertEqual(clip['loop'], 'loop')
-        self.assertEqual(len(clip['animators']), 8)
-        for anim in clip['animators'].values():
-            by_chan = {}
-            for kf in anim['keyframes']:
-                by_chan.setdefault(kf['channel'], []).append(kf)
-            for chan, kfs in by_chan.items():
-                self.assertEqual(kfs[0]['data_points'], kfs[-1]['data_points'], (anim['name'], chan))
+        self.assertEqual([c['name'] for c in clips],
+                         ['idle', 'say_svet', 'say_amam', 'say_voznya', 'say_babki', 'say_tancuem', 'say_miliciya'])
+        idle = clips[0]
+        self.assertEqual(idle['loop'], 'loop')
+        self.assertFalse(idle['override'])
+        self.assertEqual(len(idle['animators']), 14)
+        for anim in idle['animators'].values():
+            if anim['name'].startswith('badge_'):
+                for kf in anim['keyframes']:
+                    self.assertEqual(kf['data_points'], [{'x': '0.0', 'y': '0.0', 'z': '0.0'}])
+
+        for clip in clips[1:]:
+            self.assertEqual(clip['loop'], 'once')
+            self.assertTrue(clip['override'])
+            target_badge = 'badge_' + clip['name'].split('_', 1)[1]
+            for anim in clip['animators'].values():
+                if anim['name'] == target_badge:
+                    scales = [float(kf['data_points'][0]['x']) for kf in anim['keyframes'] if kf['channel'] == 'scale']
+                    self.assertEqual(scales[0], 0.0)
+                    self.assertEqual(scales[-1], 0.0)
+                    self.assertGreater(max(scales), 1.15)
+                elif anim['name'].startswith('badge_'):
+                    for kf in anim['keyframes']:
+                        self.assertEqual(kf['data_points'], [{'x': '0.0', 'y': '0.0', 'z': '0.0'}])
+
+    def test_real_mellstroy_ogg_vorbis_voice_assets(self):
+        sounds_json = json.loads((HERE / 'assets/reallyworld/sounds.json').read_text(encoding='utf-8'))
+        expected = ('privet', 'amam', 'voznya', 'babki', 'tancuem', 'miliciya')
+        self.assertEqual(tuple(sounds_json.keys()), tuple(f'mellstroy.{k}' for k in expected))
+        for k in expected:
+            ogg_path = HERE / f'assets/reallyworld/sounds/mellstroy/{k}.ogg'
+            self.assertTrue(ogg_path.is_file(), f'missing {ogg_path}')
+            raw = ogg_path.read_bytes()
+            self.assertTrue(raw.startswith(b'OggS'), f'{k}.ogg must be Ogg container')
+            self.assertIn(b'vorbis', raw[:256], f'{k}.ogg must be genuine Vorbis, not Opus')
+            self.assertNotIn(b'OpusHead', raw[:256], f'{k}.ogg must not be Opus')
+            self.assertGreater(len(raw), 8000)
 
     def test_modelengine_itself_can_import_mellstroy_blueprint(self):
         java, ecj = os.environ.get('JAVA'), os.environ.get('ECJ')

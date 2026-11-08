@@ -15,5 +15,6 @@ public interface AnimationHandler {
     void setDefaultProperty(DefaultProperty defaultProperty);
     IAnimationProperty playAnimation(String animation, double lerpIn, double lerpOut, double speed, boolean force);
     boolean isPlayingAnimation(String animation);
+    void forceStopAnimation(String animation);
     IAnimationProperty getAnimation(String animation);
 }

@@ -51,12 +51,13 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 /**
- * Server-side 3-section accessories menu & unified ModelEngine controller (v3.15.0):
+ * Server-side 3-section accessories menu & unified ModelEngine controller (v3.16.0):
  * <ul>
  *   <li><b>Спина</b>: Ангельские крылья ({@code angel_wings}) и Щупальца Канэки ({@code elytrix_kaneki_tentacles})</li>
  *   <li><b>Шапки</b>: Божественный нимб ({@code angel_halo})</li>
  *   <li><b>Питомцы</b>: Мини-Роузи ({@code elytrix_mini_me}), Милый котёнок ({@code elytrix_cute_kitten}),
- *       Меллстрой ({@code elytrix_mellstroy}, периодически произносит смешные коронные фразы) и Сколопендра Гуля ({@code elytrix_centipede})</li>
+ *       Меллстрой ({@code elytrix_mellstroy}, с 3D-анимациями табличек внутри модели и настоящей озвучкой)
+ *       и Сколопендра Гуля ({@code elytrix_centipede})</li>
  * </ul>
  */
 public final class AccessoryController implements CommandExecutor, Listener {
@@ -85,19 +86,17 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final long RE_PAIR_TICKS = 40L;
     static final int WARMUP_SYNC_TICKS = 40;
     static final double TELEPORT_JUMP_DIST_SQ = 24.0D * 24.0D;
-    static final long QUOTE_MIN_DELAY_TICKS = 600L; // 30s
-    static final long QUOTE_MAX_DELAY_TICKS = 1000L; // 50s
-    static final long SPEECH_BUBBLE_TICKS = 75L; // 3.75s
+    static final long EMOTE_MIN_DELAY_TICKS = 500L; // 25s
+    static final long EMOTE_MAX_DELAY_TICKS = 900L; // 45s
 
-    static final String[] MELLSTROY_QUOTES = {
-        "Да-да, нет-нет — да будет свет!",
-        "Ам-ам-ам! Бэм-бэм-бэм!",
-        "Что за бизнес, боров?!",
-        "Ну шо ты, голова? Летс гирит!",
-        "Да-да, нет-нет, нет-нет, да-да — да будет свет!",
-        "Боров на месте — заноси капусту!",
-        "Мама, вызывай такси!",
-        "Айм профешинал, айм профи!"
+    /** Synchronized (in-model 3D `D.Admin BAN`-style badge animation, real Mellstroy Ogg Vorbis sound) pairs. */
+    static final String[][] MELLSTROY_EMOTES = {
+        {"say_svet",     "reallyworld:mellstroy.privet"},
+        {"say_amam",     "reallyworld:mellstroy.amam"},
+        {"say_voznya",   "reallyworld:mellstroy.voznya"},
+        {"say_babki",    "reallyworld:mellstroy.babki"},
+        {"say_tancuem",  "reallyworld:mellstroy.tancuem"},
+        {"say_miliciya", "reallyworld:mellstroy.miliciya"}
     };
 
     static final String TITLE_HUB = "§fꈁꀀꈂꏡꈂꀁ§fꈃꏠ";
@@ -141,11 +140,10 @@ public final class AccessoryController implements CommandExecutor, Listener {
         double lastZ;
         boolean hasLastPos;
         boolean loggedReady;
-        long nextQuoteTick;
-        int lastQuoteIndex = -1;
-        String lastSpokenQuote;
-        org.bukkit.entity.Entity speechBubble;
-        long bubbleExpireTick;
+        long nextEmoteTick;
+        int lastEmoteIndex = -1;
+        String lastEmoteAnim;
+        String lastEmoteSound;
 
         GhoulRig(String blueprintId, Dummy<Player> dummy, ModeledEntity entity,
                  ActiveModel model, PivotOverride pivot, Location spawnLoc) {
@@ -154,7 +152,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
             this.entity = entity;
             this.model = model;
             this.pivot = pivot;
-            this.nextQuoteTick = petTicks + randomQuoteDelayTicks();
+            this.nextEmoteTick = petTicks + randomEmoteDelayTicks();
             recordLocation(spawnLoc);
         }
 
@@ -376,15 +374,20 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return handler != null && handler.isPlayingAnimation(IDLE_ANIM);
     }
 
-    static String mellstroyLastQuote(Player player) {
+    static String mellstroyLastEmote(Player player) {
         GhoulRig rig = PETS.get(player.getUniqueId());
-        return rig != null && MELLSTROY_BLUEPRINT.equals(rig.blueprintId) ? rig.lastSpokenQuote : null;
+        return rig != null && MELLSTROY_BLUEPRINT.equals(rig.blueprintId) ? rig.lastEmoteAnim : null;
     }
 
-    static void forceNextQuoteDue(Player player) {
+    static String mellstroyLastSound(Player player) {
+        GhoulRig rig = PETS.get(player.getUniqueId());
+        return rig != null && MELLSTROY_BLUEPRINT.equals(rig.blueprintId) ? rig.lastEmoteSound : null;
+    }
+
+    static void forceNextEmoteDue(Player player) {
         GhoulRig rig = PETS.get(player.getUniqueId());
         if (rig != null && MELLSTROY_BLUEPRINT.equals(rig.blueprintId)) {
-            rig.nextQuoteTick = petTicks;
+            rig.nextEmoteTick = petTicks;
         }
     }
 
@@ -685,7 +688,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
             syncRigTransform(wearer, rig, bodyYaw);
             ensureLivingAnimation(rig, tracker.getHorizSpeedBlocksPerTick());
             if (MELLSTROY_BLUEPRINT.equals(rig.blueprintId)) {
-                tickMellstroySpeech(wearer, rig, bodyYaw);
+                tickMellstroyEmote(wearer, rig, bodyYaw);
             }
             logRigReady(rig);
         } catch (Throwable failure) {
@@ -693,136 +696,79 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
     }
 
-    static long randomQuoteDelayTicks() {
+    static long randomEmoteDelayTicks() {
         return java.util.concurrent.ThreadLocalRandom.current()
-            .nextLong(QUOTE_MIN_DELAY_TICKS, QUOTE_MAX_DELAY_TICKS + 1L);
+            .nextLong(EMOTE_MIN_DELAY_TICKS, EMOTE_MAX_DELAY_TICKS + 1L);
     }
 
-    private static int nextRandomQuoteIndex(int previousIndex) {
-        int n = MELLSTROY_QUOTES.length;
+    private static int nextRandomEmoteIndex(int previousIndex) {
+        int n = MELLSTROY_EMOTES.length;
         if (n <= 1) return 0;
         int pick = java.util.concurrent.ThreadLocalRandom.current().nextInt(n - 1);
         if (previousIndex >= 0 && pick >= previousIndex) pick++;
         return pick;
     }
 
-    private static Location computeBubbleLocation(Location base, float bodyYaw) {
+    private static Location computeShoulderSoundLocation(Location base, float bodyYaw) {
         if (base == null) return null;
         double rad = Math.toRadians(bodyYaw);
         double sin = Math.sin(rad);
         double cos = Math.cos(rad);
-        // Left shoulder (+0.55m left, +0.03m forward) and +2.38m up (right above Mellstroy's cap)
         double left = 0.55D;
         double fwd = 0.03D;
         double dx = left * cos - fwd * sin;
         double dz = left * sin + fwd * cos;
-        return new Location(base.getWorld(), base.getX() + dx, base.getY() + 2.38D, base.getZ() + dz, 0.0F, 0.0F);
-    }
-
-    private static void destroySpeechBubble(GhoulRig rig) {
-        if (rig == null || rig.speechBubble == null) return;
-        org.bukkit.entity.Entity bubble = rig.speechBubble;
-        rig.speechBubble = null;
-        rig.bubbleExpireTick = 0L;
-        try {
-            java.lang.reflect.Method remove = bubble.getClass().getMethod("remove");
-            remove.invoke(bubble);
-        } catch (Throwable ignored) {
-        }
-    }
-
-    private static void teleportSpeechBubble(org.bukkit.entity.Entity bubble, Location target) {
-        if (bubble == null || target == null) return;
-        try {
-            java.lang.reflect.Method teleport = bubble.getClass().getMethod("teleport", Location.class);
-            teleport.invoke(bubble, target);
-        } catch (Throwable ignored) {
-        }
+        return new Location(base.getWorld(), base.getX() + dx, base.getY() + 1.65D, base.getZ() + dz, 0.0F, 0.0F);
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private static void spawnOrUpdateSpeechBubble(Player wearer, GhoulRig rig, float bodyYaw, String quote) {
+    private static void playMellstroyVoiceSound(Player wearer, float bodyYaw, String soundKey) {
         try {
-            Location bubbleLoc = computeBubbleLocation(wearer.getLocation(), bodyYaw);
-            World world = bubbleLoc == null ? null : bubbleLoc.getWorld();
+            Location soundLoc = computeShoulderSoundLocation(wearer.getLocation(), bodyYaw);
+            if (soundLoc == null) return;
+            World world = soundLoc.getWorld();
             if (world == null) return;
-            Class<?> textDisplayClass = Class.forName("org.bukkit.entity.TextDisplay");
-            String text = "§x§F§8§B§E§F§B§lМеллстрой:\n§f" + quote;
-
-            if (rig.speechBubble != null && textDisplayClass.isInstance(rig.speechBubble)) {
-                java.lang.reflect.Method isValid = rig.speechBubble.getClass().getMethod("isValid");
-                if (Boolean.TRUE.equals(isValid.invoke(rig.speechBubble))) {
-                    textDisplayClass.getMethod("setText", String.class).invoke(rig.speechBubble, text);
-                    teleportSpeechBubble(rig.speechBubble, bubbleLoc);
-                    rig.bubbleExpireTick = petTicks + SPEECH_BUBBLE_TICKS;
-                    return;
-                }
-                destroySpeechBubble(rig);
-            }
-
-            java.lang.reflect.Method spawn = world.getClass().getMethod("spawn", Location.class, Class.class);
-            Object spawned = spawn.invoke(world, bubbleLoc, textDisplayClass);
-            if (!(spawned instanceof org.bukkit.entity.Entity entity)) return;
-
-            entity.getClass().getMethod("setPersistent", boolean.class).invoke(entity, Boolean.FALSE);
-            textDisplayClass.getMethod("setText", String.class).invoke(entity, text);
-            textDisplayClass.getMethod("setShadowed", boolean.class).invoke(entity, Boolean.TRUE);
-            textDisplayClass.getMethod("setSeeThrough", boolean.class).invoke(entity, Boolean.FALSE);
             try {
-                textDisplayClass.getMethod("setLineWidth", int.class).invoke(entity, Integer.valueOf(185));
+                Class<? extends Enum> catEnum = (Class<? extends Enum>) Class.forName("org.bukkit.SoundCategory");
+                Object playersCat = Enum.valueOf(catEnum, "PLAYERS");
+                java.lang.reflect.Method playCat = world.getClass().getMethod(
+                    "playSound", Location.class, String.class, catEnum, float.class, float.class);
+                playCat.invoke(world, soundLoc, soundKey, playersCat, Float.valueOf(1.0F), Float.valueOf(1.0F));
+                return;
             } catch (Throwable ignored) {
             }
-            try {
-                Class<?> displayClass = Class.forName("org.bukkit.entity.Display");
-                Class<? extends Enum> billboardEnum = (Class<? extends Enum>) Class.forName("org.bukkit.entity.Display$Billboard");
-                Object center = Enum.valueOf(billboardEnum, "CENTER");
-                displayClass.getMethod("setBillboard", billboardEnum).invoke(entity, center);
-                displayClass.getMethod("setTeleportDuration", int.class).invoke(entity, Integer.valueOf(2));
-                displayClass.getMethod("setViewRange", float.class).invoke(entity, Float.valueOf(0.55F));
-            } catch (Throwable ignored) {
-            }
-            rig.speechBubble = entity;
-            rig.bubbleExpireTick = petTicks + SPEECH_BUBBLE_TICKS;
+            world.playSound(soundLoc, soundKey, 1.0F, 1.0F);
         } catch (Throwable ignored) {
         }
     }
 
-    private static void playMellstroyBlip(Player wearer) {
-        try {
-            Location loc = wearer.getLocation();
-            if (loc == null) return;
-            java.lang.reflect.Method playSound = wearer.getClass()
-                .getMethod("playSound", Location.class, String.class, float.class, float.class);
-            float pitch = 1.18F + java.util.concurrent.ThreadLocalRandom.current().nextFloat() * 0.14F;
-            playSound.invoke(wearer, loc, "minecraft:entity.villager.yes", Float.valueOf(0.55F), Float.valueOf(pitch));
-        } catch (Throwable ignored) {
-        }
-    }
-
-    private static void triggerMellstroySpeech(Player wearer, GhoulRig rig, float bodyYaw, int forcedIndex) {
+    private static void triggerMellstroyEmote(Player wearer, GhoulRig rig, float bodyYaw, int forcedIndex) {
         if (wearer == null || rig == null || !MELLSTROY_BLUEPRINT.equals(rig.blueprintId)) return;
-        int idx = (forcedIndex >= 0 && forcedIndex < MELLSTROY_QUOTES.length)
+        int idx = (forcedIndex >= 0 && forcedIndex < MELLSTROY_EMOTES.length)
             ? forcedIndex
-            : nextRandomQuoteIndex(rig.lastQuoteIndex);
-        String quote = MELLSTROY_QUOTES[idx];
-        rig.lastQuoteIndex = idx;
-        rig.lastSpokenQuote = quote;
-        rig.nextQuoteTick = petTicks + randomQuoteDelayTicks();
-        wearer.sendMessage("§x§F§8§B§E§F§B§lМеллстрой §8» §f" + quote);
-        playMellstroyBlip(wearer);
-        spawnOrUpdateSpeechBubble(wearer, rig, bodyYaw, quote);
+            : nextRandomEmoteIndex(rig.lastEmoteIndex);
+        String animId = MELLSTROY_EMOTES[idx][0];
+        String soundKey = MELLSTROY_EMOTES[idx][1];
+        rig.lastEmoteIndex = idx;
+        rig.lastEmoteAnim = animId;
+        rig.lastEmoteSound = soundKey;
+        rig.nextEmoteTick = petTicks + randomEmoteDelayTicks();
+
+        AnimationHandler handler = rig.model.isDestroyed() ? null : rig.model.getAnimationHandler();
+        if (handler != null) {
+            for (String[] pair : MELLSTROY_EMOTES) {
+                if (!pair[0].equals(animId) && handler.isPlayingAnimation(pair[0])) {
+                    handler.forceStopAnimation(pair[0]);
+                }
+            }
+            handler.playAnimation(animId, 0.10D, 0.15D, 1.0D, true);
+        }
+        playMellstroyVoiceSound(wearer, bodyYaw, soundKey);
     }
 
-    private static void tickMellstroySpeech(Player wearer, GhoulRig rig, float bodyYaw) {
-        if (rig.speechBubble != null) {
-            if (petTicks >= rig.bubbleExpireTick) {
-                destroySpeechBubble(rig);
-            } else {
-                teleportSpeechBubble(rig.speechBubble, computeBubbleLocation(wearer.getLocation(), bodyYaw));
-            }
-        }
-        if (petTicks >= rig.nextQuoteTick) {
-            triggerMellstroySpeech(wearer, rig, bodyYaw, -1);
+    private static void tickMellstroyEmote(Player wearer, GhoulRig rig, float bodyYaw) {
+        if (petTicks >= rig.nextEmoteTick) {
+            triggerMellstroyEmote(wearer, rig, bodyYaw, -1);
         }
     }
 
@@ -837,7 +783,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
                 : KITTEN_BLUEPRINT.equals(rig.blueprintId)
                     ? "милый котёнок на плече"
                     : MELLSTROY_BLUEPRINT.equals(rig.blueprintId)
-                        ? "Меллстрой на плече (с коронными фразами)"
+                        ? "Меллстрой на плече (3D-анимации и озвучка)"
                         : "сколопендра (по всему телу)";
         host.getLogger().info("[Аксессуары] " + label + ": живая анимация '" + IDLE_ANIM
             + "', привязка к PivotOverride активна");
@@ -949,7 +895,6 @@ public final class AccessoryController implements CommandExecutor, Listener {
                                   java.util.Map<java.util.UUID, GhoulRig> store) {
         store.remove(playerUuid);
         if (rig == null) return;
-        destroySpeechBubble(rig);
         detachPivotFromPlayer(rig);
         try {
             if (!rig.entity.isDestroyed()) rig.entity.removeModel(rig.blueprintId);
@@ -1054,12 +999,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         PlayerBodyTracker tracker = trackerFor(player);
         tracker.stepFromPacket(player, to);
         float yaw = tracker.getBodyYaw();
-        if (pet != null) {
-            syncRigTransform(player, pet, yaw);
-            if (pet.speechBubble != null) {
-                teleportSpeechBubble(pet.speechBubble, computeBubbleLocation(to, yaw));
-            }
-        }
+        if (pet != null) syncRigTransform(player, pet, yaw);
         if (kagune != null) syncRigTransform(player, kagune, yaw);
     }
 
@@ -1270,8 +1210,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
                 kitten ? lore(chosen, "§7Пушистый котёнок сидит прямо на плече", "§7Наклоняет головку и машет лапкой", "§7Нажми ещё раз — снять")
                        : lore(hint, "§7Пушистый котёнок сидит прямо на плече", "§7Наклоняет головку и машет лапкой")));
             menu.setItem(32, item(Material.GOLD_INGOT, "§x§F§A§D§8§F§C§lМеллстрой", "mellstroy_icon", null,
-                mellstroy ? lore(chosen, "§7Мини-Меллстрой в кепке Rolex и цепи", "§7Танцует и выдаёт коронные фразы!", "§7«Да-да, нет-нет — да будет свет!»", "§7Нажми ещё раз — снять")
-                          : lore(hint, "§7Мини-Меллстрой в кепке Rolex и цепи", "§7Танцует и выдаёт коронные фразы!", "§7«Да-да, нет-нет — да будет свет!»")));
+                mellstroy ? lore(chosen, "§7Мини-Меллстрой в кепке Rolex и цепи", "§73D-анимации фраз и настоящая озвучка!", "§7Нажми ещё раз — снять")
+                          : lore(hint, "§7Мини-Меллстрой в кепке Rolex и цепи", "§73D-анимации фраз и настоящая озвучка!")));
             menu.setItem(34, item(Material.SPIDER_EYE, "§x§F§A§D§8§F§C§lСколопендра Гуля", "centipede_icon", null,
                 bug ? lore(chosen, "§7Живая сколопендра ползает по всему телу", "§7Грудь, плечи, шея, спина, руки и бёдра", "§7Нажми ещё раз — снять")
                     : lore(hint, "§7Живая сколопендра ползает по всему телу", "§7Грудь, плечи, шея, спина, руки и бёдра")));
@@ -1471,7 +1411,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (PET_MELLSTROY.equals(choice)) {
             GhoulRig rig = PETS.get(player.getUniqueId());
             if (rig != null) {
-                triggerMellstroySpeech(player, rig, trackerFor(player).getBodyYaw(), 0);
+                triggerMellstroyEmote(player, rig, trackerFor(player).getBodyYaw(), 0);
             }
         }
     }

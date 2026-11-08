@@ -1,0 +1,26 @@
+{
+  "mellstroy.privet": {
+    "category": "players",
+    "sounds": [{"name": "reallyworld:mellstroy/privet", "attenuation_distance": 24}]
+  },
+  "mellstroy.amam": {
+    "category": "players",
+    "sounds": [{"name": "reallyworld:mellstroy/amam", "attenuation_distance": 24}]
+  },
+  "mellstroy.voznya": {
+    "category": "players",
+    "sounds": [{"name": "reallyworld:mellstroy/voznya", "attenuation_distance": 24}]
+  },
+  "mellstroy.babki": {
+    "category": "players",
+    "sounds": [{"name": "reallyworld:mellstroy/babki", "attenuation_distance": 24}]
+  },
+  "mellstroy.tancuem": {
+    "category": "players",
+    "sounds": [{"name": "reallyworld:mellstroy/tancuem", "attenuation_distance": 24}]
+  },
+  "mellstroy.miliciya": {
+    "category": "players",
+    "sounds": [{"name": "reallyworld:mellstroy/miliciya", "attenuation_distance": 24}]
+  }
+}

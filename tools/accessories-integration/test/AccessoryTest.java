@@ -30,8 +30,14 @@ public class AccessoryTest {
    for(ItemStack it:items){ if(added.size()<capacity) added.add(it); else left.put(left.size(),it); }
    return left;}
  }
+ static class FakeWorld implements World {
+  final java.util.List<String> playedSounds=new java.util.ArrayList<>();
+  public Collection<Entity> getNearbyEntities(Location location,double x,double y,double z){return List.of();}
+  public void playSound(Location location,String sound,float volume,float pitch){playedSounds.add(sound);}
+ }
  static class PlayerFake implements Player {
-  final java.util.List<Entity> hidden=new java.util.ArrayList<>();World world;double px=0,py=1.6,pz=0;Location eye=new Location(null,0,1.62,0);float bodyYaw=15.0F;
+  final FakeWorld fakeWorld=new FakeWorld();
+  final java.util.List<Entity> hidden=new java.util.ArrayList<>();World world=fakeWorld;double px=0,py=1.6,pz=0;Location eye=new Location(null,0,1.62,0);float bodyYaw=15.0F;
   public Location getLocation(){return new Location(world,px,py,pz,bodyYaw,0);}
   public Location getEyeLocation(){eye=new Location(world,px,py+0.02,pz);return eye;}
   public float getBodyYaw(){return bodyYaw;}
@@ -75,6 +81,7 @@ public class AccessoryTest {
   public IAnimationProperty playAnimation(String anim,double li,double lo,double sp,boolean force){
    playing.add(anim);FakeProp fp=new FakeProp();fp.speed=sp;props.put(anim,fp);return fp;}
   public boolean isPlayingAnimation(String anim){return playing.contains(anim);}
+  public void forceStopAnimation(String anim){playing.remove(anim);props.remove(anim);}
   public IAnimationProperty getAnimation(String anim){return props.get(anim);}
  }
 
@@ -257,31 +264,40 @@ public class AccessoryTest {
   AccessoryController.animatePets();
   check(AccessoryController.kittenAttached(p) && fe.pivots.passengers.contains(kittenModel.pivotId),"kitten pivot mounted");
 
-  // --- 2c. Direct Pet Swap in Питомцы: Милый котёнок (slot 30) -> Меллстрой (slot 32) + Funny Catchphrases! ---
+  // --- 2c. Direct Pet Swap in Питомцы: Милый котёнок (slot 30) -> Меллстрой (slot 32) + 3D Badge Animations & Real Voice! ---
   p.messages.clear();
+  p.fakeWorld.playedSounds.clear();
   click.slot=32;controller.onClick(click);
   check(!AccessoryController.wearingKitten(p) && kittenModel.destroyed,"old kitten Dummy cleanly destroyed on swap to Mellstroy");
   check(AccessoryController.mellstroySelected(p) && AccessoryController.wearingMellstroy(p) && AccessoryController.mellstroyAnimating(p),"Меллстрой spawned & animating");
-  check("Да-да, нет-нет — да будет свет!".equals(AccessoryController.mellstroyLastQuote(p)),"Mellstroy immediately greets with signature 'Да-да, нет-нет — да будет свет!'");
-  check(p.messages.stream().anyMatch(m -> m.contains("Меллстрой") && m.contains("Да-да, нет-нет — да будет свет!")),"chat received formatted Mellstroy signature quote");
+  check(p.messages.size()==1 && p.messages.get(0).contains("Меллстрой выскочил на плечо"),"only single GUI equip status message sent (zero chat quote spam!)");
   FakeActive mellModel=fe.q.last;
+  check("say_svet".equals(AccessoryController.mellstroyLastEmote(p)) && mellModel.animHandler.isPlayingAnimation("say_svet"),
+        "Mellstroy immediately triggers in-model 3D 'say_svet' pop-up badge animation");
+  check("reallyworld:mellstroy.privet".equals(AccessoryController.mellstroyLastSound(p))
+        && p.fakeWorld.playedSounds.equals(List.of("reallyworld:mellstroy.privet")),
+        "Mellstroy immediately plays real Ogg Vorbis greeting voice sound");
   mellModel.rendererReady=true;
   AccessoryController.animatePets();
   check(AccessoryController.mellstroyAttached(p) && fe.pivots.passengers.contains(mellModel.pivotId),"Mellstroy pivot mounted");
 
-  // Verify periodic funny catchphrase rotation never repeats back-to-back across 12 quote cycles!
-  String prevQuote = AccessoryController.mellstroyLastQuote(p);
-  java.util.Set<String> seenQuotes = new java.util.LinkedHashSet<>();
-  seenQuotes.add(prevQuote);
-  for(int i=0;i<12;i++){
-   AccessoryController.forceNextQuoteDue(p);
+  // Verify periodic 3D pop-up badge + voice cycles NEVER write to chat, stop previous say_*, and never repeat back-to-back!
+  p.messages.clear();
+  String prevEmote = AccessoryController.mellstroyLastEmote(p);
+  java.util.Set<String> seenEmotes = new java.util.LinkedHashSet<>();
+  seenEmotes.add(prevEmote);
+  for(int i=0;i<14;i++){
+   AccessoryController.forceNextEmoteDue(p);
    AccessoryController.animatePets();
-   String nextQuote = AccessoryController.mellstroyLastQuote(p);
-   check(nextQuote!=null && !nextQuote.equals(prevQuote),"periodic Mellstroy quote rotated without consecutive duplicate");
-   seenQuotes.add(nextQuote);
-   prevQuote = nextQuote;
+   String nextEmote = AccessoryController.mellstroyLastEmote(p);
+   check(nextEmote!=null && !nextEmote.equals(prevEmote),"periodic Mellstroy 3D emote rotated without consecutive duplicate");
+   check(mellModel.animHandler.isPlayingAnimation(nextEmote) && !mellModel.animHandler.isPlayingAnimation(prevEmote),
+         "new 3D badge animation active and previous say_* cleanly stopped");
+   seenEmotes.add(nextEmote);
+   prevEmote = nextEmote;
   }
-  check(seenQuotes.size()>=3,"multiple distinct funny Mellstroy catchphrases spoken over time");
+  check(p.messages.isEmpty(),"ZERO chat messages ever sent during periodic Mellstroy emotes!");
+  check(seenEmotes.size()>=4 && p.fakeWorld.playedSounds.size()==15,"multiple distinct 3D badge animations & real voice clips played");
 
   // --- 3. Direct Pet Swap in Питомцы: Меллстрой (slot 32) -> Сколопендра Гуля (slot 34) ---
   click.slot=34;controller.onClick(click);
@@ -369,6 +385,6 @@ public class AccessoryTest {
   AccessoryController.install(bare);
   check(bare.mockCommand.executor==null && !bare.warnings.isEmpty(),"missing command logged safely");
   InventoryDragEvent drag=new InventoryDragEvent();drag.view=click.view;controller.onDrag(drag);check(drag.cancelled,"drag cancelled");
-  System.out.println("All v3.15.0 tests passed: 3-section menu (Спина/Шапки/Питомцы), Мини-Роузи, Милый котёнок, Меллстрой (with funny quotes), Scolopendra, Kaneki Kagune & teleport recovery!");
+  System.out.println("All v3.16.0 tests passed: 3-section menu (Спина/Шапки/Питомцы), Мини-Роузи, Милый котёнок, Меллстрой (3D BAN-style badge animations + real Ogg Vorbis voice, zero chat/holograms), Scolopendra, Kaneki Kagune & teleport recovery!");
  }
 }
