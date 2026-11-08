@@ -7,9 +7,9 @@
 Актуальное базовое состояние (синхронизировано с live VDS `dfghjdyjk56` 02.11.2026):
 - Ветка-источник актуальной сборки: `arena/4c55e5a6-0sdfg079ynsd0f9bn780897` (PR #1)
 - Ядро и запуск (`start.sh`): Leaf `1.21.11` (`DataVersion: 4671`, Java 21+, `-Dblib.server.version=1.21.10`, G1GC `PAUSE_MS=200`)
-- Версия `ElytrixFreakModel`: `v3.14.0` (`/аксессуары` 3 раздела: `Спина`/`Шапки`/`Питомцы`, Мини-Роузи, Милый котёнок, Сколопендра, Крылья, Нимб, Кагуне + Приора)
+- Версия `ElytrixFreakModel`: `v3.17.0` (открытый для ВСЕХ игроков магазин и гардероб `/accessories`, `/аксессуары`, `/acc`, `/акс` за риллики `PlayerPoints` `ꐃ` в стиле `/shop`: `Мини-Роузи` `2000 ꐃ`, `Милый котёнок` `2500 ꐃ`, `Божественный нимб` `3500 ꐃ`, `Сколопендра Гуля` `4500 ꐃ`, `Меллстрой` `5000 ꐃ`, `Ангельские крылья` `6000 ꐃ`, `Щупальца Канэки` `7500 ꐃ` + Лада Приора)
 - Версия `ElytrixRP`: `v2.5.0`
-- Актуальный `SHA-1` `rp/Elytrix-RP-1.21.zip`: `b7b61667016f9c5196dc6487ee0ea39d0b02fa8a`
+- Актуальный `SHA-1` `rp/Elytrix-RP-1.21.zip`: `11e05b3f9830ecdd54ad9b34aef71e84048a79b7`
 
 --------------------------------------------------------------------------------
 1. КРИТИЧЕСКИЕ ПРАВИЛА GIT И СТАРТА НОВОГО ЧАТА
@@ -68,6 +68,7 @@
      * `plugins/ElytrixAuthBridge/config.properties` (ключ моста привязки!)
      * `config/paper-global.yml` (`proxies.velocity.secret` — боевой ключ связки с Velocity! Настройки потоков в нём менять ТОЛЬКО точечно через `sed`, НЕ класть файл целиком в архивы!)
    - НЕ включать `plugins/ModelEngine/config.yml` (чтобы не сбросить боевой конфиг).
+   - НЕ включать `plugins/ElytrixFreakModel/owned_accessories.yml` (чтобы не затереть купленные игроками за риллики аксессуары!).
    - НЕ включать `plugins/ModelEngine/.data/` и `.data/cache.json`.
    - При упаковке `plugins/ModelEngine/resource pack/` включать ТОЛЬКО `pack.mcmeta`
      и файлы обновляемых моделей `/elytrix_` (НЕ упаковывать чужие модели `MythicMobs`!).
@@ -374,10 +375,20 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
 --------------------------------------------------------------------------------
 9. КАРТА АКТУАЛЬНЫХ СИСТЕМ, АКСЕССУАРОВ И ЗАЩИТЫ ИЗ LIVE VDS (`dfghjdyjk56`)
 --------------------------------------------------------------------------------
-1. `ElytrixFreakModel v3.15.0` + `ModelEngine-4.1.0.jar` (uncapped `SIPUSH 8192`) + `/аксессуары` (`/accessories`, глиф `ꏠ`):
-   - Поддерживает косметическое меню аксессуаров (`elytrixaccessories.admin` и
-     `elytrixaccessories.use` для группы `media`), исходники и генераторы лежат в
-     `tools/accessories-integration/` и `tools/accessories-model/` (подробности в `MODELS_PIPELINE.md`).
+1. `ElytrixFreakModel v3.17.0` + `ModelEngine-4.1.0.jar` (uncapped `SIPUSH 8192`) + `/аксессуары` (`/accessories`, `/acc`, `/акс`, глиф `ꏠ`):
+   - Открытый для **ВСЕХ** игроков магазин и гардероб 3D-аксессуаров за донат-валюту **Риллики** (`PlayerPoints`, глиф `ꐃ`)
+     в точном стиле `/shop` (слот `53` `ИНФОРМАЦИЯ` на часах `Material.CLOCK CMD 100010` с живым балансом `Ваш баланс: <баланс> ꐃ`,
+     сообщения `Недостаточно рилликов!` / `Покупка успешно совершена!`, двойное сохранение покупок навсегда в `PDC` игрока
+     `elytrixaccessories:owned_<id>` + `plugins/ElytrixFreakModel/owned_accessories.yml` + админ-команда `/accessories grant <ник> <id|all>`).
+     Цены аксессуаров:
+     * `Мини-Роузи` (`mini_me`) — `2000 ꐃ`
+     * `Милый котёнок` (`kitten`) — `2500 ꐃ`
+     * `Божественный нимб` (`halo`) — `3500 ꐃ`
+     * `Сколопендра Гуля` (`centipede`) — `4500 ꐃ`
+     * `Меллстрой` (`mellstroy`) — `5000 ꐃ`
+     * `Ангельские крылья` (`wings`) — `6000 ꐃ`
+     * `Щупальца Канэки` (`kaneki`) — `7500 ꐃ`
+     Исходники и генераторы лежат в `tools/accessories-integration/` и `tools/accessories-model/` (подробности в `MODELS_PIPELINE.md`).
    - Исправлен лимит 12 моделей в `plugins/ModelEngine-4.1.0.jar` (`ModelGeneratorImpl.importModelsInternal`:
      `BIPUSH 12` -> `SIPUSH 8192`, `tools/accessories-integration/patch_modelengine.py`) + добавлена
      авто-догрузка блюпринтов на лету `AccessoryController.resolveBlueprint(...)` в `ElytrixFreakModel v3.16.0`,

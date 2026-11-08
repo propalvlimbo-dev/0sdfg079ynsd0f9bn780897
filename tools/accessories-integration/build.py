@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
 BASE = ROOT / 'plugins/ElytrixFreakModel.jar'
 ENTRY = 'pw/elytrix/freakmodel/ElytrixFreakModelPlugin.class'
-TARGET_VERSION = '3.16.0'
+TARGET_VERSION = '3.17.0'
 JAVA = os.environ.get('JAVA', 'java')
 ECJ = os.environ.get('ECJ')
 
@@ -75,9 +75,26 @@ def main():
             if '\n  accessories:' not in yml:
                 yml = yml.replace(
                     '\npermissions:\n',
-                    '\n  accessories:\n    description: Меню аксессуаров\n    aliases: [аксессуары]\n'
+                    '\n  accessories:\n    description: Магазин и гардероб 3D-аксессуаров за риллики\n    aliases: [аксессуары, acc, акс]\n'
                     'permissions:\n  elytrixaccessories.admin:\n    description: Применение аксессуаров\n    default: op\n'
+                    '  elytrixaccessories.use:\n    description: Аксессуары\n    default: true\n',
+                    1,
+                )
+            else:
+                yml = re.sub(
+                    r'(\n  accessories:\n(?:    .*\n)*?    aliases:\s*)\[[^\]]*\]',
+                    r'\1[аксессуары, acc, акс]',
+                    yml,
+                    count=1,
+                )
+                yml = yml.replace(
                     '  elytrixaccessories.use:\n    description: Аксессуары для донат-группы media\n    default: false\n',
+                    '  elytrixaccessories.use:\n    description: Магазин и гардероб 3D-аксессуаров\n    default: true\n',
+                    1,
+                )
+                yml = yml.replace(
+                    '    description: Меню аксессуаров\n',
+                    '    description: Магазин и гардероб 3D-аксессуаров за риллики\n',
                     1,
                 )
             yml_bytes = yml.encode('utf-8')

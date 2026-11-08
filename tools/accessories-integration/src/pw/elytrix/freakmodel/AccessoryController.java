@@ -51,13 +51,13 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 /**
- * Server-side 3-section accessories menu & unified ModelEngine controller (v3.16.0):
+ * Server-side 3-section accessories shop & unified ModelEngine controller (v3.17.0):
+ * open to ALL players, with permanent unlocks purchased for Риллики (PlayerPoints) just like {@code /shop}!
  * <ul>
- *   <li><b>Спина</b>: Ангельские крылья ({@code angel_wings}) и Щупальца Канэки ({@code elytrix_kaneki_tentacles})</li>
- *   <li><b>Шапки</b>: Божественный нимб ({@code angel_halo})</li>
- *   <li><b>Питомцы</b>: Мини-Роузи ({@code elytrix_mini_me}), Милый котёнок ({@code elytrix_cute_kitten}),
- *       Меллстрой ({@code elytrix_mellstroy}, с 3D-анимациями табличек внутри модели и настоящей озвучкой)
- *       и Сколопендра Гуля ({@code elytrix_centipede})</li>
+ *   <li><b>Спина</b>: Ангельские крылья ({@code 6000 ꐃ}) и Щупальца Канэки ({@code 7500 ꐃ})</li>
+ *   <li><b>Шапки</b>: Божественный нимб ({@code 3500 ꐃ})</li>
+ *   <li><b>Питомцы</b>: Мини-Роузи ({@code 2000 ꐃ}), Милый котёнок ({@code 2500 ꐃ}),
+ *       Сколопендра Гуля ({@code 4500 ꐃ}) и Меллстрой ({@code 5000 ꐃ})</li>
  * </ul>
  */
 public final class AccessoryController implements CommandExecutor, Listener {
@@ -79,15 +79,24 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final String KANEKI_BLUEPRINT = "elytrix_kaneki_tentacles";
 
     static final String IDLE_ANIM = "idle";
-    static final String MEDIA_GROUP = "media";
-    static final String USE_PERMISSION = "elytrixaccessories.use";
+    static final String ADMIN_PERMISSION = "elytrixfreakmodel.admin";
     static final int BACK_ARROW_CMD = 10002;
+    static final int INFO_CLOCK_CMD = 100010;
     static final int VIEW_RANGE = 96;
     static final long RE_PAIR_TICKS = 40L;
     static final int WARMUP_SYNC_TICKS = 40;
     static final double TELEPORT_JUMP_DIST_SQ = 24.0D * 24.0D;
     static final long EMOTE_MIN_DELAY_TICKS = 500L; // 25s
     static final long EMOTE_MAX_DELAY_TICKS = 900L; // 45s
+
+    // Exact /shop Риллики prices (ꐃ):
+    static final int PRICE_MINI_ME = 2000;
+    static final int PRICE_KITTEN = 2500;
+    static final int PRICE_HALO = 3500;
+    static final int PRICE_CENTIPEDE = 4500;
+    static final int PRICE_MELLSTROY = 5000;
+    static final int PRICE_WINGS = 6000;
+    static final int PRICE_KANEKI = 7500;
 
     /** Synchronized (in-model 3D `D.Admin BAN`-style badge animation, real Mellstroy Ogg Vorbis sound) pairs. */
     static final String[][] MELLSTROY_EMOTES = {
@@ -108,8 +117,121 @@ public final class AccessoryController implements CommandExecutor, Listener {
         HUB, BACK, HATS, PETS
     }
 
-    private static boolean mediaGranted;
+    enum AccessoryItem {
+        WINGS("wings", Section.BACK, 30, "elytrix_angel_wings", PRICE_WINGS, "Ангельские крылья"),
+        KANEKI("kaneki", Section.BACK, 32, KANEKI_BLUEPRINT, PRICE_KANEKI, "Щупальца Канэки"),
+        HALO_ITEM("halo", Section.HATS, 31, "elytrix_angel_halo", PRICE_HALO, "Божественный нимб"),
+        MINI_ME(PET_MINI_ME, Section.PETS, 28, MINI_ME_BLUEPRINT, PRICE_MINI_ME, "Мини-Роузи"),
+        KITTEN(PET_KITTEN, Section.PETS, 30, KITTEN_BLUEPRINT, PRICE_KITTEN, "Милый котёнок"),
+        MELLSTROY(PET_MELLSTROY, Section.PETS, 32, MELLSTROY_BLUEPRINT, PRICE_MELLSTROY, "Меллстрой"),
+        CENTIPEDE(PET_CENTIPEDE, Section.PETS, 34, CENTIPEDE_BLUEPRINT, PRICE_CENTIPEDE, "Сколопендра Гуля");
+
+        final String id;
+        final Section section;
+        final int slot;
+        final String blueprintId;
+        final int price;
+        final String displayName;
+        final NamespacedKey ownedKey;
+
+        AccessoryItem(String id, Section section, int slot, String blueprintId, int price, String displayName) {
+            this.id = id;
+            this.section = section;
+            this.slot = slot;
+            this.blueprintId = blueprintId;
+            this.price = price;
+            this.displayName = displayName;
+            this.ownedKey = new NamespacedKey("elytrixaccessories", "owned_" + id);
+        }
+
+        static AccessoryItem at(Section section, int slot) {
+            for (AccessoryItem item : values()) {
+                if (item.section == section && item.slot == slot) return item;
+            }
+            return null;
+        }
+
+        static AccessoryItem byId(String raw) {
+            if (raw == null) return null;
+            String key = raw.trim().toLowerCase(Locale.ROOT);
+            for (AccessoryItem item : values()) {
+                if (item.id.equals(key)) return item;
+            }
+            return null;
+        }
+    }
+
+    interface PointsBackend {
+        boolean isAvailable();
+        int look(java.util.UUID playerUuid);
+        String lookFormatted(java.util.UUID playerUuid);
+        boolean take(java.util.UUID playerUuid, int amount);
+    }
+
+    static final PointsBackend DEFAULT_POINTS_BACKEND = new PointsBackend() {
+        private Object resolveApi() throws Exception {
+            if (!Bukkit.getPluginManager().isPluginEnabled("PlayerPoints")) return null;
+            Class<?> ppClass = Class.forName("org.black_ixx.playerpoints.PlayerPoints");
+            Object instance = ppClass.getMethod("getInstance").invoke(null);
+            return instance == null ? null : ppClass.getMethod("getAPI").invoke(instance);
+        }
+
+        @Override public boolean isAvailable() {
+            try {
+                return resolveApi() != null;
+            } catch (Throwable ignored) {
+                return false;
+            }
+        }
+
+        @Override public int look(java.util.UUID playerUuid) {
+            if (playerUuid == null) return 0;
+            try {
+                Object api = resolveApi();
+                if (api == null) return 0;
+                Object res = api.getClass().getMethod("look", java.util.UUID.class).invoke(api, playerUuid);
+                return res instanceof Number n ? Math.max(0, n.intValue()) : 0;
+            } catch (Throwable ignored) {
+                return 0;
+            }
+        }
+
+        @Override public String lookFormatted(java.util.UUID playerUuid) {
+            if (playerUuid == null) return "0";
+            try {
+                Object api = resolveApi();
+                if (api != null) {
+                    Object res = api.getClass().getMethod("lookFormatted", java.util.UUID.class).invoke(api, playerUuid);
+                    if (res instanceof String s && !s.isEmpty()) return s;
+                }
+            } catch (Throwable ignored) {
+            }
+            return formatRilliki(look(playerUuid));
+        }
+
+        @Override public boolean take(java.util.UUID playerUuid, int amount) {
+            if (playerUuid == null || amount <= 0) return false;
+            try {
+                Object api = resolveApi();
+                if (api == null) return false;
+                int current = look(playerUuid);
+                if (current < amount) return false;
+                Object res = api.getClass()
+                    .getMethod("take", java.util.UUID.class, int.class)
+                    .invoke(api, playerUuid, Integer.valueOf(amount));
+                return Boolean.TRUE.equals(res);
+            } catch (Throwable failure) {
+                reportOnce("списание рилликов PlayerPoints", failure);
+                return false;
+            }
+        }
+    };
+
+    static PointsBackend pointsBackend = DEFAULT_POINTS_BACKEND;
+
     private static ElytrixFreakModelPlugin host;
+    private static java.io.File ownedStoreFile;
+    private static final java.util.Map<java.util.UUID, java.util.Set<String>> OWNED_BY_UUID = new java.util.HashMap<>();
     private static final java.util.Map<java.util.UUID, GhoulRig> PETS = new java.util.HashMap<>();
     private static final java.util.Map<java.util.UUID, GhoulRig> KAGUNES = new java.util.HashMap<>();
     private static final java.util.Map<java.util.UUID, PlayerBodyTracker> TRACKERS = new java.util.HashMap<>();
@@ -170,6 +292,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         try {
             AccessoryController controller = new AccessoryController();
             host = plugin;
+            initOwnedStore(plugin == null ? null : plugin.getDataFolder());
             PluginCommand command = plugin.getCommand("accessories");
             if (command == null) {
                 plugin.getLogger().warning("[Аксессуары] команда accessories не найдена в plugin.yml — меню не подключено");
@@ -179,26 +302,100 @@ public final class AccessoryController implements CommandExecutor, Listener {
             Bukkit.getPluginManager().registerEvents(controller, plugin);
             Bukkit.getScheduler().runTaskTimer(plugin, AccessoryController::tickAll, 20L, 5L);
             Bukkit.getScheduler().runTaskTimer(plugin, AccessoryController::animatePets, 2L, 1L);
-            grantDonationAccess();
         } catch (Throwable failure) {
             plugin.getLogger().warning("[Аксессуары] меню не подключилось: " + failure);
         }
     }
 
-    private static void grantDonationAccess() {
-        if (mediaGranted) return;
+    static void initOwnedStore(java.io.File dataFolder) {
+        OWNED_BY_UUID.clear();
+        if (dataFolder == null) {
+            ownedStoreFile = null;
+            return;
+        }
         try {
-            if (!Bukkit.getPluginManager().isPluginEnabled("LuckPerms")) return;
-            if (!Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-                "lp group " + MEDIA_GROUP + " permission set " + USE_PERMISSION + " true")) return;
-            mediaGranted = true;
-        } catch (Throwable ignored) {
+            if (!dataFolder.exists()) dataFolder.mkdirs();
+            ownedStoreFile = new java.io.File(dataFolder, "owned_accessories.yml");
+            if (!ownedStoreFile.isFile()) return;
+            for (String rawLine : java.nio.file.Files.readAllLines(
+                    ownedStoreFile.toPath(), java.nio.charset.StandardCharsets.UTF_8)) {
+                String line = rawLine.trim();
+                if (line.isEmpty() || line.startsWith("#")) continue;
+                int colon = line.indexOf(':');
+                if (colon <= 0) continue;
+                String uuidStr = line.substring(0, colon).trim();
+                String valuesStr = line.substring(colon + 1).trim();
+                try {
+                    java.util.UUID uuid = java.util.UUID.fromString(uuidStr);
+                    java.util.Set<String> set = new java.util.LinkedHashSet<>();
+                    for (String part : valuesStr.split(",")) {
+                        String id = part.trim().toLowerCase(Locale.ROOT);
+                        if (AccessoryItem.byId(id) != null) set.add(id);
+                    }
+                    if (!set.isEmpty()) OWNED_BY_UUID.put(uuid, set);
+                } catch (IllegalArgumentException ignored) {
+                }
+            }
+        } catch (Throwable failure) {
+            reportOnce("чтение owned_accessories.yml", failure);
         }
     }
 
-    static boolean allowed(Player player) {
-        return player != null
-            && (player.hasPermission("elytrixaccessories.admin") || player.hasPermission(USE_PERMISSION));
+    private static void saveOwnedStore() {
+        if (ownedStoreFile == null) return;
+        try {
+            java.io.File parent = ownedStoreFile.getParentFile();
+            if (parent != null && !parent.exists()) parent.mkdirs();
+            java.util.List<String> lines = new java.util.ArrayList<>();
+            lines.add("# Купленные аксессуары за риллики (НЕ УДАЛЯТЬ И НЕ ЗАТИРАТЬ НА VDS!)");
+            java.util.List<java.util.UUID> uuids = new java.util.ArrayList<>(OWNED_BY_UUID.keySet());
+            uuids.sort(java.util.Comparator.comparing(java.util.UUID::toString));
+            for (java.util.UUID u : uuids) {
+                java.util.Set<String> items = OWNED_BY_UUID.get(u);
+                if (items == null || items.isEmpty()) continue;
+                lines.add(u + ": " + String.join(",", items));
+            }
+            java.nio.file.Path tmp = new java.io.File(parent, "owned_accessories.yml.tmp").toPath();
+            java.nio.file.Files.write(tmp, lines, java.nio.charset.StandardCharsets.UTF_8);
+            java.nio.file.Files.move(
+                tmp,
+                ownedStoreFile.toPath(),
+                java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+        } catch (Throwable failure) {
+            reportOnce("сохранение owned_accessories.yml", failure);
+        }
+    }
+
+    static String formatRilliki(int amount) {
+        return String.format(Locale.US, "%,d", Integer.valueOf(Math.max(0, amount))).replace(',', ' ');
+    }
+
+    static boolean owns(Player player, AccessoryItem item) {
+        if (player == null || item == null) return false;
+        java.util.UUID uuid = player.getUniqueId();
+        java.util.Set<String> mem = OWNED_BY_UUID.get(uuid);
+        boolean inStore = mem != null && mem.contains(item.id);
+        boolean inPdc = "1".equals(get(player, item.ownedKey));
+        if (inStore && !inPdc) {
+            set(player, item.ownedKey, "1");
+            return true;
+        }
+        if (inPdc && !inStore) {
+            OWNED_BY_UUID.computeIfAbsent(uuid, k -> new java.util.LinkedHashSet<>()).add(item.id);
+            saveOwnedStore();
+            return true;
+        }
+        return inStore;
+    }
+
+    static void grantOwnership(Player player, AccessoryItem item) {
+        if (player == null || item == null) return;
+        set(player, item.ownedKey, "1");
+        java.util.Set<String> set = OWNED_BY_UUID.computeIfAbsent(
+            player.getUniqueId(), k -> new java.util.LinkedHashSet<>());
+        if (set.add(item.id)) {
+            saveOwnedStore();
+        }
     }
 
     static void reportOnce(String what, Throwable failure) {
@@ -224,21 +421,21 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static String headChoice(Player player) {
         String choice = get(player, HEAD);
         if (choice.isEmpty()) choice = get(player, HALO);
-        return choice.equals("halo") ? choice : "";
+        return choice.equals("halo") && owns(player, AccessoryItem.HALO_ITEM) ? choice : "";
     }
 
     static String petChoice(Player player) {
         String choice = get(player, PET);
-        if (PET_MINI_ME.equals(choice) || PET_KITTEN.equals(choice)
-                || PET_MELLSTROY.equals(choice) || PET_CENTIPEDE.equals(choice)) {
-            return choice;
-        }
+        if (PET_MINI_ME.equals(choice) && owns(player, AccessoryItem.MINI_ME)) return choice;
+        if (PET_KITTEN.equals(choice) && owns(player, AccessoryItem.KITTEN)) return choice;
+        if (PET_MELLSTROY.equals(choice) && owns(player, AccessoryItem.MELLSTROY)) return choice;
+        if (PET_CENTIPEDE.equals(choice) && owns(player, AccessoryItem.CENTIPEDE)) return choice;
         return "";
     }
 
     static String desiredPetBlueprint(Player player) {
         if (player == null || !player.isOnline() || player.isDead()
-                || player.getGameMode() == GameMode.SPECTATOR || !allowed(player)) {
+                || player.getGameMode() == GameMode.SPECTATOR) {
             return null;
         }
         String choice = petChoice(player);
@@ -250,7 +447,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
     }
 
     public static FreakModelSpec halo(ElytrixFreakModelPlugin plugin, Player player) {
-        if (!allowed(player)) return null;
+        if (player == null) return null;
         return headChoice(player).equals("halo") ? plugin.findModel("angel_halo") : null;
     }
 
@@ -260,9 +457,11 @@ public final class AccessoryController implements CommandExecutor, Listener {
      * emits celestial angel dust, never conflicts with Halo removal, and survives all teleports.
      */
     public static FreakModelSpec back(ElytrixFreakModelPlugin plugin, Player player) {
-        if (!allowed(player)) return null;
+        if (player == null) return null;
         String selection = get(player, BACK);
-        if (selection.equals("wings")) return plugin.findModel("angel_wings");
+        if (selection.equals("wings") && owns(player, AccessoryItem.WINGS)) {
+            return plugin.findModel("angel_wings");
+        }
         return null;
     }
 
@@ -271,8 +470,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
             && player.isOnline()
             && !player.isDead()
             && player.getGameMode() != GameMode.SPECTATOR
-            && allowed(player)
-            && get(player, BACK).equals("kaneki");
+            && get(player, BACK).equals("kaneki")
+            && owns(player, AccessoryItem.KANEKI);
     }
 
     public static boolean centipedeSelected(Player player) {
@@ -1084,21 +1283,18 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return out;
     }
 
-    private static String activeBackLabel(Player player, boolean allowed) {
-        if (!allowed) return "§8Недоступно";
+    private static String activeBackLabel(Player player) {
         String back = get(player, BACK);
-        if ("wings".equals(back)) return "§dАнгельские крылья";
-        if ("kaneki".equals(back)) return "§dЩупальца Канэки";
+        if ("wings".equals(back) && owns(player, AccessoryItem.WINGS)) return "§dАнгельские крылья";
+        if ("kaneki".equals(back) && owns(player, AccessoryItem.KANEKI)) return "§dЩупальца Канэки";
         return "§8Не выбрано";
     }
 
-    private static String activeHatLabel(Player player, boolean allowed) {
-        if (!allowed) return "§8Недоступно";
+    private static String activeHatLabel(Player player) {
         return "halo".equals(headChoice(player)) ? "§dБожественный нимб" : "§8Не выбрано";
     }
 
-    private static String activePetLabel(Player player, boolean allowed) {
-        if (!allowed) return "§8Недоступно";
+    private static String activePetLabel(Player player) {
         String pet = petChoice(player);
         if (PET_MINI_ME.equals(pet)) return "§dМини-Роузи";
         if (PET_KITTEN.equals(pet)) return "§dМилый котёнок";
@@ -1107,30 +1303,64 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return "§8Не выбрано";
     }
 
-    private static void placeSectionTabs(Inventory menu, Player player, boolean allowed, Section current) {
+    private static void placeSectionTabs(Inventory menu, Player player, Section current) {
         String openHint = "§a● Открыт раздел";
         String switchHint = "§x§F§8§B§E§F§BНажми, чтобы перейти";
         menu.setItem(12, item(Material.FEATHER, "§x§F§A§D§8§F§C§lСпина", "angel_wings", null,
             lore(current == Section.BACK ? openHint : switchHint,
                 "§7Крылья и кагуне на спину",
-                "§7Надето: " + activeBackLabel(player, allowed))));
+                "§7Надето: " + activeBackLabel(player))));
         menu.setItem(13, item(Material.NETHER_STAR, "§x§F§A§D§8§F§C§lШапки", "angel_halo", null,
             lore(current == Section.HATS ? openHint : switchHint,
                 "§7Нимбы и украшения на голову",
-                "§7Надето: " + activeHatLabel(player, allowed))));
+                "§7Надето: " + activeHatLabel(player))));
         menu.setItem(14, item(Material.WHITE_DYE, "§x§F§A§D§8§F§C§lПитомцы", "mini_me_icon", null,
             lore(current == Section.PETS ? openHint : switchHint,
                 "§7Мини-Роузи, Меллстрой, котёнок и спутники",
-                "§7Надето: " + activePetLabel(player, allowed))));
+                "§7Надето: " + activePetLabel(player))));
     }
 
-    private static void placeBackAndClear(Inventory menu, boolean includeBackArrow) {
+    private static void placeBackAndClear(Inventory menu, Player player, boolean includeBackArrow) {
         if (includeBackArrow) {
             menu.setItem(45, item(Material.ARROW, "§x§F§8§B§E§F§BНазад", null, Integer.valueOf(BACK_ARROW_CMD),
                 lore("§dНажми, чтобы вернуться", "§7Возврат к разделам аксессуаров")));
         }
         menu.setItem(49, item(Material.BARRIER, "§cСнять всё", null, null,
             lore("§dНажми, чтобы снять", "§7Убирает все надетые аксессуары")));
+        String bal = player == null ? "0" : pointsBackend.lookFormatted(player.getUniqueId());
+        menu.setItem(53, item(Material.CLOCK, "§x§F§8§B§E§F§BИНФОРМАЦИЯ", null, Integer.valueOf(INFO_CLOCK_CMD),
+            "",
+            "§8 §fВаш баланс: §x§F§A§D§8§F§C" + bal + " §fꐃ",
+            "",
+            "§7Пополнить баланс можно",
+            "§7на сайте: §x§F§8§B§E§F§Bhttps://elytrix.pw"));
+    }
+
+    private static String[] shopAccessoryLore(Player player, AccessoryItem accItem, boolean equipped, String... descLines) {
+        java.util.List<String> out = new java.util.ArrayList<>();
+        out.add("");
+        boolean isOwned = owns(player, accItem);
+        if (equipped) {
+            out.add("§a● Сейчас надето");
+        } else if (isOwned) {
+            out.add("§a✔ Куплено навсегда");
+        }
+        for (String line : descLines) {
+            out.add(line);
+        }
+        out.add("");
+        if (!isOwned) {
+            out.add("§7===================");
+            out.add("");
+            out.add("§fЦена: §x§F§8§B§E§F§B" + accItem.price + " §fꐃ");
+            out.add("");
+            out.add("§x§F§8§B§E§F§BНажми, чтобы купить");
+        } else if (equipped) {
+            out.add("§7Нажми ещё раз — снять");
+        } else {
+            out.add("§x§F§8§B§E§F§BНажми, чтобы надеть");
+        }
+        return out.toArray(new String[0]);
     }
 
     static void openMenu(Player player) {
@@ -1147,75 +1377,80 @@ public final class AccessoryController implements CommandExecutor, Listener {
         Inventory menu = Bukkit.createInventory(holder, 54, title);
         holder.inventory = menu;
 
-        boolean allowed = allowed(player);
-        if (allowed) {
-            try {
-                syncPlayerRigs(player);
-            } catch (Throwable failure) {
-                reportOnce("меню синхронизация", failure);
-            }
+        try {
+            syncPlayerRigs(player);
+        } catch (Throwable failure) {
+            reportOnce("меню синхронизация", failure);
         }
 
-        String hint = allowed ? "§dНажми, чтобы выбрать" : "§cДоступно с доната §dmedia";
-        String chosen = allowed ? "§a● Сейчас надето" : "§8● Недоступно";
         String openSectionHint = "§x§F§8§B§E§F§BНажми, чтобы открыть раздел";
 
         if (target == Section.HUB) {
             menu.setItem(20, item(Material.FEATHER, "§x§F§A§D§8§F§C§lСпина", "angel_wings", null,
                 lore(openSectionHint,
                     "§7Крылья и кагуне на спину",
-                    "§7Надето: " + activeBackLabel(player, allowed),
+                    "§7Цены: §x§F§8§B§E§F§B6000 §8– §x§F§8§B§E§F§B7500 §fꐃ",
+                    "§7Надето: " + activeBackLabel(player),
                     "")));
             menu.setItem(22, item(Material.NETHER_STAR, "§x§F§A§D§8§F§C§lШапки", "angel_halo", null,
                 lore(openSectionHint,
                     "§7Нимбы и украшения на голову",
-                    "§7Надето: " + activeHatLabel(player, allowed),
+                    "§7Цена: §x§F§8§B§E§F§B3500 §fꐃ",
+                    "§7Надето: " + activeHatLabel(player),
                     "")));
             menu.setItem(24, item(Material.WHITE_DYE, "§x§F§A§D§8§F§C§lПитомцы", "mini_me_icon", null,
                 lore(openSectionHint,
                     "§7Мини-Роузи, Меллстрой, котёнок и спутники",
-                    "§7Надето: " + activePetLabel(player, allowed),
+                    "§7Цены: §x§F§8§B§E§F§B2000 §8– §x§F§8§B§E§F§B5000 §fꐃ",
+                    "§7Надето: " + activePetLabel(player),
                     "")));
-            placeBackAndClear(menu, false);
+            placeBackAndClear(menu, player, false);
         } else if (target == Section.BACK) {
-            placeSectionTabs(menu, player, allowed, Section.BACK);
+            placeSectionTabs(menu, player, Section.BACK);
             String back = get(player, BACK);
-            boolean wings = allowed && "wings".equals(back);
-            boolean kagune = allowed && "kaneki".equals(back);
+            boolean wings = owns(player, AccessoryItem.WINGS) && "wings".equals(back);
+            boolean kagune = owns(player, AccessoryItem.KANEKI) && "kaneki".equals(back);
             menu.setItem(30, item(Material.FEATHER, "§x§F§A§D§8§F§C§lАнгельские крылья", "angel_wings", null,
-                wings ? lore(chosen, "§7Аксессуар для спины", "§7Не занимает слот брони", "§7Нажми ещё раз — снять")
-                      : lore(hint, "§7Аксессуар для спины", "§7Не занимает слот брони")));
+                shopAccessoryLore(player, AccessoryItem.WINGS, wings,
+                    "§7Аксессуар для спины",
+                    "§7Не занимает слот брони")));
             menu.setItem(32, item(Material.RED_DYE, "§x§F§A§D§8§F§C§lЩупальца Канэки", "kaneki_tentacles_icon", null,
-                kagune ? lore(chosen, "§7Кагуне Ринкаку Канэки Кена (Токийский Гуль)", "§74 живых алых хвоста из какухо на спине", "§7Нажми ещё раз — снять")
-                       : lore(hint, "§7Кагуне Ринкаку Канэки Кена (Токийский Гуль)", "§74 живых алых хвоста из какухо на спине")));
-            placeBackAndClear(menu, true);
+                shopAccessoryLore(player, AccessoryItem.KANEKI, kagune,
+                    "§7Кагуне Ринкаку Канэки Кена (Токийский Гуль)",
+                    "§74 живых алых хвоста из какухо на спине")));
+            placeBackAndClear(menu, player, true);
         } else if (target == Section.HATS) {
-            placeSectionTabs(menu, player, allowed, Section.HATS);
-            boolean halo = allowed && "halo".equals(headChoice(player));
+            placeSectionTabs(menu, player, Section.HATS);
+            boolean halo = "halo".equals(headChoice(player));
             menu.setItem(31, item(Material.NETHER_STAR, "§x§F§A§D§8§F§C§lБожественный нимб", "angel_halo", null,
-                halo ? lore(chosen, "§7Нимб на голову", "§7Нажми ещё раз — снять")
-                     : lore(hint, "§7Нимб на голову")));
-            placeBackAndClear(menu, true);
+                shopAccessoryLore(player, AccessoryItem.HALO_ITEM, halo,
+                    "§7Сияющий 3D-нимб над головой",
+                    "§7Не занимает слот шлема")));
+            placeBackAndClear(menu, player, true);
         } else if (target == Section.PETS) {
-            placeSectionTabs(menu, player, allowed, Section.PETS);
+            placeSectionTabs(menu, player, Section.PETS);
             String pet = petChoice(player);
-            boolean miniMe = allowed && PET_MINI_ME.equals(pet);
-            boolean kitten = allowed && PET_KITTEN.equals(pet);
-            boolean mellstroy = allowed && PET_MELLSTROY.equals(pet);
-            boolean bug = allowed && PET_CENTIPEDE.equals(pet);
+            boolean miniMe = PET_MINI_ME.equals(pet);
+            boolean kitten = PET_KITTEN.equals(pet);
+            boolean mellstroy = PET_MELLSTROY.equals(pet);
+            boolean bug = PET_CENTIPEDE.equals(pet);
             menu.setItem(28, item(Material.WHITE_DYE, "§x§F§A§D§8§F§C§lМини-Роузи", "mini_me_icon", null,
-                miniMe ? lore(chosen, "§7Маленькая копия Роузи возле плеча", "§7Зажигательно танцует рядом с тобой", "§7Нажми ещё раз — снять")
-                       : lore(hint, "§7Маленькая копия Роузи возле плеча", "§7Зажигательно танцует рядом с тобой")));
+                shopAccessoryLore(player, AccessoryItem.MINI_ME, miniMe,
+                    "§7Маленькая копия Роузи возле плеча",
+                    "§7Зажигательно танцует рядом с тобой")));
             menu.setItem(30, item(Material.PINK_DYE, "§x§F§A§D§8§F§C§lМилый котёнок", "kitten_icon", null,
-                kitten ? lore(chosen, "§7Пушистый котёнок сидит прямо на плече", "§7Наклоняет головку и машет лапкой", "§7Нажми ещё раз — снять")
-                       : lore(hint, "§7Пушистый котёнок сидит прямо на плече", "§7Наклоняет головку и машет лапкой")));
+                shopAccessoryLore(player, AccessoryItem.KITTEN, kitten,
+                    "§7Пушистый котёнок сидит прямо на плече",
+                    "§7Наклоняет головку и машет лапкой")));
             menu.setItem(32, item(Material.GOLD_INGOT, "§x§F§A§D§8§F§C§lМеллстрой", "mellstroy_icon", null,
-                mellstroy ? lore(chosen, "§7Мини-Меллстрой в кепке Rolex и цепи", "§73D-анимации фраз и настоящая озвучка!", "§7Нажми ещё раз — снять")
-                          : lore(hint, "§7Мини-Меллстрой в кепке Rolex и цепи", "§73D-анимации фраз и настоящая озвучка!")));
+                shopAccessoryLore(player, AccessoryItem.MELLSTROY, mellstroy,
+                    "§7Мини-Меллстрой в кепке Rolex и цепи",
+                    "§73D-анимации фраз и настоящая озвучка!")));
             menu.setItem(34, item(Material.SPIDER_EYE, "§x§F§A§D§8§F§C§lСколопендра Гуля", "centipede_icon", null,
-                bug ? lore(chosen, "§7Живая сколопендра ползает по всему телу", "§7Грудь, плечи, шея, спина, руки и бёдра", "§7Нажми ещё раз — снять")
-                    : lore(hint, "§7Живая сколопендра ползает по всему телу", "§7Грудь, плечи, шея, спина, руки и бёдра")));
-            placeBackAndClear(menu, true);
+                shopAccessoryLore(player, AccessoryItem.CENTIPEDE, bug,
+                    "§7Живая сколопендра ползает по всему телу",
+                    "§7Грудь, плечи, шея, спина, руки и бёдра")));
+            placeBackAndClear(menu, player, true);
         }
 
         player.openInventory(menu);
@@ -1230,9 +1465,39 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return Section.HUB;
     }
 
+    private static boolean handleAdminGrant(CommandSender sender, String[] args) {
+        if (args == null || args.length < 3 || !"grant".equalsIgnoreCase(args[0])) return false;
+        boolean canGrant = !(sender instanceof Player p) || p.hasPermission(ADMIN_PERMISSION);
+        if (!canGrant) return false;
+        Player target = null;
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            if (online != null && online.getName().equalsIgnoreCase(args[1])) {
+                target = online;
+                break;
+            }
+        }
+        if (target == null) {
+            sender.sendMessage("§cИгрок " + args[1] + " не в сети.");
+            return true;
+        }
+        if ("all".equalsIgnoreCase(args[2])) {
+            for (AccessoryItem item : AccessoryItem.values()) grantOwnership(target, item);
+            sender.sendMessage("§aВсе аксессуары навсегда выданы игроку §f" + target.getName() + "§a.");
+            return true;
+        }
+        AccessoryItem item = AccessoryItem.byId(args[2]);
+        if (item == null) {
+            sender.sendMessage("§cНеизвестный аксессуар: " + args[2]);
+            return true;
+        }
+        grantOwnership(target, item);
+        sender.sendMessage("§aАксессуар §f" + item.displayName + " §aвыдан игроку §f" + target.getName() + "§a.");
+        return true;
+    }
+
     @Override public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (handleAdminGrant(sender, args)) return true;
         if (!(sender instanceof Player player)) { sender.sendMessage("Только для игроков."); return true; }
-        grantDonationAccess();
         try {
             openMenu(player, parseSectionArg(args));
         } catch (Throwable failure) {
@@ -1254,7 +1519,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         int slot = event.getRawSlot();
         Section current = holder.section;
 
-        // Navigation clicks (open to everyone so players can browse all 3 sections!)
+        // Navigation clicks (open to everyone!)
         if (current == Section.HUB) {
             if (slot == 20) { openMenu(player, Section.BACK); return; }
             if (slot == 22) { openMenu(player, Section.HATS); return; }
@@ -1264,18 +1529,6 @@ public final class AccessoryController implements CommandExecutor, Listener {
             if (slot == 12) { openMenu(player, Section.BACK); return; }
             if (slot == 13) { openMenu(player, Section.HATS); return; }
             if (slot == 14) { openMenu(player, Section.PETS); return; }
-        }
-
-        // Action clicks require permission
-        boolean isActionSlot = (slot == 49)
-            || (current == Section.BACK && (slot == 30 || slot == 32))
-            || (current == Section.HATS && slot == 31)
-            || (current == Section.PETS && (slot == 28 || slot == 30 || slot == 32 || slot == 34));
-        if (!isActionSlot) return;
-
-        if (!allowed(player)) {
-            player.sendMessage("§cАксессуары доступны с доната §d" + MEDIA_GROUP + "§c.");
-            return;
         }
 
         if (slot == 49) {
@@ -1289,42 +1542,52 @@ public final class AccessoryController implements CommandExecutor, Listener {
             return;
         }
 
-        String requiredBlueprint = null;
-        if (current == Section.BACK && slot == 30) requiredBlueprint = "elytrix_angel_wings";
-        else if (current == Section.BACK && slot == 32) requiredBlueprint = KANEKI_BLUEPRINT;
-        else if (current == Section.HATS && slot == 31) requiredBlueprint = "elytrix_angel_halo";
-        else if (current == Section.PETS && slot == 28) requiredBlueprint = MINI_ME_BLUEPRINT;
-        else if (current == Section.PETS && slot == 30) requiredBlueprint = KITTEN_BLUEPRINT;
-        else if (current == Section.PETS && slot == 32) requiredBlueprint = MELLSTROY_BLUEPRINT;
-        else if (current == Section.PETS && slot == 34) requiredBlueprint = CENTIPEDE_BLUEPRINT;
+        AccessoryItem clickedItem = AccessoryItem.at(current, slot);
+        if (clickedItem == null) return;
 
-        if (requiredBlueprint != null && resolveBlueprint(requiredBlueprint) == null) {
+        if (resolveBlueprint(clickedItem.blueprintId) == null) {
             player.sendMessage("§cМодель ещё не загружена. Обратитесь к администрации.");
             return;
         }
 
-        if (current == Section.BACK && slot == 30) {
+        // Permanent unlock purchase for Риллики (PlayerPoints) just like /shop!
+        if (!owns(player, clickedItem)) {
+            if (!pointsBackend.isAvailable()) {
+                player.sendMessage("§x§F§8§B§E§F§BElytrix §8> §cМагазин рилликов временно недоступен!");
+                return;
+            }
+            int balance = pointsBackend.look(player.getUniqueId());
+            if (balance < clickedItem.price || !pointsBackend.take(player.getUniqueId(), clickedItem.price)) {
+                player.sendMessage("§x§F§8§B§E§F§BElytrix §8> §cНедостаточно рилликов!");
+                openMenu(player, current);
+                return;
+            }
+            grantOwnership(player, clickedItem);
+            player.sendMessage("§x§F§8§B§E§F§Bhttps://elytrix.pw §8> §aПокупка успешно совершена!");
+        }
+
+        if (clickedItem == AccessoryItem.WINGS) {
             toggleWings(player);
-        } else if (current == Section.BACK && slot == 32) {
+        } else if (clickedItem == AccessoryItem.KANEKI) {
             toggleKaneki(player);
-        } else if (current == Section.HATS && slot == 31) {
+        } else if (clickedItem == AccessoryItem.HALO_ITEM) {
             toggleHead(player, "halo", "Нимб", "надет", "снят");
-        } else if (current == Section.PETS && slot == 28) {
+        } else if (clickedItem == AccessoryItem.MINI_ME) {
             togglePetChoice(player, PET_MINI_ME, MINI_ME_BLUEPRINT,
                 "Мини-Роузи",
                 "§dМини-Роузи вызвана и танцует возле плеча!",
                 "§7Мини-Роузи убрана.");
-        } else if (current == Section.PETS && slot == 30) {
+        } else if (clickedItem == AccessoryItem.KITTEN) {
             togglePetChoice(player, PET_KITTEN, KITTEN_BLUEPRINT,
                 "Милый котёнок",
                 "§dМилый котёнок уютно устроился на плече!",
                 "§7Милый котёнок убран.");
-        } else if (current == Section.PETS && slot == 32) {
+        } else if (clickedItem == AccessoryItem.MELLSTROY) {
             togglePetChoice(player, PET_MELLSTROY, MELLSTROY_BLUEPRINT,
                 "Меллстрой",
                 "§dМеллстрой выскочил на плечо и готов зажигать!",
                 "§7Меллстрой убран.");
-        } else if (current == Section.PETS && slot == 34) {
+        } else if (clickedItem == AccessoryItem.CENTIPEDE) {
             togglePetChoice(player, PET_CENTIPEDE, CENTIPEDE_BLUEPRINT,
                 "Сколопендра",
                 "§dСколопендра Гуля выпущена и ползает по всему телу.",
