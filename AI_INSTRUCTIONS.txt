@@ -412,16 +412,16 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
      (`RGB 252,253,254` -> отсечка `< 2.85m` для крыльев) + GLSL fragment `discard` в `core/entity.{vsh,fsh}` и
      `core/rendertype_item_entity_translucent_cull.{vsh,fsh}` по всем версиям (`<= 1.21.1`, `1_21_2` для `1.21.2–1.21.5`,
      `1_21_6` для `1.21.6–1.21.8`, `1_21_9` `#version 330` + `PER_FACE_LIGHTING` для `1.21.9–1.21.11`) + `sodium.ignored_shaders`.
-   - Актуальные блюпринты в `plugins/ModelEngine/blueprints/` и RP (`SHA-1: 6566ddc36c9e71b28da7374f409d565fd67cb502`):
+   - Актуальные блюпринты в `plugins/ModelEngine/blueprints/` и RP (`SHA-1: 95c806ddf271b036fe9fd4a32634d4b5bc44dd4a`):
      * `elytrix_angel_halo.bbmodel` (нимб, 161 куб, `halo_ring` + `halo_aura`)
-     * `elytrix_lightning_hat.bbmodel` (шапка `Грозовая молния`, `tools/accessories-model/build_lightning_hat.py`:
-       грозовая туча `storm_cloud` с неоновыми прожилками `#F8BEFB` + `#5CF4FF`, многослойная зигзагообразная 3D-молния
-       `bolt_main` с белым плазменным ядром и золотисто-белым остриём, боковые разветвления `fork_left/right`, 4 искрящиеся
-       дуги `arc_nw/ne/sw/se`, 8-сегментное кольцо ударной волны `impact_ring` и радиальные брызги искр `impact_sparks`;
-       74 куба с `rotation: [0,0,0]` и `shade: false`, 10 рисуемых костей `Y=33.6..47.2` строго `< 1.85m` от глаз;
-       две 20-TPS анимации: бесшовный цикл `'idle'` `3.2s` с зарядом в туче, ударом молнии, двойной вспышкой return-stroke
-       и расходящейся ударной волной + приоритетный супер-разряд `'strike'` `1.3s` `override: true` при надевании, взмахе рукой
-       раз в `3s` и периодически каждые `8–13s`; иконка `lightning_hat_icon`)
+     * `elytrix_lightning_hat.bbmodel` (шапка `Грозовая молния` v2, `tools/accessories-model/build_lightning_hat.py`:
+       объёмное кучево-грозовое облако `storm_cloud` в спокойных серо-синих тонах `#566478`..`#7689A3` с полностью чистым
+       неокрашенным дном, полупрозрачная стеклянная 3D-молния `bolt_main` в стиле матового белого и ледяного витражного
+       стекла Minecraft `alpha=122..192` с бликами, тонкие стеклянные ответвления `fork_left/right` и `arc_nw/ne/sw/se`,
+       стеклянное кольцо ударной волны `impact_ring` и брызги `impact_sparks`; расположена низко прямо над головой
+       `Y=32.34..42.6`, 56 кубов с `rotation: [0,0,0]` и `shade: false`, 10 рисуемых костей строго `< 1.85m` от глаз;
+       две 20-TPS анимации: бесшовный цикл `'idle'` `3.2s` с зарядом в облаке, ударом молнии, двойной вспышкой return-stroke
+       и расходящейся ударной волной + приоритетный супер-разряд `'strike'` `1.3s` `override: true`; иконка `lightning_hat_icon`)
      * `elytrix_angel_wings.bbmodel` (крылья, 9 кубов на крыло + 6 падающих перьев)
      * `elytrix_kaneki_tentacles.bbmodel` (каноничное Ринкаку Кагуне Канеки Кена из аниме «Токийский Гуль»:
        4 гибких хвоста из единого спинного мешка Какухо `root_knot`, 55 рисуемых костей, 171 куб с `rotation: [0,0,0]`,

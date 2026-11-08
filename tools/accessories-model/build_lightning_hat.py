@@ -1,20 +1,17 @@
 #!/usr/bin/env python3
-"""Procedural 3D Blockbench 4.10 generator for `elytrix_lightning_hat` (Грозовая молния).
+"""Procedural 3D Blockbench 4.10 generator for `elytrix_lightning_hat` (Грозовая молния — v2 Glass & Calm Stormcloud).
 
-Creates:
-  1. `elytrix_lightning_hat.bbmodel` — ModelEngine 4.1.0 `free` blueprint (`uv_width=16`,
-     `uv_height=16`, `internal=true`, all cube rotations `[0,0,0]`, `shade=false` self-luminous
-     plasma) featuring a dark storm-indigo thunderhead, multi-layered 3D zig-zag thunderbolt,
-     branching side forks, 4 orbiting temple arcs, and an expanding 8-segment impact shockwave
-     ring + radial sparks above the player's crown (`Y = 33.8 .. 49.9`, strictly `< 1.85m` from
-     the wearer's eye so the FPV shader hides it 100% in 1st-person while keeping it 100% visible
-     in F5 and to other players).
-  2. Two seamless 20-TPS keyframe animations:
-       - `idle` (`loop`, `3.2s`): continuous hover & high-voltage crackle + storm charge-up +
-         downward thunderbolt slam + realistic return-stroke double-flash + expanding shockwave!
-       - `strike` (`once`, `override=true`, `1.3s`): instant triple-flash super-strike played
-         immediately on equip and periodically while worn.
-  3. Crisp 32x32 pixel-art menu icon (`reallyworld:lightning_hat_icon`) + preview strip PNG.
+Refinements per user visual feedback:
+  1. Lightning bolt, branching forks, shockwave ring & strike sparks are built out of
+     **translucent Minecraft glass** (`alpha = 105..200` pale ice-blue & frosted white glass
+     with subtle vanilla glass diagonal specular glints, zero harsh borders, zero double-box stickers).
+  2. Positioned **lower** right above the player's crown (`Y = 32.65 .. 43.8`, ~3.5 BB units lower
+     than v1; player head top = `32.0`, strictly `< 1.85m` from camera eye for 100% 1st-person hide).
+  3. **Cloud bottom is completely unpainted** — no underside veins/stripes and no protruding
+     colored bottom nodes; calm uniform slate-grey cloud across the bottom and sides.
+  4. **Calmer, softer textures** inspired by natural atmospheric stormclouds & pale ice glass
+     (soft muted cool slate-blue/grey cumulus cloud + serene white/ice-blue translucent glass,
+     zero neon pink/purple/yellow noise).
 """
 from __future__ import annotations
 
@@ -51,15 +48,15 @@ def _pt(x: float, y: float, z: float) -> list[float]:
     return [round(float(x), 4), round(float(y), 4), round(float(z), 4)]
 
 
-# UV rectangles in 0..16 space (8 px per unit on 128x128 texture)
-UV_CORE_WHITE = [0.25, 0.25, 3.75, 3.75]     # Blinding white-cyan plasma core
-UV_BOLT_CYAN = [4.25, 0.25, 7.75, 3.75]      # High-voltage electric sky-cyan shell
-UV_PLASMA_PINK = [8.25, 0.25, 11.75, 3.75]   # Signature Elytrix violet-pink plasma (#F8BEFB)
-UV_TIP_GOLD = [12.25, 0.25, 15.75, 3.75]     # White-gold high-voltage spearpoint spark
-UV_CLOUD_TOP = [0.25, 4.25, 7.75, 7.75]      # Dark storm-indigo thundercloud top/sides
-UV_CLOUD_UNDER = [8.25, 4.25, 15.75, 7.75]   # Charged storm underside with cyan/pink veins
-UV_RING_INNER = [0.25, 8.25, 7.75, 11.75]    # Shockwave ring bright cyan-white inner band
-UV_RING_OUTER = [8.25, 8.25, 15.75, 11.75]   # Shockwave ring neon cyan + pink outer band
+# UV rectangles in 0..16 space (8 px per unit on 128x128 RGBA texture)
+UV_GLASS_CORE = [0.25, 0.25, 3.75, 3.75]      # Translucent frosted white glass (main bolt core)
+UV_GLASS_ICE = [4.25, 0.25, 7.75, 3.75]       # Translucent pale ice-blue stained glass (bolt & branches)
+UV_GLASS_MIST = [8.25, 0.25, 11.75, 3.75]     # Soft misty sky-glass (delicate tips & shockwave ring)
+UV_GLASS_GLINT = [12.25, 0.25, 15.75, 3.75]   # Brighter frosted crystal glass (strike tip & sparks)
+UV_CLOUD_BASE = [0.5, 4.5, 7.5, 7.5]          # Calm muted slate-blue/grey cloud (sides & UNPAINTED bottom!)
+UV_CLOUD_CROWN = [8.5, 4.5, 15.5, 7.5]        # Softly sunlit upper cumulus dome (calm cool grey-blue)
+UV_RING_GLASS = [0.5, 8.5, 7.5, 11.5]         # Calm translucent ice-white glass shockwave band
+UV_RING_SOFT = [8.5, 8.5, 15.5, 11.5]         # Softer translucent pale-blue glass outer ring
 
 
 def _faces(default_uv, **overrides) -> dict:
@@ -70,7 +67,7 @@ def _faces(default_uv, **overrides) -> dict:
     return out
 
 
-def _cube(name: str, p_from: list[float], p_to: list[float], origin: list[float], faces: dict, shade: bool = False) -> dict:
+def _cube(name: str, p_from: list[float], p_to: list[float], origin: list[float], faces: dict, shade: bool = False, light: int = 15) -> dict:
     return {
         'name': name,
         'type': 'cube',
@@ -84,468 +81,402 @@ def _cube(name: str, p_from: list[float], p_to: list[float], origin: list[float]
         'locked': False,
         'visibility': True,
         'shade': shade,
-        'light_emission': 15,
+        'light_emission': light,
         'color': 0,
         'faces': faces,
         'uuid': uid(f'cube:{name}'),
     }
 
 
+def _paint_glass_patch(px, x0: int, y0: int, w: int, h: int,
+                       base_rgba: tuple[int, int, int, int],
+                       glint_rgba: tuple[int, int, int, int],
+                       rim_rgba: tuple[int, int, int, int]):
+    """Paints a calm, authentic Minecraft stained-glass texture patch (translucent body + subtle diagonal glint, NO dark border)."""
+    for ly in range(h):
+        for lx in range(w):
+            bx, by = lx // 2, ly // 2
+            edge = min(bx, by, (w // 2 - 1) - bx, (h // 2 - 1) - by)
+            # Classic subtle vanilla glass diagonal specular streaks
+            glint_main = (bx + by) in (5, 6, 17, 18) and 2 <= bx <= (w // 2 - 3) and 2 <= by <= (h // 2 - 3)
+            glint_sub = (bx + by) == 11 and 4 <= bx <= 9
+            if glint_main or glint_sub:
+                col = glint_rgba
+            elif edge == 0:
+                col = rim_rgba
+            else:
+                col = base_rgba
+            px[x0 + lx, y0 + ly] = col
+
+
 def build_lightning_texture() -> Image.Image:
-    """Builds a crisp 128x128 pixel-art storm & plasma atlas (zero blur, pure pixel art)."""
+    """Builds a calm, atmospheric 128x128 RGBA atlas:
+       - Translucent white & pale ice-blue glass for the lightning bolt (alpha 105..200)
+       - Calm, soft slate-grey/blue cumulus cloud with ZERO bottom markings or loud colors.
+    """
     img = Image.new('RGBA', (128, 128), (0, 0, 0, 0))
     px = img.load()
 
-    # 1. [0..32, 0..32] Blinding white-cyan plasma core
-    for y in range(32):
-        for x in range(32):
-            edge = min(x, y, 31 - x, 31 - y)
-            checker = ((x // 2) + (y // 2)) % 2
-            if edge <= 2:
-                col = (168, 248, 255, 255)
-            elif edge <= 5:
-                col = (216, 253, 255, 255) if checker == 0 else (238, 255, 255, 255)
-            else:
-                col = (255, 255, 255, 255)
-            px[x, y] = col
+    # 1. [0..32, 0..32] Translucent Frosted White Glass (main lightning shaft)
+    _paint_glass_patch(
+        px, 0, 0, 32, 32,
+        base_rgba=(234, 245, 255, 172),
+        glint_rgba=(255, 255, 255, 218),
+        rim_rgba=(214, 234, 250, 184),
+    )
 
-    # 2. [32..64, 0..32] Electric sky-cyan bolt shell
-    for y in range(32):
-        for x in range(32, 64):
-            lx = x - 32
-            edge = min(lx, y, 31 - lx, 31 - y)
-            diag = ((lx // 2) - (y // 2)) % 5
-            if edge <= 2:
-                col = (10, 134, 238, 255)
-            elif edge <= 5:
-                col = (30, 196, 255, 255)
-            elif diag == 0:
-                col = (162, 248, 255, 255)
-            else:
-                col = (68, 234, 255, 255)
-            px[x, y] = col
+    # 2. [32..64, 0..32] Translucent Pale Ice-Blue Glass (mid bolt & branches)
+    _paint_glass_patch(
+        px, 32, 0, 32, 32,
+        base_rgba=(188, 220, 246, 148),
+        glint_rgba=(238, 249, 255, 198),
+        rim_rgba=(168, 206, 238, 162),
+    )
 
-    # 3. [64..96, 0..32] Signature Elytrix neon violet-pink plasma (#F8BEFB)
-    for y in range(32):
-        for x in range(64, 96):
-            lx = x - 64
-            edge = min(lx, y, 31 - lx, 31 - y)
-            spark = ((lx * 3 + y * 5) % 13 == 0)
-            if edge <= 2:
-                col = (168, 85, 247, 255)
-            elif edge <= 5:
-                col = (226, 136, 252, 255)
-            elif spark:
-                col = (255, 246, 255, 255)
-            else:
-                col = (248, 190, 251, 255)
-            px[x, y] = col
+    # 3. [64..96, 0..32] Soft Misty Sky Glass (fine outer fork tips)
+    _paint_glass_patch(
+        px, 64, 0, 32, 32,
+        base_rgba=(172, 206, 236, 122),
+        glint_rgba=(224, 242, 255, 170),
+        rim_rgba=(158, 194, 228, 136),
+    )
 
-    # 4. [96..128, 0..32] High-voltage white-gold spark spearpoint
-    for y in range(32):
-        for x in range(96, 128):
-            lx = x - 96
-            edge = min(lx, y, 31 - lx, 31 - y)
-            if edge <= 2:
-                col = (94, 236, 255, 255)
-            elif edge <= 6:
-                col = (255, 232, 118, 255)
-            else:
-                col = (255, 253, 236, 255)
-            px[x, y] = col
+    # 4. [96..128, 0..32] Bright Crystal White Glass (spear tip & strike sparks)
+    _paint_glass_patch(
+        px, 96, 0, 32, 32,
+        base_rgba=(244, 250, 255, 192),
+        glint_rgba=(255, 255, 255, 232),
+        rim_rgba=(222, 239, 252, 198),
+    )
 
-    # 5. [0..64, 32..64] Dark storm-indigo thundercloud top & sides (pixel-art blocks)
+    # 5. [0..64, 32..64] Calm Storm-Slate Cloud Base (used on sides AND bottom — completely clean & calm!)
+    # Soft cool slate-grey palette (#566478 .. #63738A): gentle 4x4 texel variation of only ~8 RGB units!
+    cloud_base_tones = [
+        (86, 100, 120, 255),
+        (91, 106, 127, 255),
+        (96, 111, 133, 255),
+        (89, 103, 124, 255),
+    ]
     for y in range(32, 64):
         for x in range(0, 64):
-            bx, by = x // 4, (y - 32) // 4
-            h = (bx * 7 + by * 13 + (bx ^ by) * 5) % 11
-            if by <= 1 or h >= 9:
-                col = (58, 70, 118, 255)
-            elif h >= 5:
-                col = (40, 49, 88, 255)
-            elif h >= 2:
-                col = (29, 35, 66, 255)
-            else:
-                col = (22, 26, 52, 255)
-            px[x, y] = col
+            bx, by = x // 8, (y - 32) // 8
+            idx = int(1.5 + 1.4 * math.sin(bx * 0.9 + by * 0.7)) % len(cloud_base_tones)
+            px[x, y] = cloud_base_tones[idx]
 
-    # 6. [64..128, 32..64] Charged storm underside with glowing cyan & #F8BEFB lightning veins
+    # 6. [64..128, 32..64] Soft Upper Cumulus Crown (slightly airier cool grey-blue #687992 .. #788AA4)
+    cloud_crown_tones = [
+        (104, 121, 146, 255),
+        (111, 129, 155, 255),
+        (118, 137, 163, 255),
+        (108, 125, 150, 255),
+    ]
     for y in range(32, 64):
         for x in range(64, 128):
-            lx, ly = x - 64, y - 32
-            bx, by = lx // 2, ly // 2
-            vein_a = abs((bx - 16) + ((by * 3) % 5 - 2))
-            vein_b = abs((by - 8) + ((bx * 2) % 5 - 2))
-            if vein_a == 0 or vein_b == 0:
-                col = (232, 254, 255, 255)
-            elif vein_a == 1:
-                col = (84, 238, 255, 255)
-            elif vein_b == 1:
-                col = (248, 190, 251, 255)
-            else:
-                h = (bx * 5 + by * 9) % 7
-                col = (34, 41, 78, 255) if h < 4 else (48, 56, 104, 255)
-            px[x, y] = col
+            bx, by = (x - 64) // 8, (y - 32) // 8
+            idx = int(1.5 + 1.4 * math.cos(bx * 0.8 - by * 0.7)) % len(cloud_crown_tones)
+            px[x, y] = cloud_crown_tones[idx]
 
-    # 7. [0..64, 64..96] Shockwave ring bright cyan-white inner plasma
+    # 7. [0..64, 64..96] Translucent Glass Shockwave Ring (inner frosted glass band)
     for y in range(64, 96):
         for x in range(0, 64):
             ly = y - 64
             band = abs(ly - 15)
-            if band <= 4:
-                col = (255, 255, 255, 255)
-            elif band <= 9:
-                col = (118, 248, 255, 255)
+            glint = ((x // 4 + ly // 4) % 7 == 0)
+            if glint:
+                col = (250, 254, 255, 190)
+            elif band <= 5:
+                col = (228, 243, 255, 160)
             else:
-                col = (28, 190, 255, 255)
+                col = (192, 222, 246, 126)
             px[x, y] = col
 
-    # 8. [64..128, 64..96] Shockwave ring neon cyan + Elytrix violet-pink outer band
+    # 8. [64..128, 64..96] Translucent Glass Shockwave Ring (outer soft mist-glass band)
     for y in range(64, 96):
         for x in range(64, 128):
-            lx, ly = x - 64, y - 64
+            ly = y - 64
             band = abs(ly - 15)
-            alt = ((lx // 4) % 2 == 0)
-            if band <= 4:
-                col = (248, 190, 251, 255) if alt else (142, 250, 255, 255)
-            elif band <= 10:
-                col = (206, 118, 250, 255) if alt else (52, 218, 255, 255)
+            if band <= 5:
+                col = (204, 230, 250, 136)
             else:
-                col = (146, 78, 232, 255)
+                col = (176, 208, 238, 104)
             px[x, y] = col
 
     return img
 
 
 def build_lightning_icon() -> Image.Image:
-    """Builds a razor-sharp 32x32 pixel-art menu icon (`reallyworld:lightning_hat_icon`)."""
+    """Builds a calm, crisp 32x32 pixel-art menu icon matching the slate cumulus cloud + glass lightning."""
     icon = Image.new('RGBA', (32, 32), (0, 0, 0, 0))
     px = icon.load()
 
-    OUTLINE = (16, 20, 42, 255)
-    CLOUD_DARK = (30, 37, 70, 255)
-    CLOUD_MID = (46, 56, 102, 255)
-    CLOUD_HI = (70, 84, 144, 255)
-    CYAN_DEEP = (16, 168, 250, 255)
-    CYAN_BRIGHT = (82, 242, 255, 255)
-    PINK_NEON = (248, 190, 251, 255)
-    PINK_DEEP = (204, 112, 246, 255)
-    WHITE = (255, 255, 255, 255)
-    GOLD_WHITE = (255, 248, 176, 255)
+    OUTLINE = (38, 46, 62, 255)
+    CLOUD_LOW = (84, 98, 118, 255)
+    CLOUD_MID = (102, 118, 142, 255)
+    CLOUD_TOP = (124, 142, 168, 255)
+    GLASS_EDGE = (154, 196, 232, 225)
+    GLASS_ICE = (196, 228, 252, 215)
+    GLASS_WHITE = (242, 250, 255, 240)
+    GLASS_GLINT = (255, 255, 255, 255)
+    MIST_RING = (182, 216, 244, 190)
 
     def put(x: int, y: int, c: tuple[int, int, int, int]):
         if 0 <= x < 32 and 0 <= y < 32:
             px[x, y] = c
 
-    # 1. Compact storm cloud crown at top (y = 2..10, x = 5..26)
+    # 1. Fluffy cumulus stormcloud at top (y = 2..10), clean unpainted bottom!
     cloud_spans = {
-        2: (11, 20),
-        3: (8, 23),
-        4: (6, 25),
-        5: (5, 26),
+        2: (13, 19),
+        3: (10, 21),
+        4: (8, 23),
+        5: (6, 25),
         6: (5, 26),
-        7: (6, 25),
-        8: (7, 24),
+        7: (5, 26),
+        8: (6, 25),
     }
     for y, (x0, x1) in cloud_spans.items():
         for x in range(x0 - 1, x1 + 2):
             if x == x0 - 1 or x == x1 + 1 or y == 2:
                 put(x, y, OUTLINE)
             elif y <= 4:
-                put(x, y, CLOUD_HI if (x + y) % 3 != 0 else CLOUD_MID)
+                put(x, y, CLOUD_TOP)
             elif y <= 6:
-                put(x, y, CLOUD_MID if (x % 2 == 0) else CLOUD_DARK)
+                put(x, y, CLOUD_MID)
             else:
-                put(x, y, CLOUD_DARK)
-    for x in range(7, 25):
+                put(x, y, CLOUD_LOW)
+    for x in range(6, 26):
         put(x, 9, OUTLINE)
-    # Glowing underside veins inside cloud
-    for x in (10, 11, 19, 20):
-        put(x, 7, PINK_NEON)
-    for x in range(13, 19):
-        put(x, 7, CYAN_BRIGHT)
-        put(x, 8, WHITE if 14 <= x <= 17 else CYAN_DEEP)
 
-    # 2. Impact shockwave ring at bottom (y = 24..29, x = 5..26)
+    # 2. Calm translucent glass shockwave ring at bottom (y = 24..29)
     ring_pts = [
-        (7, 26), (8, 25), (9, 25), (10, 24), (11, 24),
-        (20, 24), (21, 24), (22, 25), (23, 25), (24, 26),
-        (6, 27), (25, 27),
-        (7, 28), (8, 28), (9, 29), (10, 29), (11, 29), (12, 29),
-        (19, 29), (20, 29), (21, 29), (22, 29), (23, 28), (24, 28),
-        (13, 29), (14, 29), (15, 29), (16, 29), (17, 29), (18, 29),
+        (8, 26), (9, 25), (10, 25), (11, 24),
+        (20, 24), (21, 25), (22, 25), (23, 26),
+        (7, 27), (24, 27),
+        (8, 28), (9, 28), (10, 29), (11, 29), (12, 29), (13, 29),
+        (14, 29), (15, 29), (16, 29), (17, 29), (18, 29), (19, 29),
+        (20, 29), (21, 29), (22, 28), (23, 28),
     ]
     for rx, ry in ring_pts:
-        for ox, oy in ((-1, 0), (1, 0), (0, -1), (0, 1)):
-            if px[rx + ox, ry + oy][3] == 0:
-                put(rx + ox, ry + oy, OUTLINE)
-    for rx, ry in ring_pts:
-        is_pink = rx in (7, 8, 23, 24, 6, 25)
-        put(rx, ry, PINK_NEON if is_pink else CYAN_BRIGHT)
+        put(rx, ry, MIST_RING)
     for rx in range(13, 19):
-        put(rx, 28, WHITE)
+        put(rx, 28, GLASS_WHITE)
 
-    # 3. Iconic razor-sharp zig-zag thunderbolt (y = 7..27)
-    # Each row: (x_left, x_right)
+    # 3. Crystalline glass lightning bolt (y = 8..27)
     bolt_rows = {
-        7:  (15, 20),
-        8:  (14, 19),
-        9:  (13, 18),
-        10: (12, 17),
-        11: (11, 16),
-        12: (10, 15),
-        13: (9,  15),
-        14: (8,  21),  # sharp mid-jag crossbar!
-        15: (9,  22),
-        16: (15, 21),
-        17: (14, 20),
-        18: (14, 19),
-        19: (13, 18),
+        8:  (15, 19),
+        9:  (14, 18),
+        10: (13, 17),
+        11: (12, 16),
+        12: (11, 15),
+        13: (10, 15),
+        14: (9,  20),
+        15: (10, 21),
+        16: (15, 20),
+        17: (14, 19),
+        18: (14, 18),
+        19: (13, 17),
         20: (13, 17),
-        21: (13, 17),
+        21: (13, 16),
         22: (13, 16),
-        23: (13, 16),
-        24: (14, 16),
+        23: (14, 16),
+        24: (14, 15),
         25: (14, 15),
         26: (14, 15),
         27: (14, 14),
     }
-    # Outline pass around thunderbolt
     for y, (x0, x1) in bolt_rows.items():
         for x in range(x0, x1 + 1):
-            for ox in (-1, 0, 1):
-                for oy in (-1, 0, 1):
-                    nx, ny = x + ox, y + oy
-                    if 0 <= nx < 32 and 0 <= ny < 32 and ny not in bolt_rows:
-                        if ny >= 9:
-                            put(nx, ny, OUTLINE)
-                    elif 0 <= nx < 32 and 0 <= ny < 32:
-                        bx0, bx1 = bolt_rows[ny]
-                        if nx < bx0 or nx > bx1:
-                            put(nx, ny, OUTLINE)
-
-    # Fill pass for thunderbolt (cyan edge + #F8BEFB highlight + white-gold core)
-    for y, (x0, x1) in bolt_rows.items():
-        for x in range(x0, x1 + 1):
-            if y >= 25:
-                put(x, y, GOLD_WHITE if x == x0 else WHITE)
-            elif x == x0:
-                put(x, y, CYAN_BRIGHT)
-            elif x == x1:
-                put(x, y, PINK_NEON if y % 2 == 0 else CYAN_DEEP)
-            elif x == x0 + 1 and (x1 - x0) >= 4:
-                put(x, y, CYAN_BRIGHT)
+            if x == x0 or x == x1:
+                put(x, y, GLASS_EDGE if x == x1 else GLASS_ICE)
+            elif (x + y) % 5 == 0:
+                put(x, y, GLASS_GLINT)
             else:
-                put(x, y, WHITE if y < 22 else GOLD_WHITE)
+                put(x, y, GLASS_WHITE)
 
-    # 4. Crisp side electric sparks around the strike!
-    sparks = [
-        (4, 13, CYAN_BRIGHT), (3, 12, WHITE),
-        (27, 13, PINK_NEON), (28, 12, WHITE),
-        (5, 21, PINK_DEEP), (4, 20, PINK_NEON),
-        (26, 21, CYAN_DEEP), (27, 20, CYAN_BRIGHT),
-        (10, 26, GOLD_WHITE), (20, 26, GOLD_WHITE),
-    ]
-    for sx, sy, scol in sparks:
-        put(sx, sy, scol)
+    # Delicate fine glass branches (like image-10.png)
+    for bx, by in ((9, 16), (8, 17), (7, 18), (20, 17), (21, 18), (22, 19)):
+        put(bx, by, GLASS_ICE)
 
     return icon
 
 
 def eval_lightning_pose(u: float, mode: str = 'idle') -> dict:
-    """Evaluates all bone positions, rotations, and scales at normalized time u in [0, 1].
-
-    `mode == 'idle'` (3.2s seamless loop):
-      - u in [0.00, 0.39): Hover & lively electric crackle above head
-      - u in [0.39, 0.485): Storm cloud swells & charges; bolt retracts upward into cloud!
-      - u in [0.485, 0.535): STRIKE #1 SLAM! Bolt slams down onto head, shockwave explodes!
-      - u in [0.535, 0.575): Brief flicker dip between return strokes
-      - u in [0.575, 0.635): STRIKE #2 RETURN STROKE FLASH! Second blinding flash + wider wave!
-      - u in [0.635, 1.00]: Shockwave dissipates & residual arcs crackle back into seamless loop!
-
-    `mode == 'strike'` (1.3s override super-strike):
-      - Rapid charge -> Triple high-voltage return-stroke slam -> clean settle!
-    """
+    """Evaluates all bone positions, rotations, and scales at normalized time u in [0, 1]."""
     tau = 2.0 * math.pi
 
     if mode == 'idle':
-        # Seamless periodic base hum
-        hover_y = 0.35 * math.sin(tau * u)
-        cloud_sway_x = 0.28 * math.sin(tau * u)
+        hover_y = 0.24 * math.sin(tau * u)
+        cloud_sway_x = 0.20 * math.sin(tau * u)
         cloud_rot = [
-            1.8 * math.sin(tau * 2.0 * u),
-            6.0 * math.sin(tau * u),
-            2.2 * math.cos(tau * 2.0 * u),
+            1.2 * math.sin(tau * 2.0 * u),
+            5.0 * math.sin(tau * u),
+            1.6 * math.cos(tau * 2.0 * u),
         ]
         cloud_sc = [1.0, 1.0, 1.0]
 
-        # Crisp high-frequency electric crackle (seamless harmonics)
-        jitter_z = 2.2 * math.sin(tau * 7.0 * u) + 1.4 * math.cos(tau * 11.0 * u)
-        jitter_y = 5.0 * math.sin(tau * 3.0 * u)
+        jitter_z = 1.6 * math.sin(tau * 6.0 * u) + 0.9 * math.cos(tau * 10.0 * u)
+        jitter_y = 4.0 * math.sin(tau * 2.0 * u)
 
         bolt_dy = 0.0
-        bolt_sc = [0.92 + 0.05 * math.sin(tau * 8.0 * u), 0.94, 0.92 + 0.05 * math.sin(tau * 8.0 * u)]
+        bolt_sc = [0.94 + 0.04 * math.sin(tau * 6.0 * u), 0.96, 0.94 + 0.04 * math.sin(tau * 6.0 * u)]
         bolt_rot = [0.0, jitter_y, jitter_z]
 
-        fork_sc = 0.82 + 0.12 * math.sin(tau * 6.0 * u)
-        fork_spread = 4.0 * math.sin(tau * 5.0 * u)
+        fork_sc = 0.84 + 0.10 * math.sin(tau * 5.0 * u)
+        fork_spread = 3.0 * math.sin(tau * 4.0 * u)
 
-        ring_sc_xz = 0.52 + 0.06 * math.sin(tau * 4.0 * u)
+        ring_sc_xz = 0.48 + 0.05 * math.sin(tau * 3.0 * u)
         ring_sc_y = 0.70
-        ring_ry = (360.0 * u) % 360.0  # Smooth 360 deg spin per loop -> wait: linear 0..360!
-        ring_ry = 18.0 * math.sin(tau * 2.0 * u)
+        ring_ry = 14.0 * math.sin(tau * 2.0 * u)
 
         sparks_sc = 0.0
         sparks_dy = 0.0
-        arc_flare = 0.85 + 0.15 * math.sin(tau * 9.0 * u)
+        arc_flare = 0.82 + 0.10 * math.sin(tau * 6.0 * u)
 
-        # Storm Charge-Up window: [0.38, 0.485]
+        # Storm Charge-Up window: [0.38, 0.485] — bolt retracts smoothly into cumulus cloud
         if 0.38 <= u < 0.485:
             p = (u - 0.38) / (0.485 - 0.38)
             ease = p * p * (3.0 - 2.0 * p)
-            cloud_sc = [1.0 + 0.14 * ease, 1.0 + 0.10 * ease, 1.0 + 0.14 * ease]
-            cloud_rot[2] += 4.5 * math.sin(p * math.pi * 4.0)
-            bolt_dy = 3.1 * ease
-            bolt_sc = [0.88 - 0.66 * ease, 0.94 - 0.78 * ease, 0.88 - 0.66 * ease]
-            fork_sc = 0.82 * (1.0 - 0.80 * ease)
-            ring_sc_xz = 0.50 - 0.30 * ease
-            arc_flare = 0.80 - 0.45 * ease
+            cloud_sc = [1.0 + 0.11 * ease, 1.0 + 0.08 * ease, 1.0 + 0.11 * ease]
+            cloud_rot[2] += 3.2 * math.sin(p * math.pi * 4.0)
+            bolt_dy = 2.5 * ease
+            bolt_sc = [0.94 - 0.70 * ease, 0.96 - 0.80 * ease, 0.94 - 0.70 * ease]
+            fork_sc = 0.84 * (1.0 - 0.82 * ease)
+            ring_sc_xz = 0.48 - 0.30 * ease
+            arc_flare = 0.82 * (1.0 - 0.78 * ease)
 
         # STRIKE SLAM #1: [0.485, 0.540]
         elif 0.485 <= u < 0.540:
             p = (u - 0.485) / (0.540 - 0.485)
             slam = min(1.0, p * 2.5)
-            cloud_sc = [1.15 - 0.07 * p, 0.92 + 0.08 * p, 1.15 - 0.07 * p]
-            bolt_dy = 3.1 * (1.0 - slam) - 0.75 * slam
-            bolt_sc = [0.22 + 0.90 * slam, 0.16 + 1.08 * slam, 0.22 + 0.90 * slam]
-            bolt_rot = [1.5, -6.0, 4.0]
+            cloud_sc = [1.12 - 0.05 * p, 0.94 + 0.06 * p, 1.12 - 0.05 * p]
+            bolt_dy = 2.5 * (1.0 - slam) - 0.45 * slam
+            bolt_sc = [0.24 + 0.84 * slam, 0.16 + 0.98 * slam, 0.24 + 0.84 * slam]
+            bolt_rot = [1.0, -5.0, 3.0]
             fork_sc = 1.12 * slam
-            fork_spread = 16.0 * slam
-            ring_sc_xz = 0.20 + 1.05 * p
-            ring_sc_y = 1.30 - 0.20 * p
-            sparks_sc = 1.10 * slam
-            sparks_dy = 0.45 * p
-            arc_flare = 1.15
+            fork_spread = 14.0 * slam
+            ring_sc_xz = 0.18 + 1.00 * p
+            ring_sc_y = 1.20 - 0.20 * p
+            sparks_sc = 1.05 * slam
+            sparks_dy = 0.35 * p
+            arc_flare = 1.12 * slam
 
         # Inter-stroke flicker dip: [0.540, 0.570]
         elif 0.540 <= u < 0.570:
             p = (u - 0.540) / (0.570 - 0.540)
-            cloud_sc = [1.08, 1.02, 1.08]
-            bolt_dy = -0.25
-            bolt_sc = [0.46, 0.58, 0.46]
-            bolt_rot = [-1.0, 5.0, -3.0]
-            fork_sc = 0.48
-            fork_spread = 6.0
-            ring_sc_xz = 1.25 + 0.10 * p
-            ring_sc_y = 0.95
-            sparks_sc = 0.55
-            sparks_dy = 0.55
-            arc_flare = 0.85
+            cloud_sc = [1.06, 1.01, 1.06]
+            bolt_dy = -0.15
+            bolt_sc = [0.48, 0.58, 0.48]
+            bolt_rot = [-1.0, 4.0, -2.5]
+            fork_sc = 0.46
+            fork_spread = 5.0
+            ring_sc_xz = 1.18 + 0.10 * p
+            ring_sc_y = 0.90
+            sparks_sc = 0.50
+            sparks_dy = 0.45
+            arc_flare = 0.55
 
         # STRIKE #2 RETURN-STROKE DOUBLE FLASH: [0.570, 0.640]
         elif 0.570 <= u < 0.640:
             p = (u - 0.570) / (0.640 - 0.570)
             flash = math.sin(min(1.0, p * 1.35) * math.pi * 0.5)
-            cloud_sc = [1.12 - 0.06 * p, 0.95 + 0.05 * p, 1.12 - 0.06 * p]
-            bolt_dy = -0.65 * (1.0 - 0.35 * p)
-            bolt_sc = [1.08 - 0.10 * p, 1.18 - 0.14 * p, 1.08 - 0.10 * p]
-            bolt_rot = [-1.5, 8.0 * (1.0 - 0.5 * p), -4.0]
+            cloud_sc = [1.09 - 0.04 * p, 0.96 + 0.04 * p, 1.09 - 0.04 * p]
+            bolt_dy = -0.40 * (1.0 - 0.35 * p)
+            bolt_sc = [1.06 - 0.08 * p, 1.12 - 0.10 * p, 1.06 - 0.08 * p]
+            bolt_rot = [-1.0, 6.0 * (1.0 - 0.5 * p), -3.0]
             fork_sc = 1.08 - 0.14 * p
-            fork_spread = 18.0 - 6.0 * p
-            ring_sc_xz = 1.35 + 0.18 * p
-            ring_sc_y = 1.15 - 0.25 * p
-            sparks_sc = (1.05 - 0.30 * p) * flash
-            sparks_dy = 0.55 + 0.45 * p
-            arc_flare = 1.12 - 0.12 * p
+            fork_spread = 16.0 - 5.0 * p
+            ring_sc_xz = 1.28 + 0.16 * p
+            ring_sc_y = 1.08 - 0.22 * p
+            sparks_sc = (0.98 - 0.28 * p) * flash
+            sparks_dy = 0.45 + 0.35 * p
+            arc_flare = 1.08 - 0.14 * p
 
         # Aftershock dissipation back to seamless hover: [0.640, 0.840]
         elif 0.640 <= u < 0.840:
             p = (u - 0.640) / (0.840 - 0.640)
             ease = 1.0 - (p * p * (3.0 - 2.0 * p))
-            cloud_sc = [1.0 + 0.06 * ease, 1.0, 1.0 + 0.06 * ease]
-            bolt_dy = -0.42 * ease
-            bolt_sc = [0.92 + 0.06 * ease, 0.94 + 0.10 * ease, 0.92 + 0.06 * ease]
-            fork_sc = 0.82 + 0.12 * ease
-            fork_spread = 4.0 + 8.0 * ease
-            ring_sc_xz = 0.52 + 1.01 * ease
-            ring_sc_y = 0.70 + 0.20 * ease
-            sparks_sc = max(0.0, 0.75 * (1.0 - min(1.0, p * 1.6)))
-            sparks_dy = 1.00 * min(1.0, p * 1.6)
-            arc_flare = 0.85 + 0.15 * ease
+            cloud_sc = [1.0 + 0.05 * ease, 1.0, 1.0 + 0.05 * ease]
+            bolt_dy = -0.26 * ease
+            bolt_sc = [0.94 + 0.04 * ease, 0.96 + 0.06 * ease, 0.94 + 0.04 * ease]
+            fork_sc = 0.84 + 0.10 * ease
+            fork_spread = 3.0 + 8.0 * ease
+            ring_sc_xz = 0.48 + 0.96 * ease
+            ring_sc_y = 0.70 + 0.16 * ease
+            sparks_sc = max(0.0, 0.70 * (1.0 - min(1.0, p * 1.6)))
+            sparks_dy = 0.80 * min(1.0, p * 1.6)
+            arc_flare = 0.82 + 0.12 * ease
 
     else:
-        # Dedicated `strike` override clip (1.3s): instant charge -> triple flash slam -> clean settle
+        # Dedicated `strike` override clip (1.3s): rapid charge -> triple return-stroke slam -> settle
         hover_y = 0.0
         cloud_sway_x = 0.0
         cloud_rot = [0.0, 0.0, 0.0]
-        ring_ry = 24.0 * math.sin(tau * u)
+        ring_ry = 18.0 * math.sin(tau * u)
         if u in (0.0, 1.0):
             cloud_sc = [1.0, 1.0, 1.0]
             bolt_dy = 0.0
-            bolt_sc = [0.94, 0.94, 0.94]
+            bolt_sc = [0.95, 0.96, 0.95]
             bolt_rot = [0.0, 0.0, 0.0]
-            fork_sc = 0.85
+            fork_sc = 0.84
             fork_spread = 0.0
-            ring_sc_xz = 0.52
+            ring_sc_xz = 0.48
             ring_sc_y = 0.70
             sparks_sc = 0.0
             sparks_dy = 0.0
-            arc_flare = 0.85
+            arc_flare = 0.82
         elif u < 0.16:
             p = u / 0.16
-            cloud_sc = [1.0 + 0.16 * p, 1.0 + 0.12 * p, 1.0 + 0.16 * p]
-            cloud_rot = [0.0, 0.0, 5.0 * math.sin(p * math.pi * 2.0)]
-            bolt_dy = 3.2 * p
-            bolt_sc = [0.94 - 0.72 * p, 0.94 - 0.78 * p, 0.94 - 0.72 * p]
+            cloud_sc = [1.0 + 0.12 * p, 1.0 + 0.09 * p, 1.0 + 0.12 * p]
+            cloud_rot = [0.0, 0.0, 3.5 * math.sin(p * math.pi * 2.0)]
+            bolt_dy = 2.6 * p
+            bolt_sc = [0.95 - 0.72 * p, 0.96 - 0.80 * p, 0.95 - 0.72 * p]
             bolt_rot = [0.0, 0.0, 0.0]
-            fork_sc = 0.20
-            fork_spread = -4.0
-            ring_sc_xz = 0.22
+            fork_sc = 0.18
+            fork_spread = -3.0
+            ring_sc_xz = 0.20
             ring_sc_y = 0.50
             sparks_sc = 0.0
             sparks_dy = 0.0
-            arc_flare = 0.40
+            arc_flare = 0.22
         elif u < 0.62:
             p = (u - 0.16) / (0.62 - 0.16)
-            # 3 sharp high-voltage return strokes!
             stroke = abs(math.cos(p * math.pi * 2.5))
-            cloud_sc = [1.16 - 0.08 * p, 0.92 + 0.08 * p, 1.16 - 0.08 * p]
-            cloud_rot = [2.0 * math.sin(p * math.pi * 6.0), 0.0, -3.5 * math.cos(p * math.pi * 6.0)]
-            bolt_dy = -0.75 + 0.25 * (1.0 - stroke)
-            bolt_sc = [0.68 + 0.44 * stroke, 0.74 + 0.50 * stroke, 0.68 + 0.44 * stroke]
-            bolt_rot = [1.5 * math.sin(p * math.pi * 5.0), 9.0 * math.sin(p * math.pi * 3.0), 4.5 * math.cos(p * math.pi * 5.0)]
-            fork_sc = 0.60 + 0.55 * stroke
-            fork_spread = 8.0 + 12.0 * stroke
-            ring_sc_xz = 0.30 + 1.25 * p
-            ring_sc_y = 0.85 + 0.45 * stroke
-            sparks_sc = 0.45 + 0.70 * stroke
-            sparks_dy = 0.95 * p
-            arc_flare = 0.90 + 0.28 * stroke
+            cloud_sc = [1.12 - 0.06 * p, 0.94 + 0.06 * p, 1.12 - 0.06 * p]
+            cloud_rot = [1.5 * math.sin(p * math.pi * 6.0), 0.0, -2.5 * math.cos(p * math.pi * 6.0)]
+            bolt_dy = -0.45 + 0.20 * (1.0 - stroke)
+            bolt_sc = [0.68 + 0.40 * stroke, 0.74 + 0.42 * stroke, 0.68 + 0.40 * stroke]
+            bolt_rot = [1.2 * math.sin(p * math.pi * 5.0), 7.0 * math.sin(p * math.pi * 3.0), 3.5 * math.cos(p * math.pi * 5.0)]
+            fork_sc = 0.58 + 0.56 * stroke
+            fork_spread = 6.0 + 11.0 * stroke
+            ring_sc_xz = 0.28 + 1.18 * p
+            ring_sc_y = 0.80 + 0.38 * stroke
+            sparks_sc = 0.40 + 0.65 * stroke
+            sparks_dy = 0.75 * p
+            arc_flare = 0.65 + 0.48 * stroke
         else:
             p = (u - 0.62) / (1.0 - 0.62)
             ease = 1.0 - (p * p * (3.0 - 2.0 * p))
-            cloud_sc = [1.0 + 0.06 * ease, 1.0, 1.0 + 0.06 * ease]
-            bolt_dy = -0.50 * ease
-            bolt_sc = [0.94 + 0.12 * ease, 0.94 + 0.16 * ease, 0.94 + 0.12 * ease]
-            bolt_rot = [0.0, 3.0 * ease, -1.5 * ease]
-            fork_sc = 0.85 + 0.18 * ease
-            fork_spread = 10.0 * ease
-            ring_sc_xz = 0.52 + 1.03 * ease
-            ring_sc_y = 0.70 + 0.20 * ease
-            sparks_sc = max(0.0, 0.80 * (1.0 - min(1.0, p * 1.7)))
-            sparks_dy = 0.95 + 0.35 * p
-            arc_flare = 0.85 + 0.20 * ease
+            cloud_sc = [1.0 + 0.05 * ease, 1.0, 1.0 + 0.05 * ease]
+            bolt_dy = -0.32 * ease
+            bolt_sc = [0.95 + 0.08 * ease, 0.96 + 0.12 * ease, 0.95 + 0.08 * ease]
+            bolt_rot = [0.0, 2.5 * ease, -1.2 * ease]
+            fork_sc = 0.84 + 0.16 * ease
+            fork_spread = 8.0 * ease
+            ring_sc_xz = 0.48 + 0.98 * ease
+            ring_sc_y = 0.70 + 0.16 * ease
+            sparks_sc = max(0.0, 0.72 * (1.0 - min(1.0, p * 1.7)))
+            sparks_dy = 0.75 + 0.25 * p
+            arc_flare = 0.82 + 0.16 * ease
 
-    # 4 temple arcs orbit/crackle with phase offsets
+    # 4 connected diagonal glass lightning tendrils (`arc_nw`, `arc_ne`, `arc_sw`, `arc_se`)
     arcs = {}
     for idx, aname in enumerate(('arc_nw', 'arc_ne', 'arc_sw', 'arc_se')):
-        ph = tau * (3.0 * u + 0.25 * idx)
+        ph = tau * (2.0 * u + 0.25 * idx)
         sign_x = -1.0 if 'w' in aname else 1.0
         sign_z = -1.0 if 'n' in aname else 1.0
-        sc_i = max(0.0, round(arc_flare * (0.86 + 0.18 * math.sin(ph)), 3))
+        sc_i = max(0.0, round(arc_flare * (0.90 + 0.12 * math.sin(ph)), 3))
         arcs[aname] = {
-            'pos': [0.0, round(0.25 * math.sin(ph), 3), 0.0],
-            'rot': [round(sign_z * 10.0 * math.sin(ph), 3), round(14.0 * math.cos(ph), 3), round(sign_x * (8.0 + 10.0 * (arc_flare - 0.85)), 3)],
+            'pos': [0.0, round(0.12 * math.sin(ph), 3), 0.0],
+            'rot': [round(sign_z * 6.0 * math.sin(ph), 3), round(8.0 * math.cos(ph), 3), round(sign_x * (6.0 + 10.0 * max(0.0, arc_flare - 0.80)), 3)],
             'scale': [sc_i, sc_i, sc_i],
         }
 
@@ -590,7 +521,6 @@ def _build_clip_animators(clip_name: str, length: float, steps: int, mode: str) 
 
     for s in range(steps + 1):
         u = s / steps
-        # Guarantee exact loop endpoint match for seamless `idle`
         u_eval = 0.0 if (mode == 'idle' and s == steps) else u
         t = length * u
         pose = eval_lightning_pose(u_eval, mode=mode)
@@ -665,18 +595,26 @@ def build_animations() -> list[dict]:
     ]
 
 
+# Shared bone origins (lowered ~4.7 BB units vs v1 so the hat hugs right above the player's head Y=32.0!)
+ROOT_ORIG = [0.0, 32.4, 0.0]
+CLOUD_ORIG = [0.0, 39.8, 0.0]
+BOLT_ORIG = [0.0, 35.8, 0.0]
+FORK_L_ORIG = [-0.95, 36.4, 0.0]
+FORK_R_ORIG = [0.95, 36.0, 0.0]
+RING_ORIG = [0.0, 32.45, 0.0]
+SPARKS_ORIG = [0.0, 32.55, 0.0]
+ARC_ORIGINS = {
+    'arc_nw': [-0.55, 37.2, -0.22],
+    'arc_ne': [0.55,  37.0, -0.22],
+    'arc_sw': [-0.55, 36.2,  0.22],
+    'arc_se': [0.55,  36.0,  0.22],
+}
+
+
 def build_blueprint() -> tuple[dict, Image.Image]:
     texture = build_lightning_texture()
     raw = io.BytesIO()
     texture.save(raw, format='PNG', optimize=True)
-
-    root_orig = _pt(0.0, 34.8, 0.0)
-    cloud_orig = _pt(0.0, 45.2, 0.0)
-    bolt_orig = _pt(0.0, 39.8, 0.0)
-    fork_l_orig = _pt(-1.9, 40.8, 0.0)
-    fork_r_orig = _pt(1.9, 40.2, 0.0)
-    ring_orig = _pt(0.0, 33.9, 0.0)
-    sparks_orig = _pt(0.0, 34.1, 0.0)
 
     elements: list[dict] = []
 
@@ -684,92 +622,98 @@ def build_blueprint() -> tuple[dict, Image.Image]:
         elements.append(c)
         return c['uuid']
 
-    # 1. Storm Cloud cluster (Y = 43.7 .. 47.2, compact stormhead with glowing #F8BEFB + cyan veins)
-    cloud_faces = _faces(UV_CLOUD_TOP, down=UV_CLOUD_UNDER)
-    cloud_vein_faces = _faces(UV_PLASMA_PINK, north=UV_BOLT_CYAN, south=UV_BOLT_CYAN, down=UV_CORE_WHITE)
+    # 1. Organic Asymmetric Fluffy Cumulus Cloud (`storm_cloud`: Y = 38.6 .. 42.5, cozy & low above head!)
+    #    IMPORTANT: `down` uses `UV_CLOUD_BASE` (exact same calm slate-grey as sides — ZERO bottom coloring/veins/nodes!).
+    cloud_base_faces = _faces(UV_CLOUD_BASE, up=UV_CLOUD_CROWN, down=UV_CLOUD_BASE)
+    cloud_crown_faces = _faces(UV_CLOUD_CROWN, down=UV_CLOUD_BASE)
     cloud_uuids = [
-        add(_cube('cloud_main',   _pt(-3.6, 44.3, -2.8), _pt(3.6, 46.5, 2.8), cloud_orig, cloud_faces)),
-        add(_cube('cloud_crown',  _pt(-2.4, 46.2, -2.0), _pt(2.4, 47.2, 2.0), cloud_orig, cloud_faces)),
-        add(_cube('cloud_left',   _pt(-4.8, 44.1, -2.1), _pt(-3.1, 45.9, 2.1), cloud_orig, cloud_faces)),
-        add(_cube('cloud_right',  _pt(3.1, 44.1, -2.1),  _pt(4.8, 45.9, 2.1), cloud_orig, cloud_faces)),
-        add(_cube('cloud_front',  _pt(-2.5, 44.2, -3.7), _pt(2.5, 45.8, -2.4), cloud_orig, cloud_faces)),
-        add(_cube('cloud_back',   _pt(-2.5, 44.2, 2.4),  _pt(2.5, 45.8, 3.7), cloud_orig, cloud_faces)),
-        add(_cube('cloud_node_c', _pt(-1.3, 43.7, -1.1), _pt(1.3, 44.4, 1.1), cloud_orig, cloud_vein_faces)),
-        add(_cube('cloud_node_l', _pt(-3.8, 43.8, -0.7), _pt(-2.4, 44.3, 0.7), cloud_orig, _faces(UV_PLASMA_PINK))),
-        add(_cube('cloud_node_r', _pt(2.4, 43.8, -0.7),  _pt(3.8, 44.3, 0.7), cloud_orig, _faces(UV_BOLT_CYAN))),
+        # Flush, clean flat-bottomed cumulus base (Y = 38.6 .. 40.5, completely unpainted underside!)
+        add(_cube('cloud_main',    _pt(-3.4, 38.6, -2.5), _pt(3.4,  40.5, 2.5),  CLOUD_ORIG, cloud_base_faces)),
+        add(_cube('cloud_left',    _pt(-4.6, 38.7, -1.8), _pt(-3.4, 40.2, 1.9),  CLOUD_ORIG, cloud_base_faces)),
+        add(_cube('cloud_right',   _pt(3.4,  38.7, -1.9), _pt(4.5,  40.3, 1.8),  CLOUD_ORIG, cloud_base_faces)),
+        add(_cube('cloud_front',   _pt(-2.6, 38.7, -3.3), _pt(2.4,  40.1, -2.5), CLOUD_ORIG, cloud_base_faces)),
+        add(_cube('cloud_back',    _pt(-2.4, 38.7,  2.5), _pt(2.7,  40.2, 3.3),  CLOUD_ORIG, cloud_base_faces)),
+        # Organic asymmetric upper cumulus billows (like image-10.png — NOT a symmetric stepped pyramid!)
+        add(_cube('cloud_dome_r',  _pt(-0.8, 40.5, -1.9), _pt(2.6,  42.0, 1.9),  CLOUD_ORIG, cloud_crown_faces)),
+        add(_cube('cloud_top_r',   _pt(-0.2, 42.0, -1.3), _pt(2.0,  42.6, 1.3),  CLOUD_ORIG, cloud_crown_faces)),
+        add(_cube('cloud_dome_l',  _pt(-3.3, 40.5, -1.6), _pt(-0.8, 41.5, 1.5),  CLOUD_ORIG, cloud_crown_faces)),
+        add(_cube('cloud_puff_f',  _pt(-1.9, 40.5, -2.5), _pt(1.2,  41.3, -1.9), CLOUD_ORIG, cloud_crown_faces)),
     ]
 
-    # 2. Centerpiece 3D Jagged Thunderbolt (`bolt_main`: Y = 33.7 .. 44.8)
-    # Unified Electric Cyan plasma shell + raised 3D Pure White hot core + Golden-White strike tip!
+    # 2. Single-layer Translucent Glass Lightning Bolt (`bolt_main`: Y = 32.4 .. 38.7)
+    #    Non-overlapping Y spans (`y0..y1` abut flush with 0 internal overlap!) so translucent glass
+    #    renders crystal-clean like genuine Minecraft stained glass!
     bolt_uuids: list[str] = []
     bolt_segments = [
-        # (tag, cx, y0, y1, half_w, half_z, shell_uv)
-        # Upper shaft slanting from (-1.35 -> +1.85 in world X so from North viewer it slants Top-Right -> Mid-Left just like the icon!)
-        ('u1', -1.25, 43.6, 44.8, 0.98, 0.60, UV_BOLT_CYAN),
-        ('u2', -0.45, 42.6, 43.8, 0.96, 0.58, UV_BOLT_CYAN),
-        ('u3',  0.35, 41.7, 42.8, 0.94, 0.56, UV_BOLT_CYAN),
-        ('u4',  1.15, 40.8, 41.9, 0.92, 0.55, UV_BOLT_CYAN),
-        ('u5',  1.85, 40.0, 41.0, 0.90, 0.54, UV_BOLT_CYAN),
-        # Sharp horizontal mid-jag crossbar (+1.85 -> -1.75)
-        ('m1',  0.65, 39.8, 40.9, 1.00, 0.58, UV_BOLT_CYAN),
-        ('m2', -0.55, 39.6, 40.7, 1.00, 0.58, UV_BOLT_CYAN),
-        ('m3', -1.65, 39.4, 40.5, 0.92, 0.56, UV_PLASMA_PINK),
-        # Lower strike spear plunging from (-1.50 -> 0.0, Y=33.7) right onto the crown!
-        ('l1', -1.35, 38.4, 39.6, 0.86, 0.52, UV_BOLT_CYAN),
-        ('l2', -1.00, 37.4, 38.6, 0.78, 0.48, UV_BOLT_CYAN),
-        ('l3', -0.68, 36.5, 37.6, 0.68, 0.44, UV_BOLT_CYAN),
-        ('l4', -0.38, 35.6, 36.7, 0.56, 0.38, UV_BOLT_CYAN),
-        ('l5', -0.16, 34.8, 35.8, 0.44, 0.32, UV_TIP_GOLD),
-        ('l6', -0.04, 34.1, 35.0, 0.32, 0.26, UV_TIP_GOLD),
-        ('l7',  0.00, 33.6, 34.3, 0.20, 0.20, UV_CORE_WHITE),
+        # (tag, cx, y0, y1, half_w, half_z, glass_uv)
+        # Upper glass shaft emerging from cloud base (Y = 38.7 -> 35.9)
+        ('u1', -0.75, 38.0, 38.7, 0.46, 0.36, UV_GLASS_CORE),
+        ('u2', -0.20, 37.3, 38.0, 0.44, 0.35, UV_GLASS_CORE),
+        ('u3',  0.35, 36.6, 37.3, 0.42, 0.34, UV_GLASS_ICE),
+        ('u4',  0.85, 35.9, 36.6, 0.40, 0.33, UV_GLASS_CORE),
+        # Crisp horizontal glass zig-zag jog (+0.95 -> -0.95 at Y = 35.35 .. 35.9)
+        ('m1', -0.05, 35.35, 35.9, 1.28, 0.34, UV_GLASS_CORE),
+        # Lower glass spear plunging onto crown (Y = 35.35 -> 32.4)
+        ('l1', -0.85, 34.75, 35.35, 0.40, 0.32, UV_GLASS_ICE),
+        ('l2', -0.60, 34.15, 34.75, 0.35, 0.29, UV_GLASS_CORE),
+        ('l3', -0.36, 33.60, 34.15, 0.30, 0.26, UV_GLASS_CORE),
+        ('l4', -0.16, 33.10, 33.60, 0.24, 0.22, UV_GLASS_GLINT),
+        ('l5', -0.05, 32.70, 33.10, 0.19, 0.18, UV_GLASS_GLINT),
+        ('l6',  0.00, 32.38, 32.70, 0.13, 0.13, UV_GLASS_GLINT),
     ]
-    for tag, cx, y0, y1, hw, hz, suv in bolt_segments:
+    for tag, cx, y0, y1, hw, hz, guv in bolt_segments:
         bolt_uuids.append(add(_cube(
-            f'bolt_shell_{tag}',
+            f'bolt_glass_{tag}',
             _pt(cx - hw, y0, -hz),
             _pt(cx + hw, y1, hz),
-            bolt_orig,
-            _faces(suv),
+            BOLT_ORIG,
+            _faces(guv),
         )))
-        if tag != 'l7':
-            cw = max(0.18, round(hw * 0.56, 3))
-            cz = round(hz + 0.12, 3)
-            core_uv = UV_TIP_GOLD if tag in ('l5', 'l6') else UV_CORE_WHITE
-            bolt_uuids.append(add(_cube(
-                f'bolt_core_{tag}',
-                _pt(cx - cw, y0 + 0.06, -cz),
-                _pt(cx + cw, y1 - 0.06, cz),
-                bolt_orig,
-                _faces(core_uv),
-            )))
 
-    # 3. Sleek razor-thin branching side lightning forks (`fork_left`, `fork_right`)
+    # 3. Connected Continuous Crystalline Glass Side Branches (`fork_left`, `fork_right`)
     fork_l_uuids = [
-        add(_cube('fork_l_1', _pt(-2.55, 39.2, -0.22), _pt(-1.65, 39.85, 0.22), fork_l_orig, _faces(UV_BOLT_CYAN))),
-        add(_cube('fork_l_2', _pt(-3.30, 38.4, -0.18), _pt(-2.40, 39.30, 0.18), fork_l_orig, _faces(UV_CORE_WHITE))),
-        add(_cube('fork_l_3', _pt(-3.95, 37.6, -0.15), _pt(-3.15, 38.55, 0.15), fork_l_orig, _faces(UV_PLASMA_PINK))),
-        add(_cube('fork_l_4', _pt(-4.40, 36.9, -0.12), _pt(-3.80, 37.75, 0.12), fork_l_orig, _faces(UV_TIP_GOLD))),
+        add(_cube('fork_l_1', _pt(-1.60, 35.65, -0.14), _pt(-0.95, 36.15, 0.14), FORK_L_ORIG, _faces(UV_GLASS_ICE))),
+        add(_cube('fork_l_2', _pt(-2.10, 35.10, -0.12), _pt(-1.42, 35.65, 0.12), FORK_L_ORIG, _faces(UV_GLASS_ICE))),
+        add(_cube('fork_l_3', _pt(-2.52, 34.55, -0.10), _pt(-1.95, 35.10, 0.10), FORK_L_ORIG, _faces(UV_GLASS_MIST))),
+        add(_cube('fork_l_4', _pt(-2.85, 34.00, -0.09), _pt(-2.40, 34.55, 0.09), FORK_L_ORIG, _faces(UV_GLASS_MIST))),
     ]
     fork_r_uuids = [
-        add(_cube('fork_r_1', _pt(1.65, 39.8, -0.22), _pt(2.55, 40.45, 0.22), fork_r_orig, _faces(UV_BOLT_CYAN))),
-        add(_cube('fork_r_2', _pt(2.40, 39.0, -0.18), _pt(3.30, 39.90, 0.18), fork_r_orig, _faces(UV_CORE_WHITE))),
-        add(_cube('fork_r_3', _pt(3.15, 38.2, -0.15), _pt(3.95, 39.15, 0.15), fork_r_orig, _faces(UV_PLASMA_PINK))),
-        add(_cube('fork_r_4', _pt(3.80, 37.5, -0.12), _pt(4.40, 38.35, 0.12), fork_r_orig, _faces(UV_TIP_GOLD))),
+        add(_cube('fork_r_1', _pt(0.95, 35.45, -0.14), _pt(1.60, 35.95, 0.14), FORK_R_ORIG, _faces(UV_GLASS_ICE))),
+        add(_cube('fork_r_2', _pt(1.42, 34.90, -0.12), _pt(2.10, 35.45, 0.12), FORK_R_ORIG, _faces(UV_GLASS_ICE))),
+        add(_cube('fork_r_3', _pt(1.95, 34.35, -0.10), _pt(2.52, 34.90, 0.10), FORK_R_ORIG, _faces(UV_GLASS_MIST))),
+        add(_cube('fork_r_4', _pt(2.40, 33.80, -0.09), _pt(2.85, 34.35, 0.09), FORK_R_ORIG, _faces(UV_GLASS_MIST))),
     ]
 
-    # 4. Four sleek articulated orbiting electric temple arcs (`arc_nw`, `arc_ne`, `arc_sw`, `arc_se`)
+    # 4. Four Continuous Thin Glass Sub-Branches (`arc_nw`, `arc_ne`, `arc_sw`, `arc_se`)
+    #    Each segment overlaps cleanly at its step corner so every tendril reads as ONE continuous glass filament!
     arc_bones = []
     arc_specs = [
-        ('arc_nw', -3.3, -3.3, -1.0, -1.0, UV_BOLT_CYAN, UV_PLASMA_PINK),
-        ('arc_ne',  3.3, -3.3,  1.0, -1.0, UV_PLASMA_PINK, UV_BOLT_CYAN),
-        ('arc_sw', -3.3,  3.3, -1.0,  1.0, UV_PLASMA_PINK, UV_BOLT_CYAN),
-        ('arc_se',  3.3,  3.3,  1.0,  1.0, UV_BOLT_CYAN, UV_PLASMA_PINK),
+        ('arc_nw', -1.0, -1.0),
+        ('arc_ne',  1.0, -1.0),
+        ('arc_sw', -1.0,  1.0),
+        ('arc_se',  1.0,  1.0),
     ]
-    for aname, ax, az, sx, sz, uv_a, uv_b in arc_specs:
-        a_orig = _pt(ax, 35.8, az)
-        c1 = add(_cube(f'{aname}_1', _pt(ax - 0.18, 34.8, az - 0.18), _pt(ax + 0.18, 35.9, az + 0.18), a_orig, _faces(uv_a)))
-        c2 = add(_cube(f'{aname}_2', _pt(ax + sx * 0.28 - 0.16, 35.7, az + sz * 0.28 - 0.16), _pt(ax + sx * 0.28 + 0.16, 36.8, az + sz * 0.28 + 0.16), a_orig, _faces(UV_CORE_WHITE)))
-        c3 = add(_cube(f'{aname}_3', _pt(ax - 0.14, 36.6, az - 0.14), _pt(ax + 0.14, 37.6, az + 0.14), a_orig, _faces(uv_b)))
+    for aname, sx, sz in arc_specs:
+        a_orig = ARC_ORIGINS[aname]
+        ox, oy, oz = a_orig
+        c1 = add(_cube(
+            f'{aname}_1',
+            _pt(min(ox, ox + sx * 0.42) - 0.09, oy - 0.65, min(oz, oz + sz * 0.30) - 0.09),
+            _pt(max(ox, ox + sx * 0.42) + 0.09, oy,        max(oz, oz + sz * 0.30) + 0.09),
+            a_orig, _faces(UV_GLASS_ICE),
+        ))
+        c2 = add(_cube(
+            f'{aname}_2',
+            _pt(min(ox + sx * 0.32, ox + sx * 0.80) - 0.08, oy - 1.30, min(oz + sz * 0.22, oz + sz * 0.58) - 0.08),
+            _pt(max(ox + sx * 0.32, ox + sx * 0.80) + 0.08, oy - 0.65, max(oz + sz * 0.22, oz + sz * 0.58) + 0.08),
+            a_orig, _faces(UV_GLASS_MIST),
+        ))
+        c3 = add(_cube(
+            f'{aname}_3',
+            _pt(min(ox + sx * 0.70, ox + sx * 1.12) - 0.07, oy - 1.90, min(oz + sz * 0.50, oz + sz * 0.82) - 0.07),
+            _pt(max(ox + sx * 0.70, ox + sx * 1.12) + 0.07, oy - 1.30, max(oz + sz * 0.50, oz + sz * 0.82) + 0.07),
+            a_orig, _faces(UV_GLASS_MIST),
+        ))
         arc_bones.append({
             'name': aname,
             'origin': a_orig,
@@ -784,30 +728,30 @@ def build_blueprint() -> tuple[dict, Image.Image]:
             'children': [c1, c2, c3],
         })
 
-    # 5. Expanding 8-segment electric shockwave ring (`impact_ring`, Y = 33.65 .. 34.15)
-    ring_in = _faces(UV_RING_INNER)
-    ring_out = _faces(UV_RING_OUTER)
+    # 5. Calm Translucent Glass Shockwave Ring (`impact_ring`, Y = 32.35 .. 32.62, right above crown!)
+    ring_in = _faces(UV_RING_GLASS)
+    ring_out = _faces(UV_RING_SOFT)
     ring_uuids = [
-        add(_cube('ring_n',  _pt(-1.9, 33.7, -3.7), _pt(1.9, 34.15, -3.15), ring_orig, ring_in)),
-        add(_cube('ring_s',  _pt(-1.9, 33.7,  3.15), _pt(1.9, 34.15, 3.7),  ring_orig, ring_in)),
-        add(_cube('ring_w',  _pt(-3.7, 33.7, -1.9), _pt(-3.15, 34.15, 1.9), ring_orig, ring_in)),
-        add(_cube('ring_e',  _pt(3.15, 33.7, -1.9), _pt(3.7, 34.15, 1.9),   ring_orig, ring_in)),
-        add(_cube('ring_nw', _pt(-3.25, 33.65, -3.25), _pt(-1.85, 34.1, -1.85), ring_orig, ring_out)),
-        add(_cube('ring_ne', _pt(1.85,  33.65, -3.25), _pt(3.25, 34.1, -1.85),  ring_orig, ring_out)),
-        add(_cube('ring_sw', _pt(-3.25, 33.65, 1.85),  _pt(-1.85, 34.1, 3.25),  ring_orig, ring_out)),
-        add(_cube('ring_se', _pt(1.85,  33.65, 1.85),  _pt(3.25, 34.1, 3.25),   ring_orig, ring_out)),
+        add(_cube('ring_n',  _pt(-1.5, 32.36, -2.9), _pt(1.5, 32.62, -2.55), RING_ORIG, ring_in)),
+        add(_cube('ring_s',  _pt(-1.5, 32.36,  2.55), _pt(1.5, 32.62, 2.9),  RING_ORIG, ring_in)),
+        add(_cube('ring_w',  _pt(-2.9, 32.36, -1.5), _pt(-2.55, 32.62, 1.5), RING_ORIG, ring_in)),
+        add(_cube('ring_e',  _pt(2.55, 32.36, -1.5), _pt(2.9, 32.62,  1.5),  RING_ORIG, ring_in)),
+        add(_cube('ring_nw', _pt(-2.55, 32.34, -2.55), _pt(-1.5, 32.58, -1.5), RING_ORIG, ring_out)),
+        add(_cube('ring_ne', _pt(1.5,   32.34, -2.55), _pt(2.55, 32.58, -1.5), RING_ORIG, ring_out)),
+        add(_cube('ring_sw', _pt(-2.55, 32.34,  1.5),  _pt(-1.5, 32.58,  2.55), RING_ORIG, ring_out)),
+        add(_cube('ring_se', _pt(1.5,   32.34,  1.5),  _pt(2.55, 32.58,  2.55), RING_ORIG, ring_out)),
     ]
 
-    # 6. Sleek radial strike burst sparks (`impact_sparks`, burst outward/upward at moment of impact!)
+    # 6. Delicate Translucent Glass Strike Sparks (`impact_sparks`, burst on strike only)
     sparks_uuids = [
-        add(_cube('spark_n1', _pt(-0.20, 34.0, -2.5), _pt(0.20, 34.7, -1.5), sparks_orig, _faces(UV_TIP_GOLD))),
-        add(_cube('spark_n2', _pt(-0.15, 34.6, -3.4), _pt(0.15, 35.3, -2.4), sparks_orig, _faces(UV_CORE_WHITE))),
-        add(_cube('spark_s1', _pt(-0.20, 34.0,  1.5), _pt(0.20, 34.7,  2.5), sparks_orig, _faces(UV_TIP_GOLD))),
-        add(_cube('spark_s2', _pt(-0.15, 34.6,  2.4), _pt(0.15, 35.3,  3.4), sparks_orig, _faces(UV_CORE_WHITE))),
-        add(_cube('spark_w1', _pt(-2.5, 34.0, -0.20), _pt(-1.5, 34.7, 0.20), sparks_orig, _faces(UV_PLASMA_PINK))),
-        add(_cube('spark_w2', _pt(-3.4, 34.6, -0.15), _pt(-2.4, 35.3, 0.15), sparks_orig, _faces(UV_CORE_WHITE))),
-        add(_cube('spark_e1', _pt(1.5,  34.0, -0.20), _pt(2.5,  34.7, 0.20), sparks_orig, _faces(UV_BOLT_CYAN))),
-        add(_cube('spark_e2', _pt(2.4,  34.6, -0.15), _pt(3.4,  35.3, 0.15), sparks_orig, _faces(UV_CORE_WHITE))),
+        add(_cube('spark_n1', _pt(-0.12, 32.55, -1.9), _pt(0.12, 33.0, -1.2), SPARKS_ORIG, _faces(UV_GLASS_GLINT))),
+        add(_cube('spark_n2', _pt(-0.09, 33.0,  -2.5), _pt(0.09, 33.4, -1.9), SPARKS_ORIG, _faces(UV_GLASS_ICE))),
+        add(_cube('spark_s1', _pt(-0.12, 32.55,  1.2), _pt(0.12, 33.0,  1.9), SPARKS_ORIG, _faces(UV_GLASS_GLINT))),
+        add(_cube('spark_s2', _pt(-0.09, 33.0,   1.9), _pt(0.09, 33.4,  2.5), SPARKS_ORIG, _faces(UV_GLASS_ICE))),
+        add(_cube('spark_w1', _pt(-1.9, 32.55, -0.12), _pt(-1.2, 33.0, 0.12), SPARKS_ORIG, _faces(UV_GLASS_GLINT))),
+        add(_cube('spark_w2', _pt(-2.5, 33.0,  -0.09), _pt(-1.9, 33.4, 0.09), SPARKS_ORIG, _faces(UV_GLASS_ICE))),
+        add(_cube('spark_e1', _pt(1.2,  32.55, -0.12), _pt(1.9,  33.0, 0.12), SPARKS_ORIG, _faces(UV_GLASS_GLINT))),
+        add(_cube('spark_e2', _pt(1.9,  33.0,  -0.09), _pt(2.5,  33.4, 0.09), SPARKS_ORIG, _faces(UV_GLASS_ICE))),
     ]
 
     def bone(bname: str, orig: list[float], children: list) -> dict:
@@ -826,15 +770,15 @@ def build_blueprint() -> tuple[dict, Image.Image]:
         }
 
     outliner = [
-        bone('hat_root', root_orig, [
-            bone('storm_cloud', cloud_orig, cloud_uuids),
-            bone('bolt_main', bolt_orig, [
+        bone('hat_root', ROOT_ORIG, [
+            bone('storm_cloud', CLOUD_ORIG, cloud_uuids),
+            bone('bolt_main', BOLT_ORIG, [
                 *bolt_uuids,
-                bone('fork_left', fork_l_orig, fork_l_uuids),
-                bone('fork_right', fork_r_orig, fork_r_uuids),
+                bone('fork_left', FORK_L_ORIG, fork_l_uuids),
+                bone('fork_right', FORK_R_ORIG, fork_r_uuids),
             ]),
-            bone('impact_ring', ring_orig, ring_uuids),
-            bone('impact_sparks', sparks_orig, sparks_uuids),
+            bone('impact_ring', RING_ORIG, ring_uuids),
+            bone('impact_sparks', SPARKS_ORIG, sparks_uuids),
             *arc_bones,
         ]),
         {
@@ -901,16 +845,17 @@ def build_blueprint() -> tuple[dict, Image.Image]:
 
 
 def render_preview(blueprint: dict, texture: Image.Image, icon: Image.Image, out_path: Path):
-    """Renders a 5-panel inspection sheet showing:
-       Panel 1: Hover & electric crackle above player head (`u = 0.12`)
-       Panel 2: Storm Cloud Charge-Up (`u = 0.46`, bolt retracted into glowing stormhead!)
-       Panel 3: LIGHTNING STRIKE SLAM #1 (`u = 0.505`, bolt slamming crown + shockwave burst!)
-       Panel 4: RETURN-STROKE DOUBLE FLASH (`u = 0.595`, angled 3/4 view + wide shockwave!)
-       Panel 5: Zoomed 32x32 menu icon + texture swatch!
+    """Renders a 5-panel inspection sheet with TRUE RGBA alpha-compositing so glass translucency
+    and the clean unpainted cloud underside are verified visually:
+       Panel 1: Calm hover right above head (`u = 0.12`, sandstone-like light backdrop to show glass translucency!)
+       Panel 2: Charge-up inside cloud (`u = 0.465`)
+       Panel 3: Glass Lightning Strike Slam (`u = 0.505`)
+       Panel 4: Bottom-up inspection view (looking up at the cloud underside, matching user's image-9.png!)
+       Panel 5: Zoomed 32x32 menu icon + calm glass/cloud texture atlas
     """
     panel_w, panel_h = 236, 300
-    canvas = Image.new('RGBA', (panel_w * 5, panel_h), (16, 19, 32, 255))
-    draw = ImageDraw.Draw(canvas)
+    # Warm sandstone-grey & twilight split background so semi-transparent glass is clearly visible!
+    canvas = Image.new('RGBA', (panel_w * 5, panel_h), (38, 44, 58, 255))
 
     def rot_mat(rx, ry, rz):
         ax, ay, az = map(math.radians, (rx, ry, rz))
@@ -925,49 +870,55 @@ def render_preview(blueprint: dict, texture: Image.Image, icon: Image.Image, out
     tex_arr = np.array(texture)
     by_name = {el['name']: el for el in blueprint['elements']}
 
+    # (u, cam_yaw, cam_pitch, show_head)
     stages = [
-        (0.12,  16.0,  'idle',   '1. HOVER & CRACKLE'),
-        (0.465, 16.0,  'idle',   '2. CLOUD CHARGE-UP'),
-        (0.505, 14.0,  'idle',   '3. LIGHTNING STRIKE!'),
-        (0.595, -28.0, 'idle',   '4. DOUBLE-FLASH WAVE'),
+        (0.12,  16.0,  -10.0, True),   # 1. Hover right above head
+        (0.465, 16.0,  -10.0, True),   # 2. Cloud charge-up
+        (0.505, -20.0, -10.0, True),   # 3. Strike slam + branches + glass wave!
+        (0.12,  12.0,   46.0, False),  # 4. Looking UP at the bottom of the cloud (verifies unpainted bottom!)
     ]
 
-    for idx, (u, cam_yaw, mode, _label) in enumerate(stages):
-        pose = eval_lightning_pose(u, mode=mode)
-        ox0 = idx * panel_w
+    for idx, (u, cam_yaw, cam_pitch, show_head) in enumerate(stages):
+        panel = Image.new('RGBA', (panel_w, panel_h), (196, 186, 152, 255) if idx in (0, 3) else (32, 38, 52, 255))
+        pose = eval_lightning_pose(u, mode='idle')
 
-        # Subtle panel divider
-        if idx > 0:
-            draw.line([(ox0, 0), (ox0, panel_h)], fill=(40, 46, 72, 255), width=1)
+        ay = math.radians(cam_yaw)
+        ap = math.radians(cam_pitch)
+        cy_m, sy_m = math.cos(ay), math.sin(ay)
+        cp_m, sp_m = math.cos(ap), math.sin(ap)
 
-        def proj(pt, _ang=math.radians(cam_yaw), _ox=ox0):
-            dx = pt[0]
-            dz = pt[2]
-            xw = dx * math.cos(_ang) - dz * math.sin(_ang)
-            zw = dx * math.sin(_ang) + dz * math.cos(_ang)
-            yw = pt[1] - 0.18 * zw
-            return (_ox + 118.0 - xw * 13.2, 258.0 - (yw - 24.0) * 9.8, zw)
+        scale_px = 14.5 if show_head else 18.5
+        center_y_world = 32.5 if show_head else 38.2
+        center_y_px = 192.0 if show_head else 155.0
+
+        def proj(pt):
+            dx, dy, dz = pt[0], pt[1] - center_y_world, pt[2]
+            xw = dx * cy_m - dz * sy_m
+            z1 = dx * sy_m + dz * cy_m
+            yw = dy * cp_m - z1 * sp_m
+            zw = dy * sp_m + z1 * cp_m
+            return (118.0 - xw * scale_px, center_y_px - yw * scale_px, zw)
 
         faces_to_draw = []
 
-        # Reference player head [-4..4, 24..32, -4..4] & shoulders [-8..8, 18..24, -2..2]
-        ref_boxes = [
-            ([-8.0, 19.0, -2.0], [8.0, 24.0, 2.0], (42, 48, 68)),
-            ([-4.0, 24.0, -4.0], [4.0, 32.0, 4.0], (68, 76, 104)),
-        ]
-        for low, high, base_rgb in ref_boxes:
-            cs = [
-                np.array([low[0], low[1], low[2]]), np.array([high[0], low[1], low[2]]),
-                np.array([high[0], high[1], low[2]]), np.array([low[0], high[1], low[2]]),
-                np.array([low[0], low[1], high[2]]), np.array([high[0], low[1], high[2]]),
-                np.array([high[0], high[1], high[2]]), np.array([low[0], high[1], high[2]]),
+        if show_head:
+            ref_boxes = [
+                ([-8.0, 19.0, -2.0], [8.0, 24.0, 2.0], (56, 64, 82)),
+                ([-4.0, 24.0, -4.0], [4.0, 32.0, 4.0], (86, 96, 118)),
             ]
-            for idxs, sm in (((2, 1, 0, 3), 1.0), ((7, 4, 5, 6), 0.85), ((6, 5, 1, 2), 0.92), ((3, 0, 4, 7), 0.90), ((7, 6, 2, 3), 1.08)):
-                p2d = [proj(cs[k]) for k in idxs]
-                cross = (p2d[1][0] - p2d[0][0]) * (p2d[2][1] - p2d[0][1]) - (p2d[1][1] - p2d[0][1]) * (p2d[2][0] - p2d[0][0])
-                if cross <= 0:
-                    col = tuple(min(255, int(c * sm)) for c in base_rgb) + (255,)
-                    faces_to_draw.append((sum(p[2] for p in p2d) / 4.0 + 2.0, [(s[0], s[1]) for s in p2d], col, (28, 32, 48, 255)))
+            for low, high, base_rgb in ref_boxes:
+                cs = [
+                    np.array([low[0], low[1], low[2]]), np.array([high[0], low[1], low[2]]),
+                    np.array([high[0], high[1], low[2]]), np.array([low[0], high[1], low[2]]),
+                    np.array([low[0], low[1], high[2]]), np.array([high[0], low[1], high[2]]),
+                    np.array([high[0], high[1], high[2]]), np.array([low[0], high[1], high[2]]),
+                ]
+                for idxs, sm in (((2, 1, 0, 3), 1.0), ((7, 4, 5, 6), 0.86), ((6, 5, 1, 2), 0.92), ((3, 0, 4, 7), 0.90), ((7, 6, 2, 3), 1.06)):
+                    p2d = [proj(cs[k]) for k in idxs]
+                    cross = (p2d[1][0] - p2d[0][0]) * (p2d[2][1] - p2d[0][1]) - (p2d[1][1] - p2d[0][1]) * (p2d[2][0] - p2d[0][0])
+                    if cross <= 0:
+                        col = tuple(min(255, int(c * sm)) for c in base_rgb) + (255,)
+                        faces_to_draw.append((sum(p[2] for p in p2d) / 4.0 + 2.0, [(s[0], s[1]) for s in p2d], col, (42, 48, 64, 255)))
 
         def bone_tf(parent_tf, orig, pos, rot, scale):
             o = np.array(orig)
@@ -976,19 +927,17 @@ def render_preview(blueprint: dict, texture: Image.Image, icon: Image.Image, out
             sc = np.array(scale)
             return lambda p: parent_tf(o + t + m @ (sc * (p - o)))
 
-        tf_root = bone_tf(lambda p: p, [0.0, 34.8, 0.0], pose['hat_root_pos'], [0.0, 0.0, 0.0], [1.0, 1.0, 1.0])
-        tf_cloud = bone_tf(tf_root, [0.0, 45.2, 0.0], pose['cloud_pos'], pose['cloud_rot'], pose['cloud_scale'])
-        tf_bolt = bone_tf(tf_root, [0.0, 39.8, 0.0], pose['bolt_pos'], pose['bolt_rot'], pose['bolt_scale'])
-        tf_fl = bone_tf(tf_bolt, [-1.9, 40.8, 0.0], [0.0, 0.0, 0.0], pose['fork_l_rot'], pose['fork_l_scale'])
-        tf_fr = bone_tf(tf_bolt, [1.9, 40.2, 0.0], [0.0, 0.0, 0.0], pose['fork_r_rot'], pose['fork_r_scale'])
-        tf_ring = bone_tf(tf_root, [0.0, 33.9, 0.0], [0.0, 0.0, 0.0], pose['ring_rot'], pose['ring_scale'])
-        tf_sparks = bone_tf(tf_root, [0.0, 34.1, 0.0], pose['sparks_pos'], [0.0, 0.0, 0.0], pose['sparks_scale'])
+        tf_root = bone_tf(lambda p: p, ROOT_ORIG, pose['hat_root_pos'], [0.0, 0.0, 0.0], [1.0, 1.0, 1.0])
+        tf_cloud = bone_tf(tf_root, CLOUD_ORIG, pose['cloud_pos'], pose['cloud_rot'], pose['cloud_scale'])
+        tf_bolt = bone_tf(tf_root, BOLT_ORIG, pose['bolt_pos'], pose['bolt_rot'], pose['bolt_scale'])
+        tf_fl = bone_tf(tf_bolt, FORK_L_ORIG, [0.0, 0.0, 0.0], pose['fork_l_rot'], pose['fork_l_scale'])
+        tf_fr = bone_tf(tf_bolt, FORK_R_ORIG, [0.0, 0.0, 0.0], pose['fork_r_rot'], pose['fork_r_scale'])
+        tf_ring = bone_tf(tf_root, RING_ORIG, [0.0, 0.0, 0.0], pose['ring_rot'], pose['ring_scale'])
+        tf_sparks = bone_tf(tf_root, SPARKS_ORIG, pose['sparks_pos'], [0.0, 0.0, 0.0], pose['sparks_scale'])
 
         arc_tfs = {
-            'arc_nw': bone_tf(tf_root, [-3.3, 35.8, -3.3], pose['arcs']['arc_nw']['pos'], pose['arcs']['arc_nw']['rot'], pose['arcs']['arc_nw']['scale']),
-            'arc_ne': bone_tf(tf_root, [3.3, 35.8, -3.3],  pose['arcs']['arc_ne']['pos'], pose['arcs']['arc_ne']['rot'], pose['arcs']['arc_ne']['scale']),
-            'arc_sw': bone_tf(tf_root, [-3.3, 35.8, 3.3],  pose['arcs']['arc_sw']['pos'], pose['arcs']['arc_sw']['rot'], pose['arcs']['arc_sw']['scale']),
-            'arc_se': bone_tf(tf_root, [3.3, 35.8, 3.3],   pose['arcs']['arc_se']['pos'], pose['arcs']['arc_se']['rot'], pose['arcs']['arc_se']['scale']),
+            aname: bone_tf(tf_root, ARC_ORIGINS[aname], pose['arcs'][aname]['pos'], pose['arcs'][aname]['rot'], pose['arcs'][aname]['scale'])
+            for aname in ('arc_nw', 'arc_ne', 'arc_sw', 'arc_se')
         }
 
         def add_cube(cname, tf_fn):
@@ -1002,13 +951,14 @@ def render_preview(blueprint: dict, texture: Image.Image, icon: Image.Image, out
             wcs = [tf_fn(c) for c in cs]
             if np.linalg.norm(wcs[6] - wcs[0]) < 0.04:
                 return
+            is_cloud = cname.startswith('cloud_')
             quads = [
-                ('north', (2, 1, 0, 3), 1.00),
-                ('south', (7, 4, 5, 6), 0.98),
-                ('east',  (6, 5, 1, 2), 0.95),
-                ('west',  (3, 0, 4, 7), 0.95),
-                ('up',    (7, 6, 2, 3), 1.02),
-                ('down',  (0, 1, 5, 4), 0.92),
+                ('north', (2, 1, 0, 3), 0.96 if is_cloud else 1.00),
+                ('south', (7, 4, 5, 6), 0.94 if is_cloud else 0.99),
+                ('east',  (6, 5, 1, 2), 0.91 if is_cloud else 0.97),
+                ('west',  (3, 0, 4, 7), 0.91 if is_cloud else 0.97),
+                ('up',    (7, 6, 2, 3), 1.03 if is_cloud else 1.02),
+                ('down',  (0, 1, 5, 4), 0.89 if is_cloud else 0.96),
             ]
             for fname, idxs, sm in quads:
                 pts3 = [wcs[k] for k in idxs]
@@ -1021,10 +971,12 @@ def render_preview(blueprint: dict, texture: Image.Image, icon: Image.Image, out
                 tx = min(127, int(0.5 * (uv[0] + uv[2]) * 8))
                 ty = min(127, int(0.5 * (uv[1] + uv[3]) * 8))
                 rgba = tex_arr[ty, tx]
-                if rgba[3] < 24:
+                if rgba[3] < 16:
                     continue
-                col = tuple(min(255, int(c * sm)) for c in rgba[:3]) + (int(rgba[3]),)
-                faces_to_draw.append((z_avg, [(s[0], s[1]) for s in p2d], col, None))
+                alpha = int(rgba[3])
+                col = tuple(min(255, int(c * sm)) for c in rgba[:3]) + (alpha,)
+                outline = (210, 234, 252, 95) if alpha < 245 else None
+                faces_to_draw.append((z_avg, [(s[0], s[1]) for s in p2d], col, outline))
 
         for name in by_name:
             if name.startswith('cloud_'):
@@ -1046,13 +998,29 @@ def render_preview(blueprint: dict, texture: Image.Image, icon: Image.Image, out
 
         faces_to_draw.sort(key=lambda item: -item[0])
         for _, poly, fill_col, edge_col in faces_to_draw:
-            draw.polygon(poly, fill=fill_col, outline=edge_col)
+            layer = Image.new('RGBA', (panel_w, panel_h), (0, 0, 0, 0))
+            ldraw = ImageDraw.Draw(layer)
+            ldraw.polygon(poly, fill=fill_col, outline=edge_col)
+            panel.alpha_composite(layer)
 
-    # Panel 5: Zoomed 32x32 menu icon + 128x128 plasma atlas preview
+        canvas.alpha_composite(panel, (idx * panel_w, 0))
+
+    draw = ImageDraw.Draw(canvas)
+    for i in range(1, 5):
+        draw.line([(i * panel_w, 0), (i * panel_w, panel_h)], fill=(64, 74, 96, 255), width=1)
+
     ox4 = 4 * panel_w
-    draw.line([(ox4, 0), (ox4, panel_h)], fill=(40, 46, 72, 255), width=1)
     canvas.alpha_composite(icon.resize((128, 128), Image.NEAREST), (ox4 + 54, 18))
-    canvas.alpha_composite(texture.resize((112, 112), Image.NEAREST), (ox4 + 62, 168))
+    # Checkerboard behind atlas swatch so glass alpha translucency is clearly visible
+    sw_size = 112
+    checker = Image.new('RGBA', (sw_size, sw_size), (48, 56, 72, 255))
+    cdraw = ImageDraw.Draw(checker)
+    for cy in range(0, sw_size, 8):
+        for cx in range(0, sw_size, 8):
+            if ((cx // 8) + (cy // 8)) % 2 == 0:
+                cdraw.rectangle([cx, cy, cx + 7, cy + 7], fill=(82, 94, 116, 255))
+    checker.alpha_composite(texture.resize((sw_size, sw_size), Image.NEAREST))
+    canvas.alpha_composite(checker, (ox4 + 62, 168))
     canvas.save(out_path)
 
 
