@@ -51,11 +51,12 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 /**
- * Server-side 3-section accessories menu & unified ModelEngine controller (v3.14.0):
+ * Server-side 3-section accessories menu & unified ModelEngine controller (v3.15.0):
  * <ul>
  *   <li><b>Спина</b>: Ангельские крылья ({@code angel_wings}) и Щупальца Канэки ({@code elytrix_kaneki_tentacles})</li>
  *   <li><b>Шапки</b>: Божественный нимб ({@code angel_halo})</li>
- *   <li><b>Питомцы</b>: Мини-Роузи ({@code elytrix_mini_me}), Милый котёнок ({@code elytrix_cute_kitten}) и Сколопендра Гуля ({@code elytrix_centipede})</li>
+ *   <li><b>Питомцы</b>: Мини-Роузи ({@code elytrix_mini_me}), Милый котёнок ({@code elytrix_cute_kitten}),
+ *       Меллстрой ({@code elytrix_mellstroy}, периодически произносит смешные коронные фразы) и Сколопендра Гуля ({@code elytrix_centipede})</li>
  * </ul>
  */
 public final class AccessoryController implements CommandExecutor, Listener {
@@ -68,10 +69,12 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final String PET_CHOICE = PET_CENTIPEDE;
     static final String PET_MINI_ME = "mini_me";
     static final String PET_KITTEN = "kitten";
+    static final String PET_MELLSTROY = "mellstroy";
 
     static final String CENTIPEDE_BLUEPRINT = "elytrix_centipede";
     static final String MINI_ME_BLUEPRINT = "elytrix_mini_me";
     static final String KITTEN_BLUEPRINT = "elytrix_cute_kitten";
+    static final String MELLSTROY_BLUEPRINT = "elytrix_mellstroy";
     static final String KANEKI_BLUEPRINT = "elytrix_kaneki_tentacles";
 
     static final String IDLE_ANIM = "idle";
@@ -82,11 +85,25 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final long RE_PAIR_TICKS = 40L;
     static final int WARMUP_SYNC_TICKS = 40;
     static final double TELEPORT_JUMP_DIST_SQ = 24.0D * 24.0D;
+    static final long QUOTE_MIN_DELAY_TICKS = 600L; // 30s
+    static final long QUOTE_MAX_DELAY_TICKS = 1000L; // 50s
+    static final long SPEECH_BUBBLE_TICKS = 75L; // 3.75s
+
+    static final String[] MELLSTROY_QUOTES = {
+        "Да-да, нет-нет — да будет свет!",
+        "Ам-ам-ам! Бэм-бэм-бэм!",
+        "Что за бизнес, боров?!",
+        "Ну шо ты, голова? Летс гирит!",
+        "Да-да, нет-нет, нет-нет, да-да — да будет свет!",
+        "Боров на месте — заноси капусту!",
+        "Мама, вызывай такси!",
+        "Айм профешинал, айм профи!"
+    };
 
     static final String TITLE_HUB = "§fꈁꀀꈂꏡꈂꀁ§fꈃꏠ";
     static final String TITLE_BACK = "§fꈁꀀꈂꏢꈂꀁ§fꈃꏤ";
     static final String TITLE_HATS = "§fꈁꀀꈂꏣꈂꀁ§fꈃꏥ";
-    static final String TITLE_PETS = "§fꈁꀀꈂꏧꈂꀁ§fꈃꏦ";
+    static final String TITLE_PETS = "§fꈁꀀꈂꏨꈂꀁ§fꈃꏦ";
 
     enum Section {
         HUB, BACK, HATS, PETS
@@ -124,6 +141,11 @@ public final class AccessoryController implements CommandExecutor, Listener {
         double lastZ;
         boolean hasLastPos;
         boolean loggedReady;
+        long nextQuoteTick;
+        int lastQuoteIndex = -1;
+        String lastSpokenQuote;
+        org.bukkit.entity.Entity speechBubble;
+        long bubbleExpireTick;
 
         GhoulRig(String blueprintId, Dummy<Player> dummy, ModeledEntity entity,
                  ActiveModel model, PivotOverride pivot, Location spawnLoc) {
@@ -132,6 +154,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
             this.entity = entity;
             this.model = model;
             this.pivot = pivot;
+            this.nextQuoteTick = petTicks + randomQuoteDelayTicks();
             recordLocation(spawnLoc);
         }
 
@@ -208,7 +231,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
 
     static String petChoice(Player player) {
         String choice = get(player, PET);
-        if (PET_MINI_ME.equals(choice) || PET_KITTEN.equals(choice) || PET_CENTIPEDE.equals(choice)) {
+        if (PET_MINI_ME.equals(choice) || PET_KITTEN.equals(choice)
+                || PET_MELLSTROY.equals(choice) || PET_CENTIPEDE.equals(choice)) {
             return choice;
         }
         return "";
@@ -222,6 +246,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         String choice = petChoice(player);
         if (PET_MINI_ME.equals(choice)) return MINI_ME_BLUEPRINT;
         if (PET_KITTEN.equals(choice)) return KITTEN_BLUEPRINT;
+        if (PET_MELLSTROY.equals(choice)) return MELLSTROY_BLUEPRINT;
         if (PET_CENTIPEDE.equals(choice)) return CENTIPEDE_BLUEPRINT;
         return null;
     }
@@ -264,6 +289,10 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return KITTEN_BLUEPRINT.equals(desiredPetBlueprint(player));
     }
 
+    public static boolean mellstroySelected(Player player) {
+        return MELLSTROY_BLUEPRINT.equals(desiredPetBlueprint(player));
+    }
+
     static boolean wearingKaneki(Player player) {
         GhoulRig rig = KAGUNES.get(player.getUniqueId());
         return rig != null && KANEKI_BLUEPRINT.equals(rig.blueprintId)
@@ -288,6 +317,12 @@ public final class AccessoryController implements CommandExecutor, Listener {
             && !rig.model.isDestroyed() && !rig.entity.isDestroyed();
     }
 
+    static boolean wearingMellstroy(Player player) {
+        GhoulRig rig = PETS.get(player.getUniqueId());
+        return rig != null && MELLSTROY_BLUEPRINT.equals(rig.blueprintId)
+            && !rig.model.isDestroyed() && !rig.entity.isDestroyed();
+    }
+
     static boolean centipedeAttached(Player player) {
         GhoulRig rig = PETS.get(player.getUniqueId());
         return rig != null && CENTIPEDE_BLUEPRINT.equals(rig.blueprintId) && rig.attached;
@@ -301,6 +336,11 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static boolean kittenAttached(Player player) {
         GhoulRig rig = PETS.get(player.getUniqueId());
         return rig != null && KITTEN_BLUEPRINT.equals(rig.blueprintId) && rig.attached;
+    }
+
+    static boolean mellstroyAttached(Player player) {
+        GhoulRig rig = PETS.get(player.getUniqueId());
+        return rig != null && MELLSTROY_BLUEPRINT.equals(rig.blueprintId) && rig.attached;
     }
 
     static boolean kanekiAttached(Player player) {
@@ -327,6 +367,25 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (rig == null || !KITTEN_BLUEPRINT.equals(rig.blueprintId) || rig.model.isDestroyed()) return false;
         AnimationHandler handler = rig.model.getAnimationHandler();
         return handler != null && handler.isPlayingAnimation(IDLE_ANIM);
+    }
+
+    static boolean mellstroyAnimating(Player player) {
+        GhoulRig rig = PETS.get(player.getUniqueId());
+        if (rig == null || !MELLSTROY_BLUEPRINT.equals(rig.blueprintId) || rig.model.isDestroyed()) return false;
+        AnimationHandler handler = rig.model.getAnimationHandler();
+        return handler != null && handler.isPlayingAnimation(IDLE_ANIM);
+    }
+
+    static String mellstroyLastQuote(Player player) {
+        GhoulRig rig = PETS.get(player.getUniqueId());
+        return rig != null && MELLSTROY_BLUEPRINT.equals(rig.blueprintId) ? rig.lastSpokenQuote : null;
+    }
+
+    static void forceNextQuoteDue(Player player) {
+        GhoulRig rig = PETS.get(player.getUniqueId());
+        if (rig != null && MELLSTROY_BLUEPRINT.equals(rig.blueprintId)) {
+            rig.nextQuoteTick = petTicks;
+        }
     }
 
     static boolean kanekiAnimating(Player player) {
@@ -622,11 +681,148 @@ public final class AccessoryController implements CommandExecutor, Listener {
                 rig.pairedAt = petTicks;
             }
             ensurePivotMounted(wearer, rig);
-            syncRigTransform(wearer, rig, tracker.getBodyYaw());
+            float bodyYaw = tracker.getBodyYaw();
+            syncRigTransform(wearer, rig, bodyYaw);
             ensureLivingAnimation(rig, tracker.getHorizSpeedBlocksPerTick());
+            if (MELLSTROY_BLUEPRINT.equals(rig.blueprintId)) {
+                tickMellstroySpeech(wearer, rig, bodyYaw);
+            }
             logRigReady(rig);
         } catch (Throwable failure) {
             reportOnce("тик аксессуара", failure);
+        }
+    }
+
+    static long randomQuoteDelayTicks() {
+        return java.util.concurrent.ThreadLocalRandom.current()
+            .nextLong(QUOTE_MIN_DELAY_TICKS, QUOTE_MAX_DELAY_TICKS + 1L);
+    }
+
+    private static int nextRandomQuoteIndex(int previousIndex) {
+        int n = MELLSTROY_QUOTES.length;
+        if (n <= 1) return 0;
+        int pick = java.util.concurrent.ThreadLocalRandom.current().nextInt(n - 1);
+        if (previousIndex >= 0 && pick >= previousIndex) pick++;
+        return pick;
+    }
+
+    private static Location computeBubbleLocation(Location base, float bodyYaw) {
+        if (base == null) return null;
+        double rad = Math.toRadians(bodyYaw);
+        double sin = Math.sin(rad);
+        double cos = Math.cos(rad);
+        // Left shoulder (+0.55m left, +0.03m forward) and +2.38m up (right above Mellstroy's cap)
+        double left = 0.55D;
+        double fwd = 0.03D;
+        double dx = left * cos - fwd * sin;
+        double dz = left * sin + fwd * cos;
+        return new Location(base.getWorld(), base.getX() + dx, base.getY() + 2.38D, base.getZ() + dz, 0.0F, 0.0F);
+    }
+
+    private static void destroySpeechBubble(GhoulRig rig) {
+        if (rig == null || rig.speechBubble == null) return;
+        org.bukkit.entity.Entity bubble = rig.speechBubble;
+        rig.speechBubble = null;
+        rig.bubbleExpireTick = 0L;
+        try {
+            java.lang.reflect.Method remove = bubble.getClass().getMethod("remove");
+            remove.invoke(bubble);
+        } catch (Throwable ignored) {
+        }
+    }
+
+    private static void teleportSpeechBubble(org.bukkit.entity.Entity bubble, Location target) {
+        if (bubble == null || target == null) return;
+        try {
+            java.lang.reflect.Method teleport = bubble.getClass().getMethod("teleport", Location.class);
+            teleport.invoke(bubble, target);
+        } catch (Throwable ignored) {
+        }
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private static void spawnOrUpdateSpeechBubble(Player wearer, GhoulRig rig, float bodyYaw, String quote) {
+        try {
+            Location bubbleLoc = computeBubbleLocation(wearer.getLocation(), bodyYaw);
+            World world = bubbleLoc == null ? null : bubbleLoc.getWorld();
+            if (world == null) return;
+            Class<?> textDisplayClass = Class.forName("org.bukkit.entity.TextDisplay");
+            String text = "§x§F§8§B§E§F§B§lМеллстрой:\n§f" + quote;
+
+            if (rig.speechBubble != null && textDisplayClass.isInstance(rig.speechBubble)) {
+                java.lang.reflect.Method isValid = rig.speechBubble.getClass().getMethod("isValid");
+                if (Boolean.TRUE.equals(isValid.invoke(rig.speechBubble))) {
+                    textDisplayClass.getMethod("setText", String.class).invoke(rig.speechBubble, text);
+                    teleportSpeechBubble(rig.speechBubble, bubbleLoc);
+                    rig.bubbleExpireTick = petTicks + SPEECH_BUBBLE_TICKS;
+                    return;
+                }
+                destroySpeechBubble(rig);
+            }
+
+            java.lang.reflect.Method spawn = world.getClass().getMethod("spawn", Location.class, Class.class);
+            Object spawned = spawn.invoke(world, bubbleLoc, textDisplayClass);
+            if (!(spawned instanceof org.bukkit.entity.Entity entity)) return;
+
+            entity.getClass().getMethod("setPersistent", boolean.class).invoke(entity, Boolean.FALSE);
+            textDisplayClass.getMethod("setText", String.class).invoke(entity, text);
+            textDisplayClass.getMethod("setShadowed", boolean.class).invoke(entity, Boolean.TRUE);
+            textDisplayClass.getMethod("setSeeThrough", boolean.class).invoke(entity, Boolean.FALSE);
+            try {
+                textDisplayClass.getMethod("setLineWidth", int.class).invoke(entity, Integer.valueOf(185));
+            } catch (Throwable ignored) {
+            }
+            try {
+                Class<?> displayClass = Class.forName("org.bukkit.entity.Display");
+                Class<? extends Enum> billboardEnum = (Class<? extends Enum>) Class.forName("org.bukkit.entity.Display$Billboard");
+                Object center = Enum.valueOf(billboardEnum, "CENTER");
+                displayClass.getMethod("setBillboard", billboardEnum).invoke(entity, center);
+                displayClass.getMethod("setTeleportDuration", int.class).invoke(entity, Integer.valueOf(2));
+                displayClass.getMethod("setViewRange", float.class).invoke(entity, Float.valueOf(0.55F));
+            } catch (Throwable ignored) {
+            }
+            rig.speechBubble = entity;
+            rig.bubbleExpireTick = petTicks + SPEECH_BUBBLE_TICKS;
+        } catch (Throwable ignored) {
+        }
+    }
+
+    private static void playMellstroyBlip(Player wearer) {
+        try {
+            Location loc = wearer.getLocation();
+            if (loc == null) return;
+            java.lang.reflect.Method playSound = wearer.getClass()
+                .getMethod("playSound", Location.class, String.class, float.class, float.class);
+            float pitch = 1.18F + java.util.concurrent.ThreadLocalRandom.current().nextFloat() * 0.14F;
+            playSound.invoke(wearer, loc, "minecraft:entity.villager.yes", Float.valueOf(0.55F), Float.valueOf(pitch));
+        } catch (Throwable ignored) {
+        }
+    }
+
+    private static void triggerMellstroySpeech(Player wearer, GhoulRig rig, float bodyYaw, int forcedIndex) {
+        if (wearer == null || rig == null || !MELLSTROY_BLUEPRINT.equals(rig.blueprintId)) return;
+        int idx = (forcedIndex >= 0 && forcedIndex < MELLSTROY_QUOTES.length)
+            ? forcedIndex
+            : nextRandomQuoteIndex(rig.lastQuoteIndex);
+        String quote = MELLSTROY_QUOTES[idx];
+        rig.lastQuoteIndex = idx;
+        rig.lastSpokenQuote = quote;
+        rig.nextQuoteTick = petTicks + randomQuoteDelayTicks();
+        wearer.sendMessage("§x§F§8§B§E§F§B§lМеллстрой §8» §f" + quote);
+        playMellstroyBlip(wearer);
+        spawnOrUpdateSpeechBubble(wearer, rig, bodyYaw, quote);
+    }
+
+    private static void tickMellstroySpeech(Player wearer, GhoulRig rig, float bodyYaw) {
+        if (rig.speechBubble != null) {
+            if (petTicks >= rig.bubbleExpireTick) {
+                destroySpeechBubble(rig);
+            } else {
+                teleportSpeechBubble(rig.speechBubble, computeBubbleLocation(wearer.getLocation(), bodyYaw));
+            }
+        }
+        if (petTicks >= rig.nextQuoteTick) {
+            triggerMellstroySpeech(wearer, rig, bodyYaw, -1);
         }
     }
 
@@ -640,7 +836,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
                 ? "танцующая Мини-Роузи у плеча"
                 : KITTEN_BLUEPRINT.equals(rig.blueprintId)
                     ? "милый котёнок на плече"
-                    : "сколопендра (по всему телу)";
+                    : MELLSTROY_BLUEPRINT.equals(rig.blueprintId)
+                        ? "Меллстрой на плече (с коронными фразами)"
+                        : "сколопендра (по всему телу)";
         host.getLogger().info("[Аксессуары] " + label + ": живая анимация '" + IDLE_ANIM
             + "', привязка к PivotOverride активна");
     }
@@ -751,6 +949,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
                                   java.util.Map<java.util.UUID, GhoulRig> store) {
         store.remove(playerUuid);
         if (rig == null) return;
+        destroySpeechBubble(rig);
         detachPivotFromPlayer(rig);
         try {
             if (!rig.entity.isDestroyed()) rig.entity.removeModel(rig.blueprintId);
@@ -799,7 +998,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
         modelsLogged = true;
         StringBuilder missing = new StringBuilder();
         for (String id : new String[] {"elytrix_angel_wings", "elytrix_angel_halo",
-                                       KANEKI_BLUEPRINT, CENTIPEDE_BLUEPRINT, MINI_ME_BLUEPRINT, KITTEN_BLUEPRINT,
+                                       KANEKI_BLUEPRINT, CENTIPEDE_BLUEPRINT, MINI_ME_BLUEPRINT,
+                                       KITTEN_BLUEPRINT, MELLSTROY_BLUEPRINT,
                                        "elytrix_priora_black", "elytrix_priora_white", "elytrix_priora_pink"}) {
             if (resolveBlueprint(id) == null && !id.startsWith("elytrix_priora_")) {
                 if (missing.length() > 0) missing.append(", ");
@@ -808,7 +1008,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
         try {
             if (missing.length() == 0) {
-                host.getLogger().info("[Аксессуары] ModelEngine загрузил все модели: крылья, нимб, кагуне Канэки, сколопендра, Мини-Роузи, котёнок");
+                host.getLogger().info("[Аксессуары] ModelEngine загрузил все модели: крылья, нимб, кагуне Канэки, сколопендра, Мини-Роузи, котёнок, Меллстрой");
             } else {
                 host.getLogger().warning("[Аксессуары] ModelEngine не загрузил: " + missing
                     + " — проверь plugins/ModelEngine/blueprints и лог ModelEngine");
@@ -854,7 +1054,12 @@ public final class AccessoryController implements CommandExecutor, Listener {
         PlayerBodyTracker tracker = trackerFor(player);
         tracker.stepFromPacket(player, to);
         float yaw = tracker.getBodyYaw();
-        if (pet != null) syncRigTransform(player, pet, yaw);
+        if (pet != null) {
+            syncRigTransform(player, pet, yaw);
+            if (pet.speechBubble != null) {
+                teleportSpeechBubble(pet.speechBubble, computeBubbleLocation(to, yaw));
+            }
+        }
         if (kagune != null) syncRigTransform(player, kagune, yaw);
     }
 
@@ -957,6 +1162,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         String pet = petChoice(player);
         if (PET_MINI_ME.equals(pet)) return "§dМини-Роузи";
         if (PET_KITTEN.equals(pet)) return "§dМилый котёнок";
+        if (PET_MELLSTROY.equals(pet)) return "§dМеллстрой";
         if (PET_CENTIPEDE.equals(pet)) return "§dСколопендра Гуля";
         return "§8Не выбрано";
     }
@@ -974,7 +1180,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
                 "§7Надето: " + activeHatLabel(player, allowed))));
         menu.setItem(14, item(Material.WHITE_DYE, "§x§F§A§D§8§F§C§lПитомцы", "mini_me_icon", null,
             lore(current == Section.PETS ? openHint : switchHint,
-                "§7Мини-Роузи, милый котёнок и спутники",
+                "§7Мини-Роузи, Меллстрой, котёнок и спутники",
                 "§7Надето: " + activePetLabel(player, allowed))));
     }
 
@@ -1027,7 +1233,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
                     "")));
             menu.setItem(24, item(Material.WHITE_DYE, "§x§F§A§D§8§F§C§lПитомцы", "mini_me_icon", null,
                 lore(openSectionHint,
-                    "§7Мини-Роузи, милый котёнок и спутники",
+                    "§7Мини-Роузи, Меллстрой, котёнок и спутники",
                     "§7Надето: " + activePetLabel(player, allowed),
                     "")));
             placeBackAndClear(menu, false);
@@ -1055,14 +1261,18 @@ public final class AccessoryController implements CommandExecutor, Listener {
             String pet = petChoice(player);
             boolean miniMe = allowed && PET_MINI_ME.equals(pet);
             boolean kitten = allowed && PET_KITTEN.equals(pet);
+            boolean mellstroy = allowed && PET_MELLSTROY.equals(pet);
             boolean bug = allowed && PET_CENTIPEDE.equals(pet);
-            menu.setItem(29, item(Material.WHITE_DYE, "§x§F§A§D§8§F§C§lМини-Роузи", "mini_me_icon", null,
+            menu.setItem(28, item(Material.WHITE_DYE, "§x§F§A§D§8§F§C§lМини-Роузи", "mini_me_icon", null,
                 miniMe ? lore(chosen, "§7Маленькая копия Роузи возле плеча", "§7Зажигательно танцует рядом с тобой", "§7Нажми ещё раз — снять")
                        : lore(hint, "§7Маленькая копия Роузи возле плеча", "§7Зажигательно танцует рядом с тобой")));
-            menu.setItem(31, item(Material.PINK_DYE, "§x§F§A§D§8§F§C§lМилый котёнок", "kitten_icon", null,
+            menu.setItem(30, item(Material.PINK_DYE, "§x§F§A§D§8§F§C§lМилый котёнок", "kitten_icon", null,
                 kitten ? lore(chosen, "§7Пушистый котёнок сидит прямо на плече", "§7Наклоняет головку и машет лапкой", "§7Нажми ещё раз — снять")
                        : lore(hint, "§7Пушистый котёнок сидит прямо на плече", "§7Наклоняет головку и машет лапкой")));
-            menu.setItem(33, item(Material.SPIDER_EYE, "§x§F§A§D§8§F§C§lСколопендра Гуля", "centipede_icon", null,
+            menu.setItem(32, item(Material.GOLD_INGOT, "§x§F§A§D§8§F§C§lМеллстрой", "mellstroy_icon", null,
+                mellstroy ? lore(chosen, "§7Мини-Меллстрой в кепке Rolex и цепи", "§7Танцует и выдаёт коронные фразы!", "§7«Да-да, нет-нет — да будет свет!»", "§7Нажми ещё раз — снять")
+                          : lore(hint, "§7Мини-Меллстрой в кепке Rolex и цепи", "§7Танцует и выдаёт коронные фразы!", "§7«Да-да, нет-нет — да будет свет!»")));
+            menu.setItem(34, item(Material.SPIDER_EYE, "§x§F§A§D§8§F§C§lСколопендра Гуля", "centipede_icon", null,
                 bug ? lore(chosen, "§7Живая сколопендра ползает по всему телу", "§7Грудь, плечи, шея, спина, руки и бёдра", "§7Нажми ещё раз — снять")
                     : lore(hint, "§7Живая сколопендра ползает по всему телу", "§7Грудь, плечи, шея, спина, руки и бёдра")));
             placeBackAndClear(menu, true);
@@ -1120,7 +1330,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         boolean isActionSlot = (slot == 49)
             || (current == Section.BACK && (slot == 30 || slot == 32))
             || (current == Section.HATS && slot == 31)
-            || (current == Section.PETS && (slot == 29 || slot == 31 || slot == 33));
+            || (current == Section.PETS && (slot == 28 || slot == 30 || slot == 32 || slot == 34));
         if (!isActionSlot) return;
 
         if (!allowed(player)) {
@@ -1143,9 +1353,10 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (current == Section.BACK && slot == 30) requiredBlueprint = "elytrix_angel_wings";
         else if (current == Section.BACK && slot == 32) requiredBlueprint = KANEKI_BLUEPRINT;
         else if (current == Section.HATS && slot == 31) requiredBlueprint = "elytrix_angel_halo";
-        else if (current == Section.PETS && slot == 29) requiredBlueprint = MINI_ME_BLUEPRINT;
-        else if (current == Section.PETS && slot == 31) requiredBlueprint = KITTEN_BLUEPRINT;
-        else if (current == Section.PETS && slot == 33) requiredBlueprint = CENTIPEDE_BLUEPRINT;
+        else if (current == Section.PETS && slot == 28) requiredBlueprint = MINI_ME_BLUEPRINT;
+        else if (current == Section.PETS && slot == 30) requiredBlueprint = KITTEN_BLUEPRINT;
+        else if (current == Section.PETS && slot == 32) requiredBlueprint = MELLSTROY_BLUEPRINT;
+        else if (current == Section.PETS && slot == 34) requiredBlueprint = CENTIPEDE_BLUEPRINT;
 
         if (requiredBlueprint != null && resolveBlueprint(requiredBlueprint) == null) {
             player.sendMessage("§cМодель ещё не загружена. Обратитесь к администрации.");
@@ -1158,17 +1369,22 @@ public final class AccessoryController implements CommandExecutor, Listener {
             toggleKaneki(player);
         } else if (current == Section.HATS && slot == 31) {
             toggleHead(player, "halo", "Нимб", "надет", "снят");
-        } else if (current == Section.PETS && slot == 29) {
+        } else if (current == Section.PETS && slot == 28) {
             togglePetChoice(player, PET_MINI_ME, MINI_ME_BLUEPRINT,
                 "Мини-Роузи",
                 "§dМини-Роузи вызвана и танцует возле плеча!",
                 "§7Мини-Роузи убрана.");
-        } else if (current == Section.PETS && slot == 31) {
+        } else if (current == Section.PETS && slot == 30) {
             togglePetChoice(player, PET_KITTEN, KITTEN_BLUEPRINT,
                 "Милый котёнок",
                 "§dМилый котёнок уютно устроился на плече!",
                 "§7Милый котёнок убран.");
-        } else if (current == Section.PETS && slot == 33) {
+        } else if (current == Section.PETS && slot == 32) {
+            togglePetChoice(player, PET_MELLSTROY, MELLSTROY_BLUEPRINT,
+                "Меллстрой",
+                "§dМеллстрой выскочил на плечо и готов зажигать!",
+                "§7Меллстрой убран.");
+        } else if (current == Section.PETS && slot == 34) {
             togglePetChoice(player, PET_CENTIPEDE, CENTIPEDE_BLUEPRINT,
                 "Сколопендра",
                 "§dСколопендра Гуля выпущена и ползает по всему телу.",
@@ -1244,6 +1460,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
         boolean spawned = PET_MINI_ME.equals(choice) ? wearingMiniMe(player)
             : PET_KITTEN.equals(choice) ? wearingKitten(player)
+            : PET_MELLSTROY.equals(choice) ? wearingMellstroy(player)
             : wearingCentipede(player);
         if (!spawned) {
             set(player, PET, "");
@@ -1251,6 +1468,12 @@ public final class AccessoryController implements CommandExecutor, Listener {
             return;
         }
         player.sendMessage(equippedMsg);
+        if (PET_MELLSTROY.equals(choice)) {
+            GhoulRig rig = PETS.get(player.getUniqueId());
+            if (rig != null) {
+                triggerMellstroySpeech(player, rig, trackerFor(player).getBodyYaw(), 0);
+            }
+        }
     }
 
     private static void toggleHead(Player player, String choice, String name, String on, String off) {

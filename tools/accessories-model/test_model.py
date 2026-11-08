@@ -25,7 +25,8 @@ MODEL = 'elytrix_kaneki_tentacles'
 PET = 'elytrix_centipede'
 MINI_ME = 'elytrix_mini_me'
 KITTEN = 'elytrix_cute_kitten'
-MODELS = (MODEL, PET, MINI_ME, KITTEN)
+MELLSTROY = 'elytrix_mellstroy'
+MODELS = (MODEL, PET, MINI_ME, KITTEN, MELLSTROY)
 TITLE = 'assets/reallyworld/textures/gui/title/elytrix_accessories.png'
 FONT = 'assets/minecraft/font/default.json'
 GLYPH = 'ꏠ'
@@ -413,9 +414,9 @@ class PackTests(unittest.TestCase):
                                 for m in MODELS)
                          or name.startswith('assets/reallyworld/')
                          and any(ic in name for ic in (
-                             'kaneki_tentacles_icon', 'centipede_icon', 'mini_me_icon', 'kitten_icon',
+                             'kaneki_tentacles_icon', 'centipede_icon', 'mini_me_icon', 'kitten_icon', 'mellstroy_icon',
                              'content_acc_hub.png', 'content_acc_two.png', 'content_acc_one.png',
-                             'content_acc_three.png',
+                             'content_acc_three.png', 'content_acc_four.png',
                              'elytrix_acc_back.png', 'elytrix_acc_hats.png', 'elytrix_acc_pets.png',
                          ))}
             self.assertEqual(generated, expected)
@@ -521,7 +522,7 @@ class PackTests(unittest.TestCase):
     def test_menu_icon_exists(self):
         with zipfile.ZipFile(self.pack) as pack:
             names = set(pack.namelist())
-            for icon_id in ('kaneki_tentacles_icon', 'centipede_icon', 'mini_me_icon', 'kitten_icon'):
+            for icon_id in ('kaneki_tentacles_icon', 'centipede_icon', 'mini_me_icon', 'kitten_icon', 'mellstroy_icon'):
                 item_path = f'assets/reallyworld/items/{icon_id}.json'
                 model_path = f'assets/reallyworld/models/item/freak/{icon_id}.json'
                 tex_path = f'assets/reallyworld/textures/item/freak/{icon_id}.png'
@@ -556,6 +557,7 @@ class PackTests(unittest.TestCase):
                 ('ꏥ', 'reallyworld:gui/title/elytrix_acc_hats.png'),
                 ('ꏦ', 'reallyworld:gui/title/elytrix_acc_pets.png'),
                 ('ꏧ', 'reallyworld:gui/content/content_acc_three.png'),
+                ('ꏨ', 'reallyworld:gui/content/content_acc_four.png'),
             ):
                 matched = [p for p in providers if ch in p.get('chars', [])]
                 self.assertEqual(len(matched), 1, f'provider count for {ch!r}')
@@ -692,6 +694,60 @@ class CuteKittenBlueprintTest(unittest.TestCase):
         out = Path(tempfile.mkdtemp()) / 'assets'
         result = subprocess.run(
             ['sh', str(HERE / 'generate_assets.sh'), str(HERE / f'{KITTEN}.bbmodel'), str(out)],
+            capture_output=True, text=True, timeout=300, env=dict(os.environ, JAVA=java, ECJ=ecj))
+        output = result.stdout + result.stderr
+        self.assertEqual(result.returncode, 0, output)
+        self.assertNotIn('UnsupportedOperationException', output)
+
+
+class MellstroyBlueprintTest(unittest.TestCase):
+    """Verifies the procedural Mellstroy shoulder pet (`elytrix_mellstroy`)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.model = json.loads((HERE / f'{MELLSTROY}.bbmodel').read_text(encoding='utf-8'))
+
+    def test_blockbench_4_10_free_and_zero_cube_rotations(self):
+        self.assertEqual(self.model['meta'], {'format_version': '4.10', 'model_format': 'free', 'box_uv': False})
+        self.assertEqual(self.model['resolution'], {'width': 16, 'height': 16})
+        self.assertEqual(len(self.model['elements']), 12)
+        for cube in self.model['elements']:
+            self.assertEqual(cube['rotation'], [0.0, 0.0, 0.0], cube['name'])
+            self.assertTrue(all(a < b for a, b in zip(cube['from'], cube['to'])))
+            for face_name, face in cube['faces'].items():
+                self.assertEqual(face['texture'], 0)
+                self.assertTrue(all(0.0 <= v <= 16.0 for v in face['uv']), (cube['name'], face_name))
+        tex_meta = self.model['textures'][0]
+        self.assertEqual((tex_meta['uv_width'], tex_meta['uv_height']), (16, 16))
+        self.assertTrue(tex_meta['internal'])
+
+    def test_shoulder_placement_and_meme_dance_loop(self):
+        xs = [v for c in self.model['elements'] for v in (c['from'][0], c['to'][0])]
+        ys = [v for c in self.model['elements'] for v in (c['from'][1], c['to'][1])]
+        self.assertLess(max(xs), -5.8, 'clears player head & helmet')
+        self.assertGreater(min(xs), -12.2, 'stays beside outer shoulder')
+        self.assertGreaterEqual(min(ys), 23.5, 'starts at shoulder height')
+        self.assertLessEqual(max(ys), 35.5, 'clears central overhead halo')
+        clips = self.model['animations']
+        self.assertEqual(len(clips), 1)
+        clip = clips[0]
+        self.assertEqual(clip['name'], 'idle')
+        self.assertEqual(clip['loop'], 'loop')
+        self.assertEqual(len(clip['animators']), 8)
+        for anim in clip['animators'].values():
+            by_chan = {}
+            for kf in anim['keyframes']:
+                by_chan.setdefault(kf['channel'], []).append(kf)
+            for chan, kfs in by_chan.items():
+                self.assertEqual(kfs[0]['data_points'], kfs[-1]['data_points'], (anim['name'], chan))
+
+    def test_modelengine_itself_can_import_mellstroy_blueprint(self):
+        java, ecj = os.environ.get('JAVA'), os.environ.get('ECJ')
+        if not java or not ecj:
+            self.skipTest('set JAVA and ECJ to run the real ModelEngine parser')
+        out = Path(tempfile.mkdtemp()) / 'assets'
+        result = subprocess.run(
+            ['sh', str(HERE / 'generate_assets.sh'), str(HERE / f'{MELLSTROY}.bbmodel'), str(out)],
             capture_output=True, text=True, timeout=300, env=dict(os.environ, JAVA=java, ECJ=ecj))
         output = result.stdout + result.stderr
         self.assertEqual(result.returncode, 0, output)

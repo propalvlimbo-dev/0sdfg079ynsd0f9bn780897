@@ -41,7 +41,13 @@ from fpv_shaders import (
 # ``items/<model>/<bone>.json`` + ``models/<model>/<bone>.json`` + texture inside
 # the served pack is invisible in game, so all of them are validated and their
 # stale files are replaced.
-MODELS = ('elytrix_kaneki_tentacles', 'elytrix_centipede', 'elytrix_mini_me', 'elytrix_cute_kitten')
+MODELS = (
+    'elytrix_kaneki_tentacles',
+    'elytrix_centipede',
+    'elytrix_mini_me',
+    'elytrix_cute_kitten',
+    'elytrix_mellstroy',
+)
 GLYPH = 'ꏠ'
 FONT = 'assets/minecraft/font/default.json'
 TITLE = 'assets/reallyworld/textures/gui/title/elytrix_accessories.png'
