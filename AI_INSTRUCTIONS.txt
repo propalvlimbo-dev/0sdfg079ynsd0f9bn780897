@@ -385,6 +385,7 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
      * `Милый котёнок` (`kitten`) — `2500 ꐃ`
      * `Божественный нимб` (`halo`) — `3500 ꐃ`
      * `Грозовая молния` (`lightning`) — `4000 ꐃ`
+     * `Корона` (`crown`) — `4500 ꐃ`
      * `Сколопендра Гуля` (`centipede`) — `4500 ꐃ`
      * `Меллстрой` (`mellstroy`) — `5000 ꐃ`
      * `Ангельские крылья` (`wings`) — `6000 ꐃ`
@@ -392,15 +393,16 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
      Исходники и генераторы лежат в `tools/accessories-integration/` и `tools/accessories-model/` (подробности в `MODELS_PIPELINE.md`).
    - Исправлен лимит 12 моделей в `plugins/ModelEngine-4.1.0.jar` (`ModelGeneratorImpl.importModelsInternal`:
      `BIPUSH 12` -> `SIPUSH 8192`, `tools/accessories-integration/patch_modelengine.py`) + добавлена
-     авто-догрузка блюпринтов на лету `AccessoryController.resolveBlueprint(...)` в `ElytrixFreakModel v3.18.0`,
+     авто-догрузка блюпринтов на лету `AccessoryController.resolveBlueprint(...)` в `ElytrixFreakModel v3.19.0`,
      чтобы ни одна модель никогда не выдавала «Модель ещё не загружена».
    - Меню `/accessories` (`/аксессуары`) разбито на 3 раздела с нативными RP-оверлеями слотов (`ꏡ`, `ꏢ`, `ꏣ`, `ꏧ`, `ꏨ`)
      и пиксельными заголовками из `title_00.png` (`ꏤ` `СПИНА`, `ꏥ` `ШАПКИ`, `ꏦ` `ПИТОМЦЫ`), вкладками быстрого
      переключения (`12, 13, 14`) и кнопкой `Назад` (`ARROW CMD 10002`, слот `45`):
      * `Спина` (`ꏢ`, слоты `30, 32`): `Ангельские крылья` (`angel_wings`) и `Щупальца Канэки` (`elytrix_kaneki_tentacles`)
-     * `Шапки` (`ꏢ`, `content_acc_two.png`, слоты `30, 32`):
-       - `[30]` `Божественный нимб` (`angel_halo`, `3500 ꐃ`)
-       - `[32]` `Грозовая молния` (`elytrix_lightning_hat`, `reallyworld:lightning_hat_icon`, `4000 ꐃ` — грозовая туча + 3D-молния с анимацией удара и ударной волной!)
+     * `Шапки` (`ꏧ`, `content_acc_three.png`, слоты `29, 31, 33`):
+       - `[29]` `Божественный нимб` (`angel_halo`, `3500 ꐃ`)
+       - `[31]` `Корона` (`elytrix_royal_crown`, `reallyworld:crown_icon`, `4500 ꐃ` — золотая 3D-корона с рубинами, сапфирами, бархатным сводом и мягким переливом бликов, сидит чётко на голове!)
+       - `[33]` `Грозовая молния` (`elytrix_lightning_hat`, `reallyworld:lightning_hat_icon`, `4000 ꐃ` — грозовая туча + стеклянная 3D-молния с анимацией удара прямо над макушкой головы!)
      * `Питомцы` (`ꏨ`, `content_acc_four.png`, слоты `28, 30, 32, 34`):
        - `[28]` `Мини-Роузи` (`elytrix_mini_me` — танцующий возле правого плеча маленький белый скин с бирюзовым лицом `#5BFBFF`, `reallyworld:mini_me_icon`)
        - `[30]` `Милый котёнок` (`elytrix_cute_kitten` — пушистый белый котёнок `1.28x` на левом плече с голубыми глазками, розовыми ушками, ошейником с колокольчиком и анимацией наклона головы и махания лапкой, `reallyworld:kitten_icon`)
@@ -408,20 +410,28 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
        - `[34]` `Сколопендра Гуля` (`elytrix_centipede`, `reallyworld:centipede_icon`)
    - Реализовано скрытие надетых аксессуаров от 1-го лица при сохранении 100% видимости в `F5` и для всех
      остальных игроков (`tools/accessories-model/fpv_shaders.py`): маркерные `minecraft:constant` тинты
-     `-196867` (`RGB 252,254,253` -> отсечка `< 1.85m` для грозовой молнии, кагуне, сколопендры, Мини-Роузи, милого котёнка, Меллстроя и нимба) и `-197122`
+     `-196867` (`RGB 252,254,253` -> отсечка `< 1.85m` для короны, грозовой молнии, кагуне, сколопендры, Мини-Роузи, милого котёнка, Меллстроя и нимба) и `-197122`
      (`RGB 252,253,254` -> отсечка `< 2.85m` для крыльев) + GLSL fragment `discard` в `core/entity.{vsh,fsh}` и
      `core/rendertype_item_entity_translucent_cull.{vsh,fsh}` по всем версиям (`<= 1.21.1`, `1_21_2` для `1.21.2–1.21.5`,
      `1_21_6` для `1.21.6–1.21.8`, `1_21_9` `#version 330` + `PER_FACE_LIGHTING` для `1.21.9–1.21.11`) + `sodium.ignored_shaders`.
-   - Актуальные блюпринты в `plugins/ModelEngine/blueprints/` и RP (`SHA-1: 95c806ddf271b036fe9fd4a32634d4b5bc44dd4a`):
+   - ВАЖНАЯ КАЛИБРОВКА КООРДИНАТ ГОЛОВЫ (`PlayerRenderer` scale `0.9375` + `PivotOverride`):
+     в Minecraft модель игрока масштабируется в `PlayerRenderer` на `0.9375` (`15/16`), поэтому при `scale = 1.0` в `.bbmodel`:
+     * точный верх головы игрока = `Y = 30.00` (`32 × 0.9375`), шея/плечи = `Y = 22.50` (`24 × 0.9375`),
+     * точная полуширина голой головы = `X/Z = ±3.75` (`4 × 0.9375`), второй слой скина (шляпа) = `±4.22`.
+   - Актуальные блюпринты в `plugins/ModelEngine/blueprints/` и RP (`SHA-1: 0cf77a7a1d3c52d8a5b3b7fcb8b417911a3b165d`):
      * `elytrix_angel_halo.bbmodel` (нимб, 161 куб, `halo_ring` + `halo_aura`)
-     * `elytrix_lightning_hat.bbmodel` (шапка `Грозовая молния` v2, `tools/accessories-model/build_lightning_hat.py`:
+     * `elytrix_royal_crown.bbmodel` (шапка `Корона` v1, `tools/accessories-model/build_crown_hat.py`:
+       золотой обруч `Y = 28.55..30.98`, `±3.82..±4.38`, охватывающий лоб и виски строго вплотную к голове `Y = 30.00`
+       без зазора и без z-fighting со вторым слоем скина, тёмно-бордовый бархатный свод `velvet_cap_*`, 8 резных
+       золотых зубцов с жемчужинами `Y = 30.98..33.48`, гранёные рубины, сапфиры и бриллианты `crown_gems` и 4 мерцающие
+       искорки-блика `glint_n/e/s/w`; 63 куба с `rotation: [0,0,0]`, плавная 20-TPS анимация `'idle'` `3.6s`, иконка `crown_icon`)
+     * `elytrix_lightning_hat.bbmodel` (шапка `Грозовая молния` v3, `tools/accessories-model/build_lightning_hat.py`:
        объёмное кучево-грозовое облако `storm_cloud` в спокойных серо-синих тонах `#566478`..`#7689A3` с полностью чистым
        неокрашенным дном, полупрозрачная стеклянная 3D-молния `bolt_main` в стиле матового белого и ледяного витражного
        стекла Minecraft `alpha=122..192` с бликами, тонкие стеклянные ответвления `fork_left/right` и `arc_nw/ne/sw/se`,
-       стеклянное кольцо ударной волны `impact_ring` и брызги `impact_sparks`; расположена низко прямо над головой
-       `Y=32.34..42.6`, 56 кубов с `rotation: [0,0,0]` и `shade: false`, 10 рисуемых костей строго `< 1.85m` от глаз;
-       две 20-TPS анимации: бесшовный цикл `'idle'` `3.2s` с зарядом в облаке, ударом молнии, двойной вспышкой return-stroke
-       и расходящейся ударной волной + приоритетный супер-разряд `'strike'` `1.3s` `override: true`; иконка `lightning_hat_icon`)
+       стеклянное кольцо ударной волны `impact_ring` и брызги `impact_sparks`; опущена вплотную к макушке головы `Y = 30.00`
+       в диапазон `Y = 30.20..38.30`, 56 кубов с `rotation: [0,0,0]` и `shade: false`, 10 рисуемых костей строго `< 1.85m` от глаз;
+       две 20-TPS анимации: бесшовный цикл `'idle'` `3.2s` + супер-разряд `'strike'` `1.3s` `override: true`; иконка `lightning_hat_icon`)
      * `elytrix_angel_wings.bbmodel` (крылья, 9 кубов на крыло + 6 падающих перьев)
      * `elytrix_kaneki_tentacles.bbmodel` (каноничное Ринкаку Кагуне Канеки Кена из аниме «Токийский Гуль»:
        4 гибких хвоста из единого спинного мешка Какухо `root_knot`, 55 рисуемых костей, 171 куб с `rotation: [0,0,0]`,

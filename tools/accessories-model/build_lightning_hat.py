@@ -595,19 +595,20 @@ def build_animations() -> list[dict]:
     ]
 
 
-# Shared bone origins (lowered ~4.7 BB units vs v1 so the hat hugs right above the player's head Y=32.0!)
-ROOT_ORIG = [0.0, 32.4, 0.0]
-CLOUD_ORIG = [0.0, 39.8, 0.0]
-BOLT_ORIG = [0.0, 35.8, 0.0]
-FORK_L_ORIG = [-0.95, 36.4, 0.0]
-FORK_R_ORIG = [0.95, 36.0, 0.0]
-RING_ORIG = [0.0, 32.45, 0.0]
-SPARKS_ORIG = [0.0, 32.55, 0.0]
+# Exact Minecraft PlayerRenderer (0.9375 scale) head = X/Z [-3.75..3.75], Y [22.50..30.00]!
+# Lowered right down onto Y = 30.20..38.20 so impact_ring skims right above head top Y = 30.00!
+ROOT_ORIG = [0.0, 30.2, 0.0]
+CLOUD_ORIG = [0.0, 36.0, 0.0]
+BOLT_ORIG = [0.0, 32.8, 0.0]
+FORK_L_ORIG = [-0.90, 33.3, 0.0]
+FORK_R_ORIG = [0.90, 33.0, 0.0]
+RING_ORIG = [0.0, 30.32, 0.0]
+SPARKS_ORIG = [0.0, 30.42, 0.0]
 ARC_ORIGINS = {
-    'arc_nw': [-0.55, 37.2, -0.22],
-    'arc_ne': [0.55,  37.0, -0.22],
-    'arc_sw': [-0.55, 36.2,  0.22],
-    'arc_se': [0.55,  36.0,  0.22],
+    'arc_nw': [-0.50, 33.9, -0.20],
+    'arc_ne': [0.50,  33.7, -0.20],
+    'arc_sw': [-0.50, 33.1,  0.20],
+    'arc_se': [0.50,  32.9,  0.20],
 }
 
 
@@ -622,44 +623,44 @@ def build_blueprint() -> tuple[dict, Image.Image]:
         elements.append(c)
         return c['uuid']
 
-    # 1. Organic Asymmetric Fluffy Cumulus Cloud (`storm_cloud`: Y = 38.6 .. 42.5, cozy & low above head!)
+    # 1. Organic Asymmetric Fluffy Cumulus Cloud (`storm_cloud`: Y = 34.7 .. 38.3, right above head!)
     #    IMPORTANT: `down` uses `UV_CLOUD_BASE` (exact same calm slate-grey as sides — ZERO bottom coloring/veins/nodes!).
     cloud_base_faces = _faces(UV_CLOUD_BASE, up=UV_CLOUD_CROWN, down=UV_CLOUD_BASE)
     cloud_crown_faces = _faces(UV_CLOUD_CROWN, down=UV_CLOUD_BASE)
     cloud_uuids = [
-        # Flush, clean flat-bottomed cumulus base (Y = 38.6 .. 40.5, completely unpainted underside!)
-        add(_cube('cloud_main',    _pt(-3.4, 38.6, -2.5), _pt(3.4,  40.5, 2.5),  CLOUD_ORIG, cloud_base_faces)),
-        add(_cube('cloud_left',    _pt(-4.6, 38.7, -1.8), _pt(-3.4, 40.2, 1.9),  CLOUD_ORIG, cloud_base_faces)),
-        add(_cube('cloud_right',   _pt(3.4,  38.7, -1.9), _pt(4.5,  40.3, 1.8),  CLOUD_ORIG, cloud_base_faces)),
-        add(_cube('cloud_front',   _pt(-2.6, 38.7, -3.3), _pt(2.4,  40.1, -2.5), CLOUD_ORIG, cloud_base_faces)),
-        add(_cube('cloud_back',    _pt(-2.4, 38.7,  2.5), _pt(2.7,  40.2, 3.3),  CLOUD_ORIG, cloud_base_faces)),
+        # Flush, clean flat-bottomed cumulus base (Y = 34.7 .. 36.4, completely unpainted underside!)
+        add(_cube('cloud_main',    _pt(-3.3, 34.7, -2.4), _pt(3.3,  36.4, 2.4),  CLOUD_ORIG, cloud_base_faces)),
+        add(_cube('cloud_left',    _pt(-4.4, 34.8, -1.7), _pt(-3.3, 36.1, 1.8),  CLOUD_ORIG, cloud_base_faces)),
+        add(_cube('cloud_right',   _pt(3.3,  34.8, -1.8), _pt(4.3,  36.2, 1.7),  CLOUD_ORIG, cloud_base_faces)),
+        add(_cube('cloud_front',   _pt(-2.5, 34.8, -3.2), _pt(2.3,  36.0, -2.4), CLOUD_ORIG, cloud_base_faces)),
+        add(_cube('cloud_back',    _pt(-2.3, 34.8,  2.4), _pt(2.6,  36.1, 3.2),  CLOUD_ORIG, cloud_base_faces)),
         # Organic asymmetric upper cumulus billows (like image-10.png — NOT a symmetric stepped pyramid!)
-        add(_cube('cloud_dome_r',  _pt(-0.8, 40.5, -1.9), _pt(2.6,  42.0, 1.9),  CLOUD_ORIG, cloud_crown_faces)),
-        add(_cube('cloud_top_r',   _pt(-0.2, 42.0, -1.3), _pt(2.0,  42.6, 1.3),  CLOUD_ORIG, cloud_crown_faces)),
-        add(_cube('cloud_dome_l',  _pt(-3.3, 40.5, -1.6), _pt(-0.8, 41.5, 1.5),  CLOUD_ORIG, cloud_crown_faces)),
-        add(_cube('cloud_puff_f',  _pt(-1.9, 40.5, -2.5), _pt(1.2,  41.3, -1.9), CLOUD_ORIG, cloud_crown_faces)),
+        add(_cube('cloud_dome_r',  _pt(-0.8, 36.4, -1.8), _pt(2.5,  37.7, 1.8),  CLOUD_ORIG, cloud_crown_faces)),
+        add(_cube('cloud_top_r',   _pt(-0.2, 37.7, -1.2), _pt(1.9,  38.3, 1.2),  CLOUD_ORIG, cloud_crown_faces)),
+        add(_cube('cloud_dome_l',  _pt(-3.1, 36.4, -1.5), _pt(-0.8, 37.3, 1.4),  CLOUD_ORIG, cloud_crown_faces)),
+        add(_cube('cloud_puff_f',  _pt(-1.8, 36.4, -2.4), _pt(1.1,  37.1, -1.8), CLOUD_ORIG, cloud_crown_faces)),
     ]
 
-    # 2. Single-layer Translucent Glass Lightning Bolt (`bolt_main`: Y = 32.4 .. 38.7)
+    # 2. Single-layer Translucent Glass Lightning Bolt (`bolt_main`: Y = 30.22 .. 34.80)
     #    Non-overlapping Y spans (`y0..y1` abut flush with 0 internal overlap!) so translucent glass
     #    renders crystal-clean like genuine Minecraft stained glass!
     bolt_uuids: list[str] = []
     bolt_segments = [
         # (tag, cx, y0, y1, half_w, half_z, glass_uv)
-        # Upper glass shaft emerging from cloud base (Y = 38.7 -> 35.9)
-        ('u1', -0.75, 38.0, 38.7, 0.46, 0.36, UV_GLASS_CORE),
-        ('u2', -0.20, 37.3, 38.0, 0.44, 0.35, UV_GLASS_CORE),
-        ('u3',  0.35, 36.6, 37.3, 0.42, 0.34, UV_GLASS_ICE),
-        ('u4',  0.85, 35.9, 36.6, 0.40, 0.33, UV_GLASS_CORE),
-        # Crisp horizontal glass zig-zag jog (+0.95 -> -0.95 at Y = 35.35 .. 35.9)
-        ('m1', -0.05, 35.35, 35.9, 1.28, 0.34, UV_GLASS_CORE),
-        # Lower glass spear plunging onto crown (Y = 35.35 -> 32.4)
-        ('l1', -0.85, 34.75, 35.35, 0.40, 0.32, UV_GLASS_ICE),
-        ('l2', -0.60, 34.15, 34.75, 0.35, 0.29, UV_GLASS_CORE),
-        ('l3', -0.36, 33.60, 34.15, 0.30, 0.26, UV_GLASS_CORE),
-        ('l4', -0.16, 33.10, 33.60, 0.24, 0.22, UV_GLASS_GLINT),
-        ('l5', -0.05, 32.70, 33.10, 0.19, 0.18, UV_GLASS_GLINT),
-        ('l6',  0.00, 32.38, 32.70, 0.13, 0.13, UV_GLASS_GLINT),
+        # Upper glass shaft emerging from cloud base (Y = 34.80 -> 32.75)
+        ('u1', -0.68, 34.25, 34.80, 0.42, 0.33, UV_GLASS_CORE),
+        ('u2', -0.18, 33.75, 34.25, 0.40, 0.32, UV_GLASS_CORE),
+        ('u3',  0.32, 33.25, 33.75, 0.38, 0.31, UV_GLASS_ICE),
+        ('u4',  0.78, 32.75, 33.25, 0.36, 0.30, UV_GLASS_CORE),
+        # Crisp horizontal glass zig-zag jog (+0.85 -> -0.85 at Y = 32.30 .. 32.75)
+        ('m1', -0.04, 32.30, 32.75, 1.18, 0.31, UV_GLASS_CORE),
+        # Lower glass spear plunging onto crown (Y = 32.30 -> 30.22, skimming head top Y = 30.00!)
+        ('l1', -0.76, 31.85, 32.30, 0.36, 0.29, UV_GLASS_ICE),
+        ('l2', -0.52, 31.42, 31.85, 0.32, 0.26, UV_GLASS_CORE),
+        ('l3', -0.32, 31.02, 31.42, 0.27, 0.23, UV_GLASS_CORE),
+        ('l4', -0.14, 30.68, 31.02, 0.22, 0.20, UV_GLASS_GLINT),
+        ('l5', -0.04, 30.42, 30.68, 0.17, 0.16, UV_GLASS_GLINT),
+        ('l6',  0.00, 30.20, 30.42, 0.12, 0.12, UV_GLASS_GLINT),
     ]
     for tag, cx, y0, y1, hw, hz, guv in bolt_segments:
         bolt_uuids.append(add(_cube(
@@ -672,20 +673,19 @@ def build_blueprint() -> tuple[dict, Image.Image]:
 
     # 3. Connected Continuous Crystalline Glass Side Branches (`fork_left`, `fork_right`)
     fork_l_uuids = [
-        add(_cube('fork_l_1', _pt(-1.60, 35.65, -0.14), _pt(-0.95, 36.15, 0.14), FORK_L_ORIG, _faces(UV_GLASS_ICE))),
-        add(_cube('fork_l_2', _pt(-2.10, 35.10, -0.12), _pt(-1.42, 35.65, 0.12), FORK_L_ORIG, _faces(UV_GLASS_ICE))),
-        add(_cube('fork_l_3', _pt(-2.52, 34.55, -0.10), _pt(-1.95, 35.10, 0.10), FORK_L_ORIG, _faces(UV_GLASS_MIST))),
-        add(_cube('fork_l_4', _pt(-2.85, 34.00, -0.09), _pt(-2.40, 34.55, 0.09), FORK_L_ORIG, _faces(UV_GLASS_MIST))),
+        add(_cube('fork_l_1', _pt(-1.48, 32.55, -0.13), _pt(-0.88, 32.98, 0.13), FORK_L_ORIG, _faces(UV_GLASS_ICE))),
+        add(_cube('fork_l_2', _pt(-1.95, 32.10, -0.11), _pt(-1.32, 32.55, 0.11), FORK_L_ORIG, _faces(UV_GLASS_ICE))),
+        add(_cube('fork_l_3', _pt(-2.35, 31.65, -0.09), _pt(-1.82, 32.10, 0.09), FORK_L_ORIG, _faces(UV_GLASS_MIST))),
+        add(_cube('fork_l_4', _pt(-2.65, 31.20, -0.08), _pt(-2.22, 31.65, 0.08), FORK_L_ORIG, _faces(UV_GLASS_MIST))),
     ]
     fork_r_uuids = [
-        add(_cube('fork_r_1', _pt(0.95, 35.45, -0.14), _pt(1.60, 35.95, 0.14), FORK_R_ORIG, _faces(UV_GLASS_ICE))),
-        add(_cube('fork_r_2', _pt(1.42, 34.90, -0.12), _pt(2.10, 35.45, 0.12), FORK_R_ORIG, _faces(UV_GLASS_ICE))),
-        add(_cube('fork_r_3', _pt(1.95, 34.35, -0.10), _pt(2.52, 34.90, 0.10), FORK_R_ORIG, _faces(UV_GLASS_MIST))),
-        add(_cube('fork_r_4', _pt(2.40, 33.80, -0.09), _pt(2.85, 34.35, 0.09), FORK_R_ORIG, _faces(UV_GLASS_MIST))),
+        add(_cube('fork_r_1', _pt(0.88, 32.40, -0.13), _pt(1.48, 32.82, 0.13), FORK_R_ORIG, _faces(UV_GLASS_ICE))),
+        add(_cube('fork_r_2', _pt(1.32, 31.95, -0.11), _pt(1.95, 32.40, 0.11), FORK_R_ORIG, _faces(UV_GLASS_ICE))),
+        add(_cube('fork_r_3', _pt(1.82, 31.50, -0.09), _pt(2.35, 31.95, 0.09), FORK_R_ORIG, _faces(UV_GLASS_MIST))),
+        add(_cube('fork_r_4', _pt(2.22, 31.05, -0.08), _pt(2.65, 31.50, 0.08), FORK_R_ORIG, _faces(UV_GLASS_MIST))),
     ]
 
     # 4. Four Continuous Thin Glass Sub-Branches (`arc_nw`, `arc_ne`, `arc_sw`, `arc_se`)
-    #    Each segment overlaps cleanly at its step corner so every tendril reads as ONE continuous glass filament!
     arc_bones = []
     arc_specs = [
         ('arc_nw', -1.0, -1.0),
@@ -698,20 +698,20 @@ def build_blueprint() -> tuple[dict, Image.Image]:
         ox, oy, oz = a_orig
         c1 = add(_cube(
             f'{aname}_1',
-            _pt(min(ox, ox + sx * 0.42) - 0.09, oy - 0.65, min(oz, oz + sz * 0.30) - 0.09),
-            _pt(max(ox, ox + sx * 0.42) + 0.09, oy,        max(oz, oz + sz * 0.30) + 0.09),
+            _pt(min(ox, ox + sx * 0.38) - 0.08, oy - 0.50, min(oz, oz + sz * 0.26) - 0.08),
+            _pt(max(ox, ox + sx * 0.38) + 0.08, oy,        max(oz, oz + sz * 0.26) + 0.08),
             a_orig, _faces(UV_GLASS_ICE),
         ))
         c2 = add(_cube(
             f'{aname}_2',
-            _pt(min(ox + sx * 0.32, ox + sx * 0.80) - 0.08, oy - 1.30, min(oz + sz * 0.22, oz + sz * 0.58) - 0.08),
-            _pt(max(ox + sx * 0.32, ox + sx * 0.80) + 0.08, oy - 0.65, max(oz + sz * 0.22, oz + sz * 0.58) + 0.08),
+            _pt(min(ox + sx * 0.28, ox + sx * 0.72) - 0.07, oy - 1.00, min(oz + sz * 0.18, oz + sz * 0.52) - 0.07),
+            _pt(max(ox + sx * 0.28, ox + sx * 0.72) + 0.07, oy - 0.50, max(oz + sz * 0.18, oz + sz * 0.52) + 0.07),
             a_orig, _faces(UV_GLASS_MIST),
         ))
         c3 = add(_cube(
             f'{aname}_3',
-            _pt(min(ox + sx * 0.70, ox + sx * 1.12) - 0.07, oy - 1.90, min(oz + sz * 0.50, oz + sz * 0.82) - 0.07),
-            _pt(max(ox + sx * 0.70, ox + sx * 1.12) + 0.07, oy - 1.30, max(oz + sz * 0.50, oz + sz * 0.82) + 0.07),
+            _pt(min(ox + sx * 0.62, ox + sx * 1.02) - 0.06, oy - 1.48, min(oz + sz * 0.44, oz + sz * 0.74) - 0.06),
+            _pt(max(ox + sx * 0.62, ox + sx * 1.02) + 0.06, oy - 1.00, max(oz + sz * 0.44, oz + sz * 0.74) + 0.06),
             a_orig, _faces(UV_GLASS_MIST),
         ))
         arc_bones.append({
@@ -728,30 +728,30 @@ def build_blueprint() -> tuple[dict, Image.Image]:
             'children': [c1, c2, c3],
         })
 
-    # 5. Calm Translucent Glass Shockwave Ring (`impact_ring`, Y = 32.35 .. 32.62, right above crown!)
+    # 5. Calm Translucent Glass Shockwave Ring (`impact_ring`, Y = 30.22 .. 30.48, right on head top Y = 30.00!)
     ring_in = _faces(UV_RING_GLASS)
     ring_out = _faces(UV_RING_SOFT)
     ring_uuids = [
-        add(_cube('ring_n',  _pt(-1.5, 32.36, -2.9), _pt(1.5, 32.62, -2.55), RING_ORIG, ring_in)),
-        add(_cube('ring_s',  _pt(-1.5, 32.36,  2.55), _pt(1.5, 32.62, 2.9),  RING_ORIG, ring_in)),
-        add(_cube('ring_w',  _pt(-2.9, 32.36, -1.5), _pt(-2.55, 32.62, 1.5), RING_ORIG, ring_in)),
-        add(_cube('ring_e',  _pt(2.55, 32.36, -1.5), _pt(2.9, 32.62,  1.5),  RING_ORIG, ring_in)),
-        add(_cube('ring_nw', _pt(-2.55, 32.34, -2.55), _pt(-1.5, 32.58, -1.5), RING_ORIG, ring_out)),
-        add(_cube('ring_ne', _pt(1.5,   32.34, -2.55), _pt(2.55, 32.58, -1.5), RING_ORIG, ring_out)),
-        add(_cube('ring_sw', _pt(-2.55, 32.34,  1.5),  _pt(-1.5, 32.58,  2.55), RING_ORIG, ring_out)),
-        add(_cube('ring_se', _pt(1.5,   32.34,  1.5),  _pt(2.55, 32.58,  2.55), RING_ORIG, ring_out)),
+        add(_cube('ring_n',  _pt(-1.45, 30.24, -2.75), _pt(1.45, 30.48, -2.42), RING_ORIG, ring_in)),
+        add(_cube('ring_s',  _pt(-1.45, 30.24,  2.42), _pt(1.45, 30.48,  2.75), RING_ORIG, ring_in)),
+        add(_cube('ring_w',  _pt(-2.75, 30.24, -1.45), _pt(-2.42, 30.48, 1.45), RING_ORIG, ring_in)),
+        add(_cube('ring_e',  _pt(2.42,  30.24, -1.45), _pt(2.75,  30.48, 1.45), RING_ORIG, ring_in)),
+        add(_cube('ring_nw', _pt(-2.42, 30.22, -2.42), _pt(-1.45, 30.45, -1.45), RING_ORIG, ring_out)),
+        add(_cube('ring_ne', _pt(1.45,  30.22, -2.42), _pt(2.42,  30.45, -1.45), RING_ORIG, ring_out)),
+        add(_cube('ring_sw', _pt(-2.42, 30.22,  1.45), _pt(-1.45, 30.45,  2.42), RING_ORIG, ring_out)),
+        add(_cube('ring_se', _pt(1.45,  30.22,  1.45), _pt(2.42,  30.45,  2.42), RING_ORIG, ring_out)),
     ]
 
     # 6. Delicate Translucent Glass Strike Sparks (`impact_sparks`, burst on strike only)
     sparks_uuids = [
-        add(_cube('spark_n1', _pt(-0.12, 32.55, -1.9), _pt(0.12, 33.0, -1.2), SPARKS_ORIG, _faces(UV_GLASS_GLINT))),
-        add(_cube('spark_n2', _pt(-0.09, 33.0,  -2.5), _pt(0.09, 33.4, -1.9), SPARKS_ORIG, _faces(UV_GLASS_ICE))),
-        add(_cube('spark_s1', _pt(-0.12, 32.55,  1.2), _pt(0.12, 33.0,  1.9), SPARKS_ORIG, _faces(UV_GLASS_GLINT))),
-        add(_cube('spark_s2', _pt(-0.09, 33.0,   1.9), _pt(0.09, 33.4,  2.5), SPARKS_ORIG, _faces(UV_GLASS_ICE))),
-        add(_cube('spark_w1', _pt(-1.9, 32.55, -0.12), _pt(-1.2, 33.0, 0.12), SPARKS_ORIG, _faces(UV_GLASS_GLINT))),
-        add(_cube('spark_w2', _pt(-2.5, 33.0,  -0.09), _pt(-1.9, 33.4, 0.09), SPARKS_ORIG, _faces(UV_GLASS_ICE))),
-        add(_cube('spark_e1', _pt(1.2,  32.55, -0.12), _pt(1.9,  33.0, 0.12), SPARKS_ORIG, _faces(UV_GLASS_GLINT))),
-        add(_cube('spark_e2', _pt(1.9,  33.0,  -0.09), _pt(2.5,  33.4, 0.09), SPARKS_ORIG, _faces(UV_GLASS_ICE))),
+        add(_cube('spark_n1', _pt(-0.11, 30.42, -1.8), _pt(0.11, 30.82, -1.1), SPARKS_ORIG, _faces(UV_GLASS_GLINT))),
+        add(_cube('spark_n2', _pt(-0.08, 30.82, -2.4), _pt(0.08, 31.20, -1.8), SPARKS_ORIG, _faces(UV_GLASS_ICE))),
+        add(_cube('spark_s1', _pt(-0.11, 30.42,  1.1), _pt(0.11, 30.82,  1.8), SPARKS_ORIG, _faces(UV_GLASS_GLINT))),
+        add(_cube('spark_s2', _pt(-0.08, 30.82,  1.8), _pt(0.08, 31.20,  2.4), SPARKS_ORIG, _faces(UV_GLASS_ICE))),
+        add(_cube('spark_w1', _pt(-1.8, 30.42, -0.11), _pt(-1.1, 30.82, 0.11), SPARKS_ORIG, _faces(UV_GLASS_GLINT))),
+        add(_cube('spark_w2', _pt(-2.4, 30.82, -0.08), _pt(-1.8, 31.20, 0.08), SPARKS_ORIG, _faces(UV_GLASS_ICE))),
+        add(_cube('spark_e1', _pt(1.1,  30.42, -0.11), _pt(1.8,  30.82, 0.11), SPARKS_ORIG, _faces(UV_GLASS_GLINT))),
+        add(_cube('spark_e2', _pt(1.8,  30.82, -0.08), _pt(2.4,  31.20, 0.08), SPARKS_ORIG, _faces(UV_GLASS_ICE))),
     ]
 
     def bone(bname: str, orig: list[float], children: list) -> dict:
@@ -888,7 +888,7 @@ def render_preview(blueprint: dict, texture: Image.Image, icon: Image.Image, out
         cp_m, sp_m = math.cos(ap), math.sin(ap)
 
         scale_px = 14.5 if show_head else 18.5
-        center_y_world = 32.5 if show_head else 38.2
+        center_y_world = 30.5 if show_head else 34.5
         center_y_px = 192.0 if show_head else 155.0
 
         def proj(pt):
@@ -903,8 +903,8 @@ def render_preview(blueprint: dict, texture: Image.Image, icon: Image.Image, out
 
         if show_head:
             ref_boxes = [
-                ([-8.0, 19.0, -2.0], [8.0, 24.0, 2.0], (56, 64, 82)),
-                ([-4.0, 24.0, -4.0], [4.0, 32.0, 4.0], (86, 96, 118)),
+                ([-7.5, 18.0, -1.875], [7.5, 22.5, 1.875], (56, 64, 82)),
+                ([-3.75, 22.5, -3.75], [3.75, 30.0, 3.75], (86, 96, 118)),
             ]
             for low, high, base_rgb in ref_boxes:
                 cs = [

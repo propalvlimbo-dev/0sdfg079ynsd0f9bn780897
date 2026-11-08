@@ -36,6 +36,7 @@ CLOSE_ACCESSORY_MODELS = (
     'elytrix_cute_kitten',
     'elytrix_mellstroy',
     'elytrix_lightning_hat',
+    'elytrix_royal_crown',
 )
 WINGS_ACCESSORY_MODELS = (
     'elytrix_angel_wings',

@@ -48,6 +48,7 @@ MODELS = (
     'elytrix_cute_kitten',
     'elytrix_mellstroy',
     'elytrix_lightning_hat',
+    'elytrix_royal_crown',
 )
 GLYPH = 'ꏠ'
 FONT = 'assets/minecraft/font/default.json'
