@@ -947,6 +947,13 @@ public final class AccessoryController implements CommandExecutor, Listener {
     private static void syncRigTransform(Player player, GhoulRig rig, float bodyYaw, Location locOverride) {
         if (player == null || rig == null || rig.entity == null || rig.entity.isDestroyed()) return;
         float safeYaw = Float.isFinite(bodyYaw) ? bodyYaw : 0.0F;
+        // ВАЖНО: аура живёт в МИРОВЫХ координатах и НИКОГДА не поворачивается вместе с
+        // телом игрока. Рысканье обнуляем ВНУТРИ этой функции, а не в отдельных местах
+        // вызова: раньше обнуление стояло только в tickActiveRig, а syncSingleSlot
+        // (вход игрока, смена аксессуара, респавн после телепорта) на один кадр
+        // разворачивал всю ауру по рысканью тела — из-за этого кольцо/поток ауры
+        // визуально «телепортировался» (резко проворачивался) в эти моменты.
+        if (isAuraBlueprint(rig.blueprintId)) safeYaw = 0.0F;
         try {
             Location loc = locOverride != null ? locOverride : player.getLocation();
             float safePitch = 0.0F;
@@ -1139,7 +1146,6 @@ public final class AccessoryController implements CommandExecutor, Listener {
             boolean isHeadRig = LIGHTNING_HAT_BLUEPRINT.equals(rig.blueprintId)
                 || SATAN_BLUEPRINT.equals(rig.blueprintId);
             float rigYaw = (isHeadRig && loc != null) ? loc.getYaw() : bodyYaw;
-            if (isAuraBlueprint(rig.blueprintId)) rigYaw = 0.0F;   // аура не вращается за игроком
             syncRigTransform(wearer, rig, rigYaw, loc);
             ensureLivingAnimation(rig, tracker.getHorizSpeedBlocksPerTick());
             if (MELLSTROY_BLUEPRINT.equals(rig.blueprintId)) {

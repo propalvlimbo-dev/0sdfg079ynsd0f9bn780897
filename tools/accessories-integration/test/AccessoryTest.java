@@ -625,6 +625,6 @@ public class AccessoryTest {
   AccessoryController.install(bare);
   check(bare.mockCommand.executor==null && !bare.warnings.isEmpty(),"missing command logged safely");
   InventoryDragEvent drag=new InventoryDragEvent();drag.view=click.view;controller.onDrag(drag);check(drag.cancelled,"drag cancelled");
-  System.out.println("All v3.24.0 tests passed: public /accessories (/acc, /акс) Риллики shop + Ауры section with TWO auras (Аура сердечек 5500 ꐃ, 12 rising hearts + Аура бабочек 5500 ꐃ, 10 pink butterflies circling the player with flapping wings) + Крылья Зевса (8000 ꐃ, wings woven from lightning) + Круг Сатаны (4500 ꐃ, spinning pentagram halo) + Дождевое облако (4000 ꐃ, 3D drizzle) + all 12 3D models!");
+  System.out.println("All v3.25.0 tests passed: public /accessories (/acc, /акс) Риллики shop + Ауры section with TWO auras (Аура сердечек 5500 ꐃ, 12 hearts rising at random, no spiral + Аура бабочек 5500 ꐃ, 10 pink butterflies with filled wings, horizontal body and antennae, circling the player) + Крылья Зевса (8000 ꐃ, wings woven from lightning) + Круг Сатаны (4500 ꐃ, spinning pentagram halo) + Дождевое облако (4000 ꐃ, 3D drizzle) + all 12 3D models!");
  }
 }

@@ -267,9 +267,57 @@ BONE_NAMES = ['aura_root'] + GROUP_IDS + BF_IDS + WING_IDS
 # 4. Геометрия: каждая бабочка запечена на своей точке кольца
 # ---------------------------------------------------------------------------
 # Локальная система бабочки: вперёд +Z, вверх +Y, вправо +X (наружу от игрока).
-HINGE_Y = 0.22          # высота оси-петли крыла над центром тельца
-BODY_ROWS = 3           # брюшко / грудь / голова — три вертикальные полоски
-WING_ROWS = 3           # верхняя лопасть / кончик / нижняя лопасть
+#
+# Тельце теперь ГОРИЗОНТАЛЬНОЕ и лежит вдоль полёта (+Z): голова спереди, брюшко
+# сзади — как у настоящей бабочки. Крылья — заполненные горизонтальные пластины в
+# плоскости XZ (тонкие по Y), переднее крупнее заднего; машут они вокруг оси Z,
+# то есть кончики ходят ВВЕРХ-ВНИЗ. Раньше тельце стояло вертикально, а крыло было
+# собрано из двух тонких пластин с ПУСТОТОЙ между ними и отдельно висящим
+# кончиком — из-за этого крыло читалось как пустая рамка (см. `WING_FORE/WING_HIND`).
+HINGE_Y = 0.20          # высота оси-петли крыла над центром тельца (верх груди)
+BODY_ROWS = 3           # полоски градиента тельца: голова / грудь / брюшко
+
+# Крыло как ЗАПОЛНЕННЫЙ эллипс в плоскости XZ, нарезанный полосами вдоль X
+# (от корня к кончику). Никаких разрывов: полосы идут вплотную, поэтому внутри
+# контура нет пустоты.
+# `x0` = 0.10 — корень крыла ЗАХОДИТ под тельце (полуширина брюшка 0.12), иначе
+# между внутренним краем крыла и тельцем видна щель и крыло читается от detached.
+WING_FORE = dict(cx=0.78, cz=0.44, a=0.58, b=0.56, strips=5, x0=0.10,
+                 y_lo=0.02, y_hi=0.13)
+WING_HIND = dict(cx=0.58, cz=-0.46, a=0.42, b=0.40, strips=3, x0=0.10,
+                 y_lo=-0.11, y_hi=0.01)
+SPOT = dict(x0=0.60, x1=0.86, z0=0.30, z1=0.62, y0=0.13, y1=0.21)
+# «Плечики»: у эллипса хорда у самого корня узкая, поэтому между внутренним краем
+# крыла и грудью оставалась щель и крыло читалось приклеенным отдельно. Эти две
+# пластины закрывают плечевой стык у переднего и заднего крыла.
+SHOULDER_FORE = dict(x0=0.085, x1=0.34, z0=-0.16, z1=0.34)
+SHOULDER_HIND = dict(x0=0.085, x1=0.34, z0=-0.26, z1=0.00)
+
+
+def _strip(left: float, top: float, col: int, cols: int, gap: float = 0.05) -> tuple:
+    """Полоска градиента ВДОЛЬ КРЫЛА (корень -> кончик), а не поперёк.
+
+    Тайл крыла меняет цвет по X (бледный корень -> насыщенный кончик). Разрезая его
+    на вертикальные полоски по числу кубов-полос, получаем ПЛАВНЫЙ переход вдоль
+    крыла: каждая полоса берёт свой кусок того же градиента, и «стиральной доски»
+    не возникает ни вдоль крыла, ни поперёк.
+    """
+    w = 7.5 / cols
+    x0 = left + col * w + gap
+    x1 = left + (col + 1) * w - gap
+    return (round(x0, 3), top, round(x1, 3), round(top + 7.5, 3))
+
+
+def _wing_faces(top_uv: tuple, edge_uv: tuple, bottom_uv: tuple) -> dict:
+    """Верх крыла — основной градиент, низ и торцы — приглушённый."""
+    return {
+        'up': {'uv': list(top_uv), 'texture': 0},
+        'down': {'uv': list(bottom_uv), 'texture': 0},
+        'north': {'uv': list(edge_uv), 'texture': 0},
+        'south': {'uv': list(edge_uv), 'texture': 0},
+        'east': {'uv': list(edge_uv), 'texture': 0},
+        'west': {'uv': list(edge_uv), 'texture': 0},
+    }
 
 
 def build_geometry(elements: list) -> dict:
@@ -278,9 +326,26 @@ def build_geometry(elements: list) -> dict:
 
     body_uvs = [_band(TILE_BODY, BODY_Y0, r, BODY_ROWS) for r in range(BODY_ROWS)]
     body_side = _band(TILE_BODY, BODY_Y0, BODY_ROWS - 1, BODY_ROWS)
-    wing_uvs = [_band(TILE_WING, 0.25, r, WING_ROWS) for r in range(WING_ROWS)]
-    wing_side = [_band(TILE_EDGE, 0.25, r, WING_ROWS) for r in range(WING_ROWS)]
     spot_uv = _band(TILE_SPOT, SPOT_Y0, 0, 1)
+
+    fore_top = [_strip(TILE_WING, 0.25, c, WING_FORE['strips']) for c in range(WING_FORE['strips'])]
+    fore_edg = [_strip(TILE_EDGE, 0.25, c, WING_FORE['strips']) for c in range(WING_FORE['strips'])]
+    hind_top = [_strip(TILE_WING, 0.25, c, WING_HIND['strips']) for c in range(WING_HIND['strips'])]
+    hind_edg = [_strip(TILE_EDGE, 0.25, c, WING_HIND['strips']) for c in range(WING_HIND['strips'])]
+    # Низ крыла — своя, приглушённая полоска из тайла боковых граней.
+    fore_bot = [_strip(TILE_EDGE, 0.25, c, WING_FORE['strips']) for c in range(WING_FORE['strips'])]
+    hind_bot = [_strip(TILE_EDGE, 0.25, c, WING_HIND['strips']) for c in range(WING_HIND['strips'])]
+
+    def chord(cfg: dict, col: int) -> tuple:
+        """Z-диапазон полосы `col` — хорда эллипса крыла в её середине."""
+        n = cfg['strips']
+        x0, x1 = cfg['x0'], cfg['cx'] + cfg['a']
+        xa = x0 + (x1 - x0) * (col / n)
+        xb = x0 + (x1 - x0) * ((col + 1) / n)
+        xm = 0.5 * (xa + xb)
+        k = (xm - cfg['cx']) / cfg['a']
+        hz = cfg['b'] * math.sqrt(max(0.0, 1.0 - k * k))
+        return round(cfg['cz'] - hz, 4), round(cfg['cz'] + hz, 4)
 
     for i, spec in enumerate(BUTTERFLY_SPECS):
         s = spec['scale']
@@ -293,11 +358,13 @@ def build_geometry(elements: list) -> dict:
         hinge = [cx, round(cy + HINGE_Y * s, 4), cz]
 
         body_cubes = []
-        # брюшко (row 2, самое нижнее) / грудь (row 1) / голова (row 0)
+        # Тельце ГОРИЗОНТАЛЬНОЕ: голова спереди (+Z), брюшко сзади (-Z).
+        # (тэг, ряд градиента, x0,y0,z0, x1,y1,z1)
         body_boxes = (
-            ('abd', 2, (-0.16, -0.95, -0.30), (0.16, -0.05, 0.12)),
-            ('thr', 1, (-0.22, -0.05, -0.22), (0.22, 0.40, 0.30)),
-            ('head', 0, (-0.19, 0.40, 0.14), (0.19, 0.66, 0.44)),
+            ('head', 0, (-0.16, -0.08, 0.30), (0.16, 0.20, 0.52)),
+            ('thr', 1, (-0.19, -0.20, -0.24), (0.19, 0.22, 0.30)),
+            ('abd1', 2, (-0.12, -0.36, -0.64), (0.12, 0.08, -0.20)),
+            ('abd2', 2, (-0.07, -0.30, -1.04), (0.07, 0.02, -0.62)),
         )
         for tag, row, lo, hi in body_boxes:
             body_cubes.append(_cube(
@@ -305,40 +372,67 @@ def build_geometry(elements: list) -> dict:
                 [origin[0] + lo[0] * s, origin[1] + lo[1] * s, origin[2] + lo[2] * s],
                 [origin[0] + hi[0] * s, origin[1] + hi[1] * s, origin[2] + hi[2] * s],
                 origin, _faces(body_uvs[row], body_side)))
-        # два усика — по одному кубику с наклоном «ступенькой»
+        # усики: две «ступеньки» вперёд-вверх-наружу от головы
         for side, tag in ((-1, 'antl'), (1, 'antr')):
-            x0 = (0.20 if side > 0 else -0.34) * s
-            x1 = (0.34 if side > 0 else -0.20) * s
+            sg = side
             body_cubes.append(_cube(
-                f'bf_{i + 1:02d}_{tag}',
-                [origin[0] + x0, origin[1] + 0.62 * s, origin[2] + 0.28 * s],
-                [origin[0] + x1, origin[1] + 0.92 * s, origin[2] + 0.38 * s],
+                f'bf_{i + 1:02d}_{tag}a',
+                [origin[0] + (0.06 if sg > 0 else -0.14) * s, origin[1] + 0.18 * s,
+                 origin[2] + 0.42 * s],
+                [origin[0] + (0.14 if sg > 0 else -0.06) * s, origin[1] + 0.32 * s,
+                 origin[2] + 0.58 * s],
+                origin, _faces(body_uvs[0], body_side)))
+            body_cubes.append(_cube(
+                f'bf_{i + 1:02d}_{tag}b',
+                [origin[0] + (0.13 if sg > 0 else -0.24) * s, origin[1] + 0.30 * s,
+                 origin[2] + 0.56 * s],
+                [origin[0] + (0.24 if sg > 0 else -0.13) * s, origin[1] + 0.46 * s,
+                 origin[2] + 0.70 * s],
                 origin, _faces(body_uvs[0], body_side)))
 
         wing_cubes = {'wl': [], 'wr': []}
-        # (тэг, ряд, z-диапазон, y-диапазон, x-диапазон от корня)
-        wing_boxes = (
-            ('up', 0, (-0.34, 0.46), (0.16, 0.28), (0.18, 1.30)),
-            ('lo', 2, (-0.36, 0.34), (-0.66, -0.54), (0.18, 1.06)),
-            ('tip', 1, (-0.28, 0.36), (-0.34, 0.06), (1.22, 1.44)),
-        )
         for wkey, sign in (('wl', -1), ('wr', 1)):
-            for tag, row, zr, yr, xr in wing_boxes:
-                xa = sign * xr[0]
-                xb = sign * xr[1]
-                wing_cubes[wkey].append(_cube(
-                    f'bf_{i + 1:02d}_{wkey}_{tag}',
-                    [hinge[0] + min(xa, xb) * s, hinge[1] + yr[0] * s, hinge[2] + zr[0] * s],
-                    [hinge[0] + max(xa, xb) * s, hinge[1] + yr[1] * s, hinge[2] + zr[1] * s],
-                    hinge, _faces(wing_uvs[row], wing_side[row])))
-            # светлое пятнышко на верхней лопасти, чуть выступает вверх
-            xa = sign * 0.72
-            xb = sign * 0.98
+            for cfg, tops, edgs, bots, tag in (
+                    (WING_FORE, fore_top, fore_edg, fore_bot, 'f'),
+                    (WING_HIND, hind_top, hind_edg, hind_bot, 'h')):
+                n = cfg['strips']
+                x0 = cfg['x0']
+                x1 = cfg['cx'] + cfg['a']
+                for col in range(n):
+                    xa = x0 + (x1 - x0) * (col / n)
+                    xb = x0 + (x1 - x0) * ((col + 1) / n)
+                    za, zb = chord(cfg, col)
+                    wing_cubes[wkey].append(_cube(
+                        f'bf_{i + 1:02d}_{wkey}_{tag}{col}',
+                        [hinge[0] + min(sign * xa, sign * xb) * s, hinge[1] + cfg['y_lo'] * s,
+                         hinge[2] + za * s],
+                        [hinge[0] + max(sign * xa, sign * xb) * s, hinge[1] + cfg['y_hi'] * s,
+                         hinge[2] + zb * s],
+                        hinge, _wing_faces(tops[col], edgs[col], bots[col])))
+            # плечевые пластины — убирают щель между корнем крыла и грудью
+            wing_cubes[wkey].append(_cube(
+                f'bf_{i + 1:02d}_{wkey}_sf',
+                [hinge[0] + min(sign * SHOULDER_FORE['x0'], sign * SHOULDER_FORE['x1']) * s,
+                 hinge[1] + WING_FORE['y_lo'] * s, hinge[2] + SHOULDER_FORE['z0'] * s],
+                [hinge[0] + max(sign * SHOULDER_FORE['x0'], sign * SHOULDER_FORE['x1']) * s,
+                 hinge[1] + WING_FORE['y_hi'] * s, hinge[2] + SHOULDER_FORE['z1'] * s],
+                hinge, _wing_faces(fore_top[0], fore_edg[0], fore_bot[0])))
+            wing_cubes[wkey].append(_cube(
+                f'bf_{i + 1:02d}_{wkey}_sh',
+                [hinge[0] + min(sign * SHOULDER_HIND['x0'], sign * SHOULDER_HIND['x1']) * s,
+                 hinge[1] + WING_HIND['y_lo'] * s, hinge[2] + SHOULDER_HIND['z0'] * s],
+                [hinge[0] + max(sign * SHOULDER_HIND['x0'], sign * SHOULDER_HIND['x1']) * s,
+                 hinge[1] + WING_HIND['y_hi'] * s, hinge[2] + SHOULDER_HIND['z1'] * s],
+                hinge, _wing_faces(hind_top[0], hind_edg[0], hind_bot[0])))
+            # светлое пятнышко на переднем крыле — лежит сверху, чуть выступает
+            xa, xb = SPOT['x0'], SPOT['x1']
             wing_cubes[wkey].append(_cube(
                 f'bf_{i + 1:02d}_{wkey}_spot',
-                [hinge[0] + min(xa, xb) * s, hinge[1] + 0.28 * s, hinge[2] + 0.02 * s],
-                [hinge[0] + max(xa, xb) * s, hinge[1] + 0.38 * s, hinge[2] + 0.26 * s],
-                hinge, _faces(spot_uv, spot_uv)))
+                [hinge[0] + min(sign * xa, sign * xb) * s, hinge[1] + SPOT['y0'] * s,
+                 hinge[2] + SPOT['z0'] * s],
+                [hinge[0] + max(sign * xa, sign * xb) * s, hinge[1] + SPOT['y1'] * s,
+                 hinge[2] + SPOT['z1'] * s],
+                hinge, _wing_faces(spot_uv, spot_uv, spot_uv)))
 
         all_cubes = body_cubes + wing_cubes['wl'] + wing_cubes['wr']
         for c in all_cubes:
