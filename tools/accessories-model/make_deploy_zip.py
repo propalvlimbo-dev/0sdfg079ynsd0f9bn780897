@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the deployment archive `elytrix-freakmodel.zip` (v3.23.0) straight from the repository.
+"""Build the deployment archive `elytrix-freakmodel.zip` (v3.24.0) straight from the repository.
 
 Contents (see AI_INSTRUCTIONS.txt, section 8, step 5):
   * plugins/ElytrixFreakModel.jar          (+ plugins/ElytrixFreakModel/config.yml)

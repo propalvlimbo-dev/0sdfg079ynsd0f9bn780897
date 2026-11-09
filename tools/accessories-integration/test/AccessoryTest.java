@@ -513,15 +513,15 @@ public class AccessoryTest {
         "Крылья Зевса pivot mounted on player PivotOverride");
   check(fe.entities.size()==3,"Крылья Зевса, Круг Сатаны & Меллстрой all riding their own isolated Dummy entity");
 
-  // --- 8c. Buy & Equip NEW Аура сердечек (5500 ꐃ, Ауры tab slot 16 -> card slot 31 -> 4000 ꐃ) ---
+  // --- 8c. Buy & Equip NEW Аура сердечек (5500 ꐃ, Ауры tab slot 16 -> card slot 30 -> 4000 ꐃ) ---
   click.slot=16;controller.onClick(click); // tab to Ауры
   check(Bukkit.title.equals(AccessoryController.TITLE_AURAS),"opened brand-new Ауры section via tab slot 16");
-  check(Bukkit.slots.get(31).meta.title.contains("Аура сердечек")
-        && Bukkit.slots.get(31).meta.model.equals(new NamespacedKey("reallyworld","heart_aura_icon")),
-        "Аура сердечек in Ауры slot 31 with heart_aura_icon!");
-  check(Bukkit.slots.get(31).meta.lore.stream().anyMatch(l -> l.contains("5500") && l.contains("ꐃ")),
+  check(Bukkit.slots.get(30).meta.title.contains("Аура сердечек")
+        && Bukkit.slots.get(30).meta.model.equals(new NamespacedKey("reallyworld","heart_aura_icon")),
+        "Аура сердечек in Ауры slot 30 with heart_aura_icon!");
+  check(Bukkit.slots.get(30).meta.lore.stream().anyMatch(l -> l.contains("5500") && l.contains("ꐃ")),
         "Аура сердечек priced at 5500 Рилликов!");
-  click.slot=31;controller.onClick(click); // buy & equip Аура сердечек!
+  click.slot=30;controller.onClick(click); // buy & equip Аура сердечек!
   check(wallet.get(p.uuid)==4000 && AccessoryController.owns(p, AccessoryController.AccessoryItem.HEART_AURA),
         "Аура сердечек bought for exact 5500 Рилликов!");
   check(AccessoryController.heartAuraSelected(p) && AccessoryController.wearingHeartAura(p)
@@ -537,18 +537,51 @@ public class AccessoryTest {
   check(AccessoryController.heartAuraAttached(p) && fe.pivots.passengers.contains(auraModel.pivotId),
         "Аура сердечек pivot mounted on player PivotOverride");
   // Unequip & re-equip the aura -> always free!
-  click.slot=31;controller.onClick(click);
+  click.slot=30;controller.onClick(click);
   check(!AccessoryController.wearingHeartAura(p) && wallet.get(p.uuid)==4000,"unequipping the aura is free");
-  click.slot=31;controller.onClick(click);
+  click.slot=30;controller.onClick(click);
   check(AccessoryController.wearingHeartAura(p) && wallet.get(p.uuid)==4000,"re-equipping the aura is free forever!");
+  controller.onMove(new PlayerMoveEvent(p, new Location(p.world, p.px, p.py, p.pz, -61.0F, 0.0F)));
+  check(Math.abs(auraModel.owner.bodyYaw - 0.0F) < 0.01F && Math.abs(auraModel.owner.headYaw - 0.0F) < 0.01F,
+        "Аура сердечек never turns with the body: its rig yaw stays pinned to 0 (world space)!");
+
+  // --- 8d. Buy & Equip NEW Аура пламени (6500 ꐃ, Ауры card slot 32 -> 5500 ꐃ) ---
+  wallet.put(p.uuid, 12000); // top the test wallet up for the second aura
+  check(Bukkit.slots.get(32).meta.title.contains("Аура пламени")
+        && Bukkit.slots.get(32).meta.model.equals(new NamespacedKey("reallyworld","flame_aura_icon")),
+        "Аура пламени in Ауры slot 32 with flame_aura_icon!");
+  check(Bukkit.slots.get(32).meta.lore.stream().anyMatch(l -> l.contains("6500") && l.contains("ꐃ")),
+        "Аура пламени priced at 6500 Рилликов!");
+  click.slot=32;controller.onClick(click); // buy & equip Аура пламени!
+  check(wallet.get(p.uuid)==5500 && AccessoryController.owns(p, AccessoryController.AccessoryItem.FLAME_AURA),
+        "Аура пламени bought for exact 6500 Рилликов!");
+  check(AccessoryController.flameAuraSelected(p) && AccessoryController.wearingFlameAura(p)
+        && AccessoryController.flameAuraAnimating(p),
+        "Аура пламени Dummy spawned around the player & playing the seamless 'idle' rise loop!");
+  check(!AccessoryController.wearingHeartAura(p) && AccessoryController.wearingZeusWings(p),
+        "both auras share the ONE aura slot: equipping Аура пламени swaps out Аура сердечек!");
+  check(fe.entities.size()==4,"the swapped aura still rides the 4th isolated Dummy entity, no leak");
+  FakeActive flameModel=fe.q.last;
+  flameModel.rendererReady=true;
+  AccessoryController.animatePets();
+  check(AccessoryController.flameAuraAttached(p) && fe.pivots.passengers.contains(flameModel.pivotId),
+        "Аура пламени pivot mounted on player PivotOverride");
+  controller.onMove(new PlayerMoveEvent(p, new Location(p.world, p.px, p.py, p.pz, 122.0F, 0.0F)));
+  check(Math.abs(flameModel.owner.bodyYaw - 0.0F) < 0.01F && Math.abs(flameModel.owner.headYaw - 0.0F) < 0.01F,
+        "Аура пламени never turns with the body: its rig yaw stays pinned to 0 (world space)!");
+  // Unequip & re-equip -> always free!
+  click.slot=32;controller.onClick(click);
+  check(!AccessoryController.wearingFlameAura(p) && wallet.get(p.uuid)==5500,"unequipping Аура пламени is free");
+  click.slot=32;controller.onClick(click);
+  check(AccessoryController.wearingFlameAura(p) && wallet.get(p.uuid)==5500,"re-equipping Аура пламени is free forever!");
 
   // --- 9. Clear All (slot 49) ---
   click.slot=49;controller.onClick(click);
   check(!AccessoryController.wearingMellstroy(p) && !AccessoryController.wearingSatanCircle(p)
         && !AccessoryController.wearingLightningHat(p) && !AccessoryController.wearingZeusWings(p)
-        && !AccessoryController.wearingHeartAura(p)
+        && !AccessoryController.wearingHeartAura(p) && !AccessoryController.wearingFlameAura(p)
         && AccessoryController.back(plugin,p)==null && AccessoryController.halo(plugin,p)==null && fe.entities.isEmpty(),
-        "clear-all removes back, hat, pet and aura cleanly");
+        "clear-all removes back, hat, pet and both auras cleanly");
 
   // --- 10. Quit cleanup + Dual Persistence (owned_accessories.yml survives PDC wipe + server restart!) ---
   click.slot=14;controller.onClick(click); // Питомцы
@@ -556,19 +589,21 @@ public class AccessoryTest {
   click.slot=12;controller.onClick(click); // Шапки
   click.slot=31;controller.onClick(click); // Круг Сатаны (free!)
   click.slot=16;controller.onClick(click); // Ауры
-  click.slot=31;controller.onClick(click); // Аура сердечек (free!)
+  click.slot=30;controller.onClick(click); // Аура сердечек (free!)
+  click.slot=32;controller.onClick(click); // Аура пламени (free!) -> takes over the shared aura slot
   click.slot=10;controller.onClick(click); // Спина
   click.slot=33;controller.onClick(click); // Крылья Зевса (free!)
-  check(wallet.get(p.uuid)==4000 && AccessoryController.wearingMiniMe(p)
+  check(wallet.get(p.uuid)==5500 && AccessoryController.wearingMiniMe(p)
         && AccessoryController.wearingSatanCircle(p) && AccessoryController.wearingZeusWings(p)
-        && AccessoryController.wearingHeartAura(p),
-        "all 4 Dummy slots (Крылья Зевса + Круг Сатаны + Мини-Роузи + Аура сердечек) equipped for free before quit");
+        && !AccessoryController.wearingHeartAura(p) && AccessoryController.wearingFlameAura(p),
+        "all 4 Dummy slots (Крылья Зевса + Круг Сатаны + Мини-Роузи + Аура пламени) equipped for free before quit");
   controller.onQuit(new PlayerQuitEvent(p));
   check(!AccessoryController.wearingMiniMe(p) && !AccessoryController.wearingSatanCircle(p)
-        && !AccessoryController.wearingZeusWings(p) && !AccessoryController.wearingHeartAura(p) && fe.entities.isEmpty(),
+        && !AccessoryController.wearingZeusWings(p) && !AccessoryController.wearingHeartAura(p)
+        && !AccessoryController.wearingFlameAura(p) && fe.entities.isEmpty(),
         "quit releases all 4 Dummy rigs without leak");
 
-  // Simulate full server restart + playerdata PDC wipe: owned_accessories.yml restores all 11 purchases!
+  // Simulate full server restart + playerdata PDC wipe: owned_accessories.yml restores all 12 purchases!
   p.data.m.clear();
   AccessoryController.install(plugin);
   for (AccessoryController.AccessoryItem item : AccessoryController.AccessoryItem.values()) {
@@ -590,6 +625,6 @@ public class AccessoryTest {
   AccessoryController.install(bare);
   check(bare.mockCommand.executor==null && !bare.warnings.isEmpty(),"missing command logged safely");
   InventoryDragEvent drag=new InventoryDragEvent();drag.view=click.view;controller.onDrag(drag);check(drag.cancelled,"drag cancelled");
-  System.out.println("All v3.23.0 tests passed: public /accessories (/acc, /акс) Риллики shop + new Ауры section + Аура сердечек (5500 ꐃ, 12 rising hearts) + Крылья Зевса (8000 ꐃ, wings woven from lightning) + Круг Сатаны (4500 ꐃ, spinning pentagram halo) + Дождевое облако (4000 ꐃ, 3D drizzle) + all 11 3D models!");
+  System.out.println("All v3.24.0 tests passed: public /accessories (/acc, /акс) Риллики shop + Ауры section with TWO auras (Аура сердечек 5500 ꐃ, 12 rising hearts + Аура пламени 6500 ꐃ, 12 rising flames) + Крылья Зевса (8000 ꐃ, wings woven from lightning) + Круг Сатаны (4500 ꐃ, spinning pentagram halo) + Дождевое облако (4000 ꐃ, 3D drizzle) + all 12 3D models!");
  }
 }
