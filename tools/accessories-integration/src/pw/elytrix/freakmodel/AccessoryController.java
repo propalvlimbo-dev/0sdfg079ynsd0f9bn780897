@@ -66,8 +66,9 @@ import org.bukkit.persistence.PersistentDataType;
  *   <li><b>Ауры</b>: обе ауры делят один слот и НИКОГДА не поворачиваются вместе с игроком —
  *       только следуют за ним по позиции. Аура сердечек ({@code 5500 ꐃ} — 12 сердечек кольцом
  *       вокруг игрока, которые рождаются под ногами, плавно поднимаются вверх и тают над
- *       макушкой, непрерывным потоком) и Аура пламени ({@code 6500 ꐃ} — 12 живых языков пламени
- *       на том же кольце: вспыхивают под ногами, тянутся вверх, дрожат и гаснут над макушкой)</li>
+ *       макушкой, непрерывным потоком) и Аура бабочек ({@code 5500 ꐃ} — 10 крошечных розовых
+ *       бабочек, которые НЕПРЕРЫВНО кружат вокруг игрока от колен до макушки, блуждают по
+ *       кольцу и всё время машут крылышками)</li>
  * </ul>
  */
 public final class AccessoryController implements CommandExecutor, Listener {
@@ -89,7 +90,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final String PET_MELLSTROY = "mellstroy";
 
     static final String AURA_HEARTS = "hearts";
-    static final String AURA_FLAMES = "flames";
+    static final String AURA_BUTTERFLIES = "butterflies";
 
     static final String LIGHTNING_HAT_BLUEPRINT = "elytrix_lightning_hat";
     static final String SATAN_BLUEPRINT = "elytrix_satan_circle";
@@ -100,7 +101,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final String KANEKI_BLUEPRINT = "elytrix_kaneki_tentacles";
     static final String ZEUS_BLUEPRINT = "elytrix_zeus_wings";
     static final String HEART_AURA_BLUEPRINT = "elytrix_heart_aura";
-    static final String FLAME_AURA_BLUEPRINT = "elytrix_flame_aura";
+    static final String BUTTERFLY_AURA_BLUEPRINT = "elytrix_butterfly_aura";
 
     static final String IDLE_ANIM = "idle";
     static final String ADMIN_PERMISSION = "elytrixfreakmodel.admin";
@@ -125,7 +126,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final int PRICE_KANEKI = 7500;
     static final int PRICE_ZEUS_WINGS = 8000;
     static final int PRICE_HEART_AURA = 5500;
-    static final int PRICE_FLAME_AURA = 6500;
+    static final int PRICE_BUTTERFLY_AURA = 5500;
 
     /** Synchronized (in-model 3D `D.Admin BAN`-style badge animation, real Mellstroy Ogg Vorbis sound) pairs. */
     static final String[][] MELLSTROY_EMOTES = {
@@ -163,7 +164,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         MELLSTROY(PET_MELLSTROY, Section.PETS, 32, MELLSTROY_BLUEPRINT, PRICE_MELLSTROY, "Меллстрой"),
         CENTIPEDE(PET_CENTIPEDE, Section.PETS, 34, CENTIPEDE_BLUEPRINT, PRICE_CENTIPEDE, "Сколопендра Гуля"),
         HEART_AURA(AURA_HEARTS, Section.AURAS, 30, HEART_AURA_BLUEPRINT, PRICE_HEART_AURA, "Аура сердечек"),
-        FLAME_AURA(AURA_FLAMES, Section.AURAS, 32, FLAME_AURA_BLUEPRINT, PRICE_FLAME_AURA, "Аура пламени");
+        BUTTERFLY_AURA(AURA_BUTTERFLIES, Section.AURAS, 32, BUTTERFLY_AURA_BLUEPRINT, PRICE_BUTTERFLY_AURA, "Аура бабочек");
 
         final String id;
         final Section section;
@@ -504,7 +505,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static String auraChoice(Player player) {
         String choice = get(player, AURA);
         if (AURA_HEARTS.equals(choice) && owns(player, AccessoryItem.HEART_AURA)) return choice;
-        if (AURA_FLAMES.equals(choice) && owns(player, AccessoryItem.FLAME_AURA)) return choice;
+        if (AURA_BUTTERFLIES.equals(choice) && owns(player, AccessoryItem.BUTTERFLY_AURA)) return choice;
         return "";
     }
 
@@ -515,14 +516,14 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
         String choice = auraChoice(player);
         if (AURA_HEARTS.equals(choice)) return HEART_AURA_BLUEPRINT;
-        if (AURA_FLAMES.equals(choice)) return FLAME_AURA_BLUEPRINT;
+        if (AURA_BUTTERFLIES.equals(choice)) return BUTTERFLY_AURA_BLUEPRINT;
         return null;
     }
 
     /** True for every aura blueprint: an aura must follow the player's POSITION but must
      *  never copy his body rotation, so its rig yaw is always pinned to 0 (world space). */
     static boolean isAura(String blueprintId) {
-        return HEART_AURA_BLUEPRINT.equals(blueprintId) || FLAME_AURA_BLUEPRINT.equals(blueprintId);
+        return HEART_AURA_BLUEPRINT.equals(blueprintId) || BUTTERFLY_AURA_BLUEPRINT.equals(blueprintId);
     }
 
     static GhoulRig auraRig(Player player, String blueprintId) {
@@ -546,16 +547,16 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return HEART_AURA_BLUEPRINT.equals(desiredAuraBlueprint(player));
     }
 
-    public static boolean flameAuraSelected(Player player) {
-        return FLAME_AURA_BLUEPRINT.equals(desiredAuraBlueprint(player));
+    public static boolean butterflyAuraSelected(Player player) {
+        return BUTTERFLY_AURA_BLUEPRINT.equals(desiredAuraBlueprint(player));
     }
 
     static boolean wearingHeartAura(Player player) {
         return wearingAura(player, HEART_AURA_BLUEPRINT);
     }
 
-    static boolean wearingFlameAura(Player player) {
-        return wearingAura(player, FLAME_AURA_BLUEPRINT);
+    static boolean wearingButterflyAura(Player player) {
+        return wearingAura(player, BUTTERFLY_AURA_BLUEPRINT);
     }
 
     static boolean heartAuraAttached(Player player) {
@@ -563,8 +564,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return rig != null && rig.attached;
     }
 
-    static boolean flameAuraAttached(Player player) {
-        GhoulRig rig = auraRig(player, FLAME_AURA_BLUEPRINT);
+    static boolean butterflyAuraAttached(Player player) {
+        GhoulRig rig = auraRig(player, BUTTERFLY_AURA_BLUEPRINT);
         return rig != null && rig.attached;
     }
 
@@ -572,8 +573,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return auraAnimating(player, HEART_AURA_BLUEPRINT);
     }
 
-    static boolean flameAuraAnimating(Player player) {
-        return auraAnimating(player, FLAME_AURA_BLUEPRINT);
+    static boolean butterflyAuraAnimating(Player player) {
+        return auraAnimating(player, BUTTERFLY_AURA_BLUEPRINT);
     }
 
     public static FreakModelSpec halo(ElytrixFreakModelPlugin plugin, Player player) {
@@ -1436,7 +1437,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
                                        SATAN_BLUEPRINT, LIGHTNING_HAT_BLUEPRINT,
                                        KANEKI_BLUEPRINT, ZEUS_BLUEPRINT, CENTIPEDE_BLUEPRINT,
                                        MINI_ME_BLUEPRINT, KITTEN_BLUEPRINT, MELLSTROY_BLUEPRINT,
-                                       HEART_AURA_BLUEPRINT, FLAME_AURA_BLUEPRINT,
+                                       HEART_AURA_BLUEPRINT, BUTTERFLY_AURA_BLUEPRINT,
                                        "elytrix_priora_black", "elytrix_priora_white", "elytrix_priora_pink"}) {
             if (resolveBlueprint(id) == null && !id.startsWith("elytrix_priora_")) {
                 if (missing.length() > 0) missing.append(", ");
@@ -1623,7 +1624,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
     private static String activeAuraLabel(Player player) {
         String aura = auraChoice(player);
         if (AURA_HEARTS.equals(aura)) return "§dАура сердечек";
-        if (AURA_FLAMES.equals(aura)) return "§dАура пламени";
+        if (AURA_BUTTERFLIES.equals(aura)) return "§dАура бабочек";
         return "§8Не выбрано";
     }
 
@@ -1736,7 +1737,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
             menu.setItem(25, item(Material.POPPY, "§x§F§A§D§8§F§C§lАуры", "heart_aura_icon", null,
                 lore(openSectionHint,
                     "§7Живые эффекты вокруг игрока",
-                    "§7Цены: §x§F§8§B§E§F§B5500 §8– §x§F§8§B§E§F§B6500 §fꐃ",
+                    "§7Цены: §x§F§8§B§E§F§B5500 §fꐃ",
                     "§7Надето: " + activeAuraLabel(player),
                     "")));
             placeBackAndClear(menu, player, false);
@@ -1806,15 +1807,15 @@ public final class AccessoryController implements CommandExecutor, Listener {
             placeSectionTabs(menu, player, Section.AURAS);
             String auraNow = auraChoice(player);
             boolean hearts = AURA_HEARTS.equals(auraNow);
-            boolean flames = AURA_FLAMES.equals(auraNow);
+            boolean butterflies = AURA_BUTTERFLIES.equals(auraNow);
             menu.setItem(30, item(Material.POPPY, "§x§F§A§D§8§F§C§lАура сердечек", "heart_aura_icon", null,
                 shopAccessoryLore(player, AccessoryItem.HEART_AURA, hearts,
                     "§7Кольцо из 12 живых сердечек вокруг игрока",
                     "§7Рождаются под ногами, плывут вверх и тают над макушкой")));
-            menu.setItem(32, item(Material.BLAZE_POWDER, "§x§F§A§D§8§F§C§lАура пламени", "flame_aura_icon", null,
-                shopAccessoryLore(player, AccessoryItem.FLAME_AURA, flames,
-                    "§7Кольцо из 12 живых языков пламени вокруг игрока",
-                    "§7Вспыхивают под ногами, тянутся вверх и гаснут над макушкой")));
+            menu.setItem(32, item(Material.PINK_DYE, "§x§F§A§D§8§F§C§lАура бабочек", "butterfly_aura_icon", null,
+                shopAccessoryLore(player, AccessoryItem.BUTTERFLY_AURA, butterflies,
+                    "§7Стая из 10 крошечных розовых бабочек вокруг игрока",
+                    "§7Кружат от колен до макушки и всё время машут крылышками")));
             placeBackAndClear(menu, player, true);
         }
 
@@ -1969,8 +1970,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
                 "§7Сколопендра снята.");
         } else if (clickedItem == AccessoryItem.HEART_AURA) {
             toggleHeartAura(player);
-        } else if (clickedItem == AccessoryItem.FLAME_AURA) {
-            toggleFlameAura(player);
+        } else if (clickedItem == AccessoryItem.BUTTERFLY_AURA) {
+            toggleButterflyAura(player);
         }
         openMenu(player, current);
     }
@@ -2053,10 +2054,10 @@ public final class AccessoryController implements CommandExecutor, Listener {
             "§dАура сердечек зажглась — сердечки плывут вверх вокруг тебя!");
     }
 
-    private static void toggleFlameAura(Player player) {
-        toggleAura(player, AURA_FLAMES, FLAME_AURA_BLUEPRINT,
-            "Аура пламени", "ауры пламени", "аура пламени",
-            "§dАура пламени зажглась — языки пламени тянутся вверх вокруг тебя!");
+    private static void toggleButterflyAura(Player player) {
+        toggleAura(player, AURA_BUTTERFLIES, BUTTERFLY_AURA_BLUEPRINT,
+            "Аура бабочек", "ауры бабочек", "аура бабочек",
+            "§dАура бабочек расправила крылышки — они кружат вокруг тебя!");
     }
 
     private static void toggleAura(Player player, String choiceId, String blueprint,
