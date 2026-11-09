@@ -337,6 +337,103 @@ BRANCHES = [
 ]
 BRANCH_COUNT = len(BRANCHES)
 
+# --- ПЕРЬЯ (v3.27.0): то, что превращает «ветки молний» в НАСТОЯЩЕЕ КРЫЛО ---
+# Старая форма (ствол + 7 висящих ветвей с зазубринами и ПРОПУСКАМИ) читалась
+# как дерево/ветки, а не как крыло: между ветвями было пусто. Теперь крыло —
+# это СПЛОШНАЯ ПЛОСКОСТЬ из 14 перекрывающихся перьев: корень каждого сидит на
+# дуге ствола (передняя кромка), кончик выходит на заднюю кромку. Хорда пера
+# растёт от плеча (3.3 BB) к запястью (9.5 BB) и сходит на нет у кончика —
+# это и есть птичий план крыла. Перья ШИРЕ своего шага (1.70 против 1.56),
+# поэтому они перекрываются и дают сплошную поверхность, а тёмные боковые
+# грани прорисовывают границы между перьями.
+# (s_root — доля по дуге TRUNK 0..1; tip_x, tip_y — кончик пера)
+FEATHERS = (
+    (0.000, 1.50, 17.20),
+    (0.071, 3.45, 16.40),
+    (0.143, 5.50, 15.80),
+    (0.214, 7.55, 15.40),
+    (0.286, 9.60, 15.20),
+    (0.357, 11.70, 15.15),
+    (0.429, 13.80, 15.30),
+    (0.500, 15.80, 15.60),
+    (0.571, 17.70, 16.05),
+    (0.643, 19.30, 16.60),
+    (0.714, 20.60, 17.20),
+    (0.786, 21.55, 17.70),
+    (0.857, 22.25, 18.00),
+    (0.929, 22.65, 18.05),
+)
+FEATHER_COUNT = len(FEATHERS)
+FEATHER_WIDTH = 1.70      # ширина пера по размаху (шаг 1.56 -> перекрытие)
+FEATHER_THICK = 0.22      # толщина плоскости крыла
+FEATHER_SEG_LEN = 1.85    # длина одного сегмента пера
+FEATHER_TIP_DZ = 0.30     # задняя кромка отнесена НАЗАД (+Z = спина), чтобы
+                          # сплошная плоскость не врезалась в тело игрока
+FEATHER_ZCURVE = 0.18     # плоскость крыла выгнута назад
+# Три группы перьев (кроющие / второстепенные / маховые): каждая рябит своей
+# фазой, поэтому крыло «дышит» как оперение, а не ходит монолитной плитой.
+FEATHER_GROUPS = ((0, 5), (5, 10), (10, FEATHER_COUNT))
+
+
+def _trunk_at(sv: float) -> tuple:
+    """Точка на дуге ствола (передней кромке) при доле `sv` от плеча к кончику."""
+    t = sv * (len(TRUNK) - 1)
+    i = min(len(TRUNK) - 2, max(0, int(t)))
+    f = t - i
+    a, b = TRUNK[i], TRUNK[i + 1]
+    return tuple(a[k] + (b[k] - a[k]) * f for k in range(3))
+
+
+def _feather_ends(idx: int):
+    sv, tx, ty = FEATHERS[idx]
+    root = _trunk_at(sv)
+    tip = (tx, ty, root[2] + FEATHER_TIP_DZ)
+    return root, tip
+
+
+def _feather_group_pivots() -> list:
+    """Пивот группы — центр тяжести её перьев (все кубы группы в +-6 BB)."""
+    out = []
+    for (i0, i1) in FEATHER_GROUPS:
+        pts = []
+        for i in range(i0, i1):
+            root, tip = _feather_ends(i)
+            for k in (0.2, 0.5, 0.8):
+                pts.append(tuple(root[j] + (tip[j] - root[j]) * k for j in range(3)))
+        out.append([round(sum(p[j] for p in pts) / len(pts), 4) for j in range(3)])
+    return out
+
+
+def feather_chain(prefix: str, root: tuple, tip: tuple, faces: dict, origin: list,
+                  glow_faces=None) -> list:
+    """Одно перо: ланцетовидная цепочка прямоугольных сегментов вдоль оси.
+
+    Каждый сегмент — ОСЕВЫОЙ куб (никаких поворотов), соседние перекрываются
+    на `12%`, поэтому перо получается сплошным. Профиль `0.74 + 0.28*sin(pi*t)`
+    делает перо узким у корня, широким в середине и острым на конце.
+    """
+    rx, ry, rz = root
+    tx, ty, tz = tip
+    chord = math.hypot(tx - rx, ty - ry)
+    segs = max(2, int(round(chord / FEATHER_SEG_LEN)))
+    cubes = []
+    for k in range(segs):
+        t0 = k / segs
+        t1 = min(1.0, (k + 1) / segs + 0.12)
+        tm = (t0 + t1) / 2.0
+        x0 = rx + (tx - rx) * t0; y0 = ry + (ty - ry) * t0; z0 = rz + (tz - rz) * t0
+        x1 = rx + (tx - rx) * t1; y1 = ry + (ty - ry) * t1; z1 = rz + (tz - rz) * t1
+        hw = FEATHER_WIDTH * (0.74 + 0.28 * math.sin(math.pi * tm)) / 2.0
+        zc = FEATHER_ZCURVE * math.sin(math.pi * tm)
+        lo = [min(x0, x1) - hw, min(y0, y1), min(z0, z1) - FEATHER_THICK / 2.0 + zc]
+        hi = [max(x0, x1) + hw, max(y0, y1), max(z0, z1) + FEATHER_THICK / 2.0 + zc]
+        last = (k == segs - 1)
+        f = glow_faces if (last and glow_faces is not None) else faces
+        cubes.append(_cube(f'{prefix}_{k:02d}',
+                           [round(v, 4) for v in lo], [round(v, 4) for v in hi],
+                           origin, f))
+    return cubes
+
 # Branch pivots sit 40% along their own length: the longest branch is ~9.6 BB,
 # so its farthest cube (plus a 4.3 BB barb) stays under 10 BB from the pivot.
 BRANCH_PIVOT_T = 0.40
@@ -509,46 +606,20 @@ def build_geometry(elements: list) -> dict:
     bones['trunk_r'] = add_many(trunk)
     bones['trunk_l'] = add_many(_mirror_chain(trunk, _mirror_pivot(tpiv)))
 
-    # --- D) seven branch bolts hanging off the trunk, each splitting into barbs ---
-    for idx, (att, tx, ty, tz, steps, hw, hd, amp, gaps) in enumerate(BRANCHES):
-        ax, ay, az = TRUNK[att]
-        bpiv = _branch_pivot(idx)
-        pts = []
-        for i in range(steps + 1):
-            t = i / steps
-            pts.append((ax + (tx - ax) * t,
-                        ay + (ty - ay) * t,
-                        az + (tz - az) * t))
-        cubes = jag_chain(f'branch_r{idx + 1}', pts, amp, 11.0 + idx * 3.3,
-                          hw, hd, bolt_faces, bpiv, taper=0.5, gaps=gaps)
-
-        # the branch splits again — that is what makes it a lightning TREE
-        base = math.atan2(ty - ay, tx - ax)
-        for bk, (bt, bang, blen) in enumerate(BARBS.get(idx + 1, ())):
-            bx = ax + (tx - ax) * bt
-            by = ay + (ty - ay) * bt
-            bz = az + (tz - az) * bt
-            rad = base + math.radians(bang)
-            cubes.extend(bolt_cubes(
-                f'barb_r{idx + 1}_{bk}',
-                (bx, by),
-                (bx + math.cos(rad) * blen, by + math.sin(rad) * blen),
-                bz, bz + 0.14,
-                hw * 0.66, hd * 0.66, 2, amp * 0.5, 23.0 + idx * 4.0 + bk,
-                glow_faces, bpiv, taper=0.6, gaps=(1,)))
-
-        # loose spark hanging past the tip of the branch
-        for k, (along, lat, size) in enumerate(BRANCH_TIPS.get(idx + 1, ())):
-            sx = tx + math.cos(base) * along - math.sin(base) * lat
-            sy = ty + math.sin(base) * along + math.cos(base) * lat
-            sz = tz + 0.08 * k
-            cubes.append(_cube(f'ash_r{idx + 1}_{k}',
-                               [sx - size, sy - size, sz - size],
-                               [sx + size, sy + size, sz + size],
-                               bpiv, spark_faces))
-
-        bones[f'branch_r{idx + 1}'] = add_many(cubes)
-        bones[f'branch_l{idx + 1}'] = add_many(_mirror_chain(cubes, _mirror_pivot(bpiv)))
+    # --- D) ПЕРЬЯ: сплошная плоскость крыла (вместо висящих ветвей) ---------
+    feather_faces = _faces(UV_BOLT_MID, east=UV_BOLT_EDGE, west=UV_BOLT_EDGE,
+                           up=UV_BOLT_CORE, down=UV_BOLT_EDGE)
+    fpivs = _feather_group_pivots()
+    for gi, (i0, i1) in enumerate(FEATHER_GROUPS):
+        cubes = []
+        for i in range(i0, i1):
+            root, tip = _feather_ends(i)
+            # каждый третий кончик пера СВЕТИТСЯ — молния пробивает оперение
+            glow = glow_faces if (i % 3 == 1) else None
+            cubes.extend(feather_chain(f'feather_r{i:02d}', root, tip,
+                                       feather_faces, fpivs[gi], glow_faces=glow))
+        bones[f'feather_r{gi + 1}'] = add_many(cubes)
+        bones[f'feather_l{gi + 1}'] = add_many(_mirror_chain(cubes, _mirror_pivot(fpivs[gi])))
 
     # --- D) spark_r / spark_l: crackling clusters above each shoulder blade ---
     for side, (sx, sy, sz) in (('r', SPARKS[0]), ('l', SPARKS[1])):
@@ -576,8 +647,9 @@ def build_geometry(elements: list) -> dict:
 # 4. Seamless 4.8 s animation: wing beat, per-arc flutter, electric discharge
 # ---------------------------------------------------------------------------
 TRUNK_IDS = ['trunk_r', 'trunk_l']
-BRANCH_IDS = [f'branch_{s}{i}' for s in ('r', 'l') for i in range(1, BRANCH_COUNT + 1)]
-BONE_NAMES = (['zeus_root', 'wing_r', 'wing_l'] + TRUNK_IDS + BRANCH_IDS
+FEATHER_IDS = [f'feather_{s}{i}' for s in ('r', 'l')
+               for i in range(1, len(FEATHER_GROUPS) + 1)]
+BONE_NAMES = (['zeus_root', 'wing_r', 'wing_l'] + TRUNK_IDS + FEATHER_IDS
               + ['cloud_rim_r', 'cloud_rim_l'] + ['spark_r', 'spark_l'])
 
 
@@ -602,8 +674,8 @@ def eval_zeus_pose(u: float) -> dict:
                      'wing_l': [0.0, round(-sweep_y, 4), round(-flap_z, 4)]},
         'trunk_rot': {},
         'trunk_scale': {},
-        'branch_rot': {},
-        'branch_scale': {},
+        'feather_rot': {},
+        'feather_scale': {},
         'rim_scale': {},
         'spark_rot': {},
         'spark_scale': {},
@@ -624,22 +696,20 @@ def eval_zeus_pose(u: float) -> dict:
         ts = round(1.0 + 0.03 * math.sin(tau * up + phase) + 0.12 * pulse, 4)
         pose['trunk_scale'][tname] = [ts, round(1.0 + 0.03 * pulse, 4), ts]
 
-        # Branches flutter harder the further out they sit, so the wingtip whips.
-        for i in range(1, BRANCH_COUNT + 1):
-            name = f'branch_{side}{i}'
-            bph = 0.52 * (i - 1) + phase
-            amp = 2.6 + 1.15 * (i - 1)
-            flutter = amp * math.sin(tau * up + bph)
-            crackle = 1.7 * math.sin(tau * 7.0 * up + i * 1.7)
-            twist = 1.0 * math.sin(tau * 3.0 * up + bph * 1.6)
-            pose['branch_rot'][name] = [round(twist, 4),
-                                        round(0.6 * crackle, 4),
-                                        round(sign * (flutter + crackle), 4)]
-            # Discharge: a narrow +18% surge travelling outward through the tree.
-            beat = (up - (i - 1) * 0.11 - (0.0 if side == 'r' else 0.5)) % 1.0
-            pulse = math.exp(-((beat - 0.5) / 0.15) ** 2)
-            s = round(1.0 + 0.05 * math.sin(tau * up + bph) + 0.18 * pulse, 4)
-            pose['branch_scale'][name] = [s, round(1.0 + 0.04 * pulse, 4), s]
+        # Перья РЯБЯТ группами: кроющие -> второстепенные -> маховые. Волна
+        # бежит от плеча к кончику, поэтому крыло шевелится как оперение.
+        for gi in range(len(FEATHER_GROUPS)):
+            gname = f'feather_{side}{gi + 1}'
+            fph = 0.55 * gi + phase
+            ripple = (2.2 + 0.9 * gi) * math.sin(tau * up + fph)
+            crackle = 1.1 * math.sin(tau * 6.0 * up + gi * 2.1)
+            pose['feather_rot'][gname] = [round(sign * 0.8 * crackle, 4),
+                                          round(0.5 * crackle, 4),
+                                          round(sign * (ripple + crackle), 4)]
+            beat = (up - gi * 0.13 - (0.0 if side == 'r' else 0.5)) % 1.0
+            pulse = math.exp(-((beat - 0.5) / 0.16) ** 2)
+            s_ = round(1.0 + 0.02 * math.sin(tau * up + fph) + 0.09 * pulse, 4)
+            pose['feather_scale'][gname] = [s_, round(1.0 + 0.03 * pulse, 4), s_]
 
         # Облачный ободок не молния: он не трещит, а медленно «кипит» —
         # масштаб дышит на своей фазе, поэтому гребень всё время шевелится.
@@ -688,9 +758,9 @@ def build_idle_animators() -> dict:
             kfs[name].append(_vec_kf('rotation', f'idle:{name}', t, *pose['trunk_rot'][name]))
             kfs[name].append(_vec_kf('scale', f'idle:{name}', t, *pose['trunk_scale'][name]))
 
-        for name in BRANCH_IDS:
-            kfs[name].append(_vec_kf('rotation', f'idle:{name}', t, *pose['branch_rot'][name]))
-            kfs[name].append(_vec_kf('scale', f'idle:{name}', t, *pose['branch_scale'][name]))
+        for name in FEATHER_IDS:
+            kfs[name].append(_vec_kf('rotation', f'idle:{name}', t, *pose['feather_rot'][name]))
+            kfs[name].append(_vec_kf('scale', f'idle:{name}', t, *pose['feather_scale'][name]))
 
         for rname in ('cloud_rim_r', 'cloud_rim_l'):
             kfs[rname].append(_vec_kf('scale', f'idle:{rname}', t, *pose['rim_scale'][rname]))
@@ -733,11 +803,12 @@ def build_blueprint() -> tuple[dict, Image.Image]:
         kids = [bone(f'trunk_{side}',
                      _trunk_pivot() if side == 'r' else _mirror_pivot(_trunk_pivot()),
                      bones[f'trunk_{side}'], is_open=False)]
-        for i in range(1, BRANCH_COUNT + 1):
-            bp = _branch_pivot(i - 1)
-            kids.append(bone(f'branch_{side}{i}',
-                             bp if side == 'r' else _mirror_pivot(bp),
-                             bones[f'branch_{side}{i}'], is_open=False))
+        fpivs = _feather_group_pivots()
+        for gi in range(len(FEATHER_GROUPS)):
+            fp = fpivs[gi]
+            kids.append(bone(f'feather_{side}{gi + 1}',
+                             fp if side == 'r' else _mirror_pivot(fp),
+                             bones[f'feather_{side}{gi + 1}'], is_open=False))
         # Облачный ободок — ребёнок группы крыла, поэтому он бьёт вместе с ним.
         kids.append(bone(f'cloud_rim_{side}',
                          _rim_pivot() if side == 'r' else _mirror_pivot(_rim_pivot()),
@@ -985,14 +1056,15 @@ def render_preview(blueprint: dict, texture: Image.Image, icon: Image.Image, out
                 piv = _mirror_pivot(piv)
             tf[name] = make_tf(tf[f'wing_{side}'], piv, [0, 0, 0],
                                pose['trunk_rot'][name], pose['trunk_scale'][name])
-        for name in BRANCH_IDS:
-            side = name[7]                       # 'branch_r3' -> 'r'
-            i = int(name[8:])
-            piv = _branch_pivot(i - 1)
+        fpivs = _feather_group_pivots()
+        for name in FEATHER_IDS:
+            side = name[8]                       # 'feather_r3' -> 'r'
+            gi = int(name[9:]) - 1
+            piv = fpivs[gi]
             if side == 'l':
                 piv = _mirror_pivot(piv)
             tf[name] = make_tf(tf[f'wing_{side}'], piv, [0, 0, 0],
-                               pose['branch_rot'][name], pose['branch_scale'][name])
+                               pose['feather_rot'][name], pose['feather_scale'][name])
         for side in ('r', 'l'):
             name = f'cloud_rim_{side}'
             piv = _rim_pivot()

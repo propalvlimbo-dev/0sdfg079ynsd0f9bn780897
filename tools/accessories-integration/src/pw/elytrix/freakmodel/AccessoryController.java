@@ -91,6 +91,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
 
     static final String AURA_HEARTS = "hearts";
     static final String AURA_BUTTERFLIES = "butterflies";
+    static final String AURA_PEPEL = "pepel";
+    // Старый идентификатор «Смертельная аура» оставлен псевдонимом, чтобы
+    // уже сохранённый выбор игрока ("death") не сбрасывался после обновления.
     static final String AURA_DEATH = "death";
 
     static final String LIGHTNING_HAT_BLUEPRINT = "elytrix_lightning_hat";
@@ -168,7 +171,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         CENTIPEDE(PET_CENTIPEDE, Section.PETS, 34, CENTIPEDE_BLUEPRINT, PRICE_CENTIPEDE, "Сколопендра Гуля"),
         HEART_AURA(AURA_HEARTS, Section.AURAS, 29, HEART_AURA_BLUEPRINT, PRICE_HEART_AURA, "Аура сердечек"),
         BUTTERFLY_AURA(AURA_BUTTERFLIES, Section.AURAS, 31, BUTTERFLY_AURA_BLUEPRINT, PRICE_BUTTERFLY_AURA, "Аура бабочек"),
-        DEATH_AURA(AURA_DEATH, Section.AURAS, 33, DEATH_AURA_BLUEPRINT, PRICE_DEATH_AURA, "Смертельная аура");
+        DEATH_AURA(AURA_PEPEL, Section.AURAS, 33, DEATH_AURA_BLUEPRINT, PRICE_DEATH_AURA, "Пепельная аура");
 
         final String id;
         final Section section;
@@ -198,6 +201,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
         static AccessoryItem byId(String raw) {
             if (raw == null) return null;
             String key = raw.trim().toLowerCase(Locale.ROOT);
+            // Псевдонимы. "death" — старое имя «Пепельной ауры»: /accessories grant
+            // <ник> death продолжает работать после переименования.
+            if ("death".equals(key) || "пепел".equals(key) || "смерть".equals(key)) key = AURA_PEPEL;
             for (AccessoryItem item : values()) {
                 if (item.id.equals(key)) return item;
             }
@@ -510,7 +516,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
         String choice = get(player, AURA);
         if (AURA_HEARTS.equals(choice) && owns(player, AccessoryItem.HEART_AURA)) return choice;
         if (AURA_BUTTERFLIES.equals(choice) && owns(player, AccessoryItem.BUTTERFLY_AURA)) return choice;
-        if (AURA_DEATH.equals(choice) && owns(player, AccessoryItem.DEATH_AURA)) return choice;
+        if ((AURA_PEPEL.equals(choice) || AURA_DEATH.equals(choice))
+                && owns(player, AccessoryItem.DEATH_AURA)) return AURA_PEPEL;
         return "";
     }
 
@@ -522,7 +529,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         String choice = auraChoice(player);
         if (AURA_HEARTS.equals(choice)) return HEART_AURA_BLUEPRINT;
         if (AURA_BUTTERFLIES.equals(choice)) return BUTTERFLY_AURA_BLUEPRINT;
-        if (AURA_DEATH.equals(choice)) return DEATH_AURA_BLUEPRINT;
+        if (AURA_PEPEL.equals(choice) || AURA_DEATH.equals(choice)) return DEATH_AURA_BLUEPRINT;
         return null;
     }
 
@@ -1679,7 +1686,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         String aura = auraChoice(player);
         if (AURA_HEARTS.equals(aura)) return "§dАура сердечек";
         if (AURA_BUTTERFLIES.equals(aura)) return "§dАура бабочек";
-        if (AURA_DEATH.equals(aura)) return "§dСмертельная аура";
+        if (AURA_PEPEL.equals(aura) || AURA_DEATH.equals(aura)) return "§dПепельная аура";
         return "§8Не выбрано";
     }
 
@@ -1863,7 +1870,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
             String auraNow = auraChoice(player);
             boolean hearts = AURA_HEARTS.equals(auraNow);
             boolean butterflies = AURA_BUTTERFLIES.equals(auraNow);
-            boolean death = AURA_DEATH.equals(auraNow);
+            boolean death = AURA_PEPEL.equals(auraNow) || AURA_DEATH.equals(auraNow);
             menu.setItem(29, item(Material.POPPY, "§x§F§A§D§8§F§C§lАура сердечек", "heart_aura_icon", null,
                 shopAccessoryLore(player, AccessoryItem.HEART_AURA, hearts,
                     "§7Кольцо из 12 живых сердечек вокруг игрока",
@@ -1872,10 +1879,10 @@ public final class AccessoryController implements CommandExecutor, Listener {
                 shopAccessoryLore(player, AccessoryItem.BUTTERFLY_AURA, butterflies,
                     "§7Стая из 10 крошечных розовых бабочек вокруг игрока",
                     "§7Кружат от колен до макушки и всё время машут крылышками")));
-            menu.setItem(33, item(Material.BLAZE_POWDER, "§x§F§A§D§8§F§C§lСмертельная аура", "death_aura_icon", null,
+            menu.setItem(33, item(Material.BLAZE_POWDER, "§x§F§A§D§8§F§C§lПепельная аура", "death_aura_icon", null,
                 shopAccessoryLore(player, AccessoryItem.DEATH_AURA, death,
                     "§7Из-под самых ног всё время летит вверх пепел",
-                    "§7Серые хлопья кувыркаются, в них тлеют угольки")));
+                    "§7Закручивается вихрем вокруг тебя и всплывает, тлея угольками")));
             placeBackAndClear(menu, player, true);
         }
 
@@ -2123,9 +2130,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
     }
 
     private static void toggleDeathAura(Player player) {
-        toggleAura(player, AURA_DEATH, DEATH_AURA_BLUEPRINT,
-            "Смертельная аура", "смертельной ауры", "смертельная аура",
-            "§dСмертельная аура вспыхнула — из-под ног полетел пепел!");
+        toggleAura(player, AURA_PEPEL, DEATH_AURA_BLUEPRINT,
+            "Пепельная аура", "пепельной ауры", "пепельная аура",
+            "§dПепельная аура вспыхнула — из-под ног вихрем полетел пепел!");
     }
 
     private static void toggleAura(Player player, String choiceId, String blueprint,

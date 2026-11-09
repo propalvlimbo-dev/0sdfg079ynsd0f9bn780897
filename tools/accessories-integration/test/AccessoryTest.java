@@ -575,35 +575,35 @@ public class AccessoryTest {
   click.slot=31;controller.onClick(click);
   check(AccessoryController.wearingButterflyAura(p) && wallet.get(p.uuid)==4500,"re-equipping Аура бабочек is free forever!");
 
-  // --- 8e. Buy & Equip NEW Смертельная аура (5500 ꐃ, Ауры card slot 33 -> 4500 ꐃ) ---
+  // --- 8e. Buy & Equip NEW Пепельная аура (5500 ꐃ, Ауры card slot 33 -> 4500 ꐃ) ---
   wallet.put(p.uuid, 10000); // top the test wallet up for the third aura
-  check(Bukkit.slots.get(33).meta.title.contains("Смертельная аура")
+  check(Bukkit.slots.get(33).meta.title.contains("Пепельная аура")
         && Bukkit.slots.get(33).meta.model.equals(new NamespacedKey("reallyworld","death_aura_icon")),
-        "Смертельная аура in Ауры slot 33 with death_aura_icon!");
+        "Пепельная аура in Ауры slot 33 with death_aura_icon!");
   check(Bukkit.slots.get(33).meta.lore.stream().anyMatch(l -> l.contains("5500") && l.contains("ꐃ")),
-        "Смертельная аура priced at 5500 Рилликов!");
-  click.slot=33;controller.onClick(click); // buy & equip Смертельная аура!
+        "Пепельная аура priced at 5500 Рилликов!");
+  click.slot=33;controller.onClick(click); // buy & equip Пепельная аура!
   check(wallet.get(p.uuid)==4500 && AccessoryController.owns(p, AccessoryController.AccessoryItem.DEATH_AURA),
-        "Смертельная аура bought for exact 5500 Рилликов!");
+        "Пепельная аура bought for exact 5500 Рилликов!");
   check(AccessoryController.deathAuraSelected(p) && AccessoryController.wearingDeathAura(p)
         && AccessoryController.deathAuraAnimating(p),
-        "Смертельная аура Dummy spawned around the player & playing the seamless 'idle' ash-rise loop!");
+        "Пепельная аура Dummy spawned around the player & playing the seamless 'idle' ash-vortex loop!");
   check(!AccessoryController.wearingButterflyAura(p) && !AccessoryController.wearingHeartAura(p)
         && AccessoryController.wearingZeusWings(p),
-        "all three auras share the ONE aura slot: equipping Смертельная аура swaps out the other two!");
+        "all three auras share the ONE aura slot: equipping Пепельная аура swaps out the other two!");
   check(fe.entities.size()==4,"the swapped aura still rides the 4th isolated Dummy entity, no leak");
   FakeActive deathModel=fe.q.last;
   deathModel.rendererReady=true;
   AccessoryController.animatePets();
   check(AccessoryController.deathAuraAttached(p) && fe.pivots.passengers.contains(deathModel.pivotId),
-        "Смертельная аура pivot mounted on player PivotOverride");
+        "Пепельная аура pivot mounted on player PivotOverride");
   controller.onMove(new PlayerMoveEvent(p, new Location(p.world, p.px, p.py, p.pz, -173.0F, 0.0F)));
   check(Math.abs(deathModel.owner.bodyYaw - 0.0F) < 0.01F && Math.abs(deathModel.owner.headYaw - 0.0F) < 0.01F,
-        "Смертельная аура never turns with the body: its rig yaw stays pinned to 0 (world space)!");
+        "Пепельная аура never turns with the body: its rig yaw stays pinned to 0 (world space)!");
   click.slot=33;controller.onClick(click);
-  check(!AccessoryController.wearingDeathAura(p) && wallet.get(p.uuid)==4500,"unequipping Смертельная аура is free");
+  check(!AccessoryController.wearingDeathAura(p) && wallet.get(p.uuid)==4500,"unequipping Пепельная аура is free");
   click.slot=33;controller.onClick(click);
-  check(AccessoryController.wearingDeathAura(p) && wallet.get(p.uuid)==4500,"re-equipping Смертельная аура is free forever!");
+  check(AccessoryController.wearingDeathAura(p) && wallet.get(p.uuid)==4500,"re-equipping Пепельная аура is free forever!");
 
   // --- 9. Clear All (slot 49) ---
   click.slot=49;controller.onClick(click);
@@ -656,6 +656,6 @@ public class AccessoryTest {
   AccessoryController.install(bare);
   check(bare.mockCommand.executor==null && !bare.warnings.isEmpty(),"missing command logged safely");
   InventoryDragEvent drag=new InventoryDragEvent();drag.view=click.view;controller.onDrag(drag);check(drag.cancelled,"drag cancelled");
-  System.out.println("All v3.26.1 tests passed: public /accessories (/acc, /акс) Риллики shop + Ауры section with THREE auras (Аура сердечек 5500 ꐃ, 12 hearts rising at random, no spiral + Аура бабочек 5500 ꐃ, 10 pink butterflies with filled wings, horizontal body and antennae + Смертельная аура 5500 ꐃ, 26 ash flakes rising in ONE swirling vortex from under the feet, glowing embers, never re-created on teleport) + Крылья Зевса (8000 ꐃ, wings woven from lightning + new cloud rim over the wing arc) + Круг Сатаны (4500 ꐃ, spinning pentagram halo) + Дождевое облако (4000 ꐃ, 3D drizzle) + all 13 3D models!");
+  System.out.println("All v3.27.0 tests passed: public /accessories (/acc, /акс) Риллики shop + Ауры section with THREE auras (Аура сердечек 5500 ꐃ, 12 hearts rising at random, no spiral + Аура бабочек 5500 ꐃ, 10 pink butterflies with filled wings, horizontal body and antennae + Пепельная аура 5500 ꐃ, 34 evenly scattered single ash flakes rising in ONE swirling vortex from under the feet, glowing embers, never re-created on teleport) + Крылья Зевса (8000 ꐃ, remade as a real 14-feather WING surface, not branches + cloud rim over the leading edge) + Круг Сатаны (4500 ꐃ, spinning pentagram halo) + Дождевое облако (4000 ꐃ, 3D drizzle) + all 13 3D models!");
  }
 }
