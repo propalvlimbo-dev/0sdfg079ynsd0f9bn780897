@@ -44,7 +44,9 @@ options:
   alerts-on-join: true
 
   # Whether LPX should kick players when an exception in their handlers occurs
-  kick-on-exception: true
+  # ELYTRIX: было true — любое исключение внутри обработчика LPX кикало игрока,
+  # а при общем для всех пакете вылетали ВСЕ сразу. Теперь только лог, без кика.
+  kick-on-exception: false
 
   # LPX will prevent any type of item exploit that slows Netty threads.
   # Available options:
@@ -229,7 +231,7 @@ checks:
       # DON'T DISABLE THIS CHECK, IF IT FALSES PLEASE DISABLE AUTOMATIC MODE AND INCREASE "max" VALUE
       enabled: true
       punish: true
-      max-vl: 3
+      max-vl: 8
       min-vl: 1
       punish-commands:
         - 'lpx kick %player% <red>You are sending suspicious packets.'
@@ -244,7 +246,7 @@ checks:
     b:
       enabled: true
       punish: true
-      max-vl: 1
+      max-vl: 5
       min-vl: 1
       punish-commands:
         - 'lpx kick %player% <red>You are sending suspicious packets.'
