@@ -894,6 +894,11 @@ public final class AccessoryController implements CommandExecutor, Listener {
         entity.setRotationTick(-1);
     }
 
+    /** True for the aura models: they surround the player in world space and never turn with the body. */
+    private static boolean isAuraBlueprint(String blueprintId) {
+        return HEART_AURA_BLUEPRINT.equals(blueprintId);
+    }
+
     private static void syncRigTransform(Player player, GhoulRig rig, float bodyYaw, Location locOverride) {
         if (player == null || rig == null || rig.entity == null || rig.entity.isDestroyed()) return;
         float safeYaw = Float.isFinite(bodyYaw) ? bodyYaw : 0.0F;
@@ -1089,6 +1094,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
             boolean isHeadRig = LIGHTNING_HAT_BLUEPRINT.equals(rig.blueprintId)
                 || SATAN_BLUEPRINT.equals(rig.blueprintId);
             float rigYaw = (isHeadRig && loc != null) ? loc.getYaw() : bodyYaw;
+            if (isAuraBlueprint(rig.blueprintId)) rigYaw = 0.0F;   // аура не вращается за игроком
             syncRigTransform(wearer, rig, rigYaw, loc);
             ensureLivingAnimation(rig, tracker.getHorizSpeedBlocksPerTick());
             if (MELLSTROY_BLUEPRINT.equals(rig.blueprintId)) {
@@ -1252,10 +1258,15 @@ public final class AccessoryController implements CommandExecutor, Listener {
         PlayerBodyTracker tracker = trackerFor(player);
         boolean isHeadRig = LIGHTNING_HAT_BLUEPRINT.equals(blueprintId)
             || SATAN_BLUEPRINT.equals(blueprintId);
+        // An aura lives in WORLD space: it only follows the player's position and never
+        // turns together with the body, so the ring never spins when the player looks around.
+        boolean isAura = isAuraBlueprint(blueprintId);
         boolean tracksHeadPitch = false;
-        float initialYaw = (isHeadRig && loc != null && Float.isFinite(loc.getYaw()))
-            ? loc.getYaw()
-            : tracker.getBodyYaw();
+        float initialYaw = isAura
+            ? 0.0F
+            : ((isHeadRig && loc != null && Float.isFinite(loc.getYaw()))
+                ? loc.getYaw()
+                : tracker.getBodyYaw());
         float initialPitch = (tracksHeadPitch && loc != null && Float.isFinite(loc.getPitch()))
             ? loc.getPitch()
             : 0.0F;
@@ -1423,9 +1434,11 @@ public final class AccessoryController implements CommandExecutor, Listener {
         GhoulRig pet = PETS.get(uuid);
         GhoulRig kagune = KAGUNES.get(uuid);
         GhoulRig hat = HATS.get(uuid);
+        GhoulRig aura = AURAS.get(uuid);
         if ((pet == null || pet.model.isDestroyed())
                 && (kagune == null || kagune.model.isDestroyed())
-                && (hat == null || hat.model.isDestroyed())) {
+                && (hat == null || hat.model.isDestroyed())
+                && (aura == null || aura.model.isDestroyed())) {
             return;
         }
         Location to = event.getTo();
@@ -1444,6 +1457,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (pet != null) syncRigTransform(player, pet, yaw, to);
         if (kagune != null) syncRigTransform(player, kagune, yaw, to);
         if (hat != null) syncRigTransform(player, hat, to.getYaw(), to);
+        // Аура следует за игроком ТОЛЬКО позицией — рысканье всегда 0.
+        if (aura != null) syncRigTransform(player, aura, 0.0F, to);
     }
 
     @EventHandler public void onTeleport(PlayerTeleportEvent event) {

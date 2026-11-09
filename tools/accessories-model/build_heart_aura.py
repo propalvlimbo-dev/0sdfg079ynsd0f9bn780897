@@ -133,11 +133,11 @@ def build_heart_texture() -> Image.Image:
 
     # (0,0) тело сердца: светлый персиково-розовый -> насыщенная роза
     paint(0, 0, lambda px, py: _ramp(
-        [(0.00, (255, 224, 233)), (0.45, (255, 138, 172)), (1.00, (226, 74, 118))],
+        [(0.00, (255, 219, 230)), (0.45, (255, 152, 184)), (1.00, (233, 92, 135))],
         py / 31.0 + wob(px, py)))
     # (32,0) боковые грани: роза -> глубокая малина
     paint(1, 0, lambda px, py: _ramp(
-        [(0.00, (255, 150, 182)), (0.45, (232, 78, 122)), (1.00, (150, 30, 72))],
+        [(0.00, (255, 165, 194)), (0.45, (236, 92, 134)), (1.00, (176, 46, 88))],
         py / 31.0 + wob(px, py)))
     # (0,32) блик: почти белый -> бледно-розовый
     paint(0, 1, lambda px, py: _ramp(
@@ -155,6 +155,25 @@ def build_heart_texture() -> Image.Image:
 # ---------------------------------------------------------------------------
 # 2. Кубы (НИ ОДИН не повёрнут)
 # ---------------------------------------------------------------------------
+# Каждая из 7 пиксель-строк сердца — отдельный куб. Если дать им всем одну и ту же
+# UV-область, каждый куб покажет ВЕСЬ градиент и сердце превратится в «стиральную
+# доску» из 7 полос. Поэтому строка `r` получает свою полоску градиента: вместе
+# 7 полосок складываются в один непрерывный сверху-вниз переход (светлый верх ->
+# насыщенный низ), то есть в обычную объёмную тень, а не в полосы.
+_ROW_BAND = 7.5 / 7.0
+
+
+def _row_band(top: float, left: float, right: float, row: int) -> tuple:
+    y0 = top + row * _ROW_BAND + 0.04
+    y1 = top + (row + 1) * _ROW_BAND - 0.04
+    return (left, round(y0, 3), right, round(y1, 3))
+
+
+def _heart_row_faces(row: int) -> dict:
+    """Лицевые грани строки `row`: своя полоска тела + своя полоска боковой грани."""
+    body = _row_band(0.25, 0.25, 7.75, row)
+    edge = _row_band(0.25, 8.25, 15.75, row)
+    return _faces(body, east=edge, west=edge, up=edge, down=edge)
 def _faces(default_uv: tuple, **overrides) -> dict:
     out = {}
     for side in ('north', 'east', 'south', 'west', 'up', 'down'):
@@ -203,8 +222,6 @@ def heart_spec(i: int) -> dict:
 
 
 def build_geometry(elements: list) -> dict:
-    heart_faces = _faces(UV_HEART, east=UV_EDGE, west=UV_EDGE,
-                         up=UV_EDGE, down=UV_EDGE)
     high_faces = _faces(UV_HIGH)
     spark_faces = _faces(UV_SPARK)
 
@@ -228,7 +245,7 @@ def build_geometry(elements: list) -> dict:
                 f'heart_{i + 1:02d}_r{row}_{k}',
                 [origin[0] + xa, origin[1] + y_lo, origin[2] - hd],
                 [origin[0] + xb, origin[1] + y_hi, origin[2] + hd],
-                origin, heart_faces))
+                origin, _heart_row_faces(row)))
         # блик: чуть выступает вперёд, микро-ступенька против z-fighting
         s = spec['scale']
         hd = ROW_DEPTH[1] * s + 0.03
@@ -285,8 +302,13 @@ def eval_aura_pose(u: float) -> dict:
         ang = spec['ang'] + tau * DRIFT_TURNS * c
         # дыхание кольца — ТОЛЬКО наружу, чтобы сердечко никогда не приближалось к игроку
         r = spec['r'] + 0.60 * (0.5 + 0.5 * math.sin(tau * (c * 1.5 + i * 0.37)))
-        x = math.cos(ang) * r
-        z = math.sin(ang) * r
+        # живое болтание: касательная качка + вертикальное покачивание. Обе правки
+        # НЕ уменьшают радиус, поэтому зазор до игрока остаётся прежним.
+        sway = 0.75 * math.sin(tau * (c * 2.5 + i * 0.83))
+        bob = 0.45 * math.sin(tau * (c * 3.0 + i * 0.47))
+        x = math.cos(ang) * r - math.sin(ang) * sway
+        z = math.sin(ang) * r + math.cos(ang) * sway
+        y = y + bob
 
         bx = math.cos(spec['ang']) * spec['r']
         bz = math.sin(spec['ang']) * spec['r']
@@ -295,12 +317,14 @@ def eval_aura_pose(u: float) -> dict:
 
         # сердечко повёрнуто «лицом» наружу кольца + живое покачивание
         face = 90.0 - math.degrees(ang)
-        wob_y = 12.0 * math.sin(tau * (c * 2.0 + i * 0.61))
-        wob_z = 10.0 * math.sin(tau * (c * 1.0 + i * 1.23))
-        wob_x = 6.0 * math.sin(tau * (c * 1.5 + i * 0.29))
+        wob_y = 26.0 * math.sin(tau * (c * 3.0 + i * 0.61))
+        wob_z = 22.0 * math.sin(tau * (c * 2.0 + i * 1.23))
+        wob_x = 14.0 * math.sin(tau * (c * 2.5 + i * 0.29))
         pose['heart_rot'][name] = [round(wob_x, 4), round(face + wob_y, 4), round(wob_z, 4)]
 
-        f = _fade(c) * spec['scale']
+        # лёгкое «дыхание» размера поверх общей кривой появления/таяния
+        flutter = 1.0 + 0.07 * math.sin(tau * (c * 4.0 + i * 0.71))
+        f = _fade(c) * spec['scale'] * flutter
         pose['heart_scale'][name] = [round(f, 4), round(f, 4), round(f, 4)]
 
     return pose
