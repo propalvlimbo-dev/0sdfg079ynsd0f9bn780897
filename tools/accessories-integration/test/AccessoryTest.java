@@ -656,6 +656,6 @@ public class AccessoryTest {
   AccessoryController.install(bare);
   check(bare.mockCommand.executor==null && !bare.warnings.isEmpty(),"missing command logged safely");
   InventoryDragEvent drag=new InventoryDragEvent();drag.view=click.view;controller.onDrag(drag);check(drag.cancelled,"drag cancelled");
-  System.out.println("All v3.26.0 tests passed: public /accessories (/acc, /акс) Риллики shop + Ауры section with THREE auras (Аура сердечек 5500 ꐃ, 12 hearts rising at random, no spiral + Аура бабочек 5500 ꐃ, 10 pink butterflies with filled wings, horizontal body and antennae + Смертельная аура 5500 ꐃ, 10 tumbling ash flakes with glowing embers rising from under the feet, never re-created on teleport) + Крылья Зевса (8000 ꐃ, wings woven from lightning + new cloud rim over the wing arc) + Круг Сатаны (4500 ꐃ, spinning pentagram halo) + Дождевое облако (4000 ꐃ, 3D drizzle) + all 13 3D models!");
+  System.out.println("All v3.26.1 tests passed: public /accessories (/acc, /акс) Риллики shop + Ауры section with THREE auras (Аура сердечек 5500 ꐃ, 12 hearts rising at random, no spiral + Аура бабочек 5500 ꐃ, 10 pink butterflies with filled wings, horizontal body and antennae + Смертельная аура 5500 ꐃ, 26 ash flakes rising in ONE swirling vortex from under the feet, glowing embers, never re-created on teleport) + Крылья Зевса (8000 ꐃ, wings woven from lightning + new cloud rim over the wing arc) + Круг Сатаны (4500 ꐃ, spinning pentagram halo) + Дождевое облако (4000 ꐃ, 3D drizzle) + all 13 3D models!");
  }
 }
