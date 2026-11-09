@@ -15,7 +15,7 @@
 
 ```bash
 # живой дашборд, экран обновляется раз в 10 секунд:
-curl -fsSL https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/<COMMIT_SHA>/tools/lag-diagnostics/live_watch.sh -o /root/live_watch.sh && bash /root/live_watch.sh 10 /root/RW_GRIEF
+curl -fsSL https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/577a9a44d800f37dea41d51e28800095ffe3a792/tools/lag-diagnostics/live_watch.sh -o /root/live_watch.sh && bash /root/live_watch.sh 10 /root/RW_GRIEF
 ```
 
 `Ctrl+C` -> сводка за всё время наблюдения + CSV-таймлайн в
