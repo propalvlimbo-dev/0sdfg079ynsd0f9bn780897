@@ -1295,7 +1295,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         // Zeus' wings span ~3 blocks; the heart aura is a 2.3-block tall column around the
         // player, so it needs a slightly wider render sphere than the close-body rigs too.
         model.setViewRange(ZEUS_BLUEPRINT.equals(blueprintId) ? 4.5F
-            : (HEART_AURA_BLUEPRINT.equals(blueprintId) ? 3.0F : 2.5F));
+            : (HEART_AURA_BLUEPRINT.equals(blueprintId) ? 3.5F : 2.5F));
 
         PivotOverrideRegistry registry = ModelEngineAPI.getPivotOverrideRegistry();
         PivotOverride pivot = registry == null ? null : registry.getOrCreate(player);

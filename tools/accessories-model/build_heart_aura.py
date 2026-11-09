@@ -64,7 +64,7 @@ HEART_COUNT = 12
 Y_LOW = -1.2          # ниже подошвы — «из под низу»
 Y_HIGH = 34.0         # выше макушки — там и тает
 RISE = 0.80           # доля цикла на подъём, дальше таяние + невидимое окно
-DRIFT_TURNS = 0.18    # на сколько оборотов сердечко обходит кольцо за цикл
+DRIFT_TURNS = 0.10    # на сколько оборотов сердечко обходит кольцо за цикл
 
 PX = 0.30             # размер «пикселя» сердечка в BB (сердце 8x7 пикселей = 2.4 x 2.1 BB)
 
@@ -193,7 +193,10 @@ def _cube(name: str, p_from: list, p_to: list, origin: list, faces: dict) -> dic
 def heart_spec(i: int) -> dict:
     """Базовые параметры сердечка `i` (0-based)."""
     base_ang = math.radians(i * (360.0 / HEART_COUNT) + 7.0 * (i % 3))
-    radius = 4.4 + 1.2 * (((i * 7) % 5) / 4.0)
+    # Кольцо лежит ВНЕ игрока: модель игрока вместе с опущенными руками занимает
+    # |x| <= 7.5 BB и |z| <= 3.75 BB, а полуразмер сердечка ~1.5 BB — поэтому
+    # радиус держим от 10.4 BB, чтобы сердечко никогда не проходило сквозь тело.
+    radius = 11.4 + 1.8 * (((i * 7) % 5) / 4.0)
     scale = 0.85 + 0.30 * (((i * 3) % 4) / 3.0)
     phase = i / HEART_COUNT
     return {'ang': base_ang, 'r': radius, 'scale': scale, 'phase': phase}
@@ -280,7 +283,8 @@ def eval_aura_pose(u: float) -> dict:
         y = Y_LOW + (Y_HIGH - Y_LOW) * t
 
         ang = spec['ang'] + tau * DRIFT_TURNS * c
-        r = spec['r'] + 0.35 * math.sin(tau * (c * 1.5 + i * 0.37))
+        # дыхание кольца — ТОЛЬКО наружу, чтобы сердечко никогда не приближалось к игроку
+        r = spec['r'] + 0.60 * (0.5 + 0.5 * math.sin(tau * (c * 1.5 + i * 0.37)))
         x = math.cos(ang) * r
         z = math.sin(ang) * r
 

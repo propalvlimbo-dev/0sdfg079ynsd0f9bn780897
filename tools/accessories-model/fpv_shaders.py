@@ -37,11 +37,14 @@ CLOSE_ACCESSORY_MODELS = (
     'elytrix_mellstroy',
     'elytrix_lightning_hat',
     'elytrix_satan_circle',
-    'elytrix_heart_aura',
 )
 WINGS_ACCESSORY_MODELS = (
     'elytrix_angel_wings',
     'elytrix_zeus_wings',
+    # Аура — это столб высотой 2.3 блока ВОКРУГ игрока (кольцо вынесено за руки,
+    # R = 10.4..12.2 BB), поэтому по тем же причинам, что и крылья, она не влезает
+    # в отсечку 1.85 м ближнего тинта и использует «крыльевую» отсечку 2.85 м.
+    'elytrix_heart_aura',
 )
 
 SODIUM_IGNORED_SHADERS = [
