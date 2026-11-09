@@ -53,10 +53,11 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 /**
- * Server-side 3-section accessories shop & unified ModelEngine controller (v3.21.0):
+ * Server-side 3-section accessories shop & unified ModelEngine controller (v3.22.0):
  * open to ALL players, with permanent unlocks purchased for Риллики (PlayerPoints) just like {@code /shop}!
  * <ul>
- *   <li><b>Спина</b>: Ангельские крылья ({@code 6000 ꐃ}) и Щупальца Канэки ({@code 7500 ꐃ})</li>
+ *   <li><b>Спина</b>: Ангельские крылья ({@code 6000 ꐃ}), Щупальца Канэки ({@code 7500 ꐃ})
+ *       и Крылья Зевса ({@code 8000 ꐃ} — два огромных крыла, целиком сплетённых из молний)</li>
  *   <li><b>Шапки</b>: Божественный нимб ({@code 3500 ꐃ}), Круг Сатаны ({@code 4500 ꐃ},
  *       пентаграмма, вращающаяся нимбом вокруг головы) и Дождевое облако ({@code 4000 ꐃ},
  *       спокойное кучевое облако с настоящим 3D-дождиком)</li>
@@ -73,6 +74,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final String HAT_LIGHTNING = "lightning";
     static final String HAT_SATAN = "satan";
 
+    static final String BACK_ZEUS = "zeus";
+
     static final String PET_CENTIPEDE = "centipede";
     static final String PET_CHOICE = PET_CENTIPEDE;
     static final String PET_MINI_ME = "mini_me";
@@ -86,6 +89,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final String KITTEN_BLUEPRINT = "elytrix_cute_kitten";
     static final String MELLSTROY_BLUEPRINT = "elytrix_mellstroy";
     static final String KANEKI_BLUEPRINT = "elytrix_kaneki_tentacles";
+    static final String ZEUS_BLUEPRINT = "elytrix_zeus_wings";
 
     static final String IDLE_ANIM = "idle";
     static final String ADMIN_PERMISSION = "elytrixfreakmodel.admin";
@@ -108,6 +112,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final int PRICE_MELLSTROY = 5000;
     static final int PRICE_WINGS = 6000;
     static final int PRICE_KANEKI = 7500;
+    static final int PRICE_ZEUS_WINGS = 8000;
 
     /** Synchronized (in-model 3D `D.Admin BAN`-style badge animation, real Mellstroy Ogg Vorbis sound) pairs. */
     static final String[][] MELLSTROY_EMOTES = {
@@ -120,7 +125,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
     };
 
     static final String TITLE_HUB = "§fꈁꀀꈂꏡꈂꀁ§fꈃꏠ";
-    static final String TITLE_BACK = "§fꈁꀀꈂꏢꈂꀁ§fꈃꏤ";
+    // Спина now holds 3 accessories (29/31/33), so it reuses the 3-slot ꏧ content frame
+    // (content_acc_three.png) instead of the 2-slot ꏢ one.
+    static final String TITLE_BACK = "§fꈁꀀꈂꏧꈂꀁ§fꈃꏤ";
     static final String TITLE_HATS = "§fꈁꀀꈂꏧꈂꀁ§fꈃꏥ";
     static final String TITLE_PETS = "§fꈁꀀꈂꏨꈂꀁ§fꈃꏦ";
 
@@ -129,8 +136,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
     }
 
     enum AccessoryItem {
-        WINGS("wings", Section.BACK, 30, "elytrix_angel_wings", PRICE_WINGS, "Ангельские крылья"),
-        KANEKI("kaneki", Section.BACK, 32, KANEKI_BLUEPRINT, PRICE_KANEKI, "Щупальца Канэки"),
+        WINGS("wings", Section.BACK, 29, "elytrix_angel_wings", PRICE_WINGS, "Ангельские крылья"),
+        KANEKI("kaneki", Section.BACK, 31, KANEKI_BLUEPRINT, PRICE_KANEKI, "Щупальца Канэки"),
+        ZEUS_WINGS(BACK_ZEUS, Section.BACK, 33, ZEUS_BLUEPRINT, PRICE_ZEUS_WINGS, "Крылья Зевса"),
         HALO_ITEM("halo", Section.HATS, 29, "elytrix_angel_halo", PRICE_HALO, "Божественный нимб"),
         SATAN_CIRCLE(HAT_SATAN, Section.HATS, 31, SATAN_BLUEPRINT, PRICE_SATAN_CIRCLE, "Круг Сатаны"),
         LIGHTNING_HAT(HAT_LIGHTNING, Section.HATS, 33, LIGHTNING_HAT_BLUEPRINT, PRICE_LIGHTNING_HAT, "Дождевое облако"),
@@ -494,12 +502,28 @@ public final class AccessoryController implements CommandExecutor, Listener {
     }
 
     public static boolean kanekiSelected(Player player) {
-        return player != null
-            && player.isOnline()
-            && !player.isDead()
-            && player.getGameMode() != GameMode.SPECTATOR
-            && get(player, BACK).equals("kaneki")
-            && owns(player, AccessoryItem.KANEKI);
+        return KANEKI_BLUEPRINT.equals(backRigBlueprint(player));
+    }
+
+    public static boolean zeusWingsSelected(Player player) {
+        return ZEUS_BLUEPRINT.equals(backRigBlueprint(player));
+    }
+
+    /**
+     * The isolated Dummy rig worn on the back.  Kaneki's kagune and Zeus' lightning wings share
+     * this single slot, so putting one on always takes the other off.
+     */
+    static String backRigBlueprint(Player player) {
+        if (player == null
+            || !player.isOnline()
+            || player.isDead()
+            || player.getGameMode() == GameMode.SPECTATOR) {
+            return null;
+        }
+        String selection = get(player, BACK);
+        if (selection.equals("kaneki") && owns(player, AccessoryItem.KANEKI)) return KANEKI_BLUEPRINT;
+        if (BACK_ZEUS.equals(selection) && owns(player, AccessoryItem.ZEUS_WINGS)) return ZEUS_BLUEPRINT;
+        return null;
     }
 
     public static boolean centipedeSelected(Player player) {
@@ -566,6 +590,24 @@ public final class AccessoryController implements CommandExecutor, Listener {
         GhoulRig rig = KAGUNES.get(player.getUniqueId());
         return rig != null && KANEKI_BLUEPRINT.equals(rig.blueprintId)
             && !rig.model.isDestroyed() && !rig.entity.isDestroyed();
+    }
+
+    static boolean wearingZeusWings(Player player) {
+        GhoulRig rig = KAGUNES.get(player.getUniqueId());
+        return rig != null && ZEUS_BLUEPRINT.equals(rig.blueprintId)
+            && !rig.model.isDestroyed() && !rig.entity.isDestroyed();
+    }
+
+    static boolean zeusWingsAttached(Player player) {
+        GhoulRig rig = KAGUNES.get(player.getUniqueId());
+        return rig != null && ZEUS_BLUEPRINT.equals(rig.blueprintId) && rig.attached;
+    }
+
+    static boolean zeusWingsAnimating(Player player) {
+        GhoulRig rig = KAGUNES.get(player.getUniqueId());
+        if (rig == null || !ZEUS_BLUEPRINT.equals(rig.blueprintId) || rig.model.isDestroyed()) return false;
+        AnimationHandler handler = rig.model.getAnimationHandler();
+        return handler != null && handler.isPlayingAnimation(IDLE_ANIM);
     }
 
     static boolean wearingCentipede(Player player) {
@@ -845,9 +887,11 @@ public final class AccessoryController implements CommandExecutor, Listener {
                 handler.setDefaultProperty(new AnimationHandler.DefaultProperty(state, "", 0.0D, 0.0D, 1.0D));
             }
         }
+        // Zeus' wings beat harder the faster you run, but stay majestic — a kagune snaps, wings glide.
         double speedBoost = KANEKI_BLUEPRINT.equals(rig.blueprintId)
             ? 2.5D
-            : (MINI_ME_BLUEPRINT.equals(rig.blueprintId) ? 1.5D : 1.8D);
+            : (ZEUS_BLUEPRINT.equals(rig.blueprintId) ? 1.6D
+                : (MINI_ME_BLUEPRINT.equals(rig.blueprintId) ? 1.5D : 1.8D));
         double targetSpeed = 1.0D + Math.min(0.85D, Math.max(0.0D, horizSpeed) * speedBoost);
         if (!handler.isPlayingAnimation(IDLE_ANIM) || rig.animProperty == null) {
             IAnimationProperty prop = handler.playAnimation(IDLE_ANIM, 0.0D, 0.0D, targetSpeed, true);
@@ -907,7 +951,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static void syncPlayerRigs(Player player) {
         if (player == null || !player.isOnline()) return;
         syncSingleSlot(player, desiredPetBlueprint(player), PETS);
-        syncSingleSlot(player, kanekiSelected(player) ? KANEKI_BLUEPRINT : null, KAGUNES);
+        syncSingleSlot(player, backRigBlueprint(player), KAGUNES);
         syncSingleSlot(player, desiredHatBlueprint(player), HATS);
     }
 
@@ -944,7 +988,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
             PlayerBodyTracker tracker = trackerFor(wearer);
             tracker.stepServerTick(wearer);
             tickActiveRig(uuid, wearer, tracker, PETS, desiredPetBlueprint(wearer));
-            tickActiveRig(uuid, wearer, tracker, KAGUNES, kanekiSelected(wearer) ? KANEKI_BLUEPRINT : null);
+            tickActiveRig(uuid, wearer, tracker, KAGUNES, backRigBlueprint(wearer));
             tickActiveRig(uuid, wearer, tracker, HATS, desiredHatBlueprint(wearer));
         }
     }
@@ -1178,7 +1222,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
         model.setHitboxVisible(false);
         model.setLockPitch(!tracksHeadPitch);
         model.setLockYaw(true);
-        model.setViewRange(2.5F);
+        // Zeus' wings span ~3 blocks, so their tips need a wider render sphere than the
+        // close-body rigs (kagune, centipede, hats, shoulder pets) which all fit in 2.5.
+        model.setViewRange(ZEUS_BLUEPRINT.equals(blueprintId) ? 4.5F : 2.5F);
 
         PivotOverrideRegistry registry = ModelEngineAPI.getPivotOverrideRegistry();
         PivotOverride pivot = registry == null ? null : registry.getOrCreate(player);
@@ -1248,7 +1294,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (player == null) return;
         java.util.UUID uuid = player.getUniqueId();
         releaseByUuid(uuid);
-        if (desiredPetBlueprint(player) != null || kanekiSelected(player) || desiredHatBlueprint(player) != null) {
+        if (desiredPetBlueprint(player) != null || backRigBlueprint(player) != null || desiredHatBlueprint(player) != null) {
             TELEPORT_RESPAWN_AT.put(uuid, Long.valueOf(petTicks + Math.max(1L, delayTicks)));
         }
     }
@@ -1259,8 +1305,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
         StringBuilder missing = new StringBuilder();
         for (String id : new String[] {"elytrix_angel_wings", "elytrix_angel_halo",
                                        SATAN_BLUEPRINT, LIGHTNING_HAT_BLUEPRINT,
-                                       KANEKI_BLUEPRINT, CENTIPEDE_BLUEPRINT, MINI_ME_BLUEPRINT,
-                                       KITTEN_BLUEPRINT, MELLSTROY_BLUEPRINT,
+                                       KANEKI_BLUEPRINT, ZEUS_BLUEPRINT, CENTIPEDE_BLUEPRINT,
+                                       MINI_ME_BLUEPRINT, KITTEN_BLUEPRINT, MELLSTROY_BLUEPRINT,
                                        "elytrix_priora_black", "elytrix_priora_white", "elytrix_priora_pink"}) {
             if (resolveBlueprint(id) == null && !id.startsWith("elytrix_priora_")) {
                 if (missing.length() > 0) missing.append(", ");
@@ -1269,7 +1315,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
         try {
             if (missing.length() == 0) {
-                host.getLogger().info("[Аксессуары] ModelEngine загрузил все модели: крылья, нимб, круг сатаны, дождевое облако, кагуне Канэки, сколопендра, Мини-Роузи, котёнок, Меллстрой");
+                host.getLogger().info("[Аксессуары] ModelEngine загрузил все модели: крылья, нимб, круг сатаны, дождевое облако, кагуне Канэки, крылья Зевса, сколопендра, Мини-Роузи, котёнок, Меллстрой");
             } else {
                 host.getLogger().warning("[Аксессуары] ModelEngine не загрузил: " + missing
                     + " — проверь plugins/ModelEngine/blueprints и лог ModelEngine");
@@ -1419,6 +1465,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         String back = get(player, BACK);
         if ("wings".equals(back) && owns(player, AccessoryItem.WINGS)) return "§dАнгельские крылья";
         if ("kaneki".equals(back) && owns(player, AccessoryItem.KANEKI)) return "§dЩупальца Канэки";
+        if (BACK_ZEUS.equals(back) && owns(player, AccessoryItem.ZEUS_WINGS)) return "§dКрылья Зевса";
         return "§8Не выбрано";
     }
 
@@ -1444,7 +1491,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         String switchHint = "§x§F§8§B§E§F§BНажми, чтобы перейти";
         menu.setItem(12, item(Material.FEATHER, "§x§F§A§D§8§F§C§lСпина", "angel_wings", null,
             lore(current == Section.BACK ? openHint : switchHint,
-                "§7Крылья и кагуне на спину",
+                "§7Крылья, кагуне и молнии на спину",
                 "§7Надето: " + activeBackLabel(player))));
         menu.setItem(13, item(Material.NETHER_STAR, "§x§F§A§D§8§F§C§lШапки", "angel_halo", null,
             lore(current == Section.HATS ? openHint : switchHint,
@@ -1524,8 +1571,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (target == Section.HUB) {
             menu.setItem(20, item(Material.FEATHER, "§x§F§A§D§8§F§C§lСпина", "angel_wings", null,
                 lore(openSectionHint,
-                    "§7Крылья и кагуне на спину",
-                    "§7Цены: §x§F§8§B§E§F§B6000 §8– §x§F§8§B§E§F§B7500 §fꐃ",
+                    "§7Крылья, кагуне и молнии на спину",
+                    "§7Цены: §x§F§8§B§E§F§B6000 §8– §x§F§8§B§E§F§B8000 §fꐃ",
                     "§7Надето: " + activeBackLabel(player),
                     "")));
             menu.setItem(22, item(Material.NETHER_STAR, "§x§F§A§D§8§F§C§lШапки", "angel_halo", null,
@@ -1546,14 +1593,19 @@ public final class AccessoryController implements CommandExecutor, Listener {
             String back = get(player, BACK);
             boolean wings = owns(player, AccessoryItem.WINGS) && "wings".equals(back);
             boolean kagune = owns(player, AccessoryItem.KANEKI) && "kaneki".equals(back);
-            menu.setItem(30, item(Material.FEATHER, "§x§F§A§D§8§F§C§lАнгельские крылья", "angel_wings", null,
+            boolean zeus = owns(player, AccessoryItem.ZEUS_WINGS) && BACK_ZEUS.equals(back);
+            menu.setItem(29, item(Material.FEATHER, "§x§F§A§D§8§F§C§lАнгельские крылья", "angel_wings", null,
                 shopAccessoryLore(player, AccessoryItem.WINGS, wings,
                     "§7Аксессуар для спины",
                     "§7Не занимает слот брони")));
-            menu.setItem(32, item(Material.RED_DYE, "§x§F§A§D§8§F§C§lЩупальца Канэки", "kaneki_tentacles_icon", null,
+            menu.setItem(31, item(Material.RED_DYE, "§x§F§A§D§8§F§C§lЩупальца Канэки", "kaneki_tentacles_icon", null,
                 shopAccessoryLore(player, AccessoryItem.KANEKI, kagune,
                     "§7Кагуне Ринкаку Канэки Кена (Токийский Гуль)",
                     "§74 живых алых хвоста из какухо на спине")));
+            menu.setItem(33, item(Material.LIGHTNING_ROD, "§x§F§A§D§8§F§C§lКрылья Зевса", "zeus_wings_icon", null,
+                shopAccessoryLore(player, AccessoryItem.ZEUS_WINGS, zeus,
+                    "§7Два крыла, целиком сплетённых из молний",
+                    "§710 живых разрядов, грозовое облако и искры")));
             placeBackAndClear(menu, player, true);
         } else if (target == Section.HATS) {
             placeSectionTabs(menu, player, Section.HATS);
@@ -1717,6 +1769,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
             toggleWings(player);
         } else if (clickedItem == AccessoryItem.KANEKI) {
             toggleKaneki(player);
+        } else if (clickedItem == AccessoryItem.ZEUS_WINGS) {
+            toggleZeusWings(player);
         } else if (clickedItem == AccessoryItem.HALO_ITEM) {
             toggleHead(player, "halo", "Нимб", "надет", "снят");
         } else if (clickedItem == AccessoryItem.SATAN_CIRCLE) {
@@ -1787,6 +1841,36 @@ public final class AccessoryController implements CommandExecutor, Listener {
             return;
         }
         player.sendMessage("§dКагуне Канэки Кена пробуждено.");
+    }
+
+    private static void toggleZeusWings(Player player) {
+        if (BACK_ZEUS.equals(get(player, BACK))) {
+            set(player, BACK, "");
+            GhoulRig rig = KAGUNES.get(player.getUniqueId());
+            if (rig != null) removeRig(player.getUniqueId(), rig, KAGUNES);
+            player.sendMessage("§7Крылья Зевса сняты.");
+            return;
+        }
+        if (resolveBlueprint(ZEUS_BLUEPRINT) == null) {
+            player.sendMessage("§cМодель крыльев Зевса ещё не загружена. Обратитесь к администрации.");
+            return;
+        }
+        set(player, BACK, BACK_ZEUS);
+        TELEPORT_RESPAWN_AT.remove(player.getUniqueId());
+        try {
+            syncPlayerRigs(player);
+        } catch (Throwable failure) {
+            reportOnce("крылья Зевса", failure);
+            set(player, BACK, "");
+            player.sendMessage("§cКрылья Зевса не появились: " + failure.getClass().getSimpleName());
+            return;
+        }
+        if (!wearingZeusWings(player)) {
+            set(player, BACK, "");
+            player.sendMessage("§cКрылья Зевса не появились: модель не загрузилась.");
+            return;
+        }
+        player.sendMessage("§dКрылья Зевса ударили молнией за спиной!");
     }
 
     private static void toggleSatanCircle(Player player) {

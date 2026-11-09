@@ -95,7 +95,7 @@
 ШАБЛОН А — Если обновлялись `ElytrixFreakModel`, модели `ModelEngine` или ресурспак
 (архив `elytrix-freakmodel.zip`, подставь реальный `<COMMIT_SHA>`):
 
-curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/<COMMIT_SHA>/elytrix-freakmodel.zip" -o /tmp/elytrix-freakmodel.zip && rm -rf "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_angel_halo" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_angel_halo" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_angel_wings" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_angel_wings" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_centipede" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_centipede" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_kaneki_tentacles" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_kaneki_tentacles" && unzip -oq /tmp/elytrix-freakmodel.zip -d /root/RW_GRIEF && mkdir -p /root/RP && cp -f /root/RW_GRIEF/rp/Elytrix-RP-1.21.zip /root/RP/Elytrix-RP-1.21.zip && chmod 644 /root/RP/Elytrix-RP-1.21.zip && rm -f /tmp/elytrix-freakmodel.zip && sha1sum /root/RP/Elytrix-RP-1.21.zip
+curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/<COMMIT_SHA>/elytrix-freakmodel.zip" -o /tmp/elytrix-freakmodel.zip && rm -rf "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_angel_halo" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_angel_halo" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_angel_wings" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_angel_wings" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_centipede" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_centipede" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_kaneki_tentacles" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_kaneki_tentacles" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_lightning_hat" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_lightning_hat" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_satan_circle" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_satan_circle" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_zeus_wings" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_zeus_wings" && unzip -oq /tmp/elytrix-freakmodel.zip -d /root/RW_GRIEF && mkdir -p /root/RP && cp -f /root/RW_GRIEF/rp/Elytrix-RP-1.21.zip /root/RP/Elytrix-RP-1.21.zip && chmod 644 /root/RP/Elytrix-RP-1.21.zip && rm -f /tmp/elytrix-freakmodel.zip && sha1sum /root/RP/Elytrix-RP-1.21.zip
 
 После выполнения этой команды напомни пользователю сверить выведенный `SHA-1`
 и ввести в консоли сервера: `restart`.
@@ -357,13 +357,17 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
 - Вычисляется `sha1sum rp/Elytrix-RP-1.21.zip` и записывается в `plugins/ElytrixRP/config.yml`.
 
 ШАГ 5 — Сборка деплой-архивов и загрузка на GitHub -> VDS:
-1) Python-скрипт собирает `elytrix-freakmodel.zip` (и при необходимости `elytrix-update.zip`)
-   напрямую из файлов репозитория:
+1) Python-скрипт `tools/accessories-model/make_deploy_zip.py` собирает `elytrix-freakmodel.zip`
+   (и при необходимости `elytrix-update.zip`) напрямую из файлов репозитория:
    - включает `plugins/ElytrixFreakModel.jar` (+ `config.yml`), `plugins/ElytrixRP.jar`
-     (+ обновлённый `config.yml`), `plugins/ModelEngine/blueprints/elytrix_*.bbmodel`,
-     отфильтрованные файлы `plugins/ModelEngine/resource pack/` (только `pack.mcmeta` и
-     пути с `/elytrix_`) и `rp/Elytrix-RP-1.21.zip`;
-   - исключает `plugins/ModelEngine/config.yml`, `.data/cache.json` и чужие модели.
+     (+ обновлённый `config.yml`), `plugins/ModelEngine-4.1.0.jar`,
+     `plugins/ModelEngine/blueprints/*.bbmodel`, весь `plugins/ModelEngine/resource pack/`
+     (модели `elytrix_*`, пропатченные FPV-шейдеры `assets/minecraft/shaders/**`,
+     `pack.mcmeta`, `pack.png`) и `rp/Elytrix-RP-1.21.zip`;
+   - исключает `plugins/ModelEngine/config.yml`, `.data/cache.json`,
+     `owned_accessories.yml` и любые боевые БД/секреты.
+   Сборка детерминирована (фиксированная дата `2020-01-01`), поэтому `sha1sum` архива
+   воспроизводим; скрипт сам печатает `files / size / sha1 / sha256`.
 2) Выполняется `git add`, `git commit` и `git push origin <текущая_ветка>` в этом же ходе.
 3) Через `git rev-parse HEAD` берётся полный 40-символьный `COMMIT_SHA`.
 4) Архив открывается пользователю через `present_file`, и в ответ вставляется однострочная
@@ -375,7 +379,7 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
 --------------------------------------------------------------------------------
 9. КАРТА АКТУАЛЬНЫХ СИСТЕМ, АКСЕССУАРОВ И ЗАЩИТЫ ИЗ LIVE VDS (`dfghjdyjk56`)
 --------------------------------------------------------------------------------
-1. `ElytrixFreakModel v3.21.0` + `ModelEngine-4.1.0.jar` (uncapped `SIPUSH 8192` + `MojangAPI.CLIENT` leak-free) + `/аксессуары` (`/accessories`, `/acc`, `/акс`, глиф `ꏠ`):
+1. `ElytrixFreakModel v3.22.0` + `ModelEngine-4.1.0.jar` (uncapped `SIPUSH 8192` + `MojangAPI.CLIENT` leak-free) + `/аксессуары` (`/accessories`, `/acc`, `/акс`, глиф `ꏠ`):
    - Открытый для **ВСЕХ** игроков магазин и гардероб 3D-аксессуаров за донат-валюту **Риллики** (`PlayerPoints`, глиф `ꐃ`)
      в точном стиле `/shop` (слот `53` `ИНФОРМАЦИЯ` на часах `Material.CLOCK CMD 100010` с живым балансом `Ваш баланс: <баланс> ꐃ`,
      сообщения `Недостаточно рилликов!` / `Покупка успешно совершена!`, двойное сохранение покупок навсегда в `PDC` игрока
@@ -390,18 +394,25 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
      * `Меллстрой` (`mellstroy`) — `5000 ꐃ`
      * `Ангельские крылья` (`wings`) — `6000 ꐃ`
      * `Щупальца Канэки` (`kaneki`) — `7500 ꐃ`
+     * `Крылья Зевса` (`zeus`) — `8000 ꐃ`
      Исходники и генераторы лежат в `tools/accessories-integration/` и `tools/accessories-model/` (подробности в `MODELS_PIPELINE.md`).
    - Исправлен лимит 12 моделей в `plugins/ModelEngine-4.1.0.jar` (`ModelGeneratorImpl.importModelsInternal`:
      `BIPUSH 12` -> `SIPUSH 8192`, `tools/accessories-integration/patch_modelengine.py`) + добавлена
-     авто-догрузка блюпринтов на лету `AccessoryController.resolveBlueprint(...)` в `ElytrixFreakModel v3.21.0`,
+     авто-догрузка блюпринтов на лету `AccessoryController.resolveBlueprint(...)` в `ElytrixFreakModel v3.22.0`,
      чтобы ни одна модель никогда не выдавала «Модель ещё не загружена».
    - Меню `/accessories` (`/аксессуары`) разбито на 3 раздела с нативными RP-оверлеями слотов (`ꏡ`, `ꏢ`, `ꏣ`, `ꏧ`, `ꏨ`)
      и пиксельными заголовками из `title_00.png` (`ꏤ` `СПИНА`, `ꏥ` `ШАПКИ`, `ꏦ` `ПИТОМЦЫ`), вкладками быстрого
      переключения (`12, 13, 14`) и кнопкой `Назад` (`ARROW CMD 10002`, слот `45`):
-     * `Спина` (`ꏢ`, слоты `30, 32`): `Ангельские крылья` (`angel_wings`) и `Щупальца Канэки` (`elytrix_kaneki_tentacles`)
+     * `Спина` (`ꏢ`, слоты `29, 31, 33`):
+       - `[29]` `Ангельские крылья` (`angel_wings`, `6000 ꐃ`)
+       - `[31]` `Щупальца Канэки` (`elytrix_kaneki_tentacles`, `7500 ꐃ`)
+       - `[33]` `Крылья Зевса` (`elytrix_zeus_wings`, `reallyworld:zeus_wings_icon`, `8000 ꐃ` — два огромных размашистых
+         крыла, целиком сплетённых из живых молний: 5 зигзагообразных разрядов-перьев на каждом крыле, грозовое
+         облако-кость в корне и 2 искрящих наконечника; делят изолированный слот спины с кагуне Канэки,
+         поэтому надевание одного всегда снимает другое)
      * `Шапки` (`ꏧ`, `content_acc_three.png`, слоты `29, 31, 33`):
        - `[29]` `Божественный нимб` (`angel_halo`, `3500 ꐃ`)
-       - `[31]` `Круг Сатаны` (`elytrix_satan_circle`, `reallyworld:satan_circle_icon`, `4500 ꐃ` — пентаграмма из раскалённого красно-чёрного обсидиана с кроваво-алой каймой, горящей магматической жилой, багровым анкхом в центре и 5 внешними оккультными символами; висит нимбом прямо над макушкой головы `Y = 31.85` и непрерывно вращается на `0 -> 360°` за `6.4s`!)
+       - `[31]` `Круг Сатаны` (`elytrix_satan_circle`, `reallyworld:satan_circle_icon`, `4500 ꐃ` — пентаграмма из раскалённого красно-чёрного обсидиана с кроваво-алой каймой, горящей магматической жилой, багровым анкхом в центре и 5 внешними оккультными символами; висит нимбом над макушкой головы `Y = 34.25` и непрерывно вращается на `0 -> 360°` за `6.4s`!)
        - `[33]` `Дождевое облако` (`elytrix_lightning_hat`, `reallyworld:lightning_hat_icon`, `4000 ꐃ` — спокойное кучевое облако низко над головой `Y = 33.40..37.00`, с которого всё время капает настоящий 3D-дождик из 12 полупрозрачных капель!)
      * `Питомцы` (`ꏨ`, `content_acc_four.png`, слоты `28, 30, 32, 34`):
        - `[28]` `Мини-Роузи` (`elytrix_mini_me` — танцующий возле правого плеча маленький белый скин с бирюзовым лицом `#5BFBFF`, `reallyworld:mini_me_icon`)
@@ -418,7 +429,7 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
      в Minecraft модель игрока масштабируется в `PlayerRenderer` на `0.9375` (`15/16`), поэтому при `scale = 1.0` в `.bbmodel`:
      * точный верх головы игрока = `Y = 30.00` (`32 × 0.9375`), шея/плечи = `Y = 22.50` (`24 × 0.9375`),
      * точная полуширина голой головы = `X/Z = ±3.75` (`4 × 0.9375`), второй слой скина (шляпа) = `±4.22`.
-   - Актуальные блюпринты в `plugins/ModelEngine/blueprints/` и RP (`SHA-1: 99d4eb65551aa29d11f89680fa0df93afcf3f630`):
+   - Актуальные блюпринты в `plugins/ModelEngine/blueprints/` и RP (`SHA-1: 5282f7ed2f157666842a95cbd6595022cffc8a47`):
      * `elytrix_angel_halo.bbmodel` (нимб, 161 куб, `halo_ring` + `halo_aura`)
      * `elytrix_satan_circle.bbmodel` (шапка `Круг Сатаны` v1, `tools/accessories-model/build_satan_circle.py`:
        16-сегментное гладкое двойное кольцо `circle_ring` (`R = 5.92..6.26`, разрешённые углы Minecraft
@@ -428,7 +439,11 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
        горящей магматической жилой; багровый анкх `ankh_*` в центре, 5 внешних оккультных символов
        (перевёрнутый крест, полумесяц со звездой, гексаграмма, пламя/Ом, железный крест) и контр-вращающаяся
        тёмно-багровая аура `satan_aura` (`0 -> -360°` + 8 магматических осколков); 104 куба с `rotation: [0,0,0]`,
-       7 рисуемых костей, висит нимбом на `Y = 31.85` (`R` до `7.56` BB = `0.47м` от глаз -> 100% скрытие от 1-го лица),
+       7 рисуемых костей, висит нимбом на `Y = 34.25` (поднят с `31.85` по просьбе игрока: верх голой головы `30.00`,
+       верх второго слоя шляпы `30.47`, самый нижний куб кольца теперь `Y = 33.99` — то есть `3.99` BB просвета над
+       макушкой и `3.52` BB над тульей шляпы; с учётом парения `±0.20` BB и гироскопического наклона `±5.8°`
+       на `R = 7.80` (≈`0.79` BB вниз) запас остаётся `>= 2.7` BB, поэтому круг больше НЕ садится на голову
+       шапочной тульей; макс. удаление куба от глаз `0.718м` `<< 1.85м` -> 100% скрытие от 1-го лица),
        одна бесшовная 20-TPS анимация `'idle'` `6.4s` (полный оборот `0 -> 360°` + парение `±0.20` BB +
        гироскопический наклон `±5.8°`); иконка `satan_circle_icon`)
      * `elytrix_lightning_hat.bbmodel` (шапка `Дождевое облако` v4, `tools/accessories-model/build_lightning_hat.py`:
@@ -440,6 +455,18 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
        микро-всплеск и держится `scale = [0,0,0]` минимум `5` тиков, пока `dy` сбрасывается в `0` — поэтому
        20-TPS интерполяция ModelEngine НИКОГДА не тянет капли вверх; 33 куба, 13 рисуемых костей строго `< 1.85m` от глаз,
        одна бесшовная 20-TPS анимация `'idle'` `3.2s` (дривт облака + дыхание + 2 цикла падения на каплю); иконка `lightning_hat_icon`)
+     * `elytrix_zeus_wings.bbmodel` (спина `Крылья Зевса` v1, `tools/accessories-model/build_zeus_wings.py`:
+       два размашистых крыла (`X` до `±23.73` BB ≈ `±1.48м`), целиком сплетённых из электричества — НИ ОДНОГО пера;
+       кость `zeus_root` (`[0.0, 22.0, 1.9]`, 18 кубов) = грозовое облако-кость + две дуги-арки, от которых
+       `wing_r` / `wing_l` (по 16 кубов) уходят двумя непрерывными зигзагами-молниями `jag_chain()` по 9 опорным
+       точкам `(1.0, 22.5) -> (22.2, 19.6)`; на каждом крыле 5 живых разрядов-перьев `feather_r1..r5` / `feather_l1..l5`
+       (10/16/14/18/12 кубов) и искрящий наконечник `spark_r` / `spark_l` (по 5 кубов) — итого 200 кубов и
+       15 рисуемых костей, ВСЕ 200 кубов с `rotation: [0,0,0]` (зигзаги собраны только осевыми L-ступеньками),
+       текстура `128x128` в молниевой палитре `#FFF6B0`/`#FFD34D`/`#6FE9FF`/`#3A2E8F`;
+       одна бесшовная 20-TPS анимация `'idle'` `4.8s` (взмах `±8°` + дрожь `3°` + джиттер `0.9°`, трепет перьев `5.5°`,
+       импульс разряда `+18%` и рост искр `0.55 -> 1.20`), скорость анимации зависит от бега (`1.0 + min(0.85, v*1.6)`);
+       макс. удаление вершины от глаз `1.679м` `< 2.85м` -> тинт `-197122` скрывает крылья от 1-го лица;
+       `viewRange = 4.5` (вместо `2.5`) из-за 3-блочного размаха; иконка `zeus_wings_icon`)
      * `elytrix_angel_wings.bbmodel` (крылья, 9 кубов на крыло + 6 падающих перьев)
      * `elytrix_kaneki_tentacles.bbmodel` (каноничное Ринкаку Кагуне Канеки Кена из аниме «Токийский Гуль»:
        4 гибких хвоста из единого спинного мешка Какухо `root_knot`, 55 рисуемых костей, 171 куб с `rotation: [0,0,0]`,

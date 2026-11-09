@@ -17,8 +17,11 @@ verification preview strip.
        - Counter-rotating dark-crimson ember aura (`satan_aura`, 0 -> -360 deg) mirroring
          `halo_aura` in `elytrix_angel_halo`.
   2. Halo Motion (`крутится как нимб вокруг головы`, seamless 6.4s loop @ 20 TPS):
-       - Positioned right above & framing the player's head (`Y = 31.85`, bare head top = `30.00`,
-         `R = 6.0`..`7.45` < `1.85m` from 1st-person eye -> 100% hidden in 1st-person!).
+       - Floating clearly ABOVE the player's head like a true nimbus (`Y = 34.25`, bare head top
+         = `30.00`, 2nd-layer hat top = `30.47`, so the lowest geometry sits `3.83`..`4.23` BB
+         — a quarter of a block — above the skull and never touches it).
+         `R` up to `7.80` BB, so the farthest point is only `~0.73m` from the 1st-person eye
+         (`< 1.85m` cutoff -> 100% hidden in 1st-person!).
        - Spins a full seamless `0 -> 360 deg` around the head while gently floating (`±0.20` BB)
          with a subtle `6.0 deg` gyroscopic halo precession so the 5-pointed star & central Ankh
          are clearly readable from horizontal `F5` AND from above without ever touching the head!
@@ -274,9 +277,13 @@ def _ring_16_segments(prefix: str, radius: float, half_radial: float,
 # 3. Exact Halo Coordinates & Seamless 360-deg Spin Animation
 # ---------------------------------------------------------------------------
 # Bare player head top = Y = 30.00 (2nd-layer skin hat = Y = 30.47).
-# Placing the halo at Y = 31.85 sits right above & framing the head like a true nimbus,
-# keeping 100% of the inner pentagram chords & central Ankh unobstructed above the skull!
-HALO_Y = 31.85
+# Y = 31.85 (v1) sat directly on the skull and read as a hat brim, so the player asked for it
+# HIGHER.  Y = 34.25 lifts the whole nimbus by 2.40 BB: the lowest cube of the ring now sits at
+# Y = 34.03, i.e. 4.03 BB (~0.25 block) of clear air above the skull, and even at the bottom of
+# the +-0.20 BB hover plus the +-5.8 deg precession (7.80 BB * sin 5.8 deg = 0.79 BB) there is
+# still 3.0 BB of clearance — it reads as a floating halo, never as a hat.
+# 100% of the inner pentagram chords & central Ankh stay unobstructed above the skull!
+HALO_Y = 34.25
 ROOT_ORIG = [0.0, HALO_Y, 0.0]
 STAR_R = 5.76   # Inscribed pentagram star radius inside outer circle R = 5.95
 

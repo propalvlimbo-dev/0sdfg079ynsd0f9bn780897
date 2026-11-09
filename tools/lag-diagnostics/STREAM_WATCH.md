@@ -3,7 +3,7 @@
 Живое ядро: **DivineMC `1.21.11`** (`/root/RW_GRIEF`), JVM-флаги в `start.sh`
 (G1, `-XX:MaxGCPauseMillis=100`, `MaxDirectMemorySize=1536M`,
 `-Dio.netty.maxDirectMemory=0`), 86 плагинов, `LagFixer`, `ModelEngine 4.1.0`
-+ `ElytrixFreakModel v3.21.0`.
++ `ElytrixFreakModel v3.22.0`.
 
 Документ — это чек-лист «что смотреть и когда бить тревогу». Всё наблюдение
 делается **только чтением**: не перезапускает, не убивает процессы, не трогает

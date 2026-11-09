@@ -73,7 +73,8 @@ Blockbench в песочнице нет, нейросетевой арт зап�
 | `elytrix_centipede` (до замены) | 68 | 1 | **0** | 64×64 |
 | `elytrix_centipede` (новая, v3) | **119** | 11 (`body_root`, `c1…c9`, `head`) | 2 (`idle`, `crawl`) | 128×128 |
 | `elytrix_lightning_hat` (v4, только облако + 3D-дождик) | 33 | 13 (`storm_cloud`, `drop_01…drop_12`) | 1 (`idle`) | 64×64 |
-| `elytrix_satan_circle` (v1, пентаграмма-нимб `satan_root` `[0, 31.85, 0]`) | 104 | 7 (`circle_ring`, `satan_aura`, `beam_0…beam_4`) | 1 (`idle`, полный оборот `0→360°` за `6.4s`) | 128×128 |
+| `elytrix_satan_circle` (v1, пентаграмма-нимб `satan_root` `[0, 34.25, 0]`, поднят с `31.85`) | 104 | 7 (`circle_ring`, `satan_aura`, `beam_0…beam_4`) | 1 (`idle`, полный оборот `0→360°` за `6.4s`) | 128×128 |
+| `elytrix_zeus_wings` (v1, крылья из молний `zeus_root` `[0, 22.0, 1.9]`) | 200 | 15 (`zeus_root`, `wing_r/l`, `feather_r1…r5`, `feather_l1…l5`, `spark_r/l`) | 1 (`idle`, взмах `±8°` за `4.8s`) | 128×128 |
 
 ### Про `shade: false` и `scale = 2`
 В **отгружаемом** паке этих значений нет:

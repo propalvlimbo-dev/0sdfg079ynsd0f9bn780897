@@ -40,6 +40,7 @@ CLOSE_ACCESSORY_MODELS = (
 )
 WINGS_ACCESSORY_MODELS = (
     'elytrix_angel_wings',
+    'elytrix_zeus_wings',
 )
 
 SODIUM_IGNORED_SHADERS = [
