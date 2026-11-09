@@ -501,3 +501,14 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
    - `NEnderChest-1.jar`, `NPvp-1.0.jar`, `IRandomTeleport.jar` — гарантированное удаление из `CheckCommand.viewers` при любом закрытии `/ec check` и `PlayerQuitEvent`; удаление выходящих игроков из `PvpSelect.pvpPlayers` и меню `/pvp`; очистка `ChannelManager.teleportingPlayers` на `PlayerQuitEvent`/`PlayerDeathEvent`/`PlayerChangedWorldEvent`, замена сильной ссылки `Player` на `String` в `Channel$1`/`Channel$2` и удаление лишнего `org/bukkit/plugin/Plugin.class`.
    - Конфиги выгрузки чанков и очистки мира: `config/paper-world-defaults.yml` (`delay-chunk-unloads-by: 5s`, `auto-save-interval: 6000`, `max-auto-save-chunks-per-tick: 8`, `despawn-time` снарядов, `alt-item-despawn-rate`, `despawn-ranges` `hard: 56` под `view-distance: 4`), `spigot.yml` (`unload-frozen-chunks: true`, `item-despawn-rate: 2400`, `netty-threads: 4`), `bukkit.yml` (`chunk-gc.period-in-ticks: 200`, `monsters: 24`, `autosave: 6000`), `LagFixer/modules/{WorldCleaner.yml,EntityLimiter.yml}` (`interval: 300`, `time_lived: 1200` с защитой ценного лута и голов/шаров, `abyss.enabled: false`, `overflow_purge.types.items: true`), `config/leaf-global.yml` и `FastAsyncWorldEdit/config.yml` (`pool: false`, `parallel-threads: 3`).
 ================================================================================
+
+6. Живой контроль производительности во время стрима / 40+ онлайна (`tools/lag-diagnostics/`):
+   - `live_watch.sh` — живой дашборд раз в N секунд (CPU/steal/iowait, heap, паузы GC, RSS и off-heap,
+     потоки/FD, «Can't keep up», ошибки из `logs/latest.log`, соединения на `:25565`, диск) + строка
+     «ТРЕВОГА» по порогам + CSV-таймлайн. Запуск: `bash /root/live_watch.sh 10 /root/RW_GRIEF`.
+   - `STREAM_WATCH.md` — 12 точек контроля с порогами, «почему spark не видит причину»,
+     `/tick query` + `spark profiler start --only-ticks-over 50`, лечение GC-пауз, DirectMemory и утечки потоков.
+   - `collect.sh` — разовый глубокий дамп (GC, steal, cron, диски, JVM-флаги).
+   - ВАЖНО: `-XX:MaxGCPauseMillis=100` в `start.sh` — фриз «ровно 100 мс» ожидаем; аксессуары
+     `ElytrixFreakModel` дают до 60 `ItemDisplay` на игрока, поэтому `ignore_models: true`
+     в `plugins/LagFixer/modules/EntityLimiter.yml` НЕ выключать.
