@@ -224,14 +224,14 @@ public class AccessoryTest {
         "Шапки uses 3-slot ꏧ RP frame at slots 29, 31 & 33");
   check(Bukkit.slots.get(29).meta.model.equals(new NamespacedKey("reallyworld","angel_halo")),"halo in Шапки slot 29");
   check(Bukkit.slots.get(29).meta.lore.stream().anyMatch(l -> l.contains("3500") && l.contains("ꐃ")),"Божественный нимб priced at 3500 Рилликов!");
-  check(Bukkit.slots.get(31).meta.title.contains("Корона")
-        && Bukkit.slots.get(31).meta.model.equals(new NamespacedKey("reallyworld","crown_icon")),
-        "Корона in Шапки slot 31 with crown_icon!");
-  check(Bukkit.slots.get(31).meta.lore.stream().anyMatch(l -> l.contains("4500") && l.contains("ꐃ")),"Корона priced at 4500 Рилликов!");
-  check(Bukkit.slots.get(33).meta.title.contains("Грозовая молния")
+  check(Bukkit.slots.get(31).meta.title.contains("Круг Сатаны")
+        && Bukkit.slots.get(31).meta.model.equals(new NamespacedKey("reallyworld","satan_circle_icon")),
+        "Круг Сатаны in Шапки slot 31 with satan_circle_icon!");
+  check(Bukkit.slots.get(31).meta.lore.stream().anyMatch(l -> l.contains("4500") && l.contains("ꐃ")),"Круг Сатаны priced at 4500 Рилликов!");
+  check(Bukkit.slots.get(33).meta.title.contains("Дождевое облако")
         && Bukkit.slots.get(33).meta.model.equals(new NamespacedKey("reallyworld","lightning_hat_icon")),
-        "Грозовая молния in Шапки slot 33 with lightning_hat_icon!");
-  check(Bukkit.slots.get(33).meta.lore.stream().anyMatch(l -> l.contains("4000") && l.contains("ꐃ")),"Грозовая молния priced at 4000 Рилликов!");
+        "Дождевое облако in Шапки slot 33 with lightning_hat_icon!");
+  check(Bukkit.slots.get(33).meta.lore.stream().anyMatch(l -> l.contains("4000") && l.contains("ꐃ")),"Дождевое облако priced at 4000 Рилликов!");
   click.slot=14;controller.onClick(click);
   check(Bukkit.title.equals(AccessoryController.TITLE_PETS) && Bukkit.title.contains("ꏨ"),"opened Питомцы via tab with 4-slot ꏨ content glyph");
   check(Bukkit.slots.get(28).meta.title.contains("Мини-Роузи") && Bukkit.slots.get(28).meta.lore.stream().anyMatch(l -> l.contains("2000") && l.contains("ꐃ")),
@@ -372,72 +372,56 @@ public class AccessoryTest {
   mellModel.rendererReady=true;
   AccessoryController.animatePets();
 
-  // --- 3a. Buy & Equip NEW Корона (4500 ꐃ, Шапки slot 31 -> 17500 ꐃ) alongside Kaneki + Меллстрой! ---
+  // --- 3a. Buy & Equip NEW Круг Сатаны (4500 ꐃ, Шапки slot 31 -> 17500 ꐃ) alongside Kaneki + Меллстрой! ---
   click.slot=13;controller.onClick(click); // switch to Шапки
-  click.slot=31;controller.onClick(click); // buy & equip Корона!
-  check(wallet.get(p.uuid)==17500 && AccessoryController.owns(p, AccessoryController.AccessoryItem.CROWN),
-        "Корона bought for exact 4500 Рилликов!");
-  check(AccessoryController.crownSelected(p) && AccessoryController.wearingCrown(p) && AccessoryController.crownAnimating(p),
-        "Корона Dummy spawned flush on head & playing subtle 'idle' shimmer animation!");
-  FakeModeled crownEntity=fe.q.lastEntity;
-  FakeActive crownModel=fe.q.last;
-  check(!crownModel.lockPitch && mellModel.lockPitch && kanekiModel.lockPitch,
-        "Корона unlocks 3D head pitch tracking (lockPitch=false) while pets & kagune stay pitch-locked!");
-  crownModel.rendererReady=true;
+  click.slot=31;controller.onClick(click); // buy & equip Круг Сатаны!
+  check(wallet.get(p.uuid)==17500 && AccessoryController.owns(p, AccessoryController.AccessoryItem.SATAN_CIRCLE),
+        "Круг Сатаны bought for exact 4500 Рилликов!");
+  check(AccessoryController.satanCircleSelected(p) && AccessoryController.wearingSatanCircle(p) && AccessoryController.satanCircleAnimating(p),
+        "Круг Сатаны Dummy spawned right above the head & spinning the seamless 'idle' pentagram loop!");
+  FakeModeled satanEntity=fe.q.lastEntity;
+  FakeActive satanModel=fe.q.last;
+  check(satanModel.lockPitch && mellModel.lockPitch && kanekiModel.lockPitch,
+        "Круг Сатаны stays pitch-locked (lockPitch=true) so the pentagram halo never tilts off the head!");
+  satanModel.rendererReady=true;
   AccessoryController.animatePets();
-  check(AccessoryController.crownAttached(p) && fe.pivots.passengers.contains(crownModel.pivotId),
-        "Корона pivot mounted on player PivotOverride");
-  // Test full 3D head tracking: looking DOWN (+35.0 deg) AND looking UP (-55.0 deg) + sneak crouch offset!
+  check(AccessoryController.satanCircleAttached(p) && fe.pivots.passengers.contains(satanModel.pivotId),
+        "Круг Сатаны pivot mounted on player PivotOverride");
+  // Test nimbus-style head tracking: the circle follows every horizontal head turn on the exact packet tick!
   controller.onMove(new PlayerMoveEvent(p, new Location(p.world, 0.5, 1.6, 0.5, 128.0F, 35.0F)));
-  check(Math.abs(crownEntity.bodyYaw - 128.0F) < 0.01F && Math.abs(crownEntity.headYaw - 128.0F) < 0.01F
-        && Math.abs(crownEntity.headPitch - 35.0F) < 0.01F && crownEntity.rotTick == -1,
-        "Корона tracks looking DOWN (+35 deg pitch + 128 deg yaw) on exact packet tick!");
+  check(Math.abs(satanEntity.bodyYaw - 128.0F) < 0.01F && Math.abs(satanEntity.headYaw - 128.0F) < 0.01F
+        && Math.abs(satanEntity.headPitch) < 0.01F && satanEntity.rotTick == -1,
+        "Круг Сатаны follows a 128 deg head turn with 0-tick lag while staying perfectly level!");
   controller.onMove(new PlayerMoveEvent(p, new Location(p.world, 0.5, 1.6, 0.5, -42.0F, -55.0F)));
-  check(Math.abs(crownEntity.bodyYaw - (-42.0F)) < 0.01F && Math.abs(crownEntity.headYaw - (-42.0F)) < 0.01F
-        && Math.abs(crownEntity.headPitch - (-55.0F)) < 0.01F && crownEntity.rotTick == -1,
-        "Корона tracks looking UP (-55 deg pitch + -42 deg yaw) on exact packet tick!");
-  p.sneaking = true;
-  controller.onSneak(new PlayerToggleSneakEvent(p, true));
-  check(crownModel.animHandler.isPlayingAnimation("sneak") && crownModel.animHandler.isPlayingAnimation("idle"),
-        "sneaking activates neck-drop 'sneak' offset while keeping 'idle' shimmer active!");
-  p.sneaking = false;
-  controller.onSneak(new PlayerToggleSneakEvent(p, false));
-  check(!crownModel.animHandler.isPlayingAnimation("sneak") && crownModel.animHandler.isPlayingAnimation("idle"),
-        "releasing sneak stops 'sneak' offset cleanly!");
+  check(Math.abs(satanEntity.bodyYaw - (-42.0F)) < 0.01F && Math.abs(satanEntity.headYaw - (-42.0F)) < 0.01F
+        && Math.abs(satanEntity.headPitch) < 0.01F && satanEntity.rotTick == -1,
+        "Круг Сатаны follows a -42 deg head turn while looking up (-55 deg) without tilting off the head!");
 
-  // --- 3b. Buy & Swap to Грозовая молния (4000 ꐃ, Шапки slot 33 -> 13500 ꐃ) -> cleanly replaces Корона! ---
-  click.slot=33;controller.onClick(click); // buy & equip Грозовая молния!
+  // --- 3b. Buy & Swap to Дождевое облако (4000 ꐃ, Шапки slot 33 -> 13500 ꐃ) -> cleanly replaces Круг Сатаны! ---
+  click.slot=33;controller.onClick(click); // buy & equip Дождевое облако!
   check(wallet.get(p.uuid)==13500 && AccessoryController.owns(p, AccessoryController.AccessoryItem.LIGHTNING_HAT),
-        "Грозовая молния bought for exact 4000 Рилликов!");
-  check(!AccessoryController.wearingCrown(p) && crownModel.destroyed,
-        "old Корона Dummy cleanly destroyed on swap to Грозовая молния");
+        "Дождевое облако bought for exact 4000 Рилликов!");
+  check(!AccessoryController.wearingSatanCircle(p) && satanModel.destroyed,
+        "old Круг Сатаны Dummy cleanly destroyed on swap to Дождевое облако");
   check(AccessoryController.lightningHatSelected(p) && AccessoryController.wearingLightningHat(p),
-        "Грозовая молния Dummy spawned above head alongside Kaneki + Mellstroy!");
-  check(AccessoryController.halo(plugin,p)==null,"WornAngelRig halo is null while wearing Грозовая молния");
-  check(AccessoryController.lightningHatAnimating(p) && AccessoryController.lightningHatStriking(p)
-        && AccessoryController.lightningStrikeCount(p)==1,
-        "Грозовая молния plays both 'idle' storm loop AND immediate 'strike' slam animation on equip!");
+        "Дождевое облако Dummy spawned above head alongside Kaneki + Mellstroy!");
+  check(AccessoryController.halo(plugin,p)==null,"WornAngelRig halo is null while wearing Дождевое облако");
+  check(AccessoryController.lightningHatAnimating(p)
+        && !fe.q.last.animHandler.isPlayingAnimation("strike"),
+        "Дождевое облако plays ONLY the seamless 'idle' rain loop (no lightning strike animation left)!");
   FakeModeled lightningEntity=fe.q.lastEntity;
   FakeActive lightningModel=fe.q.last;
-  check(lightningModel.lockPitch,"Грозовая молния keeps lockPitch=true so stormcloud stays level overhead!");
+  check(lightningModel.lockPitch,"Дождевое облако keeps lockPitch=true so the cloud stays level overhead!");
   lightningModel.rendererReady=true;
   AccessoryController.animatePets();
   check(AccessoryController.lightningHatAttached(p) && fe.pivots.passengers.contains(lightningModel.pivotId),
-        "Грозовая молния pivot mounted on player PivotOverride");
-  check(fe.entities.size()==3,"all 3 isolated Dummy rigs (Kaneki + Грозовая молния + Меллстрой) active simultaneously!");
+        "Дождевое облако pivot mounted on player PivotOverride");
+  check(fe.entities.size()==3,"all 3 isolated Dummy rigs (Kaneki + Дождевое облако + Меллстрой) active simultaneously!");
 
-  // Arm-swing cooldown test + periodic strike test on Грозовая молния!
+  // Arm swing must stay a no-op for the raincloud (no strike animation any more, tracker still notified)!
   controller.onArmSwing(new PlayerAnimationEvent(p));
-  check(AccessoryController.lightningStrikeCount(p)==1,"3s arm-swing strike cooldown prevents mid-strike spam reset");
-  for(int i=0;i<62;i++) AccessoryController.animatePets();
-  int beforeSwingStrikes = AccessoryController.lightningStrikeCount(p);
-  controller.onArmSwing(new PlayerAnimationEvent(p));
-  check(AccessoryController.lightningStrikeCount(p)==beforeSwingStrikes+1 && AccessoryController.lightningHatStriking(p),
-        "arm swing after cooldown triggers fresh 3D lightning strike animation!");
-  AccessoryController.forceNextStrikeDue(p);
-  AccessoryController.animatePets();
-  check(AccessoryController.lightningStrikeCount(p)==beforeSwingStrikes+2,
-        "periodic storm strike cycle fires cleanly!");
+  check(AccessoryController.lightningHatAnimating(p) && !lightningModel.animHandler.isPlayingAnimation("strike"),
+        "arm swing never fires a removed 'strike' animation — the cloud just keeps raining!");
 
   // --- 4. Simulate WornAngelRig.destroyAll() wiping PivotOverrideRegistry ---
   fe.pivots.simulateWornAngelRigDestroyAll();
@@ -499,16 +483,16 @@ public class AccessoryTest {
         "switching to Божественный нимб cleanly destroys Грозовая молния Dummy");
   check(AccessoryController.halo(plugin,p)==plugin.halo && AccessoryController.back(plugin,p)==plugin.wings && AccessoryController.wearingMellstroy(p),
         "Спина (Wings) + Шапки (Halo) + Питомцы (Меллстрой) all active simultaneously!");
-  // Switch back to Корона (slot 31) for free (still 4000 ꐃ)!
+  // Switch back to Круг Сатаны (slot 31) for free (still 4000 ꐃ)!
   click.slot=31;controller.onClick(click);
-  check(wallet.get(p.uuid)==4000 && AccessoryController.halo(plugin,p)==null && AccessoryController.wearingCrown(p),
-        "re-equipping Корона is free and disables WornAngelRig halo!");
+  check(wallet.get(p.uuid)==4000 && AccessoryController.halo(plugin,p)==null && AccessoryController.wearingSatanCircle(p),
+        "re-equipping Круг Сатаны is free and disables WornAngelRig halo!");
   check(Bukkit.slots.get(53).meta.lore.stream().anyMatch(l -> l.contains("4 000") && l.contains("ꐃ")),
         "slot 53 ИНФОРМАЦИЯ clock updated live to 4 000 ꐃ!");
 
   // --- 9. Clear All (slot 49) ---
   click.slot=49;controller.onClick(click);
-  check(!AccessoryController.wearingMellstroy(p) && !AccessoryController.wearingCrown(p)
+  check(!AccessoryController.wearingMellstroy(p) && !AccessoryController.wearingSatanCircle(p)
         && !AccessoryController.wearingLightningHat(p)
         && AccessoryController.back(plugin,p)==null && AccessoryController.halo(plugin,p)==null && fe.entities.isEmpty(),
         "clear-all removes back, hat, and pet cleanly");
@@ -517,14 +501,14 @@ public class AccessoryTest {
   click.slot=14;controller.onClick(click); // Питомцы
   click.slot=28;controller.onClick(click); // Мини-Роузи (free!)
   click.slot=13;controller.onClick(click); // Шапки
-  click.slot=31;controller.onClick(click); // Корона (free!)
+  click.slot=31;controller.onClick(click); // Круг Сатаны (free!)
   click.slot=12;controller.onClick(click); // Спина
   click.slot=32;controller.onClick(click); // Kaneki (free!)
   check(wallet.get(p.uuid)==4000 && AccessoryController.wearingMiniMe(p)
-        && AccessoryController.wearingCrown(p) && AccessoryController.wearingKaneki(p),
-        "all 3 Dummy slots (Kaneki + Корона + Мини-Роузи) equipped for free before quit");
+        && AccessoryController.wearingSatanCircle(p) && AccessoryController.wearingKaneki(p),
+        "all 3 Dummy slots (Kaneki + Круг Сатаны + Мини-Роузи) equipped for free before quit");
   controller.onQuit(new PlayerQuitEvent(p));
-  check(!AccessoryController.wearingMiniMe(p) && !AccessoryController.wearingCrown(p)
+  check(!AccessoryController.wearingMiniMe(p) && !AccessoryController.wearingSatanCircle(p)
         && !AccessoryController.wearingKaneki(p) && fe.entities.isEmpty(),
         "quit releases all 3 Dummy rigs without leak");
 
@@ -535,21 +519,21 @@ public class AccessoryTest {
    check(AccessoryController.owns(p, item), "owned_accessories.yml persisted " + item.id + " across server restart & PDC wipe!");
   }
 
-  // Test console `/accessories grant <player> crown` for a brand-new player
+  // Test console `/accessories grant <player> satan` for a brand-new player
   PlayerFake newbie = new PlayerFake();
   newbie.name = "Newbie";
   newbie.uuid = UUID.randomUUID();
   Bukkit.online.add(newbie);
-  check(!AccessoryController.owns(newbie, AccessoryController.AccessoryItem.CROWN), "newbie owns nothing initially");
-  controller.onCommand(Bukkit.getConsoleSender(), new Command(), "accessories", new String[]{"grant", "Newbie", "crown"});
-  check(AccessoryController.owns(newbie, AccessoryController.AccessoryItem.CROWN)
+  check(!AccessoryController.owns(newbie, AccessoryController.AccessoryItem.SATAN_CIRCLE), "newbie owns nothing initially");
+  controller.onCommand(Bukkit.getConsoleSender(), new Command(), "accessories", new String[]{"grant", "Newbie", "satan"});
+  check(AccessoryController.owns(newbie, AccessoryController.AccessoryItem.SATAN_CIRCLE)
         && !AccessoryController.owns(newbie, AccessoryController.AccessoryItem.KANEKI),
-        "console /accessories grant crown unlocks crown hat permanently");
+        "console /accessories grant satan unlocks the satan circle hat permanently");
 
   ElytrixFreakModelPlugin bare=new ElytrixFreakModelPlugin();bare.returnNullCommand=true;
   AccessoryController.install(bare);
   check(bare.mockCommand.executor==null && !bare.warnings.isEmpty(),"missing command logged safely");
   InventoryDragEvent drag=new InventoryDragEvent();drag.view=click.view;controller.onDrag(drag);check(drag.cancelled,"drag cancelled");
-  System.out.println("All v3.20.0 tests passed: public /accessories (/acc, /акс) Риллики shop + Корона (4500 ꐃ, 3D yaw+pitch glued to head) + Грозовая молния (4000 ꐃ) + all 9 3D models!");
+  System.out.println("All v3.21.0 tests passed: public /accessories (/acc, /акс) Риллики shop + Круг Сатаны (4500 ꐃ, spinning pentagram halo) + Дождевое облако (4000 ꐃ, 3D drizzle) + all 9 3D models!");
  }
 }

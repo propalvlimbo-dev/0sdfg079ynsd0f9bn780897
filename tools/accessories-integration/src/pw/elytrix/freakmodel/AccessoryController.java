@@ -45,7 +45,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -54,11 +53,13 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 /**
- * Server-side 3-section accessories shop & unified ModelEngine controller (v3.20.0):
+ * Server-side 3-section accessories shop & unified ModelEngine controller (v3.21.0):
  * open to ALL players, with permanent unlocks purchased for Риллики (PlayerPoints) just like {@code /shop}!
  * <ul>
  *   <li><b>Спина</b>: Ангельские крылья ({@code 6000 ꐃ}) и Щупальца Канэки ({@code 7500 ꐃ})</li>
- *   <li><b>Шапки</b>: Божественный нимб ({@code 3500 ꐃ}), Корона ({@code 4500 ꐃ}, полная 3D-привязка к голове {@code yaw + pitch}) и Грозовая молния ({@code 4000 ꐃ})</li>
+ *   <li><b>Шапки</b>: Божественный нимб ({@code 3500 ꐃ}), Круг Сатаны ({@code 4500 ꐃ},
+ *       пентаграмма, вращающаяся нимбом вокруг головы) и Дождевое облако ({@code 4000 ꐃ},
+ *       спокойное кучевое облако с настоящим 3D-дождиком)</li>
  *   <li><b>Питомцы</b>: Мини-Роузи ({@code 2000 ꐃ}), Милый котёнок ({@code 2500 ꐃ}),
  *       Сколопендра Гуля ({@code 4500 ꐃ}) и Меллстрой ({@code 5000 ꐃ})</li>
  * </ul>
@@ -70,7 +71,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final NamespacedKey PET = new NamespacedKey("elytrixaccessories", "pet");
 
     static final String HAT_LIGHTNING = "lightning";
-    static final String HAT_CROWN = "crown";
+    static final String HAT_SATAN = "satan";
 
     static final String PET_CENTIPEDE = "centipede";
     static final String PET_CHOICE = PET_CENTIPEDE;
@@ -79,7 +80,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final String PET_MELLSTROY = "mellstroy";
 
     static final String LIGHTNING_HAT_BLUEPRINT = "elytrix_lightning_hat";
-    static final String CROWN_BLUEPRINT = "elytrix_royal_crown";
+    static final String SATAN_BLUEPRINT = "elytrix_satan_circle";
     static final String CENTIPEDE_BLUEPRINT = "elytrix_centipede";
     static final String MINI_ME_BLUEPRINT = "elytrix_mini_me";
     static final String KITTEN_BLUEPRINT = "elytrix_cute_kitten";
@@ -87,8 +88,6 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final String KANEKI_BLUEPRINT = "elytrix_kaneki_tentacles";
 
     static final String IDLE_ANIM = "idle";
-    static final String STRIKE_ANIM = "strike";
-    static final String SNEAK_ANIM = "sneak";
     static final String ADMIN_PERMISSION = "elytrixfreakmodel.admin";
     static final int BACK_ARROW_CMD = 10002;
     static final int INFO_CLOCK_CMD = 100010;
@@ -98,16 +97,13 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final double TELEPORT_JUMP_DIST_SQ = 24.0D * 24.0D;
     static final long EMOTE_MIN_DELAY_TICKS = 500L; // 25s
     static final long EMOTE_MAX_DELAY_TICKS = 900L; // 45s
-    static final long STRIKE_MIN_DELAY_TICKS = 160L; // 8s
-    static final long STRIKE_MAX_DELAY_TICKS = 260L; // 13s
-    static final long STRIKE_SWING_COOLDOWN_TICKS = 60L; // 3s
 
     // Exact /shop Риллики prices (ꐃ):
     static final int PRICE_MINI_ME = 2000;
     static final int PRICE_KITTEN = 2500;
     static final int PRICE_HALO = 3500;
     static final int PRICE_LIGHTNING_HAT = 4000;
-    static final int PRICE_CROWN = 4500;
+    static final int PRICE_SATAN_CIRCLE = 4500;
     static final int PRICE_CENTIPEDE = 4500;
     static final int PRICE_MELLSTROY = 5000;
     static final int PRICE_WINGS = 6000;
@@ -136,8 +132,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
         WINGS("wings", Section.BACK, 30, "elytrix_angel_wings", PRICE_WINGS, "Ангельские крылья"),
         KANEKI("kaneki", Section.BACK, 32, KANEKI_BLUEPRINT, PRICE_KANEKI, "Щупальца Канэки"),
         HALO_ITEM("halo", Section.HATS, 29, "elytrix_angel_halo", PRICE_HALO, "Божественный нимб"),
-        CROWN(HAT_CROWN, Section.HATS, 31, CROWN_BLUEPRINT, PRICE_CROWN, "Корона"),
-        LIGHTNING_HAT(HAT_LIGHTNING, Section.HATS, 33, LIGHTNING_HAT_BLUEPRINT, PRICE_LIGHTNING_HAT, "Грозовая молния"),
+        SATAN_CIRCLE(HAT_SATAN, Section.HATS, 31, SATAN_BLUEPRINT, PRICE_SATAN_CIRCLE, "Круг Сатаны"),
+        LIGHTNING_HAT(HAT_LIGHTNING, Section.HATS, 33, LIGHTNING_HAT_BLUEPRINT, PRICE_LIGHTNING_HAT, "Дождевое облако"),
         MINI_ME(PET_MINI_ME, Section.PETS, 28, MINI_ME_BLUEPRINT, PRICE_MINI_ME, "Мини-Роузи"),
         KITTEN(PET_KITTEN, Section.PETS, 30, KITTEN_BLUEPRINT, PRICE_KITTEN, "Милый котёнок"),
         MELLSTROY(PET_MELLSTROY, Section.PETS, 32, MELLSTROY_BLUEPRINT, PRICE_MELLSTROY, "Меллстрой"),
@@ -260,7 +256,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
 
     private AccessoryController() {}
 
-    /** Isolated Dummy-backed ModelEngine rig (Pets, Kaneki Rinkaku Kagune, or Lightning Strike Hat). */
+    /** Isolated Dummy-backed ModelEngine rig (Pets, Kaneki Rinkaku Kagune, Raincloud Hat or Satan Circle). */
     private static final class GhoulRig {
         final String blueprintId;
         final Dummy<?> dummy;
@@ -284,9 +280,6 @@ public final class AccessoryController implements CommandExecutor, Listener {
         int lastEmoteIndex = -1;
         String lastEmoteAnim;
         String lastEmoteSound;
-        long nextStrikeTick;
-        long lastStrikeAtTick = -9999L;
-        int strikeCount;
 
         GhoulRig(String blueprintId, Dummy<?> dummy, ModeledEntity entity,
                  ActiveModel model, PivotOverride pivot, Location spawnLoc) {
@@ -296,7 +289,6 @@ public final class AccessoryController implements CommandExecutor, Listener {
             this.model = model;
             this.pivot = pivot;
             this.nextEmoteTick = petTicks + randomEmoteDelayTicks();
-            this.nextStrikeTick = petTicks + randomStrikeDelayTicks();
             recordLocation(spawnLoc);
         }
 
@@ -444,7 +436,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         String choice = get(player, HEAD);
         if (choice.isEmpty()) choice = get(player, HALO);
         if ("halo".equals(choice) && owns(player, AccessoryItem.HALO_ITEM)) return choice;
-        if (HAT_CROWN.equals(choice) && owns(player, AccessoryItem.CROWN)) return choice;
+        if (HAT_SATAN.equals(choice) && owns(player, AccessoryItem.SATAN_CIRCLE)) return choice;
         if (HAT_LIGHTNING.equals(choice) && owns(player, AccessoryItem.LIGHTNING_HAT)) return choice;
         return "";
     }
@@ -456,7 +448,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
         String choice = headChoice(player);
         if (HAT_LIGHTNING.equals(choice)) return LIGHTNING_HAT_BLUEPRINT;
-        if (HAT_CROWN.equals(choice)) return CROWN_BLUEPRINT;
+        if (HAT_SATAN.equals(choice)) return SATAN_BLUEPRINT;
         return null;
     }
 
@@ -530,8 +522,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return LIGHTNING_HAT_BLUEPRINT.equals(desiredHatBlueprint(player));
     }
 
-    public static boolean crownSelected(Player player) {
-        return CROWN_BLUEPRINT.equals(desiredHatBlueprint(player));
+    public static boolean satanCircleSelected(Player player) {
+        return SATAN_BLUEPRINT.equals(desiredHatBlueprint(player));
     }
 
     static boolean wearingLightningHat(Player player) {
@@ -540,9 +532,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
             && !rig.model.isDestroyed() && !rig.entity.isDestroyed();
     }
 
-    static boolean wearingCrown(Player player) {
+    static boolean wearingSatanCircle(Player player) {
         GhoulRig rig = HATS.get(player.getUniqueId());
-        return rig != null && CROWN_BLUEPRINT.equals(rig.blueprintId)
+        return rig != null && SATAN_BLUEPRINT.equals(rig.blueprintId)
             && !rig.model.isDestroyed() && !rig.entity.isDestroyed();
     }
 
@@ -551,9 +543,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return rig != null && LIGHTNING_HAT_BLUEPRINT.equals(rig.blueprintId) && rig.attached;
     }
 
-    static boolean crownAttached(Player player) {
+    static boolean satanCircleAttached(Player player) {
         GhoulRig rig = HATS.get(player.getUniqueId());
-        return rig != null && CROWN_BLUEPRINT.equals(rig.blueprintId) && rig.attached;
+        return rig != null && SATAN_BLUEPRINT.equals(rig.blueprintId) && rig.attached;
     }
 
     static boolean lightningHatAnimating(Player player) {
@@ -563,30 +555,11 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return handler != null && handler.isPlayingAnimation(IDLE_ANIM);
     }
 
-    static boolean crownAnimating(Player player) {
+    static boolean satanCircleAnimating(Player player) {
         GhoulRig rig = HATS.get(player.getUniqueId());
-        if (rig == null || !CROWN_BLUEPRINT.equals(rig.blueprintId) || rig.model.isDestroyed()) return false;
+        if (rig == null || !SATAN_BLUEPRINT.equals(rig.blueprintId) || rig.model.isDestroyed()) return false;
         AnimationHandler handler = rig.model.getAnimationHandler();
         return handler != null && handler.isPlayingAnimation(IDLE_ANIM);
-    }
-
-    static boolean lightningHatStriking(Player player) {
-        GhoulRig rig = HATS.get(player.getUniqueId());
-        if (rig == null || !LIGHTNING_HAT_BLUEPRINT.equals(rig.blueprintId) || rig.model.isDestroyed()) return false;
-        AnimationHandler handler = rig.model.getAnimationHandler();
-        return handler != null && handler.isPlayingAnimation(STRIKE_ANIM);
-    }
-
-    static int lightningStrikeCount(Player player) {
-        GhoulRig rig = HATS.get(player.getUniqueId());
-        return rig != null && LIGHTNING_HAT_BLUEPRINT.equals(rig.blueprintId) ? rig.strikeCount : 0;
-    }
-
-    static void forceNextStrikeDue(Player player) {
-        GhoulRig rig = HATS.get(player.getUniqueId());
-        if (rig != null && LIGHTNING_HAT_BLUEPRINT.equals(rig.blueprintId)) {
-            rig.nextStrikeTick = petTicks;
-        }
     }
 
     static boolean wearingKaneki(Player player) {
@@ -829,35 +802,12 @@ public final class AccessoryController implements CommandExecutor, Listener {
         entity.setRotationTick(-1);
     }
 
-    private static void ensureCrownSneakPose(GhoulRig rig, boolean sneaking) {
-        if (rig == null || !CROWN_BLUEPRINT.equals(rig.blueprintId)
-                || rig.model == null || rig.model.isDestroyed()) {
-            return;
-        }
-        try {
-            AnimationHandler handler = rig.model.getAnimationHandler();
-            if (handler == null) return;
-            boolean playing = handler.isPlayingAnimation(SNEAK_ANIM);
-            if (sneaking && !playing) {
-                IAnimationProperty prop = handler.playAnimation(SNEAK_ANIM, 0.04D, 0.04D, 1.0D, true);
-                if (prop != null) {
-                    prop.setForceLoopMode(BlueprintAnimation.LoopMode.LOOP);
-                }
-            } else if (!sneaking && playing) {
-                handler.forceStopAnimation(SNEAK_ANIM);
-            }
-        } catch (Throwable ignored) {
-        }
-    }
-
     private static void syncRigTransform(Player player, GhoulRig rig, float bodyYaw, Location locOverride) {
         if (player == null || rig == null || rig.entity == null || rig.entity.isDestroyed()) return;
         float safeYaw = Float.isFinite(bodyYaw) ? bodyYaw : 0.0F;
         try {
             Location loc = locOverride != null ? locOverride : player.getLocation();
-            float safePitch = (CROWN_BLUEPRINT.equals(rig.blueprintId) && loc != null && Float.isFinite(loc.getPitch()))
-                ? loc.getPitch()
-                : 0.0F;
+            float safePitch = 0.0F;
             if (rig.dummy != null) {
                 if (loc != null) {
                     rig.dummy.syncLocation(loc);
@@ -943,11 +893,10 @@ public final class AccessoryController implements CommandExecutor, Listener {
         PlayerBodyTracker tracker = trackerFor(player);
         Location loc = player.getLocation();
         boolean isHeadRig = LIGHTNING_HAT_BLUEPRINT.equals(rig.blueprintId)
-            || CROWN_BLUEPRINT.equals(rig.blueprintId);
+            || SATAN_BLUEPRINT.equals(rig.blueprintId);
         float rigYaw = (isHeadRig && loc != null) ? loc.getYaw() : tracker.getBodyYaw();
         syncRigTransform(player, rig, rigYaw, loc);
         ensureLivingAnimation(rig, tracker.getHorizSpeedBlocksPerTick());
-        ensureCrownSneakPose(rig, player.isSneaking());
         logRigReady(rig);
     }
 
@@ -1026,47 +975,16 @@ public final class AccessoryController implements CommandExecutor, Listener {
             float bodyYaw = tracker.getBodyYaw();
             Location loc = wearer.getLocation();
             boolean isHeadRig = LIGHTNING_HAT_BLUEPRINT.equals(rig.blueprintId)
-                || CROWN_BLUEPRINT.equals(rig.blueprintId);
+                || SATAN_BLUEPRINT.equals(rig.blueprintId);
             float rigYaw = (isHeadRig && loc != null) ? loc.getYaw() : bodyYaw;
             syncRigTransform(wearer, rig, rigYaw, loc);
             ensureLivingAnimation(rig, tracker.getHorizSpeedBlocksPerTick());
-            ensureCrownSneakPose(rig, wearer.isSneaking());
             if (MELLSTROY_BLUEPRINT.equals(rig.blueprintId)) {
                 tickMellstroyEmote(wearer, rig, bodyYaw);
-            } else if (LIGHTNING_HAT_BLUEPRINT.equals(rig.blueprintId)) {
-                tickLightningStrike(rig);
             }
             logRigReady(rig);
         } catch (Throwable failure) {
             reportOnce("тик аксессуара", failure);
-        }
-    }
-
-    static long randomStrikeDelayTicks() {
-        return java.util.concurrent.ThreadLocalRandom.current()
-            .nextLong(STRIKE_MIN_DELAY_TICKS, STRIKE_MAX_DELAY_TICKS + 1L);
-    }
-
-    private static void triggerLightningStrike(GhoulRig rig, boolean ignoreSwingCooldown) {
-        if (rig == null || !LIGHTNING_HAT_BLUEPRINT.equals(rig.blueprintId) || rig.model.isDestroyed()) return;
-        if (!ignoreSwingCooldown && (petTicks - rig.lastStrikeAtTick) < STRIKE_SWING_COOLDOWN_TICKS) {
-            return;
-        }
-        rig.lastStrikeAtTick = petTicks;
-        rig.nextStrikeTick = petTicks + randomStrikeDelayTicks();
-        rig.strikeCount++;
-        AnimationHandler handler = rig.model.getAnimationHandler();
-        if (handler != null) {
-            if (handler.isPlayingAnimation(STRIKE_ANIM)) {
-                handler.forceStopAnimation(STRIKE_ANIM);
-            }
-            handler.playAnimation(STRIKE_ANIM, 0.05D, 0.12D, 1.0D, true);
-        }
-    }
-
-    private static void tickLightningStrike(GhoulRig rig) {
-        if (petTicks >= rig.nextStrikeTick) {
-            triggerLightningStrike(rig, true);
         }
     }
 
@@ -1153,9 +1071,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
         String label = KANEKI_BLUEPRINT.equals(rig.blueprintId)
             ? "кагуне Канэки Кена"
             : LIGHTNING_HAT_BLUEPRINT.equals(rig.blueprintId)
-                ? "шапка Грозовая молния (анимация удара)"
-                : CROWN_BLUEPRINT.equals(rig.blueprintId)
-                    ? "шапка Корона (приклеена к голове yaw+pitch, перелив)"
+                ? "шапка Дождевое облако (3D-дождик)"
+                : SATAN_BLUEPRINT.equals(rig.blueprintId)
+                    ? "шапка Круг Сатаны (пентаграмма нимбом вокруг головы)"
                     : MINI_ME_BLUEPRINT.equals(rig.blueprintId)
                         ? "танцующая Мини-Роузи у плеча"
                         : KITTEN_BLUEPRINT.equals(rig.blueprintId)
@@ -1221,8 +1139,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
 
         PlayerBodyTracker tracker = trackerFor(player);
         boolean isHeadRig = LIGHTNING_HAT_BLUEPRINT.equals(blueprintId)
-            || CROWN_BLUEPRINT.equals(blueprintId);
-        boolean tracksHeadPitch = CROWN_BLUEPRINT.equals(blueprintId);
+            || SATAN_BLUEPRINT.equals(blueprintId);
+        boolean tracksHeadPitch = false;
         float initialYaw = (isHeadRig && loc != null && Float.isFinite(loc.getYaw()))
             ? loc.getYaw()
             : tracker.getBodyYaw();
@@ -1275,7 +1193,6 @@ public final class AccessoryController implements CommandExecutor, Listener {
         rig.pairedAt = petTicks;
         ensurePivotMounted(player, rig);
         ensureLivingAnimation(rig, tracker.getHorizSpeedBlocksPerTick());
-        ensureCrownSneakPose(rig, player.isSneaking());
         return rig;
     }
 
@@ -1341,7 +1258,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         modelsLogged = true;
         StringBuilder missing = new StringBuilder();
         for (String id : new String[] {"elytrix_angel_wings", "elytrix_angel_halo",
-                                       CROWN_BLUEPRINT, LIGHTNING_HAT_BLUEPRINT,
+                                       SATAN_BLUEPRINT, LIGHTNING_HAT_BLUEPRINT,
                                        KANEKI_BLUEPRINT, CENTIPEDE_BLUEPRINT, MINI_ME_BLUEPRINT,
                                        KITTEN_BLUEPRINT, MELLSTROY_BLUEPRINT,
                                        "elytrix_priora_black", "elytrix_priora_white", "elytrix_priora_pink"}) {
@@ -1352,7 +1269,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
         try {
             if (missing.length() == 0) {
-                host.getLogger().info("[Аксессуары] ModelEngine загрузил все модели: крылья, нимб, корона, грозовая молния, кагуне Канэки, сколопендра, Мини-Роузи, котёнок, Меллстрой");
+                host.getLogger().info("[Аксессуары] ModelEngine загрузил все модели: крылья, нимб, круг сатаны, дождевое облако, кагуне Канэки, сколопендра, Мини-Роузи, котёнок, Меллстрой");
             } else {
                 host.getLogger().warning("[Аксессуары] ModelEngine не загрузил: " + missing
                     + " — проверь plugins/ModelEngine/blueprints и лог ModelEngine");
@@ -1408,16 +1325,6 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (hat != null) syncRigTransform(player, hat, to.getYaw(), to);
     }
 
-    @EventHandler public void onSneak(PlayerToggleSneakEvent event) {
-        if (event.isCancelled()) return;
-        Player player = event.getPlayer();
-        if (player == null) return;
-        GhoulRig hat = HATS.get(player.getUniqueId());
-        if (hat != null && CROWN_BLUEPRINT.equals(hat.blueprintId)) {
-            ensureCrownSneakPose(hat, event.isSneaking());
-        }
-    }
-
     @EventHandler public void onTeleport(PlayerTeleportEvent event) {
         if (event.isCancelled()) return;
         Player player = event.getPlayer();
@@ -1436,10 +1343,6 @@ public final class AccessoryController implements CommandExecutor, Listener {
         java.util.UUID uuid = player.getUniqueId();
         PlayerBodyTracker tracker = TRACKERS.get(uuid);
         if (tracker != null) tracker.notifyArmSwing();
-        GhoulRig hat = HATS.get(uuid);
-        if (hat != null && LIGHTNING_HAT_BLUEPRINT.equals(hat.blueprintId)) {
-            triggerLightningStrike(hat, false);
-        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -1522,8 +1425,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
     private static String activeHatLabel(Player player) {
         String head = headChoice(player);
         if ("halo".equals(head)) return "§dБожественный нимб";
-        if (HAT_CROWN.equals(head)) return "§dКорона";
-        if (HAT_LIGHTNING.equals(head)) return "§dГрозовая молния";
+        if (HAT_SATAN.equals(head)) return "§dКруг Сатаны";
+        if (HAT_LIGHTNING.equals(head)) return "§dДождевое облако";
         return "§8Не выбрано";
     }
 
@@ -1545,7 +1448,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
                 "§7Надето: " + activeBackLabel(player))));
         menu.setItem(13, item(Material.NETHER_STAR, "§x§F§A§D§8§F§C§lШапки", "angel_halo", null,
             lore(current == Section.HATS ? openHint : switchHint,
-                "§7Нимб, корона и грозовая молния",
+                "§7Нимб, круг сатаны и дождевое облако",
                 "§7Надето: " + activeHatLabel(player))));
         menu.setItem(14, item(Material.WHITE_DYE, "§x§F§A§D§8§F§C§lПитомцы", "mini_me_icon", null,
             lore(current == Section.PETS ? openHint : switchHint,
@@ -1627,7 +1530,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
                     "")));
             menu.setItem(22, item(Material.NETHER_STAR, "§x§F§A§D§8§F§C§lШапки", "angel_halo", null,
                 lore(openSectionHint,
-                    "§7Нимб, корона и грозовая молния",
+                    "§7Нимб, круг сатаны и дождевое облако",
                     "§7Цены: §x§F§8§B§E§F§B3500 §8– §x§F§8§B§E§F§B4500 §fꐃ",
                     "§7Надето: " + activeHatLabel(player),
                     "")));
@@ -1656,20 +1559,20 @@ public final class AccessoryController implements CommandExecutor, Listener {
             placeSectionTabs(menu, player, Section.HATS);
             String head = headChoice(player);
             boolean halo = "halo".equals(head);
-            boolean crown = HAT_CROWN.equals(head);
+            boolean satan = HAT_SATAN.equals(head);
             boolean lightning = HAT_LIGHTNING.equals(head);
             menu.setItem(29, item(Material.NETHER_STAR, "§x§F§A§D§8§F§C§lБожественный нимб", "angel_halo", null,
                 shopAccessoryLore(player, AccessoryItem.HALO_ITEM, halo,
                     "§7Сияющий 3D-нимб над головой",
                     "§7Не занимает слот шлема")));
-            menu.setItem(31, item(Material.GOLD_INGOT, "§x§F§A§D§8§F§C§lКорона", "crown_icon", null,
-                shopAccessoryLore(player, AccessoryItem.CROWN, crown,
-                    "§7Золотая корона с рубинами и сапфирами",
-                    "§7Движется вместе с головой и переливается!")));
-            menu.setItem(33, item(Material.BLAZE_ROD, "§x§F§A§D§8§F§C§lГрозовая молния", "lightning_hat_icon", null,
+            menu.setItem(31, item(Material.NETHERRACK, "§x§F§A§D§8§F§C§lКруг Сатаны", "satan_circle_icon", null,
+                shopAccessoryLore(player, AccessoryItem.SATAN_CIRCLE, satan,
+                    "§7Пентаграмма из раскалённого обсидиана",
+                    "§7Крутится нимбом вокруг головы!")));
+            menu.setItem(33, item(Material.BLAZE_ROD, "§x§F§A§D§8§F§C§lДождевое облако", "lightning_hat_icon", null,
                 shopAccessoryLore(player, AccessoryItem.LIGHTNING_HAT, lightning,
-                    "§7Грозовая туча и 3D-молния над головой",
-                    "§7Заряжается и бьёт разрядом с ударной волной!")));
+                    "§7Спокойное кучевое облако прямо над головой",
+                    "§7С него всё время капает настоящий 3D-дождик!")));
             placeBackAndClear(menu, player, true);
         } else if (target == Section.PETS) {
             placeSectionTabs(menu, player, Section.PETS);
@@ -1816,8 +1719,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
             toggleKaneki(player);
         } else if (clickedItem == AccessoryItem.HALO_ITEM) {
             toggleHead(player, "halo", "Нимб", "надет", "снят");
-        } else if (clickedItem == AccessoryItem.CROWN) {
-            toggleCrown(player);
+        } else if (clickedItem == AccessoryItem.SATAN_CIRCLE) {
+            toggleSatanCircle(player);
         } else if (clickedItem == AccessoryItem.LIGHTNING_HAT) {
             toggleLightningHat(player);
         } else if (clickedItem == AccessoryItem.MINI_ME) {
@@ -1886,34 +1789,34 @@ public final class AccessoryController implements CommandExecutor, Listener {
         player.sendMessage("§dКагуне Канэки Кена пробуждено.");
     }
 
-    private static void toggleCrown(Player player) {
-        if (HAT_CROWN.equals(headChoice(player))) {
+    private static void toggleSatanCircle(Player player) {
+        if (HAT_SATAN.equals(headChoice(player))) {
             setHead(player, "");
             GhoulRig hat = HATS.get(player.getUniqueId());
             if (hat != null) removeRig(player.getUniqueId(), hat, HATS);
-            player.sendMessage("§7Корона снята.");
+            player.sendMessage("§7Круг Сатаны снят.");
             return;
         }
-        if (resolveBlueprint(CROWN_BLUEPRINT) == null) {
-            player.sendMessage("§cМодель короны ещё не загружена. Обратитесь к администрации.");
+        if (resolveBlueprint(SATAN_BLUEPRINT) == null) {
+            player.sendMessage("§cМодель круга сатаны ещё не загружена. Обратитесь к администрации.");
             return;
         }
-        setHead(player, HAT_CROWN);
+        setHead(player, HAT_SATAN);
         TELEPORT_RESPAWN_AT.remove(player.getUniqueId());
         try {
             syncPlayerRigs(player);
         } catch (Throwable failure) {
-            reportOnce("корона", failure);
+            reportOnce("круг сатаны", failure);
             setHead(player, "");
-            player.sendMessage("§cКорона не появилась: " + failure.getClass().getSimpleName());
+            player.sendMessage("§cКруг Сатаны не появился: " + failure.getClass().getSimpleName());
             return;
         }
-        if (!wearingCrown(player)) {
+        if (!wearingSatanCircle(player)) {
             setHead(player, "");
-            player.sendMessage("§cКорона не появилась: модель не загрузилась.");
+            player.sendMessage("§cКруг Сатаны не появился: модель не загрузилась.");
             return;
         }
-        player.sendMessage("§dКоролевская корона надета!");
+        player.sendMessage("§dКруг Сатаны зажжён над головой!");
     }
 
     private static void toggleLightningHat(Player player) {
@@ -1921,11 +1824,11 @@ public final class AccessoryController implements CommandExecutor, Listener {
             setHead(player, "");
             GhoulRig hat = HATS.get(player.getUniqueId());
             if (hat != null) removeRig(player.getUniqueId(), hat, HATS);
-            player.sendMessage("§7Грозовая молния снята.");
+            player.sendMessage("§7Дождевое облако снято.");
             return;
         }
         if (resolveBlueprint(LIGHTNING_HAT_BLUEPRINT) == null) {
-            player.sendMessage("§cМодель грозовой молнии ещё не загружена. Обратитесь к администрации.");
+            player.sendMessage("§cМодель дождевого облака ещё не загружена. Обратитесь к администрации.");
             return;
         }
         setHead(player, HAT_LIGHTNING);
@@ -1933,21 +1836,17 @@ public final class AccessoryController implements CommandExecutor, Listener {
         try {
             syncPlayerRigs(player);
         } catch (Throwable failure) {
-            reportOnce("грозовая молния", failure);
+            reportOnce("дождевое облако", failure);
             setHead(player, "");
-            player.sendMessage("§cГрозовая молния не появилась: " + failure.getClass().getSimpleName());
+            player.sendMessage("§cДождевое облако не появилось: " + failure.getClass().getSimpleName());
             return;
         }
         if (!wearingLightningHat(player)) {
             setHead(player, "");
-            player.sendMessage("§cГрозовая молния не появилась: модель не загрузилась.");
+            player.sendMessage("§cДождевое облако не появилось: модель не загрузилась.");
             return;
         }
-        player.sendMessage("§dГрозовая молния заряжена и бьёт над головой!");
-        GhoulRig rig = HATS.get(player.getUniqueId());
-        if (rig != null) {
-            triggerLightningStrike(rig, true);
-        }
+        player.sendMessage("§dДождевое облако нависло над головой — капает дождик!");
     }
 
     private static void togglePetChoice(Player player, String choice, String blueprintId,

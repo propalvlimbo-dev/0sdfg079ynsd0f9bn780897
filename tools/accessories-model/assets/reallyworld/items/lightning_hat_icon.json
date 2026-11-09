@@ -1,1 +1,6 @@
-{"model":{"type":"minecraft:model","model":"reallyworld:item/freak/lightning_hat_icon"}}
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "reallyworld:item/lightning_hat_icon"
+  }
+}
