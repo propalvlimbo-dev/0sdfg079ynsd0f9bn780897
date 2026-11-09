@@ -4,11 +4,90 @@
 
 ## 0. Florium
 
-В снимке сервера (`plugins/`) плагина **Florium нет** — установлены `GrimAC`,
+> **ОБНОВЛЕНО (по логу VDS от игрока):**Florium **установлен** —
+> `[packetevents] Loaded packetevents v2.13.0 for FloriumAC`. На момент первого
+> разбора его не было, поэтому раздел ниже про LPX остался как история; **теперь
+> подозреваемый №1 — FloriumAC** (см. раздел 0.1).
+
+В снимке сервера (`plugins/`) плагина Florium не было — установлены `GrimAC`,
 `LPX`, `ProtocolLib`, `ViaVersion` + `ViaBackwards`, `KnockbackSync`,
 `AntiDisconnectSpam`. У GrimAC все `punish-commands` закомментированы, то есть
-**Grim никого не кикает**. Значит основной подозреваемый — **LPX** (плюс
-Paper `packet-limiter` как второй).
+**Grim никого не кикает**.
+
+---
+
+## 0.1 Разбор живого лога (2746 строк, 14:28–15:35) ⭐ актуально
+
+### Что подтверждено: старые причины УСТРАНЕНЫ
+
+| Проверка | Было | Сейчас |
+|---|---|---|
+| LPX `suspicious packets` / `lpx kick` | были | **0** ✅ |
+| Paper `packet-limiter` | `action: KICK` | **0** ✅ |
+| `OutOfDirectMemoryError` | был | **0** ✅ |
+
+> **Ложное срабатывание скрипта:** строка `>> ПОДОЗРЕВАЕТСЯ Netty/DirectMemory: 1`
+> — это **не** OOM. В логе ровно одна обычная
+> `io.netty.channel.unix.Errors$NativeIoException: sendAddress(..) failed with error(-32): Broken pipe`,
+> которая появляется при любом штатном обрыве сокета клиентом. Настоящий
+> `OutOfDirectMemoryError` отсутствует.
+
+### Ключевое наблюдение: пик = минута старта сервера
+
+```
+14:28:00  старт сервера
+14:28:37  Done (44.576s)!
+14:28     14 отключений  <-- «массовый кик»
+```
+
+Пик **совпадает с минутой готовности сервера**. Это почти наверняка
+**реконнект-шторм после рестарта**, а не кик плагином: игроки, которые были на
+прокси, переподключаются пачкой. Скрипт теперь печатает это отдельным предупреждением и раздел 6 с именами.
+
+### Три новых подозреваемых
+
+1. **FloriumAC (главный)** — облачный античит, появился впервые:
+   * `[FloriumAC] Florium server presence is unavailable; reconnecting (SocketTimeoutException)` — его бэкенд недоступен;
+   * `[FloriumAC] [network] ZesKmix (UUID) transport exception; lastIn=CLIENT_TICK_END Nms ago; lastOut=ENTITY_METADATA Nms ago` — обрыв именно на `ENTITY_METADATA`.
+   Облачные AC при недоступном бэкенде часто дисконнектят игроков **синхронно и пачкой**.
+2. **`IRandomTeleport` (`/rtp`) падает 17 раз** — `ArrayIndexOutOfBoundsException`
+   в `com.ilyapurtov.utils.ReflectionUtil` прямо на `Server thread`. Плагин не адаптирован под `1.21.11`. Падение посреди телепортации роняет игрока.
+3. **`Entity threw exception` ×10, NPE ×9, `WrappedGoal.isRunning() because "goal" is null` ×2** —
+   классика Paper: кто-то мутирует список AI-целей сущности не из главного потока.
+   Кандидаты: MythicMobs/мобы с кастомным AI, ModelEngine, плагины питомцев.
+
+### Четыре инстанса packetevents одновременно
+
+```
+packetevents v2.13.1+4d40422-SNAPSHOT  -> GrimAC
+packetevents v2.14.1+c11273e-SNAPSHOT  -> KnockbackSync
+packetevents v2.14.1-LPX+6aecc331c     -> LPX
+packetevents v2.13.0                   -> FloriumAC
+```
+
+Четыре независимых пакетных пайплайна на одном сервере — это и лишняя задержка,
+и четыре разных точки отказа. Плюс в логе видны загрузки `block mappings` для
+`V_1_21_4/17`, `V_1_21_6/19`, `V_1_21_9/20`, `V_26_3/23` — онлайн идёт с
+четырёх разных версий клиента.
+
+### Что делать (в порядке приоритета)
+
+```bash
+# 1. Подтвердить, что это реконнект-шторм, а не кик: имена + причины
+bash /root/kick_why.sh /root/RW_GRIEF/logs/latest.log      # смотреть раздел 6
+
+# 2. Проверить FloriumAC: если его облако недоступно — временно выключить
+#    (PlugManX, БЕЗ рестарта):
+plugman unload FloriumAC
+#    если отключения пропали — виновник найден.
+
+# 3. Убрать сломанный /rtp (17 исключений на Server thread):
+plugman unload IRandomTeleport
+#    либо обновить плагин до версии с поддержкой 1.21.11.
+
+# 4. Найти, кто мутирует AI-цели (NPE WrappedGoal): раздел 8 скрипта показывает
+#    пакеты из стектрейсов.
+```
 
 ---
 
