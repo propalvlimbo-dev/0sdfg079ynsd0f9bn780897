@@ -4,22 +4,27 @@ pixel-art menu icon (`reallyworld:zeus_wings_icon`) and a multi-angle verificati
 
 100% pure procedural Python + Pillow + NumPy — zero AI generation.
 
-  1. Visual design v2 — "RAGGED BUNDLE OF DISCHARGES WITH GAPS" ("рваный пучок
-     разрядов с просветами"), chosen by the player to replace the earlier
-     "arm + 5 feathers" silhouette:
-       - Each wing is a FAN OF 6 INDEPENDENT ARCS (`arc_r1..r6`, `arc_l1..l6`) that
-         shoot straight out of one shoulder-blade discharge hub.  No shared arm, no
-         feather row — six separate bolts fanning from a single point.
-       - The fan is deliberately IRREGULAR: angles `+61 / +38 / +27 / +5 / -12 / -33`
-         deg and lengths `11.0 / 18.0 / 24.0 / 20.0 / 13.5 / 8.5` BB, so no two arcs
-         line up and the wing never reads as a comb.
-       - RAGGED: every arc is pierced by missing segments (`gaps`), so you can see
-         straight through the wing between the bolts.  Each arc also throws one short
-         razor fork and 1-2 loose tip sparks, which is what sells "живое электричество".
-       - `wing_r` / `wing_l` are now empty group bones: they carry the whole-wing beat,
-         while every arc wobbles and surges on its own phase on top of it.
-       - A small storm-indigo cloud (`zeus_root`) boils between the shoulder blades with
-         two bright feeder arcs, plus two crackling spark clusters (`spark_r`, `spark_l`).
+  1. Visual design v3 — "BRANCHING LIGHTNING THAT READS AS WINGS" ("ветки молний,
+     которые вместе выглядят как крылья"), chosen by the player to replace v2's
+     fan-of-six-arcs silhouette:
+       - Each wing is ONE CONTINUOUS TRUNK BOLT (`trunk_r` / `trunk_l`) that traces the
+         wing's leading edge: shoulder hub `(0.9, 22.4)` -> up over the wrist
+         `(11.6, 26.5)` -> down and out to the wingtip `(22.8, 19.9)`.  That single arc
+         is what makes the whole shape read as a WING and not as a burst.
+       - SEVEN BRANCH BOLTS (`branch_r1..r7`, `branch_l1..l7`) split off the trunk and
+         hang down/back like primaries — short by the shoulder, longest at the wrist,
+         tucking back up at the tip, so their tips trace the wing's trailing edge.
+       - Every branch SPLITS AGAIN into 1-2 short barbs, so it is a real lightning
+         tree and not a comb of sticks, and throws one loose spark past its tip.
+       - STILL RAGGED: the branches are pierced by missing segments (`gaps`), so you
+         see straight through the wing between the bolts.  The trunk stays continuous
+         on purpose — it is the spar the wing hangs from.
+       - `wing_r` / `wing_l` stay empty group bones carrying the whole-wing beat; the
+         trunk lags behind that beat, and every branch flutters on its own phase with
+         an amplitude that GROWS toward the wingtip (`2.6 deg -> 9.5 deg`).
+       - A small storm-indigo cloud (`zeus_root`) boils between the shoulder blades
+         with two bright feeder arcs, plus two crackling spark clusters
+         (`spark_r`, `spark_l`).
        - Texture v2 — SMOOTH ENERGY GRADIENT (no scanlines, no per-pixel hash): each
          32x32 tile is a continuous ramp between 3-4 stops, modulated by two very
          low-frequency sine waves and finished with a 4x4 Bayer dither so the 8-bit
@@ -28,20 +33,21 @@ pixel-art menu icon (`reallyworld:zeus_wings_icon`) and a multi-angle verificati
          bright cyan `hue ~192`, electric blue `hue ~210`, deep thunder-indigo
          `hue ~228`.  Every colour lives in hue `180..232`, zero warm/gold pixels.
   2. Motion (seamless 4.8 s loop @ 20 TPS = 96 ticks, 64 keyframes):
-       - Whole-wing beat on the group bones (`+-7 deg` flap, `+3 deg` double-time
+       - Whole-wing beat on the group bones (`+-6 deg` flap, `+3 deg` double-time
          shudder, `+-3.5 deg` sweep, `+-0.9 deg` crackle jitter).
-       - Every arc independently flutters (`+-4.5 deg` + `1.6 deg` high-frequency
-         crackle) and surges `+18%` on its own staggered discharge beat, so the wing
-         "breathes" lightning instead of flapping cloth.
+       - The trunk lags the beat by `+-3.2 deg` and crackles `+-1.4 deg`.
+       - Every branch independently flutters (`2.6..9.5 deg` by index + `1.7 deg`
+         high-frequency crackle) and surges `+18%` on its own staggered discharge
+         beat, so the wing "breathes" lightning instead of flapping cloth.
        - The root hovers `+-0.14` BB, the spark clusters pulse `0.55 -> 1.20` and tumble
          a full turn per loop.
   3. Engine safety (the rules that made the earlier models reliable):
        - **Not a single cube is rotated.**  Every jag is an axis-aligned L-step, exactly
          like `elytrix_kaneki_tentacles` / `elytrix_centipede`, so ModelEngine 4.1.0's
          `RotationSolver` is never invoked (it crashes on rotated cubes).
-       - Every bone's geometry stays inside `+-24` BB of its own pivot (each arc pivots
-         40% along its own length, so the longest `24` BB arc reaches only `14.4`),
-         which keeps ModelEngine's `scaleToFit()` out of the pipeline.
+       - Every bone's geometry stays inside `+-24` BB of its own pivot (the trunk pivots
+         at the wrist, the branches 40% along their own length — the worst bone reaches
+         only ~13 BB), which keeps ModelEngine's `scaleToFit()` out of the pipeline.
        - `16.0` BB units = `1.0` block: feet `0.00`, waist `11.25`, neck/shoulders `22.50`,
          bare skull top `30.00`, `+Z` is the player's back.
 """
@@ -71,8 +77,8 @@ IDLE_STEPS = 64
 # Shoulder-blade pivot: upper back, just under the neck, on the back surface (+Z).
 ROOT_ORIG = [0.0, 22.0, 1.9]
 
-# Right-wing discharge hub.  Every arc is born here; the left hub is the X mirror.
-HUB = (1.10, 21.90, 2.35)
+# Right-wing discharge hub.  The trunk bolt is born here; the left hub is the X mirror.
+HUB = (0.90, 22.40, 2.30)
 
 
 def uid(tag: str) -> str:
@@ -285,44 +291,73 @@ def mirror_all(cubes: list, suffix: str = '_l') -> list:
 
 
 # ---------------------------------------------------------------------------
-# 3. Geometry v2 — a ragged fan of six discharges per wing
+# 3. Geometry v3 — a branching lightning tree shaped like a wing
 # ---------------------------------------------------------------------------
-# (angle deg from horizontal, length BB, L-steps, half width, half depth, jag amp, gaps)
-# Angles and lengths are deliberately uneven: +61/+38/+27/+5/-12/-33 and
-# 11.0/18.0/24.0/20.0/13.5/8.5, so the fan never reads as a regular comb.
-ARCS = [
-    (52.0, 11.0, 5, 0.22, 0.19, 0.78, (2,)),
-    (34.0, 18.0, 6, 0.26, 0.22, 0.86, (1, 3)),
-    (18.0, 23.0, 8, 0.30, 0.25, 0.95, (2, 5)),
-    (3.0, 20.0, 8, 0.28, 0.24, 0.90, (1, 4)),
-    (-13.0, 13.5, 6, 0.25, 0.21, 0.80, (2,)),
-    (-33.0, 8.5, 5, 0.21, 0.18, 0.70, (1, 3)),
+# One continuous TRUNK bolt per wing runs along the wing's leading edge
+# (shoulder hub -> up over the wrist -> down and out to the wingtip).  SEVEN
+# BRANCH bolts split off it and hang down/back like primaries: short by the
+# shoulder, longest at the wrist, tucking back up at the tip, so their tips
+# trace the wing's trailing edge.  Every branch splits AGAIN into 1-2 short
+# barbs and throws one loose spark past its tip.  The branches are pierced by
+# `gaps` so the wing stays ragged and transparent between the bolts — the
+# trunk stays continuous on purpose, it is the spar the wing hangs from.
+TRUNK = [
+    (0.90, 22.40, 2.30),
+    (2.60, 23.30, 2.42),
+    (4.40, 24.20, 2.55),
+    (6.20, 25.05, 2.68),
+    (8.00, 25.70, 2.80),
+    (9.80, 26.20, 2.90),
+    (11.60, 26.50, 2.95),    # <- wrist: the highest point of the whole wing
+    (13.35, 26.35, 2.90),
+    (15.10, 26.10, 2.85),
+    (16.70, 25.55, 2.78),
+    (18.30, 24.90, 2.70),
+    (19.70, 23.90, 2.62),
+    (21.00, 22.80, 2.55),
+    (21.95, 21.40, 2.50),
+    (22.80, 19.90, 2.45),    # <- wingtip, sweeping down and back
 ]
-ARC_COUNT = len(ARCS)
+# The trunk pivots at the wrist, so the farthest cube (the wingtip) sits only
+# ~13 BB away — far inside ModelEngine's +-24 BB bone budget.
+TRUNK_PIVOT_I = 6
 
-# Where each arc pivots, as a fraction of its own length (0.40 keeps the longest
-# 24 BB arc within 14.4 BB of its pivot, well inside ModelEngine's +-24 BB budget).
-ARC_PIVOT_T = 0.40
+# (attach index into TRUNK, tip x, tip y, tip z, L-steps, hw, hd, jag amp, gaps)
+BRANCHES = [
+    (2,   1.60, 18.60, 2.10, 5, 0.24, 0.20, 0.72, (2,)),
+    (4,   6.60, 17.40, 2.15, 6, 0.26, 0.21, 0.80, (1, 4)),
+    (6,  12.10, 16.90, 2.20, 6, 0.26, 0.21, 0.84, (2,)),
+    (8,  17.40, 17.40, 2.30, 6, 0.25, 0.20, 0.78, (1, 4)),
+    (10, 21.60, 18.30, 2.45, 5, 0.23, 0.19, 0.70, (2,)),
+    (12, 24.10, 19.10, 2.55, 4, 0.21, 0.18, 0.62, (1,)),
+    (13, 24.90, 18.30, 2.58, 4, 0.19, 0.17, 0.56, (2,)),
+]
+BRANCH_COUNT = len(BRANCHES)
 
-# Razor forks per arc: (start fraction along the arc, angle offset deg, length BB).
-# The two longest arcs throw a second fork further out — that is what makes the fan
-# read as crackling electricity instead of six tidy sticks.
-FORK_SPEC = {
-    0: ((0.50, -46.0, 4.2),),
-    1: ((0.45, 40.0, 4.6), (0.78, -34.0, 3.4)),
-    2: ((0.40, -42.0, 5.4), (0.72, 36.0, 4.0)),
-    3: ((0.62, 44.0, 4.6),),
-    4: ((0.55, -38.0, 3.8),),
-    5: ((0.48, 42.0, 3.2),),
+# Branch pivots sit 40% along their own length: the longest branch is ~9.6 BB,
+# so its farthest cube (plus a 4.3 BB barb) stays under 10 BB from the pivot.
+BRANCH_PIVOT_T = 0.40
+
+# Barb splits per branch (1-based): (t along the branch, angle offset deg, length BB).
+# The sign alternates so the twigs splay to both sides instead of combing one way.
+BARBS = {
+    1: ((0.36, 44.0, 3.6), (0.72, -38.0, 2.6)),
+    2: ((0.32, -46.0, 4.0), (0.68, 40.0, 2.9)),
+    3: ((0.34, 42.0, 4.3), (0.70, -36.0, 3.1)),
+    4: ((0.30, -44.0, 4.0), (0.66, 38.0, 2.8)),
+    5: ((0.34, 46.0, 3.2), (0.70, -40.0, 2.3)),
+    6: ((0.32, -42.0, 2.6), (0.68, 36.0, 1.9)),
+    7: ((0.36, 40.0, 2.1),),
 }
-# Loose tip sparks per arc: (offset along the arc past the tip, lateral offset BB, size)
-TIP_SPARKS = {
-    0: ((1.4, 0.7, 0.34),),
-    1: ((1.8, -0.9, 0.30), (2.4, 0.5, 0.22)),
-    2: ((2.0, 1.0, 0.32), (2.6, -0.6, 0.24)),
-    3: ((1.6, -0.8, 0.28),),
-    4: ((1.4, 0.7, 0.26),),
-    5: (),
+# Loose spark past each branch tip: (offset along the branch, lateral BB, half size)
+BRANCH_TIPS = {
+    1: ((0.9, 0.5, 0.30),),
+    2: ((1.0, -0.5, 0.30),),
+    3: ((1.1, 0.4, 0.28),),
+    4: ((1.0, -0.4, 0.26),),
+    5: ((0.8, 0.3, 0.24),),
+    6: ((0.7, -0.3, 0.22),),
+    7: ((0.6, 0.2, 0.20),),
 }
 # Spark clusters hovering just above each shoulder blade.
 SPARKS = [
@@ -330,27 +365,33 @@ SPARKS = [
 ]
 
 
-def _arc_ray(idx: int):
-    """Unit direction, tip point and mid-pivot of arc `idx` (right wing, +X)."""
-    ang, length, _steps, _hw, _hd, _amp, _gaps = ARCS[idx]
-    ay = HUB[1] + (0.40 - 0.10 * idx)
-    ax, az = HUB[0], HUB[2]
-    rad = math.radians(ang)
-    ux, uy = math.cos(rad), math.sin(rad)
-    tip = (ax + ux * length, ay + uy * length, az + 0.55)
-    pivot = (ax + ux * length * ARC_PIVOT_T,
-             ay + uy * length * ARC_PIVOT_T,
-             az + 0.55 * ARC_PIVOT_T)
-    return (ax, ay, az), (ux, uy), length, tip, pivot
+def _trunk_pivot() -> list:
+    p = TRUNK[TRUNK_PIVOT_I]
+    return [round(float(p[0]), 4), round(float(p[1]), 4), round(float(p[2]), 4)]
 
 
-def _arc_pivot(idx: int) -> list:
-    _start, _u, _l, _tip, pivot = _arc_ray(idx)
-    return [round(pivot[0], 4), round(pivot[1], 4), round(pivot[2], 4)]
+def _branch_pivot(idx: int) -> list:
+    att, tx, ty, tz = BRANCHES[idx][:4]
+    ax, ay, az = TRUNK[att]
+    t = BRANCH_PIVOT_T
+    return [round(ax + (tx - ax) * t, 4),
+            round(ay + (ty - ay) * t, 4),
+            round(az + (tz - az) * t, 4)]
 
 
 def _mirror_pivot(p: list) -> list:
     return [round(-p[0], 4), p[1], p[2]]
+
+
+def _mirror_chain(cubes: list, pivot: list) -> list:
+    """X-mirror a whole cube chain onto a new (mirrored) bone pivot."""
+    out = []
+    for c in cubes:
+        m = _mirror(c)
+        m['origin'] = pivot
+        m['uuid'] = uid(f"cube:{m['name']}")
+        out.append(m)
+    return out
 
 
 def _spark_pivot(side: str) -> list:
@@ -389,10 +430,11 @@ def build_geometry(elements: list) -> dict:
     for i, (x0, y0, z0, x1, y1, z1) in enumerate(cloud_blocks):
         root_cubes.append(_cube(f'cloud_{i}', [x0, y0, z0], [x1, y1, z1],
                                 ROOT_ORIG, cloud_faces))
-    feed_pts = [(-1.2, 23.4, 2.6), (-3.6, 23.0, 2.5), (-5.4, 21.9, 2.4), (-7.4, 21.2, 2.2)]
-    root_cubes.extend(jag_chain('feed_r', feed_pts, 0.55, 2.2, 0.16, 0.14,
+    # two short feeder bolts: storm cloud -> each wing's trunk hub
+    feed_pts = [(-2.2, 23.6, 2.70), (-1.1, 23.2, 2.60), (0.0, 22.9, 2.50), (0.90, 22.40, 2.30)]
+    root_cubes.extend(jag_chain('feed_r', feed_pts, 0.45, 2.2, 0.16, 0.14,
                                 glow_faces, ROOT_ORIG, taper=0.35))
-    root_cubes.extend(mirror_all(jag_chain('feed_r', feed_pts, 0.55, 2.2, 0.16, 0.14,
+    root_cubes.extend(mirror_all(jag_chain('feed_r', feed_pts, 0.45, 2.2, 0.16, 0.14,
                                            glow_faces, ROOT_ORIG, taper=0.35)))
     bones['zeus_root'] = add_many(root_cubes)
 
@@ -400,57 +442,53 @@ def build_geometry(elements: list) -> dict:
     bones['wing_r'] = []
     bones['wing_l'] = []
 
-    # --- C) 12 ragged arcs: fan from the hub, each with gaps + a razor fork + sparks ---
-    for idx in range(ARC_COUNT):
-        ang, length, steps, hw, hd, amp, gaps = ARCS[idx]
-        (ax, ay, az), (ux, uy), length, tip, _pivot = _arc_ray(idx)
-        piv = _arc_pivot(idx)
+    # --- C) trunk: one continuous arched bolt per wing = the wing's leading edge ---
+    tpiv = _trunk_pivot()
+    trunk = jag_chain('trunk_r', TRUNK, 0.82, 5.1, 0.32, 0.24,
+                      bolt_faces, tpiv, taper=0.45)
+    bones['trunk_r'] = add_many(trunk)
+    bones['trunk_l'] = add_many(_mirror_chain(trunk, _mirror_pivot(tpiv)))
 
-        # main bolt: sample along the ray, then jag the interior nodes
+    # --- D) seven branch bolts hanging off the trunk, each splitting into barbs ---
+    for idx, (att, tx, ty, tz, steps, hw, hd, amp, gaps) in enumerate(BRANCHES):
+        ax, ay, az = TRUNK[att]
+        bpiv = _branch_pivot(idx)
         pts = []
         for i in range(steps + 1):
             t = i / steps
-            pts.append((ax + ux * length * t,
-                        ay + uy * length * t,
-                        az + 0.55 * t))
-        cubes = jag_chain(f'arc_r{idx + 1}', pts, amp, 1.3 + idx * 2.7,
-                          hw, hd, bolt_faces, piv, taper=0.45, gaps=gaps)
+            pts.append((ax + (tx - ax) * t,
+                        ay + (ty - ay) * t,
+                        az + (tz - az) * t))
+        cubes = jag_chain(f'branch_r{idx + 1}', pts, amp, 11.0 + idx * 3.3,
+                          hw, hd, bolt_faces, bpiv, taper=0.5, gaps=gaps)
 
-        # razor forks branching off the bolt
-        for fk, (ft, fang, flen) in enumerate(FORK_SPEC.get(idx, ())):
-            frad = math.radians(ang + fang)
-            fx = ax + ux * length * ft
-            fy = ay + uy * length * ft
-            fz = az + 0.55 * ft
+        # the branch splits again — that is what makes it a lightning TREE
+        base = math.atan2(ty - ay, tx - ax)
+        for bk, (bt, bang, blen) in enumerate(BARBS.get(idx + 1, ())):
+            bx = ax + (tx - ax) * bt
+            by = ay + (ty - ay) * bt
+            bz = az + (tz - az) * bt
+            rad = base + math.radians(bang)
             cubes.extend(bolt_cubes(
-                f'fork_r{idx + 1}_{fk}',
-                (fx, fy),
-                (fx + math.cos(frad) * flen, fy + math.sin(frad) * flen),
-                fz, fz + 0.18,
-                hw * 0.68, hd * 0.68, 2, amp * 0.55, 7.0 + idx * 3.0 + fk,
-                glow_faces, piv, taper=0.6, gaps=(1,)))
+                f'barb_r{idx + 1}_{bk}',
+                (bx, by),
+                (bx + math.cos(rad) * blen, by + math.sin(rad) * blen),
+                bz, bz + 0.14,
+                hw * 0.66, hd * 0.66, 2, amp * 0.5, 23.0 + idx * 4.0 + bk,
+                glow_faces, bpiv, taper=0.6, gaps=(1,)))
 
-        # loose tip sparks hanging past the end of the bolt
-        for k, (along, lat, size) in enumerate(TIP_SPARKS.get(idx, ())):
-            trad = math.radians(ang)
-            sx = tip[0] + math.cos(trad) * along - math.sin(trad) * lat
-            sy = tip[1] + math.sin(trad) * along + math.cos(trad) * lat
-            sz = tip[2] + 0.10 * k
+        # loose spark hanging past the tip of the branch
+        for k, (along, lat, size) in enumerate(BRANCH_TIPS.get(idx + 1, ())):
+            sx = tx + math.cos(base) * along - math.sin(base) * lat
+            sy = ty + math.sin(base) * along + math.cos(base) * lat
+            sz = tz + 0.08 * k
             cubes.append(_cube(f'ash_r{idx + 1}_{k}',
                                [sx - size, sy - size, sz - size],
                                [sx + size, sy + size, sz + size],
-                               piv, spark_faces))
+                               bpiv, spark_faces))
 
-        bones[f'arc_r{idx + 1}'] = add_many(cubes)
-
-        left_piv = _mirror_pivot(piv)
-        left = []
-        for c in cubes:
-            m = _mirror(c)
-            m['origin'] = left_piv
-            m['uuid'] = uid(f"cube:{m['name']}")
-            left.append(m)
-        bones[f'arc_l{idx + 1}'] = add_many(left)
+        bones[f'branch_r{idx + 1}'] = add_many(cubes)
+        bones[f'branch_l{idx + 1}'] = add_many(_mirror_chain(cubes, _mirror_pivot(bpiv)))
 
     # --- D) spark_r / spark_l: crackling clusters above each shoulder blade ---
     for side, (sx, sy, sz) in (('r', SPARKS[0]), ('l', SPARKS[1])):
@@ -477,8 +515,10 @@ def build_geometry(elements: list) -> dict:
 # ---------------------------------------------------------------------------
 # 4. Seamless 4.8 s animation: wing beat, per-arc flutter, electric discharge
 # ---------------------------------------------------------------------------
-ARC_IDS = [f'arc_{s}{i}' for s in ('r', 'l') for i in range(1, ARC_COUNT + 1)]
-BONE_NAMES = ['zeus_root', 'wing_r', 'wing_l'] + ARC_IDS + ['spark_r', 'spark_l']
+TRUNK_IDS = ['trunk_r', 'trunk_l']
+BRANCH_IDS = [f'branch_{s}{i}' for s in ('r', 'l') for i in range(1, BRANCH_COUNT + 1)]
+BONE_NAMES = (['zeus_root', 'wing_r', 'wing_l'] + TRUNK_IDS + BRANCH_IDS
+              + ['spark_r', 'spark_l'])
 
 
 def eval_zeus_pose(u: float) -> dict:
@@ -489,7 +529,7 @@ def eval_zeus_pose(u: float) -> dict:
     hover_y = 0.14 * math.sin(tau * up)
 
     # Whole-wing beat on the empty group bones.
-    flap = 7.0 * math.sin(tau * up) + 3.0 * math.sin(tau * 2.0 * up + 1.1)
+    flap = 6.0 * math.sin(tau * up) + 3.0 * math.sin(tau * 2.0 * up + 1.1)
     jitter = 0.9 * math.sin(tau * 8.0 * up + 0.6)
     flap_z = flap + jitter
     sweep_y = 3.5 * math.sin(tau * up + 0.35)
@@ -500,28 +540,45 @@ def eval_zeus_pose(u: float) -> dict:
                      round(1.1 * math.sin(tau * up), 4)],
         'wing_rot': {'wing_r': [0.0, round(sweep_y, 4), round(flap_z, 4)],
                      'wing_l': [0.0, round(-sweep_y, 4), round(-flap_z, 4)]},
-        'arc_rot': {},
-        'arc_scale': {},
+        'trunk_rot': {},
+        'trunk_scale': {},
+        'branch_rot': {},
+        'branch_scale': {},
         'spark_rot': {},
         'spark_scale': {},
     }
 
     for side, sign in (('r', 1.0), ('l', -1.0)):
-        for i in range(1, ARC_COUNT + 1):
-            name = f'arc_{side}{i}'
-            phase = 0.62 * (i - 1) + (0.0 if side == 'r' else math.pi)
-            # Each arc wobbles a little differently: the fan never moves as one plate.
-            flutter = 4.5 * math.sin(tau * up + phase)
-            crackle = 1.6 * math.sin(tau * 7.0 * up + i * 1.9)
-            twist = 1.1 * math.sin(tau * 3.0 * up + phase * 1.7)
-            pose['arc_rot'][name] = [round(twist, 4),
-                                     round(0.7 * crackle, 4),
-                                     round(sign * (flutter + crackle), 4)]
-            # Discharge: a narrow +18% surge travelling outward through the fan.
-            beat = (up - (i - 1) * 0.14 - (0.0 if side == 'r' else 0.5)) % 1.0
+        phase = 0.0 if side == 'r' else math.pi
+
+        # The trunk is the spar: it lags the group beat and crackles along its length.
+        tname = f'trunk_{side}'
+        lag = 3.2 * math.sin(tau * up + 0.30 + phase)
+        tcr = 1.4 * math.sin(tau * 7.0 * up + 0.4)
+        pose['trunk_rot'][tname] = [round(0.7 * tcr, 4),
+                                    round(0.5 * tcr, 4),
+                                    round(sign * (lag + tcr), 4)]
+        beat = (up - (0.0 if side == 'r' else 0.5)) % 1.0
+        pulse = math.exp(-((beat - 0.5) / 0.16) ** 2)
+        ts = round(1.0 + 0.03 * math.sin(tau * up + phase) + 0.12 * pulse, 4)
+        pose['trunk_scale'][tname] = [ts, round(1.0 + 0.03 * pulse, 4), ts]
+
+        # Branches flutter harder the further out they sit, so the wingtip whips.
+        for i in range(1, BRANCH_COUNT + 1):
+            name = f'branch_{side}{i}'
+            bph = 0.52 * (i - 1) + phase
+            amp = 2.6 + 1.15 * (i - 1)
+            flutter = amp * math.sin(tau * up + bph)
+            crackle = 1.7 * math.sin(tau * 7.0 * up + i * 1.7)
+            twist = 1.0 * math.sin(tau * 3.0 * up + bph * 1.6)
+            pose['branch_rot'][name] = [round(twist, 4),
+                                        round(0.6 * crackle, 4),
+                                        round(sign * (flutter + crackle), 4)]
+            # Discharge: a narrow +18% surge travelling outward through the tree.
+            beat = (up - (i - 1) * 0.11 - (0.0 if side == 'r' else 0.5)) % 1.0
             pulse = math.exp(-((beat - 0.5) / 0.15) ** 2)
-            s = round(1.0 + 0.05 * math.sin(tau * up + phase) + 0.18 * pulse, 4)
-            pose['arc_scale'][name] = [s, round(1.0 + 0.04 * pulse, 4), s]
+            s = round(1.0 + 0.05 * math.sin(tau * up + bph) + 0.18 * pulse, 4)
+            pose['branch_scale'][name] = [s, round(1.0 + 0.04 * pulse, 4), s]
 
         sname = f'spark_{side}'
         pose['spark_rot'][sname] = [0.0, round(360.0 * u, 4), 0.0]
@@ -557,9 +614,13 @@ def build_idle_animators() -> dict:
         for wing in ('wing_r', 'wing_l'):
             kfs[wing].append(_vec_kf('rotation', f'idle:{wing}', t, *pose['wing_rot'][wing]))
 
-        for name in ARC_IDS:
-            kfs[name].append(_vec_kf('rotation', f'idle:{name}', t, *pose['arc_rot'][name]))
-            kfs[name].append(_vec_kf('scale', f'idle:{name}', t, *pose['arc_scale'][name]))
+        for name in TRUNK_IDS:
+            kfs[name].append(_vec_kf('rotation', f'idle:{name}', t, *pose['trunk_rot'][name]))
+            kfs[name].append(_vec_kf('scale', f'idle:{name}', t, *pose['trunk_scale'][name]))
+
+        for name in BRANCH_IDS:
+            kfs[name].append(_vec_kf('rotation', f'idle:{name}', t, *pose['branch_rot'][name]))
+            kfs[name].append(_vec_kf('scale', f'idle:{name}', t, *pose['branch_scale'][name]))
 
         for sname in ('spark_r', 'spark_l'):
             kfs[sname].append(_vec_kf('rotation', f'idle:{sname}', t, *pose['spark_rot'][sname]))
@@ -596,11 +657,15 @@ def build_blueprint() -> tuple[dict, Image.Image]:
         }
 
     def wing_group(side: str) -> dict:
-        arcs = [bone(f'arc_{side}{i}',
-                     _arc_pivot(i - 1) if side == 'r' else _mirror_pivot(_arc_pivot(i - 1)),
-                     bones[f'arc_{side}{i}'], is_open=False)
-                for i in range(1, ARC_COUNT + 1)]
-        return bone(f'wing_{side}', ROOT_ORIG, arcs, is_open=False)
+        kids = [bone(f'trunk_{side}',
+                     _trunk_pivot() if side == 'r' else _mirror_pivot(_trunk_pivot()),
+                     bones[f'trunk_{side}'], is_open=False)]
+        for i in range(1, BRANCH_COUNT + 1):
+            bp = _branch_pivot(i - 1)
+            kids.append(bone(f'branch_{side}{i}',
+                             bp if side == 'r' else _mirror_pivot(bp),
+                             bones[f'branch_{side}{i}'], is_open=False))
+        return bone(f'wing_{side}', ROOT_ORIG, kids, is_open=False)
 
     outliner = [
         bone('zeus_root', ROOT_ORIG, [
@@ -661,7 +726,7 @@ def build_blueprint() -> tuple[dict, Image.Image]:
 
 # ---------------------------------------------------------------------------
 # 6. Hand-crafted 32x32 pixel-art menu icon (`reallyworld:zeus_wings_icon`)
-#    — same ragged fan as the 3D model, cold but bright palette.
+#    — same branching lightning wing as the 3D model, cold but bright palette.
 # ---------------------------------------------------------------------------
 def build_zeus_icon() -> Image.Image:
     img = Image.new('RGBA', (32, 32), (0, 0, 0, 0))
@@ -677,62 +742,71 @@ def build_zeus_icon() -> Image.Image:
         if 0 <= x < 32 and 0 <= y < 32:
             px[x, y] = c
 
-    def jag_ray(x0: float, y0: float, x1: float, y1: float,
-                steps: int = 4, amp: float = 2.0, gaps=()) -> None:
-        dx, dy = x1 - x0, y1 - y0
-        length = math.hypot(dx, dy) or 1.0
-        ux, uy = dx / length, dy / length
-        nx, ny = -uy, ux
-        nodes = []
-        for i in range(steps + 1):
-            t = i / steps
-            off = 0.0 if i in (0, steps) else amp * (1.0 if i % 2 else -1.0) * (1.0 - 0.35 * t)
-            nodes.append((x0 + ux * length * t + nx * off,
-                          y0 + uy * length * t + ny * off))
-        for i in range(steps):
+    def bolt(pts: list, amp: float, gaps=(), halo: bool = True) -> None:
+        """Jagged bolt through `pts` (list of (x, y)).
+
+        `halo=True` (the trunk) draws a cyan glow one pixel around a white core,
+        `halo=False` (the branches) draws a bare one-pixel core line — at 32x32 six
+        haloed bolts merge into a solid blob, so only the spar keeps its glow.
+        Interior nodes are kicked off the polyline by an alternating perpendicular
+        offset, exactly like the 3D `jag_chain`, and `gaps` skips whole segments so
+        the little icon is as ragged and see-through as the model itself.
+        """
+        P = []
+        n = len(pts)
+        for i, (x, y) in enumerate(pts):
+            if i == 0 or i == n - 1:
+                P.append((float(x), float(y)))
+                continue
+            ax, ay = pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]
+            bx, by = pts[i + 1][0] - pts[i][0], pts[i + 1][1] - pts[i][1]
+            la, lb = math.hypot(ax, ay) or 1.0, math.hypot(bx, by) or 1.0
+            nx, ny = -(ay / la + by / lb), (ax / la + bx / lb)
+            ln = math.hypot(nx, ny) or 1.0
+            off = amp * (1.0 if i % 2 else -1.0)
+            P.append((x + nx / ln * off, y + ny / ln * off))
+
+        for i in range(len(P) - 1):
             if i in gaps:
                 continue
-            (ax, ay), (bx, by) = nodes[i], nodes[i + 1]
-            for k in range(41):
-                tt = k / 40.0
-                qx = int(round(ax + (bx - ax) * tt))
-                qy = int(round(ay + (by - ay) * tt))
-                for ox, oy in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)):
-                    put(qx + ox, qy + oy, mid if (ox or oy) else dark)
-        for i in range(steps):
-            if i in gaps:
-                continue
-            (ax, ay), (bx, by) = nodes[i], nodes[i + 1]
-            for k in range(41):
-                tt = k / 40.0
-                put(int(round(ax + (bx - ax) * tt)), int(round(ay + (by - ay) * tt)), core)
+            (x0, y0), (x1, y1) = P[i], P[i + 1]
+            steps = max(3, int(math.hypot(x1 - x0, y1 - y0) * 3))
+            for k in range(steps + 1):
+                tt = k / steps
+                qx = int(round(x0 + (x1 - x0) * tt))
+                qy = int(round(y0 + (y1 - y0) * tt))
+                if halo:
+                    for ox, oy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                        put(qx + ox, qy + oy, mid)
+                    put(qx, qy, dark)
+                put(qx, qy, core)
 
-    hub_x, hub_y = 15.5, 17.5
-    # Six uneven arcs per side — the same irregular fan as the 3D model.
-    fan = (
-        (52.0, 9.0, 3, 1.5, (1,)),
-        (34.0, 13.0, 4, 1.8, (1, 3)),
-        (18.0, 14.0, 5, 2.0, (2, 4)),
-        (3.0, 13.0, 5, 1.9, (1, 4)),
-        (-13.0, 10.0, 4, 1.6, (2,)),
-        (-33.0, 7.0, 3, 1.3, (1,)),
-    )
-    for ang, length, steps, amp, gaps in fan:
-        for sgn in (1.0, -1.0):
-            rad = math.radians(ang)
-            jag_ray(hub_x + sgn * 1.5, hub_y,
-                    hub_x + sgn * (1.5 + math.cos(rad) * length),
-                    hub_y - math.sin(rad) * length,
-                    steps=steps, amp=amp, gaps=gaps)
-
-    # small storm cloud at the base
-    for (bx, by, bw, bh) in ((10, 21, 12, 4), (12, 20, 8, 2), (13, 25, 6, 2)):
+    # small storm cloud the wings erupt from — drawn FIRST, bolts on top of it
+    for (bx, by, bw, bh) in ((12, 17, 9, 4), (13, 16, 7, 2), (13, 21, 7, 2)):
         for y in range(by, by + bh):
             for x in range(bx, bx + bw):
-                if ((x + y) % 5) == 0:
-                    put(x, y, cloud_hi)
-                else:
-                    put(x, y, cloud)
+                put(x, y, cloud_hi if ((x + y) % 5) == 0 else cloud)
+
+    # Right half of the wing (x from 16 outwards); the left half is the X mirror.
+    TRUNK_ICON = [(16, 16), (18, 14), (20, 12), (22, 10), (24, 9),
+                  (26, 10), (28, 12), (30, 16)]
+    BRANCH_ICON = [
+        ((18, 14), (16.0, 22)),
+        ((20, 12), (19.0, 23)),
+        ((22, 10), (23.0, 23)),
+        ((25, 9.5), (27.0, 21)),
+        ((28, 12), (30.0, 18)),
+    ]
+    for sgn in (1.0, -1.0):
+        def mx(x: float) -> float:
+            return 15.5 + sgn * (x - 15.5)
+
+        bolt([(mx(x), y) for x, y in TRUNK_ICON], 1.1)
+        for k, (p0, p1) in enumerate(BRANCH_ICON):
+            qmid = ((p0[0] + p1[0]) / 2.0, (p0[1] + p1[1]) / 2.0)
+            # every other branch is interrupted, so the wing is see-through
+            bolt([(mx(p0[0]), p0[1]), (mx(qmid[0]), qmid[1]), (mx(p1[0]), p1[1])],
+                 1.0, gaps=(1,) if k % 2 else (), halo=False)
 
     return img
 
@@ -827,15 +901,21 @@ def render_preview(blueprint: dict, texture: Image.Image, icon: Image.Image, out
         tf = {'zeus_root': root_tf}
         for wing in ('wing_r', 'wing_l'):
             tf[wing] = make_tf(root_tf, ROOT_ORIG, [0, 0, 0], pose['wing_rot'][wing], [1, 1, 1])
-        for name in ARC_IDS:
-            side = 'r' if name.startswith('arc_r') else 'l'
-            i = int(name[-1])
-            parent = tf['wing_r'] if side == 'r' else tf['wing_l']
-            piv = _arc_pivot(i - 1)
+        for name in TRUNK_IDS:
+            side = name[-1]
+            piv = _trunk_pivot()
             if side == 'l':
                 piv = _mirror_pivot(piv)
-            tf[name] = make_tf(parent, piv, [0, 0, 0], pose['arc_rot'][name],
-                               pose['arc_scale'][name])
+            tf[name] = make_tf(tf[f'wing_{side}'], piv, [0, 0, 0],
+                               pose['trunk_rot'][name], pose['trunk_scale'][name])
+        for name in BRANCH_IDS:
+            side = name[7]                       # 'branch_r3' -> 'r'
+            i = int(name[8:])
+            piv = _branch_pivot(i - 1)
+            if side == 'l':
+                piv = _mirror_pivot(piv)
+            tf[name] = make_tf(tf[f'wing_{side}'], piv, [0, 0, 0],
+                               pose['branch_rot'][name], pose['branch_scale'][name])
         for side in ('r', 'l'):
             name = f'spark_{side}'
             tf[name] = make_tf(root_tf, _spark_pivot(side), [0, 0, 0],
