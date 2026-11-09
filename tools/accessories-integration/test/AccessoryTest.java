@@ -516,12 +516,12 @@ public class AccessoryTest {
   // --- 8c. Buy & Equip NEW Аура сердечек (5500 ꐃ, Ауры tab slot 16 -> card slot 30 -> 4000 ꐃ) ---
   click.slot=16;controller.onClick(click); // tab to Ауры
   check(Bukkit.title.equals(AccessoryController.TITLE_AURAS),"opened brand-new Ауры section via tab slot 16");
-  check(Bukkit.slots.get(30).meta.title.contains("Аура сердечек")
-        && Bukkit.slots.get(30).meta.model.equals(new NamespacedKey("reallyworld","heart_aura_icon")),
-        "Аура сердечек in Ауры slot 30 with heart_aura_icon!");
-  check(Bukkit.slots.get(30).meta.lore.stream().anyMatch(l -> l.contains("5500") && l.contains("ꐃ")),
+  check(Bukkit.slots.get(29).meta.title.contains("Аура сердечек")
+        && Bukkit.slots.get(29).meta.model.equals(new NamespacedKey("reallyworld","heart_aura_icon")),
+        "Аура сердечек in Ауры slot 29 with heart_aura_icon!");
+  check(Bukkit.slots.get(29).meta.lore.stream().anyMatch(l -> l.contains("5500") && l.contains("ꐃ")),
         "Аура сердечек priced at 5500 Рилликов!");
-  click.slot=30;controller.onClick(click); // buy & equip Аура сердечек!
+  click.slot=29;controller.onClick(click); // buy & equip Аура сердечек!
   check(wallet.get(p.uuid)==4000 && AccessoryController.owns(p, AccessoryController.AccessoryItem.HEART_AURA),
         "Аура сердечек bought for exact 5500 Рилликов!");
   check(AccessoryController.heartAuraSelected(p) && AccessoryController.wearingHeartAura(p)
@@ -537,9 +537,9 @@ public class AccessoryTest {
   check(AccessoryController.heartAuraAttached(p) && fe.pivots.passengers.contains(auraModel.pivotId),
         "Аура сердечек pivot mounted on player PivotOverride");
   // Unequip & re-equip the aura -> always free!
-  click.slot=30;controller.onClick(click);
+  click.slot=29;controller.onClick(click);
   check(!AccessoryController.wearingHeartAura(p) && wallet.get(p.uuid)==4000,"unequipping the aura is free");
-  click.slot=30;controller.onClick(click);
+  click.slot=29;controller.onClick(click);
   check(AccessoryController.wearingHeartAura(p) && wallet.get(p.uuid)==4000,"re-equipping the aura is free forever!");
   controller.onMove(new PlayerMoveEvent(p, new Location(p.world, p.px, p.py, p.pz, -61.0F, 0.0F)));
   check(Math.abs(auraModel.owner.bodyYaw - 0.0F) < 0.01F && Math.abs(auraModel.owner.headYaw - 0.0F) < 0.01F,
@@ -547,12 +547,12 @@ public class AccessoryTest {
 
   // --- 8d. Buy & Equip NEW Аура бабочек (5500 ꐃ, Ауры card slot 32 -> 4500 ꐃ) ---
   wallet.put(p.uuid, 10000); // top the test wallet up for the second aura
-  check(Bukkit.slots.get(32).meta.title.contains("Аура бабочек")
-        && Bukkit.slots.get(32).meta.model.equals(new NamespacedKey("reallyworld","butterfly_aura_icon")),
-        "Аура бабочек in Ауры slot 32 with butterfly_aura_icon!");
-  check(Bukkit.slots.get(32).meta.lore.stream().anyMatch(l -> l.contains("5500") && l.contains("ꐃ")),
+  check(Bukkit.slots.get(31).meta.title.contains("Аура бабочек")
+        && Bukkit.slots.get(31).meta.model.equals(new NamespacedKey("reallyworld","butterfly_aura_icon")),
+        "Аура бабочек in Ауры slot 31 with butterfly_aura_icon!");
+  check(Bukkit.slots.get(31).meta.lore.stream().anyMatch(l -> l.contains("5500") && l.contains("ꐃ")),
         "Аура бабочек priced at 5500 Рилликов!");
-  click.slot=32;controller.onClick(click); // buy & equip Аура бабочек!
+  click.slot=31;controller.onClick(click); // buy & equip Аура бабочек!
   check(wallet.get(p.uuid)==4500 && AccessoryController.owns(p, AccessoryController.AccessoryItem.BUTTERFLY_AURA),
         "Аура бабочек bought for exact 5500 Рилликов!");
   check(AccessoryController.butterflyAuraSelected(p) && AccessoryController.wearingButterflyAura(p)
@@ -570,16 +570,47 @@ public class AccessoryTest {
   check(Math.abs(butterflyModel.owner.bodyYaw - 0.0F) < 0.01F && Math.abs(butterflyModel.owner.headYaw - 0.0F) < 0.01F,
         "Аура бабочек never turns with the body: its rig yaw stays pinned to 0 (world space)!");
   // Unequip & re-equip -> always free!
-  click.slot=32;controller.onClick(click);
+  click.slot=31;controller.onClick(click);
   check(!AccessoryController.wearingButterflyAura(p) && wallet.get(p.uuid)==4500,"unequipping Аура бабочек is free");
-  click.slot=32;controller.onClick(click);
+  click.slot=31;controller.onClick(click);
   check(AccessoryController.wearingButterflyAura(p) && wallet.get(p.uuid)==4500,"re-equipping Аура бабочек is free forever!");
+
+  // --- 8e. Buy & Equip NEW Смертельная аура (5500 ꐃ, Ауры card slot 33 -> 4500 ꐃ) ---
+  wallet.put(p.uuid, 10000); // top the test wallet up for the third aura
+  check(Bukkit.slots.get(33).meta.title.contains("Смертельная аура")
+        && Bukkit.slots.get(33).meta.model.equals(new NamespacedKey("reallyworld","death_aura_icon")),
+        "Смертельная аура in Ауры slot 33 with death_aura_icon!");
+  check(Bukkit.slots.get(33).meta.lore.stream().anyMatch(l -> l.contains("5500") && l.contains("ꐃ")),
+        "Смертельная аура priced at 5500 Рилликов!");
+  click.slot=33;controller.onClick(click); // buy & equip Смертельная аура!
+  check(wallet.get(p.uuid)==4500 && AccessoryController.owns(p, AccessoryController.AccessoryItem.DEATH_AURA),
+        "Смертельная аура bought for exact 5500 Рилликов!");
+  check(AccessoryController.deathAuraSelected(p) && AccessoryController.wearingDeathAura(p)
+        && AccessoryController.deathAuraAnimating(p),
+        "Смертельная аура Dummy spawned around the player & playing the seamless 'idle' ash-rise loop!");
+  check(!AccessoryController.wearingButterflyAura(p) && !AccessoryController.wearingHeartAura(p)
+        && AccessoryController.wearingZeusWings(p),
+        "all three auras share the ONE aura slot: equipping Смертельная аура swaps out the other two!");
+  check(fe.entities.size()==4,"the swapped aura still rides the 4th isolated Dummy entity, no leak");
+  FakeActive deathModel=fe.q.last;
+  deathModel.rendererReady=true;
+  AccessoryController.animatePets();
+  check(AccessoryController.deathAuraAttached(p) && fe.pivots.passengers.contains(deathModel.pivotId),
+        "Смертельная аура pivot mounted on player PivotOverride");
+  controller.onMove(new PlayerMoveEvent(p, new Location(p.world, p.px, p.py, p.pz, -173.0F, 0.0F)));
+  check(Math.abs(deathModel.owner.bodyYaw - 0.0F) < 0.01F && Math.abs(deathModel.owner.headYaw - 0.0F) < 0.01F,
+        "Смертельная аура never turns with the body: its rig yaw stays pinned to 0 (world space)!");
+  click.slot=33;controller.onClick(click);
+  check(!AccessoryController.wearingDeathAura(p) && wallet.get(p.uuid)==4500,"unequipping Смертельная аура is free");
+  click.slot=33;controller.onClick(click);
+  check(AccessoryController.wearingDeathAura(p) && wallet.get(p.uuid)==4500,"re-equipping Смертельная аура is free forever!");
 
   // --- 9. Clear All (slot 49) ---
   click.slot=49;controller.onClick(click);
   check(!AccessoryController.wearingMellstroy(p) && !AccessoryController.wearingSatanCircle(p)
         && !AccessoryController.wearingLightningHat(p) && !AccessoryController.wearingZeusWings(p)
         && !AccessoryController.wearingHeartAura(p) && !AccessoryController.wearingButterflyAura(p)
+        && !AccessoryController.wearingDeathAura(p)
         && AccessoryController.back(plugin,p)==null && AccessoryController.halo(plugin,p)==null && fe.entities.isEmpty(),
         "clear-all removes back, hat, pet and both auras cleanly");
 
@@ -589,8 +620,8 @@ public class AccessoryTest {
   click.slot=12;controller.onClick(click); // Шапки
   click.slot=31;controller.onClick(click); // Круг Сатаны (free!)
   click.slot=16;controller.onClick(click); // Ауры
-  click.slot=30;controller.onClick(click); // Аура сердечек (free!)
-  click.slot=32;controller.onClick(click); // Аура бабочек (free!) -> takes over the shared aura slot
+  click.slot=29;controller.onClick(click); // Аура сердечек (free!)
+  click.slot=31;controller.onClick(click); // Аура бабочек (free!) -> takes over the shared aura slot
   click.slot=10;controller.onClick(click); // Спина
   click.slot=33;controller.onClick(click); // Крылья Зевса (free!)
   check(wallet.get(p.uuid)==4500 && AccessoryController.wearingMiniMe(p)
@@ -625,6 +656,6 @@ public class AccessoryTest {
   AccessoryController.install(bare);
   check(bare.mockCommand.executor==null && !bare.warnings.isEmpty(),"missing command logged safely");
   InventoryDragEvent drag=new InventoryDragEvent();drag.view=click.view;controller.onDrag(drag);check(drag.cancelled,"drag cancelled");
-  System.out.println("All v3.25.0 tests passed: public /accessories (/acc, /акс) Риллики shop + Ауры section with TWO auras (Аура сердечек 5500 ꐃ, 12 hearts rising at random, no spiral + Аура бабочек 5500 ꐃ, 10 pink butterflies with filled wings, horizontal body and antennae, circling the player) + Крылья Зевса (8000 ꐃ, wings woven from lightning) + Круг Сатаны (4500 ꐃ, spinning pentagram halo) + Дождевое облако (4000 ꐃ, 3D drizzle) + all 12 3D models!");
+  System.out.println("All v3.26.0 tests passed: public /accessories (/acc, /акс) Риллики shop + Ауры section with THREE auras (Аура сердечек 5500 ꐃ, 12 hearts rising at random, no spiral + Аура бабочек 5500 ꐃ, 10 pink butterflies with filled wings, horizontal body and antennae + Смертельная аура 5500 ꐃ, 10 tumbling ash flakes with glowing embers rising from under the feet, never re-created on teleport) + Крылья Зевса (8000 ꐃ, wings woven from lightning + new cloud rim over the wing arc) + Круг Сатаны (4500 ꐃ, spinning pentagram halo) + Дождевое облако (4000 ꐃ, 3D drizzle) + all 13 3D models!");
  }
 }

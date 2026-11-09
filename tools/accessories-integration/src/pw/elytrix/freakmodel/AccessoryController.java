@@ -91,6 +91,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
 
     static final String AURA_HEARTS = "hearts";
     static final String AURA_BUTTERFLIES = "butterflies";
+    static final String AURA_DEATH = "death";
 
     static final String LIGHTNING_HAT_BLUEPRINT = "elytrix_lightning_hat";
     static final String SATAN_BLUEPRINT = "elytrix_satan_circle";
@@ -102,6 +103,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final String ZEUS_BLUEPRINT = "elytrix_zeus_wings";
     static final String HEART_AURA_BLUEPRINT = "elytrix_heart_aura";
     static final String BUTTERFLY_AURA_BLUEPRINT = "elytrix_butterfly_aura";
+    static final String DEATH_AURA_BLUEPRINT = "elytrix_death_aura";
 
     static final String IDLE_ANIM = "idle";
     static final String ADMIN_PERMISSION = "elytrixfreakmodel.admin";
@@ -127,6 +129,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final int PRICE_ZEUS_WINGS = 8000;
     static final int PRICE_HEART_AURA = 5500;
     static final int PRICE_BUTTERFLY_AURA = 5500;
+    static final int PRICE_DEATH_AURA = 5500;
 
     /** Synchronized (in-model 3D `D.Admin BAN`-style badge animation, real Mellstroy Ogg Vorbis sound) pairs. */
     static final String[][] MELLSTROY_EMOTES = {
@@ -145,8 +148,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final String TITLE_BACK = "§fꈁꀀꈂꏧꈂꀁ§fꈃꏤ";
     static final String TITLE_HATS = "§fꈁꀀꈂꏧꈂꀁ§fꈃꏥ";
     static final String TITLE_PETS = "§fꈁꀀꈂꏨꈂꀁ§fꈃꏦ";
-    // Ауры holds 2 accessories (30/32) -> 2-slot ꏢ content frame (content_acc_two.png).
-    static final String TITLE_AURAS = "§fꈁꀀꈂꏢꈂꀁ§fꈃꏬ";
+    // Ауры holds 3 accessories (29/31/33) -> 3-slot ꏫ content frame (content_acc_auras3.png).
+    static final String TITLE_AURAS = "§fꈁꀀꈂꏫꈂꀁ§fꈃꏬ";
 
     enum Section {
         HUB, BACK, HATS, PETS, AURAS
@@ -163,8 +166,9 @@ public final class AccessoryController implements CommandExecutor, Listener {
         KITTEN(PET_KITTEN, Section.PETS, 30, KITTEN_BLUEPRINT, PRICE_KITTEN, "Милый котёнок"),
         MELLSTROY(PET_MELLSTROY, Section.PETS, 32, MELLSTROY_BLUEPRINT, PRICE_MELLSTROY, "Меллстрой"),
         CENTIPEDE(PET_CENTIPEDE, Section.PETS, 34, CENTIPEDE_BLUEPRINT, PRICE_CENTIPEDE, "Сколопендра Гуля"),
-        HEART_AURA(AURA_HEARTS, Section.AURAS, 30, HEART_AURA_BLUEPRINT, PRICE_HEART_AURA, "Аура сердечек"),
-        BUTTERFLY_AURA(AURA_BUTTERFLIES, Section.AURAS, 32, BUTTERFLY_AURA_BLUEPRINT, PRICE_BUTTERFLY_AURA, "Аура бабочек");
+        HEART_AURA(AURA_HEARTS, Section.AURAS, 29, HEART_AURA_BLUEPRINT, PRICE_HEART_AURA, "Аура сердечек"),
+        BUTTERFLY_AURA(AURA_BUTTERFLIES, Section.AURAS, 31, BUTTERFLY_AURA_BLUEPRINT, PRICE_BUTTERFLY_AURA, "Аура бабочек"),
+        DEATH_AURA(AURA_DEATH, Section.AURAS, 33, DEATH_AURA_BLUEPRINT, PRICE_DEATH_AURA, "Смертельная аура");
 
         final String id;
         final Section section;
@@ -506,6 +510,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         String choice = get(player, AURA);
         if (AURA_HEARTS.equals(choice) && owns(player, AccessoryItem.HEART_AURA)) return choice;
         if (AURA_BUTTERFLIES.equals(choice) && owns(player, AccessoryItem.BUTTERFLY_AURA)) return choice;
+        if (AURA_DEATH.equals(choice) && owns(player, AccessoryItem.DEATH_AURA)) return choice;
         return "";
     }
 
@@ -517,13 +522,15 @@ public final class AccessoryController implements CommandExecutor, Listener {
         String choice = auraChoice(player);
         if (AURA_HEARTS.equals(choice)) return HEART_AURA_BLUEPRINT;
         if (AURA_BUTTERFLIES.equals(choice)) return BUTTERFLY_AURA_BLUEPRINT;
+        if (AURA_DEATH.equals(choice)) return DEATH_AURA_BLUEPRINT;
         return null;
     }
 
     /** True for every aura blueprint: an aura must follow the player's POSITION but must
      *  never copy his body rotation, so its rig yaw is always pinned to 0 (world space). */
     static boolean isAura(String blueprintId) {
-        return HEART_AURA_BLUEPRINT.equals(blueprintId) || BUTTERFLY_AURA_BLUEPRINT.equals(blueprintId);
+        return HEART_AURA_BLUEPRINT.equals(blueprintId) || BUTTERFLY_AURA_BLUEPRINT.equals(blueprintId)
+            || DEATH_AURA_BLUEPRINT.equals(blueprintId);
     }
 
     static GhoulRig auraRig(Player player, String blueprintId) {
@@ -575,6 +582,23 @@ public final class AccessoryController implements CommandExecutor, Listener {
 
     static boolean butterflyAuraAnimating(Player player) {
         return auraAnimating(player, BUTTERFLY_AURA_BLUEPRINT);
+    }
+
+    public static boolean deathAuraSelected(Player player) {
+        return DEATH_AURA_BLUEPRINT.equals(desiredAuraBlueprint(player));
+    }
+
+    static boolean wearingDeathAura(Player player) {
+        return wearingAura(player, DEATH_AURA_BLUEPRINT);
+    }
+
+    static boolean deathAuraAttached(Player player) {
+        GhoulRig rig = auraRig(player, DEATH_AURA_BLUEPRINT);
+        return rig != null && rig.attached;
+    }
+
+    static boolean deathAuraAnimating(Player player) {
+        return auraAnimating(player, DEATH_AURA_BLUEPRINT);
     }
 
     public static FreakModelSpec halo(ElytrixFreakModelPlugin plugin, Player player) {
@@ -1410,12 +1434,22 @@ public final class AccessoryController implements CommandExecutor, Listener {
     }
 
     private static void releaseByUuid(java.util.UUID uuid) {
+        releaseByUuid(uuid, false);
+    }
+
+    /** `keepAura = true` НЕ трогает ауру. Аура следует только за ПОЗИЦИЕЙ игрока и её
+     *  йав всегда прибит к 0, поэтому удалять + создавать риг заново на телепорте
+     *  незачем: это самый заметный источник визуального «прыжка» ауры (rig на 1-2 тика
+     *  исчезает и появляется уже на новом месте). Вместо этого риг просто
+     *  пересинхронизируется — `syncRigTransform` двигает dummy на новую точку мгновенно. */
+    private static void releaseByUuid(java.util.UUID uuid, boolean keepAura) {
         GhoulRig pet = PETS.get(uuid);
         if (pet != null) removeRig(uuid, pet, PETS);
         GhoulRig kagune = KAGUNES.get(uuid);
         if (kagune != null) removeRig(uuid, kagune, KAGUNES);
         GhoulRig hat = HATS.get(uuid);
         if (hat != null) removeRig(uuid, hat, HATS);
+        if (keepAura) return;
         GhoulRig aura = AURAS.get(uuid);
         if (aura != null) removeRig(uuid, aura, AURAS);
     }
@@ -1428,9 +1462,22 @@ public final class AccessoryController implements CommandExecutor, Listener {
     private static void schedulePostTeleportRespawn(Player player, long delayTicks) {
         if (player == null) return;
         java.util.UUID uuid = player.getUniqueId();
-        releaseByUuid(uuid);
+        GhoulRig aura = AURAS.get(uuid);
+        String auraBp = desiredAuraBlueprint(player);
+        // Ауру при телепорте НЕ пересоздаём (see releaseByUuid(uuid, keepAura)) — иначе
+        // кольцо/поток на 1-2 тика пропадает и «телепортируется» на новое место.
+        boolean keepAura = auraBp != null && aura != null && aura.entity != null
+                && !aura.entity.isDestroyed() && aura.dummy != null
+                && aura.lastWorld == player.getLocation().getWorld();
+        releaseByUuid(uuid, keepAura);
+        if (keepAura) {
+            try {
+                syncPlayerRigs(player);
+            } catch (Throwable ignored) {
+            }
+        }
         if (desiredPetBlueprint(player) != null || backRigBlueprint(player) != null
-                || desiredHatBlueprint(player) != null || desiredAuraBlueprint(player) != null) {
+                || desiredHatBlueprint(player) != null || auraBp != null) {
             TELEPORT_RESPAWN_AT.put(uuid, Long.valueOf(petTicks + Math.max(1L, delayTicks)));
         }
     }
@@ -1444,6 +1491,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
                                        KANEKI_BLUEPRINT, ZEUS_BLUEPRINT, CENTIPEDE_BLUEPRINT,
                                        MINI_ME_BLUEPRINT, KITTEN_BLUEPRINT, MELLSTROY_BLUEPRINT,
                                        HEART_AURA_BLUEPRINT, BUTTERFLY_AURA_BLUEPRINT,
+                                       DEATH_AURA_BLUEPRINT,
                                        "elytrix_priora_black", "elytrix_priora_white", "elytrix_priora_pink"}) {
             if (resolveBlueprint(id) == null && !id.startsWith("elytrix_priora_")) {
                 if (missing.length() > 0) missing.append(", ");
@@ -1452,7 +1500,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
         try {
             if (missing.length() == 0) {
-                host.getLogger().info("[Аксессуары] ModelEngine загрузил все модели: крылья, нимб, круг сатаны, дождевое облако, кагуне Канэки, крылья Зевса, сколопендра, Мини-Роузи, котёнок, Меллстрой, аура сердечек");
+                host.getLogger().info("[Аксессуары] ModelEngine загрузил все модели: крылья, нимб, круг сатаны, дождевое облако, кагуне Канэки, крылья Зевса, сколопендра, Мини-Роузи, котёнок, Меллстрой, аура сердечек, аура бабочек, смертельная аура");
             } else {
                 host.getLogger().warning("[Аксессуары] ModelEngine не загрузил: " + missing
                     + " — проверь plugins/ModelEngine/blueprints и лог ModelEngine");
@@ -1631,6 +1679,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         String aura = auraChoice(player);
         if (AURA_HEARTS.equals(aura)) return "§dАура сердечек";
         if (AURA_BUTTERFLIES.equals(aura)) return "§dАура бабочек";
+        if (AURA_DEATH.equals(aura)) return "§dСмертельная аура";
         return "§8Не выбрано";
     }
 
@@ -1814,14 +1863,19 @@ public final class AccessoryController implements CommandExecutor, Listener {
             String auraNow = auraChoice(player);
             boolean hearts = AURA_HEARTS.equals(auraNow);
             boolean butterflies = AURA_BUTTERFLIES.equals(auraNow);
-            menu.setItem(30, item(Material.POPPY, "§x§F§A§D§8§F§C§lАура сердечек", "heart_aura_icon", null,
+            boolean death = AURA_DEATH.equals(auraNow);
+            menu.setItem(29, item(Material.POPPY, "§x§F§A§D§8§F§C§lАура сердечек", "heart_aura_icon", null,
                 shopAccessoryLore(player, AccessoryItem.HEART_AURA, hearts,
                     "§7Кольцо из 12 живых сердечек вокруг игрока",
                     "§7Рождаются под ногами, плывут вверх и тают над макушкой")));
-            menu.setItem(32, item(Material.PINK_DYE, "§x§F§A§D§8§F§C§lАура бабочек", "butterfly_aura_icon", null,
+            menu.setItem(31, item(Material.PINK_DYE, "§x§F§A§D§8§F§C§lАура бабочек", "butterfly_aura_icon", null,
                 shopAccessoryLore(player, AccessoryItem.BUTTERFLY_AURA, butterflies,
                     "§7Стая из 10 крошечных розовых бабочек вокруг игрока",
                     "§7Кружат от колен до макушки и всё время машут крылышками")));
+            menu.setItem(33, item(Material.BLAZE_POWDER, "§x§F§A§D§8§F§C§lСмертельная аура", "death_aura_icon", null,
+                shopAccessoryLore(player, AccessoryItem.DEATH_AURA, death,
+                    "§7Из-под самых ног всё время летит вверх пепел",
+                    "§7Серые хлопья кувыркаются, в них тлеют угольки")));
             placeBackAndClear(menu, player, true);
         }
 
@@ -1978,6 +2032,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
             toggleHeartAura(player);
         } else if (clickedItem == AccessoryItem.BUTTERFLY_AURA) {
             toggleButterflyAura(player);
+        } else if (clickedItem == AccessoryItem.DEATH_AURA) {
+            toggleDeathAura(player);
         }
         openMenu(player, current);
     }
@@ -2064,6 +2120,12 @@ public final class AccessoryController implements CommandExecutor, Listener {
         toggleAura(player, AURA_BUTTERFLIES, BUTTERFLY_AURA_BLUEPRINT,
             "Аура бабочек", "ауры бабочек", "аура бабочек",
             "§dАура бабочек расправила крылышки — они кружат вокруг тебя!");
+    }
+
+    private static void toggleDeathAura(Player player) {
+        toggleAura(player, AURA_DEATH, DEATH_AURA_BLUEPRINT,
+            "Смертельная аура", "смертельной ауры", "смертельная аура",
+            "§dСмертельная аура вспыхнула — из-под ног полетел пепел!");
     }
 
     private static void toggleAura(Player player, String choiceId, String blueprint,

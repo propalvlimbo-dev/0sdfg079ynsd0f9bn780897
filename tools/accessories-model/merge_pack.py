@@ -52,6 +52,7 @@ MODELS = (
     'elytrix_zeus_wings',
     'elytrix_heart_aura',
     'elytrix_butterfly_aura',
+    'elytrix_death_aura',
 )
 GLYPH = 'ꏠ'
 FONT = 'assets/minecraft/font/default.json'

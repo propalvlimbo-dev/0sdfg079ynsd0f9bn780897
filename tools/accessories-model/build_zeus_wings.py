@@ -373,6 +373,54 @@ def _trunk_pivot() -> list:
     return [round(float(p[0]), 4), round(float(p[1]), 4), round(float(p[2]), 4)]
 
 
+# --- ОБЛАЧНЫЙ ОБОДОК СВЕРХУ КРЫЛА (v3.26.0) -----------------------------------
+# По просьбе игрока: «Добавь крыльям зевса сверху ободок похожий на облака».
+# Это НЕ ещё одна молния, а ПУФЫ из уже существующего штормового материала
+# `UV_STORM_CLOUD`, которые едут ВЕРХОМ по дуге ствола (спара) — от плечевого
+# хаба через запястье (высшая точка крыла) и до самого кончика. Гребень пухнет
+# у запястья и сходит на нет к обоим концам, поэтому ободок читается как облако,
+# налипшее на ВЕРХНЮЮ кромку крыла, а не как ровная полоса.
+RIM_LIFT = 0.36          # насколько пуф приподнят над осью спар-молнии, BB
+RIM_PUFF_T = 0.42        # положение пика гребня по дуге ствола (запястье)
+RIM_PUFF_W = 0.40        # ширина колокола гребня по дуге
+
+
+def _rim_puffs() -> list:
+    """Возвращает список (x0, y0, z0, x1, y1, z1) пуфов поверх дуги TRUNK."""
+    puffs = []
+    n = len(TRUNK)
+    for i in range(n):
+        # Основной пуф в каждой точке ствола + маленький промежуточный между
+        # соседними точками — так ободок получается РВАНО-ПУШИСТЫМ, без щелей.
+        for sub, shrink in ((0.0, 1.0), (0.5, 0.62)):
+            if sub > 0.0 and i == n - 1:
+                continue
+            a = TRUNK[i]
+            b = TRUNK[min(i + 1, n - 1)]
+            x = a[0] + (b[0] - a[0]) * sub
+            y = a[1] + (b[1] - a[1]) * sub
+            z = a[2] + (b[2] - a[2]) * sub
+            t = (i + sub) / (n - 1)
+            bell = math.exp(-((t - RIM_PUFF_T) / RIM_PUFF_W) ** 2)
+            # Небольшой детерминированный «разброс», чтобы силуэт не был симметричным.
+            wob = 0.86 + 0.26 * math.sin(i * 1.73 + sub * 2.1)
+            hx = (0.40 + 0.60 * bell) * shrink * wob
+            hz = (0.23 + 0.19 * bell) * shrink
+            h = (0.58 + 0.52 * bell) * shrink * (0.88 + 0.22 * math.sin(i * 2.31 + sub))
+            zc = z + 0.09 * math.sin(i * 2.27 + sub * 1.6)
+            y0 = y + RIM_LIFT
+            puffs.append((round(x - hx, 4), round(y0, 4), round(zc - hz, 4),
+                          round(x + hx, 4), round(y0 + h, 4), round(zc + hz, 4)))
+    return puffs
+
+
+RIM_PUFFS = _rim_puffs()
+# Пивот — запястье (та же точка, что и у ствола): самый дальний куб ободка
+# (кончик крыла) лежит всего в ~12.7 BB, далеко внутри лимита +-24 BB.
+def _rim_pivot() -> list:
+    return _trunk_pivot()
+
+
 def _branch_pivot(idx: int) -> list:
     att, tx, ty, tz = BRANCHES[idx][:4]
     ax, ay, az = TRUNK[att]
@@ -444,6 +492,15 @@ def build_geometry(elements: list) -> dict:
     # --- B) wing_r / wing_l: EMPTY group bones, they only carry the whole-wing beat ---
     bones['wing_r'] = []
     bones['wing_l'] = []
+
+    # --- B2) cloud_rim_r / cloud_rim_l: облачный ободок по ВЕРХУ дуги ствола ---
+    rim_piv = _rim_pivot()
+    rim_cubes = []
+    for i, (x0, y0, z0, x1, y1, z1) in enumerate(RIM_PUFFS):
+        rim_cubes.append(_cube(f'cloudrim_{i:02d}', [x0, y0, z0], [x1, y1, z1],
+                               rim_piv, cloud_faces))
+    bones['cloud_rim_r'] = add_many(rim_cubes)
+    bones['cloud_rim_l'] = add_many(_mirror_chain(rim_cubes, _mirror_pivot(rim_piv)))
 
     # --- C) trunk: one continuous arched bolt per wing = the wing's leading edge ---
     tpiv = _trunk_pivot()
@@ -521,7 +578,7 @@ def build_geometry(elements: list) -> dict:
 TRUNK_IDS = ['trunk_r', 'trunk_l']
 BRANCH_IDS = [f'branch_{s}{i}' for s in ('r', 'l') for i in range(1, BRANCH_COUNT + 1)]
 BONE_NAMES = (['zeus_root', 'wing_r', 'wing_l'] + TRUNK_IDS + BRANCH_IDS
-              + ['spark_r', 'spark_l'])
+              + ['cloud_rim_r', 'cloud_rim_l'] + ['spark_r', 'spark_l'])
 
 
 def eval_zeus_pose(u: float) -> dict:
@@ -547,6 +604,7 @@ def eval_zeus_pose(u: float) -> dict:
         'trunk_scale': {},
         'branch_rot': {},
         'branch_scale': {},
+        'rim_scale': {},
         'spark_rot': {},
         'spark_scale': {},
     }
@@ -582,6 +640,15 @@ def eval_zeus_pose(u: float) -> dict:
             pulse = math.exp(-((beat - 0.5) / 0.15) ** 2)
             s = round(1.0 + 0.05 * math.sin(tau * up + bph) + 0.18 * pulse, 4)
             pose['branch_scale'][name] = [s, round(1.0 + 0.04 * pulse, 4), s]
+
+        # Облачный ободок не молния: он не трещит, а медленно «кипит» —
+        # масштаб дышит на своей фазе, поэтому гребень всё время шевелится.
+        rname = f'cloud_rim_{side}'
+        rph = 1.15 + phase
+        boil = 0.055 * math.sin(tau * 2.0 * up + rph) \
+            + 0.030 * math.sin(tau * 5.0 * up + rph * 2.3)
+        rs = round(1.0 + boil, 4)
+        pose['rim_scale'][rname] = [rs, round(1.0 - 0.4 * boil, 4), rs]
 
         sname = f'spark_{side}'
         pose['spark_rot'][sname] = [0.0, round(360.0 * u, 4), 0.0]
@@ -624,6 +691,9 @@ def build_idle_animators() -> dict:
         for name in BRANCH_IDS:
             kfs[name].append(_vec_kf('rotation', f'idle:{name}', t, *pose['branch_rot'][name]))
             kfs[name].append(_vec_kf('scale', f'idle:{name}', t, *pose['branch_scale'][name]))
+
+        for rname in ('cloud_rim_r', 'cloud_rim_l'):
+            kfs[rname].append(_vec_kf('scale', f'idle:{rname}', t, *pose['rim_scale'][rname]))
 
         for sname in ('spark_r', 'spark_l'):
             kfs[sname].append(_vec_kf('rotation', f'idle:{sname}', t, *pose['spark_rot'][sname]))
@@ -668,6 +738,10 @@ def build_blueprint() -> tuple[dict, Image.Image]:
             kids.append(bone(f'branch_{side}{i}',
                              bp if side == 'r' else _mirror_pivot(bp),
                              bones[f'branch_{side}{i}'], is_open=False))
+        # Облачный ободок — ребёнок группы крыла, поэтому он бьёт вместе с ним.
+        kids.append(bone(f'cloud_rim_{side}',
+                         _rim_pivot() if side == 'r' else _mirror_pivot(_rim_pivot()),
+                         bones[f'cloud_rim_{side}'], is_open=False))
         return bone(f'wing_{side}', ROOT_ORIG, kids, is_open=False)
 
     outliner = [
@@ -919,6 +993,13 @@ def render_preview(blueprint: dict, texture: Image.Image, icon: Image.Image, out
                 piv = _mirror_pivot(piv)
             tf[name] = make_tf(tf[f'wing_{side}'], piv, [0, 0, 0],
                                pose['branch_rot'][name], pose['branch_scale'][name])
+        for side in ('r', 'l'):
+            name = f'cloud_rim_{side}'
+            piv = _rim_pivot()
+            if side == 'l':
+                piv = _mirror_pivot(piv)
+            tf[name] = make_tf(tf[f'wing_{side}'], piv, [0, 0, 0], [0, 0, 0],
+                               pose['rim_scale'][name])
         for side in ('r', 'l'):
             name = f'spark_{side}'
             tf[name] = make_tf(root_tf, _spark_pivot(side), [0, 0, 0],
