@@ -2,6 +2,7 @@
 [ -z "${BASH_VERSION:-}" ] && exec /bin/bash "$0" "$@"
 cd "$(dirname "$0")" || exit 1
 mkdir -p logs
+rm -f .nostart   # флаг «остановить навсегда» сбрасывается при каждом запуске обёртки
 
 # Зажимаем нативные арены glibc (2 вместо 24 арен по 64MB — экономит до 1.5 ГБ RSS)
 export MALLOC_ARENA_MAX=2
@@ -74,9 +75,18 @@ FLAGS=(
 
 while true; do
     echo "[Elytrix] Запуск $JAR (Heap: ${HEAP_MIN}..${HEAP_MAX}, Direct: ${DIRECT_MAX}, MALLOC_ARENA_MAX=${MALLOC_ARENA_MAX})..."
+    echo "[Elytrix] $(date '+%F %T') START" >> logs/restarts.log
     java "${FLAGS[@]}" -jar "$JAR" nogui
     CODE=$?
-    [ "$CODE" -eq 0 ] && echo "[Elytrix] Штатная остановка (stop)." && break
+    echo "[Elytrix] $(date '+%F %T') exit code $CODE" >> logs/restarts.log
+    # Автовозврат: сервер поднимается обратно на ЛЮБОМ коде выхода, в том числе
+    # после «чистого» stop. Раньше цикл делал break на коде 0, и после любой штатной
+    # остановки сервер оставался лежать выключенным, а игроков просто выкидывало.
+    # Чтобы остановить сервер НАВСЕГДА: touch .nostart , затем stop.
+    if [ "$CODE" -eq 0 ] && [ -f .nostart ]; then
+        rm -f .nostart
+        echo "[Elytrix] Штатная остановка (.nostart)." && break
+    fi
     echo "[Elytrix] Код выхода $CODE — перезапуск через 5 сек (Ctrl+C для отмены)..."
     sleep 5
 done
