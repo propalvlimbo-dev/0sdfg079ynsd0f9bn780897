@@ -1,0 +1,10 @@
+name: ElytrixGodPickup
+version: '2.1.0'
+main: pw.elytrix.godpickup.GodPickup
+api-version: '1.21'
+depend: [Essentials]
+softdepend: [WorldGuard, WorldEdit, FastAsyncWorldEdit, NMascot]
+permissions:
+  elytrix.god.others:
+    description: Allow toggling /god on other players
+    default: false

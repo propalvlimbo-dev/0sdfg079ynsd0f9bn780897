@@ -1,0 +1,245 @@
+menu_title: §fꈁꀀꈂꌹꈂꀁ§fꈃꄑ
+open_command:
+- kits
+- nabor
+- kitnabor
+size: 54
+items:
+  kit_start:
+    material: light_gray_shulker_box
+    slot: 10
+    display_name: '&#AAAAAAНачальный набор'
+    lore:
+    - ''
+    - '&#AAAAAA Доступен: &#55FF55Всем'
+    - ''
+    - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+    - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+    - '[player] kit start'
+    right_click_commands:
+    - '[openguimenu] preview_start'
+  kit_pvp:
+    material: cyan_shulker_box
+    slot: 11
+    display_name: '&#AAAAAAНабор &#F8BEFB&lP&#FAD8FC&lV&#FFFFFF&lP'
+    lore:
+    - ''
+    - '&#AAAAAA Доступен: &fот &#FD00E4&lDRAGON &fи выше'
+    - ''
+    - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+    - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+    - '[player] kit pvp'
+    right_click_commands:
+    - '[openguimenu] preview_pvp'
+  kit_dragon:
+    material: purple_shulker_box
+    slot: 12
+    display_name: '&#AAAAAAНабор &#FD00E4&lD&#F107E9&lR&#E60EED&lA&#DA16F2&lG&#CF1DF6&lO&#C324FB&lN'
+    lore:
+    - ''
+    - '&#AAAAAA Доступен: &fꔨ &#FD00E4&lDRAGON'
+    - ''
+    - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+    - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+    - '[player] kit dragon'
+    right_click_commands:
+    - '[openguimenu] preview_dragon'
+  kit_bull:
+    material: brown_shulker_box
+    slot: 13
+    display_name: '&#AAAAAAНабор &#900098&lB&#B210BA&lU&#D31FDD&lL&#F52FFF&lL'
+    lore:
+    - ''
+    - '&#AAAAAA Доступен: &fꔲ &#B210BA&lBULL'
+    - ''
+    - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+    - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+    - '[player] kit bull'
+    right_click_commands:
+    - '[openguimenu] preview_bull'
+  kit_rabbit:
+    material: white_shulker_box
+    slot: 14
+    display_name: '&#AAAAAAНабор &#E5E5E5&lRABBIT'
+    lore:
+    - ''
+    - '&#AAAAAA Доступен: &fꕒ &#E5E5E5&lRABBIT'
+    - ''
+    - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+    - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+    - '[player] kit rabbit'
+    right_click_commands:
+    - '[openguimenu] preview_rabbit'
+  kit_hydra:
+    material: green_shulker_box
+    slot: 15
+    display_name: '&#AAAAAAНабор &#0A6C0B&lH&#0B790C&lY&#0D850E&lD&#0E920F&lR&#0F9E10&lA'
+    lore:
+    - ''
+    - '&#AAAAAA Доступен: &fꕀ &#0F9E10&lHYDRA'
+    - ''
+    - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+    - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+    - '[player] kit hydra'
+    right_click_commands:
+    - '[openguimenu] preview_hydra'
+  kit_cobra:
+    material: lime_shulker_box
+    slot: 16
+    display_name: '&#AAAAAAНабор &#00FF00&lC&#1DFF1D&lO&#39FF39&lB&#56FF56&lR&#72FF72&lA'
+    lore:
+    - ''
+    - '&#AAAAAA Доступен: &fꕈ &#39FF39&lCOBRA'
+    - ''
+    - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+    - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+    - '[player] kit cobra'
+    right_click_commands:
+    - '[openguimenu] preview_cobra'
+  kit_god:
+    material: yellow_shulker_box
+    slot: 19
+    display_name: '&#AAAAAAНабор &#FBBF24&lGOD'
+    lore:
+    - ''
+    - '&#AAAAAA Доступен: &fꕁ &#FBBF24&lGOD'
+    - ''
+    - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+    - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+    - '[player] kit god'
+    right_click_commands:
+    - '[openguimenu] preview_god'
+  kit_pegas:
+    material: orange_shulker_box
+    slot: 20
+    display_name: '&#AAAAAAНабор &#F59E0B&lPEGAS'
+    lore:
+    - ''
+    - '&#AAAAAA Доступен: &fꕉ &#F59E0B&lPEGAS'
+    - ''
+    - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+    - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+    - '[player] kit pegas'
+    right_click_commands:
+    - '[openguimenu] preview_pegas'
+  kit_dhelper:
+    material: yellow_shulker_box
+    slot: 21
+    display_name: '&#AAAAAAНабор &#FACC15&lD.HELPER'
+    lore:
+    - ''
+    - '&#AAAAAA Доступен: &fꕠ &#FACC15&lD.HELPER'
+    - ''
+    - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+    - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+    - '[player] kit dhelper'
+    right_click_commands:
+    - '[openguimenu] preview_dhelper'
+  kit_angel:
+    material: white_shulker_box
+    slot: 22
+    display_name: '&#AAAAAAНабор &#FFFFFF&lA&#F9FAFB&lN&#F3F4F6&lG&#FAECFD&lE&#F8BEFB&lL'
+    lore:
+    - ''
+    - '&#AAAAAA Доступен: &fꕓ &#F8BEFB&lANGEL'
+    - ''
+    - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+    - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+    - '[player] kit angel'
+    right_click_commands:
+    - '[openguimenu] preview_angel'
+  kit_dadmin:
+    material: red_shulker_box
+    slot: 23
+    display_name: '&#AAAAAAНабор &#FF3B4E&lD.&#F43F5E&lA&#E11D48&lD&#BE123C&lM&#E11D48&lI&#FF3B4E&lN'
+    lore:
+    - ''
+    - '&#AAAAAA Доступен: &fꕡ &#FF3B4E&lD.ADMIN'
+    - ''
+    - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+    - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+    - '[player] kit dadmin'
+    right_click_commands:
+    - '[openguimenu] preview_dadmin'
+  kit_tiger:
+    material: orange_shulker_box
+    slot: 24
+    display_name: '&#AAAAAAНабор &#F8BEFB&lTIGER'
+    lore:
+    - ''
+    - '&#AAAAAA Доступен: &#F8BEFB&lTIGER'
+    - ''
+    - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+    - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+    - '[player] kit tiger'
+    right_click_commands:
+    - '[openguimenu] preview_tiger'
+  kit_bunny:
+    material: black_shulker_box
+    slot: 25
+    display_name: '&#AAAAAAНабор &#585858&lBUNNY'
+    lore:
+    - ''
+    - '&#AAAAAA Доступен: &#585858&lBUNNY'
+    - ''
+    - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+    - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+    - '[player] kit bunny'
+    right_click_commands:
+    - '[openguimenu] preview_bunny'
+  kit_vampire:
+    material: red_shulker_box
+    slot: 30
+    display_name: '&#AAAAAAНабор &#FF5555&lVAMPIRE'
+    lore:
+    - ''
+    - '&#AAAAAA Доступен: &#FF5555&lVAMPIRE'
+    - ''
+    - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+    - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+    - '[player] kit vampire'
+    right_click_commands:
+    - '[openguimenu] preview_vampire'
+  kit_plus:
+    material: pink_shulker_box
+    slot: 31
+    display_name: '&#AAAAAAНабор &#FAD8FC&lPLUS'
+    lore:
+    - ''
+    - '&#AAAAAA Доступен: &#FAD8FC&lEL+'
+    - ''
+    - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+    - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+    - '[player] kit plus'
+    right_click_commands:
+    - '[openguimenu] preview_plus'
+  kit_pluspro:
+    material: magenta_shulker_box
+    slot: 32
+    display_name: '&#AAAAAAНабор &#F8BEFB&lPLUSPRO'
+    lore:
+    - ''
+    - '&#AAAAAA Доступен: &#F8BEFB&lEL+ PRO'
+    - ''
+    - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
+    - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
+    left_click_commands:
+    - '[player] kit pluspro'
+    right_click_commands:
+    - '[openguimenu] preview_pluspro'

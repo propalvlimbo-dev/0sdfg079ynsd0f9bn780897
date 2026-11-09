@@ -1,0 +1,87 @@
+menu_title: '§fꈁꀀꈂꌕꈂꀁ§fꈃꄉ'
+open_command:
+- jobs
+- job
+- rabota
+- fish
+- farm
+- fermer
+- wood
+register_command: true
+size: 54
+items:
+  'fishing_rod':
+    material: fishing_rod
+    slot: 22
+    display_name: '&f&l❖ &#F8BEFBРыбалка'
+    lore:
+      - '  '
+      - '  Зарабатывай деньги  '
+      - '  вылавливая рыбу на рыбалке.  '
+      - '  '
+      - '  Полная прокачка рыбака откроет  '
+      - '  доступ к продаже редких видов ресурсов  '
+      - '  и повышенной зарплате.  '
+      - '  '
+      - '  &#FAD8FC(Нажмите для телепортации)  '
+      - '  '
+    click_commands:
+      - '[player] warp fish'
+  'diamond_pickaxe':
+    material: diamond_pickaxe
+    slot: 30
+    display_name: '&f&l❖ &#F8BEFBШахта'
+    lore:
+      - '  '
+      - '  Зарабатывай деньги  '
+      - '  добывая уголь и руды в шахте.  '
+      - '  '
+      - '  Полная прокачка шахтёра откроет  '
+      - '  доступ к продаже редких видов ресурсов  '
+      - '  и повышенной зарплате.  '
+      - '  '
+      - '  &#FAD8FC(Нажмите для телепортации)  '
+      - '  '
+    click_commands:
+      - '[player] warp mine'
+  'iron_hoe':
+    material: iron_hoe
+    slot: 31
+    display_name: '&f&l❖ &#F8BEFBФермер'
+    lore:
+      - '  '
+      - '  Зарабатывай деньги  '
+      - '  выращивая культуры на ферме.  '
+      - '  '
+      - '  Полная прокачка фермера откроет  '
+      - '  доступ к продаже редких видов ресурсов  '
+      - '  и повышенной зарплате.  '
+      - '  '
+      - '  &#FAD8FC(Нажмите для телепортации)  '
+      - '  '
+    click_commands:
+      - '[player] warp farm'
+  'golden_axe':
+    material: golden_axe
+    slot: 32
+    display_name: '&f&l❖ &#F8BEFBЛесорубка'
+    lore:
+      - '  '
+      - '  Зарабатывай деньги  '
+      - '  вырубая деревья в лесу.  '
+      - '  '
+      - '  Полная прокачка лесоруба откроет  '
+      - '  доступ к продаже редких видов ресурсов  '
+      - '  и повышенной зарплате.  '
+      - '  '
+      - '  &#FAD8FC(Нажмите для телепортации)  '
+      - '  '
+    click_commands:
+      - '[player] warp les'
+  'arrow':
+    material: arrow
+    slot: 45
+    display_name: '&#F8BEFBНазад'
+    model_data: 10002
+    click_commands:
+      - '[player] gps'

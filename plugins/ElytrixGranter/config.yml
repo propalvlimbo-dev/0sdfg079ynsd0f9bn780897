@@ -1,0 +1,60 @@
+groups:
+  dragon:
+    titan: 1
+    hero: 2
+  angel:
+    bull: 1
+    dragon: 3
+    imperator: 3
+  dhelper:
+    dragon: 2
+    imperator: 2
+    magister: 3
+  owner:
+    dragon: 999
+    bull: 999
+    dracula: 999
+    bunny: 999
+    tiger: 999
+    rabbit: 999
+    hydra: 999
+    cobra: 999
+    god: 999
+    vampire: 999
+    pegas: 999
+    dhelper: 999
+    angel: 999
+    dadmin: 999
+  dadmin:
+    cobra: 1
+    hydra: 2
+    rabbit: 2
+    bull: 3
+    dragon: 5
+weight:
+  hero: 0
+  titan: 1
+  avenger: 2
+  overlord: 3
+  magister: 4
+  imperator: 5
+  dragon: 6
+  bull: 7
+  rabbit: 8
+  hydra: 9
+  cobra: 10
+  god: 11
+  pegas: 12
+  angel: 14
+  dhelper: 13
+  dadmin: 15
+  owner: 16
+grant commands:
+- lp user %player% parent add %group%
+- bc &x&F&8&B&E&F&B%granter% &fвыдал игроку &x&F&8&B&E&F&B%player% &fпривилегию &x&F&8&B&E&F&B%group%
+messages:
+  help: '&x&F&8&B&E&F&BГрант &7» &f/grant &x&F&8&B&E&F&B[ник] [группа]&f!'
+  player not found: '&cИгрок не найден!'
+  cant grant: '&cВы не можете выдавать эту группу!'
+  grant limit: '&cВы выдали максимально возможное количество этой группы!'
+  higher weight: '&cУ игрока уже есть донат лучше!'

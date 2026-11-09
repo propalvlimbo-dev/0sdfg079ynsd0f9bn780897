@@ -1,0 +1,301 @@
+settings:
+  generate-on-startup: true
+  regenerate-on-every-startup: false
+  reset-progress-on-generate: true
+  rows: 5
+  max-amount-per-task: 3000
+  ignore-custom-items: true
+generator:
+  amount-multiplier: 14.0
+  min-score: 14.0
+  max-score: 150.0
+  custom-pool: {}
+quests:
+  '1':
+    slot: 0
+    type: TASK
+    action: CRAFT
+    material: CHEST
+    amount: 704
+    name: Сундуки
+  '2':
+    slot: 1
+    type: TASK
+    action: BREAK
+    material: GOLD_ORE
+    amount: 352
+    name: Золотая Руда
+  '3':
+    slot: 2
+    type: TASK
+    action: BREAK
+    material: POTATO
+    amount: 1344
+    name: Картошка
+  '4':
+    slot: 3
+    type: TASK
+    action: CRAFT
+    material: GOLDEN_CARROT
+    amount: 192
+    name: Золотая Морковь
+  '5':
+    slot: 4
+    type: TASK
+    action: BRING
+    material: APPLE
+    amount: 448
+    name: Яблоки
+  '6':
+    slot: 5
+    type: TASK
+    action: BREAK
+    material: DIAMOND_ORE
+    amount: 176
+    name: Алмазная Руда
+  '7':
+    slot: 6
+    type: TASK
+    action: BREAK
+    material: STONE
+    amount: 1600
+    name: Камень
+  '8':
+    slot: 7
+    type: TASK
+    action: CRAFT
+    material: GLASS
+    amount: 640
+    name: Стекло
+  '10':
+    slot: 9
+    type: TASK
+    action: KILL
+    material: GOLD_INGOT
+    amount: 352
+    name: Убить Пиглинов
+    entity: PIGLIN
+  '11':
+    slot: 10
+    type: TASK
+    action: BREAK
+    material: OBSIDIAN
+    amount: 576
+    name: Обсидиан
+  '12':
+    slot: 11
+    type: TASK
+    action: BRING
+    material: REDSTONE
+    amount: 1536
+    name: Редстоун
+  '13':
+    slot: 12
+    type: TASK
+    action: KILL
+    material: PORKCHOP
+    amount: 352
+    name: Убить Хоглинов
+    entity: HOGLIN
+  '14':
+    slot: 13
+    type: TASK
+    action: BREAK
+    material: WARPED_STEM
+    amount: 2048
+    name: Искажённые Стебли
+  '15':
+    slot: 14
+    type: TASK
+    action: BREAK
+    material: LAPIS_ORE
+    amount: 896
+    name: Лазуритовая Руда
+  '16':
+    slot: 15
+    type: TASK
+    action: BRING
+    material: CARROT
+    amount: 2688
+    name: Морковь
+  '17':
+    slot: 16
+    type: TASK
+    action: BRING
+    material: NETHER_WART
+    amount: 1728
+    name: Незер Нарост
+  '19':
+    slot: 18
+    type: TASK
+    action: CRAFT
+    material: IRON_BLOCK
+    amount: 832
+    name: Железные Блоки
+  '20':
+    slot: 19
+    type: TASK
+    action: BRING
+    material: NETHERITE_SCRAP
+    amount: 336
+    name: Незеритовый Лом
+  '21':
+    slot: 20
+    type: TASK
+    action: BRING
+    material: REDSTONE
+    amount: 2432
+    name: Редстоун
+  '22':
+    slot: 21
+    type: TASK
+    action: CRAFT
+    material: ANVIL
+    amount: 400
+    name: Наковальни
+  '23':
+    slot: 22
+    type: TASK
+    action: KILL
+    material: PHANTOM_MEMBRANE
+    amount: 576
+    name: Убить Фантомов
+    entity: PHANTOM
+  '24':
+    slot: 23
+    type: TASK
+    action: CRAFT
+    material: END_CRYSTAL
+    amount: 400
+    name: Кристаллы Энда
+  '25':
+    slot: 24
+    type: TASK
+    action: KILL
+    material: CREEPER_HEAD
+    amount: 1088
+    name: Убить Криперов
+    entity: CREEPER
+  '26':
+    slot: 25
+    type: TASK
+    action: CRAFT
+    material: BARREL
+    amount: 2688
+    name: Бочки
+  '28':
+    slot: 27
+    type: TASK
+    action: BREAK
+    material: EMERALD_ORE
+    amount: 832
+    name: Изумрудная Руда
+  '29':
+    slot: 28
+    type: TASK
+    action: KILL
+    material: PORKCHOP
+    amount: 832
+    name: Убить Хоглинов
+    entity: HOGLIN
+  '30':
+    slot: 29
+    type: TASK
+    action: BRING
+    material: EMERALD
+    amount: 768
+    name: Изумруды
+  '31':
+    slot: 30
+    type: TASK
+    action: BRING
+    material: DIAMOND
+    amount: 768
+    name: Алмазы
+  '32':
+    slot: 31
+    type: TASK
+    action: BRING
+    material: GOLD_INGOT
+    amount: 1792
+    name: Золотые Слитки
+  '33':
+    slot: 32
+    type: TASK
+    action: BREAK
+    material: IRON_ORE
+    amount: 2560
+    name: Железная Руда
+  '34':
+    slot: 33
+    type: TASK
+    action: BRING
+    material: WITHER_SKELETON_SKULL
+    amount: 448
+    name: Черепа Визер-Скелетов
+  '35':
+    slot: 34
+    type: TASK
+    action: CRAFT
+    material: GOLD_BLOCK
+    amount: 960
+    name: Золотые Блоки
+  '37':
+    slot: 36
+    type: TASK
+    action: BRING
+    material: WITHER_SKELETON_SKULL
+    amount: 576
+    name: Черепа Визер-Скелетов
+  '38':
+    slot: 37
+    type: TASK
+    action: BRING
+    material: EMERALD
+    amount: 960
+    name: Изумруды
+  '39':
+    slot: 38
+    type: TASK
+    action: KILL
+    material: CREEPER_HEAD
+    amount: 1856
+    name: Убить Криперов
+    entity: CREEPER
+  '40':
+    slot: 39
+    type: TASK
+    action: BRING
+    material: GOLD_INGOT
+    amount: 2304
+    name: Золотые Слитки
+  '41':
+    slot: 40
+    type: TASK
+    action: KILL
+    material: BLAZE_ROD
+    amount: 1344
+    name: Убить Ифритов
+    entity: BLAZE
+  '42':
+    slot: 41
+    type: TASK
+    action: BREAK
+    material: LAPIS_ORE
+    amount: 2560
+    name: Лазуритовая Руда
+  '43':
+    slot: 42
+    type: TASK
+    action: KILL
+    material: SLIME_BALL
+    amount: 1664
+    name: Убить Слаймов
+    entity: SLIME
+  '44':
+    slot: 43
+    type: TASK
+    action: BREAK
+    material: DIAMOND_ORE
+    amount: 1280
+    name: Алмазная Руда

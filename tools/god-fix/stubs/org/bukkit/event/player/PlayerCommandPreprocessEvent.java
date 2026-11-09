@@ -1,0 +1,1 @@
+package org.bukkit.event.player; public class PlayerCommandPreprocessEvent { private final org.bukkit.entity.Player player; private final String message; public PlayerCommandPreprocessEvent(org.bukkit.entity.Player p,String s){player=p;message=s;} public String getMessage(){return message;} public org.bukkit.entity.Player getPlayer(){return player;} }

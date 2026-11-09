@@ -1,0 +1,535 @@
+menu_title: '§fꈁꀀꈂꌑꈂꀁ§fꈃꄅ'
+open_command: sphere
+register_command: true
+size: 54
+items:
+  'player_head':
+    material: player_head
+    slot: 12
+    display_name: '&#FF5555&lШар Огня'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - ''
+      - '&#AAAAAAКогда в руке'
+      - '&#AAAAAAОгнеупорность'
+      - ''
+      - '&#AAAAAAПри экипировке в левой руке:'
+      - '&#5555FF +2.5 Урон атаки'
+      - '&#5555FF +0.3 Скорость атаки'
+      - '&#5555FF +4 Макс. здоровье'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB199 &#FFFFFFꐃ'
+      - ''
+    model_data: 5003
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 199'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 199'
+      - '[console] rwitems FIRE_BALL %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'player_head_1':
+    material: player_head
+    slot: 13
+    display_name: '&#5555FF&lШар Воды'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - ''
+      - '&#AAAAAAКогда во второй руке'
+      - '&#AAAAAAПри нажатии SHIFT:'
+      - '&#AAAAAAПодводное дыхание (01:00)'
+      - '&#AAAAAAГрация дельфина (00:10)'
+      - ''
+      - '&#AAAAAAПри экипировке в левой руке:'
+      - '&#5555FF +30% Скорость передвижения'
+      - '&#5555FF +12 Макс. здоровье'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB219 &#FFFFFFꐃ'
+      - ''
+    model_data: 5005
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 219'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 219'
+      - '[console] rwitems WATER_BALL %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'player_head_2':
+    material: player_head
+    slot: 14
+    display_name: '&#FAD8FC&lШар Земли'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - ''
+      - '&#AAAAAAКогда во второй руке'
+      - '&#AAAAAAПри нажатии SHIFT:'
+      - '&#AAAAAAСпешка II (00:08)'
+      - ''
+      - '&#AAAAAAПри экипировке в левой руке:'
+      - '&#5555FF +4.5 Броня'
+      - '&#5555FF +2 Сопротивление отбрасыванию'
+      - '&#5555FF +4 Прочность брони'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB189 &#FFFFFFꐃ'
+      - ''
+    model_data: 5002
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 189'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 189'
+      - '[console] rwitems EARTH_BALL %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'player_head_3':
+    material: player_head
+    slot: 21
+    display_name: '&f&lШар Света'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - ''
+      - '&#AAAAAAКогда во второй руке'
+      - '&#AAAAAAПри нажатии SHIFT:'
+      - '&#AAAAAAВ радиусе 16 блоков'
+      - '&#AAAAAAСветлячок (01:00)'
+      - ''
+      - '&#AAAAAAПри экипировке в левой руке:'
+      - '&#5555FF +2 Урон атаки'
+      - '&#5555FF +3.5 Удача'
+      - '&#5555FF +3 Броня'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB189 &#FFFFFFꐃ'
+      - ''
+    model_data: 5004
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 189'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 189'
+      - '[console] rwitems LIGHT_BALL %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'player_head_4':
+    material: player_head
+    slot: 22
+    display_name: '&#FF55FF&lШар Порядка'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - ''
+      - '&#AAAAAAКогда во второй руке'
+      - '&#AAAAAAПри нажатии SHIFT:'
+      - '&#AAAAAAРегенерация II (00:08)'
+      - ''
+      - '&#AAAAAAПри экипировке в левой руке:'
+      - '&#5555FF +20 Макс. здоровье'
+      - '&#5555FF +2 Броня'
+      - '&#5555FF +15% Скорость передвижения'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB229 &#FFFFFFꐃ'
+      - ''
+    model_data: 5006
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 229'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 229'
+      - '[console] rwitems HARMONY_BALL %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'player_head_5':
+    material: player_head
+    slot: 23
+    display_name: '&#AA00AA&lШар Хаоса'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - ''
+      - '&#AAAAAAКогда во второй руке'
+      - '&#AAAAAAПри нажатии SHIFT:'
+      - '&#AAAAAAВ радиусе 8 блоков'
+      - '&#AAAAAAСлабость II (00:10)'
+      - ''
+      - '&#AAAAAAПри экипировке в левой руке:'
+      - '&#5555FF +3 Урон атаки'
+      - '&#5555FF +0.4 Скорость атаки'
+      - '&#5555FF -10 Макс. здоровье'
+      - '&#5555FF +2.5 Броня'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB249 &#FFFFFFꐃ'
+      - ''
+    model_data: 5007
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 249'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 249'
+      - '[console] rwitems CHAOS_BALL %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'player_head_6':
+    material: player_head
+    slot: 29
+    display_name: '&#AA0000&lШар Крови'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - ''
+      - '&#AAAAAAПока во второй руке:'
+      - '&#55FF55+3.5 &#AAAAAAк броне'
+      - '&#55FF55+2 &#AAAAAAк урону'
+      - '&#FF5555-10% &#AAAAAAк скорости передвижения'
+      - ''
+      - '&#AAAAAAПри нажатии SHIFT:'
+      - '&#AAAAAAВ радиусе &#F8BEFB15 &#AAAAAAблоков'
+      - '&#FF5555Моментальный урон 2'
+      - '&#555555Игнорирует броню'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB149 &#FFFFFFꐃ'
+      - ''
+    model_data: 5011
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 149'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 149'
+      - '[console] rwitems KROV_BALL %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'player_head_7':
+    material: player_head
+    slot: 30
+    display_name: '&#AA00AA&lШар Тьмы'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - ''
+      - '&#AAAAAAПока во второй руке:'
+      - '&#55FF55+2 &#AAAAAAк урону'
+      - '&#55FF55+30% &#AAAAAAк скорости передвижения'
+      - '&#55FF55+6 &#AAAAAAк максимальному здоровью'
+      - ''
+      - '&#AAAAAAПри нажатии SHIFT:'
+      - '&#AAAAAAВ радиусе &#F8BEFB15 &#AAAAAAблоков'
+      - '&#FF5555Тьма (00:06)'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB149 &#FFFFFFꐃ'
+      - ''
+    model_data: 5010
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 149'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 149'
+      - '[console] rwitems DARKNESS_BALL %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'player_head_8':
+    material: player_head
+    slot: 31
+    display_name: '&#FFFFFF&lШар Воздуха'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - ''
+      - '&#AAAAAAКогда во второй руке'
+      - '&#AAAAAAПри нажатии SHIFT:'
+      - '&#AAAAAAЛевитация II (00:08)'
+      - ''
+      - '&#AAAAAAПри экипировке в левой руке:'
+      - '&#5555FF +2.3 Урон атаки'
+      - '&#5555FF +1.5 Отбрасывание атаки'
+      - '&#5555FF +35% Скорость передвижения'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB199 &#FFFFFFꐃ'
+      - ''
+    model_data: 5001
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 199'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 199'
+      - '[console] rwitems AIR_BALL %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'player_head_9':
+    material: player_head
+    slot: 32
+    display_name: '&#FF55FF&lШар Молнии'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - ''
+      - '&#AAAAAAПока во второй руке:'
+      - '&#55FF55+3 &#AAAAAAк урону'
+      - '&#55FF55+25% &#AAAAAAк скорости передвижения'
+      - ''
+      - '&#AAAAAAПри нажатии SHIFT:'
+      - '&#5555FFСкорость атаки +0.35 (00:08)'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB169 &#FFFFFFꐃ'
+      - ''
+    model_data: 5009
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 169'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 169'
+      - '[console] rwitems LIGHTNING_BALL %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'player_head_10':
+    material: player_head
+    slot: 33
+    display_name: '&#F8BEFB&lШар Роузи'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - ''
+      - '&#AAAAAAПока во второй руке:'
+      - '&#55FF55+10 &#AAAAAAк максимальному здоровью'
+      - '&#55FF55+2.5 &#AAAAAAк броне'
+      - ''
+      - '&#AAAAAAПри нажатии SHIFT:'
+      - '&#AAAAAAВ радиусе &#F8BEFB8 &#AAAAAAблоков'
+      - '&#F8BEFBВихрь лепестков Роузи (00:04)'
+      - '&#55FF55Регенерация II владельцу (00:04)'
+      - ''
+      - '&#AAAAAA==================='
+      - ''
+      - '&#FFFFFFЦена: &#F8BEFB179 &#FFFFFFꐃ'
+      - ''
+    model_data: 5008
+    click_requirement:
+      requirements:
+        points_check:
+          type: javascript
+          expression: '%playerpoints_points% >= 179'
+      deny_commands:
+        - '[message] &#F8BEFBElytrix &8> &cНедостаточно рилликов!'
+    click_commands:
+      - '[console] p take %player_name% 179'
+      - '[console] rwitems ROSY_BALL %player_name%'
+      - '[message] &#F8BEFBhttps://elytrix.pw &8> &aПокупка успешно совершена!'
+  'player_head_11':
+    material: player_head
+    slot: 36
+    display_name: '&#FAD8FC&lШар Д.Хелпера'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - '&#AAAAAA+7.0 к здоровью'
+      - '&#AAAAAA+0.6 к скорости атаки'
+      - '&#AAAAAA+3 к стойкости'
+      - ''
+      - '&#AAAAAA=========================='
+      - ''
+      - '&#AAAAAAДоступно в наборе: &#FAD8FC&lDHELPER '
+      - ''
+    
+  'player_head_12':
+    material: player_head
+    slot: 37
+    display_name: '&#FAD8FC&lТигринная голова'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - '&#FF5555Когда надето на голове:'
+      - '&#FAD8FC+2.5 к урону'
+      - '&#FAD8FC+25% к скорости'
+      - '&#FAD8FC+1 здоровье'
+      - ''
+      - '&#AAAAAA=========================='
+      - ''
+      - '&#AAAAAAДоступно в наборе: &#FAD8FC&lTIGER '
+      - ''
+    
+  'player_head_13':
+    material: player_head
+    slot: 38
+    display_name: '&#FF5555&lГолова Дракулы'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - ''
+      - '&#AAAAAAВампиризм'
+      - ''
+      - '&#AAAAAAПри экипировке в левой руке:'
+      - '&#5555FF +8 Макс. здоровье'
+      - '&#5555FF +1.5 Урон атаки'
+      - '&#5555FF +4.5 Броня'
+      - ''
+      - '&#AAAAAA=========================='
+      - ''
+      - '&#AAAAAAДоступно в наборе: &#AA0000&lDRACULA '
+      - ''
+    
+  'player_head_14':
+    material: player_head
+    slot: 39
+    display_name: '&#555555&lШар BUNNY'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - ''
+      - '&#AAAAAAОгнестойкость'
+      - ''
+      - '&#AAAAAAПри экипировке в левой руке:'
+      - '&#5555FF +21% Скорость передвижения'
+      - '&#5555FF +3.9 Броня'
+      - ''
+      - '&#AAAAAA=========================='
+      - ''
+      - '&#AAAAAAДоступно в наборе: &#000000&lBUNNY '
+      - ''
+    
+  'player_head_15':
+    material: player_head
+    slot: 40
+    display_name: '&f&lПасхальное яйцо'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - '&#FF5555Когда во второй руке:'
+      - '&f+3 к урону'
+      - '&f+5.5 к стойкости'
+      - '&f+6 к здоровью'
+      - ''
+      - '&#AAAAAA=========================='
+      - ''
+      - '&#AAAAAAДоступно в наборе: &#FFFFFF&lRABBIT '
+      - ''
+    
+  'player_head_16':
+    material: player_head
+    slot: 41
+    display_name: '&#55FF55&lГолова Гидры'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - ''
+      - '&#AAAAAAПри экипировке в левой руке:'
+      - '&#5555FF +5 Броня'
+      - '&#5555FF +10 Макс. здоровье'
+      - '&#5555FF +20% Скорость передвижения'
+      - ''
+      - '&#AAAAAA=========================='
+      - ''
+      - '&#AAAAAAДоступно в наборе: &#00AA00&lHYDRA '
+      - ''
+    
+  'player_head_17':
+    material: player_head
+    slot: 42
+    display_name: '&#00AA00&lГолова Кобры'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - '&#AAAAAAКогда во второй руке:'
+      - '&#55FF55+3.0 к Урону'
+      - '&#55FF55+20% к Скорости атаки'
+      - '&#55FF55+2.5 к Стойкости'
+      - '&#55FF55Отравляет врагов ядом '
+      - ''
+      - '&#AAAAAA=========================='
+      - ''
+      - '&#AAAAAAДоступно в наборе: &#00AA00&lCOBRA '
+      - ''
+    
+  'player_head_18':
+    material: player_head
+    slot: 43
+    display_name: '&#FFFFFF&lШАР БОГА'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - '&#AAAAAAКогда во второй руке'
+      - '&#AAAAAAПри нажатии SHIFT:'
+      - '&#AAAAAAСопротивление III (00:06)'
+      - ''
+      - '&#AAAAAAПри экипировке в левой руке:'
+      - '&#5555FF +2.5 Урон атаки'
+      - '&#5555FF +3 Броня'
+      - '&#5555FF +25% Скорость передвижения'
+      - ''
+      - '&#AAAAAA=========================='
+      - ''
+      - '&#AAAAAAДоступно в наборе: &#FAD8FC&lGOD '
+      - ''
+    
+  'player_head_19':
+    material: player_head
+    slot: 44
+    display_name: '&#55FFFF&lГолова Пегаса'
+    lore:
+      - '&#FF5555Проклятие утраты'
+      - '&#55FFFF&lПри нажатии SHIFT: '
+      - '&#55FFFF&lВы получаете СКОРОСТЬ III (0:10)'
+      - ''
+      - '&#AAAAAAПри экипировке в левой руке:'
+      - '&#5555FF +3.5 Броня'
+      - '&#5555FF +7 Макс. здоровье'
+      - '&#5555FF +2.5 Урон атаки'
+      - '&#5555FF +0.2 Скорость атаки'
+      - ''
+      - '&#AAAAAA=========================='
+      - ''
+      - '&#AAAAAAДоступно в наборе: &#FAD8FC&lPEGAS '
+      - ''
+    
+  'arrow':
+    material: arrow
+    slot: 45
+    display_name: '&#F8BEFBНазад'
+    model_data: 10002
+    click_commands:
+      - '[player] shop'
+  'clock':
+    material: clock
+    slot: 53
+    display_name: '&#F8BEFBИНФОРМАЦИЯ'
+    lore:
+      - ''
+      - '&#555555 &#FFFFFFВаш баланс: &#FAD8FC%playerpoints_points_formatted% &#FFFFFFꐃ'
+      - ''
+      - '&#AAAAAAПополнить баланс можно'
+      - '&#AAAAAAна сайте: &#FAD8FChttps://elytrix.pw'
+    model_data: 100020
+    

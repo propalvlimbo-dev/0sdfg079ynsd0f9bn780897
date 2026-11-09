@@ -1,0 +1,53 @@
+# =============================================================
+# code.yml — Промокоды ElytrixFree (Риллики + Кейсы)
+# =============================================================
+
+announce:
+  - ''
+  - '&7☁ &#F8BEFB&lElytrix &8» &fНовый промокод!'
+  - '&#F8BEFB&l┃ &fРедкость: &#F8BEFB&l{kind}'
+  - '&#F8BEFB&l┃ &fКод: &f&l{code}'
+  - '&#F8BEFB&l┃ &fАктиваций: &#F8BEFB{uses}'
+  - '&#F8BEFB&l┃ &fНаш Telegram: &#F8BEFBt.me/elytrix_ru'
+  - ''
+
+redeem-message:
+  - ''
+  - '&7☁ &#F8BEFB&lElytrix &8» &aПромокод активирован!'
+  - '&#F8BEFB&l┃ &fИгрок: &#F8BEFB{player}'
+  - '&#F8BEFB&l┃ &fРедкость: &#F8BEFB{kind}'
+  - ''
+
+kinds:
+  common:
+    min: 41
+    max: 50
+    name: 'Обычная (200 Рилликов)'
+    commands:
+      - 'p give {player} 200'
+  uncommon:
+    min: 31
+    max: 40
+    name: 'Необычная (350 Рилликов)'
+    commands:
+      - 'p give {player} 350'
+  rare:
+    min: 21
+    max: 30
+    name: 'Редкая (500 Рилликов + Кейс с валютой)'
+    commands:
+      - 'p give {player} 500'
+      - 'bcases give {player} money 1'
+  epic:
+    min: 11
+    max: 20
+    name: 'Эпическая (850 Рилликов)'
+    commands:
+      - 'p give {player} 850'
+  legendary:
+    min: 1
+    max: 10
+    name: 'Легендарная (1500 Рилликов + Кейс с Донатом 5)'
+    commands:
+      - 'p give {player} 1500'
+      - 'bcases give {player} donate 5'

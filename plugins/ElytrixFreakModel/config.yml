@@ -1,0 +1,188 @@
+# ═══════════════════════════════════════════════════════════════════════
+# ElytrixFreakModel v3.2.2 — Хаб кастомных 3D-моделек, Приоры и Божественного Сета
+#  • 3D Ангельские Крылья (приклеены к спине, асинхронный листопад перьев) и 3D Божественный Нимб
+#    с клиентской привязкой PivotOverride для ВСЕХ игроков вокруг (0 мс задержки)
+#  • Плавная Лада Приора на ItemDisplay-носителях (240 FPS без откидывания пассажиров)
+# ═══════════════════════════════════════════════════════════════════════
+
+defaults:
+  max-active-per-player: 2
+  interpolation-ticks: 2
+  max-speed: 0.94
+  reverse-speed: 0.36
+  acceleration: 0.042
+  braking: 0.085
+  rolling-friction: 0.962
+  turn-rate: 5.2
+  kmh-multiplier: 92.0
+
+messages:
+  unknown-command: '&#F8BEFBElytrix &7» &fКоманда не найдена'
+  # Минималистичный экшн-бар для водителя (только скорость)
+  actionbar: '&#F8BEFB⚡ &f{speed} км/ч'
+
+models:
+  priora_black:
+    kind: VEHICLE
+    blueprint: elytrix_priora_black
+    aliases:
+      - priora
+      - black
+      - чёрная
+      - черная
+    material: DIAMOND_HORSE_ARMOR
+    cmd: 30
+    name: '&#F8BEFB&lЛада Приора &8«Чёрный Космос»'
+    lore:
+      - ''
+      - ' &fКастомный 3D автомобиль &#F8BEFBВАЗ-2170'
+      - ' &fМест в салоне: &#F8BEFB2'
+      - ''
+      - ' &#F8BEFB• &fПКМ по блоку &8— &fпоставить'
+      - ' &#F8BEFB• &fПКМ по машине &8— &fсесть'
+      - ' &#F8BEFB• &fShift + ПКМ &8— &fзабрать'
+      - ''
+    scale: 1.0
+    yaw-offset: 0.0
+    model-y-offset: 0.0
+    hitbox-width: 2.2
+    hitbox-height: 1.5
+    interpolation-ticks: 2
+    seats: 2
+    seat-x-offset: 0.36
+    seat-y-offset: 0.10
+    seat-z-offset: 0.12
+    max-speed: 0.94
+    reverse-speed: 0.36
+    acceleration: 0.042
+    braking: 0.085
+    rolling-friction: 0.962
+    turn-rate: 5.2
+    kmh-multiplier: 92.0
+    horn-enabled: true
+    exhaust-particles: true
+
+  priora_white:
+    kind: VEHICLE
+    blueprint: elytrix_priora_white
+    aliases:
+      - white
+      - silver
+      - priora_silver
+      - белая
+      - серебряная
+      - облако
+    material: DIAMOND_HORSE_ARMOR
+    cmd: 31
+    name: '&#F8BEFB&lЛада Приора &f«Белое Облако»'
+    lore:
+      - ''
+      - ' &fКастомный 3D автомобиль &#F8BEFBВАЗ-2170'
+      - ' &fМест в салоне: &#F8BEFB2'
+      - ''
+      - ' &#F8BEFB• &fПКМ по блоку &8— &fпоставить'
+      - ' &#F8BEFB• &fПКМ по машине &8— &fсесть'
+      - ' &#F8BEFB• &fShift + ПКМ &8— &fзабрать'
+      - ''
+    scale: 1.0
+    yaw-offset: 0.0
+    model-y-offset: 0.0
+    hitbox-width: 2.2
+    hitbox-height: 1.5
+    interpolation-ticks: 2
+    seats: 2
+    seat-x-offset: 0.36
+    seat-y-offset: 0.10
+    seat-z-offset: 0.12
+    max-speed: 0.94
+    reverse-speed: 0.36
+    acceleration: 0.042
+    braking: 0.085
+    rolling-friction: 0.962
+    turn-rate: 5.2
+    kmh-multiplier: 92.0
+    horn-enabled: true
+    exhaust-particles: true
+
+  priora_pink:
+    kind: VEHICLE
+    blueprint: elytrix_priora_pink
+    aliases:
+      - pink
+      - elytrix
+      - розовая
+    material: DIAMOND_HORSE_ARMOR
+    cmd: 32
+    name: '&#F8BEFB&lЛада Приора &d«Elytrix Edition»'
+    lore:
+      - ''
+      - ' &fКастомный 3D автомобиль &#F8BEFBВАЗ-2170'
+      - ' &fМест в салоне: &#F8BEFB2'
+      - ''
+      - ' &#F8BEFB• &fПКМ по блоку &8— &fпоставить'
+      - ' &#F8BEFB• &fПКМ по машине &8— &fсесть'
+      - ' &#F8BEFB• &fShift + ПКМ &8— &fзабрать'
+      - ''
+    scale: 1.0
+    yaw-offset: 0.0
+    model-y-offset: 0.0
+    hitbox-width: 2.2
+    hitbox-height: 1.5
+    interpolation-ticks: 2
+    seats: 2
+    seat-x-offset: 0.36
+    seat-y-offset: 0.10
+    seat-z-offset: 0.12
+    max-speed: 0.94
+    reverse-speed: 0.36
+    acceleration: 0.042
+    braking: 0.085
+    rolling-friction: 0.962
+    turn-rate: 5.2
+    kmh-multiplier: 92.0
+    horn-enabled: true
+    exhaust-particles: true
+
+  angel_halo:
+    kind: ANGEL_HALO
+    blueprint: elytrix_angel_halo
+    aliases:
+      - halo
+      - нимб
+      - шлем
+    material: NETHERITE_HELMET
+    item-model: 'reallyworld:angel_halo'
+    cmd: 37
+    name: '&#FFE47A&lБожественный Нимб'
+    lore:
+      - ''
+      - ' &fСвященный 3D аксессуар Высшего Божества:'
+      - ' &fсияющая солнечная мандала с лучами света'
+      - ' &fи парящей восьмиконечной звездой над головой!'
+      - ''
+      - ' &#F8BEFB• &fСлот брони: &#FFE47AШлем'
+      - ' &#F8BEFB• &fНаденьте в слот шлема &8— &fнимб появится на вас'
+      - ''
+    scale: 1.0
+
+  angel_wings:
+    kind: ANGEL_WINGS
+    blueprint: elytrix_angel_wings
+    aliases:
+      - wings
+      - крылья
+      - нагрудник
+    material: NETHERITE_CHESTPLATE
+    item-model: 'reallyworld:angel_wings'
+    cmd: 34
+    name: '&#F8BEFB&lАнгельские Крылья'
+    lore:
+      - ''
+      - ' &fНебесный 3D нагрудник-аксессуар:'
+      - ' &fобъёмные порхающие крылья за спиной'
+      - ' &fс плавной анимацией перьев и сиянием!'
+      - ''
+      - ' &#F8BEFB• &fСлот брони: &#F8BEFBНагрудник'
+      - ' &#F8BEFB• &fНаденьте в слот нагрудника &8— &fкрылья появятся на вас'
+      - ''
+    scale: 1.0

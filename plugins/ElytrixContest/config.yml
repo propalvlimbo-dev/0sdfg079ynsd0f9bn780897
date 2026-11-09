@@ -1,0 +1,102 @@
+lastPlayerSymbol: " {c}ꐀ&f "
+symbolsToCut: 10
+
+gradient:
+  start: '#F8BEFB'
+  end: '#F8BEFB'
+
+settings:
+  delay: 60
+  time: 5
+  min_players: 1
+
+commands:
+  no_permission: "§x§F§8§B§E§F§BСостязание §7» &cУ вас нет прав!"
+  info: "§x§F§8§B§E§F§BСостязание §7» &7Текущий эвент: &x&F&8&B&E&F&B{current_event}."
+  stop: "§x§F§8§B§E§F§BСостязание §7» &aУспешно остановили эвент!"
+  start: "§x§F§8§B§E§F§BСостязание §7» &aУспешно запустили эвент!"
+  reload: "§x§F§8§B§E§F§BСостязание §7» &aВы успешно перезагрузили конфиг!"
+
+scoreboard:
+  title: "&x&F&8&B&E&F&B&lГРИФ #1"
+  player_placeholder:
+    - " {c}ꐁ &f{player_name}: {c}{player_score}"
+  menu:
+    - " "
+    - "{information}"
+    - " "
+    - " {c}ꐀ &f{player_name}: {c}{my_score}"
+    - " "
+    - " {c}ꐁ &f{scoreboard_0}"
+    - " {c}ꐁ &f{scoreboard_1}"
+    - " {c}ꐀ &fЗа: {c}{time_remaining}"
+    - " "
+
+broadcast_no_winner: "(никто)"
+
+events:
+  move:
+    name: "ШАГИ"
+    money: 100000
+    scoreboard:
+      - "Пройдите как можно"
+      - "больше блоков"
+    broadcast:
+      start:
+        - ""
+      end:
+        - "§x§F§8§B§E§F§BСостязание §7» Игрок §x§F§8§B§E§F§B{winner} §7победил в состязании!"
+        - "§x§F§8§B§E§F§BСостязание §7» Он получил приз в размере §x§F§8§B§E§F§B100.000!"
+        - "§x§F§8§B§E§F§BСостязание §7» Поздравим победителя!"
+  blocks:
+    name: "БЛОКИ"
+    money: 100000
+    scoreboard:
+      - "Сломайте как можно"
+      - "больше блоков"
+    broadcast:
+      start:
+        - ""
+      end:
+        - "§x§F§8§B§E§F§BСостязание §7» Игрок §x§F§8§B§E§F§B{winner} §7победил в состязании!"
+        - "§x§F§8§B§E§F§BСостязание §7» Он получил приз в размере §x§F§8§B§E§F§B100.000!"
+        - "§x§F§8§B§E§F§BСостязание §7» Поздравим победителя!"
+  eat:
+    name: "ЕДА"
+    money: 100000
+    scoreboard:
+      - "Сьешьте как можно"
+      - "больше еды"
+    broadcast:
+      start:
+        - ""
+      end:
+        - "§x§F§8§B§E§F§BСостязание §7» Игрок §x§F§8§B§E§F§B{winner} §7победил в состязании!"
+        - "§x§F§8§B§E§F§BСостязание §7» Он получил приз в размере §x§F§8§B§E§F§B100.000!"
+        - "§x§F§8§B§E§F§BСостязание §7» Поздравим победителя!"
+  damage:
+    name: "УРОН"
+    money: 100000
+    scoreboard:
+      - "Нанесите как можно"
+      - "больше урона"
+    broadcast:
+      start:
+        - ""
+      end:
+        - "§x§F§8§B§E§F§BСостязание §7» Игрок §x§F§8§B§E§F§B{winner} §7победил в состязании!"
+        - "§x§F§8§B§E§F§BСостязание §7» Он получил приз в размере §x§F§8§B§E§F§B100.000!"
+        - "§x§F§8§B§E§F§BСостязание §7» Поздравим победителя!"
+  craft:
+    name: "КРАФТ"
+    money: 100000
+    scoreboard:
+      - "Скрафтите как можно"
+      - "больше предметов"
+    broadcast:
+      start:
+        - ""
+      end:
+        - "§x§F§8§B§E§F§BСостязание §7» Игрок §x§F§8§B§E§F§B{winner} §7победил в состязании!"
+        - "§x§F§8§B§E§F§BСостязание §7» Он получил приз в размере §x§F§8§B§E§F§B100.000!"
+        - "§x§F§8§B§E§F§BСостязание §7» Поздравим победителя!"

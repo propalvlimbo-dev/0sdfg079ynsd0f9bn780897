@@ -1,0 +1,23 @@
+MSO_Imp_Randomspawn:
+  Action: REPLACE
+  MobType: MSO_Imp
+  Chance: 0.02
+  Priority: 1
+  Conditions:
+  - mobtype{type=ZOMBIFIED_PIGLIN}
+MSO_Warmm_Randomspawn:
+  Action: REPLACE
+  MobType: MSO_Warmm
+  Chance: 0.05
+  Priority: 1
+  Conditions:
+  - mobtype{type=ZOMBIFIED_PIGLIN}
+MSO_Twinkler_Randomspawn:
+  Action: REPLACE
+  MobType: MSO_Twinkler
+  Chance: 0.05
+  Priority: 1
+  Conditions:
+  - mobtype{type=ZOMBIFIED_PIGLIN}
+
+# 4322XZSM

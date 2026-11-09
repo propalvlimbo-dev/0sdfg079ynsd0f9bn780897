@@ -1,0 +1,125 @@
+menu_title: §fꈁꀀꈂꍗꈂꀁ§fꈃꄑ
+open_command: kitpreview_pluspro
+register_command: true
+size: 54
+items:
+  offhand_item:
+    slot: 36
+    amount: 1
+    material: TOTEM_OF_UNDYING
+  kit_badge:
+    material: magenta_shulker_box
+    slot: 45
+    display_name: '&#AAAAAAНабор &#F8BEFB&lPLUSPRO'
+    lore:
+    - '&8Предпросмотр набора'
+    - ''
+    - '&7Слева отображается броня и'
+    - '&7предмет второй руки (щит/тотем).'
+    - '&7Справа — всё содержимое набора!'
+  loot_0:
+    slot: 2
+    amount: 1
+    material: LIME_SHULKER_BOX
+  loot_1:
+    slot: 3
+    amount: 1
+    material: TOTEM_OF_UNDYING
+  loot_2:
+    slot: 4
+    amount: 1
+    material: TOTEM_OF_UNDYING
+  loot_3:
+    slot: 5
+    amount: 64
+    material: EXPERIENCE_BOTTLE
+  loot_4:
+    slot: 6
+    amount: 64
+    material: EXPERIENCE_BOTTLE
+  loot_5:
+    slot: 7
+    amount: 64
+    material: EXPERIENCE_BOTTLE
+  loot_6:
+    slot: 8
+    amount: 64
+    material: EXPERIENCE_BOTTLE
+  loot_7:
+    slot: 11
+    amount: 64
+    material: CHORUS_FRUIT
+  loot_8:
+    slot: 12
+    amount: 2
+    material: SPAWNER
+    display_name: pig Spawner
+  loot_9:
+    slot: 13
+    amount: 64
+    material: GOLDEN_CARROT
+  loot_10:
+    slot: 14
+    amount: 1
+    material: CREEPER_SPAWN_EGG
+  loot_11:
+    slot: 15
+    amount: 1
+    material: VILLAGER_SPAWN_EGG
+  loot_12:
+    slot: 16
+    amount: 64
+    material: EXPERIENCE_BOTTLE
+  loot_13:
+    slot: 17
+    amount: 1
+    material: TOTEM_OF_UNDYING
+  loot_14:
+    slot: 20
+    amount: 4
+    material: ENDER_CHEST
+  loot_15:
+    slot: 21
+    amount: 12
+    material: GOLDEN_APPLE
+  loot_16:
+    slot: 22
+    amount: 30
+    material: DRAGON_BREATH
+  loot_17:
+    slot: 23
+    amount: 64
+    material: EXPERIENCE_BOTTLE
+  loot_18:
+    slot: 24
+    amount: 1
+    material: MAGENTA_SHULKER_BOX
+  loot_19:
+    slot: 25
+    amount: 1
+    material: WHITE_SHULKER_BOX
+  loot_20:
+    slot: 26
+    amount: 2
+    material: DRAGON_HEAD
+  btn_back:
+    material: structure_void
+    slots:
+    - 47
+    - 48
+    display_name: '&#F8BEFB◄ Назад к списку наборов'
+    lore:
+    - '&7Нажмите, чтобы вернуться в &f/kits'
+    click_commands:
+    - '[openguimenu] kits'
+  btn_claim:
+    material: structure_void
+    slots:
+    - 50
+    - 51
+    display_name: '&#55FF55✔ Получить этот набор'
+    lore:
+    - '&7Нажмите, чтобы взять набор'
+    click_commands:
+    - '[close]'
+    - '[player] kit pluspro'

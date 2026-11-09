@@ -1,0 +1,18 @@
+location: world_spawn:-29.512:74.100:5.533
+enabled: true
+display-range: 48
+update-range: 48
+update-interval: 20
+facing: 0.0
+down-origin: false
+pages:
+- lines:
+  - content: '&#F8BEFB&lЗащита особняка'
+    height: 0.3
+  - content: '&fКаждую субботу в &#F8BEFB17:30'
+    height: 0.3
+  - content: '&7Одолейте Ригурда и его гоблинов!'
+    height: 0.3
+  - content: '&#F8BEFBНажмите на NPC &fили &7/siege join'
+    height: 0.3
+  actions: {}

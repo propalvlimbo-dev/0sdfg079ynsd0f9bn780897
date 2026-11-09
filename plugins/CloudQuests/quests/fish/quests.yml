@@ -1,0 +1,303 @@
+settings:
+  generate-on-startup: true
+  regenerate-on-every-startup: false
+  reset-progress-on-generate: true
+  rows: 5
+  max-amount-per-task: 3000
+  ignore-custom-items: true
+generator:
+  amount-multiplier: 3.0
+  min-score: 0.0
+  max-score: 48.0
+  custom-pool: {}
+quests:
+  '1':
+    slot: 0
+    type: TASK
+    action: BRING
+    material: PUFFERFISH
+    amount: 24
+    name: Иглобрюх
+  '2':
+    slot: 1
+    type: TASK
+    action: BRING
+    material: COD
+    amount: 80
+    name: Треска
+  '3':
+    slot: 2
+    type: TASK
+    action: BRING
+    material: NAUTILUS_SHELL
+    amount: 3
+    name: Раковины Наутилуса
+  '4':
+    slot: 3
+    type: TASK
+    action: BRING
+    material: PRISMARINE_SHARD
+    amount: 40
+    name: Призмариновый Осколок
+  '5':
+    slot: 4
+    type: TASK
+    action: CRAFT
+    material: SEA_LANTERN
+    amount: 11
+    name: Морские Фонари
+  '6':
+    slot: 5
+    type: TASK
+    action: BRING
+    material: PRISMARINE_CRYSTALS
+    amount: 24
+    name: Призмариновые Кристаллы
+  '7':
+    slot: 6
+    type: TASK
+    action: KILL
+    material: INK_SAC
+    amount: 32
+    name: Убить Спрутов
+    entity: SQUID
+  '8':
+    slot: 7
+    type: TASK
+    action: BRING
+    material: TROPICAL_FISH
+    amount: 24
+    name: Тропическая Рыба
+  '10':
+    slot: 9
+    type: TASK
+    action: KILL
+    material: INK_SAC
+    amount: 256
+    name: Убить Спрутов
+    entity: SQUID
+  '11':
+    slot: 10
+    type: TASK
+    action: BRING
+    material: PRISMARINE_SHARD
+    amount: 176
+    name: Призмариновый Осколок
+  '12':
+    slot: 11
+    type: TASK
+    action: BRING
+    material: TROPICAL_FISH
+    amount: 224
+    name: Тропическая Рыба
+  '13':
+    slot: 12
+    type: TASK
+    action: KILL
+    material: PRISMARINE_SHARD
+    amount: 88
+    name: Убить Стражей
+    entity: GUARDIAN
+  '14':
+    slot: 13
+    type: TASK
+    action: BRING
+    material: PRISMARINE_CRYSTALS
+    amount: 160
+    name: Призмариновые Кристаллы
+  '15':
+    slot: 14
+    type: TASK
+    action: BRING
+    material: COD
+    amount: 576
+    name: Треска
+  '16':
+    slot: 15
+    type: TASK
+    action: BRING
+    material: SALMON
+    amount: 480
+    name: Лосось
+  '17':
+    slot: 16
+    type: TASK
+    action: BRING
+    material: PUFFERFISH
+    amount: 240
+    name: Иглобрюх
+  '19':
+    slot: 18
+    type: TASK
+    action: BRING
+    material: SALMON
+    amount: 960
+    name: Лосось
+  '20':
+    slot: 19
+    type: TASK
+    action: KILL
+    material: INK_SAC
+    amount: 512
+    name: Убить Спрутов
+    entity: SQUID
+  '21':
+    slot: 20
+    type: TASK
+    action: BRING
+    material: PRISMARINE_SHARD
+    amount: 336
+    name: Призмариновый Осколок
+  '22':
+    slot: 21
+    type: TASK
+    action: CRAFT
+    material: FISHING_ROD
+    amount: 576
+    name: Удочки
+  '23':
+    slot: 22
+    type: TASK
+    action: KILL
+    material: TRIDENT
+    amount: 288
+    name: Убить Утопленников
+    entity: DROWNED
+  '24':
+    slot: 23
+    type: TASK
+    action: CRAFT
+    material: SEA_LANTERN
+    amount: 224
+    name: Морские Фонари
+  '25':
+    slot: 24
+    type: TASK
+    action: BRING
+    material: COD
+    amount: 1088
+    name: Треска
+  '26':
+    slot: 25
+    type: TASK
+    action: BRING
+    material: PUFFERFISH
+    amount: 464
+    name: Иглобрюх
+  '28':
+    slot: 27
+    type: TASK
+    action: BRING
+    material: COD
+    amount: 1600
+    name: Треска
+  '29':
+    slot: 28
+    type: TASK
+    action: BRING
+    material: PRISMARINE_SHARD
+    amount: 496
+    name: Призмариновый Осколок
+  '30':
+    slot: 29
+    type: TASK
+    action: KILL
+    material: PRISMARINE_SHARD
+    amount: 272
+    name: Убить Стражей
+    entity: GUARDIAN
+  '31':
+    slot: 30
+    type: TASK
+    action: BRING
+    material: TROPICAL_FISH
+    amount: 640
+    name: Тропическая Рыба
+  '32':
+    slot: 31
+    type: TASK
+    action: BRING
+    material: PRISMARINE_CRYSTALS
+    amount: 448
+    name: Призмариновые Кристаллы
+  '33':
+    slot: 32
+    type: TASK
+    action: KILL
+    material: INK_SAC
+    amount: 768
+    name: Убить Спрутов
+    entity: SQUID
+  '34':
+    slot: 33
+    type: TASK
+    action: BRING
+    material: NAUTILUS_SHELL
+    amount: 224
+    name: Раковины Наутилуса
+  '35':
+    slot: 34
+    type: TASK
+    action: BRING
+    material: SALMON
+    amount: 1472
+    name: Лосось
+  '37':
+    slot: 36
+    type: TASK
+    action: KILL
+    material: TRIDENT
+    amount: 576
+    name: Убить Утопленников
+    entity: DROWNED
+  '38':
+    slot: 37
+    type: TASK
+    action: KILL
+    material: PRISMARINE_SHARD
+    amount: 352
+    name: Убить Стражей
+    entity: GUARDIAN
+  '39':
+    slot: 38
+    type: TASK
+    action: KILL
+    material: INK_SAC
+    amount: 1024
+    name: Убить Спрутов
+    entity: SQUID
+  '40':
+    slot: 39
+    type: TASK
+    action: BRING
+    material: PUFFERFISH
+    amount: 960
+    name: Иглобрюх
+  '41':
+    slot: 40
+    type: TASK
+    action: BRING
+    material: NAUTILUS_SHELL
+    amount: 304
+    name: Раковины Наутилуса
+  '42':
+    slot: 41
+    type: TASK
+    action: BRING
+    material: COD
+    amount: 2176
+    name: Треска
+  '43':
+    slot: 42
+    type: TASK
+    action: BRING
+    material: PRISMARINE_SHARD
+    amount: 704
+    name: Призмариновый Осколок
+  '44':
+    slot: 43
+    type: TASK
+    action: BRING
+    material: TROPICAL_FISH
+    amount: 896
+    name: Тропическая Рыба

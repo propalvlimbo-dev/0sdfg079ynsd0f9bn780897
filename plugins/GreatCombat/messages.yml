@@ -1,0 +1,30 @@
+bossbar:
+  enable: true
+  style: SOLID
+  color: PINK
+  title: '&#F8BEFB&l⚔ Режим боя &8• &fДо конца: &#F8BEFB{time}'
+  progress: true
+actions:
+  on-start-damager:
+  - '[MESSAGE] &#F8BEFBРежим боя &8» &fВы начали бой с &#F8BEFB{0}&f! Не выходите с сервера.'
+  on-start-target:
+  - '[MESSAGE] &#F8BEFBРежим боя &8» &fИгрок &#F8BEFB{0} &fнапал на вас! Не выходите с сервера.'
+  on-join:
+  - '[MESSAGE] &#F8BEFBРежим боя &8» &fВы вступили в бой с &#F8BEFB{0}&f!'
+  on-merge: []
+  on-stop:
+  - '[MESSAGE] &#F8BEFBРежим боя &8» &fБой &#7CF8A8окончен&f. Теперь можно безопасно выходить!'
+  on-item-cooldown:
+  - '[MESSAGE] &#F8BEFBРежим боя &8» &fПодождите &#F8BEFB{0} &fперед использованием &#F8BEFB{1}&f.'
+  on-pvp-leave:
+  - '[BROADCASTMESSAGE] &#F8BEFBРежим боя &8» &fИгрок &#F8BEFB{0} &fвышел во время боя и &#FF6B8Aпотерял вещи&f!'
+  on-pvp-command:
+  - '[MESSAGE] &#F8BEFBРежим боя &8» &fЭта команда недоступна во время боя!'
+  on-interact-prevention:
+  - '[MESSAGE] &#F8BEFBРежим боя &8» &fНельзя использовать &#F8BEFB{0} &fво время боя!'
+  on-tick: []
+  on-player-command:
+  - '[MESSAGE] &#F8BEFBРежим боя &8» &fИгрок &#F8BEFB{0} &fсейчас находится в бою!'
+  on-cooldown-expired: []
+  on-held: []
+config-version: 2

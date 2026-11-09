@@ -1,0 +1,72 @@
+######## created by samus2002 #########
+
+dwarf_arrow:
+  Id: arrow
+  Display: "&7Dwarf Arrow"
+  Model: 57501
+  Hide:
+  - ATTRIBUTES
+  
+dwarf_axe:
+  Id: stone_sword
+  Display: "&7Dwarf Axe"
+  Model: 57503
+  Hide:
+  - ATTRIBUTES
+
+dwarf_horn:
+  Id: stone_sword
+  Display: "&7Dwarf Horn"
+  Model: 57504
+  Hide:
+  - ATTRIBUTES
+
+dwarf_mace:
+  Id: stone_sword
+  Display: "&7Dwarf Mace"
+  Model: 57505
+  Hide:
+  - ATTRIBUTES
+
+dwarf_tome:
+  Id: stone_sword
+  Display: "&7Dwarf Tome"
+  Model: 57506
+  Hide:
+  - ATTRIBUTES
+  
+blacksmith_hammer:
+  Id: stone_sword
+  Display: "&7Blacksmith Hammer"
+  Model: 57507
+  Hide:
+  - ATTRIBUTES
+  
+blacksmith_spear:
+  Id: stone_sword
+  Display: "&7Blacksmith Spear"
+  Model: 57508
+  Hide:
+  - ATTRIBUTES
+  
+blacksmith_sword:
+  Id: stone_sword
+  Display: "&7Blacksmith Sword"
+  Model: 57509
+  Hide:
+  - ATTRIBUTES
+  
+blacksmith_shield:
+  Id: shield
+  Display: "&7Blacksmith Shield"
+  Model: 57501
+  Hide:
+  - ATTRIBUTES
+
+dwarf_crossbow:
+  Id: crossbow
+  Display: "&7Dwarf Crossbow"
+  Model: 57500
+  Hide:
+  - ATTRIBUTES
+#IDWy9EMEVVUJB3Qpt0R49WNJZUV6dGVNNzZq1UNjRlTwsmRXZWUoNXYxEXYxVjcQh0d2EXO

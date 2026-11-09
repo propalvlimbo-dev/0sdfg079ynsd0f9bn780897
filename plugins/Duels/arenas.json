@@ -1,0 +1,416 @@
+[
+  {
+    "name": "arena1_1",
+    "disabled": false,
+    "kits": [ ],
+    "positions": {
+      "1": {
+        "world": "duels",
+        "x": 1000.5,
+        "y": 64.0,
+        "z": 1000.5,
+        "pitch": 0.0,
+        "yaw": 0.0
+      },
+      "2": {
+        "world": "duels",
+        "x": 1000.5,
+        "y": 64.0,
+        "z": 1036.5,
+        "pitch": 0.0,
+        "yaw": 180.0
+      }
+    }
+  },
+  {
+    "name": "arena1_2",
+    "disabled": false,
+    "kits": [ ],
+    "positions": {
+      "1": {
+        "world": "duels",
+        "x": 1000.5,
+        "y": 64.0,
+        "z": 2000.5,
+        "pitch": 0.0,
+        "yaw": 0.0
+      },
+      "2": {
+        "world": "duels",
+        "x": 1000.5,
+        "y": 64.0,
+        "z": 2036.5,
+        "pitch": 0.0,
+        "yaw": 180.0
+      }
+    }
+  },
+  {
+    "name": "arena2_1",
+    "disabled": false,
+    "kits": [ ],
+    "positions": {
+      "1": {
+        "world": "duels",
+        "x": 2000.5,
+        "y": 64.0,
+        "z": 1000.5,
+        "pitch": 0.0,
+        "yaw": 360.0
+      },
+      "2": {
+        "world": "duels",
+        "x": 2000.5,
+        "y": 64.0,
+        "z": 1055.5,
+        "pitch": 0.0,
+        "yaw": 180.0
+      }
+    }
+  },
+  {
+    "name": "arena2_2",
+    "disabled": false,
+    "kits": [ ],
+    "positions": {
+      "1": {
+        "world": "duels",
+        "x": 2000.5,
+        "y": 64.0,
+        "z": 2000.5,
+        "pitch": 0.0,
+        "yaw": 0.0
+      },
+      "2": {
+        "world": "duels",
+        "x": 2000.5,
+        "y": 64.0,
+        "z": 2055.5,
+        "pitch": 0.0,
+        "yaw": 180.0
+      }
+    }
+  },
+  {
+    "name": "arena3_1",
+    "disabled": false,
+    "kits": [ ],
+    "positions": {
+      "1": {
+        "world": "duels",
+        "x": 3000.5,
+        "y": 64.0,
+        "z": 1000.5,
+        "pitch": 0.0,
+        "yaw": 0.0
+      },
+      "2": {
+        "world": "duels",
+        "x": 3000.5,
+        "y": 64.0,
+        "z": 1046.5,
+        "pitch": 0.0,
+        "yaw": 180.0
+      }
+    }
+  },
+  {
+    "name": "arena3_2",
+    "disabled": false,
+    "kits": [ ],
+    "positions": {
+      "1": {
+        "world": "duels",
+        "x": 3000.5,
+        "y": 64.0,
+        "z": 2000.5,
+        "pitch": 0.0,
+        "yaw": 0.0
+      },
+      "2": {
+        "world": "duels",
+        "x": 3000.5,
+        "y": 64.0,
+        "z": 2046.5,
+        "pitch": 0.0,
+        "yaw": 180.0
+      }
+    }
+  },
+  {
+    "name": "arena4_1",
+    "disabled": false,
+    "kits": [ ],
+    "positions": {
+      "1": {
+        "world": "duels",
+        "x": 4000.5,
+        "y": 64.0,
+        "z": 1000.5,
+        "pitch": 0.0,
+        "yaw": 315.0
+      },
+      "2": {
+        "world": "duels",
+        "x": 4053.5,
+        "y": 66.0,
+        "z": 1043.5,
+        "pitch": 0.0,
+        "yaw": 135.0
+      }
+    }
+  },
+  {
+    "name": "arena4_2",
+    "disabled": false,
+    "kits": [ ],
+    "positions": {
+      "1": {
+        "world": "duels",
+        "x": 4000.5,
+        "y": 64.0,
+        "z": 2000.5,
+        "pitch": 0.0,
+        "yaw": 45.0
+      },
+      "2": {
+        "world": "duels",
+        "x": 4053.5,
+        "y": 66.0,
+        "z": 2043.5,
+        "pitch": 0.0,
+        "yaw": 135.0
+      }
+    }
+  },
+  {
+    "name": "arena5_1",
+    "disabled": false,
+    "kits": [ ],
+    "positions": {
+      "1": {
+        "world": "duels",
+        "x": 5000.5,
+        "y": 64.5,
+        "z": 1000.5,
+        "pitch": 0.0,
+        "yaw": 270.0
+      },
+      "2": {
+        "world": "duels",
+        "x": 5040.5,
+        "y": 64.5,
+        "z": 1000.5,
+        "pitch": 0.0,
+        "yaw": 90.0
+      }
+    }
+  },
+  {
+    "name": "arena5_2",
+    "disabled": false,
+    "kits": [ ],
+    "positions": {
+      "1": {
+        "world": "duels",
+        "x": 5000.5,
+        "y": 64.5,
+        "z": 2000.5,
+        "pitch": 0.0,
+        "yaw": 270.0
+      },
+      "2": {
+        "world": "duels",
+        "x": 5040.5,
+        "y": 64.5,
+        "z": 2000.5,
+        "pitch": 0.0,
+        "yaw": 90.0
+      }
+    }
+  },
+  {
+    "name": "arena6_1",
+    "disabled": false,
+    "kits": [ ],
+    "positions": {
+      "1": {
+        "world": "duels",
+        "x": 6000.5,
+        "y": 64.0,
+        "z": 1000.5,
+        "pitch": 0.0,
+        "yaw": 270.0
+      },
+      "2": {
+        "world": "duels",
+        "x": 6044.5,
+        "y": 64.0,
+        "z": 1000.5,
+        "pitch": 0.0,
+        "yaw": 90.0
+      }
+    }
+  },
+  {
+    "name": "arena6_2",
+    "disabled": false,
+    "kits": [ ],
+    "positions": {
+      "1": {
+        "world": "duels",
+        "x": 6000.5,
+        "y": 64.0,
+        "z": 2000.5,
+        "pitch": 0.0,
+        "yaw": 270.0
+      },
+      "2": {
+        "world": "duels",
+        "x": 6044.5,
+        "y": 64.0,
+        "z": 2000.5,
+        "pitch": 0.0,
+        "yaw": 90.0
+      }
+    }
+  },
+  {
+    "name": "arena7_1",
+    "disabled": false,
+    "kits": [ ],
+    "positions": {
+      "1": {
+        "world": "duels",
+        "x": 7000.5,
+        "y": 64.0,
+        "z": 1000.5,
+        "pitch": 0.0,
+        "yaw": 0.0
+      },
+      "2": {
+        "world": "duels",
+        "x": 7003.5,
+        "y": 64.0,
+        "z": 1041.5,
+        "pitch": 0.0,
+        "yaw": -180.0
+      }
+    }
+  },
+  {
+    "name": "arena7_2",
+    "disabled": false,
+    "kits": [ ],
+    "positions": {
+      "1": {
+        "world": "duels",
+        "x": 7000.5,
+        "y": 64.0,
+        "z": 2000.5,
+        "pitch": 0.0,
+        "yaw": 0.0
+      },
+      "2": {
+        "world": "duels",
+        "x": 7003.5,
+        "y": 64.0,
+        "z": 2041.5,
+        "pitch": 0.0,
+        "yaw": -180.0
+      }
+    }
+  },
+  {
+    "name": "arena8_1",
+    "disabled": false,
+    "kits": [ ],
+    "positions": {
+      "1": {
+        "world": "duels",
+        "x": 8000.5,
+        "y": 64.875,
+        "z": 1000.5,
+        "pitch": 0.0,
+        "yaw": 0.0
+      },
+      "2": {
+        "world": "duels",
+        "x": 8000.5,
+        "y": 64.875,
+        "z": 1024.5,
+        "pitch": 0.0,
+        "yaw": 180.0
+      }
+    }
+  },
+  {
+    "name": "arena8_2",
+    "disabled": false,
+    "kits": [ ],
+    "positions": {
+      "1": {
+        "world": "duels",
+        "x": 8000.5,
+        "y": 64.875,
+        "z": 2000.5,
+        "pitch": 0.0,
+        "yaw": 0.0
+      },
+      "2": {
+        "world": "duels",
+        "x": 8000.5,
+        "y": 64.875,
+        "z": 2024.5,
+        "pitch": 0.0,
+        "yaw": 180.0
+      }
+    }
+  },
+  {
+    "name": "arena9_1",
+    "disabled": false,
+    "kits": [ ],
+    "positions": {
+      "1": {
+        "world": "duels",
+        "x": 9000.5,
+        "y": 64.0,
+        "z": 1000.5,
+        "pitch": 0.0,
+        "yaw": 0.0
+      },
+      "2": {
+        "world": "duels",
+        "x": 9003.5,
+        "y": 64.0,
+        "z": 1037.5,
+        "pitch": 0.0,
+        "yaw": 180.0
+      }
+    }
+  },
+  {
+    "name": "arena9_2",
+    "disabled": false,
+    "kits": [ ],
+    "positions": {
+      "1": {
+        "world": "duels",
+        "x": 9000.5,
+        "y": 64.0,
+        "z": 2000.5,
+        "pitch": 0.0,
+        "yaw": 0.0
+      },
+      "2": {
+        "world": "duels",
+        "x": 9003.5,
+        "y": 64.0,
+        "z": 2037.5,
+        "pitch": 0.0,
+        "yaw": 180.0
+      }
+    }
+  }
+]

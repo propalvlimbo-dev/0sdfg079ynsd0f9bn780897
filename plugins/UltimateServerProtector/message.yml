@@ -1,0 +1,89 @@
+# Сообщения, которые будут отображаться игрокам при вводе команды
+msg:
+  message: '%prefix% <white>Обнаружены права администратора! Введите пароль администратора!'
+  incorrect: '%prefix% <red>Неправильный пароль!'
+  correct: '%prefix% <green>Правильный пароль. Хорошего дня ;)'
+  noneed: '%prefix% <white>Вам не нужно вводить пароль администратора или он уже был
+    введён.'
+  cantbenull: '%prefix% <white>Пароль не может быть пустым.'
+  playeronly: '%prefix% <white>Только для игроков.'
+broadcasts:
+  failed: '%prefix% <white>Администратор <#F8BEFB>%player% <white>ввёл пароль <red>неправильно!
+    <white>IP: <red>скрыто'
+  passed: '%prefix% <white>Администратор <#F8BEFB>%player% <white>ввёл пароль <green>правильно!
+    <white>IP: <red>скрыто'
+  joined: '%prefix% <white>Администратор <#F8BEFB>%player% <white>вошёл в игру! <white>IP:
+    <red>скрыто'
+  captured: '%prefix% <white>У игрока <#F8BEFB>%player% <white>обнаружены права администратора!
+    <white>IP: <red>скрыто'
+  disabled: '%prefix% <red><bold>ВНИМАНИЕ! <white>Плагин был отключён!'
+titles:
+  message: ' ;<white>Обнаружены права администратора! Введите пароль администратора!;10;60;15'
+  incorrect: ' ;<red>Неправильный пароль!;10;60;15'
+  correct: ' ;<green>Правильный пароль. Хорошего дня;10;60;15'
+bossbar:
+  message: '<white>Осталось: <red>%time% <white>секунд'
+uspmsg:
+  consoleonly: <red>Эту команду можно выполнить только из консоли!
+  playeronly: <red>Эту команду может выполнить только игрок!
+  logout: <green>Ваша сессия была сброшена.
+  reloaded: <green>Плагин перезагружен.
+  rebooted: <green>Плагин перезапущен.
+  playernotfound: <red>Аккаунт %nick% не найден в системе!
+  alreadyinconfig: <green>Этот аккаунт уже находится в конфигурации.
+  notinconfig: <red>Этого аккаунта нет в конфигурации.
+  playeradded: <green>Игрок %nick% успешно добавлен.
+  playerremoved: <green>Игрок успешно удалён.
+  ipadded: <green>IP-адреса %ip% успешно добавлены.
+  setpassusage: <#F8BEFB>/%cmd% setpass (ник) (пароль)
+  addopusage: <#F8BEFB>/%cmd% addop (ник)
+  addipusage: <#F8BEFB>/%cmd% addip (IP-адреса)
+  rempassusage: <#F8BEFB>/%cmd% rempass (ник)
+  remopusage: <#F8BEFB>/%cmd% remop (ник)
+  remipusage: <#F8BEFB>/%cmd% rempip (IP-адреса)
+  usage: '<gray><bold>> <gray>Использование:'
+  usage-logout: <#F8BEFB>/%cmd% logout <gray>- <white>завершить вашу сессию
+  usage-reload: <#F8BEFB>/%cmd% reload <gray>- <white>перезагрузить конфигурацию
+  usage-reboot: <#F8BEFB>/%cmd% reboot <gray>- <white>перезапустить плагин
+  usage-encrypt: <#F8BEFB>/%cmd% encrypt (пароль) <gray>- <white>показать зашифрованную
+    версию пароля
+  usage-setpass: <#F8BEFB>/%cmd% setpass (ник) (пароль) <gray>- <white>установить
+    пароль игрока
+  usage-rempass: <#F8BEFB>/%cmd% rempass (ник) <gray>- <white>удалить пароль игрока
+  usage-addop: <#F8BEFB>/%cmd% addop (ник) <gray>- <white>добавить игрока в белый
+    список OP
+  usage-remop: <#F8BEFB>/%cmd% remop (ник) <gray>- <white>удалить игрока из белого
+    списка OP
+  usage-addip: <#F8BEFB>/%cmd% addip (ник) (IP-адреса) <gray>- <white>добавить игрока
+    и его IP в белый список IP
+  usage-remip: <#F8BEFB>/%cmd% remip (ник) (IP-адреса) <gray>- <white>удалить игрока
+    и его IP из белого списка IP
+  otherdisabled: |-
+    <gray>Другие команды отключены.
+    <gray>Чтобы включить их, установите <gold>enable-admin-commands: <green>true
+log-format:
+  enabled: '%date% [UltimateServerProtector - плагин включён]'
+  disabled: '%date% [UltimateServerProtector - плагин отключён]'
+  failed: '%date% Администратор %player% неправильно ввёл пароль администратора! IP:
+    %ip%'
+  passed: '%date% Администратор %player% успешно вошёл в систему! IP: %ip%'
+  joined: '%date% Администратор %player% вошёл в игру. IP: %ip%'
+  captured: '%date% У игрока %player% обнаружены права администратора! IP: %ip%'
+  command: '%date% Плагин выполнил команду: %cmd%'
+system:
+  baseline-warn: <gold>============= <red>! ПРЕДУПРЕЖДЕНИЕ ! <gold>=============
+  baseline-default: <gold>========================================
+  paper-1: <yellow>Вы используете нестабильное ядро для своего MC-сервера! Рекомендуется
+    использовать <green>Paper
+  paper-2: '<yellow>Скачать Paper: <green>https://papermc.io/downloads/all'
+  bungeecord-1: <yellow>У вас <gold>настройка bungeecord <green>включена<yellow>,
+    но плагин <gold>BungeeGuard <yellow>не установлен!
+  bungeecord-2: <yellow>Без этого плагина вы подвергаетесь <red>рискам безопасности!
+    <yellow>Установите его для дальнейшей безопасной работы.
+  bungeecord-3: '<yellow>Скачать BungeeGuard: <green>https://www.spigotmc.org/resources/bungeeguard.79601/'
+  update-latest: <green>Вы используете последнюю версию плагина!
+  update-success-1: <green>Обновление успешно загружено!
+  update-success-2: <green>Перезапустите сервер, чтобы применить обновление.
+  update-outdated-1: <green>Вы используете устаревшую версию плагина!
+  update-outdated-2: '<green>Вы можете скачать новую версию здесь:'
+  update-outdated-3: <aqua>github.com/OverwriteMC/UltimateServerProtector/releases/

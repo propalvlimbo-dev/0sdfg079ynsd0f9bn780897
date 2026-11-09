@@ -1,0 +1,32 @@
+location: world_spawn:-13.500:75.000:-5.500
+enabled: true
+display-range: 48
+update-range: 48
+update-interval: 20
+facing: 0.0
+down-origin: false
+pages:
+- lines:
+  - content: '&fТоп по &bELO&f на сервере <#F8BEFB>&lElytrix</#FAD8FC>'
+    height: 0.5
+  - content: '%elytrixtops_elo_1%'
+    height: 0.3
+  - content: '%elytrixtops_elo_2%'
+    height: 0.3
+  - content: '%elytrixtops_elo_3%'
+    height: 0.3
+  - content: '%elytrixtops_elo_4%'
+    height: 0.3
+  - content: '%elytrixtops_elo_5%'
+    height: 0.3
+  - content: '%elytrixtops_elo_6%'
+    height: 0.3
+  - content: '%elytrixtops_elo_7%'
+    height: 0.3
+  - content: '%elytrixtops_elo_8%'
+    height: 0.3
+  - content: '%elytrixtops_elo_9%'
+    height: 0.3
+  - content: '%elytrixtops_elo_10%'
+    height: 0.3
+  actions: {}

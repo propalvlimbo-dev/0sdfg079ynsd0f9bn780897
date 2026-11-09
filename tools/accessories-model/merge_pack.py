@@ -1,0 +1,281 @@
+#!/usr/bin/env python3
+"""Merges the new accessory assets into a copy of the Elytrix resource pack.
+
+Only these things change, everything else is copied byte for byte:
+
+* ``assets/modelengine/items|models/<model>/`` for every shipped accessory becomes
+  exactly the files generated from that blueprint (old bone files are removed);
+* ``assets/modelengine/textures/entity/models/<model>.png`` is the new texture;
+* ``assets/reallyworld/textures/gui/title/elytrix_accessories.png`` is the menu title
+  redrawn with the pack's own font;
+* ``assets/minecraft/font/default.json`` gets (or replaces) exactly one provider for
+  the ``ꏠ`` glyph, keeping the metrics of the other title providers.
+
+The system files that the pack must keep (pack.png, leather_horse_armor item/model,
+atlases, shaders) are checked before and after, and every JSON is validated, so the
+client cannot end up with a broken pack.
+
+Usage:
+    python3 merge_pack.py <input.zip> <new_output.zip> \
+        --assets <dir containing assets/> --title <elytrix_accessories.png> \
+        [--texture <elytrix_kaneki_tentacles.png>]
+"""
+import argparse
+import hashlib
+import json
+import sys
+import zipfile
+from pathlib import Path
+
+from build_mini_me import ACC_FONT_PROVIDERS
+from fpv_shaders import (
+    CLOSE_ACCESSORY_MODELS,
+    CLOSE_TINT_VALUE,
+    SODIUM_IGNORED_SHADERS,
+    WINGS_ACCESSORY_MODELS,
+    WINGS_TINT_VALUE,
+    build_fpv_pack_entries,
+)
+
+# Every ModelEngine model this repository ships.  A model without its
+# ``items/<model>/<bone>.json`` + ``models/<model>/<bone>.json`` + texture inside
+# the served pack is invisible in game, so all of them are validated and their
+# stale files are replaced.
+MODELS = (
+    'elytrix_kaneki_tentacles',
+    'elytrix_centipede',
+    'elytrix_mini_me',
+    'elytrix_cute_kitten',
+    'elytrix_mellstroy',
+    'elytrix_lightning_hat',
+    'elytrix_satan_circle',
+    'elytrix_zeus_wings',
+    'elytrix_heart_aura',
+    'elytrix_butterfly_aura',
+    'elytrix_death_aura',
+)
+GLYPH = 'ꏠ'
+FONT = 'assets/minecraft/font/default.json'
+TITLE = 'assets/reallyworld/textures/gui/title/elytrix_accessories.png'
+PROVIDER = {
+    'type': 'bitmap',
+    'file': 'reallyworld:gui/title/elytrix_accessories.png',
+    'ascent': 26,
+    'height': 32,
+    'chars': [GLYPH],
+}
+ALL_PROVIDERS = [PROVIDER] + list(ACC_FONT_PROVIDERS)
+REQUIRED = [
+    'pack.png',
+    'assets/minecraft/items/leather_horse_armor.json',
+    'assets/minecraft/models/item/leather_horse_armor.json',
+    'assets/minecraft/atlases/blocks.json',
+    'assets/reallyworld/textures/gui/title/title_00.png',
+]
+# fonts/atlases the client needs; their content must not be touched by this merge
+KEEP = [FONT, 'assets/minecraft/atlases/blocks.json',
+        'assets/minecraft/items/leather_horse_armor.json',
+        'assets/minecraft/models/item/leather_horse_armor.json']
+
+
+def collect_assets(directory):
+    """Reads an assets tree; accepts either <dir>/assets/... or <dir>/modelengine/..."""
+    directory = Path(directory)
+    base = directory / 'assets' if (directory / 'assets').is_dir() else directory
+    files = {}
+    for path in sorted(base.rglob('*')):
+        if path.is_file():
+            files['assets/' + path.relative_to(base).as_posix()] = path.read_bytes()
+    if not files:
+        raise ValueError('no generated assets found in ' + str(directory))
+    return files
+
+
+def font_entry(font, replace):
+    providers = font['providers']
+    any_replaced = False
+    for target_prov in ALL_PROVIDERS:
+        ch = target_prov['chars'][0]
+        found = []
+        for index, provider in enumerate(providers):
+            chars = provider.get('chars', [])
+            if any(ch in row for row in chars) or ch in provider.get('advances', {}):
+                found.append(index)
+        if len(found) > 1:
+            raise ValueError(f'glyph {ch!r} is registered more than once')
+        if found and not replace:
+            raise ValueError(f'glyph {ch!r} already registered but replace was not enabled')
+        if found:
+            providers[found[0]] = dict(target_prov)
+            any_replaced = True
+        else:
+            providers.insert(0, dict(target_prov))
+    return font, any_replaced
+
+
+def models_in(files):
+    """Model names that the generated asset tree actually contains."""
+    found = set()
+    for name in files:
+        parts = name.split('/')
+        if len(parts) >= 5 and parts[1] == 'modelengine' and parts[2] in ('items', 'models'):
+            found.add(parts[3])
+    if not found:
+        raise ValueError('the generated assets contain no modelengine model')
+    return found
+
+
+def validate_assets(files, models=None):
+    """Every item definition must point to a model that exists, and JSON must parse.
+
+    Covers *all* shipped models: a model whose files are missing entirely is the
+    exact defect that made the centipede invisible, so an unknown name in
+    ``models`` is an error instead of a silent skip.
+    """
+    present = models_in(files)
+    models = list(MODELS if models is None else models)
+    for model in models:
+        if model not in present:
+            raise ValueError(f'no assets generated for model {model}')
+    unknown = present - set(models)
+    if unknown:
+        raise ValueError('assets for unregistered models: ' + ', '.join(sorted(unknown)))
+    for model in models:
+        bone_models = {name for name in files if name.startswith(f'assets/modelengine/models/{model}/')}
+        bone_items = {name for name in files if name.startswith(f'assets/modelengine/items/{model}/')}
+        if not bone_models or len(bone_models) != len(bone_items):
+            raise ValueError(f'{model}: item/model count mismatch: '
+                             f'{len(bone_items)} items, {len(bone_models)} models')
+        for name in bone_models | bone_items:
+            if not name.endswith('.json'):
+                raise ValueError('unexpected non-JSON asset: ' + name)
+            json.loads(files[name])
+        for name in bone_items:
+            definition = json.loads(files[name])['model']
+            reference = definition['model']
+            expected = f'modelengine:{model}/' + Path(name).stem
+            if reference != expected:
+                raise ValueError(f'{name} points to {reference}, expected {expected}')
+        textures = set()
+        for name in bone_models:
+            textures.update(json.loads(files[name]).get('textures', {}).values())
+        textures = {t.split(':')[-1] for t in textures if not t.startswith('#')}
+        if not textures:
+            raise ValueError(f'{model}: its bone models reference no texture')
+        for texture in textures:
+            if f'assets/modelengine/textures/{texture}.png' not in files:
+                raise ValueError('missing texture ' + texture)
+
+
+def merge(source, destination, assets_dir, title_png, texture_png=None,
+          allow_existing_glyph=False, drop=()):
+    source, destination = Path(source), Path(destination)
+    if not source.is_file():
+        raise SystemExit('missing input pack: ' + str(source))
+    if destination.exists():
+        raise SystemExit('output must be a new file: ' + str(destination))
+    generated = collect_assets(assets_dir)
+    if texture_png:
+        # legacy flag: an explicit texture for the kagune model
+        generated[f'assets/modelengine/textures/entity/models/{MODELS[0]}.png'] = \
+            Path(texture_png).read_bytes()
+    validate_assets(generated)
+
+    title_bytes = Path(title_png).read_bytes()
+
+    with zipfile.ZipFile(source) as original:
+        names = original.namelist()
+        if len(names) != len(set(names)) or original.testzip() is not None:
+            raise SystemExit('input pack is corrupt or has duplicate entries')
+        missing = [name for name in REQUIRED if name not in names]
+        if missing:
+            raise SystemExit('input pack lacks required files: ' + ', '.join(missing))
+        source_data = {name: original.read(name) for name in names}
+
+    font = json.loads(source_data[FONT])
+    font, replaced = font_entry(font, replace=allow_existing_glyph or GLYPH in json.dumps(font))
+    font_bytes = (json.dumps(font, ensure_ascii=False, separators=(',', ':')) + '\n').encode('utf-8')
+
+    prefixes = []
+    for model in MODELS:
+        prefixes += [f'assets/modelengine/items/{model}/',
+                     f'assets/modelengine/models/{model}/',
+                     f'assets/modelengine/textures/entity/models/{model}.png']
+    stale = {name for name in source_data
+             if any(name.startswith(prefix) for prefix in prefixes) and name not in generated}
+    # retired accessories: their files must leave the pack, not linger as orphans
+    for prefix in drop:
+        if not prefix:
+            continue
+        stale |= {name for name in source_data if name.startswith(prefix) and name not in generated}
+
+    merged_view = {k: v for k, v in source_data.items() if k not in stale}
+    merged_view.update(generated)
+    fpv_updates = build_fpv_pack_entries(merged_view)
+
+    additions = dict(generated)
+    additions.update(fpv_updates)
+    additions[TITLE] = title_bytes
+    additions[FONT] = font_bytes
+
+    with zipfile.ZipFile(destination, 'x') as out:
+        for info in zipfile.ZipFile(source).infolist():
+            name = info.filename
+            if name in stale:
+                continue
+            out.writestr(info, additions.get(name, source_data[name]))
+        for name in sorted(additions):
+            if name in source_data and name not in stale:
+                continue
+            entry = zipfile.ZipInfo(name, (2020, 1, 1, 0, 0, 0))
+            entry.compress_type = zipfile.ZIP_DEFLATED
+            out.writestr(entry, additions[name])
+
+    with zipfile.ZipFile(destination) as result:
+        if result.testzip() is not None:
+            raise SystemExit('output pack failed its CRC check')
+        final = set(result.namelist())
+        for name in generated:
+            expected_bytes = additions[name]
+            if result.read(name) != expected_bytes:
+                raise SystemExit('asset was not written: ' + name)
+        for name, expected_bytes in fpv_updates.items():
+            if result.read(name) != expected_bytes:
+                raise SystemExit('fpv shader/tint asset was not written: ' + name)
+        for name in KEEP:
+            if name != FONT and result.read(name) != source_data[name]:
+                raise SystemExit('system file was modified: ' + name)
+        check = json.loads(result.read(FONT))
+        providers = [p for p in check['providers']
+                     if GLYPH in p.get('chars', []) or GLYPH in p.get('advances', {})]
+        if len(providers) != 1 or providers[0]['file'] != PROVIDER['file']:
+            raise SystemExit('font provider for the title glyph is wrong')
+        for name in stale:
+            if name in final:
+                raise SystemExit('stale file kept: ' + name)
+    return hashlib.sha1(destination.read_bytes()).hexdigest(), replaced, len(stale)
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('source')
+    parser.add_argument('destination')
+    parser.add_argument('--assets', required=True)
+    parser.add_argument('--title', required=True)
+    parser.add_argument('--texture', help='texture PNG for the model (optional if already in --assets)')
+    parser.add_argument('--allow-existing-glyph', action='store_true',
+                        help='the source pack already carries the menu title glyph')
+    parser.add_argument('--drop', action='append', default=[],
+                        help='path prefix of a retired asset to remove from the pack (repeatable)')
+    args = parser.parse_args()
+    sha1, replaced, removed = merge(args.source, args.destination, args.assets, args.title,
+                                    texture_png=args.texture,
+                                    allow_existing_glyph=args.allow_existing_glyph,
+                                    drop=args.drop)
+    print(f'merged pack: {args.destination}')
+    print(f'  font provider: {"replaced" if replaced else "added"}, stale files removed: {removed}')
+    print(f'  SHA-1: {sha1}')
+
+
+if __name__ == '__main__':
+    main()

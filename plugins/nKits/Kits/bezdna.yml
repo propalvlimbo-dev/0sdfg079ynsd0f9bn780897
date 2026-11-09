@@ -1,0 +1,64 @@
+Name: bezdna
+Cooldown: 0
+Permission: nKits.kits.bezdna
+Order: 0
+FirstTimeJoinKit: false
+OneTimeUse: false
+Inventory:
+  Main:
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_effects:[{amplifier:2b,duration:900,id:"minecraft:strength",show_icon:1b},{amplifier:2b,duration:900,id:"minecraft:speed",show_icon:1b},{amplifier:2b,duration:9600,id:"minecraft:fire_resistance",show_icon:1b},{duration:900,id:"minecraft:poison",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"red",italic:0b,obfuscated:0b,strikethrough:0b,text:"Зелье
+        Бездны",underlined:0b}],text:""}'
+    schema_version: 1
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  - null
+  Armor:
+  - null
+  - null
+  - null
+  - null

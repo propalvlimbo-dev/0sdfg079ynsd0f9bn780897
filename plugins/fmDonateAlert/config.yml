@@ -1,0 +1,36 @@
+texts:
+  1:
+    - ''
+    - '&f☁ &x&f&8&b&e&f&bᴇ&x&f&6&b&e&f&bʟ&x&f&3&b&e&f&bʏ&x&f&1&b&f&f&bᴛ&x&e&e&b&f&f&bʀ&x&e&c&b&f&f&bɪ&x&e&9&b&f&f&bх &7» &x&f&8&b&e&f&bПокупка доната'
+    - '&x&f&8&b&e&f&b&l┃ &fИгрок: &x&f&8&b&e&f&b%player%'
+    - '&x&f&8&b&e&f&b&l┃ &fПриобрел: &a%donate%'
+    - '&x&f&8&b&e&f&b&l┃ &fСпасибо за поддержку сервера!'
+    - '&x&f&8&b&e&f&b&l┃ &fСайт: &x&f&8&b&e&f&belytrix.pw'
+    - ''
+  2:
+    - ''
+    - '&f☁ &x&f&8&b&e&f&bᴇ&x&f&6&b&e&f&bʟ&x&f&3&b&e&f&bʏ&x&f&1&b&f&f&bᴛ&x&e&e&b&f&f&bʀ&x&e&c&b&f&f&bɪ&x&e&9&b&f&f&bх &7» &x&f&8&b&e&f&bПокупка доната'
+    - '&x&f&8&b&e&f&b&l┃ &fИгрок: &x&f&8&b&e&f&b%player%'
+    - '&x&f&8&b&e&f&b&l┃ &fПриобрел: &a%donate%'
+    - '&x&f&8&b&e&f&b&l┃ &fЖелаем приятной игры на нашем проекте!'
+    - '&x&f&8&b&e&f&b&l┃ &fСайт: &x&f&8&b&e&f&belytrix.pw'
+    - ''
+  3:
+    - ''
+    - '&f☁ &x&f&8&b&e&f&bᴇ&x&f&6&b&e&f&bʟ&x&f&3&b&e&f&bʏ&x&f&1&b&f&f&bᴛ&x&e&e&b&f&f&bʀ&x&e&c&b&f&f&bɪ&x&e&9&b&f&f&bх &7» &x&f&8&b&e&f&bПокупка доната'
+    - '&x&f&8&b&e&f&b&l┃ &fИгрок: &x&f&8&b&e&f&b%player%'
+    - '&x&f&8&b&e&f&b&l┃ &fПриобрел: &a%donate%'
+    - '&x&f&8&b&e&f&b&l┃ &fПоздравляем его с &aуспешной &fпокупкой!'
+    - '&x&f&8&b&e&f&b&l┃ &fСайт: &x&f&8&b&e&f&belytrix.pw'
+    - ''
+messages:
+  no-perms: '&f☁ &x&f&8&b&e&f&bᴇ&x&f&6&b&e&f&bʟ&x&f&3&b&e&f&bʏ&x&f&1&b&f&f&bᴛ&x&e&e&b&f&f&bʀ&x&e&c&b&f&f&bɪ&x&e&9&b&f&f&bх &7» &cУ Вас недостаточно прав.'
+  usage:
+    - '&f☁ &x&f&8&b&e&f&bᴇ&x&f&6&b&e&f&bʟ&x&f&3&b&e&f&bʏ&x&f&1&b&f&f&bᴛ&x&e&e&b&f&f&bʀ&x&e&c&b&f&f&bɪ&x&e&9&b&f&f&bх &7» &x&f&8&b&e&f&bПомощь по командам:'
+    - '&x&f&8&b&e&f&b&l┃ &f/fmam reload &7— &fПерезагрузить конфигурацию плагина'
+    - '&x&f&8&b&e&f&b&l┃ &f/fmad send (Никнейм) (Донат) &7— &fОтправить сообщение о покупке'
+  title: '&x&f&8&b&e&f&b&lПОКУПКА'
+  subtitle: '&f%player% &x&f&8&b&e&f&bкупил &a%donate%&f'
+  success-send: '&f☁ &x&f&8&b&e&f&bᴇ&x&f&6&b&e&f&bʟ&x&f&3&b&e&f&bʏ&x&f&1&b&f&f&bᴛ&x&e&e&b&f&f&bʀ&x&e&c&b&f&f&bɪ&x&e&9&b&f&f&bх &7» &fВы &aуспешно &fотправили сообщение о покупке доната!'
+  success-reload: '&f☁ &x&f&8&b&e&f&bᴇ&x&f&6&b&e&f&bʟ&x&f&3&b&e&f&bʏ&x&f&1&b&f&f&bᴛ&x&e&e&b&f&f&bʀ&x&e&c&b&f&f&bɪ&x&e&9&b&f&f&bх &7» &fКонфигурация плагина &aуспешно &fперезагружена!'
+enable-title: true

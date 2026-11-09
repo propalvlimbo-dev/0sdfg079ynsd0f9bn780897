@@ -1,0 +1,1 @@
+package org.bukkit.entity; public interface Player extends Entity,org.bukkit.command.CommandSender { String getName(); java.util.UUID getUniqueId(); org.bukkit.inventory.PlayerInventory getInventory(); org.bukkit.GameMode getGameMode(); }

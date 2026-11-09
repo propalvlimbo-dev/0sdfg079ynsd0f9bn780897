@@ -1,0 +1,1 @@
+package org.bukkit.inventory; public interface PlayerInventory { ItemStack[] getStorageContents(); void setStorageContents(ItemStack[] a); java.util.HashMap<Integer,ItemStack> addItem(ItemStack... i); }

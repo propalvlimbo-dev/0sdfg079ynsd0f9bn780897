@@ -1,0 +1,66 @@
+{
+  "use-locale": "ru_RU",
+  "default-locale": "ru_RU",
+  "messages": {
+    "command.give.successfully": {
+      "ru_RU": "&#F8BEFB&lElytrix &8» &fУспешно выдано игроку &#F8BEFB{}&f ключей: &#F8BEFB{}&f от кейса &#F8BEFB{}",
+      "en_UK": "&#F8BEFB&lElytrix &8» &fУспешно выдано игроку &#F8BEFB{}&f ключей: &#F8BEFB{}&f от кейса &#F8BEFB{}"
+    },
+    "command.give.successfully.offline": {
+      "ru_RU": "&#F8BEFB&lElytrix &8» &fУспешно выдано &#F8BEFBоффлайн&f-игроку &#F8BEFB{}&f ключей: &#F8BEFB{}&f от кейса &#F8BEFB{}",
+      "en_UK": "&#F8BEFB&lElytrix &8» &fУспешно выдано &#F8BEFBоффлайн&f-игроку &#F8BEFB{}&f ключей: &#F8BEFB{}&f от кейса &#F8BEFB{}"
+    },
+    "command.give.successfully.multiple": {
+      "ru_RU": "&#F8BEFB&lElytrix &8» &fУспешно выдано &#F8BEFB{}&f игрокам по &#F8BEFB{}&f ключей от кейса &#F8BEFB{}",
+      "en_UK": "&#F8BEFB&lElytrix &8» &fУспешно выдано &#F8BEFB{}&f игрокам по &#F8BEFB{}&f ключей от кейса &#F8BEFB{}"
+    },
+    "command.take.successfully": {
+      "ru_RU": "&#F8BEFB&lElytrix &8» &fУспешно изъяты ключи &#F8BEFB{}&f (&#F8BEFB{}&f шт.) у игрока &#F8BEFB{}",
+      "en_UK": "&#F8BEFB&lElytrix &8» &fУспешно изъяты ключи &#F8BEFB{}&f (&#F8BEFB{}&f шт.) у игрока &#F8BEFB{}"
+    },
+    "command.take.successfully.multiple": {
+      "ru_RU": "&#F8BEFB&lElytrix &8» &fУспешно изъято у &#F8BEFB{}&f игроков по &#F8BEFB{}&f ключей от кейса &#F8BEFB{}",
+      "en_UK": "&#F8BEFB&lElytrix &8» &fУспешно изъято у &#F8BEFB{}&f игроков по &#F8BEFB{}&f ключей от кейса &#F8BEFB{}"
+    },
+    "command.take.failed": {
+      "ru_RU": "&#F8BEFB&lElytrix &8» &fНевозможно изъять ключи у оффлайн-игрока!",
+      "en_UK": "&#F8BEFB&lElytrix &8» &fНевозможно изъять ключи у оффлайн-игрока!"
+    },
+    "command.clear.successfully": {
+      "ru_RU": "&#F8BEFB&lElytrix &8» &fУспешно очищено &#F8BEFB{}&f ключей у игрока &#F8BEFB{}",
+      "en_UK": "&#F8BEFB&lElytrix &8» &fУспешно очищено &#F8BEFB{}&f ключей у игрока &#F8BEFB{}"
+    },
+    "command.clear.successfully.offline": {
+      "ru_RU": "&#F8BEFB&lElytrix &8» &fУспешно очищено &#F8BEFB{}&f ключей у &#F8BEFBоффлайн&f-игрока &#F8BEFB{}",
+      "en_UK": "&#F8BEFB&lElytrix &8» &fУспешно очищено &#F8BEFB{}&f ключей у &#F8BEFBоффлайн&f-игрока &#F8BEFB{}"
+    },
+    "command.clear.successfully.multiple": {
+      "ru_RU": "&#F8BEFB&lElytrix &8» &fУспешно очищено &#F8BEFB{}&f ключей у &#F8BEFB{}&f игроков",
+      "en_UK": "&#F8BEFB&lElytrix &8» &fУспешно очищено &#F8BEFB{}&f ключей у &#F8BEFB{}&f игроков"
+    },
+    "command.clear.failed": {
+      "ru_RU": "&#F8BEFB&lElytrix &8» &fНе удалось очистить ключи игрока &#F8BEFB{}",
+      "en_UK": "&#F8BEFB&lElytrix &8» &fНе удалось очистить ключи игрока &#F8BEFB{}"
+    },
+    "command.remove.successfully": {
+      "ru_RU": "&#F8BEFB&lElytrix &8» &fКейс на координатах &#F8BEFB{} {} {}&f успешно удалён",
+      "en_UK": "&#F8BEFB&lElytrix &8» &fКейс на координатах &#F8BEFB{} {} {}&f успешно удалён"
+    },
+    "command.set.successfully": {
+      "ru_RU": "&#F8BEFB&lElytrix &8» &fКейс успешно установлен!",
+      "en_UK": "&#F8BEFB&lElytrix &8» &fКейс успешно установлен!"
+    },
+    "command.dump.req-item": {
+      "ru_RU": "&#F8BEFB&lElytrix &8» &fВозьмите предмет в руку для выполнения команды!",
+      "en_UK": "&#F8BEFB&lElytrix &8» &fВозьмите предмет в руку для выполнения команды!"
+    },
+    "command.reload.successfully": {
+      "ru_RU": "&#F8BEFB&lElytrix &8» &fКонфигурация кейсов перезагружена за &#F8BEFB{} мс&f.",
+      "en_UK": "&#F8BEFB&lElytrix &8» &fКонфигурация кейсов перезагружена за &#F8BEFB{} мс&f."
+    },
+    "click-to-copy": {
+      "ru_RU": "Нажмите, чтобы скопировать",
+      "en_UK": "Нажмите, чтобы скопировать"
+    }
+  }
+}

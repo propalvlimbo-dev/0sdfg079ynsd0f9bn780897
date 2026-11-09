@@ -1,0 +1,18 @@
+location: world_spawn:44.500:66.672:0.500
+enabled: true
+display-range: 48
+update-range: 48
+update-interval: 20
+facing: 0.0
+down-origin: false
+pages:
+- lines:
+  - content: '&#F8BEFB⚡ &f&lГроу Гарден &#F8BEFB⚡'
+    height: 0.6
+  - content: '&b◆ &r&f&lОбменяй опыт на награды &r&b◆&r'
+    height: 0.4
+  - content: '&7Играй и получай опыт&r'
+    height: 0.4
+  - content: '&7Выбирай лучшие награды'
+    height: 0.3
+  actions: {}

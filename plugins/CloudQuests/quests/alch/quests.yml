@@ -1,0 +1,296 @@
+settings:
+  generate-on-startup: true
+  regenerate-on-every-startup: false
+  reset-progress-on-generate: true
+  rows: 5
+  max-amount-per-task: 3000
+  ignore-custom-items: true
+generator:
+  amount-multiplier: 3.5
+  min-score: 4.0
+  max-score: 90.0
+  custom-pool: {}
+quests:
+  '1':
+    slot: 0
+    type: TASK
+    action: KILL
+    material: BLAZE_ROD
+    amount: 24
+    name: Убить Ифритов
+    entity: BLAZE
+  '2':
+    slot: 1
+    type: TASK
+    action: CRAFT
+    material: FERMENTED_SPIDER_EYE
+    amount: 88
+    name: Брожённый Паучий Глаз
+  '3':
+    slot: 2
+    type: TASK
+    action: BRING
+    material: NETHER_STAR
+    amount: 2
+    name: Звёзды Незера
+  '4':
+    slot: 3
+    type: TASK
+    action: CRAFT
+    material: GOLDEN_CARROT
+    amount: 24
+    name: Золотая Морковь
+  '5':
+    slot: 4
+    type: TASK
+    action: BRING
+    material: PUFFERFISH
+    amount: 112
+    name: Иглобрюх
+  '6':
+    slot: 5
+    type: TASK
+    action: BRING
+    material: RABBIT_FOOT
+    amount: 7
+    name: Кроличья Лапка
+  '7':
+    slot: 6
+    type: TASK
+    action: BRING
+    material: NETHER_WART
+    amount: 208
+    name: Незер Нарост
+  '8':
+    slot: 7
+    type: TASK
+    action: CRAFT
+    material: GLISTERING_MELON_SLICE
+    amount: 80
+    name: Сверкающий Арбуз
+  '10':
+    slot: 9
+    type: TASK
+    action: CRAFT
+    material: GLISTERING_MELON_SLICE
+    amount: 352
+    name: Сверкающий Арбуз
+  '11':
+    slot: 10
+    type: TASK
+    action: CRAFT
+    material: BREWING_STAND
+    amount: 320
+    name: Варочные Стойки
+  '12':
+    slot: 11
+    type: TASK
+    action: CRAFT
+    material: END_CRYSTAL
+    amount: 120
+    name: Кристаллы Энда
+  '13':
+    slot: 12
+    type: TASK
+    action: BRING
+    material: RABBIT_FOOT
+    amount: 224
+    name: Кроличья Лапка
+  '14':
+    slot: 13
+    type: TASK
+    action: BRING
+    material: MAGMA_CREAM
+    amount: 352
+    name: Сгустки Магмы
+  '15':
+    slot: 14
+    type: TASK
+    action: BRING
+    material: REDSTONE
+    amount: 1024
+    name: Редстоун
+  '16':
+    slot: 15
+    type: TASK
+    action: KILL
+    material: BLAZE_ROD
+    amount: 240
+    name: Убить Ифритов
+    entity: BLAZE
+  '17':
+    slot: 16
+    type: TASK
+    action: BRING
+    material: GLOWSTONE_DUST
+    amount: 640
+    name: Светопыль
+  '19':
+    slot: 18
+    type: TASK
+    action: BRING
+    material: GHAST_TEAR
+    amount: 304
+    name: Слёзы Гаста
+  '20':
+    slot: 19
+    type: TASK
+    action: BRING
+    material: MAGMA_CREAM
+    amount: 640
+    name: Сгустки Магмы
+  '21':
+    slot: 20
+    type: TASK
+    action: BRING
+    material: NETHER_WART
+    amount: 1536
+    name: Незер Нарост
+  '22':
+    slot: 21
+    type: TASK
+    action: BRING
+    material: SPLASH_POTION
+    amount: 768
+    name: Взрывные Зелья
+  '23':
+    slot: 22
+    type: TASK
+    action: BRING
+    material: WITHER_SKELETON_SKULL
+    amount: 192
+    name: Черепа Визер-Скелетов
+  '24':
+    slot: 23
+    type: TASK
+    action: CRAFT
+    material: BREWING_STAND
+    amount: 576
+    name: Варочные Стойки
+  '25':
+    slot: 24
+    type: TASK
+    action: CRAFT
+    material: BEACON
+    amount: 128
+    name: Маяки
+  '26':
+    slot: 25
+    type: TASK
+    action: KILL
+    material: BLAZE_ROD
+    amount: 416
+    name: Убить Ифритов
+    entity: BLAZE
+  '28':
+    slot: 27
+    type: TASK
+    action: CRAFT
+    material: GLISTERING_MELON_SLICE
+    amount: 896
+    name: Сверкающий Арбуз
+  '29':
+    slot: 28
+    type: TASK
+    action: CRAFT
+    material: FERMENTED_SPIDER_EYE
+    amount: 1024
+    name: Брожённый Паучий Глаз
+  '30':
+    slot: 29
+    type: TASK
+    action: BRING
+    material: REDSTONE
+    amount: 2560
+    name: Редстоун
+  '31':
+    slot: 30
+    type: TASK
+    action: BRING
+    material: GHAST_TEAR
+    amount: 448
+    name: Слёзы Гаста
+  '32':
+    slot: 31
+    type: TASK
+    action: BRING
+    material: SPLASH_POTION
+    amount: 1152
+    name: Взрывные Зелья
+  '33':
+    slot: 32
+    type: TASK
+    action: BRING
+    material: DRAGON_BREATH
+    amount: 384
+    name: Дыхание Дракона
+  '34':
+    slot: 33
+    type: TASK
+    action: BRING
+    material: RABBIT_FOOT
+    amount: 576
+    name: Кроличья Лапка
+  '35':
+    slot: 34
+    type: TASK
+    action: BRING
+    material: MAGMA_CREAM
+    amount: 896
+    name: Сгустки Магмы
+  '37':
+    slot: 36
+    type: TASK
+    action: BRING
+    material: WITHER_SKELETON_SKULL
+    amount: 336
+    name: Черепа Визер-Скелетов
+  '38':
+    slot: 37
+    type: TASK
+    action: CRAFT
+    material: GOLDEN_CARROT
+    amount: 832
+    name: Золотая Морковь
+  '39':
+    slot: 38
+    type: TASK
+    action: BRING
+    material: PHANTOM_MEMBRANE
+    amount: 896
+    name: Мембрана Фантома
+  '40':
+    slot: 39
+    type: TASK
+    action: CRAFT
+    material: GLISTERING_MELON_SLICE
+    amount: 1152
+    name: Сверкающий Арбуз
+  '41':
+    slot: 40
+    type: TASK
+    action: CRAFT
+    material: BEACON
+    amount: 240
+    name: Маяки
+  '42':
+    slot: 41
+    type: TASK
+    action: CRAFT
+    material: END_CRYSTAL
+    amount: 400
+    name: Кристаллы Энда
+  '43':
+    slot: 42
+    type: TASK
+    action: BRING
+    material: GUNPOWDER
+    amount: 2048
+    name: Порох
+  '44':
+    slot: 43
+    type: TASK
+    action: BRING
+    material: LINGERING_POTION
+    amount: 896
+    name: Туманные Зелья

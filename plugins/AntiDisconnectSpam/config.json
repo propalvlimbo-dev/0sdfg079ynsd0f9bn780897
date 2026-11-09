@@ -1,0 +1,18 @@
+{
+  "if_disable_kick": true,
+  "disabled_reasons": [
+    "disconnect.spam",
+    "disconnect spam",
+    "Kicked for spamming",
+    "Sent too many packets",
+    "Отправлено слишком много пакетов",
+    "disconnect.exceeded_packet_rate",
+    "exceeded_packet_rate",
+    "Kicked for spamming packets",
+    "Too many packets"
+  ],
+  "if_send_warn_message": false,
+  "warn_message": "&cHey, &7stop spamming!",
+  "if_change_kick_reason": false,
+  "changed_kick_reason": "&cHey, &7stop spamming!"
+}

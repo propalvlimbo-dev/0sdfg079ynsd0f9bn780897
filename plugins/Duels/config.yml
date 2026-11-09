@@ -1,0 +1,323 @@
+# DO NOT EDIT THIS VALUE!
+config-version: 12
+
+check-for-updates: false
+
+supported-plugins:
+  CombatTagPlus:
+    prevent-duel-if-tagged: true
+    prevent-tag-in-duel: true
+  PvPManager:
+    prevent-duel-if-tagged: true
+    prevent-tag-in-duel: true
+  CombatLogX:
+    prevent-duel-if-tagged: true
+    prevent-tag-in-duel: true
+  Essentials:
+    auto-unvanish: true
+    set-back-location: true
+  mcMMO:
+    disable-skills-in-duel: true
+  FactionsUUID:
+    no-power-loss-in-duel: true
+  Factions:
+    no-power-loss-in-duel: true
+  WorldGuard:
+    duelzone:
+      enabled: false
+      regions: [spawn, lobby]
+  MyPet:
+    despawn-pet-in-duel: false
+  BountyHunters:
+    prevent-bounty-loss-in-duel: true
+  SimpleClans:
+    prevent-kdr-change: true
+  LeaderHeads:
+    wins:
+      menu:
+        title: 'Победы в дуэлях'
+        open-command: 'openwins'
+    losses:
+      menu:
+        title: 'Поражения в дуэлях'
+        open-command: 'openlosses'
+
+request:
+  requires-cleared-inventory: false
+  prevent-creative-mode: false
+
+  use-own-inventory:
+    enabled: false
+    drop-inventory-items: false
+    use-permission: false
+
+  kit-selecting:
+    enabled: true
+    use-permission: false
+
+  arena-selecting:
+    enabled: false
+    use-permission: false
+
+  item-betting:
+    enabled: false
+    use-permission: false
+
+  money-betting:
+    enabled: true
+    use-permission: false
+
+  expiration: 30
+
+duel:
+  match:
+    max-duration: -1
+
+    start-commands:
+      enabled: true
+      queue-matches-only: false
+      commands:
+      - 'gamemode survival %player%'
+
+    end-commands:
+      enabled: true
+      queue-matches-only: false
+      commands:
+      - 'heal %winner%'
+
+  projectile-hit-message:
+    enabled: true
+    types: [ARROW, TIPPED_ARROW, SPECTRAL_ARROW, TRIDENT]
+
+  prevent-inventory-open: true
+  protect-kit-items: true
+  remove-empty-bottle: true
+  prevent-teleport-to-match-players: true
+  force-allow-combat: true
+  cancel-if-moved: false
+
+  blacklisted-worlds:
+    - 'world_siege'
+    - 'boss'
+
+  teleport-to-last-location: true
+  teleport-delay: 5
+  spawn-firework: true
+  arena-only-end-message: false
+  display-inventories: false
+  prevent-item-drop: true
+  prevent-item-pickup: false
+
+  limit-teleportation:
+    enabled: true
+    distance-allowed: 5.0
+
+  block-all-commands: false
+
+  whitelisted-commands:
+    - 'msg'
+    - 'r'
+    - 'w'
+    - 'pm'
+    - 'reply'
+    - 'tell'
+    - 'whisper'
+    - 'list'
+    - 'ban'
+    - 'kick'
+    - 'mute'
+    - 'tempban'
+
+  blacklisted-commands:
+  - 'heal'
+  - 'eheal'
+  - 'essentials:heal'
+  - 'essentials:eheal'
+  - 'kit'
+  - 'ekit'
+  - 'kits'
+  - 'ekits'
+  - 'essentials:kit'
+  - 'essentials:ekit'
+  - 'essentials:kits'
+  - 'essentials:ekits'
+  - 'enderchest'
+  - 'echest'
+  - 'eechest'
+  - 'eenderchest'
+  - 'endersee'
+  - 'eendersee'
+  - 'ec'
+  - 'eec'
+  - 'essentials:enderchest'
+  - 'essentials:echest'
+  - 'essentials:eechest'
+  - 'essentials:eenderchest'
+  - 'essentials:endersee'
+  - 'essentials:eendersee'
+  - 'essentials:ec'
+  - 'essentials:eec'
+  - 'tpaccept'
+  - 'etpaccept'
+  - 'tpyes'
+  - 'etpyes'
+  - 'essentials:tpaccept'
+  - 'essentials:etpaccept'
+  - 'essentials:tpyes'
+  - 'essentials:etpyes'
+  - 'tpahere'
+  - 'etpahere'
+  - 'essentials:tpahere'
+  - 'essentials:etpahere'
+  - 'back'
+  - 'eback'
+  - 'return'
+  - 'ereturn'
+  - 'essentials:back'
+  - 'essentials:eback'
+  - 'essentials:return'
+  - 'essentials:ereturn'
+  - 'sethome'
+  - 'esethome'
+  - 'createhome'
+  - 'ecreatehome'
+  - 'essentials:sethome'
+  - 'essentials:esethome'
+  - 'essentials:createhome'
+  - 'essentials:ecreatehome'
+  - 'spawn'
+  - 'espawn'
+  - 'essentials:spawn'
+  - 'essentials:espawn'
+  - 'vault'
+  - 'chest'
+  - 'pv'
+  - 'playervaults'
+  - 'playervaults:vault'
+  - 'playervaults:chest'
+  - 'playervaults:pv'
+  - 'playervaults:playervaults'
+  - 'rtp'
+  - 'home'
+  - 'ehome'
+  - 'warp'
+  - 'ewarp'
+  - 'free'
+
+queue:
+  blacklisted-commands: []
+
+rating:
+  enabled: true
+  k-factor: 32
+  default-rating: 1400
+  queue-matches-only: false
+
+spectate:
+  requires-cleared-inventory: false
+  use-spectator-gamemode: false
+  add-invisibility-effect: true
+  whitelisted-commands:
+    - 'msg'
+    - 'r'
+    - 'w'
+    - 'pm'
+    - 'reply'
+    - 'tell'
+    - 'whisper'
+    - 'list'
+    - 'ban'
+    - 'kick'
+    - 'mute'
+    - 'tempban'
+
+countdown:
+  enabled: true
+  messages:
+    - '&#F8BEFB&lElytrix &8» &fПоединок начнётся через &#F8BEFB5 &fсек.!'
+    - '&#F8BEFB&lElytrix &8» &fПоединок начнётся через &#F8BEFB4 &fсек.!'
+    - '&#F8BEFB&lElytrix &8» &fПоединок начнётся через &#F8BEFB3 &fсек.!'
+    - '&#F8BEFB&lElytrix &8» &fПоединок начнётся через &#F8BEFB2 &fсек.!'
+    - '&#F8BEFB&lElytrix &8» &fПоединок начнётся через &#F8BEFB1 &fсек.!'
+    - '&#F8BEFB&lElytrix &8» &fПоединок против &#F8BEFB%opponent% &8(&f%opponent_rating%&8)&f с набором &#F8BEFB%kit%&f начался!'
+
+  titles:
+    - '&f&l5'
+    - '&f&l4'
+    - '&#FCE3FD&l3'
+    - '&#FAD1FC&l2'
+    - '&#F8BEFB&l1'
+    - '&#F8BEFB&lВ БОЙ!'
+
+  prevent:
+    movement: true
+    launch-projectile: true
+    pvp: true
+    interact: true
+
+stats:
+  display-kit-ratings: true
+  display-nokit-rating: false
+  display-past-matches: true
+  matches-to-display: 5
+
+top:
+  update-interval: 5
+  displayed-replacers:
+    wins:
+      type: 'Победы'
+      identifier: 'побед'
+    losses:
+      type: 'Поражения'
+      identifier: 'поражений'
+    kit:
+      type: '%kit%'
+      identifier: 'рейтинга'
+    no-kit:
+      type: 'Свой инвентарь'
+      identifier: 'рейтинга'
+
+guis:
+  kit-selector:
+    rows: 2
+    space-filler-item:
+      type: PINK_STAINED_GLASS_PANE
+      data: 0
+  arena-selector:
+    rows: 3
+    space-filler-item:
+      type: WHITE_STAINED_GLASS_PANE
+      data: 0
+  settings:
+    space-filler-item:
+      type: PINK_STAINED_GLASS_PANE
+      data: 0
+  queues:
+    rows: 2
+    space-filler-item:
+      type: PINK_STAINED_GLASS_PANE
+      data: 0
+    inherit-kit-item-type: true
+
+soup:
+  hearts-to-regen: 3.5
+  remove-empty-bowl: true
+  cancel-if-already-full: true
+
+sounds:
+  countdown-ongoing-sound:
+    type: BLOCK_NOTE_BLOCK_PLING
+    pitch: 0.95
+    volume: 1.0
+    trigger-messages:
+    - '&#F8BEFB&lElytrix &8» &fПоединок начнётся через &#F8BEFB5 &fсек.!'
+    - '&#F8BEFB&lElytrix &8» &fПоединок начнётся через &#F8BEFB4 &fсек.!'
+    - '&#F8BEFB&lElytrix &8» &fПоединок начнётся через &#F8BEFB3 &fсек.!'
+    - '&#F8BEFB&lElytrix &8» &fПоединок начнётся через &#F8BEFB2 &fсек.!'
+    - '&#F8BEFB&lElytrix &8» &fПоединок начнётся через &#F8BEFB1 &fсек.!'
+  countdown-end-sound:
+    type: BLOCK_NOTE_BLOCK_PLING
+    pitch: 1.9
+    volume: 1.0
+    trigger-messages:
+    - '&#F8BEFB&lElytrix &8» &fПоединок против &#F8BEFB%opponent% &8(&f%opponent_rating%&8)&f с набором &#F8BEFB%kit%&f начался!'

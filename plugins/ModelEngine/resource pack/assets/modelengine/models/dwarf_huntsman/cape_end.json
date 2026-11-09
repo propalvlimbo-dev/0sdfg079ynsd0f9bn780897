@@ -1,0 +1,1 @@
+{"textures":{"0":"modelengine:entity/models/dwarf_huntsman","particle":"#0"},"elements":[{"from":[2.5,3.0000005,8.0],"to":[13.5,8.0,8.0],"faces":{"south":{"uv":[5.25,3.375,6.625,4.0],"tintindex":0,"rotation":0,"texture":"#0"},"north":{"uv":[1.5,4.75,2.875,5.375],"tintindex":0,"rotation":0,"texture":"#0"}}}],"display":{"gui":{"rotation":[-150.0,-45.0,180.0]}}}

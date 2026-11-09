@@ -1,0 +1,14 @@
+egg-item:
+  material: "PIG_SPAWN_EGG"
+  name: "&b&lРандомное Яйцо"
+  lore:
+    - ""
+    - "&9Призывает: &k1234567"
+    - ""
+    
+messages:
+  no-permission: "&x&F&8&B&E&F&BЯйцо &7» &fНету прав!"
+  player-not-found: "&x&F&8&B&E&F&BЯйцо &7» &fИгрок не найден!"
+  must-specify-player: "&x&F&8&B&E&F&BЯйцо &7» &fВыдать яйцо: /randomegg <игрок>"
+  received-egg: "&x&F&8&B&E&F&BЯйцо &7» &fВы получили &b&lРандомное Яйцо"
+  gave-egg: "&x&F&8&B&E&F&BЯйцо &7» &fЯйцо успешно выдано: &x&F&8&B&E&F&B<player>&7."

@@ -1,0 +1,756 @@
+================================================================================
+ИНСТРУКЦИЯ ДЛЯ ИИ-АГЕНТА ПО ПРОЕКТУ ELYTRIX (MINECRAFT 1.21.10 GRIEF)
+================================================================================
+Прочитай этот файл ПОЛНОСТЬЮ перед выполнением любой задачи в репозитории
+`propalvlimbo-dev/0sdfg079ynsd0f9bn780897`.
+
+Актуальное базовое состояние (синхронизировано с live VDS `dfghjdyjk56` 02.11.2026):
+- Ветка-источник актуальной сборки: `arena/4c55e5a6-0sdfg079ynsd0f9bn780897` (PR #1)
+- Ядро и запуск (`start.sh`): Leaf `1.21.11` (`DataVersion: 4671`, Java 21+, `-Dblib.server.version=1.21.10`, G1GC + `-Dio.netty.maxDirectMemory=0` + `MALLOC_ARENA_MAX=2` + `G1PeriodicGCInterval=30000`)
+- Версия `ElytrixFreakModel`: `v3.26.0` (открытый для ВСЕХ игроков магазин и гардероб `/accessories`, `/аксессуары`, `/acc`, `/акс` за риллики `PlayerPoints` `ꐃ` в стиле `/shop`: `Мини-Роузи` `2000 ꐃ`, `Милый котёнок` `2500 ꐃ`, `Божественный нимб` `3500 ꐃ`, `Сколопендра Гуля` `4500 ꐃ`, `Меллстрой` `5000 ꐃ`, `Ангельские крылья` `6000 ꐃ`, `Щупальца Канэки` `7500 ꐃ`, `Аура сердечек` `5500 ꐃ`, `Аура бабочек` `5500 ꐃ`, `Смертельная аура` `5500 ꐃ`, `VIEW_RANGE=48` + Лада Приора)
+- Версия `ElytrixRP`: `v2.5.0`
+- Актуальный `SHA-1` `rp/Elytrix-RP-1.21.zip`: `194e06a960710153e0df1f430265b1095e773216`
+
+--------------------------------------------------------------------------------
+1. КРИТИЧЕСКИЕ ПРАВИЛА GIT И СТАРТА НОВОГО ЧАТА
+--------------------------------------------------------------------------------
+1. НИКОГДА НЕ МЕРЖИТЬ `origin/main` (`e37c5ba`)!
+   В ветке `origin/main` лежит старый одиночный коммит `Duel.rar` без общей истории
+   со сборкой сервера. Попытка слить `origin/main` сломает дерево файлов.
+
+2. Если в новом чате рабочая ветка создана от `main` и в корне нет папки `plugins/`:
+   - НЕ переключайся на другую ветку (`git checkout <чужая_ветка>` запрещён в Arena,
+     всегда оставайся на текущей ветке сессии `arena/...`).
+   - Подтяни актуальные файлы сборки в текущую рабочую ветку командами:
+     git fetch origin arena/4c55e5a6-0sdfg079ynsd0f9bn780897
+     git rm -rf --ignore-unmatch Duel.rar "РП.rar"
+     git checkout FETCH_HEAD -- .
+   - (Если были ещё более свежие ветки/PR — проверь `git ls-remote origin` и возьми
+     самую свежую рабочую ветку сборки).
+
+3. ВАЖНО ПРО ЛИМИТ СНАПШОТОВ ARENA (128 МБ):
+   Суммарный вес сборки с `.jar` и `.zip` архивами превышает 128 МБ относительно
+   базового коммита контейнера, поэтому между ходами локальная рабочая папка может
+   сбрасываться к начальному коммиту, ТОГДА КАК `git push` НА GITHUB СОХРАНЯЕТ ВСЁ!
+   Поэтому:
+   - В начале хода перед правкой файлов всегда проверяй `git log -1` и при сбросе
+     выполняй `git fetch origin <текущая_ветка> && git reset --hard FETCH_HEAD`.
+   - ВСЕГДА делай `git commit` и `git push origin <текущая_ветка>` В ТОМ ЖЕ ХОДЕ,
+     в котором изменил или собрал файлы (не оставляй незапушенные файлы на следующий ход!).
+
+4. В командах скачивания для VDS ВСЕГДА используй ПОЛНЫЙ 40-символьный SHA коммита
+   (`git rev-parse HEAD`), а НЕ имя ветки!
+   Причина: `raw.githubusercontent.com` кеширует файлы по имени ветки на 5+ минут,
+   из-за чего VDS скачивает старый архив. По полному `COMMIT_SHA` всегда скачивается
+   свежая версия мгновенно.
+
+--------------------------------------------------------------------------------
+2. СЕРВЕР VDS (`SH-VM4492`) И ЧТО КАТЕГОРИЧЕСКИ НЕЛЬЗЯ ДЕЛАТЬ НА НЁМ
+--------------------------------------------------------------------------------
+- Ядро на VDS (`start.sh`): Leaf `1.21.11` (`DataVersion: 4671`, Java 21+, Mojang-mapped NMS).
+  В `start.sh` прописан обязательный флаг `-Dblib.server.version=1.21.10`, чтобы `BLib 1.7.2`,
+  `BCases`, `BMenu` и `VirtualEntityApi` корректно стартовали на `1.21.11`!
+- Путь к сборке сервера на VDS: `/root/RW_GRIEF/`
+- Путь к раздаваемому ресурспаку на VDS: `/root/RP/Elytrix-RP-1.21.zip`
+
+СТРОЖАЙШИЕ ЗАПРЕТЫ:
+1. НИКОГДА НЕ УБИВАЙ И НЕ ТРОГАЙ ПОРТ `:8085` (и порт API сайта `:20559`, и войс `:24454`)!
+   Запрещено писать в командах `fuser -k 8085/tcp`, `kill`, `lsof -ti:8085` и т.п.!
+   На порту `:8085` работает сайт проекта `https://elytrix.pw` и раздача ресурспака
+   `/root/RP/Elytrix-RP-1.21.zip`. Плагин `ElytrixRP` сам проверяет `:8085` и мирно
+   использует внешний веб-сервер.
+
+2. НИКОГДА НЕ КЛАДИ В ДЕПЛОЙ-АРХИВЫ LIVE-ДАННЫЕ, СЕКРЕТЫ И ЧУЖИЕ КЕШИ:
+   - НИКОГДА НЕ перезаписывай на VDS файлы с боевыми паролями/ключами (в публичном Git
+     значения в них заменены на `<REDACTED_ON_PUBLIC_GITHUB>`):
+     * `plugins/UltimateServerProtector/data.yml` (админ-пароли `/pas`!)
+     * `plugins/ElytrixSite/config.yml` (пароль MySQL и секрет сайта!)
+     * `plugins/ElytrixAuthBridge/config.properties` (ключ моста привязки!)
+     * `config/paper-global.yml` (`proxies.velocity.secret` — боевой ключ связки с Velocity! Настройки потоков в нём менять ТОЛЬКО точечно через `sed`, НЕ класть файл целиком в архивы!)
+   - НЕ включать `plugins/ModelEngine/config.yml` (чтобы не сбросить боевой конфиг).
+   - НЕ включать `plugins/ElytrixFreakModel/owned_accessories.yml` (чтобы не затереть купленные игроками за риллики аксессуары!).
+   - НЕ включать `plugins/ModelEngine/.data/` и `.data/cache.json`.
+   - При упаковке `plugins/ModelEngine/resource pack/` включать ТОЛЬКО `pack.mcmeta`
+     и файлы обновляемых моделей `/elytrix_` (НЕ упаковывать чужие модели `MythicMobs`!).
+   - НЕ перезаписывать живые базы игроков (`LiteBans`, `PlayerPoints`, `BCases/database`,
+     `LuckPerms` H2 БД, `GrimAC/data`), если пользователь прямо не просил поменять именно их.
+
+3. При любом изменении `rp/Elytrix-RP-1.21.zip`:
+   - Обязательно вычислить `sha1sum rp/Elytrix-RP-1.21.zip`.
+   - Обязательно прописать этот точный `sha1` в `plugins/ElytrixRP/config.yml`.
+   - В команде деплоя для VDS обязательно скопировать RP также в `/root/RP/Elytrix-RP-1.21.zip`,
+     выставить `chmod 644 /root/RP/Elytrix-RP-1.21.zip` и вывести `sha1sum` в конце
+     для визуальной проверки пользователем.
+
+--------------------------------------------------------------------------------
+3. КАКИЕ КОМАНДЫ ОБЯЗАТЕЛЬНО ДАВАТЬ ПОЛЬЗОВАТЕЛЮ ПОСЛЕ ВЫПОЛНЕНИЯ ЗАДАЧИ
+--------------------------------------------------------------------------------
+После выполнения ЛЮБОЙ задачи по плагинам, конфигам или ресурспаку ты ОБЯЗАН:
+1) Упаковать обновлённые файлы в соответствующий ZIP-архив в корне репозитория.
+2) Закоммитить и запушить изменения в текущую ветку на GitHub (`git push`).
+3) Получить точный полный хеш коммита через `git rev-parse HEAD`.
+4) Показать готовый архив пользователю через инструмент `present_file`.
+5) В тексте ответа ОБЯЗАТЕЛЬНО дать готовую однострочную SSH-команду для VDS!
+
+ШАБЛОН А — Если обновлялись `ElytrixFreakModel`, модели `ModelEngine` или ресурспак
+(архив `elytrix-freakmodel.zip`, подставь реальный `<COMMIT_SHA>`):
+
+curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/<COMMIT_SHA>/elytrix-freakmodel.zip" -o /tmp/elytrix-freakmodel.zip && rm -rf "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_angel_halo" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_angel_halo" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_angel_wings" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_angel_wings" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_centipede" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_centipede" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_kaneki_tentacles" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_kaneki_tentacles" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_lightning_hat" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_lightning_hat" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_satan_circle" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_satan_circle" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/items/elytrix_zeus_wings" "/root/RW_GRIEF/plugins/ModelEngine/resource pack/assets/modelengine/models/elytrix_zeus_wings" && unzip -oq /tmp/elytrix-freakmodel.zip -d /root/RW_GRIEF && mkdir -p /root/RP && cp -f /root/RW_GRIEF/rp/Elytrix-RP-1.21.zip /root/RP/Elytrix-RP-1.21.zip && chmod 644 /root/RP/Elytrix-RP-1.21.zip && rm -f /tmp/elytrix-freakmodel.zip && sha1sum /root/RP/Elytrix-RP-1.21.zip
+
+После выполнения этой команды напомни пользователю сверить выведенный `SHA-1`
+и ввести в консоли сервера: `restart`.
+
+ШАБЛОН Б — Если обновлялся большой пакет `elytrix-update.zip` (плагины + конфиги + RP):
+
+curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/<COMMIT_SHA>/elytrix-update.zip" -o /tmp/elytrix-update.zip && unzip -oq /tmp/elytrix-update.zip -d /root/RW_GRIEF && mkdir -p /root/RP && cp -f /root/RW_GRIEF/rp/Elytrix-RP-1.21.zip /root/RP/Elytrix-RP-1.21.zip && chmod 644 /root/RP/Elytrix-RP-1.21.zip && rm -f /tmp/elytrix-update.zip && sha1sum /root/RP/Elytrix-RP-1.21.zip
+
+После выполнения — `restart` в консоли сервера.
+
+ШАБЛОН В — Если обновлялись ТОЛЬКО конкретные конфиги/плагины БЕЗ ресурспака
+(например, дельта-архив `elytrix-patch.zip` или прямое скачивание одного файла):
+
+curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/<COMMIT_SHA>/<ARCHIVE_NAME>.zip" -o /tmp/elytrix-patch.zip && unzip -oq /tmp/elytrix-patch.zip -d /root/RW_GRIEF && rm -f /tmp/elytrix-patch.zip
+
+После выполнения:
+- если менялся `.jar` плагина — написать ввести `restart` в консоли сервера;
+- если менялся только конфиг меню/голограмм — указать точную команду перезагрузки
+  (например, `dm reload` для DeluxeMenus, `dh reload` для DecentHolograms, `tab reload` для TAB).
+
+--------------------------------------------------------------------------------
+4. ЧТО НЕЛЬЗЯ ДЕЛАТЬ В РЕСУРСПАКЕ (`rp/Elytrix-RP-1.21.zip`) И АРТЕ
+--------------------------------------------------------------------------------
+1. БЕЗ НЕЙРОСЛОПА (`без нейрослопа`)!
+   Строго запрещено использовать ИИ-генераторы изображений (`generate_image`) для
+   `server-icon.png`, логотипа `ELYTRIX`, GUI-меню, префиксов и текстур ресурспака!
+   Любая графика рисуется только чистым пиксель-артом / программно (Python Pillow)
+   без артефактов нейросетей. Префикс `owner` (`ꕢ`) должен оставаться тонким под стать
+   остальным донат-префиксам.
+
+2. НИКОГДА НЕ ЗАТИРАЙ СИСТЕМНЫЕ ФАЙЛЫ `Elytrix-RP-1.21.zip` файлами из `ModelEngine`:
+   - `pack.png` (оригинальная иконка ресурспака Elytrix)
+   - `assets/minecraft/items/leather_horse_armor.json` (там 365+ моделей сервера!)
+   - `assets/minecraft/models/item/leather_horse_armor.json`
+   - `assets/minecraft/atlases/blocks.json` (обязаны сохраняться источники `entity`,
+     `archangel_set_texture` и `entity/models`)
+   - `assets/minecraft/shaders/core/rendertype_entity_translucent.json`
+   Также НИКОГДА не копируй в корень `Elytrix-RP-1.21.zip` папки `modelengine_1_*`
+   и `modelengine_26_*` — переносятся только нужные файлы внутри `assets/modelengine/...`.
+
+3. Проверяй валидность каждого JSON и `.mcmeta` внутри `Elytrix-RP-1.21.zip`, чтобы
+   клиент Minecraft `1.21.10` не отваливался с ошибкой `FAILED_RELOAD`.
+
+4. Для шлема нимба (`angel_halo`) обязательно сохранять:
+   - `EquippableComponent#setModel("reallyworld:invisible")` на предмете;
+   - `"head": {"scale": [0, 0, 0]}` в `assets/reallyworld/models/item/freak/angel_halo_icon.json`
+     (чтобы плоская иконка предмета не рендерилась на голове вместе с 3D-нимбом).
+
+--------------------------------------------------------------------------------
+5. ЧТО НЕЛЬЗЯ ДЕЛАТЬ В `ElytrixFreakModel` И `ModelEngine 4.1.0`
+--------------------------------------------------------------------------------
+Плагин `ElytrixFreakModel.jar` отвечает за кастомные нестандартные 3D-модели:
+1) Броня Ангела: шлем `angel_halo` (Божественный Нимб) и нагрудник `angel_wings` (Крылья).
+2) Машина `Lada Priora` (`priora_black`, `priora_white`, `priora_pink`).
+
+ЖЁСТКИЕ ТЕХНИЧЕСКИЕ ЗАПРЕТЫ (ЧТОБЫ НЕ ВЕРНУТЬ СТАРЫЕ БАГИ):
+1. Крылья и нимб ОБЯЗАНЫ быть полноценными 3D-моделями `ModelEngine` (плоская элитра /
+   `CustomHeadLayer` из `v3.1.0` и крылатая корона `h_halo_root` из `v3.2.0` отвергнуты!).
+   Характеристики незеритовой брони и скрытие своих крыльев от 1-го лица сохранять.
+
+2. НИКОГДА НЕ ВЫЗЫВАЙ `activeModel.setModelRotationLocked(...)` ДО вызова
+   `modeledEntity.addModel(activeModel, false)`!
+   В `ModelEngine 4.1.0` поле `activeModel.modeledEntity` равно `null` до `addModel`,
+   поэтому вызов раньше `addModel` бросает `NullPointerException`, и нимб/крылья
+   становятся невидимыми!
+   Правильный порядок:
+   - сначала `modeledEntity.addModel(am, false)`;
+   - затем для нимба: `am.setModelRotationLocked(true)` (нимб строго горизонтален
+     и НЕ наклоняется за головой игрока; корень `halo_root` БЕЗ префикса `h_`);
+   - для крыльев: `am.setModelRotationLocked(false)` (крылья поворачиваются за спиной,
+     но НЕ наклоняются вверх/вниз за pitch камеры).
+
+3. НИКОГДА НЕ СТАВЬ `lodTracker.getTickDuration().set(0)` или `bone.setStep(true)`
+   при поворотах игрока — это выключает клиентскую SLERP-интерполяцию `ItemDisplay`,
+   и крылья начинают телепортироваться рывками!
+   Держи `AnimationLODHandler.setEnabled(false)`, `BasicCulling` выключенным и
+   постоянный `tickDuration = 2`.
+
+4. НИКОГДА НЕ ВЫНОСИ pivot основных костей крыльев (`right_wing_inner`, `left_wing_inner`)
+   вбок от центра спины (`X != 0` или `Z != 0`)!
+   При резких разворотах смещённый pivot интерполирует `translation` по хорде сквозь
+   тело игрока. Кости `wings_root`, `right_wing_inner`, `left_wing_inner` должны иметь
+   единый осевой центр `[0.0, 20.4, 0.0]`, а вот падающие перья (`feather_r1..3`,
+   `feather_l1..3`) обязаны сохранять собственные локальные центры `[fx, fy, fz]`
+   и падать вразнобой (асинхронно, а не все одновременно!).
+
+5. Не прижимай крылья слишком плотно к спине (держать безопасный отступ назад по `+Z`
+   минимум `z >= 3.9` с учётом поворотов кубов, чтобы при взмахе крылья не входили
+   в скин/плащ игрока; в системе координат Blockbench `+Z` — назад за спину, `-Z` — в грудь).
+
+6. Помни про `JavaItemModel.scaleToFit()` в `ModelEngine 4.1.0`:
+   Если кубы кости отстоят от её `origin` дальше чем на `24.0` единиц (у слитых крыльев
+   `scale = 2`), координаты `from`/`to` и `rotation.origin` в RP JSON обязаны быть
+   масштабированы по формуле `(coord - 8.0) / scale + 8.0` (проверяй через реальный
+   `BlockbenchParser.populateBlueprint` из `ModelEngine-4.1.0.jar`).
+
+7. В `PlayerAuraAttachment` (наследник `BukkitPlayer`):
+   - Возвращай родные `super.getUUID()` и `super.getEntityId()` игрока (случайный UUID
+     ломает `PlayerListener.onChangedWorld` при телепортах между мирами и `sendPivotOverrides`).
+   - Методы `isWalking()`, `isStrafing()`, `isJumping()`, `isFlying()` должны возвращать
+     `false`, чтобы `ModeledEntityImpl.tick()` не включал 3-тиковый лаг `rotLerp`.
+
+8. В `LadaPrioraVehicle`:
+   - Не ломать плавное движение через `ItemDisplay` (`vehicleAnchor` + `ItemDisplay`
+     seat carriers с `teleportDuration = 2`, `updateInterval = 1`) и 2 места на `ArmorStand`
+     (`setCanTick(true)`, `setCanMove(false)`).
+   - Сохранять крутящиеся и поворачивающиеся колёса, только скорость в ActionBar,
+     запрет выдачи машины обычным игрокам через `/priora` и админ-команду `/clearpriora`.
+
+9. В `AccessoryController` (`elytrix_centipede` и `elytrix_kaneki_tentacles`, v3.11.0+):
+   - НИКОГДА не используй кубы с поворотом (`rotation != [0, 0, 0]`) в `elytrix_centipede`
+     и `elytrix_kaneki_tentacles`! В `ModelEngine 4.1.0` на живом сервере Paper `fastutil`
+     смешение `PlaneGroup` (например `[0,0,0]` + `[45,0,0]` в одной кости) роняет
+     `RotationSolver.lambda$fetch$6` с `UnsupportedOperationException: remove`, из-за чего
+     весь блюпринт не загружается! Всю кривизну задавать ТОЛЬКО вращением костей.
+   - Оба гуль-аксессуара спавнятся на отдельных изолированных `new Dummy<>(player)` (НЕ через
+     `WornAngelRig`, чтобы у Кагуне не сыпались розовые ангельские партиклы и модель не
+     пряталась от 1-го лица!).
+   - При любом телепорте (`PlayerTeleportEvent`, `PlayerChangedWorldEvent`, `PlayerRespawnEvent`
+     или скачке `> 24` блоков) ОБЯЗАТЕЛЬНО уничтожать старый `Dummy` и пересоздавать свежий
+     через `2` тика, а также каждый тик перепроверять актуальный `PivotOverrideRegistry.getOrCreate(player)`
+     (так как `WornAngelRig.destroyAll()` при снятии нимба/крыльев удаляет старый `PivotOverride`).
+
+--------------------------------------------------------------------------------
+6. ЗАКРЕПЛЁННЫЕ ТРЕБОВАНИЯ ПО ИГРОВОМУ РЕЖИМУ, МЕНЮ И ПЛАГИНАМ (НЕ ЛОМАТЬ!)
+--------------------------------------------------------------------------------
+- Брендинг: только `Elytrix` (никаких `Smile`, `ReallyWorld`, `FAWE`, `Duel` в видимых
+  игрокам сообщениях). Цвета: розовый `&#F8BEFB` и белый `&f` с лёгкими градиентами.
+  Ссылки: `https://elytrix.pw`, IP `mc.Elytrix.pw`, Discord `dsc.gg/elytrix`, TG `t.me/elytrix_ru`.
+- Валюта: `риллики` и основную экономику НЕ менять (технический неймспейс `reallyworld:`
+  внутри существующих путей ресурспака тоже НЕ переименовывать, чтобы не сломать модели).
+- Донат-лестница: `ANGEL` (`899р`, `ꕓ`) стоит между `D.HELPER` (`499р`, `ꕠ`) и `D.ADMIN`
+  (`3000р`, `ꕡ`); у `owner` есть `*` и тонкий префикс `ꕢ`; в `/donate` у `D.ADMIN`
+  отображается префикс `ꕡ`.
+- Скорборд и `TAB`: `ElytrixPlaceholders` удалён; в строке `Ранг:` нет `%expirytime%`;
+  в шапке скорборда компактное лого `ꕤ`; в футере `TAB` — только онлайн.
+- Кейсы: работает официальная связка `BCases.jar` + `BLib.jar` + `VirtualEntityApi.jar`
+  + `BMenu.jar` (`NCases` удалён навсегда!). Обычный донат-кейс выдаёт до `RABBIT`,
+  легендарный (`89р`) — `DRAGON`..`GOD`. На голограммах `don1.yml` (`74,100`) и
+  `don2.yml` (`73,100`) нет паков по 3 и 10 кейсов, высота голограмм занижена.
+- Киты и оружие: киты `PVE, FARM, MAGISTER, OVERLORD, AVENGER, TITAN, HERO` удалены;
+  `PVP` кит (`DRAGON`+) без зелья исцеления и арбалета; в `kitsbuy` продаются только
+  `dragon`..`god`; `/kit` и `preview_<kit>` открываются у всех игроков и без чёрных
+  стеклянных панелей; 3D-мечи у `god` (`CMD 100`), `angel` (`CMD 5012`), `dadmin` (`CMD 5013`).
+- Шары (`PLAYER_HEAD`): Angel (`5012`, 3D с крыльями), D.Admin (`5013`, 3D шар с вылетающим
+  `BAN`), Rosy (`5008`, чистый шар с вылетающим `YT`), Blood (`5011`). Любые шары на базе
+  `PLAYER_HEAD` никогда не должны изыматься анти-нелегал проверками!
+- `/free` (`ElytrixFree.jar`): кастомное RP-меню (`ꍘ`/`ꍙ`), кнопка «Назад» как в `DeluxeMenus`,
+  награды ТОЛЬКО риллики + киты до `GOD` + кейсы `rilik`/`money`, обязательная привязка
+  аккаунта включена (`auth.http.enabled: true`, логику привязки НЕ трогать!), NPC `ХАЛЯВА`
+  стоит на `world_spawn` (`7.5, 69, -3.5`).
+- `/shop` (`plugins/DeluxeMenus/gui_menus/shop/grief.yml`): в категории «Всё для грифа»
+  добавлен `Заряд ветра` (`wind_charge`) `32 шт.` за `159` рилликов (`slot: 4`) — сохранять!
+- Прочие меню и механики:
+  - `NClans` и `/repairexp` (`ElytrixRepairExp`) без стеклянных панелей-заполнителей, с HEX.
+  - `/potion` (`hPotions`): стакание зелий без дюпов.
+  - `CakeSub` / `CakeSubAddon` и `ElytrixSiege` исправлены и работают без зависаний.
+  - Границы миров: обычный мир `4000` (`±2000`), Ад `2000` (`±1000`); `WGExtender-fork.jar`
+    (`max-claim-volume: 5000000`) и лимиты приватов по донатам настроены.
+  - В `LagFixer` отключена `/abyss`.
+  - В `GreatCombat` убраны `actionbar` и всплывающие `[TITLE]` кулдаунов, настроен PvP-скорборд.
+
+--------------------------------------------------------------------------------
+7. КАК КОМПИЛИРОВАТЬ ПЛАГИНЫ В ПЕСОЧНИЦЕ ARENA (ТЕХНИЧЕСКАЯ СПРАВКА)
+--------------------------------------------------------------------------------
+- Сервер работает на Paper/Pufferfish `1.21.10` с Mojang-mapped runtime — НЕ перемапливай
+  NMS-классы в старые Spigot-обфусцированные имена (`tiny-remapper` под Spigot не нужен).
+- Если в контейнере нет системного `javac`:
+  1) Установи `jdk4py` и `pillow` в `/tmp/venv`:
+     python3 -m venv /tmp/venv && /tmp/venv/bin/pip install jdk4py pillow
+  2) Скачай компилятор Eclipse `ecj` из npm (`https://registry.npmjs.org/exoproc-jjit/-/exoproc-jjit-0.6.5.tgz` -> `package/deps/ecj-3.46.100.jar`).
+  3) Запускай `ecj` через `/tmp/venv/.../bin/java -jar ecj-3.46.100.jar -21 -proc:none`
+     с явным перечислением `.jar` в `-cp` (без `*` wildcards):
+     - `plugins/ModelEngine-4.1.0.jar` — API и внутренности ModelEngine
+     - `plugins/BLib.jar` — JOML (`org.joml.*`) и Guava
+     - `plugins/FancyNpcs-2.10.0.jar` — Gson (`com.google.gson.*`)
+- Временные сборочные файлы и тесты всегда держи в `/tmp/...`, не засоряя Git-репозиторий.
+
+--------------------------------------------------------------------------------
+8. КАК ДЕЛАЮТСЯ 3D-МОДЕЛИ (`.bbmodel` + RP JSON) И КАК ВСЁ УПАКОВЫВАЕТСЯ / ЗАЛИВАЕТСЯ
+--------------------------------------------------------------------------------
+Полный конвейер создания и обновления моделей (нимб, крылья, Priora или новые модели),
+который работает без ручного запуска десктопного Blockbench и сервера:
+
+ШАГ 1 — Процедурная генерация `.bbmodel` и текстур на Python (`Pillow` + `json`):
+- Файлы лежат в `plugins/ModelEngine/blueprints/elytrix_<name>.bbmodel`.
+- Формат JSON: Blockbench `4.10` (`"meta": {"format_version": "4.10", "model_format": "free", "box_uv": false}`),
+  `"resolution": {"width": 16, "height": 16}`.
+- Текстура рисуется программно через `PIL.Image` (без нейросетей!), сохраняется в PNG
+  (`assets/modelengine/textures/entity/models/elytrix_<name>.png`) И одновременно
+  кодируется в `data:image/png;base64,...` внутри массива `"textures"` `.bbmodel` с полями:
+  `"uv_width": 16, "uv_height": 16, "internal": true`
+  (благодаря этому UV-координаты всегда идут в диапазоне `0..16` независимо от размера PNG
+  `64x64` или `256x256`).
+- Обязательные поля для парсера `ModelEngine-4.1.0.jar` (`BlockbenchParser`):
+  * в корне `.bbmodel`: `"animation_variable_placeholders": ""`;
+  * в каждой анимации массива `"animations"`: `"uuid"`, `"name"`, `"loop"` (`"loop"` / `"once"`),
+    `"override": false`, `"length"` (float > 0), `"snapping": 24`,
+    `"anim_time_update": ""`, `"blend_weight": ""`, `"start_delay": ""`, `"loop_delay": ""`,
+    `"animators": { "<bone_uuid>": { "name": "<bone_name>", "type": "bone", "keyframes": [...] } }`.
+- Ограничение кубов Minecraft JSON (КРИТИЧНО при генерации геометрии):
+  Каждый куб в экспортируемой JSON-модели Minecraft может быть повёрнут ТОЛЬКО вокруг
+  ОДНОЙ оси (`"x"`, `"y"` или `"z"`) и ТОЛЬКО на углы `-45`, `-22.5`, `0`, `22.5`, `45`!
+  Поэтому круглые формы (как 16-сегментный тор и солнечные лучи в `elytrix_angel_halo`:
+  кости `halo_ring` + `halo_aura`, 161 куб) строятся по тригонометрии с углами, кратными
+  `22.5°`, и флагом `"shade": false` на горизонтальных кубах для равномерного свечения.
+  Наклоны по нескольким осям задаются не на кубе, а на самой КОСТИ (`bone.rotation`)
+  или в кейфреймах анимации (так как кости в `ModelEngine` рендерятся отдельными
+  `ItemDisplay` с полными 3D-кватернионами без ограничений в `22.5°`).
+
+ШАГ 2 — Экспорт костей из `.bbmodel` в формат ресурспака `1.21.4+` / `1.21.10`:
+Поскольку в песочнице сервер не запускается целиком, файлы ресурспака генерируются
+скриптом точь-в-точь по алгоритму `ModelEngine 4.1.0` для каждой видимой кости
+(кроме `hitbox` и пустых корней без кубов):
+1) `assets/modelengine/items/<blueprint>/<bone>.json` (Item Definition 1.21.4+):
+   {
+     "model": {
+       "type": "minecraft:model",
+       "model": "modelengine:<blueprint>/<bone>",
+       "tints": [{"type": "minecraft:custom_model_data", "index": 0, "default": 16777215}]
+     }
+   }
+   (НЕ добавлять `oversized_in_gui`).
+2) `assets/modelengine/models/<blueprint>/<bone>.json` (3D-геометрия кости):
+   - Координаты кубов переводятся относительно `origin` своей кости с центром в `[8, 8, 8]`:
+     `from_local = cube_from - bone_origin + 8.0`,
+     `to_local   = cube_to   - bone_origin + 8.0`,
+     `rot_origin = cube_origin - bone_origin + 8.0`
+     (с учётом инверсии X/Z граней и UV по правилам Blockbench -> Minecraft).
+   - Правило `JavaItemModel.scaleToFit()` (`DIST_DIVIDER = 1/24`):
+     В Minecraft координаты кубов ограничены диапазоном `[-16, 32]` (максимум `24.0`
+     единицы от `[8, 8, 8]`). Если хотя бы одна вершина куба кости выходит дальше `24.0`
+     от `origin` кости (`maxDist > 24.0`), `ModelEngine` при загрузке `.bbmodel` сам
+     ставит `BlueprintBone.scale = ceil(maxDist / 24.0)` (например, `scale = 2` у
+     `right_wing_inner` и `left_wing_inner`), увеличивая `ItemDisplay` в мире в `scale` раз.
+     Значит в JSON модели ВСЕ координаты `from`, `to` и `rotation.origin` этой кости
+     обязаны быть сжаты вокруг `8.0`:
+     `coord_json = (coord_local - 8.0) / scale + 8.0`.
+   - У каждой грани куба указывается `"tintindex": 0` и `"texture": "#0"`, а в блоке
+     `"textures"` — `"0": "modelengine:entity/models/<texture_name>"`, `"particle": "#0"`.
+
+ШАГ 3 — Обязательная авто-верификация через реальный `ModelEngine-4.1.0.jar`:
+Перед сборкой ZIP запускается проверочный Java-класс в `/tmp` с подключёнными в `-cp`
+`plugins/ModelEngine-4.1.0.jar`, `plugins/BLib.jar` и `plugins/FancyNpcs-2.10.0.jar`:
+- Вызывается `Gson` десериализатор `ModelEngine` + `BlockbenchParser.populateBlueprint`
+  на `.bbmodel` файл.
+- Проверяется, что парсер читает модель без единого исключения, а вычисленный внутри
+  `ModelEngine` `BlueprintBone.getScale()` и `JavaItemModel.scaleToFit()` на 100% (`0.000`
+  погрешности) совпадают со сгенерированными JSON в `models/<blueprint>/<bone>.json`.
+
+ШАГ 4 — Чистая пересборка `rp/Elytrix-RP-1.21.zip`:
+- Новые файлы сначала кладутся в `plugins/ModelEngine/resource pack/assets/modelengine/...`
+  (а старые переименованные/слитые JSON костей оттуда удаляются через `git rm`).
+- Сам `rp/Elytrix-RP-1.21.zip` пересобирается скриптом на Python `zipfile`:
+  копируются все записи чистого базового `Elytrix-RP-1.21.zip` (пропуская только старые
+  файлы обновляемых моделей `assets/modelengine/.../elytrix_<name>/...`), после чего
+  дописываются свежие `items`, `models` и `textures`. Так гарантируется 100% сохранность
+  `pack.png`, `blocks.json`, `leather_horse_armor.json` и шейдеров.
+- Вычисляется `sha1sum rp/Elytrix-RP-1.21.zip` и записывается в `plugins/ElytrixRP/config.yml`.
+
+ШАГ 5 — Сборка деплой-архивов и загрузка на GitHub -> VDS:
+1) Python-скрипт `tools/accessories-model/make_deploy_zip.py` собирает `elytrix-freakmodel.zip`
+   (и при необходимости `elytrix-update.zip`) напрямую из файлов репозитория:
+   - включает `plugins/ElytrixFreakModel.jar` (+ `config.yml`), `plugins/ElytrixRP.jar`
+     (+ обновлённый `config.yml`), `plugins/ModelEngine-4.1.0.jar`,
+     `plugins/ModelEngine/blueprints/*.bbmodel`, весь `plugins/ModelEngine/resource pack/`
+     (модели `elytrix_*`, пропатченные FPV-шейдеры `assets/minecraft/shaders/**`,
+     `pack.mcmeta`, `pack.png`) и `rp/Elytrix-RP-1.21.zip`;
+   - исключает `plugins/ModelEngine/config.yml`, `.data/cache.json`,
+     `owned_accessories.yml` и любые боевые БД/секреты.
+   Сборка детерминирована (фиксированная дата `2020-01-01`), поэтому `sha1sum` архива
+   воспроизводим; скрипт сам печатает `files / size / sha1 / sha256`.
+2) Выполняется `git add`, `git commit` и `git push origin <текущая_ветка>` в этом же ходе.
+3) Через `git rev-parse HEAD` берётся полный 40-символьный `COMMIT_SHA`.
+4) Архив открывается пользователю через `present_file`, и в ответ вставляется однострочная
+   команда `curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/<COMMIT_SHA>/elytrix-freakmodel.zip" ...`
+   (см. Шаблон А в разделе 3), которая скачивает архив на VDS, чистит старые кости,
+   распаковывает в `/root/RW_GRIEF`, копирует RP в `/root/RP/Elytrix-RP-1.21.zip` и
+   проверяет `sha1sum`.
+
+--------------------------------------------------------------------------------
+9. КАРТА АКТУАЛЬНЫХ СИСТЕМ, АКСЕССУАРОВ И ЗАЩИТЫ ИЗ LIVE VDS (`dfghjdyjk56`)
+--------------------------------------------------------------------------------
+1. `ElytrixFreakModel v3.23.0` + `ModelEngine-4.1.0.jar` (uncapped `SIPUSH 8192` + `MojangAPI.CLIENT` leak-free) + `/аксессуары` (`/accessories`, `/acc`, `/акс`, глиф `ꏠ`):
+   - Открытый для **ВСЕХ** игроков магазин и гардероб 3D-аксессуаров за донат-валюту **Риллики** (`PlayerPoints`, глиф `ꐃ`)
+     в точном стиле `/shop` (слот `53` `ИНФОРМАЦИЯ` на часах `Material.CLOCK CMD 100010` с живым балансом `Ваш баланс: <баланс> ꐃ`,
+     сообщения `Недостаточно рилликов!` / `Покупка успешно совершена!`, двойное сохранение покупок навсегда в `PDC` игрока
+     `elytrixaccessories:owned_<id>` + `plugins/ElytrixFreakModel/owned_accessories.yml` + админ-команда `/accessories grant <ник> <id|all>`).
+     Цены аксессуаров:
+     * `Мини-Роузи` (`mini_me`) — `2000 ꐃ`
+     * `Милый котёнок` (`kitten`) — `2500 ꐃ`
+     * `Божественный нимб` (`halo`) — `3500 ꐃ`
+     * `Дождевое облако` (`lightning`) — `4000 ꐃ`
+     * `Круг Сатаны` (`satan`) — `4500 ꐃ`
+     * `Сколопендра Гуля` (`centipede`) — `4500 ꐃ`
+     * `Меллстрой` (`mellstroy`) — `5000 ꐃ`
+     * `Аура сердечек` (`hearts`) — `5500 ꐃ`
+     * `Аура бабочек` (`butterflies`) — `5500 ꐃ`
+     * `Смертельная аура` (`death`) — `5500 ꐃ`
+     * `Ангельские крылья` (`wings`) — `6000 ꐃ`
+     * `Щупальца Канэки` (`kaneki`) — `7500 ꐃ`
+     * `Крылья Зевса` (`zeus`) — `8000 ꐃ`
+     Исходники и генераторы лежат в `tools/accessories-integration/` и `tools/accessories-model/` (подробности в `MODELS_PIPELINE.md`).
+   - Исправлен лимит 12 моделей в `plugins/ModelEngine-4.1.0.jar` (`ModelGeneratorImpl.importModelsInternal`:
+     `BIPUSH 12` -> `SIPUSH 8192`, `tools/accessories-integration/patch_modelengine.py`) + добавлена
+     авто-догрузка блюпринтов на лету `AccessoryController.resolveBlueprint(...)` в `ElytrixFreakModel v3.24.0`,
+     чтобы ни одна модель никогда не выдавала «Модель ещё не загружена».
+   - Меню `/accessories` (`/аксессуары`) разбито на **4 раздела** с нативными RP-оверлеями слотов
+     (`ꏡ`, `ꏢ`, `ꏣ`, `ꏧ`, `ꏨ`, `ꏩ`, `ꏫ`) и пиксельными заголовками из `title_00.png`
+     (`ꏤ` `СПИНА`, `ꏥ` `ШАПКИ`, `ꏦ` `ПИТОМЦЫ`, `ꏬ` `АУРЫ`); карточки разделов на хабе занимают слоты
+     `19, 21, 23, 25`, вкладки быстрого переключения — слоты `10, 12, 14, 16`, кнопка `Назад`
+     (`ARROW CMD 10002`, слот `45`), `Снять всё` — слот `49`, `ИНФОРМАЦИЯ` — слот `53`:
+     * `Ауры` (контент `ꏫ` `content_acc_auras3.png` + заголовок `ꏬ` `АУРЫ`, слоты `29, 31, 33`) — живые эффекты ВОКРУГ игрока (свой 4-й изолированный
+       слот Dummy, не конфликтует со `Спиной`, `Шапками` и `Питомцами`; все три ауры делят ОДИН слот ауры,
+       поэтому надевание второй всегда снимает первую). Любая аура следует за игроком ТОЛЬКО ПО ПОЗИЦИИ
+       и НИКОГДА не поворачивается вместе с ним (рысканье рига всегда `0` — мировое пространство).
+       **ИСПРАВЛЕНО в v3.25.0 — аура больше не «телепортируется» (не дёргается 4 раза в секунду).**
+       Причина: `tickAll` (`runTaskTimer ... 20L, 5L`, то есть каждые **5 тиков**) вызывает
+       `syncPlayerRigs -> syncSingleSlot -> syncRigTransform`, а обнуление рысканья для ауры
+       стояло ТОЛЬКО в `tickActiveRig` (который тикает каждый тик). Получалось, что 4 раза в
+       секунду аура на один кадр разворачивалась по рысканью тела игрока и тут же возвращалась
+       в `0` — визуально это выглядело как рывок-«телепорт» кольца и потока, особенно при
+       поворотах. Теперь `safeYaw = 0.0F` для ауры выставляется ВНУТРИ самой `syncRigTransform`,
+       то есть покрывает ВСЕ места вызова сразу (`tickAll`, `tickActiveRig`, `syncPlayerRigs`,
+       `onMove`); дублирующий вызов из `tickActiveRig` убран.
+       **ДОЖАТО в v3.26.0 — аура больше не «телепортируется» при прыжке/телепорте игрока.**
+       Вторая причина рывка: как только игрок за тик смещался дальше `24` блоков
+       (`TELEPORT_JUMP_DIST_SQ`), `schedulePostTeleportRespawn` вызывал `releaseByUuid`,
+       который УДАЛЯЛ риг ауры, а через `1-2` тика риг создавался заново уже на новом месте.
+       На клиенте это выглядит ровно как «аура телепортировалась». Теперь аура в этом пути
+       НЕ удаляется вообще: `releaseByUuid(uuid, keepAura=true)` щадит кости ауры, а новая
+       точка подхватывается мгновенно через `syncPlayerRigs -> syncRigTransform`
+       (там же `rig.dummy.syncLocation(loc)`), без destroy/respawn. Аура по-прежнему
+       пересоздаётся только если игрок сменил саму ауру, риг реально уничтожен или игрок
+       сменил МИР (`GhoulRig.lastWorld`) — иначе риг остался бы в старом мире.
+       - `[29]` `Аура сердечек` (`elytrix_heart_aura`, `reallyworld:heart_aura_icon`, `5500 ꐃ` — 12 живых сердечек
+         на кольце радиусом `11.2..13.4` BB ВОКРУГ игрока, но СТРОГО ВНЕ его: модель игрока вместе с опущенными
+         руками занимает `|x| <= 7.5` BB и `|z| <= 3.75` BB, а ближайшая вершина сердечка отстоит от этого габарита
+         минимум на `2.55` BB (`16.0` см), поэтому сердечки НИКОГДА не проходят сквозь тело. Каждое рождается под
+         ногами на `Y = -1.2` и поднимается ВВЕРХ БЕЗ ВСЯКОЙ СПИРАЛИ: монотонный обход кольца убран, вместо него
+         у каждого сердечка свои псевдослучайные скорость, высота таяния (`Y 29.5..34.5`), радиус и набор частот
+         болтания, поэтому поток выглядит «рандомным», а не винтовым; над головой сердце РАСТВОРЯЕТСЯ
+         (`MELT = 0.13` цикла, дальше невидимое окно) и бесшовно возрождается снизу)
+       - `[31]` `Аура бабочек` (`elytrix_butterfly_aura`, `reallyworld:butterfly_aura_icon`, `5500 ꐃ` —
+         10 КРОШЕЧНЫХ РОЗОВЫХ БАБОЧЕК (размах крыльев `17` см), которые НЕПРЕРЫВНО КРУЖАТ
+         ВОКРУГ ИГРОКА: три орбиты, две из них — в РАЗНЫЕ стороны, поэтому стая не выглядит
+         каруселью. Бабочки держатся на высотах `8.5..30.0` BB (от колена до чуть выше макушки)
+         на кольце радиусом `12.3..13.8` BB ВНЕ игрока (ближайшая вершина крыла отстоит от его
+         габарита минимум на `2.37` BB = `14.8` см), блуждают по радиусу (только наружу), по
+         высоте и по касательной — и ВСЁ ВРЕМЯ МАШУТ КРЫЛЫШКАМИ (`+-38°` на `3` Гц, у каждой своя
+         фаза). Кружение сделано костями-орбитами `orbit_a/b/c`: если бы полный круг делала сама
+         бабочка, её вершины уходили бы от пивота на `2*R = 28` BB и превысили бы лимит `24` BB.
+         Цикл бесшовный: орбиты делают целое число оборотов, а всё блуждание — синусы с целым
+         числом периодов. **Модель v3.25.0:** тельце ГОРИЗОНТАЛЬНОЕ вдоль полёта (голова спереди,
+         брюшко сзади, 4 усика), крылья — ЗАПОЛНЕННЫЕ эллипсы в горизонтальной плоскости
+         (переднее из 5 полос, заднее из 3, + 2 плечевые пластины у корня), машут ВВЕРХ-ВНИЗ
+         вокруг оси `Z`. В старой версии крыло было двумя пластинами с пустотой между ними и
+         отдельно висящим кончиком — из-за этого оно читалось как пустая рамка. Текстура —
+         гладкий градиент БЕЗ ПОЛОС: полоски режутся ВДОЛЬ крыла, от корня к кончику)
+     * `Спина` (`ꏧ` `content_acc_three.png`, слоты `29, 31, 33`):
+       - `[29]` `Ангельские крылья` (`angel_wings`, `6000 ꐃ`)
+       - `[31]` `Щупальца Канэки` (`elytrix_kaneki_tentacles`, `7500 ꐃ`)
+       - `[33]` `Крылья Зевса` (`elytrix_zeus_wings`, `reallyworld:zeus_wings_icon`, `8000 ꐃ` — два огромных
+         размашистых крыла, целиком сплетённых из ВЕТВЯЩИХСЯ МОЛНИЙ: у каждого крыла один непрерывный ствол-разряд
+         по передней кромке (лопатка -> запястье -> кончик крыла), от которого вниз отходят 7 ветвей-разрядов
+         (короткие у плеча, самые длинные на запястье), каждая ветвь снова расщепляется на 1-2 коротких отростка
+         и роняет искру; ветви прерываются просветами, поэтому крыло рваное и просвечивает; грозовое облако-кость
+         в корне; делят изолированный слот спины с кагуне Канэки, поэтому надевание одного всегда снимает другое)
+     * `Шапки` (`ꏧ`, `content_acc_three.png`, слоты `29, 31, 33`):
+       - `[29]` `Божественный нимб` (`angel_halo`, `3500 ꐃ`)
+       - `[31]` `Круг Сатаны` (`elytrix_satan_circle`, `reallyworld:satan_circle_icon`, `4500 ꐃ` — пентаграмма из раскалённого красно-чёрного обсидиана с кроваво-алой каймой, горящей магматической жилой, багровым анкхом в центре и 5 внешними оккультными символами; висит нимбом над макушкой головы `Y = 34.25` и непрерывно вращается на `0 -> 360°` за `6.4s`!)
+       - `[33]` `Дождевое облако` (`elytrix_lightning_hat`, `reallyworld:lightning_hat_icon`, `4000 ꐃ` — спокойное кучевое облако низко над головой `Y = 33.40..37.00`, с которого всё время капает настоящий 3D-дождик из 12 полупрозрачных капель!)
+     * `Питомцы` (`ꏨ`, `content_acc_four.png`, слоты `28, 30, 32, 34`):
+       - `[28]` `Мини-Роузи` (`elytrix_mini_me` — танцующий возле правого плеча маленький белый скин с бирюзовым лицом `#5BFBFF`, `reallyworld:mini_me_icon`)
+       - `[30]` `Милый котёнок` (`elytrix_cute_kitten` — пушистый белый котёнок `1.28x` на левом плече с голубыми глазками, розовыми ушками, ошейником с колокольчиком и анимацией наклона головы и махания лапкой, `reallyworld:kitten_icon`)
+       - `[32]` `Меллстрой` (`elytrix_mellstroy` — мини-Меллстрой у левого плеча в белой кепке Rolex козырьком назад, чёрной футболке D&G с тропическим принтом, массивной золотой цепи с кулоном и золотых часах Rolex; БЕЗ спама в чат и БЕЗ голограмм `TextDisplay` — все 6 всплывающих фраз `ДА БУДЕТ СВЕТ!`, `АМ-АМ-АМ!`, `ПОШЛА ВОЗНЯ!`, `БАБКИ РУЛЯТСЯ!`, `ТАНЦУЕМ ВСЕ!`, `ПОМОГИТЕ!` вшиты прямо в 3D-модель в стиле таблички `BAN` у шара `D.Admin` с `shade: false` и синхронизированы с настоящими голосовыми репликами Меллстроя `reallyworld:mellstroy.*` в Ogg Vorbis, `reallyworld:mellstroy_icon`)
+       - `[34]` `Сколопендра Гуля` (`elytrix_centipede`, `reallyworld:centipede_icon`)
+   - Реализовано скрытие надетых аксессуаров от 1-го лица при сохранении 100% видимости в `F5` и для всех
+     остальных игроков (`tools/accessories-model/fpv_shaders.py`): маркерные `minecraft:constant` тинты
+     `-196867` (`RGB 252,254,253` -> отсечка `< 1.85m` для круга сатаны, дождевого облака, кагуне, сколопендры, Мини-Роузи, милого котёнка, Меллстроя и нимба) и `-197122`
+     (`RGB 252,253,254` -> отсечка `< 2.85m` для крыльев и аур `Аура сердечек` + `Смертельная аура` — они
+       большие и живут ВОКРУГ
+     игрока, поэтому в отсечку `1.85m` просто не влезают) + GLSL fragment `discard` в `core/entity.{vsh,fsh}` и
+     `core/rendertype_item_entity_translucent_cull.{vsh,fsh}` по всем версиям (`<= 1.21.1`, `1_21_2` для `1.21.2–1.21.5`,
+     `1_21_6` для `1.21.6–1.21.8`, `1_21_9` `#version 330` + `PER_FACE_LIGHTING` для `1.21.9–1.21.11`) + `sodium.ignored_shaders`.
+   - ВАЖНАЯ КАЛИБРОВКА КООРДИНАТ ГОЛОВЫ (`PlayerRenderer` scale `0.9375` + `PivotOverride`):
+     в Minecraft модель игрока масштабируется в `PlayerRenderer` на `0.9375` (`15/16`), поэтому при `scale = 1.0` в `.bbmodel`:
+     * точный верх головы игрока = `Y = 30.00` (`32 × 0.9375`), шея/плечи = `Y = 22.50` (`24 × 0.9375`),
+     * точная полуширина голой головы = `X/Z = ±3.75` (`4 × 0.9375`), второй слой скина (шляпа) = `±4.22`.
+   - Актуальные блюпринты в `plugins/ModelEngine/blueprints/` и RP (`SHA-1: 194e06a960710153e0df1f430265b1095e773216`):
+     * `elytrix_angel_halo.bbmodel` (нимб, 161 куб, `halo_ring` + `halo_aura`)
+     * `elytrix_satan_circle.bbmodel` (шапка `Круг Сатаны` v1, `tools/accessories-model/build_satan_circle.py`:
+       16-сегментное гладкое двойное кольцо `circle_ring` (`R = 5.92..6.26`, разрешённые углы Minecraft
+       `-45°/-22.5°/0°/+22.5°/+45°`, ровно та же техника, что и в `elytrix_angel_halo`) из обожжённого чёрно-красного
+       обсидиана с кроваво-алой каймой; 5 прямых 3D-хорд пентаграммы `beam_0..beam_4` (пивот `±5.4781`, `z = 1.78`,
+       микро-ступенька `±0.012` по Y убирает z-fighting на 5 внутренних пересечениях) с яркой багровой каймой и
+       горящей магматической жилой; багровый анкх `ankh_*` в центре, 5 внешних оккультных символов
+       (перевёрнутый крест, полумесяц со звездой, гексаграмма, пламя/Ом, железный крест) и контр-вращающаяся
+       тёмно-багровая аура `satan_aura` (`0 -> -360°` + 8 магматических осколков); 104 куба с `rotation: [0,0,0]`,
+       7 рисуемых костей, висит нимбом на `Y = 34.25` (поднят с `31.85` по просьбе игрока: верх голой головы `30.00`,
+       верх второго слоя шляпы `30.47`, самый нижний куб кольца теперь `Y = 33.99` — то есть `3.99` BB просвета над
+       макушкой и `3.52` BB над тульей шляпы; с учётом парения `±0.20` BB и гироскопического наклона `±5.8°`
+       на `R = 7.80` (≈`0.79` BB вниз) запас остаётся `>= 2.7` BB, поэтому круг больше НЕ садится на голову
+       шапочной тульей; макс. удаление куба от глаз `0.718м` `<< 1.85м` -> 100% скрытие от 1-го лица),
+       одна бесшовная 20-TPS анимация `'idle'` `6.4s` (полный оборот `0 -> 360°` + парение `±0.20` BB +
+       гироскопический наклон `±5.8°`); иконка `satan_circle_icon`)
+     * `elytrix_lightning_hat.bbmodel` (шапка `Дождевое облако` v4, `tools/accessories-model/build_lightning_hat.py`:
+       ТОЛЬКО спокойное кучевое облако `storm_cloud` (9 кубов, `Y = 33.40..37.00`, мягкая серая палитра `#566478`..`#8EA0BC`,
+       дно на 100% чистое и неокрашенное — молния и ударная волна полностью удалены по просьбе игрока!) + настоящий
+       3D-дождик из 12 отдельных капель `drop_01..drop_12` (по 2 куба: пухлое тельце `0.19` BB + тонкий хвост),
+       разбросанных под брюхом облака (`X = -3.35..+3.35`, `Z = -2.2..+2.2`); каждая капля конденсируется у облака,
+       ускоряется вниз по гравитации (`dy = -fall * (0.28t + 0.72t^2)`, `fall = 3.02..3.55` BB), сплющивается в
+       микро-всплеск и держится `scale = [0,0,0]` минимум `5` тиков, пока `dy` сбрасывается в `0` — поэтому
+       20-TPS интерполяция ModelEngine НИКОГДА не тянет капли вверх; 33 куба, 13 рисуемых костей строго `< 1.85m` от глаз,
+       одна бесшовная 20-TPS анимация `'idle'` `3.2s` (дривт облака + дыхание + 2 цикла падения на каплю); иконка `lightning_hat_icon`)
+     * `elytrix_zeus_wings.bbmodel` (спина `Крылья Зевса` **v5**, `tools/accessories-model/build_zeus_wings.py`:
+       **v3.26.0 — ОБЛАЧНЫЙ ОБОДОК СВЕРХУ КРЫЛА** по просьбе игрока «добавь крыльям зевса сверху ободок
+       похожий на облака». Это НЕ ещё одна молния, а `29` ПУФОВ (`cloud_rim_r` / `cloud_rim_l`) из уже
+       существующего штормового материала `UV_STORM_CLOUD`, которые едут ВЕРХОМ по дуге ствола: от плечевого
+       хаба `(0.90, 20.40)` через запястье `(11.60, 24.50)` и до кончика `(22.80, 17.90)`. Гребень пухнет
+       у запястья (`bell = exp(-((t - 0.42)/0.42)^2)`) и сходит на нет к обоим концам, поэтому ободок читается
+       как облако, налипшее на ВЕРХНЮЮ кромку крыла, а не как ровная полоса. Пуфы стоят на `+0.36` BB над
+       осью лонжерона и уходят вверх на `0.58..1.10` BB, между соседними точками ствола вставлены
+       промежуточные пуфы `0.62x`, поэтому щелей нет. Кость ободка — РЕБЁНОК `wing_r` / `wing_l`, так что
+       ободок бьёт вместе с крылом; пивот — запястье (тот же, что у ствола), самый дальний куб всего в
+       `12.7` BB. Ободок НЕ трещит, как молния, а медленно «кипит»: масштаб дышит `+-5.5%` на удвоенной
+       и `+-3.0%` на пятикратной частоте цикла. Итого модель: `316` кубов (было `286`), `23` кости
+       (`21` рисуемая). Проверено v3.26.0: повёрнутых кубов `0`; макс. расстояние пивот-родитель `23.46` BB
+       (`branch_r7`) `< 24` BB; макс. удаление вершины куба от его пивота `13.26` BB (`trunk_l`) `< 24` BB;
+       полоса ободка по `Y` `18.26 .. 26.06` BB против `17.72 .. 25.20` BB у ствола — то есть он реально
+       ВЫШЕ; стык цикла `0.000000`.
+       ГОТОВАЯ ФОРМА v3 ОПУЩЕНА НА `2.0` BB (`0.125` блока) ЦЕЛИКОМ по просьбе игрока «чуть ниже размести крылья
+       зевса»: все 15 точек `TRUNK`, все 7 кончиков `BRANCHES`, хаб и питающие дуги сдвинуты по `Y` на `-2.0`,
+       геометрия, количество кубов и костей, текстура и анимация НЕ менялись. Форма v3 (см. ниже) сохранена
+       один-в-один, только ниже.
+       ФОРМА ПЕРЕДЕЛАНА ВТОРОЙ РАЗ по просьбе игрока — теперь это **ВЕТВЯЩЕЕСЯ ДЕРЕВО МОЛНИЙ, СЛОЖЕННОЕ
+       В СИЛУЭТ КРЫЛА** ("ветки молний, которые вместе выглядят как крылья"). v2 (веер из 6 дуг из одной точки)
+       полностью удалён, потому что читался как вспышка/взрыв, а не как крыло:
+       - **СТВОЛ** `trunk_r` / `trunk_l` (28 кубов каждый) — ОДИН НЕПРЕРЫВНЫЙ разряд по передней кромке крыла:
+         хаб на лопатке `(0.90, 20.40, 2.30)` -> вверх через `(2.60, 21.30)`, `(4.40, 22.20)`, `(8.00, 23.70)`
+         -> **запястье** `(11.60, 24.50, 2.95)` (высшая точка всего крыла) -> вниз и наружу через
+         `(15.10, 24.10)`, `(18.30, 22.90)`, `(21.00, 20.80)` -> **кончик крыла** `(22.80, 17.90, 2.45)`.
+         Именно эта дуга делает всю форму крылом. Ствол намеренно НЕ прерывается — это лонжерон.
+       - **7 ВЕТВЕЙ** `branch_r1..r7` / `branch_l1..l7` отходят от ствола вниз/назад как маховые перья:
+         короткие у плеча `(1.60, 16.60)`, самые длинные на запястье `(12.10, 14.90)`, снова короче к кончику
+         `(24.90, 16.30)` — их кончики и прорисовывают заднюю кромку крыла.
+       - Каждая ветвь **СНОВА РАСЩЕПЛЯЕТСЯ** на 1-2 коротких отростка-барба (`barb_*`, углы `+-36..46°`,
+         длина `1.9..4.3` BB) и роняет одну оторванную искру за кончиком — это именно ветвление, а не гребёнка.
+       - Ветви по-прежнему ПРЕРЫВАЮТСЯ просветами (`gaps`), поэтому крыло рваное и просвечивает между разрядами.
+       - `wing_r` / `wing_l` — пустые группы-кости, несущие только общий взмах; ствол отстаёт от взмаха
+         на `+-3.2°`, а амплитуда трепета ветвей РАСТЁТ к кончику крыла (`2.6° -> 9.5°`).
+       - `zeus_root` (`[0.0, 22.0, 1.9]`, 18 кубов) = грозовое облако-кость + две дуги питания к хабам стволов;
+         `spark_r` / `spark_l` (по 5 кубов) — искрящиеся кластеры над лопатками.
+       - размах `X = +-25.66` BB, `Y = 13.54..25.20`, `Z = 1.40..3.20`; итого **258 кубов и 19 рисуемых костей** (22 кости в дереве вместе с пустыми
+         группами `wing_r`/`wing_l` и `hitbox`), ВСЕ 258 кубов с `rotation: [0,0,0]` (зигзаги собраны только осевыми
+         L-ступеньками, иначе `RotationSolver` ModelEngine 4.1.0 падает); максимум удаления вершины от пивота
+         своей кости `13.26` BB (кость `trunk_r`) `< 24` BB — лимит ModelEngine для костей.
+       - текстура v2 СОХРАНЕНА без изменений (по просьбе менялась только форма): 6 тайлов ГЛАДКИХ ГРАДИЕНТОВ
+         128x128 (белое ядро `->` циан `->` синий `->` тёмный индиго) с двухчастотным синус-дрожанием и 4x4
+         Байеровским дизерингом, палитра светлее при сохранении холода (средняя яркость `171`);
+         палитра **ХОЛОДНАЯ** (по референсу игрока `image-13.png`, ни одного тёплого/золотого пикселя —
+         все оттенки лежат в `hue 180..230`): ледяное циан-белое ядро `hue 195`, электрик-голубое тело `hue 210`
+         (`#2E9CFF`-семейство), глубокий громовой индиго `hue 229` (`#0B174C`-семейство), тёмное штормовое
+         индиго-облако (`#221E6E`) и ледяные циановые искры `hue 190` (золотые искры `#FFD34D` удалены ещё в v1
+         и НЕ возвращены).
+       - одна бесшовная 20-TPS анимация `'idle'` `4.8s` (взмах `+-6°` + дрожь `3°` + подметание `3.5°` + треск `0.9°`
+         на группах; ствол отстаёт `+-3.2°` и трещит `+-1.4°`; у каждой ветви СВОЙ трепет `2.6..9.5° + 1.7°`
+         с индивидуальной фазой, импульс разряда `+18%` и рост искр `0.55 -> 1.20`), скорость анимации зависит
+         от бега (`1.0 + min(0.85, v*1.6)`).
+       - макс. удаление вершины от глаз `1.733м` `< 2.85м` -> тинт `-197122` скрывает крылья от 1-го лица;
+       `viewRange = 4.5` (вместо `2.5`) из-за 3-блочного размаха; иконка `zeus_wings_icon` (перерисована тем же
+       ветвящимся деревом: ствол с циановым гало + тонкие 1-пиксельные ветви, иначе на 32x32 они слипаются)
+     * `elytrix_heart_aura.bbmodel` (аура `Аура сердечек` v1, `tools/accessories-model/build_heart_aura.py`:
+       ПЕРВАЯ аура и первый аксессуар нового 4-го раздела `Ауры` — эффект живёт ВОКРУГ игрока, а не на нём.
+       Кольцо из **12 независимых сердечек** `heart_01..heart_12` на радиусе `11.2..13.4` BB (азимут
+       `(i/12)*360°` + псевдослучайный сдвиг `+-0.42` рад, чтобы кольцо не выглядело механическим)
+       вокруг пустой кости-держателя `aura_root` `[0, 16, 0]`;
+       каждое сердечко = 7 пиксельных строк-кубов (`PX = 0.30` BB) + 1 блик + 1 искра, итого **120 кубов и
+       12 рисуемых костей**, ВСЕ 120 кубов с `rotation: [0,0,0]` (никаких повёрнутых кубов — иначе
+       `RotationSolver` ModelEngine 4.1.0 падает). **Движение v3.25.0 — НИКАКОЙ СПИРАЛИ, «рандомно вверх».** Раньше сердце за цикл ещё и монотонно
+       обходило кольцо (`DRIFT_TURNS = 0.10` оборота), из-за чего траектория читалась как винтовая
+       линия. Монотонный обход УБРАН ПОЛНОСТЬЮ. Теперь у каждого сердечка свой набор ПСЕВДОСЛУЧАЙНЫХ
+       параметров (детерминированный `random.Random(9173 + i*7919)`): свой азимут, радиус
+       `11.2..13.4` BB, своя доля цикла на подъём `RISE 0.62..0.86` (своя скорость), свой профиль
+       разгона `t**pow` (`pow 0.82..1.22`), своя высота таяния `Y 29.5..34.5`, своя фаза
+       `((i + U(-0.45;0.45))/12) % 1` и свой набор ЦЕЛЫХ частот болтания (`nt1 2..4`, `nt2 5..7`,
+       `nr 1..3`, `nb 2..4`) со своими фазами. Целые частоты держат цикл бесшовным, а выглядит это как
+       живой разнобой: сердечки не идут строем и не повторяют друг друга. Сердце рождается ПОД НОГАМИ
+       на `Y = -1.2` невидимым (`scale = 0`) и поднимается почти вертикально, болтаясь вокруг своей
+       колонны НУЛЕВЫМ средним (касательная качка `(at/r)*(0.62*sin + 0.38*sin)`, `at 0.80..1.90` BB),
+       «дыша» по радиусу только НАРУЖУ (`r + ar*(0.5+0.5*sin)`, `ar 0.35..0.95` BB) и покачиваясь по
+       высоте (`ab 0.20..0.55` BB). После таяния (`MELT = 0.13` цикла) идёт полностью невидимое
+       окно, поэтому возврат вниз в `scale = 0` происходит за кадром и интерполяция ModelEngine
+       НИКОГДА не тянет сердечки вниз.
+       Текстура 64x64 (4 тайла, 4x4 Байеровский дизеринг) в розовой палитре (`core -> light -> mid -> deep`).
+       Дыхание радиуса сделано ТОЛЬКО НАРУЖУ, чтобы сердечко никогда не приближалось к игроку.
+       Одна бесшовная 20-TPS анимация `'idle'` `6.0s` (`IDLE_STEPS 120`, как и во всех моделях пака),
+       скорость НЕ зависит от бега (аура всегда спокойная).
+       Проверено v3.25.0: макс. смещение кости от пивота `18.78` BB (`heart_11`) `< 24` BB;
+       мин. зазор между вершиной сердечка и габаритом игрока `2.55` BB (`16.0` см), оценка, не
+       зависящая от порядка углов Эйлера, `1.72` BB (`10.8` см) — НЕ касается игрока;
+       макс. удаление вершины от глаз `31.39` BB = `1.962м` `< 2.85м` -> тинт `-197122` (крыльевой)
+       скрывает ауру от 1-го лица; стык цикла `pos/rot/scale` расхождение `0.000000`;
+       `viewRange = 3.5`; иконка `heart_aura_icon` (большое сердце внизу по центру + 3 маленьких,
+       поднимающихся вправо-вверх, + 3 блёстки)
+     * `elytrix_butterfly_aura.bbmodel` (аура `Аура бабочек` v1,
+       `tools/accessories-model/build_butterfly_aura.py`: ВТОРАЯ аура раздела `Ауры` — эффект живёт
+       ВОКРУГ игрока и НИКОГДА не поворачивается вместе с ним (рысканье рига всегда `0`, только
+       позиция). Иерархия из **33 костей**: `aura_root` `[0, 16, 0]` -> три кости-орбиты
+       `orbit_a` (4 бабочки, против часовой), `orbit_b` (3, ПО ЧАСОВОЙ) и `orbit_c` (3, против
+       часовой, с заметным «нырком» вперёд-назад) -> 10 бабочек `bf_01..bf_10`, у каждой свои
+       кости-крылья `bf_NN_wl` / `bf_NN_wr`. Итого **130 кубов**, ВСЕ с `rotation: [0,0,0]`.
+       **Модель бабочки ПЕРЕПИСАНА в v3.25.0** (старая была раскритикована: «крылья пустые, сама
+       бабочка странная, не как настоящая»). Причина «пустых крыльев»: старое крыло собиралось из двух
+       тонких пластин с ПУСТОТОЙ между ними плюс отдельно висящий кончик — читалось как пустая рамка.
+       Теперь: **тельце ГОРИЗОНТАЛЬНОЕ вдоль полёта `+Z`** (голова спереди `z 0.30..0.52`, грудь
+       `-0.24..0.30`, брюшко двумя сегментами до `z = -1.04`, 4 усика-ступеньки вперёд-вверх-наружу),
+       а **крылья — ЗАПОЛНЕННЫЕ горизонтальные пластины в плоскости `XZ`**, тонкие по `Y`
+       (`0.11..0.13` BB). Переднее крыло — эллипс `cx 0.78 / cz 0.44 / a 0.58 / b 0.56`, нарезанный
+       **5 полосами вдоль `X`** (корень -> кончик) без единого разрыва; заднее — эллипс
+       `cx 0.58 / cz -0.46 / a 0.42 / b 0.40` из **3 полос**, лежит на `0.01` BB ниже переднего
+       (никакого z-fighting). Две «плечевые» пластины `SHOULDER_FORE/HIND` (`x 0.085..0.34`) закрывают
+       стык корня крыла с грудью — иначе у эллипса у корня узкая хорда и крыло читается приклеенным
+       отдельно. Сверху на переднем крыле светлое пятнышко. Итого **300 кубов и 34 кости**
+       (было 130 кубов), ВСЕ с `rotation: [0,0,0]`. Взмах — вращение вокруг оси `Z`, то есть кончики
+       ходят ВВЕРХ-ВНИЗ (старая вертикальная плоскость крыла так не махала). Размах `2.72` BB
+       (`17` см) при длине тельца `1.56` BB — бабочки намеренно МАЛЕНЬКИЕ.
+       **Почему кружение сделано орбитой, а не самой бабочкой:** если бы полный круг описывала
+       анимация позиции `bf_NN`, её вершины уходили бы от пивота на `2*R ~ 28` BB и превысили бы
+       лимит ModelEngine `24` BB на кость. Поэтому орбита несёт целое число оборотов за цикл
+       (это вращение, оно НЕ меняет расстояние от её пивота), а бабочка анимирует только
+       НЕБОЛЬШОЕ блуждание: радиус `+0..0.9` BB (только наружу), высота `+-2.6` BB, касательное
+       рысканье `+-0.16` рад (у `orbit_c` `+-0.30`). Итого `~10` BB хода у кости бабочки и
+       `~22` BB у кости-орбиты.
+       Крылья машут на `+-38°` с частотой `3` Гц (`FLAP_CYCLES = 18` за цикл `6.0` с, при
+       `IDLE_STEPS = 120` на взмах приходится `6.7` ключевых кадра). Одна бесшовная 20-TPS
+       анимация `'idle'` `6.0s` (`IDLE_STEPS 120`), скорость НЕ зависит от бега.
+       Градиент крыла режется ВДОЛЬ крыла (`_strip` — вертикальная полоска тайла по `X`), а не
+       поперёк: каждая полоса берёт свой кусок того же градиента «корень -> кончик», поэтому
+       «стиральной доски» нет ни вдоль, ни поперёк.
+       Текстура 64x64 (4 тайла, 4x4 Байеровский дизеринг) в розовой палитре: крыло меняется вдоль
+       размаха от бледно-розового корня `(255,226,240)` к насыщенному кончику `(226,66,140)`,
+       торцы — темнее, тельце — от `(240,132,186)` к тёмно-малиновому `(140,26,76)`, пятнышко —
+       радиальный почти белый. **КАЖДАЯ лопасть крыла получает СВОЮ полоску градиента** (`_band`),
+       поэтому 3 полоски складываются в один непрерывный переход «корень -> кончик», а не в
+       «стиральную доску».
+       **v3.26.0 — бабочки «чуток поменьше»:** масштаб `0.85..1.15` -> `0.70..0.95` (примерно
+       на `18%` мельче), всё остальное не тронуто.
+       Проверено v3.26.0: макс. смещение кости от пивота `6.82` BB (`bf_10`) `< 24` BB;
+       мин. зазор до габарита игрока `2.77` BB (`17.3` см) — НЕ касается игрока;
+       макс. удаление вершины от глаз `21.77` BB = `1.361м` `< 1.85м` ->
+       стык цикла `pos/rot/scale` расхождение `0.000000`;
+       аура СПОКОЙНО влезает в БЛИЖНИЙ тинт `-196867` (бабочки остаются видны другим игрокам,
+       которые стоят ближе `2.85` м, а владельцу всё равно не видны от 1-го лица);
+       `viewRange = 3.5`; иконка `butterfly_aura_icon` (крупная розовая бабочка сверху + 2 мелких
+       по бокам + 4 блёстки)
+       - `[33]` `Смертельная аура` (`elytrix_death_aura`, `reallyworld:death_aura_icon`, `5500 ꐃ` — СТРАШНАЯ аура:
+         из-под САМЫХ НОГ игрока всё время летит вверх ПЕПЕЛ. 10 хлопьев `ash_01..ash_10` рождаются ниже подошвы
+         (`Y = -1.8` BB) и поднимаются до `Y 28.0..33.5` BB, где рассыпаются; кольцо радиусом `11.2..13.2` BB
+         ВСЕГДА ВНЕ игрока (ближайшая вершина отстоит от габарита `|x| <= 7.5`, `|z| <= 3.75` BB минимум на
+         `2.53` BB = `15.8` см). Каждое хлопье — 4 куба: два РВАНЫХ серых пепельных лоскута со сдвигом,
+         ТЛЕЮЩИЙ УГОЛЁК над ними (именно он даёт «страшность»: в сером пепле вспыхивают оранжевые точки)
+         и копоть-хвост под ними. Хлопья КУВЫРКАЮТСЯ по всем трём осям на ЦЕЛОЕ число оборотов за цикл
+         (поэтому стык цикла бесшовный), а подъём идёт без всякой спирали: у каждого свои псевдослучайные
+         скорость (`0.60..0.84` цикла), профиль разгона, высота рассыпания, радиус, фаза и набор целых частот
+         болтания. Модель намеренно ЛЁГКАЯ — `11` костей и `40` кубов (у сердечек `13`/`120`, у бабочек
+         `34`/`300`): чем меньше костей-сущностей, тем ровнее анимация при просадках TPS. Иконка
+         `death_aura_icon` — рваные серые хлопья, поднимающиеся вверх, с тлеющими угольками.
+     * `elytrix_death_aura.bbmodel` (ТРЕТЬЯ аура раздела `Ауры` — `Смертельная аура`,
+       `tools/accessories-model/build_death_aura.py`: страшная аура, из-под ног всё время летит ПЕПЕЛ.
+       `10` хлопьев `ash_01..ash_10` + пустая группа `aura_root` = `11` костей, `40` кубов с
+       `rotation: [0,0,0]` (ни одного повёрнутого куба — `RotationSolver` ModelEngine 4.1.0 падает),
+       текстура `64x64`, `4` тайла `32x32`: серый пепел, тёмные торцы пепла, тлеющий уголёк
+       (радиальный белый -> жёлтый -> оранжевый -> тёмно-красный) и копоть. Цикл `idle` `6.0s`
+       при `20` keyframes/s (`120` шагов) — ровно как у сердечек, чтобы три ауры не «бились»
+       по ритму. Пивот хлопья — в центре его пути, геометрия запечена вокруг него, «дыхание»
+       радиуса ТОЛЬКО НАРУЖУ (`r = r0 + ar*(0.5+0.5*sin)`, никогда внутрь), поэтому пепел
+       физически не может задеть игрока. Появление/исчезание сделано через `scale`
+       (всплытие `GROW = 0.07` цикла у низа, рассыпание `CRUMBLE = 0.14` у верха, дальше
+       невидимое окно), поэтому интерполяция ModelEngine НИКОГДА не протаскивает пепел сверху вниз.
+       Проверено v3.26.0: повёрнутых кубов `0`; макс. расстояние пивот-родитель `16.0` BB
+       (`aura_root`) `< 24` BB; полоса высот `Y -1.83 .. 33.50` BB; мин. радиус от оси игрока
+       `10.91` BB, зазор до его габарита `2.53` BB; стык цикла `0.000000` (по построению
+       `c = (u - phase) % 1.0`); видимых хлопьев в кадре от `7` до `10` (в среднем `8.3`);
+       тинт — «крыльевой» `-197122` (отсечка `< 2.85m`), как у сердечек, потому что габарит
+       тот же; `viewRange = 3.5`; иконка `death_aura_icon`.
+     * `elytrix_angel_wings.bbmodel` (крылья, 9 кубов на крыло + 6 падающих перьев)
+     * `elytrix_kaneki_tentacles.bbmodel` (каноничное Ринкаку Кагуне Канеки Кена из аниме «Токийский Гуль»:
+       4 гибких хвоста из единого спинного мешка Какухо `root_knot`, 55 рисуемых костей, 171 куб с `rotation: [0,0,0]`,
+       текстура `128x128` с багрово-чёрными чешуйками и прожилками Rc-клеток, живая волновая loop-анимация `'idle'` `4.0s`,
+       иконка `kaneki_tentacles_icon`; спавнится на собственном `Dummy<Player>` без розовой пыльцы крыльев)
+     * `elytrix_centipede.bbmodel` (сколопендра Токийского Гуля, ползающая ПО ВСЕМУ ТЕЛУ игрока:
+       спиральный 3-витковый маршрут на `10.8s` по бёдрам, животу, груди, плечам, шее, рукам и спине;
+       двухступенчатая защита от гимбал-лока `carrier_01..16` + `seg_01..16`, 28 лапок `leg_l/r_02..15`,
+       голова `head`, клыки `fang_l/r`, 2-звенные усики `ant_l1/l2/r1/r2`, церки `cercus_l/r`, 161 куб с `rotation: [0,0,0]`,
+       текстура `128x128`, иконка `centipede_icon`; переживает любые телепорты и смену миров за счёт авто-респавна `Dummy`)
+     * `elytrix_mini_me.bbmodel` (танцующий возле правого плеча мини-скин владельца `scale=0.27`, 6 кубов с `rotation: [0,0,0]`,
+       8 артикулированных костей `body_root -> dancer -> pelvis -> torso/head/right_arm/left_arm + right_leg/left_leg`,
+       бесшовная 8-битная танцевальная анимация `'idle'` `3.2s`, текстура `64x64` `#FFFFFF` + `#5BFBFF`, иконка `mini_me_icon`)
+     * `elytrix_cute_kitten.bbmodel` (милый пушистый белый котёнок на левом плече `scale=1.28`, `CX=-7.35`, 20 кубов с `rotation: [0,0,0]`,
+       анимация `'idle'` `3.6s`, текстура `64x64`, иконка `kitten_icon`)
+     * `elytrix_mellstroy.bbmodel` (мини-Меллстрой у левого плеча `scale=0.34`, `CX=-8.85`, 18 кубов с `rotation: [0,0,0]`,
+       текстура `128x128`, белая кепка Rolex назад, чёрная футболка D&G с тропическим принтом, золотая цепь с кулоном и золотые часы Rolex,
+       4-секундный мемный танец `'idle'` + 6 встроенных в 3D-модель `D.Admin BAN`-табличек `badge_svet`, `badge_amam`, `badge_voznya`,
+       `badge_babki`, `badge_tancuem`, `badge_miliciya` с `shade: false`, `scale: [0,0,0]` в `idle` и анимациями `say_*` `override: true`,
+       синхронизированными с настоящей озвучкой `reallyworld:mellstroy.{privet,amam,voznya,babki,tancuem,miliciya}`, иконка `mellstroy_icon`)
+     * `elytrix_priora_{black,white,pink}.bbmodel` (Лада Приора, 2 места)
+
+2. Античит, антиэксплойт и PvP-синхронизация:
+   - `GrimAC` (`plugins/GrimAC/` — кастомный конфиг, сообщения и наказания в стиле Elytrix; `.jar` лежит на VDS).
+   - `LPX 3.9.1 + fix.jar` (`plugins/LPX/config.yml` — защита Netty от пакетных и NBT/item крашей, `disable-item-decoding: SMART`).
+   - `knockbacksync-bukkit-1.3.6-dev-b143.jar` (`plugins/KnockbackSync/config.yml` — синхронизация отдачи по пингу `KEEPALIVE` + `enable_offground_synchronization: true`).
+
+3. Защита администрации, модерация и доступ по версиям:
+   - `UltimateServerProtector-en.jar` (`plugins/UltimateServerProtector/` — пароль `/pas` при входе с админ-правами; `data.yml` на VDS НЕ трогать!).
+   - `LiteBans 2.19.0-bm.jar` (`plugins/LiteBans/` — H2 база банов/мутов).
+   - `ViaVersion-5.12.1.jar` + `ViaBackwards-5.12.1.jar` — вход открыт для клиентов `1.21.4` – `26.3`.
+   - `voicechat-bukkit-2.6.24.jar` — голосовой чат на UDP порту `24454`.
+   - `PlugManX-2.4.1.jar` — горячее управление плагинами (в игноре: `ViaVersion`, `ViaBackwards`, `ProtocolLib`).
+
+4. Гриф-механики, мир и интеграции:
+   - `WorldGuardGriefFix-5.1.jar` (`plugins/WorldGuardGriefFix/config.yml` — разрешён гриф поршнями, вагонетками, визером и взрывами в приватах, кроме мира `spawn` и блоков алмазной/изумрудной/железной руды и блоков).
+   - `WGExtender-fork.jar` (`15,051 B`) + обновлённые лимиты объёма приватов в `WGExtender/config.yml` (`default: 400000`, `vertexpand: true`) + мир `duels` в `WorldGuard/worlds/duels/`.
+   - `ElytrixGodPickup.jar` (`v2.1.0`, `tools/god-fix/`) — правила `/god` и `/fly` (100% рефлексивные хуки без прямых импортов `Essentials`/`WorldGuard`/`NMascot`, безопасно для `PlugManX`):
+     * В `/god` и `/fly`: разрешено бить мобов; запрещён подбор предметов (`setCanPickupItems(false)` с чистым восстановлением); запрещено открывать сундуки/контейнеры ВЕЗДЕ, КРОМЕ собственного региона WorldGuard игрока (`owners`/`members`); удар по игрокам запрещён во время `/god` и `/fly`, а также ровно `5.0 сек.` после выключения `/god` или `/fly` (с защитой от паник-реэнэйбла, релога и подрыва кристаллов).
+     * На ивенте `Талисман` (`NMascot`): запрещено включать `/fly` и `/god`, а активные `/fly` и `/god` автоматически выключаются при входе в регион талисмана.
+   - `Duels-3.5.3.jar` (`ElytrixDuelTeleportFix`, `tools/bugfix-suite/`) — устранён редкий сбой телепортации на дуэль: `DuelListener.on(PlayerTeleportEvent)` пропускает телепорты с метадатой `"Duels-Teleport"` даже после `addPlayers`, перед телепортом снимаются транспорт/планирование/сон и открытый инвентарь, ставится chunk-ticket на `60` тиков и работают страховочные проверки на `3/12/25` тиках.
+   - `ElytrixItems.jar` (`ElytrixAirTrapGuard`, `tools/bugfix-suite/`) — запрещено активировать ловушки (`TrapItem` и `EnderTrapItem`) в радиусе `20` блоков от активного АирДропа (`ElytrixAir`) без списания предмета и кулдауна.
+   - `NMascot-1.0.jar` (`ElytrixMascotGuard`, `tools/bugfix-suite/`) — автоматическое снятие `/fly` и `/god` в активной зоне талисмана без мёртвых ссылок на `CMI`.
+   - `ItemKeep-1.0-SNAPSHOT.jar` + `plugins/ItemKeep/data.yml` + `plugins/ElytrixDealer/items.yml` + `plugins/CloudQuests/quests/*/{seller.yml,rewards.yml}` — исправлены чары `Цыганского щита` у Барыги и чары наградных инструментов в шалкерах `/quest1` (`DataVersion: 4556` + клонирование `ItemStack` + гарантия чар в `ElytrixItemKeepFix` + выброс при полном инвентаре; НЕ затирать `plugins/CloudQuests/data.db` на VDS!).
+   - `plugins/nKits/Kits/{nerum.yml,cobra.yml}` + `plugins/DeluxeMenus/gui_menus/{shop/endshop.yml,kits_preview/preview_cobra.yml}` — у Странника (`/endshop`) шлем Нериума выдает Защиту V (`PROTECTION_ENVIRONMENTAL: 5`), а в ките Кобры (`/kit cobra` + превью) убраны дубли поножей/ботинок и добавлен `Шар Кобры` (`COBRA_BALL`).
+   - `hJobs.jar` (`tools/bugfix-suite/`) — потокобезопасный SQLite WAL (`dbLock`), предзагрузка на `PlayerJoinEvent`, синхронный lazy-load `ensurePlayerStatsLoaded`, монотонный `MAX(sold_total)` UPSERT и автосохранение при продаже в GUI (НЕ затирать `plugins/hJobs/database.db` на VDS!).
+   - `NClans-1.jar` (`tools/bugfix-suite/`) — запрет ручных цветовых/HEX-кодов в названиях кланов (`ValidatorUtil.getValidClanName`), автоочистка старых названий в `Clan.<init>`/`setName`, цвет строго по уровню клана (`levels.yml` 1..100) и `O(1)` кеш `LevelConfiguration` (НЕ затирать `plugins/NClans/clans.yml` на VDS!).
+   - `GreatCombat-1.9.jar` + `plugins/GreatCombat/config.yml` (`tools/bugfix-suite/`) — Base64 коды предметов под `1.21.11` (`DataVersion: 4671`), защита `ItemUtils.decode` от отключения плагина + честные КД предметов в PvP без обхода через OP/`*`.
+   - `Chunky` — предгенерация мира `world` радиусом `2000`.
+   - `fmDonateAlert` — оповещения о покупке доната (`/fmad send`, градиент Elytrix + Title).
+   - `ElytrixSite` (порт API `20559` + MySQL сайта) и `ElytrixAuthBridge` (HTTP-мост бота привязки) — конфиги на VDS НЕ затирать; `.jar` файлы `Chunky`, `ElytrixAuthBridge`, `ElytrixSite`, `GrimAC`, `fmDonateAlert` стоят на VDS (в `dfghjdyjk56` была выгружена вторая половина джарников `I..Z` в `pluginjar1.rar`).
+
+5. Защита от накопления Off-Heap/Heap памяти, утечек `CraftPlayer`/`LevelChunk` и массовых киков при 40+ онлайна (`tools/leakfix-suite/build_leakfixes.py` + `tools/accessories-integration/patch_modelengine_leaks.py`):
+   - `start.sh` — `MALLOC_ARENA_MAX=2`, адаптивный `HEAP_MAX`, жёсткий лимит `-XX:MaxDirectMemorySize=1536M`, `-Dio.netty.maxDirectMemory=0` (отключает `NoCleaner` у Netty 4.1 и возвращает JDK `CleanerJava9`, чтобы `Unpooled.directBuffer()` от тройного `PacketEvents` в `LPX`/`KnockbackSync`/`GrimAC` освобождались при GC вместо `OutOfDirectMemoryError` и кика всего сервера при низком MSPT), ограниченные арены `io.netty.allocator.*` (`maxOrder=9`, `numDirectArenas=4`, `useCacheForAllThreads=false`), `G1PeriodicGCInterval=30000`.
+   - `ModelEngine-4.1.0.jar` + `plugins/ModelEngine/config.yml` (на VDS патчить ТОЛЬКО через `sed -i`!) — устранён `HttpClient.newHttpClient()` без `.close()` на каждый скин в `MojangAPI.getRawSkinData` и `UserLimbRegistry.getImageData` (переведены на единый `MojangAPI.CLIENT`), закрытие `Files.readString` в `UserLimbRegistry.tryLoad`, `Eager-Generate-Skins: false`, пулы `Engine-Threads: 2` (`Max: 3`) и `Culling-Threads: 2` (`Max: 3`), `Cull-Interval: 2`.
+   - `ElytrixFreakModel v3.17.2` (`AccessoryController.java`) — `new Dummy<>()` (`original = null`, без удержания `CraftPlayer`), `entity.setSaved(false)` (без сериализации NBT каждые 200 тиков), `ModelUpdaters.forceRemoveModeledEntity(rig.entity)` в `removeRig`, и страховочный `PivotOverrideRegistry.remove(uuid)` на `MONITOR` `PlayerQuitEvent`; `VIEW_RANGE = 48`.
+   - `NClans-1.jar` (`GlowListener`, `GlowFunction`, `GlowManager`, `QuestListener`) — `ConcurrentHashMap` для `playerArmorMap` и `GlowFunction.clansMap`, `O(1)` индекс `ONLINE_BY_ID` и кеш `CHEST_BY_RGB`, полная очистка при `PlayerQuitEvent` (ключи и списки `playerArmorMap` + `ONLINE_BY_ID`), мгновенный выход в `onPacketSending`, если `clansMap` пуст или пакет не содержит `ItemSlot.CHEST`, подмена `CHEST` через `event.setPacket(...)` без `setCancelled(true)`/`sendServerPacket` и без вызова `Player.getEquipment()` из потоков Netty, проверка смены координат чанка (`>> 4`) в `onChunkUpdate`, очистка `QuestListener.lastBrewer` на `BlockBreakEvent` (НЕ затирать `plugins/NClans/clans.yml` на VDS!).
+   - `NFurnace-1.jar` (`SmeltStartEvent`, `BrewStartEvent`, `FurnaceInventoryListener`, `BrewingStandInventoryListener`) — проверка `World.isChunkLoaded(cx, cz)` ДО вызова `getInventory()` / `getHolder()`, мгновенное удаление выгруженных и сломанных блоков (`BlockBreakEvent` + `iterator.remove()`), хранение состояния по строковому ключу координат вместо `BlockState` (ноль принудительной подгрузки чанков и ноль удержания `LevelChunk` в памяти).
+   - `NEnderChest-1.jar`, `NPvp-1.0.jar`, `IRandomTeleport.jar` — гарантированное удаление из `CheckCommand.viewers` при любом закрытии `/ec check` и `PlayerQuitEvent`; удаление выходящих игроков из `PvpSelect.pvpPlayers` и меню `/pvp`; очистка `ChannelManager.teleportingPlayers` на `PlayerQuitEvent`/`PlayerDeathEvent`/`PlayerChangedWorldEvent`, замена сильной ссылки `Player` на `String` в `Channel$1`/`Channel$2` и удаление лишнего `org/bukkit/plugin/Plugin.class`.
+   - Конфиги выгрузки чанков и очистки мира: `config/paper-world-defaults.yml` (`delay-chunk-unloads-by: 5s`, `auto-save-interval: 6000`, `max-auto-save-chunks-per-tick: 8`, `despawn-time` снарядов, `alt-item-despawn-rate`, `despawn-ranges` `hard: 56` под `view-distance: 4`), `spigot.yml` (`unload-frozen-chunks: true`, `item-despawn-rate: 2400`, `netty-threads: 4`), `bukkit.yml` (`chunk-gc.period-in-ticks: 200`, `monsters: 24`, `autosave: 6000`), `LagFixer/modules/{WorldCleaner.yml,EntityLimiter.yml}` (`interval: 300`, `time_lived: 1200` с защитой ценного лута и голов/шаров, `abyss.enabled: false`, `overflow_purge.types.items: true`), `config/leaf-global.yml` и `FastAsyncWorldEdit/config.yml` (`pool: false`, `parallel-threads: 3`).
+================================================================================
+
+6. Живой контроль производительности во время стрима / 40+ онлайна (`tools/lag-diagnostics/`):
+   - `live_watch.sh` — живой дашборд раз в N секунд (CPU/steal/iowait, heap, паузы GC, RSS и off-heap,
+     потоки/FD, «Can't keep up», ошибки из `logs/latest.log`, соединения на `:25565`, диск) + строка
+     «ТРЕВОГА» по порогам + CSV-таймлайн. Запуск: `bash /root/live_watch.sh 10 /root/RW_GRIEF`.
+   - `STREAM_WATCH.md` — 12 точек контроля с порогами, «почему spark не видит причину»,
+     `/tick query` + `spark profiler start --only-ticks-over 50`, лечение GC-пауз, DirectMemory и утечки потоков.
+   - `collect.sh` — разовый глубокий дамп (GC, steal, cron, диски, JVM-флаги).
+   - ВАЖНО: `-XX:MaxGCPauseMillis=100` в `start.sh` — фриз «ровно 100 мс» ожидаем; аксессуары
+     `ElytrixFreakModel` дают до 60 `ItemDisplay` на игрока, поэтому `ignore_models: true`
+     в `plugins/LagFixer/modules/EntityLimiter.yml` НЕ выключать.

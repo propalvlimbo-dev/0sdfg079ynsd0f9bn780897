@@ -1,0 +1,96 @@
+#####Imp 
+## ThrowObject animation can be used as a basic attack.
+## Pickobject picks an impbomb projectile from his backpack
+## throwobject throws bomb.
+
+MSO_Imp:
+  Type: ZOMBIE
+  Display: '<gradient:#A10100:#FFF75D>Magma Imp'
+  Options:
+    Silent: true
+    PreventSunburn: true
+    PreventOtherDrops: true
+  Damage: 0
+  DamageModifiers:
+  - FIRE 0
+  - FIRE_TICK 0
+  - LAVA 0
+  Health: 15
+  Drops:
+  - GOLD_NUGGET 5-24 1
+  AIGoalSelectors:
+  - clear
+  - fleeConditional{distance=8;speed=2;safespeed=2;conditions=[ 
+    - entitytype player true
+    - distance{d=<8} true 
+    ]}
+  - movetowardstarget
+  AITargetSelectors:
+  - clear
+  - players
+  Skills:
+  - model{mid=mso_magma_imp} @Self ~onSpawn
+  - partvisibility{m=mso_magma_imp;p=bomb;v=false} @self ~onSpawn
+  - skill:MagmaImpBombThrow @Target ~onTimer:40
+  - skill:MagmaImpFlee @Self ~onSpawn
+  - sound{s=entity.witch.celebrate;v=1;p=0.1} @Self ~onTimer:50 0.4
+  - skill{s=[
+    - e:p{p=reddust;color=#A10100;amount=2;hS=0.4;vS=0.05} @Self
+    - e:p{p=reddust;color=#DA1F05;amount=2;hS=0.4;vS=0.05} @Self
+    - e:p{p=reddust;color=#F33C04;amount=2;hS=0.4;vS=0.05} @Self
+    - e:p{p=reddust;color=#FE650D;amount=2;hS=0.4;vS=0.05} @Self
+    - e:p{p=reddust;color=#FFC11F;amount=2;hS=0.4;vS=0.05} @Self
+    - e:p{p=reddust;color=#FFF75D;amount=2;hS=0.4;vS=0.05} @Self
+    ]} @Self ~onTimer:20
+
+
+#####Warmm
+## Atkpose toggles turret mode
+## atk anim spits particle projectiles.
+## direct contact/ no anim for collision damage
+
+MSO_Warmm:
+  AIGoalSelectors:
+  - clear
+  - fleeConditional{distance=5;speed=2;safespeed=2;conditions=[ 
+    - entitytype player true
+    - distance{d=<3} true 
+    ]}
+  - movetowardstarget
+  AITargetSelectors:
+  - clear
+  - players
+  Type: SILVERFISH
+  Drops:
+  - GOLD_NUGGET 1-3 1
+  - exp 20-50 1
+  Options:
+    Silent: true
+    PreventSunburn: true
+    MovementSpeed: 0.04
+  Damage: 0
+  Health: 10
+  Skills:
+  - model{mid=mso_warmm} @Self ~onSpawn
+  - skill:WarmmTurretMode @Self ~onTimer:60 0.4
+  - skill:WarmmMeleeTick @Self ~onTimer:1
+
+#####Twinker
+## Spit anim spits projectiles at a short range
+MSO_Twinkler:
+  Type: ZOMBIE
+  Drops:
+  - bone 2-4 1
+  - exp 20-50 1
+  Options:
+    Silent: true
+    PreventSunburn: true
+    PreventOtherDrops: true
+  Damage: 0
+  Health: 12
+  Skills:
+  - model{mid=mso_twinkler} @Self ~onSpawn
+  - skill:TwinklerAttack @Self ~onAttack
+  - skill:TwinklerSpit @Self ~onTimer:60 0.4
+  - cancelevent{sync=true} @Self ~onAttack
+# DASLU3X3f1/SSRIcP6+8VqoQ5kwvA7kU1xAvbrn+eHcE1xs2QHFa5eSRKjx+ZjNqpzIaaol6GHCESQ/dkOQCpp/ajex4VQBK1i/poqrSVEE=

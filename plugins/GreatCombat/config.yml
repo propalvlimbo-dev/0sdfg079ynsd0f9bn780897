@@ -1,0 +1,143 @@
+colorizer: LEGACY
+metrics: false
+update-checker: false
+use-papi: true
+expansion:
+  error: Нет
+  'true': '&aДа'
+  'false': '&cНет'
+  delimiter: ', '
+time:
+  seconds:
+    form1: сек.
+    form3: сек.
+    form5: сек.
+  minutes:
+    form1: мин.
+    form3: мин.
+    form5: мин.
+  hours:
+    form1: ч.
+    form3: ч.
+    form5: ч.
+server-manager: Essentials
+scoreboard-manager: TAB
+pvp-time: 30
+region-manager: WorldGuard
+region-worlds:
+- world
+- world_nether
+- world_the_end
+- world_spawn
+tick-interval: 20
+time-to-stop: 1
+ignored-projectile:
+- EGG
+- SNOWBALL
+use-lang-helper: false
+helper-lang: RU_RU
+disable-lang: false
+items-cooldowns:
+  GOLDEN_APPLE:
+    translation: Золотое яблоко
+    handlers:
+    - CONSUME
+    checked-meta:
+    - MATERIAL
+    base64: H4sIAAAAAAAA/+NiYGBm4HZJLEkMSy0qzszPY2AQsudgYMpMYRDLzcxLTS5KTCuxSs/PSUnNi08sKMhJZWZgTc4vzSthYGBgZAAA2Z5EEz8AAAA=
+    time: 5
+    set-material-cooldown: true
+  ENCHANTED_GOLDEN_APPLE:
+    translation: Чарка
+    handlers:
+    - CONSUME
+    checked-meta:
+    - MATERIAL
+    base64: H4sIAAAAAAAA/wXBwQ2AIAwF0K/ExOjNCZzDixdn8EqaUpUEC8G6P+9NgMN8kNEp9YtZgWUf0ceA9Y0qXOmyTZQfUpPg75yCqKdSkjgMnH81AB0a2VocpEkAAAA=
+    time: 10
+    set-material-cooldown: true
+  ENDER_PEARL:
+    translation: Эндер-жемчуг
+    handlers:
+    - RIGHT_CLICK_AIR
+    - RIGHT_CLICK_BLOCK
+    checked-meta:
+    - MATERIAL
+    base64: H4sIAAAAAAAA/+NiYGBm4HZJLEkMSy0qzszPY2AQsudgYMpMYRDNzcxLTS5KTCuxSs1LSS2KL0hNLMphZmBNzi/NK2FgYGBkAAB72IPJPgAAAA==
+    time: 15
+    set-material-cooldown: true
+  CHORUS_FRUIT:
+    translation: Плод хоруса
+    handlers:
+    - CONSUME
+    checked-meta:
+    - MATERIAL
+    base64: H4sIAAAAAAAA/+NiYGBm4HZJLEkMSy0qzszPY2AQsudgYMpMYRDLzcxLTS5KTCuxSs7ILyotjk8rKs0sYWZgTc4vzSthYGBgZAAA6VEA7j8AAAA=
+    time: 5
+    set-material-cooldown: true
+  FIREWORK_ROCKET:
+    translation: Фейерверк
+    handlers:
+    - RIGHT_CLICK_AIR
+    - RIGHT_CLICK_BLOCK
+    checked-meta:
+    - MATERIAL
+    base64: H4sIAAAAAAAA/+NiYGBm4HZJLEkMSy0qzszPY2AQsudgYMpMYZDMzcxLTS5KTCuxSsssSi3PL8qOL8pPzk4tYWZgTc4vzSthYGBgZAAA+Tuef0IAAAA=
+    time: 8
+    set-material-cooldown: true
+preventable-items: {}
+allow-teleport: false
+ignored-worlds:
+- world1
+- world2
+- duels
+- world_duels
+prevent-start-if-damager:
+- GAMEMODE
+- VANISH
+- GOD
+prevent-start-if-target:
+- GAMEMODE
+- VANISH
+- GOD
+disable-for-damager:
+- GOD
+- GAMEMODE
+- FLY
+- VANISH
+- WALKSPEED
+disable-for-target:
+- GOD
+- FLY
+- WALKSPEED
+kill-on-leave: true
+kill-on-kick: false
+kick-messages:
+- Server closed
+- Restart
+- Перезагрузка
+- Рестарт
+- Выключение
+- Timed out
+commands:
+  type: WHITELIST
+  change-tabcomplete: true
+  commands:
+  - msg
+  - m
+  - w
+  - tell
+  - r
+  - reply
+  - spec
+  - report
+  - check
+  player-commands:
+  - /heal
+  - /fix
+  - /fix all
+  - /repair
+  - /tpa
+  - /tpahere
+  - /feed
+config-version: 3

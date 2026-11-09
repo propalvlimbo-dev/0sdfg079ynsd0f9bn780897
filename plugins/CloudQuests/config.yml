@@ -1,0 +1,98 @@
+database:
+  type: "SQLite"
+  host: "localhost"
+  port: 3306
+  username: "admin"
+  password: "admin"
+  playerDatabase: "data"
+
+settings:
+  menu_rows: 6
+  menu_name: '&fꈁꀃ'
+
+messages:
+  no-perm:
+    - '&x&F&8&B&E&F&BКвесты &7» &cНедостаточно прав'
+  reloaded:
+    - '&x&F&8&B&E&F&BКвесты &7» &aКонфиги перезагружены'
+  resetall-success:
+    - '&x&F&8&B&E&F&BКвесты &7» &aПрогресс всех игроков сброшен'
+  admin-usage:
+    - '&x&F&8&B&E&F&BКвесты &7» &f/cloudquests reload'
+    - '&x&F&8&B&E&F&BКвесты &7» &f/cloudquests generate [all|категория]'
+    - '&x&F&8&B&E&F&BКвесты &7» &f/cloudquests info <игрок> <категория>'
+    - '&x&F&8&B&E&F&BКвесты &7» &f/cloudquests reset <игрок> <категория>'
+    - '&x&F&8&B&E&F&BКвесты &7» &f/cloudquests resetall'
+    - '&x&F&8&B&E&F&BКвесты &7» &f/cloudquests resetdb'
+    - '&x&F&8&B&E&F&BКвесты &7» &f/cloudquests resetdb <игрок>'
+    - '&x&F&8&B&E&F&BКвесты &7» &f/cloudquests setstage <игрок> <кат> <id>'
+    - '&x&F&8&B&E&F&BКвесты &7» &f/cloudquests setprogress <игрок> <кат> <значение>'
+    - '&x&F&8&B&E&F&BКвесты &7» &f/cloudquests setskips <игрок> <кат> <значение>'
+    - '&x&F&8&B&E&F&BКвесты &7» &f/cloudquests complete <игрок> <кат>'
+    - '&x&F&8&B&E&F&BКвесты &7» &f/cloudquests completeall <игрок> [кат]'
+  ready_to_complete:
+    - '&x&F&8&B&E&F&B&l┎'
+    - '&x&F&8&B&E&F&B&l┃ &lЗАДАНИЕ ВЫПОЛНЕНО'
+    - '&x&F&8&B&E&F&B&l┃ &fСледующее задание разблокировано.'
+    - '&x&F&8&B&E&F&B&l┖'
+  quests_no_ready:
+    - '&x&F&8&B&E&F&BКвесты &7» &cТы ещё не готов к этим квестам.'
+  successful_reward:
+    - '&x&F&8&B&E&F&BКвесты &7» &aВаша награда была выдана. Спасибо за прохождение этапа.'
+  reward_not_ready:
+    - '&x&F&8&B&E&F&BКвесты &7» &cВыполните этап, чтобы получить награду.'
+  reward_name:
+    - '&b&lНаграда:'
+  reward_ready:
+    - '&aНажмите, чтобы забрать свою награду'
+  quest_title:
+    - '&x&F&8&B&E&F&B<quest_title>'
+  quest_completed_description:
+    - ''
+    - '&7Для выполнения данного квеста'
+    - '&7Вам нужно <quest_type>:'
+    - '&x&F&8&B&E&F&B<quest_target>'
+    - ''
+    - '&7Прогресс: &x&F&8&B&E&F&B<quest_requirement>&7/&x&F&8&B&E&F&B<quest_requirement>'
+    - '&7Статус: &aВыполнено'
+    - ''
+    - '&7Вы можете пропустить квест с помощью &x&F&8&B&E&F&BEL+'
+    - '&x&F&8&B&E&F&BВы уже прошли квест'
+  quest_not_completed_description:
+    - ''
+    - '&7Для выполнения данного квеста'
+    - '&7Вам нужно <quest_type>:'
+    - '&x&F&8&B&E&F&B<quest_target>'
+    - ''
+    - '&7Прогресс: &x&F&8&B&E&F&B<quest_progress>&7/&x&F&8&B&E&F&B<quest_requirement>'
+    - '&7Статус: &cНе выполнено'
+    - ''
+    - '&7Вы можете пропустить квест с помощью &x&F&8&B&E&F&BEL+'
+    - '&x&F&8&B&E&F&B/skipquest %id% %quest_id% &7(Осталось <quest_skip> раз)'
+  quest_not_completed_no_skips_description:
+    - ''
+    - '&7Для выполнения данного квеста'
+    - '&7Вам нужно <quest_type>:'
+    - '&x&F&8&B&E&F&B<quest_target>'
+    - ''
+    - '&7Прогресс: &x&F&8&B&E&F&B<quest_progress>&7/&x&F&8&B&E&F&B<quest_requirement>'
+    - '&7Статус: &cНе выполнено'
+    - ''
+    - '&7Вы можете пропустить квест с помощью &x&F&8&B&E&F&BEL+'
+    - '&cВы больше не можете пропустить квест'
+  quest_not_opened:
+    - '&cпредыдущие задания'
+  quest_not_opened_title:
+    - '&c&lНЕДОСТУПНО'
+    - '&cДля начала выполните'
+  quest_skipped:
+    - '&x&F&8&B&E&F&B&l┏'
+    - '&x&F&8&B&E&F&B&l┃ &lЗАДАНИЕ ПРОПУЩЕНО'
+    - '&x&F&8&B&E&F&B&l┃ &fСледующее задание разблокировано.'
+    - '&x&F&8&B&E&F&B&l┖'
+  quest_line_all_skipped:
+    - '&x&F&8&B&E&F&BКвесты &7» &aВы пропустили все этапы квестовой линии &x&F&8&B&E&F&B<category>&a.'
+  quest_no_skips:
+    - '&x&F&8&B&E&F&BКвесты &7» &cВы больше не можете пропустить квест'
+  no_permission_skip:
+    - '&x&F&8&B&E&F&BКвесты &7» &cУ вас нет подписки &x&F&8&B&E&F&BEL+'

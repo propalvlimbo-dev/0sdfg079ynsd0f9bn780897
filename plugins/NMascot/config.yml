@@ -1,0 +1,48 @@
+hour: 19
+minute: 30
+worldName: "world"
+removeSchem: false
+stopTime: 10
+xCords: 1850
+zCords: 1850
+pointsBank: 1000
+pointsForStanding: 1
+clanExpReward: 200
+clanPointsReward: 200
+startMessage:
+  - "&x&F&8&B&E&F&BТалисман &7» &fПоявился талисман!"
+  - "&x&F&8&B&E&F&BТалисман &7» &fКоординаты талисмана &x&F&8&B&E&F&B%x% %z%"
+  - "&x&F&8&B&E&F&BТалисман &7» &fКланы получают очки захвата талисмана за:"
+  - "&x&F&8&B&E&F&BТалисман &7» &fНахождение на талисмане"
+  - "&x&F&8&B&E&F&BТалисман &7» &fУбийства членов другого клана"
+  - "&x&F&8&B&E&F&BТалисман &7» &cТоп 3 клана получат клановые &bКоины &cи &bОпыт"
+clanRewardMessage:
+  - "&x&F&8&B&E&F&BТалисман &7» &fКлан &x&F&8&B&E&F&B%leader% &fзахватил талисман!"
+  - "&x&F&8&B&E&F&BТалисман &7» &fСтатистика клана:"
+  - "&x&F&8&B&E&F&BТалисман &7» &fЗахват территории: &x&F&8&B&E&F&B%clanReward%"
+  - "&x&F&8&B&E&F&BТалисман &7» &fУбийств: &x&F&8&B&E&F&B%kills%"
+  - "&x&F&8&B&E&F&BТалисман &7» &fСмертей: &x&F&8&B&E&F&B%deaths%"
+schematicName: "mascot.schem"
+noLeaderPlaceholder: "&c&lНет Лидера"
+actionBarMessage: "&fОчки захвата талисмана: &x&F&8&B&E&F&B%bank%&8/&x&F&8&B&E&F&B%max_bank%"
+rgRadius: 35
+region:
+  left: 50
+  right: 50
+  front: 50
+  back: 50
+  down: 50
+  height: 100
+  allowFlags:
+    - "pvp"
+    - "potion-splash"
+  denyFlags:
+    - "mob-spawning"
+    - "build"
+    - "block-place"
+    - "block-break"
+bossbar:
+  started:
+    color: "BLUE"
+    style: "SOLID"
+    name: "&x&F&8&B&E&F&BТалисман: &f%xCord% %zCord% &8| &x&F&8&B&E&F&BЛидер: &f%leader% &8| &x&F&8&B&E&F&BОчки: &f%bank%"

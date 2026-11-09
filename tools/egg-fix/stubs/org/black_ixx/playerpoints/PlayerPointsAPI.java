@@ -1,0 +1,1 @@
+package org.black_ixx.playerpoints; public class PlayerPointsAPI { public int balance; public int look(java.util.UUID u){return balance;} public boolean take(java.util.UUID u,int n){if(balance<n)return false;balance-=n;return true;} public boolean give(java.util.UUID u,int n){balance+=n;return true;} }
