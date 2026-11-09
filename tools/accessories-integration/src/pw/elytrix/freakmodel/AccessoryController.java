@@ -53,7 +53,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 /**
- * Server-side 3-section accessories shop & unified ModelEngine controller (v3.22.0):
+ * Server-side 4-section accessories shop & unified ModelEngine controller (v3.23.0):
  * open to ALL players, with permanent unlocks purchased for Риллики (PlayerPoints) just like {@code /shop}!
  * <ul>
  *   <li><b>Спина</b>: Ангельские крылья ({@code 6000 ꐃ}), Щупальца Канэки ({@code 7500 ꐃ})
@@ -63,6 +63,8 @@ import org.bukkit.persistence.PersistentDataType;
  *       спокойное кучевое облако с настоящим 3D-дождиком)</li>
  *   <li><b>Питомцы</b>: Мини-Роузи ({@code 2000 ꐃ}), Милый котёнок ({@code 2500 ꐃ}),
  *       Сколопендра Гуля ({@code 4500 ꐃ}) и Меллстрой ({@code 5000 ꐃ})</li>
+ *   <li><b>Ауры</b>: Аура сердечек ({@code 5500 ꐃ} — 12 сердечек кольцом вокруг игрока, которые
+ *       рождаются под ногами, плавно поднимаются вверх и тают над макушкой, непрерывным потоком)</li>
  * </ul>
  */
 public final class AccessoryController implements CommandExecutor, Listener {
@@ -70,6 +72,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final NamespacedKey HALO = new NamespacedKey("elytrixaccessories", "halo");
     static final NamespacedKey HEAD = new NamespacedKey("elytrixaccessories", "head");
     static final NamespacedKey PET = new NamespacedKey("elytrixaccessories", "pet");
+    static final NamespacedKey AURA = new NamespacedKey("elytrixaccessories", "aura");
 
     static final String HAT_LIGHTNING = "lightning";
     static final String HAT_SATAN = "satan";
@@ -82,6 +85,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final String PET_KITTEN = "kitten";
     static final String PET_MELLSTROY = "mellstroy";
 
+    static final String AURA_HEARTS = "hearts";
+
     static final String LIGHTNING_HAT_BLUEPRINT = "elytrix_lightning_hat";
     static final String SATAN_BLUEPRINT = "elytrix_satan_circle";
     static final String CENTIPEDE_BLUEPRINT = "elytrix_centipede";
@@ -90,6 +95,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final String MELLSTROY_BLUEPRINT = "elytrix_mellstroy";
     static final String KANEKI_BLUEPRINT = "elytrix_kaneki_tentacles";
     static final String ZEUS_BLUEPRINT = "elytrix_zeus_wings";
+    static final String HEART_AURA_BLUEPRINT = "elytrix_heart_aura";
 
     static final String IDLE_ANIM = "idle";
     static final String ADMIN_PERMISSION = "elytrixfreakmodel.admin";
@@ -113,6 +119,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
     static final int PRICE_WINGS = 6000;
     static final int PRICE_KANEKI = 7500;
     static final int PRICE_ZEUS_WINGS = 8000;
+    static final int PRICE_HEART_AURA = 5500;
 
     /** Synchronized (in-model 3D `D.Admin BAN`-style badge animation, real Mellstroy Ogg Vorbis sound) pairs. */
     static final String[][] MELLSTROY_EMOTES = {
@@ -124,15 +131,18 @@ public final class AccessoryController implements CommandExecutor, Listener {
         {"say_miliciya", "reallyworld:mellstroy.miliciya"}
     };
 
-    static final String TITLE_HUB = "§fꈁꀀꈂꏡꈂꀁ§fꈃꏠ";
-    // Спина now holds 3 accessories (29/31/33), so it reuses the 3-slot ꏧ content frame
-    // (content_acc_three.png) instead of the 2-slot ꏢ one.
+    // The menu gained a 4th section (Ауры), so the hub row is now 19/21/23/25 (ꏩ) and every
+    // section's tab row is 10/12/14/16 instead of 12/13/14.
+    static final String TITLE_HUB = "§fꈁꀀꈂꏩꈂꀁ§fꈃꏠ";
+    // Спина holds 3 accessories (29/31/33) -> 3-slot ꏧ content frame (content_acc_three.png).
     static final String TITLE_BACK = "§fꈁꀀꈂꏧꈂꀁ§fꈃꏤ";
     static final String TITLE_HATS = "§fꈁꀀꈂꏧꈂꀁ§fꈃꏥ";
     static final String TITLE_PETS = "§fꈁꀀꈂꏨꈂꀁ§fꈃꏦ";
+    // Ауры holds a single accessory (31) -> 1-slot ꏣ content frame (content_acc_one.png).
+    static final String TITLE_AURAS = "§fꈁꀀꈂꏣꈂꀁ§fꈃꏬ";
 
     enum Section {
-        HUB, BACK, HATS, PETS
+        HUB, BACK, HATS, PETS, AURAS
     }
 
     enum AccessoryItem {
@@ -145,7 +155,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
         MINI_ME(PET_MINI_ME, Section.PETS, 28, MINI_ME_BLUEPRINT, PRICE_MINI_ME, "Мини-Роузи"),
         KITTEN(PET_KITTEN, Section.PETS, 30, KITTEN_BLUEPRINT, PRICE_KITTEN, "Милый котёнок"),
         MELLSTROY(PET_MELLSTROY, Section.PETS, 32, MELLSTROY_BLUEPRINT, PRICE_MELLSTROY, "Меллстрой"),
-        CENTIPEDE(PET_CENTIPEDE, Section.PETS, 34, CENTIPEDE_BLUEPRINT, PRICE_CENTIPEDE, "Сколопендра Гуля");
+        CENTIPEDE(PET_CENTIPEDE, Section.PETS, 34, CENTIPEDE_BLUEPRINT, PRICE_CENTIPEDE, "Сколопендра Гуля"),
+        HEART_AURA(AURA_HEARTS, Section.AURAS, 31, HEART_AURA_BLUEPRINT, PRICE_HEART_AURA, "Аура сердечек");
 
         final String id;
         final Section section;
@@ -256,6 +267,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
     private static final java.util.Map<java.util.UUID, GhoulRig> PETS = new java.util.HashMap<>();
     private static final java.util.Map<java.util.UUID, GhoulRig> KAGUNES = new java.util.HashMap<>();
     private static final java.util.Map<java.util.UUID, GhoulRig> HATS = new java.util.HashMap<>();
+    private static final java.util.Map<java.util.UUID, GhoulRig> AURAS = new java.util.HashMap<>();
     private static final java.util.Map<java.util.UUID, PlayerBodyTracker> TRACKERS = new java.util.HashMap<>();
     private static final java.util.Map<java.util.UUID, Long> TELEPORT_RESPAWN_AT = new java.util.HashMap<>();
     private static final java.util.Set<String> REPORTED = new java.util.HashSet<>();
@@ -264,7 +276,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
 
     private AccessoryController() {}
 
-    /** Isolated Dummy-backed ModelEngine rig (Pets, Kaneki Rinkaku Kagune, Raincloud Hat or Satan Circle). */
+    /** Isolated Dummy-backed ModelEngine rig (Pets, Kaneki Rinkaku Kagune, Raincloud Hat, Satan Circle or an aura). */
     private static final class GhoulRig {
         final String blueprintId;
         final Dummy<?> dummy;
@@ -480,6 +492,44 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (PET_MELLSTROY.equals(choice)) return MELLSTROY_BLUEPRINT;
         if (PET_CENTIPEDE.equals(choice)) return CENTIPEDE_BLUEPRINT;
         return null;
+    }
+
+    static String auraChoice(Player player) {
+        String choice = get(player, AURA);
+        if (AURA_HEARTS.equals(choice) && owns(player, AccessoryItem.HEART_AURA)) return choice;
+        return "";
+    }
+
+    static String desiredAuraBlueprint(Player player) {
+        if (player == null || !player.isOnline() || player.isDead()
+                || player.getGameMode() == GameMode.SPECTATOR) {
+            return null;
+        }
+        String choice = auraChoice(player);
+        if (AURA_HEARTS.equals(choice)) return HEART_AURA_BLUEPRINT;
+        return null;
+    }
+
+    public static boolean heartAuraSelected(Player player) {
+        return HEART_AURA_BLUEPRINT.equals(desiredAuraBlueprint(player));
+    }
+
+    static boolean wearingHeartAura(Player player) {
+        GhoulRig rig = AURAS.get(player.getUniqueId());
+        return rig != null && HEART_AURA_BLUEPRINT.equals(rig.blueprintId)
+            && !rig.model.isDestroyed() && !rig.entity.isDestroyed();
+    }
+
+    static boolean heartAuraAttached(Player player) {
+        GhoulRig rig = AURAS.get(player.getUniqueId());
+        return rig != null && HEART_AURA_BLUEPRINT.equals(rig.blueprintId) && rig.attached;
+    }
+
+    static boolean heartAuraAnimating(Player player) {
+        GhoulRig rig = AURAS.get(player.getUniqueId());
+        if (rig == null || !HEART_AURA_BLUEPRINT.equals(rig.blueprintId) || rig.model.isDestroyed()) return false;
+        AnimationHandler handler = rig.model.getAnimationHandler();
+        return handler != null && handler.isPlayingAnimation(IDLE_ANIM);
     }
 
     public static FreakModelSpec halo(ElytrixFreakModelPlugin plugin, Player player) {
@@ -892,6 +942,21 @@ public final class AccessoryController implements CommandExecutor, Listener {
             ? 2.5D
             : (ZEUS_BLUEPRINT.equals(rig.blueprintId) ? 1.6D
                 : (MINI_ME_BLUEPRINT.equals(rig.blueprintId) ? 1.5D : 1.8D));
+        // An aura is a calm ambient column: it keeps the same tempo whether you walk or sprint.
+        if (HEART_AURA_BLUEPRINT.equals(rig.blueprintId)) {
+            double auraSpeed = 1.0D;
+            if (!handler.isPlayingAnimation(IDLE_ANIM) || rig.animProperty == null) {
+                IAnimationProperty prop = handler.playAnimation(IDLE_ANIM, 0.0D, 0.0D, auraSpeed, true);
+                if (prop != null) {
+                    prop.setForceLoopMode(BlueprintAnimation.LoopMode.LOOP);
+                    prop.setSpeed(auraSpeed);
+                }
+                rig.animProperty = prop;
+            } else {
+                rig.animProperty.setSpeed(auraSpeed);
+            }
+            return;
+        }
         double targetSpeed = 1.0D + Math.min(0.85D, Math.max(0.0D, horizSpeed) * speedBoost);
         if (!handler.isPlayingAnimation(IDLE_ANIM) || rig.animProperty == null) {
             IAnimationProperty prop = handler.playAnimation(IDLE_ANIM, 0.0D, 0.0D, targetSpeed, true);
@@ -953,6 +1018,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         syncSingleSlot(player, desiredPetBlueprint(player), PETS);
         syncSingleSlot(player, backRigBlueprint(player), KAGUNES);
         syncSingleSlot(player, desiredHatBlueprint(player), HATS);
+        syncSingleSlot(player, desiredAuraBlueprint(player), AURAS);
     }
 
     static void animatePets() {
@@ -971,12 +1037,13 @@ public final class AccessoryController implements CommandExecutor, Listener {
                 }
             }
         }
-        if (PETS.isEmpty() && KAGUNES.isEmpty() && HATS.isEmpty()) return;
+        if (PETS.isEmpty() && KAGUNES.isEmpty() && HATS.isEmpty() && AURAS.isEmpty()) return;
 
         java.util.Set<java.util.UUID> activePlayers = new java.util.LinkedHashSet<>();
         activePlayers.addAll(PETS.keySet());
         activePlayers.addAll(KAGUNES.keySet());
         activePlayers.addAll(HATS.keySet());
+        activePlayers.addAll(AURAS.keySet());
 
         for (java.util.UUID uuid : activePlayers) {
             Player wearer = Bukkit.getPlayer(uuid);
@@ -990,6 +1057,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
             tickActiveRig(uuid, wearer, tracker, PETS, desiredPetBlueprint(wearer));
             tickActiveRig(uuid, wearer, tracker, KAGUNES, backRigBlueprint(wearer));
             tickActiveRig(uuid, wearer, tracker, HATS, desiredHatBlueprint(wearer));
+            tickActiveRig(uuid, wearer, tracker, AURAS, desiredAuraBlueprint(wearer));
         }
     }
 
@@ -1224,7 +1292,10 @@ public final class AccessoryController implements CommandExecutor, Listener {
         model.setLockYaw(true);
         // Zeus' wings span ~3 blocks, so their tips need a wider render sphere than the
         // close-body rigs (kagune, centipede, hats, shoulder pets) which all fit in 2.5.
-        model.setViewRange(ZEUS_BLUEPRINT.equals(blueprintId) ? 4.5F : 2.5F);
+        // Zeus' wings span ~3 blocks; the heart aura is a 2.3-block tall column around the
+        // player, so it needs a slightly wider render sphere than the close-body rigs too.
+        model.setViewRange(ZEUS_BLUEPRINT.equals(blueprintId) ? 4.5F
+            : (HEART_AURA_BLUEPRINT.equals(blueprintId) ? 3.0F : 2.5F));
 
         PivotOverrideRegistry registry = ModelEngineAPI.getPivotOverrideRegistry();
         PivotOverride pivot = registry == null ? null : registry.getOrCreate(player);
@@ -1283,6 +1354,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (kagune != null) removeRig(uuid, kagune, KAGUNES);
         GhoulRig hat = HATS.get(uuid);
         if (hat != null) removeRig(uuid, hat, HATS);
+        GhoulRig aura = AURAS.get(uuid);
+        if (aura != null) removeRig(uuid, aura, AURAS);
     }
 
     static void releasePet(Player player) {
@@ -1294,7 +1367,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (player == null) return;
         java.util.UUID uuid = player.getUniqueId();
         releaseByUuid(uuid);
-        if (desiredPetBlueprint(player) != null || backRigBlueprint(player) != null || desiredHatBlueprint(player) != null) {
+        if (desiredPetBlueprint(player) != null || backRigBlueprint(player) != null
+                || desiredHatBlueprint(player) != null || desiredAuraBlueprint(player) != null) {
             TELEPORT_RESPAWN_AT.put(uuid, Long.valueOf(petTicks + Math.max(1L, delayTicks)));
         }
     }
@@ -1307,6 +1381,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
                                        SATAN_BLUEPRINT, LIGHTNING_HAT_BLUEPRINT,
                                        KANEKI_BLUEPRINT, ZEUS_BLUEPRINT, CENTIPEDE_BLUEPRINT,
                                        MINI_ME_BLUEPRINT, KITTEN_BLUEPRINT, MELLSTROY_BLUEPRINT,
+                                       HEART_AURA_BLUEPRINT,
                                        "elytrix_priora_black", "elytrix_priora_white", "elytrix_priora_pink"}) {
             if (resolveBlueprint(id) == null && !id.startsWith("elytrix_priora_")) {
                 if (missing.length() > 0) missing.append(", ");
@@ -1315,7 +1390,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         }
         try {
             if (missing.length() == 0) {
-                host.getLogger().info("[Аксессуары] ModelEngine загрузил все модели: крылья, нимб, круг сатаны, дождевое облако, кагуне Канэки, крылья Зевса, сколопендра, Мини-Роузи, котёнок, Меллстрой");
+                host.getLogger().info("[Аксессуары] ModelEngine загрузил все модели: крылья, нимб, круг сатаны, дождевое облако, кагуне Канэки, крылья Зевса, сколопендра, Мини-Роузи, котёнок, Меллстрой, аура сердечек");
             } else {
                 host.getLogger().warning("[Аксессуары] ModelEngine не загрузил: " + missing
                     + " — проверь plugins/ModelEngine/blueprints и лог ModelEngine");
@@ -1486,14 +1561,20 @@ public final class AccessoryController implements CommandExecutor, Listener {
         return "§8Не выбрано";
     }
 
+    private static String activeAuraLabel(Player player) {
+        String aura = auraChoice(player);
+        if (AURA_HEARTS.equals(aura)) return "§dАура сердечек";
+        return "§8Не выбрано";
+    }
+
     private static void placeSectionTabs(Inventory menu, Player player, Section current) {
         String openHint = "§a● Открыт раздел";
         String switchHint = "§x§F§8§B§E§F§BНажми, чтобы перейти";
-        menu.setItem(12, item(Material.FEATHER, "§x§F§A§D§8§F§C§lСпина", "angel_wings", null,
+        menu.setItem(10, item(Material.FEATHER, "§x§F§A§D§8§F§C§lСпина", "angel_wings", null,
             lore(current == Section.BACK ? openHint : switchHint,
                 "§7Крылья, кагуне и молнии на спину",
                 "§7Надето: " + activeBackLabel(player))));
-        menu.setItem(13, item(Material.NETHER_STAR, "§x§F§A§D§8§F§C§lШапки", "angel_halo", null,
+        menu.setItem(12, item(Material.NETHER_STAR, "§x§F§A§D§8§F§C§lШапки", "angel_halo", null,
             lore(current == Section.HATS ? openHint : switchHint,
                 "§7Нимб, круг сатаны и дождевое облако",
                 "§7Надето: " + activeHatLabel(player))));
@@ -1501,6 +1582,10 @@ public final class AccessoryController implements CommandExecutor, Listener {
             lore(current == Section.PETS ? openHint : switchHint,
                 "§7Мини-Роузи, Меллстрой, котёнок и спутники",
                 "§7Надето: " + activePetLabel(player))));
+        menu.setItem(16, item(Material.POPPY, "§x§F§A§D§8§F§C§lАуры", "heart_aura_icon", null,
+            lore(current == Section.AURAS ? openHint : switchHint,
+                "§7Живые эффекты вокруг игрока",
+                "§7Надето: " + activeAuraLabel(player))));
     }
 
     private static void placeBackAndClear(Inventory menu, Player player, boolean includeBackArrow) {
@@ -1555,6 +1640,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         String title = target == Section.BACK ? TITLE_BACK
             : target == Section.HATS ? TITLE_HATS
             : target == Section.PETS ? TITLE_PETS
+            : target == Section.AURAS ? TITLE_AURAS
             : TITLE_HUB;
         Holder holder = new Holder(target);
         Inventory menu = Bukkit.createInventory(holder, 54, title);
@@ -1569,23 +1655,29 @@ public final class AccessoryController implements CommandExecutor, Listener {
         String openSectionHint = "§x§F§8§B§E§F§BНажми, чтобы открыть раздел";
 
         if (target == Section.HUB) {
-            menu.setItem(20, item(Material.FEATHER, "§x§F§A§D§8§F§C§lСпина", "angel_wings", null,
+            menu.setItem(19, item(Material.FEATHER, "§x§F§A§D§8§F§C§lСпина", "angel_wings", null,
                 lore(openSectionHint,
                     "§7Крылья, кагуне и молнии на спину",
                     "§7Цены: §x§F§8§B§E§F§B6000 §8– §x§F§8§B§E§F§B8000 §fꐃ",
                     "§7Надето: " + activeBackLabel(player),
                     "")));
-            menu.setItem(22, item(Material.NETHER_STAR, "§x§F§A§D§8§F§C§lШапки", "angel_halo", null,
+            menu.setItem(21, item(Material.NETHER_STAR, "§x§F§A§D§8§F§C§lШапки", "angel_halo", null,
                 lore(openSectionHint,
                     "§7Нимб, круг сатаны и дождевое облако",
                     "§7Цены: §x§F§8§B§E§F§B3500 §8– §x§F§8§B§E§F§B4500 §fꐃ",
                     "§7Надето: " + activeHatLabel(player),
                     "")));
-            menu.setItem(24, item(Material.WHITE_DYE, "§x§F§A§D§8§F§C§lПитомцы", "mini_me_icon", null,
+            menu.setItem(23, item(Material.WHITE_DYE, "§x§F§A§D§8§F§C§lПитомцы", "mini_me_icon", null,
                 lore(openSectionHint,
                     "§7Мини-Роузи, Меллстрой, котёнок и спутники",
                     "§7Цены: §x§F§8§B§E§F§B2000 §8– §x§F§8§B§E§F§B5000 §fꐃ",
                     "§7Надето: " + activePetLabel(player),
+                    "")));
+            menu.setItem(25, item(Material.POPPY, "§x§F§A§D§8§F§C§lАуры", "heart_aura_icon", null,
+                lore(openSectionHint,
+                    "§7Живые эффекты вокруг игрока",
+                    "§7Цены: §x§F§8§B§E§F§B5500 §fꐃ",
+                    "§7Надето: " + activeAuraLabel(player),
                     "")));
             placeBackAndClear(menu, player, false);
         } else if (target == Section.BACK) {
@@ -1650,6 +1742,14 @@ public final class AccessoryController implements CommandExecutor, Listener {
                     "§7Живая сколопендра ползает по всему телу",
                     "§7Грудь, плечи, шея, спина, руки и бёдра")));
             placeBackAndClear(menu, player, true);
+        } else if (target == Section.AURAS) {
+            placeSectionTabs(menu, player, Section.AURAS);
+            boolean hearts = AURA_HEARTS.equals(auraChoice(player));
+            menu.setItem(31, item(Material.POPPY, "§x§F§A§D§8§F§C§lАура сердечек", "heart_aura_icon", null,
+                shopAccessoryLore(player, AccessoryItem.HEART_AURA, hearts,
+                    "§7Кольцо из 12 живых сердечек вокруг игрока",
+                    "§7Рождаются под ногами, плывут вверх и тают над макушкой")));
+            placeBackAndClear(menu, player, true);
         }
 
         player.openInventory(menu);
@@ -1661,6 +1761,7 @@ public final class AccessoryController implements CommandExecutor, Listener {
         if (key.equals("спина") || key.equals("back")) return Section.BACK;
         if (key.equals("шапки") || key.equals("шапка") || key.equals("hats") || key.equals("head")) return Section.HATS;
         if (key.equals("питомцы") || key.equals("питомец") || key.equals("pets") || key.equals("pet")) return Section.PETS;
+        if (key.equals("ауры") || key.equals("аура") || key.equals("auras") || key.equals("aura")) return Section.AURAS;
         return Section.HUB;
     }
 
@@ -1720,20 +1821,23 @@ public final class AccessoryController implements CommandExecutor, Listener {
 
         // Navigation clicks (open to everyone!)
         if (current == Section.HUB) {
-            if (slot == 20) { openMenu(player, Section.BACK); return; }
-            if (slot == 22) { openMenu(player, Section.HATS); return; }
-            if (slot == 24) { openMenu(player, Section.PETS); return; }
+            if (slot == 19) { openMenu(player, Section.BACK); return; }
+            if (slot == 21) { openMenu(player, Section.HATS); return; }
+            if (slot == 23) { openMenu(player, Section.PETS); return; }
+            if (slot == 25) { openMenu(player, Section.AURAS); return; }
         } else {
             if (slot == 45) { openMenu(player, Section.HUB); return; }
-            if (slot == 12) { openMenu(player, Section.BACK); return; }
-            if (slot == 13) { openMenu(player, Section.HATS); return; }
+            if (slot == 10) { openMenu(player, Section.BACK); return; }
+            if (slot == 12) { openMenu(player, Section.HATS); return; }
             if (slot == 14) { openMenu(player, Section.PETS); return; }
+            if (slot == 16) { openMenu(player, Section.AURAS); return; }
         }
 
         if (slot == 49) {
             set(player, BACK, "");
             setHead(player, "");
             set(player, PET, "");
+            set(player, AURA, "");
             TELEPORT_RESPAWN_AT.remove(player.getUniqueId());
             releaseByUuid(player.getUniqueId());
             player.sendMessage("§7Все аксессуары сняты.");
@@ -1797,6 +1901,8 @@ public final class AccessoryController implements CommandExecutor, Listener {
                 "Сколопендра",
                 "§dСколопендра Гуля выпущена и ползает по всему телу.",
                 "§7Сколопендра снята.");
+        } else if (clickedItem == AccessoryItem.HEART_AURA) {
+            toggleHeartAura(player);
         }
         openMenu(player, current);
     }
@@ -1871,6 +1977,36 @@ public final class AccessoryController implements CommandExecutor, Listener {
             return;
         }
         player.sendMessage("§dКрылья Зевса ударили молнией за спиной!");
+    }
+
+    private static void toggleHeartAura(Player player) {
+        if (AURA_HEARTS.equals(auraChoice(player))) {
+            set(player, AURA, "");
+            GhoulRig aura = AURAS.get(player.getUniqueId());
+            if (aura != null) removeRig(player.getUniqueId(), aura, AURAS);
+            player.sendMessage("§7Аура сердечек снята.");
+            return;
+        }
+        if (resolveBlueprint(HEART_AURA_BLUEPRINT) == null) {
+            player.sendMessage("§cМодель ауры сердечек ещё не загружена. Обратитесь к администрации.");
+            return;
+        }
+        set(player, AURA, AURA_HEARTS);
+        TELEPORT_RESPAWN_AT.remove(player.getUniqueId());
+        try {
+            syncPlayerRigs(player);
+        } catch (Throwable failure) {
+            reportOnce("аура сердечек", failure);
+            set(player, AURA, "");
+            player.sendMessage("§cАура сердечек не появилась: " + failure.getClass().getSimpleName());
+            return;
+        }
+        if (!wearingHeartAura(player)) {
+            set(player, AURA, "");
+            player.sendMessage("§cАура сердечек не появилась: модель не загрузилась.");
+            return;
+        }
+        player.sendMessage("§dАура сердечек зажглась — сердечки плывут вверх вокруг тебя!");
     }
 
     private static void toggleSatanCircle(Player player) {

@@ -587,6 +587,10 @@ ACC_FONT_PROVIDERS = [
     {'type': 'bitmap', 'file': 'reallyworld:gui/title/elytrix_acc_pets.png',    'ascent': 26, 'height': 32,  'chars': ['ꏦ']},
     {'type': 'bitmap', 'file': 'reallyworld:gui/content/content_acc_three.png', 'ascent': 31, 'height': 256, 'chars': ['ꏧ']},
     {'type': 'bitmap', 'file': 'reallyworld:gui/content/content_acc_four.png',  'ascent': 31, 'height': 256, 'chars': ['ꏨ']},
+    # 4-section menu (Спина / Шапки / Питомцы / Ауры): tabs move to 10,12,14,16
+    {'type': 'bitmap', 'file': 'reallyworld:gui/content/content_acc_hub4.png',   'ascent': 31, 'height': 256, 'chars': ['ꏩ']},
+    {'type': 'bitmap', 'file': 'reallyworld:gui/content/content_acc_auras3.png', 'ascent': 31, 'height': 256, 'chars': ['ꏫ']},
+    {'type': 'bitmap', 'file': 'reallyworld:gui/title/elytrix_acc_auras.png',    'ascent': 26, 'height': 32,  'chars': ['ꏬ']},
 ]
 
 
@@ -634,12 +638,16 @@ def build_gui_assets(rp_zip_path: Path, out_assets_dir: Path) -> dict:
     content_dir.mkdir(parents=True, exist_ok=True)
     title_dir.mkdir(parents=True, exist_ok=True)
 
+    # With the 4th section (Ауры) the tab row becomes 10,12,14,16 (symmetric around the
+    # chest centre slot 13) and the hub row becomes 19,21,23,25 (centre 22).
     layouts = {
-        'content_acc_hub.png':   [20, 22, 24, 49],                       # Hub: Спина [20], Шапки [22], Питомцы [24] + Снять всё [49]
-        'content_acc_two.png':   [12, 13, 14, 30, 32, 45, 49],           # Section tabs [12,13,14] + 2 items [30,32] + Назад [45] + Снять всё [49]
-        'content_acc_one.png':   [12, 13, 14, 31, 45, 49],               # Section tabs [12,13,14] + 1 item  [31]    + Назад [45] + Снять всё [49]
-        'content_acc_three.png': [12, 13, 14, 29, 31, 33, 45, 49],       # Section tabs [12,13,14] + 3 items [29,31,33] + Назад [45] + Снять всё [49]
-        'content_acc_four.png':  [12, 13, 14, 28, 30, 32, 34, 45, 49],   # Section tabs [12,13,14] + 4 items [28,30,32,34] + Назад [45] + Снять всё [49]
+        'content_acc_hub.png':   [19, 21, 23, 25, 49],                   # legacy 3-section hub layout, kept so old RPs stay valid
+        'content_acc_hub4.png':  [19, 21, 23, 25, 49],                   # Hub: Спина [19], Шапки [21], Питомцы [23], Ауры [25] + Снять всё [49]
+        'content_acc_two.png':   [10, 12, 14, 16, 30, 32, 45, 49],       # tabs [10,12,14,16] + 2 items [30,32] + Назад [45] + Снять всё [49]
+        'content_acc_one.png':   [10, 12, 14, 16, 31, 45, 49],           # tabs + 1 item  [31]    (Ауры)
+        'content_acc_three.png': [10, 12, 14, 16, 29, 31, 33, 45, 49],   # tabs + 3 items [29,31,33]
+        'content_acc_auras3.png': [10, 12, 14, 16, 29, 31, 33, 45, 49],  # tabs + 3 items (будущие ауры)
+        'content_acc_four.png':  [10, 12, 14, 16, 28, 30, 32, 34, 45, 49],  # tabs + 4 items [28,30,32,34]
     }
     written = {}
     for filename, slots in layouts.items():
@@ -658,6 +666,7 @@ def build_gui_assets(rp_zip_path: Path, out_assets_dir: Path) -> dict:
         ('elytrix_acc_back.png', 'СПИНА'),
         ('elytrix_acc_hats.png', 'ШАПКИ'),
         ('elytrix_acc_pets.png', 'ПИТОМЦЫ'),
+        ('elytrix_acc_auras.png', 'АУРЫ'),
     ):
         bitmap, _, _ = compose_title.compose(font, word=word)
         img = Image.fromarray(bitmap)

@@ -197,20 +197,21 @@ public class AccessoryTest {
   check(controller.onCommand(p,new Command(),"аксессуары",new String[0]),"command handled for regular player");
   check(p.opened!=null,"hub menu visible to everyone");
   check(Bukkit.size==54 && Bukkit.title.equals(AccessoryController.TITLE_HUB),"hub RP title");
-  check(Bukkit.slots.get(20).meta.title.contains("Спина") && Bukkit.slots.get(20).meta.model.equals(new NamespacedKey("reallyworld","angel_wings")),"hub Спина card");
-  check(Bukkit.slots.get(22).meta.title.contains("Шапки") && Bukkit.slots.get(22).meta.model.equals(new NamespacedKey("reallyworld","angel_halo")),"hub Шапки card");
-  check(Bukkit.slots.get(24).meta.title.contains("Питомцы") && Bukkit.slots.get(24).meta.model.equals(new NamespacedKey("reallyworld","mini_me_icon")),"hub Питомцы card");
+  check(Bukkit.slots.get(19).meta.title.contains("Спина") && Bukkit.slots.get(19).meta.model.equals(new NamespacedKey("reallyworld","angel_wings")),"hub Спина card");
+  check(Bukkit.slots.get(21).meta.title.contains("Шапки") && Bukkit.slots.get(21).meta.model.equals(new NamespacedKey("reallyworld","angel_halo")),"hub Шапки card");
+  check(Bukkit.slots.get(23).meta.title.contains("Питомцы") && Bukkit.slots.get(23).meta.model.equals(new NamespacedKey("reallyworld","mini_me_icon")),"hub Питомцы card");
+  check(Bukkit.slots.get(25).meta.title.contains("Ауры") && Bukkit.slots.get(25).meta.model.equals(new NamespacedKey("reallyworld","heart_aura_icon")),"hub Ауры card");
   ItemStack clearAll=Bukkit.slots.get(49);
   check(clearAll!=null && clearAll.getType()==Material.BARRIER && clearAll.meta.title.contains("Снять всё"),"clear-all button");
   ItemStack infoClock=Bukkit.slots.get(53);
   check(infoClock!=null && infoClock.getType()==Material.CLOCK && Integer.valueOf(100010).equals(infoClock.meta.cmd)
         && infoClock.meta.lore.stream().anyMatch(l -> l.contains("1 500") && l.contains("ꐃ")),
         "slot 53 ИНФОРМАЦИЯ clock shows live Риллики balance with ꐃ glyph just like /shop!");
-  check(Bukkit.slots.size()==5,"three category cards, clear-all, and /shop balance info on hub");
+  check(Bukkit.slots.size()==6,"four category cards, clear-all, and /shop balance info on hub");
 
   // Browse all 3 sections and verify exact Риллики prices in lore!
   InventoryClickEvent click=new InventoryClickEvent();click.view=()->p.opened;click.who=p;
-  click.slot=20;controller.onClick(click);
+  click.slot=19;controller.onClick(click);
   check(Bukkit.title.equals(AccessoryController.TITLE_BACK) && Bukkit.title.contains("ꏧ"),
         "opened Спина section with the 3-slot ꏧ RP frame");
   check(Bukkit.slots.get(29).meta.model.equals(new NamespacedKey("reallyworld","angel_wings")),"wings in Спина");
@@ -224,7 +225,7 @@ public class AccessoryTest {
   check(Integer.valueOf(10002).equals(Bukkit.slots.get(45).meta.cmd),"back arrow CMD 10002");
 
   // Tab switch Спина -> Шапки -> Питомцы
-  click.slot=13;controller.onClick(click);
+  click.slot=12;controller.onClick(click);
   check(Bukkit.title.equals(AccessoryController.TITLE_HATS) && Bukkit.title.contains("ꏧ"),
         "Шапки uses 3-slot ꏧ RP frame at slots 29, 31 & 33");
   check(Bukkit.slots.get(29).meta.model.equals(new NamespacedKey("reallyworld","angel_halo")),"halo in Шапки slot 29");
@@ -258,38 +259,38 @@ public class AccessoryTest {
   check(p.msg.contains("Недостаточно рилликов!"),"exact /shop insufficient Риллики message");
 
   // Top up balance to 51 500 ꐃ so our regular player can purchase all 10 accessories (total = 47 500 ꐃ -> 4 000 ꐃ left)!
-  wallet.put(p.uuid, 51500);
+  wallet.put(p.uuid, 57000);
 
   // Direct section command `/аксессуары спина` & missing blueprint safety check BEFORE charging Риллики!
   controller.onCommand(p,new Command(),"аксессуары",new String[]{"спина"});
   check(Bukkit.title.equals(AccessoryController.TITLE_BACK),"direct Спина command arg");
   ModelEngineAPI.backend=null;click.slot=31;controller.onClick(click);
-  check(wallet.get(p.uuid)==51500 && !AccessoryController.owns(p, AccessoryController.AccessoryItem.KANEKI),
+  check(wallet.get(p.uuid)==57000 && !AccessoryController.owns(p, AccessoryController.AccessoryItem.KANEKI),
         "missing blueprint never charges Риллики!");
   ModelEngineAPI.backend=fe;
 
-  // --- 1. Regular player BUYS Kaneki Ken's Rinkaku Kagune (7500 ꐃ, Спина slot 31 -> 44000 ꐃ) ---
+  // --- 1. Regular player BUYS Kaneki Ken's Rinkaku Kagune (7500 ꐃ, Спина slot 31 -> 49500 ꐃ) ---
   p.messages.clear();
   click.slot=31;controller.onClick(click);
-  check(wallet.get(p.uuid)==44000 && AccessoryController.owns(p, AccessoryController.AccessoryItem.KANEKI),
+  check(wallet.get(p.uuid)==49500 && AccessoryController.owns(p, AccessoryController.AccessoryItem.KANEKI),
         "7500 Рилликов deducted and Kaneki permanently unlocked!");
   check(p.messages.stream().anyMatch(m -> m.contains("Покупка успешно совершена!")),"exact /shop purchase message sent");
   check(AccessoryController.kanekiSelected(p) && AccessoryController.wearingKaneki(p),"kaneki kagune immediately equipped on purchase");
   check(AccessoryController.kanekiAnimating(p),"kaneki kagune playing living 'idle' loop");
   // Unequip & re-equip Kaneki -> 0 Рилликов charged!
   click.slot=31;controller.onClick(click);
-  check(!AccessoryController.wearingKaneki(p) && wallet.get(p.uuid)==44000,"unequipping purchased item is free");
+  check(!AccessoryController.wearingKaneki(p) && wallet.get(p.uuid)==49500,"unequipping purchased item is free");
   click.slot=31;controller.onClick(click);
-  check(AccessoryController.wearingKaneki(p) && wallet.get(p.uuid)==44000,"re-equipping purchased item is 100% free forever!");
+  check(AccessoryController.wearingKaneki(p) && wallet.get(p.uuid)==49500,"re-equipping purchased item is 100% free forever!");
   FakeActive kanekiModel=fe.q.last;
   kanekiModel.rendererReady=true;
   AccessoryController.animatePets();
   check(AccessoryController.kanekiAttached(p) && fe.pivots.passengers.contains(kanekiModel.pivotId),"kaneki pivot mounted");
 
-  // --- 2. Buy & Equip Мини-Роузи (2000 ꐃ, Питомцы slot 28 -> 42000 ꐃ) alongside Kaneki Kagune ---
+  // --- 2. Buy & Equip Мини-Роузи (2000 ꐃ, Питомцы slot 28 -> 47500 ꐃ) alongside Kaneki Kagune ---
   click.slot=14;controller.onClick(click); // switch to Питомцы
   click.slot=28;controller.onClick(click); // buy & equip Мини-Роузи!
-  check(wallet.get(p.uuid)==42000 && AccessoryController.owns(p, AccessoryController.AccessoryItem.MINI_ME),
+  check(wallet.get(p.uuid)==47500 && AccessoryController.owns(p, AccessoryController.AccessoryItem.MINI_ME),
         "Мини-Роузи bought for exact 2000 Рилликов!");
   check(p.msg.contains("Мини-Роузи") && !p.msg.contains("Мини-скин"),"chat message says Мини-Роузи");
   check(AccessoryController.miniMeSelected(p) && AccessoryController.wearingMiniMe(p),"dancing Мини-Роузи spawned alongside kagune");
@@ -301,9 +302,9 @@ public class AccessoryTest {
   AccessoryController.animatePets();
   check(AccessoryController.miniMeAttached(p) && fe.pivots.passengers.contains(miniModel.pivotId),"Мини-Роузи pivot mounted");
 
-  // --- 2b. Buy & Swap to Милый котёнок (2500 ꐃ, slot 30 -> 39500 ꐃ) ---
+  // --- 2b. Buy & Swap to Милый котёнок (2500 ꐃ, slot 30 -> 45000 ꐃ) ---
   click.slot=30;controller.onClick(click);
-  check(wallet.get(p.uuid)==39500 && AccessoryController.owns(p, AccessoryController.AccessoryItem.KITTEN),"bought kitten for 2500 ꐃ");
+  check(wallet.get(p.uuid)==45000 && AccessoryController.owns(p, AccessoryController.AccessoryItem.KITTEN),"bought kitten for 2500 ꐃ");
   check(!AccessoryController.wearingMiniMe(p) && miniModel.destroyed,"old Мини-Роузи Dummy cleanly destroyed on swap to kitten");
   check(AccessoryController.kittenSelected(p) && AccessoryController.wearingKitten(p) && AccessoryController.kittenAnimating(p),"Милый котёнок spawned & animating");
   FakeActive kittenModel=fe.q.last;
@@ -311,11 +312,11 @@ public class AccessoryTest {
   AccessoryController.animatePets();
   check(AccessoryController.kittenAttached(p) && fe.pivots.passengers.contains(kittenModel.pivotId),"kitten pivot mounted");
 
-  // --- 2c. Buy & Swap to Меллстрой (5000 ꐃ, slot 32 -> 34500 ꐃ) + 3D Badge Animations & Real Voice! ---
+  // --- 2c. Buy & Swap to Меллстрой (5000 ꐃ, slot 32 -> 40000 ꐃ) + 3D Badge Animations & Real Voice! ---
   p.messages.clear();
   p.fakeWorld.playedSounds.clear();
   click.slot=32;controller.onClick(click);
-  check(wallet.get(p.uuid)==34500 && AccessoryController.owns(p, AccessoryController.AccessoryItem.MELLSTROY),"bought Mellstroy for 5000 ꐃ");
+  check(wallet.get(p.uuid)==40000 && AccessoryController.owns(p, AccessoryController.AccessoryItem.MELLSTROY),"bought Mellstroy for 5000 ꐃ");
   check(!AccessoryController.wearingKitten(p) && kittenModel.destroyed,"old kitten Dummy cleanly destroyed on swap to Mellstroy");
   check(AccessoryController.mellstroySelected(p) && AccessoryController.wearingMellstroy(p) && AccessoryController.mellstroyAnimating(p),"Меллстрой spawned & animating");
   check(p.messages.size()==2 && p.messages.get(0).contains("Покупка успешно совершена!") && p.messages.get(1).contains("Меллстрой выскочил на плечо"),
@@ -348,9 +349,9 @@ public class AccessoryTest {
   check(p.messages.isEmpty(),"ZERO chat messages ever sent during periodic Mellstroy emotes!");
   check(seenEmotes.size()>=4 && p.fakeWorld.playedSounds.size()==15,"multiple distinct 3D badge animations & real voice clips played");
 
-  // --- 3. Buy & Swap to Сколопендра Гуля (4500 ꐃ, slot 34 -> 30000 ꐃ) ---
+  // --- 3. Buy & Swap to Сколопендра Гуля (4500 ꐃ, slot 34 -> 35500 ꐃ) ---
   click.slot=34;controller.onClick(click);
-  check(wallet.get(p.uuid)==30000 && AccessoryController.owns(p, AccessoryController.AccessoryItem.CENTIPEDE),"bought scolopendra for 4500 ꐃ");
+  check(wallet.get(p.uuid)==35500 && AccessoryController.owns(p, AccessoryController.AccessoryItem.CENTIPEDE),"bought scolopendra for 4500 ꐃ");
   check(!AccessoryController.wearingMellstroy(p) && mellModel.destroyed,"old Mellstroy Dummy cleanly destroyed on pet swap");
   check(AccessoryController.centipedeSelected(p) && AccessoryController.wearingCentipede(p),"scolopendra spawned cleanly");
   check(AccessoryController.wearingKaneki(p) && fe.entities.size()==2,"kagune untouched during pet swap");
@@ -370,17 +371,17 @@ public class AccessoryTest {
   // Free re-equip swap back to Меллстрой (slot 32) -> 0 Рилликов deducted (still 22000 ꐃ)!
   p.messages.clear();
   click.slot=32;controller.onClick(click);
-  check(wallet.get(p.uuid)==30000 && p.messages.size()==1,"re-equipping already owned Mellstroy charges 0 Рилликов");
+  check(wallet.get(p.uuid)==35500 && p.messages.size()==1,"re-equipping already owned Mellstroy charges 0 Рилликов");
   check(AccessoryController.wearingMellstroy(p) && !AccessoryController.wearingCentipede(p) && centModel.destroyed,"swapped to Mellstroy cleanly");
   FakeModeled mellEntity=fe.q.lastEntity;
   mellModel=fe.q.last;
   mellModel.rendererReady=true;
   AccessoryController.animatePets();
 
-  // --- 3a. Buy & Equip NEW Круг Сатаны (4500 ꐃ, Шапки slot 31 -> 25500 ꐃ) alongside Kaneki + Меллстрой! ---
-  click.slot=13;controller.onClick(click); // switch to Шапки
+  // --- 3a. Buy & Equip NEW Круг Сатаны (4500 ꐃ, Шапки slot 31 -> 31000 ꐃ) alongside Kaneki + Меллстрой! ---
+  click.slot=12;controller.onClick(click); // switch to Шапки
   click.slot=31;controller.onClick(click); // buy & equip Круг Сатаны!
-  check(wallet.get(p.uuid)==25500 && AccessoryController.owns(p, AccessoryController.AccessoryItem.SATAN_CIRCLE),
+  check(wallet.get(p.uuid)==31000 && AccessoryController.owns(p, AccessoryController.AccessoryItem.SATAN_CIRCLE),
         "Круг Сатаны bought for exact 4500 Рилликов!");
   check(AccessoryController.satanCircleSelected(p) && AccessoryController.wearingSatanCircle(p) && AccessoryController.satanCircleAnimating(p),
         "Круг Сатаны Dummy spawned right above the head & spinning the seamless 'idle' pentagram loop!");
@@ -402,9 +403,9 @@ public class AccessoryTest {
         && Math.abs(satanEntity.headPitch) < 0.01F && satanEntity.rotTick == -1,
         "Круг Сатаны follows a -42 deg head turn while looking up (-55 deg) without tilting off the head!");
 
-  // --- 3b. Buy & Swap to Дождевое облако (4000 ꐃ, Шапки slot 33 -> 21500 ꐃ) -> cleanly replaces Круг Сатаны! ---
+  // --- 3b. Buy & Swap to Дождевое облако (4000 ꐃ, Шапки slot 33 -> 27000 ꐃ) -> cleanly replaces Круг Сатаны! ---
   click.slot=33;controller.onClick(click); // buy & equip Дождевое облако!
-  check(wallet.get(p.uuid)==21500 && AccessoryController.owns(p, AccessoryController.AccessoryItem.LIGHTNING_HAT),
+  check(wallet.get(p.uuid)==27000 && AccessoryController.owns(p, AccessoryController.AccessoryItem.LIGHTNING_HAT),
         "Дождевое облако bought for exact 4000 Рилликов!");
   check(!AccessoryController.wearingSatanCircle(p) && satanModel.destroyed,
         "old Круг Сатаны Dummy cleanly destroyed on swap to Дождевое облако");
@@ -470,19 +471,19 @@ public class AccessoryTest {
         "stale pre-teleport passenger IDs removed");
   check(fe.pivots.passengers.ids.size() == 3,"new post-teleport passenger IDs active for all 3 slots");
 
-  // --- 7. Buy & Switch to Angel Wings (6000 ꐃ, Спина slot 29 -> 15500 ꐃ) ---
-  click.slot=12;controller.onClick(click); // tab to Спина
+  // --- 7. Buy & Switch to Angel Wings (6000 ꐃ, Спина slot 29 -> 21000 ꐃ) ---
+  click.slot=10;controller.onClick(click); // tab to Спина
   click.slot=29;controller.onClick(click); // buy & equip Angel Wings!
-  check(wallet.get(p.uuid)==15500 && AccessoryController.owns(p, AccessoryController.AccessoryItem.WINGS),
+  check(wallet.get(p.uuid)==21000 && AccessoryController.owns(p, AccessoryController.AccessoryItem.WINGS),
         "Ангельские крылья bought for exact 6000 Рилликов!");
   check(!AccessoryController.wearingKaneki(p) && AccessoryController.back(plugin,p)==plugin.wings,"wings replace kaneki cleanly");
   check(AccessoryController.wearingMellstroy(p) && AccessoryController.wearingLightningHat(p) && fe.entities.size()==2,
         "Mellstroy & Грозовая молния remain untouched alongside wings");
 
   // --- 8. Buy & Switch to Halo in Шапки (3500 ꐃ, slot 29 -> 4000 ꐃ) -> mutual exclusion destroys Грозовая молния Dummy! ---
-  click.slot=13;controller.onClick(click); // tab to Шапки
+  click.slot=12;controller.onClick(click); // tab to Шапки
   click.slot=29;controller.onClick(click); // buy & equip Halo!
-  check(wallet.get(p.uuid)==12000 && AccessoryController.owns(p, AccessoryController.AccessoryItem.HALO_ITEM),
+  check(wallet.get(p.uuid)==17500 && AccessoryController.owns(p, AccessoryController.AccessoryItem.HALO_ITEM),
         "Божественный нимб bought for 3500 Рилликов (12 000 ꐃ remaining after 9 purchases!)");
   check(!AccessoryController.wearingLightningHat(p) && fe.entities.size()==1,
         "switching to Божественный нимб cleanly destroys Грозовая молния Dummy");
@@ -490,15 +491,15 @@ public class AccessoryTest {
         "Спина (Wings) + Шапки (Halo) + Питомцы (Меллстрой) all active simultaneously!");
   // Switch back to Круг Сатаны (slot 31) for free (still 4000 ꐃ)!
   click.slot=31;controller.onClick(click);
-  check(wallet.get(p.uuid)==12000 && AccessoryController.halo(plugin,p)==null && AccessoryController.wearingSatanCircle(p),
+  check(wallet.get(p.uuid)==17500 && AccessoryController.halo(plugin,p)==null && AccessoryController.wearingSatanCircle(p),
         "re-equipping Круг Сатаны is free and disables WornAngelRig halo!");
-  check(Bukkit.slots.get(53).meta.lore.stream().anyMatch(l -> l.contains("12 000") && l.contains("ꐃ")),
+  check(Bukkit.slots.get(53).meta.lore.stream().anyMatch(l -> l.contains("17 500") && l.contains("ꐃ")),
         "slot 53 ИНФОРМАЦИЯ clock updated live to 12 000 ꐃ!");
 
-  // --- 8b. Buy & Equip NEW Крылья Зевса (8000 ꐃ, Спина slot 33 -> 4000 ꐃ) -> two wings woven from lightning! ---
-  click.slot=12;controller.onClick(click); // tab to Спина
+  // --- 8b. Buy & Equip NEW Крылья Зевса (8000 ꐃ, Спина slot 33 -> 9500 ꐃ) -> two wings woven from lightning! ---
+  click.slot=10;controller.onClick(click); // tab to Спина
   click.slot=33;controller.onClick(click); // buy & equip Крылья Зевса!
-  check(wallet.get(p.uuid)==4000 && AccessoryController.owns(p, AccessoryController.AccessoryItem.ZEUS_WINGS),
+  check(wallet.get(p.uuid)==9500 && AccessoryController.owns(p, AccessoryController.AccessoryItem.ZEUS_WINGS),
         "Крылья Зевса bought for exact 8000 Рилликов!");
   check(AccessoryController.zeusWingsSelected(p) && AccessoryController.wearingZeusWings(p) && AccessoryController.zeusWingsAnimating(p),
         "Крылья Зевса Dummy spawned on the back & playing the seamless 'idle' lightning-beat loop!");
@@ -512,29 +513,62 @@ public class AccessoryTest {
         "Крылья Зевса pivot mounted on player PivotOverride");
   check(fe.entities.size()==3,"Крылья Зевса, Круг Сатаны & Меллстрой all riding their own isolated Dummy entity");
 
+  // --- 8c. Buy & Equip NEW Аура сердечек (5500 ꐃ, Ауры tab slot 16 -> card slot 31 -> 4000 ꐃ) ---
+  click.slot=16;controller.onClick(click); // tab to Ауры
+  check(Bukkit.title.equals(AccessoryController.TITLE_AURAS),"opened brand-new Ауры section via tab slot 16");
+  check(Bukkit.slots.get(31).meta.title.contains("Аура сердечек")
+        && Bukkit.slots.get(31).meta.model.equals(new NamespacedKey("reallyworld","heart_aura_icon")),
+        "Аура сердечек in Ауры slot 31 with heart_aura_icon!");
+  check(Bukkit.slots.get(31).meta.lore.stream().anyMatch(l -> l.contains("5500") && l.contains("ꐃ")),
+        "Аура сердечек priced at 5500 Рилликов!");
+  click.slot=31;controller.onClick(click); // buy & equip Аура сердечек!
+  check(wallet.get(p.uuid)==4000 && AccessoryController.owns(p, AccessoryController.AccessoryItem.HEART_AURA),
+        "Аура сердечек bought for exact 5500 Рилликов!");
+  check(AccessoryController.heartAuraSelected(p) && AccessoryController.wearingHeartAura(p)
+        && AccessoryController.heartAuraAnimating(p),
+        "Аура сердечек Dummy spawned around the player & playing the seamless 'idle' rise loop!");
+  check(AccessoryController.wearingZeusWings(p) && AccessoryController.wearingSatanCircle(p)
+        && AccessoryController.wearingMellstroy(p),
+        "Аура lives in its own 4th slot and never collides with Спина, Шапки or Питомцы!");
+  check(fe.entities.size()==4,"Аура сердечек rides a 4th isolated Dummy entity, zero UUID collision");
+  FakeActive auraModel=fe.q.last;
+  auraModel.rendererReady=true;
+  AccessoryController.animatePets();
+  check(AccessoryController.heartAuraAttached(p) && fe.pivots.passengers.contains(auraModel.pivotId),
+        "Аура сердечек pivot mounted on player PivotOverride");
+  // Unequip & re-equip the aura -> always free!
+  click.slot=31;controller.onClick(click);
+  check(!AccessoryController.wearingHeartAura(p) && wallet.get(p.uuid)==4000,"unequipping the aura is free");
+  click.slot=31;controller.onClick(click);
+  check(AccessoryController.wearingHeartAura(p) && wallet.get(p.uuid)==4000,"re-equipping the aura is free forever!");
+
   // --- 9. Clear All (slot 49) ---
   click.slot=49;controller.onClick(click);
   check(!AccessoryController.wearingMellstroy(p) && !AccessoryController.wearingSatanCircle(p)
         && !AccessoryController.wearingLightningHat(p) && !AccessoryController.wearingZeusWings(p)
+        && !AccessoryController.wearingHeartAura(p)
         && AccessoryController.back(plugin,p)==null && AccessoryController.halo(plugin,p)==null && fe.entities.isEmpty(),
-        "clear-all removes back, hat, and pet cleanly");
+        "clear-all removes back, hat, pet and aura cleanly");
 
   // --- 10. Quit cleanup + Dual Persistence (owned_accessories.yml survives PDC wipe + server restart!) ---
   click.slot=14;controller.onClick(click); // Питомцы
   click.slot=28;controller.onClick(click); // Мини-Роузи (free!)
-  click.slot=13;controller.onClick(click); // Шапки
+  click.slot=12;controller.onClick(click); // Шапки
   click.slot=31;controller.onClick(click); // Круг Сатаны (free!)
-  click.slot=12;controller.onClick(click); // Спина
+  click.slot=16;controller.onClick(click); // Ауры
+  click.slot=31;controller.onClick(click); // Аура сердечек (free!)
+  click.slot=10;controller.onClick(click); // Спина
   click.slot=33;controller.onClick(click); // Крылья Зевса (free!)
   check(wallet.get(p.uuid)==4000 && AccessoryController.wearingMiniMe(p)
-        && AccessoryController.wearingSatanCircle(p) && AccessoryController.wearingZeusWings(p),
-        "all 3 Dummy slots (Крылья Зевса + Круг Сатаны + Мини-Роузи) equipped for free before quit");
+        && AccessoryController.wearingSatanCircle(p) && AccessoryController.wearingZeusWings(p)
+        && AccessoryController.wearingHeartAura(p),
+        "all 4 Dummy slots (Крылья Зевса + Круг Сатаны + Мини-Роузи + Аура сердечек) equipped for free before quit");
   controller.onQuit(new PlayerQuitEvent(p));
   check(!AccessoryController.wearingMiniMe(p) && !AccessoryController.wearingSatanCircle(p)
-        && !AccessoryController.wearingZeusWings(p) && fe.entities.isEmpty(),
-        "quit releases all 3 Dummy rigs without leak");
+        && !AccessoryController.wearingZeusWings(p) && !AccessoryController.wearingHeartAura(p) && fe.entities.isEmpty(),
+        "quit releases all 4 Dummy rigs without leak");
 
-  // Simulate full server restart + playerdata PDC wipe: owned_accessories.yml restores all 9 purchases!
+  // Simulate full server restart + playerdata PDC wipe: owned_accessories.yml restores all 11 purchases!
   p.data.m.clear();
   AccessoryController.install(plugin);
   for (AccessoryController.AccessoryItem item : AccessoryController.AccessoryItem.values()) {
@@ -556,6 +590,6 @@ public class AccessoryTest {
   AccessoryController.install(bare);
   check(bare.mockCommand.executor==null && !bare.warnings.isEmpty(),"missing command logged safely");
   InventoryDragEvent drag=new InventoryDragEvent();drag.view=click.view;controller.onDrag(drag);check(drag.cancelled,"drag cancelled");
-  System.out.println("All v3.22.0 tests passed: public /accessories (/acc, /акс) Риллики shop + Крылья Зевса (8000 ꐃ, wings woven from lightning) + Круг Сатаны (4500 ꐃ, spinning pentagram halo) + Дождевое облако (4000 ꐃ, 3D drizzle) + all 10 3D models!");
+  System.out.println("All v3.23.0 tests passed: public /accessories (/acc, /акс) Риллики shop + new Ауры section + Аура сердечек (5500 ꐃ, 12 rising hearts) + Крылья Зевса (8000 ꐃ, wings woven from lightning) + Круг Сатаны (4500 ꐃ, spinning pentagram halo) + Дождевое облако (4000 ꐃ, 3D drizzle) + all 11 3D models!");
  }
 }

@@ -8,9 +8,10 @@ pixel-art menu icon (`reallyworld:zeus_wings_icon`) and a multi-angle verificati
      которые вместе выглядят как крылья"), chosen by the player to replace v2's
      fan-of-six-arcs silhouette:
        - Each wing is ONE CONTINUOUS TRUNK BOLT (`trunk_r` / `trunk_l`) that traces the
-         wing's leading edge: shoulder hub `(0.9, 22.4)` -> up over the wrist
-         `(11.6, 26.5)` -> down and out to the wingtip `(22.8, 19.9)`.  That single arc
-         is what makes the whole shape read as a WING and not as a burst.
+         wing's leading edge: shoulder hub `(0.9, 20.4)` -> up over the wrist
+         `(11.6, 24.5)` -> down and out to the wingtip `(22.8, 17.9)`.  That single arc
+         is what makes the whole shape read as a WING and not as a burst.  (The whole
+         wing was later dropped `2.0` BB = `0.125` block on request: wrist `26.5 -> 24.5`.)
        - SEVEN BRANCH BOLTS (`branch_r1..r7`, `branch_l1..l7`) split off the trunk and
          hang down/back like primaries — short by the shoulder, longest at the wrist,
          tucking back up at the tip, so their tips trace the wing's trailing edge.
@@ -78,7 +79,9 @@ IDLE_STEPS = 64
 ROOT_ORIG = [0.0, 22.0, 1.9]
 
 # Right-wing discharge hub.  The trunk bolt is born here; the left hub is the X mirror.
-HUB = (0.90, 22.40, 2.30)
+# Dropped 2.0 BB (0.125 block) together with the whole wing — the player asked for the
+# wings to sit a little lower on the back.
+HUB = (0.90, 20.40, 2.30)
 
 
 def uid(tag: str) -> str:
@@ -302,21 +305,21 @@ def mirror_all(cubes: list, suffix: str = '_l') -> list:
 # `gaps` so the wing stays ragged and transparent between the bolts — the
 # trunk stays continuous on purpose, it is the spar the wing hangs from.
 TRUNK = [
-    (0.90, 22.40, 2.30),
-    (2.60, 23.30, 2.42),
-    (4.40, 24.20, 2.55),
-    (6.20, 25.05, 2.68),
-    (8.00, 25.70, 2.80),
-    (9.80, 26.20, 2.90),
-    (11.60, 26.50, 2.95),    # <- wrist: the highest point of the whole wing
-    (13.35, 26.35, 2.90),
-    (15.10, 26.10, 2.85),
-    (16.70, 25.55, 2.78),
-    (18.30, 24.90, 2.70),
-    (19.70, 23.90, 2.62),
-    (21.00, 22.80, 2.55),
-    (21.95, 21.40, 2.50),
-    (22.80, 19.90, 2.45),    # <- wingtip, sweeping down and back
+    (0.90, 20.40, 2.30),
+    (2.60, 21.30, 2.42),
+    (4.40, 22.20, 2.55),
+    (6.20, 23.05, 2.68),
+    (8.00, 23.70, 2.80),
+    (9.80, 24.20, 2.90),
+    (11.60, 24.50, 2.95),    # <- wrist: the highest point of the whole wing
+    (13.35, 24.35, 2.90),
+    (15.10, 24.10, 2.85),
+    (16.70, 23.55, 2.78),
+    (18.30, 22.90, 2.70),
+    (19.70, 21.90, 2.62),
+    (21.00, 20.80, 2.55),
+    (21.95, 19.40, 2.50),
+    (22.80, 17.90, 2.45),    # <- wingtip, sweeping down and back
 ]
 # The trunk pivots at the wrist, so the farthest cube (the wingtip) sits only
 # ~13 BB away — far inside ModelEngine's +-24 BB bone budget.
@@ -324,13 +327,13 @@ TRUNK_PIVOT_I = 6
 
 # (attach index into TRUNK, tip x, tip y, tip z, L-steps, hw, hd, jag amp, gaps)
 BRANCHES = [
-    (2,   1.60, 18.60, 2.10, 5, 0.24, 0.20, 0.72, (2,)),
-    (4,   6.60, 17.40, 2.15, 6, 0.26, 0.21, 0.80, (1, 4)),
-    (6,  12.10, 16.90, 2.20, 6, 0.26, 0.21, 0.84, (2,)),
-    (8,  17.40, 17.40, 2.30, 6, 0.25, 0.20, 0.78, (1, 4)),
-    (10, 21.60, 18.30, 2.45, 5, 0.23, 0.19, 0.70, (2,)),
-    (12, 24.10, 19.10, 2.55, 4, 0.21, 0.18, 0.62, (1,)),
-    (13, 24.90, 18.30, 2.58, 4, 0.19, 0.17, 0.56, (2,)),
+    (2, 1.60, 16.60, 2.10, 5, 0.24, 0.20, 0.72, (2,)),
+    (4, 6.60, 15.40, 2.15, 6, 0.26, 0.21, 0.80, (1, 4)),
+    (6, 12.10, 14.90, 2.20, 6, 0.26, 0.21, 0.84, (2,)),
+    (8, 17.40, 15.40, 2.30, 6, 0.25, 0.20, 0.78, (1, 4)),
+    (10, 21.60, 16.30, 2.45, 5, 0.23, 0.19, 0.70, (2,)),
+    (12, 24.10, 17.10, 2.55, 4, 0.21, 0.18, 0.62, (1,)),
+    (13, 24.90, 16.30, 2.58, 4, 0.19, 0.17, 0.56, (2,)),
 ]
 BRANCH_COUNT = len(BRANCHES)
 
@@ -361,7 +364,7 @@ BRANCH_TIPS = {
 }
 # Spark clusters hovering just above each shoulder blade.
 SPARKS = [
-    (2.6, 24.4, 2.5), (-2.6, 24.4, 2.5),
+    (2.6, 22.8, 2.5), (-2.6, 22.8, 2.5),
 ]
 
 
@@ -431,7 +434,7 @@ def build_geometry(elements: list) -> dict:
         root_cubes.append(_cube(f'cloud_{i}', [x0, y0, z0], [x1, y1, z1],
                                 ROOT_ORIG, cloud_faces))
     # two short feeder bolts: storm cloud -> each wing's trunk hub
-    feed_pts = [(-2.2, 23.6, 2.70), (-1.1, 23.2, 2.60), (0.0, 22.9, 2.50), (0.90, 22.40, 2.30)]
+    feed_pts = [(-1.8, 23.0, 2.70), (-0.5, 22.1, 2.60), (0.4, 21.1, 2.45), TRUNK[0]]
     root_cubes.extend(jag_chain('feed_r', feed_pts, 0.45, 2.2, 0.16, 0.14,
                                 glow_faces, ROOT_ORIG, taper=0.35))
     root_cubes.extend(mirror_all(jag_chain('feed_r', feed_pts, 0.45, 2.2, 0.16, 0.14,
