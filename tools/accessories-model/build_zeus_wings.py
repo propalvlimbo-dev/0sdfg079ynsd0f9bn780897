@@ -14,8 +14,10 @@ pixel-art menu icon (`reallyworld:zeus_wings_icon`) and a multi-angle verificati
        - A small dark thunder-cloud (`zeus_root`) boiling between the shoulder blades,
          two bright arcs stabbing from the cloud into the shoulders, and two crackling
          spark clusters (`spark_r`, `spark_l`) that pulse and tumble.
-       - Palette: electric cyan-white core, electric blue body, deep thunder-indigo
-         bevel, dark storm slate cloud, warm gold sparks.
+       - Palette (COLD, per the reference art — zero warm/gold hues anywhere):
+         icy cyan-white core, electric blue body `hue 210`, deep thunder-indigo
+         bevel `hue 229` (`#0B174C`-family), dark storm-indigo cloud and
+         ice-cyan sparks. Every colour lives in hue `180..230`.
   2. Motion (seamless 4.8 s loop @ 20 TPS = 96 ticks, 64 keyframes):
        - The wings beat gently (`+-8 deg` flap, `+3 deg` double-time shudder, `+-3.5 deg`
          sweep) with a constant high-frequency `+-0.9 deg` electric crackle jitter, so
@@ -71,12 +73,12 @@ UV_BOLT_CORE = (0.25, 0.25, 3.75, 3.75)      # near-white electric core, cyan st
 UV_BOLT_MID = (4.25, 0.25, 7.75, 3.75)       # electric blue body
 UV_BOLT_EDGE = (8.25, 0.25, 11.75, 3.75)     # deep thunder-indigo bevel
 UV_STORM_CLOUD = (12.25, 0.25, 15.75, 3.75)  # dark storm slate cloud
-UV_SPARK_GOLD = (0.25, 4.25, 3.75, 7.75)     # warm gold spark
+UV_SPARK_ICE = (0.25, 4.25, 3.75, 7.75)      # cold electric-cyan spark (was warm gold)
 UV_GLOW = (4.25, 4.25, 7.75, 7.75)           # pale cyan-white fork glow
 
 
 def build_zeus_texture() -> Image.Image:
-    """128x128 pixel-art texture: bolt core / body / bevel, storm cloud, gold spark."""
+    """128x128 pixel-art texture: bolt core / body / bevel, storm-indigo cloud, icy spark."""
     arr = np.zeros((128, 128, 4), dtype=np.uint8)
 
     def noise(x: int, y: int, a: int, b: int, m: int) -> int:
@@ -87,15 +89,15 @@ def build_zeus_texture() -> Image.Image:
         for px in range(32):
             streak = noise(px, py, 0.9, 7.3, 11)
             edge = min(px, py, 31 - px, 31 - py)
-            if py % 6 in (0, 1):
-                col = (255, 255, 255, 255)
+            if py % 7 in (0,):
+                col = (240, 253, 255, 255)
             elif streak == 0:
-                col = (168, 236, 255, 255)
+                col = (150, 228, 255, 255)
             elif edge == 0:
-                col = (198, 242, 255, 255)
+                col = (186, 237, 255, 255)
             else:
                 d = 8 if ((px + py) % 2 == 0) else 0
-                col = (226 + d, 250, 255, 255)
+                col = (216 + d, 247, 255, 255)
             arr[py, px] = col
 
     # --- Tile (1,0): electric blue body ---
@@ -104,16 +106,16 @@ def build_zeus_texture() -> Image.Image:
             streak = noise(px, py, 3.1, 5.7, 9)
             edge = min(px, py, 31 - px, 31 - py)
             if py % 7 in (0, 1):
-                col = (127, 208, 255, 255)
+                col = (110, 198, 255, 255)
             elif streak == 0:
-                col = (96, 186, 250, 255)
+                col = (72, 172, 252, 255)
             elif edge == 0:
-                col = (27, 111, 214, 255)
+                col = (16, 84, 196, 255)
             elif edge == 1:
-                col = (58, 152, 240, 255)
+                col = (40, 138, 238, 255)
             else:
                 d = 10 if ((px + py) % 2 == 0) else -8
-                col = (63 + d, 169 + d // 2, 255, 255)
+                col = (46 + d, 156 + d // 2, 255, 255)
             arr[py, 32 + px] = col
 
     # --- Tile (2,0): deep thunder-indigo bevel ---
@@ -122,14 +124,14 @@ def build_zeus_texture() -> Image.Image:
             crack = noise(px, py, 5.3, 2.9, 13)
             edge = min(px, py, 31 - px, 31 - py)
             if crack == 0:
-                col = (75, 73, 200, 255)
+                col = (58, 82, 214, 255)
             elif edge == 0:
-                col = (20, 20, 63, 255)
+                col = (11, 23, 76, 255)
             elif edge == 1:
-                col = (43, 42, 122, 255)
+                col = (28, 46, 122, 255)
             else:
                 d = 6 if ((px + py) % 2 == 0) else -5
-                col = (43 + d, 42 + d, 122 + d, 255)
+                col = (28 + d, 46 + d, 122 + d, 255)
             arr[py, 64 + px] = col
 
     # --- Tile (3,0): dark storm slate cloud ---
@@ -138,28 +140,28 @@ def build_zeus_texture() -> Image.Image:
             blob = noise(px // 3, py // 3, 12.9898, 78.233, 7)
             edge = min(px, py, 31 - px, 31 - py)
             if edge == 0:
-                col = (24, 29, 44, 255)
+                col = (13, 18, 48, 255)
             elif blob == 0:
-                col = (92, 106, 142, 255)
+                col = (74, 94, 180, 255)
             elif blob <= 2:
-                col = (60, 70, 97, 255)
+                col = (34, 46, 110, 255)
             else:
                 d = 5 if ((px + py) % 2 == 0) else -4
-                col = (60 + d, 70 + d, 97 + d, 255)
+                col = (34 + d, 46 + d, 110 + d, 255)
             arr[py, 96 + px] = col
 
-    # --- Tile (0,1): warm gold spark ---
+    # --- Tile (0,1): cold electric-cyan spark (was warm gold — reference art is cold) ---
     for py in range(32):
         for px in range(32):
             ray = noise(px, py, 8.1, 1.7, 5)
             edge = min(px, py, 31 - px, 31 - py)
             if edge == 0:
-                col = (196, 138, 24, 255)
+                col = (10, 44, 112, 255)
             elif ray == 0:
-                col = (255, 210, 74, 255)
+                col = (96, 226, 255, 255)
             else:
                 d = 9 if ((px + py) % 2 == 0) else 0
-                col = (255, 246 - d, 200 - d * 2, 255)
+                col = (168 + d, 238, 255, 255)
             arr[32 + py, px] = col
 
     # --- Tile (1,1): pale cyan-white fork glow ---
@@ -168,14 +170,14 @@ def build_zeus_texture() -> Image.Image:
             streak = noise(px, py, 2.2, 9.1, 8)
             edge = min(px, py, 31 - px, 31 - py)
             if py % 5 in (0, 1):
-                col = (255, 255, 255, 255)
+                col = (240, 252, 255, 255)
             elif streak == 0:
-                col = (159, 233, 255, 255)
+                col = (140, 226, 255, 255)
             elif edge == 0:
-                col = (176, 226, 250, 255)
+                col = (166, 232, 255, 255)
             else:
                 d = 7 if ((px + py) % 2 == 0) else 0
-                col = (223 + d, 249, 255, 255)
+                col = (210 + d, 246, 255, 255)
             arr[32 + py, 32 + px] = col
 
     return Image.fromarray(arr, 'RGBA')
@@ -333,7 +335,7 @@ def build_geometry(elements: list) -> dict:
                         east=UV_BOLT_EDGE, west=UV_BOLT_EDGE)
     glow_faces = _faces(UV_GLOW, east=UV_BOLT_EDGE, west=UV_BOLT_EDGE)
     cloud_faces = _faces(UV_STORM_CLOUD)
-    spark_faces = _faces(UV_SPARK_GOLD, east=UV_GLOW, west=UV_GLOW)
+    spark_faces = _faces(UV_SPARK_ICE, east=UV_GLOW, west=UV_GLOW)
 
     def add(cube: dict) -> str:
         elements.append(cube)
@@ -625,11 +627,11 @@ def build_zeus_icon() -> Image.Image:
     img = Image.new('RGBA', (32, 32), (0, 0, 0, 0))
     px = img.load()
 
-    core = (236, 252, 255, 255)
-    mid = (63, 169, 255, 255)
-    dark = (43, 42, 122, 255)
-    cloud = (60, 70, 97, 255)
-    cloud_hi = (92, 106, 142, 255)
+    core = (232, 250, 255, 255)     # icy cyan-white core
+    mid = (48, 158, 255, 255)       # electric blue, hue 210
+    dark = (28, 46, 122, 255)       # deep thunder-indigo, hue 229
+    cloud = (34, 46, 110, 255)      # dark storm-indigo cloud
+    cloud_hi = (74, 94, 180, 255)   # storm-indigo highlight
 
     def put(x: int, y: int, c: tuple) -> None:
         if 0 <= x < 32 and 0 <= y < 32:
