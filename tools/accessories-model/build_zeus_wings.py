@@ -4,34 +4,44 @@ pixel-art menu icon (`reallyworld:zeus_wings_icon`) and a multi-angle verificati
 
 100% pure procedural Python + Pillow + NumPy — zero AI generation.
 
-  1. Visual design (faithful 3D translation of "крылья, состоящие из молнии"):
-       - Two great arcing wing arms forged from ONE continuous jagged lightning bolt
-         each (`wing_r` / `wing_l`): they sprout from the shoulder blades, sweep up
-         over the shoulders and curve down to a lowered tip at `X = +-22.2`.
-       - 10 primary lightning feathers (`feather_r1..r5`, `feather_l1..l5`): each one
-         is an independently animated zig-zag bolt hanging from the arm, with its own
-         razor fork branch.  Nothing here is a soft plume — every "feather" is a bolt.
-       - A small dark thunder-cloud (`zeus_root`) boiling between the shoulder blades,
-         two bright arcs stabbing from the cloud into the shoulders, and two crackling
-         spark clusters (`spark_r`, `spark_l`) that pulse and tumble.
-       - Palette (COLD, per the reference art — zero warm/gold hues anywhere):
-         icy cyan-white core, electric blue body `hue 210`, deep thunder-indigo
-         bevel `hue 229` (`#0B174C`-family), dark storm-indigo cloud and
-         ice-cyan sparks. Every colour lives in hue `180..230`.
+  1. Visual design v2 — "RAGGED BUNDLE OF DISCHARGES WITH GAPS" ("рваный пучок
+     разрядов с просветами"), chosen by the player to replace the earlier
+     "arm + 5 feathers" silhouette:
+       - Each wing is a FAN OF 6 INDEPENDENT ARCS (`arc_r1..r6`, `arc_l1..l6`) that
+         shoot straight out of one shoulder-blade discharge hub.  No shared arm, no
+         feather row — six separate bolts fanning from a single point.
+       - The fan is deliberately IRREGULAR: angles `+61 / +38 / +27 / +5 / -12 / -33`
+         deg and lengths `11.0 / 18.0 / 24.0 / 20.0 / 13.5 / 8.5` BB, so no two arcs
+         line up and the wing never reads as a comb.
+       - RAGGED: every arc is pierced by missing segments (`gaps`), so you can see
+         straight through the wing between the bolts.  Each arc also throws one short
+         razor fork and 1-2 loose tip sparks, which is what sells "живое электричество".
+       - `wing_r` / `wing_l` are now empty group bones: they carry the whole-wing beat,
+         while every arc wobbles and surges on its own phase on top of it.
+       - A small storm-indigo cloud (`zeus_root`) boils between the shoulder blades with
+         two bright feeder arcs, plus two crackling spark clusters (`spark_r`, `spark_l`).
+       - Texture v2 — SMOOTH ENERGY GRADIENT (no scanlines, no per-pixel hash): each
+         32x32 tile is a continuous ramp between 3-4 stops, modulated by two very
+         low-frequency sine waves and finished with a 4x4 Bayer dither so the 8-bit
+         gradient never bands.
+       - Palette v2 — COLD BUT BRIGHTER (per the player's pick): white-hot core,
+         bright cyan `hue ~192`, electric blue `hue ~210`, deep thunder-indigo
+         `hue ~228`.  Every colour lives in hue `180..232`, zero warm/gold pixels.
   2. Motion (seamless 4.8 s loop @ 20 TPS = 96 ticks, 64 keyframes):
-       - The wings beat gently (`+-8 deg` flap, `+3 deg` double-time shudder, `+-3.5 deg`
-         sweep) with a constant high-frequency `+-0.9 deg` electric crackle jitter, so
-         the bolts never sit still.
-       - Every feather flutters on its own phase and surges `+18%` on its own
-         discharge beat — the whole wing "breathes" lightning instead of flapping cloth.
+       - Whole-wing beat on the group bones (`+-7 deg` flap, `+3 deg` double-time
+         shudder, `+-3.5 deg` sweep, `+-0.9 deg` crackle jitter).
+       - Every arc independently flutters (`+-4.5 deg` + `1.6 deg` high-frequency
+         crackle) and surges `+18%` on its own staggered discharge beat, so the wing
+         "breathes" lightning instead of flapping cloth.
        - The root hovers `+-0.14` BB, the spark clusters pulse `0.55 -> 1.20` and tumble
          a full turn per loop.
   3. Engine safety (the rules that made the earlier models reliable):
        - **Not a single cube is rotated.**  Every jag is an axis-aligned L-step, exactly
          like `elytrix_kaneki_tentacles` / `elytrix_centipede`, so ModelEngine 4.1.0's
          `RotationSolver` is never invoked (it crashes on rotated cubes).
-       - Every bone's geometry stays inside `+-24` BB of its own pivot, so ModelEngine's
-         `scaleToFit()` never has to rescale a bone.
+       - Every bone's geometry stays inside `+-24` BB of its own pivot (each arc pivots
+         40% along its own length, so the longest `24` BB arc reaches only `14.4`),
+         which keeps ModelEngine's `scaleToFit()` out of the pipeline.
        - `16.0` BB units = `1.0` block: feet `0.00`, waist `11.25`, neck/shoulders `22.50`,
          bare skull top `30.00`, `+Z` is the player's back.
 """
@@ -61,124 +71,95 @@ IDLE_STEPS = 64
 # Shoulder-blade pivot: upper back, just under the neck, on the back surface (+Z).
 ROOT_ORIG = [0.0, 22.0, 1.9]
 
+# Right-wing discharge hub.  Every arc is born here; the left hub is the X mirror.
+HUB = (1.10, 21.90, 2.35)
+
 
 def uid(tag: str) -> str:
-    return str(uuid.uuid5(uuid.NAMESPACE_OID, f'elytrix.zeus_wings.v1:{tag}'))
+    return str(uuid.uuid5(uuid.NAMESPACE_OID, f'elytrix.zeus_wings.v2:{tag}'))
 
 
 # ---------------------------------------------------------------------------
-# 1. Electric-bolt texture (128x128, UV grid 16x16 -> 32 px tiles = 4 UV units)
+# 1. Smooth-gradient electric texture (128x128, UV grid 16x16 -> 32 px tiles = 4 UV)
 # ---------------------------------------------------------------------------
-UV_BOLT_CORE = (0.25, 0.25, 3.75, 3.75)      # near-white electric core, cyan streaks
-UV_BOLT_MID = (4.25, 0.25, 7.75, 3.75)       # electric blue body
-UV_BOLT_EDGE = (8.25, 0.25, 11.75, 3.75)     # deep thunder-indigo bevel
-UV_STORM_CLOUD = (12.25, 0.25, 15.75, 3.75)  # dark storm slate cloud
-UV_SPARK_ICE = (0.25, 4.25, 3.75, 7.75)      # cold electric-cyan spark (was warm gold)
+UV_BOLT_CORE = (0.25, 0.25, 3.75, 3.75)      # white-hot core -> bright cyan
+UV_BOLT_MID = (4.25, 0.25, 7.75, 3.75)       # bright cyan -> electric blue
+UV_BOLT_EDGE = (8.25, 0.25, 11.75, 3.75)     # electric blue -> deep thunder-indigo
+UV_STORM_CLOUD = (12.25, 0.25, 15.75, 3.75)  # storm-indigo cloud
+UV_SPARK_ICE = (0.25, 4.25, 3.75, 7.75)      # radial white-hot spark
 UV_GLOW = (4.25, 4.25, 7.75, 7.75)           # pale cyan-white fork glow
+
+# 4x4 Bayer matrix — kills 8-bit banding without ever looking dithered at 32 px.
+_BAYER4 = ((0, 8, 2, 10), (12, 4, 14, 6), (3, 11, 1, 9), (15, 7, 13, 5))
+
+
+def _ramp(stops, t: float):
+    """Piecewise-linear colour ramp.  `stops` = [(pos, (r,g,b)), ...] sorted by pos."""
+    if t <= stops[0][0]:
+        return stops[0][1]
+    if t >= stops[-1][0]:
+        return stops[-1][1]
+    for i in range(len(stops) - 1):
+        p0, c0 = stops[i]
+        p1, c1 = stops[i + 1]
+        if p0 <= t <= p1:
+            k = (t - p0) / (p1 - p0)
+            return tuple(int(round(c0[j] + (c1[j] - c0[j]) * k)) for j in range(3))
+    return stops[-1][1]
 
 
 def build_zeus_texture() -> Image.Image:
-    """128x128 pixel-art texture: bolt core / body / bevel, storm-indigo cloud, icy spark."""
+    """128x128 pixel-art texture: 6 smooth gradient tiles, zero scanlines."""
     arr = np.zeros((128, 128, 4), dtype=np.uint8)
 
-    def noise(x: int, y: int, a: int, b: int, m: int) -> int:
-        return int(abs(math.sin(x * a + y * b) * 43758.5453) % m)
+    def tile(tx: int, ty: int) -> tuple:
+        """Pixel-iterator factory for the 32x32 tile at grid cell (tx, ty)."""
+        return (tx * 32, ty * 32)
 
-    # --- Tile (0,0): near-white electric core with horizontal plasma streaks ---
-    for py in range(32):
-        for px in range(32):
-            streak = noise(px, py, 0.9, 7.3, 11)
-            edge = min(px, py, 31 - px, 31 - py)
-            if py % 7 in (0,):
-                col = (240, 253, 255, 255)
-            elif streak == 0:
-                col = (150, 228, 255, 255)
-            elif edge == 0:
-                col = (186, 237, 255, 255)
-            else:
-                d = 8 if ((px + py) % 2 == 0) else 0
-                col = (216 + d, 247, 255, 255)
-            arr[py, px] = col
+    def paint(tx: int, ty: int, fn) -> None:
+        ox, oy = tile(tx, ty)
+        for py in range(32):
+            for px in range(32):
+                col = fn(px, py)
+                dith = (_BAYER4[py & 3][px & 3] / 16.0 - 0.46875) * 1.7
+                arr[oy + py, ox + px] = (
+                    max(0, min(255, int(round(col[0] + dith)))),
+                    max(0, min(255, int(round(col[1] + dith)))),
+                    max(0, min(255, int(round(col[2] + dith)))),
+                    255,
+                )
 
-    # --- Tile (1,0): electric blue body ---
-    for py in range(32):
-        for px in range(32):
-            streak = noise(px, py, 3.1, 5.7, 9)
-            edge = min(px, py, 31 - px, 31 - py)
-            if py % 7 in (0, 1):
-                col = (110, 198, 255, 255)
-            elif streak == 0:
-                col = (72, 172, 252, 255)
-            elif edge == 0:
-                col = (16, 84, 196, 255)
-            elif edge == 1:
-                col = (40, 138, 238, 255)
-            else:
-                d = 10 if ((px + py) % 2 == 0) else -8
-                col = (46 + d, 156 + d // 2, 255, 255)
-            arr[py, 32 + px] = col
+    # Two very low-frequency sine waves: gentle large-scale energy wobble, no noise.
+    def wob(px: int, py: int) -> float:
+        return (0.035 * math.sin(px * 0.21 + py * 0.13)
+                + 0.028 * math.sin(px * 0.09 - py * 0.17))
 
-    # --- Tile (2,0): deep thunder-indigo bevel ---
-    for py in range(32):
-        for px in range(32):
-            crack = noise(px, py, 5.3, 2.9, 13)
-            edge = min(px, py, 31 - px, 31 - py)
-            if crack == 0:
-                col = (58, 82, 214, 255)
-            elif edge == 0:
-                col = (11, 23, 76, 255)
-            elif edge == 1:
-                col = (28, 46, 122, 255)
-            else:
-                d = 6 if ((px + py) % 2 == 0) else -5
-                col = (28 + d, 46 + d, 122 + d, 255)
-            arr[py, 64 + px] = col
+    # --- Tile (0,0): white-hot core -> bright cyan (vertical ramp) ---
+    core_stops = [(0.00, (255, 255, 255)), (0.45, (214, 248, 255)), (1.00, (150, 232, 255))]
+    paint(0, 0, lambda px, py: _ramp(core_stops, py / 31.0 + wob(px, py)))
 
-    # --- Tile (3,0): dark storm slate cloud ---
-    for py in range(32):
-        for px in range(32):
-            blob = noise(px // 3, py // 3, 12.9898, 78.233, 7)
-            edge = min(px, py, 31 - px, 31 - py)
-            if edge == 0:
-                col = (13, 18, 48, 255)
-            elif blob == 0:
-                col = (74, 94, 180, 255)
-            elif blob <= 2:
-                col = (34, 46, 110, 255)
-            else:
-                d = 5 if ((px + py) % 2 == 0) else -4
-                col = (34 + d, 46 + d, 110 + d, 255)
-            arr[py, 96 + px] = col
+    # --- Tile (1,0): bright cyan -> electric blue ---
+    mid_stops = [(0.00, (186, 242, 255)), (0.40, (92, 212, 255)), (1.00, (30, 140, 248))]
+    paint(1, 0, lambda px, py: _ramp(mid_stops, py / 31.0 + wob(px, py)))
 
-    # --- Tile (0,1): cold electric-cyan spark (was warm gold — reference art is cold) ---
-    for py in range(32):
-        for px in range(32):
-            ray = noise(px, py, 8.1, 1.7, 5)
-            edge = min(px, py, 31 - px, 31 - py)
-            if edge == 0:
-                col = (10, 44, 112, 255)
-            elif ray == 0:
-                col = (96, 226, 255, 255)
-            else:
-                d = 9 if ((px + py) % 2 == 0) else 0
-                col = (168 + d, 238, 255, 255)
-            arr[32 + py, px] = col
+    # --- Tile (2,0): electric blue -> deep thunder-indigo ---
+    edge_stops = [(0.00, (78, 146, 244)), (0.45, (32, 88, 206)), (1.00, (12, 28, 94))]
+    paint(2, 0, lambda px, py: _ramp(edge_stops, py / 31.0 + wob(px, py)))
+
+    # --- Tile (3,0): storm-indigo cloud (soft, low contrast, still cold) ---
+    cloud_stops = [(0.00, (72, 102, 214)), (0.50, (36, 58, 152)), (1.00, (14, 22, 72))]
+    paint(3, 0, lambda px, py: _ramp(cloud_stops, py / 31.0 + wob(px, py) * 1.6))
+
+    # --- Tile (0,1): radial white-hot spark ---
+    spark_stops = [(0.00, (255, 255, 255)), (0.32, (188, 246, 255)),
+                   (0.68, (104, 228, 255)), (1.00, (38, 172, 255))]
+    paint(0, 1, lambda px, py: _ramp(
+        spark_stops,
+        min(1.0, math.hypot(px - 15.5, py - 15.5) / 17.0 + wob(px, py))))
 
     # --- Tile (1,1): pale cyan-white fork glow ---
-    for py in range(32):
-        for px in range(32):
-            streak = noise(px, py, 2.2, 9.1, 8)
-            edge = min(px, py, 31 - px, 31 - py)
-            if py % 5 in (0, 1):
-                col = (240, 252, 255, 255)
-            elif streak == 0:
-                col = (140, 226, 255, 255)
-            elif edge == 0:
-                col = (166, 232, 255, 255)
-            else:
-                d = 7 if ((px + py) % 2 == 0) else 0
-                col = (210 + d, 246, 255, 255)
-            arr[32 + py, 32 + px] = col
+    glow_stops = [(0.00, (255, 255, 255)), (0.50, (220, 250, 255)), (1.00, (148, 234, 255))]
+    paint(1, 1, lambda px, py: _ramp(glow_stops, py / 31.0 + wob(px, py)))
 
     return Image.fromarray(arr, 'RGBA')
 
@@ -236,7 +217,8 @@ def _jag(i: int, seed: float) -> float:
 
 
 def jag_chain(prefix: str, points: list, amp: float, seed: float,
-              hw: float, hd: float, faces: dict, origin: list, taper: float = 0.5) -> list:
+              hw: float, hd: float, faces: dict, origin: list,
+              taper: float = 0.5, gaps=()) -> list:
     """One jagged lightning bolt through `points` (list of (x, y, z)).
 
     Interior nodes are pushed off the polyline by an alternating perpendicular kick,
@@ -244,6 +226,9 @@ def jag_chain(prefix: str, points: list, amp: float, seed: float,
     vertical bar).  The chain therefore reads as a hard zig-zag ribbon while
     **not a single cube carries a rotation** — the rule that keeps ModelEngine 4.1.0's
     `RotationSolver` (which crashes on rotated cubes) out of the pipeline.
+
+    `gaps` lists segment indices that are SKIPPED ENTIRELY.  That is what makes the
+    wing ragged: the bolt is literally interrupted and you can see through it.
     """
     pts = []
     n = len(points)
@@ -251,7 +236,6 @@ def jag_chain(prefix: str, points: list, amp: float, seed: float,
         if i == 0 or i == n - 1:
             pts.append((float(px), float(py), float(pz)))
             continue
-        # perpendicular of the average incoming/outgoing direction
         ax, ay = points[i][0] - points[i - 1][0], points[i][1] - points[i - 1][1]
         bx, by = points[i + 1][0] - points[i][0], points[i + 1][1] - points[i][1]
         la, lb = math.hypot(ax, ay) or 1.0, math.hypot(bx, by) or 1.0
@@ -264,6 +248,8 @@ def jag_chain(prefix: str, points: list, amp: float, seed: float,
     cubes = []
     segs = len(pts) - 1
     for i in range(segs):
+        if i in gaps:
+            continue                      # <- deliberate hole in the discharge
         x0, y0, za = pts[i]
         x1, y1, zb = pts[i + 1]
         h = hw * (1.0 - taper * (i / max(1, segs - 1)))
@@ -283,7 +269,7 @@ def jag_chain(prefix: str, points: list, amp: float, seed: float,
 
 def bolt_cubes(prefix: str, p0: tuple, p1: tuple, z0: float, z1: float,
                hw: float, hd: float, steps: int, amp: float, seed: float,
-               faces: dict, origin: list, taper: float = 0.5) -> list:
+               faces: dict, origin: list, taper: float = 0.5, gaps=()) -> list:
     """Straight jagged bolt from `p0` to `p1` (XY plane), drifting `z0` -> `z1`."""
     pts = []
     for i in range(steps + 1):
@@ -291,7 +277,7 @@ def bolt_cubes(prefix: str, p0: tuple, p1: tuple, z0: float, z1: float,
         pts.append((p0[0] + (p1[0] - p0[0]) * t,
                     p0[1] + (p1[1] - p0[1]) * t,
                     z0 + (z1 - z0) * t))
-    return jag_chain(prefix, pts, amp, seed, hw, hd, faces, origin, taper)
+    return jag_chain(prefix, pts, amp, seed, hw, hd, faces, origin, taper, gaps)
 
 
 def mirror_all(cubes: list, suffix: str = '_l') -> list:
@@ -299,37 +285,81 @@ def mirror_all(cubes: list, suffix: str = '_l') -> list:
 
 
 # ---------------------------------------------------------------------------
-# 3. Exact wing geometry (right wing authored in +X; the left one is mirrored)
+# 3. Geometry v2 — a ragged fan of six discharges per wing
 # ---------------------------------------------------------------------------
-# Wing arm: sprouts at the shoulder blade, arcs up over the shoulder and then
-# sweeps down to a lowered tip — a classic great-wing silhouette in pure lightning.
-ARM_PATH = [
-    (1.0, 22.5), (3.6, 23.9), (6.4, 25.1), (9.4, 25.8), (12.4, 25.9),
-    (15.2, 25.2), (17.8, 23.7), (20.2, 21.8), (22.2, 19.6),
+# (angle deg from horizontal, length BB, L-steps, half width, half depth, jag amp, gaps)
+# Angles and lengths are deliberately uneven: +61/+38/+27/+5/-12/-33 and
+# 11.0/18.0/24.0/20.0/13.5/8.5, so the fan never reads as a regular comb.
+ARCS = [
+    (52.0, 11.0, 5, 0.22, 0.19, 0.78, (2,)),
+    (34.0, 18.0, 6, 0.26, 0.22, 0.86, (1, 3)),
+    (18.0, 23.0, 8, 0.30, 0.25, 0.95, (2, 5)),
+    (3.0, 20.0, 8, 0.28, 0.24, 0.90, (1, 4)),
+    (-13.0, 13.5, 6, 0.25, 0.21, 0.80, (2,)),
+    (-33.0, 8.5, 5, 0.21, 0.18, 0.70, (1, 3)),
 ]
-ARM_Z0, ARM_Z1 = 2.05, 1.95
+ARC_COUNT = len(ARCS)
 
-# Five primary bolts per wing: (attach point, tip point, half width, half depth, steps, jag, seed)
-FEATHERS = [
-    ((4.4, 24.5), (5.6, 17.6), 0.28, 0.25, 5, 0.62, 1.7),
-    ((8.2, 25.6), (10.4, 15.2), 0.31, 0.27, 6, 0.72, 3.1),
-    ((12.2, 25.9), (15.4, 13.4), 0.33, 0.28, 7, 0.80, 5.9),
-    ((16.2, 24.6), (20.2, 12.6), 0.31, 0.27, 7, 0.76, 8.3),
-    ((19.8, 21.8), (23.6, 13.8), 0.30, 0.26, 6, 0.68, 11.4),
-]
-# Razor forks branch off the 2nd and 4th primaries.
-FORKS = {
-    1: ((9.6, 20.4), (13.4, 18.6), 2),
-    3: ((18.4, 18.2), (22.4, 17.0), 2),
+# Where each arc pivots, as a fraction of its own length (0.40 keeps the longest
+# 24 BB arc within 14.4 BB of its pivot, well inside ModelEngine's +-24 BB budget).
+ARC_PIVOT_T = 0.40
+
+# Razor forks per arc: (start fraction along the arc, angle offset deg, length BB).
+# The two longest arcs throw a second fork further out — that is what makes the fan
+# read as crackling electricity instead of six tidy sticks.
+FORK_SPEC = {
+    0: ((0.50, -46.0, 4.2),),
+    1: ((0.45, 40.0, 4.6), (0.78, -34.0, 3.4)),
+    2: ((0.40, -42.0, 5.4), (0.72, 36.0, 4.0)),
+    3: ((0.62, 44.0, 4.6),),
+    4: ((0.55, -38.0, 3.8),),
+    5: ((0.48, 42.0, 3.2),),
 }
-# Spark clusters hover just above each shoulder blade.
+# Loose tip sparks per arc: (offset along the arc past the tip, lateral offset BB, size)
+TIP_SPARKS = {
+    0: ((1.4, 0.7, 0.34),),
+    1: ((1.8, -0.9, 0.30), (2.4, 0.5, 0.22)),
+    2: ((2.0, 1.0, 0.32), (2.6, -0.6, 0.24)),
+    3: ((1.6, -0.8, 0.28),),
+    4: ((1.4, 0.7, 0.26),),
+    5: (),
+}
+# Spark clusters hovering just above each shoulder blade.
 SPARKS = [
-    (2.6, 24.4, 2.5), (-2.6, 24.4, 2.5), (3.4, 21.6, 2.9), (-3.4, 21.6, 2.9),
+    (2.6, 24.4, 2.5), (-2.6, 24.4, 2.5),
 ]
+
+
+def _arc_ray(idx: int):
+    """Unit direction, tip point and mid-pivot of arc `idx` (right wing, +X)."""
+    ang, length, _steps, _hw, _hd, _amp, _gaps = ARCS[idx]
+    ay = HUB[1] + (0.40 - 0.10 * idx)
+    ax, az = HUB[0], HUB[2]
+    rad = math.radians(ang)
+    ux, uy = math.cos(rad), math.sin(rad)
+    tip = (ax + ux * length, ay + uy * length, az + 0.55)
+    pivot = (ax + ux * length * ARC_PIVOT_T,
+             ay + uy * length * ARC_PIVOT_T,
+             az + 0.55 * ARC_PIVOT_T)
+    return (ax, ay, az), (ux, uy), length, tip, pivot
+
+
+def _arc_pivot(idx: int) -> list:
+    _start, _u, _l, _tip, pivot = _arc_ray(idx)
+    return [round(pivot[0], 4), round(pivot[1], 4), round(pivot[2], 4)]
+
+
+def _mirror_pivot(p: list) -> list:
+    return [round(-p[0], 4), p[1], p[2]]
+
+
+def _spark_pivot(side: str) -> list:
+    sx, sy, sz = SPARKS[0] if side == 'r' else SPARKS[1]
+    return [round(float(sx), 4), round(float(sy), 4), round(float(sz), 4)]
 
 
 def build_geometry(elements: list) -> dict:
-    """Fills `elements` and returns {bone_name: [cube uuids]} plus bone pivots."""
+    """Fills `elements` and returns {bone_name: [cube uuids]}."""
     bolt_faces = _faces(UV_BOLT_MID, north=UV_BOLT_CORE, south=UV_BOLT_CORE,
                         up=UV_BOLT_MID, down=UV_BOLT_MID,
                         east=UV_BOLT_EDGE, west=UV_BOLT_EDGE)
@@ -346,7 +376,7 @@ def build_geometry(elements: list) -> dict:
 
     bones = {}
 
-    # --- A) zeus_root: thunder cloud boiling between the shoulder blades + 2 arcs ---
+    # --- A) zeus_root: storm-indigo cloud between the shoulder blades + 2 feeder arcs ---
     root_cubes = []
     cloud_blocks = [
         (-2.9, 22.5, 1.7, -0.9, 21.5, 3.0),
@@ -359,44 +389,68 @@ def build_geometry(elements: list) -> dict:
     for i, (x0, y0, z0, x1, y1, z1) in enumerate(cloud_blocks):
         root_cubes.append(_cube(f'cloud_{i}', [x0, y0, z0], [x1, y1, z1],
                                 ROOT_ORIG, cloud_faces))
-    # two bright arcs stabbing from the cloud out into the shoulders
-    arc_pts = [(-1.2, 23.4, 2.6), (-3.6, 23.0, 2.5), (-5.4, 21.9, 2.4), (-7.4, 21.2, 2.2)]
-    root_cubes.extend(jag_chain('arc_r', arc_pts, 0.55, 2.2, 0.16, 0.14,
+    feed_pts = [(-1.2, 23.4, 2.6), (-3.6, 23.0, 2.5), (-5.4, 21.9, 2.4), (-7.4, 21.2, 2.2)]
+    root_cubes.extend(jag_chain('feed_r', feed_pts, 0.55, 2.2, 0.16, 0.14,
                                 glow_faces, ROOT_ORIG, taper=0.35))
-    root_cubes.extend(mirror_all(jag_chain('arc_r', arc_pts, 0.55, 2.2, 0.16, 0.14,
+    root_cubes.extend(mirror_all(jag_chain('feed_r', feed_pts, 0.55, 2.2, 0.16, 0.14,
                                            glow_faces, ROOT_ORIG, taper=0.35)))
     bones['zeus_root'] = add_many(root_cubes)
 
-    # --- B) wing_r / wing_l: ONE continuous jagged arm bolt arcing over the shoulder ---
-    arm_pts = [(x, y, ARM_Z0 + (ARM_Z1 - ARM_Z0) * (i / (len(ARM_PATH) - 1)))
-               for i, (x, y) in enumerate(ARM_PATH)]
-    arm_r = jag_chain('arm_r', arm_pts, 0.52, 0.7, 0.28, 0.24,
-                      bolt_faces, ROOT_ORIG, taper=0.35)
-    bones['wing_r'] = add_many(arm_r)
-    bones['wing_l'] = add_many(mirror_all(arm_r))
+    # --- B) wing_r / wing_l: EMPTY group bones, they only carry the whole-wing beat ---
+    bones['wing_r'] = []
+    bones['wing_l'] = []
 
-    # --- C) 10 primary lightning feathers (+ 4 razor forks) ---
-    for k, (attach, tip, hw, hd, steps, amp, seed) in enumerate(FEATHERS):
-        idx = k + 1
-        pivot = [round(float(attach[0]), 4), round(float(attach[1]), 4), 2.25]
-        cubes = bolt_cubes(f'feather_r{idx}', attach, tip, 2.25, 2.65,
-                           hw, hd, steps, amp, seed, bolt_faces, pivot, taper=0.55)
-        if k in FORKS:
-            (fx0, fy0), (fx1, fy1), fsteps = FORKS[k]
-            cubes.extend(bolt_cubes(f'fork_r{idx}', (fx0, fy0), (fx1, fy1), 2.3, 2.5,
-                                    0.20, 0.17, fsteps, 0.50, seed + 4.0,
-                                    glow_faces, pivot, taper=0.6))
-        bones[f'feather_r{idx}'] = add_many(cubes)
-        left_pivot = [round(-pivot[0], 4), pivot[1], pivot[2]]
+    # --- C) 12 ragged arcs: fan from the hub, each with gaps + a razor fork + sparks ---
+    for idx in range(ARC_COUNT):
+        ang, length, steps, hw, hd, amp, gaps = ARCS[idx]
+        (ax, ay, az), (ux, uy), length, tip, _pivot = _arc_ray(idx)
+        piv = _arc_pivot(idx)
+
+        # main bolt: sample along the ray, then jag the interior nodes
+        pts = []
+        for i in range(steps + 1):
+            t = i / steps
+            pts.append((ax + ux * length * t,
+                        ay + uy * length * t,
+                        az + 0.55 * t))
+        cubes = jag_chain(f'arc_r{idx + 1}', pts, amp, 1.3 + idx * 2.7,
+                          hw, hd, bolt_faces, piv, taper=0.45, gaps=gaps)
+
+        # razor forks branching off the bolt
+        for fk, (ft, fang, flen) in enumerate(FORK_SPEC.get(idx, ())):
+            frad = math.radians(ang + fang)
+            fx = ax + ux * length * ft
+            fy = ay + uy * length * ft
+            fz = az + 0.55 * ft
+            cubes.extend(bolt_cubes(
+                f'fork_r{idx + 1}_{fk}',
+                (fx, fy),
+                (fx + math.cos(frad) * flen, fy + math.sin(frad) * flen),
+                fz, fz + 0.18,
+                hw * 0.68, hd * 0.68, 2, amp * 0.55, 7.0 + idx * 3.0 + fk,
+                glow_faces, piv, taper=0.6, gaps=(1,)))
+
+        # loose tip sparks hanging past the end of the bolt
+        for k, (along, lat, size) in enumerate(TIP_SPARKS.get(idx, ())):
+            trad = math.radians(ang)
+            sx = tip[0] + math.cos(trad) * along - math.sin(trad) * lat
+            sy = tip[1] + math.sin(trad) * along + math.cos(trad) * lat
+            sz = tip[2] + 0.10 * k
+            cubes.append(_cube(f'ash_r{idx + 1}_{k}',
+                               [sx - size, sy - size, sz - size],
+                               [sx + size, sy + size, sz + size],
+                               piv, spark_faces))
+
+        bones[f'arc_r{idx + 1}'] = add_many(cubes)
+
+        left_piv = _mirror_pivot(piv)
         left = []
         for c in cubes:
             m = _mirror(c)
-            m['origin'] = left_pivot
+            m['origin'] = left_piv
+            m['uuid'] = uid(f"cube:{m['name']}")
             left.append(m)
-        # re-stamp uuids after the pivot change so mirrored names stay unique
-        for c in left:
-            c['uuid'] = uid(f"cube:{c['name']}")
-        bones[f'feather_l{idx}'] = add_many(left)
+        bones[f'arc_l{idx + 1}'] = add_many(left)
 
     # --- D) spark_r / spark_l: crackling clusters above each shoulder blade ---
     for side, (sx, sy, sz) in (('r', SPARKS[0]), ('l', SPARKS[1])):
@@ -421,10 +475,10 @@ def build_geometry(elements: list) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# 4. Seamless 4.8 s animation: wing beat, feather flutter, electric discharge
+# 4. Seamless 4.8 s animation: wing beat, per-arc flutter, electric discharge
 # ---------------------------------------------------------------------------
-FEATHER_IDS = [f'feather_{s}{i}' for s in ('r', 'l') for i in range(1, 6)]
-BONE_NAMES = ['zeus_root', 'wing_r', 'wing_l'] + FEATHER_IDS + ['spark_r', 'spark_l']
+ARC_IDS = [f'arc_{s}{i}' for s in ('r', 'l') for i in range(1, ARC_COUNT + 1)]
+BONE_NAMES = ['zeus_root', 'wing_r', 'wing_l'] + ARC_IDS + ['spark_r', 'spark_l']
 
 
 def eval_zeus_pose(u: float) -> dict:
@@ -434,8 +488,8 @@ def eval_zeus_pose(u: float) -> dict:
 
     hover_y = 0.14 * math.sin(tau * up)
 
-    # Wing beat: slow lift + a faster shudder + constant high-frequency crackle.
-    flap = 8.0 * math.sin(tau * up) + 3.0 * math.sin(tau * 2.0 * up + 1.1)
+    # Whole-wing beat on the empty group bones.
+    flap = 7.0 * math.sin(tau * up) + 3.0 * math.sin(tau * 2.0 * up + 1.1)
     jitter = 0.9 * math.sin(tau * 8.0 * up + 0.6)
     flap_z = flap + jitter
     sweep_y = 3.5 * math.sin(tau * up + 0.35)
@@ -446,24 +500,28 @@ def eval_zeus_pose(u: float) -> dict:
                      round(1.1 * math.sin(tau * up), 4)],
         'wing_rot': {'wing_r': [0.0, round(sweep_y, 4), round(flap_z, 4)],
                      'wing_l': [0.0, round(-sweep_y, 4), round(-flap_z, 4)]},
-        'feather_rot': {},
-        'feather_scale': {},
+        'arc_rot': {},
+        'arc_scale': {},
         'spark_rot': {},
         'spark_scale': {},
     }
 
     for side, sign in (('r', 1.0), ('l', -1.0)):
-        for i in range(1, 6):
-            name = f'feather_{side}{i}'
-            phase = 0.55 * (i - 1) + (0.0 if side == 'r' else math.pi)
-            flutter = 5.5 * math.sin(tau * up + phase)
-            crackle = 1.4 * math.sin(tau * 6.0 * up + i * 1.7)
-            pose['feather_rot'][name] = [0.0, 0.0, round(sign * (flutter + crackle), 4)]
-            # Discharge: a narrow +18% surge on this feather's own beat.
-            beat = (up - (i - 1) * 0.17 - (0.0 if side == 'r' else 0.5)) % 1.0
-            pulse = math.exp(-((beat - 0.5) / 0.16) ** 2)
-            s = round(1.0 + 0.06 * math.sin(tau * up + phase) + 0.18 * pulse, 4)
-            pose['feather_scale'][name] = [s, round(1.0 + 0.05 * pulse, 4), s]
+        for i in range(1, ARC_COUNT + 1):
+            name = f'arc_{side}{i}'
+            phase = 0.62 * (i - 1) + (0.0 if side == 'r' else math.pi)
+            # Each arc wobbles a little differently: the fan never moves as one plate.
+            flutter = 4.5 * math.sin(tau * up + phase)
+            crackle = 1.6 * math.sin(tau * 7.0 * up + i * 1.9)
+            twist = 1.1 * math.sin(tau * 3.0 * up + phase * 1.7)
+            pose['arc_rot'][name] = [round(twist, 4),
+                                     round(0.7 * crackle, 4),
+                                     round(sign * (flutter + crackle), 4)]
+            # Discharge: a narrow +18% surge travelling outward through the fan.
+            beat = (up - (i - 1) * 0.14 - (0.0 if side == 'r' else 0.5)) % 1.0
+            pulse = math.exp(-((beat - 0.5) / 0.15) ** 2)
+            s = round(1.0 + 0.05 * math.sin(tau * up + phase) + 0.18 * pulse, 4)
+            pose['arc_scale'][name] = [s, round(1.0 + 0.04 * pulse, 4), s]
 
         sname = f'spark_{side}'
         pose['spark_rot'][sname] = [0.0, round(360.0 * u, 4), 0.0]
@@ -499,9 +557,9 @@ def build_idle_animators() -> dict:
         for wing in ('wing_r', 'wing_l'):
             kfs[wing].append(_vec_kf('rotation', f'idle:{wing}', t, *pose['wing_rot'][wing]))
 
-        for name in FEATHER_IDS:
-            kfs[name].append(_vec_kf('rotation', f'idle:{name}', t, *pose['feather_rot'][name]))
-            kfs[name].append(_vec_kf('scale', f'idle:{name}', t, *pose['feather_scale'][name]))
+        for name in ARC_IDS:
+            kfs[name].append(_vec_kf('rotation', f'idle:{name}', t, *pose['arc_rot'][name]))
+            kfs[name].append(_vec_kf('scale', f'idle:{name}', t, *pose['arc_scale'][name]))
 
         for sname in ('spark_r', 'spark_l'):
             kfs[sname].append(_vec_kf('rotation', f'idle:{sname}', t, *pose['spark_rot'][sname]))
@@ -537,23 +595,18 @@ def build_blueprint() -> tuple[dict, Image.Image]:
             'children': children,
         }
 
-    def feather_bone(name: str, origin: list, cubes: list) -> dict:
-        return bone(name, origin, cubes, is_open=False)
-
-    wing_r_children = list(bones['wing_r']) + [
-        feather_bone(f'feather_r{i}', _feather_pivot(i), bones[f'feather_r{i}'])
-        for i in range(1, 6)
-    ]
-    wing_l_children = list(bones['wing_l']) + [
-        feather_bone(f'feather_l{i}', _mirror_pivot(_feather_pivot(i)), bones[f'feather_l{i}'])
-        for i in range(1, 6)
-    ]
+    def wing_group(side: str) -> dict:
+        arcs = [bone(f'arc_{side}{i}',
+                     _arc_pivot(i - 1) if side == 'r' else _mirror_pivot(_arc_pivot(i - 1)),
+                     bones[f'arc_{side}{i}'], is_open=False)
+                for i in range(1, ARC_COUNT + 1)]
+        return bone(f'wing_{side}', ROOT_ORIG, arcs, is_open=False)
 
     outliner = [
         bone('zeus_root', ROOT_ORIG, [
             *bones['zeus_root'],
-            bone('wing_r', ROOT_ORIG, wing_r_children, is_open=False),
-            bone('wing_l', ROOT_ORIG, wing_l_children, is_open=False),
+            wing_group('r'),
+            wing_group('l'),
             bone('spark_r', _spark_pivot('r'), bones['spark_r'], is_open=False),
             bone('spark_l', _spark_pivot('l'), bones['spark_l'], is_open=False),
         ]),
@@ -606,87 +659,74 @@ def build_blueprint() -> tuple[dict, Image.Image]:
     return blueprint, texture
 
 
-def _feather_pivot(i: int) -> list:
-    attach = FEATHERS[i - 1][0]
-    return [round(float(attach[0]), 4), round(float(attach[1]), 4), 2.25]
-
-
-def _mirror_pivot(p: list) -> list:
-    return [round(-p[0], 4), p[1], p[2]]
-
-
-def _spark_pivot(side: str) -> list:
-    sx, sy, sz = SPARKS[0] if side == 'r' else SPARKS[1]
-    return [round(float(sx), 4), round(float(sy), 4), round(float(sz), 4)]
-
-
 # ---------------------------------------------------------------------------
 # 6. Hand-crafted 32x32 pixel-art menu icon (`reallyworld:zeus_wings_icon`)
+#    — same ragged fan as the 3D model, cold but bright palette.
 # ---------------------------------------------------------------------------
 def build_zeus_icon() -> Image.Image:
     img = Image.new('RGBA', (32, 32), (0, 0, 0, 0))
     px = img.load()
 
-    core = (232, 250, 255, 255)     # icy cyan-white core
-    mid = (48, 158, 255, 255)       # electric blue, hue 210
-    dark = (28, 46, 122, 255)       # deep thunder-indigo, hue 229
-    cloud = (34, 46, 110, 255)      # dark storm-indigo cloud
-    cloud_hi = (74, 94, 180, 255)   # storm-indigo highlight
+    core = (255, 255, 255, 255)      # white-hot core
+    mid = (104, 228, 255, 255)       # bright cyan
+    dark = (30, 140, 248, 255)       # electric blue
+    cloud = (36, 58, 152, 255)       # storm indigo
+    cloud_hi = (72, 102, 214, 255)
 
     def put(x: int, y: int, c: tuple) -> None:
         if 0 <= x < 32 and 0 <= y < 32:
             px[x, y] = c
 
-    def jag_ray(x0: int, y0: int, x1: int, y1: int, steps: int = 4, amp: float = 2.0) -> None:
+    def jag_ray(x0: float, y0: float, x1: float, y1: float,
+                steps: int = 4, amp: float = 2.0, gaps=()) -> None:
         dx, dy = x1 - x0, y1 - y0
-        length = math.hypot(dx, dy)
+        length = math.hypot(dx, dy) or 1.0
         ux, uy = dx / length, dy / length
         nx, ny = -uy, ux
-        prev = None
+        nodes = []
         for i in range(steps + 1):
             t = i / steps
             off = 0.0 if i in (0, steps) else amp * (1.0 if i % 2 else -1.0) * (1.0 - 0.35 * t)
-            cx = x0 + ux * length * t + nx * off
-            cy = y0 + uy * length * t + ny * off
-            cur = (int(round(cx)), int(round(cy)))
-            if prev is not None:
-                for k in range(0, 41):
-                    tt = k / 40.0
-                    qx = int(round(prev[0] + (cur[0] - prev[0]) * tt))
-                    qy = int(round(prev[1] + (cur[1] - prev[1]) * tt))
-                    put(qx, qy, dark)
-                    put(qx + 1, qy, mid)
-                    put(qx, qy + 1, mid)
-            cur = cur
-            prev = cur
-        # bright core pass along the same polyline
-        prev = None
-        for i in range(steps + 1):
-            t = i / steps
-            off = 0.0 if i in (0, steps) else amp * (1.0 if i % 2 else -1.0) * (1.0 - 0.35 * t)
-            cx = x0 + ux * length * t + nx * off
-            cy = y0 + uy * length * t + ny * off
-            cur = (int(round(cx)), int(round(cy)))
-            if prev is not None:
-                for k in range(0, 41):
-                    tt = k / 40.0
-                    qx = int(round(prev[0] + (cur[0] - prev[0]) * tt))
-                    qy = int(round(prev[1] + (cur[1] - prev[1]) * tt))
-                    put(qx, qy, core)
-            prev = cur
+            nodes.append((x0 + ux * length * t + nx * off,
+                          y0 + uy * length * t + ny * off))
+        for i in range(steps):
+            if i in gaps:
+                continue
+            (ax, ay), (bx, by) = nodes[i], nodes[i + 1]
+            for k in range(41):
+                tt = k / 40.0
+                qx = int(round(ax + (bx - ax) * tt))
+                qy = int(round(ay + (by - ay) * tt))
+                for ox, oy in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)):
+                    put(qx + ox, qy + oy, mid if (ox or oy) else dark)
+        for i in range(steps):
+            if i in gaps:
+                continue
+            (ax, ay), (bx, by) = nodes[i], nodes[i + 1]
+            for k in range(41):
+                tt = k / 40.0
+                put(int(round(ax + (bx - ax) * tt)), int(round(ay + (by - ay) * tt)), core)
 
-    base_x, base_y = 15.5, 21.0
-    # right wing: 5 bolts fanning up and out
-    rays_r = [(20, 6), (23, 10), (25, 15), (26, 20), (24, 25)]
-    for (tx, ty) in rays_r:
-        jag_ray(int(base_x) + 2, int(base_y), tx, ty, steps=4, amp=1.8)
-    # left wing (mirror across x = 15.5)
-    rays_l = [(11, 6), (8, 10), (6, 15), (5, 20), (7, 25)]
-    for (tx, ty) in rays_l:
-        jag_ray(int(base_x) - 2, int(base_y), tx, ty, steps=4, amp=1.8)
+    hub_x, hub_y = 15.5, 17.5
+    # Six uneven arcs per side — the same irregular fan as the 3D model.
+    fan = (
+        (52.0, 9.0, 3, 1.5, (1,)),
+        (34.0, 13.0, 4, 1.8, (1, 3)),
+        (18.0, 14.0, 5, 2.0, (2, 4)),
+        (3.0, 13.0, 5, 1.9, (1, 4)),
+        (-13.0, 10.0, 4, 1.6, (2,)),
+        (-33.0, 7.0, 3, 1.3, (1,)),
+    )
+    for ang, length, steps, amp, gaps in fan:
+        for sgn in (1.0, -1.0):
+            rad = math.radians(ang)
+            jag_ray(hub_x + sgn * 1.5, hub_y,
+                    hub_x + sgn * (1.5 + math.cos(rad) * length),
+                    hub_y - math.sin(rad) * length,
+                    steps=steps, amp=amp, gaps=gaps)
 
     # small storm cloud at the base
-    for (bx, by, bw, bh) in ((10, 22, 12, 4), (12, 21, 8, 2), (13, 26, 6, 2)):
+    for (bx, by, bw, bh) in ((10, 21, 12, 4), (12, 20, 8, 2), (13, 25, 6, 2)):
         for y in range(by, by + bh):
             for x in range(bx, bx + bw):
                 if ((x + y) % 5) == 0:
@@ -717,7 +757,6 @@ def render_preview(blueprint: dict, texture: Image.Image, icon: Image.Image, out
     tex_arr = np.array(texture)
     by_uuid = {el['uuid']: el for el in blueprint['elements']}
 
-    # flatten the outliner into (bone name, origin, cubes, parent tf)
     def walk(node, parent_tf, out):
         cubes = [by_uuid[c] for c in node.get('children', []) if isinstance(c, str)]
         orig = np.array(node['origin'], dtype=float)
@@ -742,8 +781,8 @@ def render_preview(blueprint: dict, texture: Image.Image, icon: Image.Image, out
         cy_m, sy_m = math.cos(ay), math.sin(ay)
         cp_m, sp_m = math.cos(ap), math.sin(ap)
 
-        scale_px = 5.2
-        center_world = np.array([0.0, 22.0, 2.0])
+        scale_px = 5.0
+        center_world = np.array([0.0, 23.0, 2.0])
         center_y_px = 165.0
 
         def proj(pt):
@@ -777,7 +816,6 @@ def render_preview(blueprint: dict, texture: Image.Image, icon: Image.Image, out
                         faces_to_draw.append((sum(p[2] for p in p2d) / 4.0,
                                               [(s[0], s[1]) for s in p2d], col, (36, 40, 52, 255)))
 
-        # build bone transforms following the real hierarchy
         def make_tf(parent_tf, orig, pos, rot, scale):
             o = np.array(orig, dtype=float)
             t = np.array(pos, dtype=float)
@@ -789,13 +827,15 @@ def render_preview(blueprint: dict, texture: Image.Image, icon: Image.Image, out
         tf = {'zeus_root': root_tf}
         for wing in ('wing_r', 'wing_l'):
             tf[wing] = make_tf(root_tf, ROOT_ORIG, [0, 0, 0], pose['wing_rot'][wing], [1, 1, 1])
-        for name in FEATHER_IDS:
-            parent = tf['wing_r'] if name.startswith('feather_r') else tf['wing_l']
-            piv = _feather_pivot(int(name[-1]))
-            if name.startswith('feather_l'):
+        for name in ARC_IDS:
+            side = 'r' if name.startswith('arc_r') else 'l'
+            i = int(name[-1])
+            parent = tf['wing_r'] if side == 'r' else tf['wing_l']
+            piv = _arc_pivot(i - 1)
+            if side == 'l':
                 piv = _mirror_pivot(piv)
-            tf[name] = make_tf(parent, piv, [0, 0, 0], pose['feather_rot'][name],
-                               pose['feather_scale'][name])
+            tf[name] = make_tf(parent, piv, [0, 0, 0], pose['arc_rot'][name],
+                               pose['arc_scale'][name])
         for side in ('r', 'l'):
             name = f'spark_{side}'
             tf[name] = make_tf(root_tf, _spark_pivot(side), [0, 0, 0],
@@ -886,8 +926,9 @@ def main() -> None:
     if args.preview is not None:
         render_preview(blueprint, texture, icon, args.preview)
 
+    drawn = sum(1 for b in BONE_NAMES if b not in ('wing_r', 'wing_l'))
     print(f'Built {MODEL}.bbmodel: {len(blueprint["elements"])} cubes, '
-          f'{len(BONE_NAMES)} bones, icon -> {args.assets_dir}')
+          f'{len(BONE_NAMES)} bones ({drawn} drawn), icon -> {args.assets_dir}')
 
 
 if __name__ == '__main__':
