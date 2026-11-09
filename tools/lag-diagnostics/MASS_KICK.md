@@ -127,8 +127,8 @@ keep-alive. Смотреть пункты 2–4 и `live_watch.sh` (GC/steal/д�
 
 ```bash
 # 1. конфиги (LPX + AntiDisconnectSpam) — безопасно, без рестарта конфигов ядра
-curl -fsSL https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/<SHA>/plugins/LPX/config.yml -o /root/RW_GRIEF/plugins/LPX/config.yml
-curl -fsSL https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/<SHA>/plugins/AntiDisconnectSpam/config.json -o /root/RW_GRIEF/plugins/AntiDisconnectSpam/config.json
+curl -fsSL https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/c4c914111cbcb746b348ad528da6f0951825b1fd/plugins/LPX/config.yml -o /root/RW_GRIEF/plugins/LPX/config.yml
+curl -fsSL https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn780897/c4c914111cbcb746b348ad528da6f0951825b1fd/plugins/AntiDisconnectSpam/config.json -o /root/RW_GRIEF/plugins/AntiDisconnectSpam/config.json
 
 # 2. поднять лимит пакетов Paper (НЕ через архив!)
 sed -i 's/^    max-packet-rate: 500.0/    max-packet-rate: 1500.0/' /root/RW_GRIEF/config/paper-global.yml
