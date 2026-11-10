@@ -71,6 +71,7 @@ public final class ElytrixMascotGuard {
         }
         GameMode gm = player.getGameMode();
         if (gm != GameMode.CREATIVE && gm != GameMode.SPECTATOR
+                && !eventGuardKeepsFly(player)
                 && (player.isFlying() || player.getAllowFlight())) {
             player.setFlying(false);
             player.setAllowFlight(false);
@@ -96,6 +97,22 @@ public final class ElytrixMascotGuard {
                 }
             } catch (Throwable ignored) {
             }
+        }
+    }
+
+    /** LuckPerms moder and above (and *) keep /fly on the Talisman: ElytrixEventGuard
+     *  owns that rule, and when it is absent we keep the old behaviour. */
+    private static boolean eventGuardKeepsFly(Player player) {
+        try {
+            Plugin guard = Bukkit.getPluginManager().getPlugin("ElytrixEventGuard");
+            if (guard == null || !guard.isEnabled()) {
+                return false;
+            }
+            Object result = guard.getClass()
+                    .getMethod("isFlyExempt", Player.class).invoke(guard, player);
+            return Boolean.TRUE.equals(result);
+        } catch (Throwable ignored) {
+            return false;
         }
     }
 }

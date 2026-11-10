@@ -1,7 +1,7 @@
 menu_title: §fꈁꀀꈂꍖꈂꀁ§fꈃꄁ
 open_command: donate
 register_command: true
-size: 54
+size: 63
 items:
   donate_dragon:
     material: structure_void
@@ -37,7 +37,7 @@ items:
     - 6
     - 7
     - 8
-    display_name: '&#FFFFFFꕁ %player_name% &#555555| &#AAAAAAНавсегда: &#F8BEFB&l289 &#AAAAAAрублей'
+    display_name: '&#FFFFFFꕁ %player_name% &#555555| &#AAAAAAНавсегда: &#F8BEFB&l199 &#AAAAAAрублей'
     lore:
     - '&#AAAAAA&l┇ &#FFFFFFБожественный набор - &#FBBF24&l/kit god'
     - '&#AAAAAA&l┇ &#FFFFFFНаборы &#F8BEFB&lPLUS &#FFFFFFи &#F8BEFB&lPLUSPRO - &#FBBF24&l/kits'
@@ -89,7 +89,7 @@ items:
     - 15
     - 16
     - 17
-    display_name: '&#FFFFFFꕉ %player_name% &#555555| &#AAAAAAНавсегда: &#F8BEFB&l379 &#AAAAAAрублей'
+    display_name: '&#FFFFFFꕉ %player_name% &#555555| &#AAAAAAНавсегда: &#F8BEFB&l249 &#AAAAAAрублей'
     lore:
     - '&#AAAAAA&l┇ &#FFFFFFКрылатый набор - &#F59E0B&l/kit pegas'
     - '&#AAAAAA&l┇ &#FFFFFFНаборы &#F8BEFB&lPLUS &#FFFFFFи &#F8BEFB&lPLUSPRO - &#F59E0B&l/kits'
@@ -111,10 +111,10 @@ items:
   donate_rabbit:
     material: structure_void
     slots:
-    - 18
-    - 19
-    - 20
-    - 21
+    - 27
+    - 28
+    - 29
+    - 30
     display_name: '&#FFFFFFꕒ %player_name% &#555555| &#AAAAAAНавсегда: &#F8BEFB&l109 &#AAAAAAрублей'
     lore:
     - '&#AAAAAA&l┇ &#FFFFFFУникальный кит - &#E5E7EB&l/kit rabbit'
@@ -140,7 +140,7 @@ items:
     - 33
     - 34
     - 35
-    display_name: '&#FFFFFFꕓ %player_name% &#555555| &#AAAAAAНавсегда: &f&l899 &#AAAAAAрублей'
+    display_name: '&#FFFFFFꕓ %player_name% &#555555| &#AAAAAAНавсегда: &f&l599 &#AAAAAAрублей'
     lore:
     - '&#AAAAAA&l┇ &#F8BEFB&l★ ТОПОВЫЙ ИГРОВОЙ ДОНАТ СЕРВЕРА ★'
     - '&#AAAAAA&l┇ &#FFFFFFЭпический набор с элитрами - &#FFFFFF&l/kit angel'
@@ -165,11 +165,11 @@ items:
   donate_hydra:
     material: structure_void
     slots:
-    - 27
-    - 28
-    - 29
-    - 30
-    display_name: '&#FFFFFFꕀ %player_name% &#555555| &#AAAAAAНавсегда: &#F8BEFB&l159 &#AAAAAAрублей'
+    - 18
+    - 19
+    - 20
+    - 21
+    display_name: '&#FFFFFFꕀ %player_name% &#555555| &#AAAAAAНавсегда: &#F8BEFB&l99 &#AAAAAAрублей'
     lore:
     - '&#AAAAAA&l┇ &#FFFFFFУникальный кит - &#22C55E&l/kit hydra'
     - '&#AAAAAA&l┇ &#FFFFFFВсе возможности привилегии &#E5E7EB&lRABBIT'
@@ -194,7 +194,7 @@ items:
     - 24
     - 25
     - 26
-    display_name: '&#FFFFFFꕠ %player_name% &#555555| &#AAAAAAНавсегда: &#F8BEFB&l499 &#AAAAAAрублей'
+    display_name: '&#FFFFFFꕠ %player_name% &#555555| &#AAAAAAНавсегда: &#F8BEFB&l299 &#AAAAAAрублей'
     lore:
     - '&#AAAAAA&l┇ &#FFFFFFУникальный набор - &#FACC15&l/kit dhelper'
     - '&#AAAAAA&l┇ &#FFFFFFДоступ к наборам &#FFFFFF&lANGEL&#AAAAAA, &#F8BEFB&lPLUS&#AAAAAA, &#F8BEFB&lPLUSPRO'
@@ -221,7 +221,7 @@ items:
     - 37
     - 38
     - 39
-    display_name: '&#FFFFFFꕈ %player_name% &#555555| &#AAAAAAНавсегда: &#F8BEFB&l219 &#AAAAAAрублей'
+    display_name: '&#FFFFFFꕈ %player_name% &#555555| &#AAAAAAНавсегда: &#F8BEFB&l159 &#AAAAAAрублей'
     lore:
     - '&#AAAAAA&l┇ &#FFFFFFУникальный кит - &#4ADE80&l/kit cobra'
     - '&#AAAAAA&l┇ &#FFFFFFВсе возможности привилегии &#22C55E&lHYDRA'
@@ -241,10 +241,10 @@ items:
   donate_dadmin:
     material: structure_void
     slots:
-    - 41
-    - 42
-    - 43
-    - 44
+    - 50
+    - 51
+    - 52
+    - 53
     display_name: '&#FFFFFFꕡ %player_name% &#555555| &#AAAAAAНавсегда: &#FF3B4E&l3000 &#AAAAAAрублей'
     lore:
     - '&#AAAAAA&l┇ &#FF3B4E&lВСЕ ПРАВА'
@@ -252,14 +252,69 @@ items:
     - '&#FF3B4E➥ &#FFFFFFПокупка на сайте &#F8BEFB&lhttps://elytrix.pw'
     click_commands:
     - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#F8BEFB&lhttps://elytrix.pw'
+  donate_fame:
+    material: structure_void
+    slots:
+    - 45
+    - 46
+    - 47
+    - 48
+    display_name: '&#A855F7&lFAME &#FFFFFF%player_name% &#555555| &#AAAAAAНавсегда: &#A855F7&l499 &#AAAAAAрублей'
+    lore:
+    - '&#AAAAAA&l┇ &#FFFFFFЛегендарный набор со своим мечом - &#A855F7&l/kit fame'
+    - '&#AAAAAA&l┇ &#FFFFFFСобственная 3D-модель меча и Шар Славы в наборе'
+    - '&#AAAAAA&l┇ &#FFFFFFНаборы &#F8BEFB&lPLUS &#FFFFFFи &#F8BEFB&lPLUSPRO - &#A855F7&l/kits'
+    - '&#AAAAAA&l┇ &#FFFFFFВсе возможности привилегии &#F59E0B&lPEGAS'
+    - '&#AAAAAA&l┇ &#FFFFFFРежим полёта - &#A855F7&l/fly'
+    - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+    - '&#AAAAAA&l┇ &#A855F7&l+ x4.7 &#FFFFFFвалюты за мобов и убийства'
+    - '&#AAAAAA&l┇ &#A855F7&l+ &#FFFFFFзаход даже на заполненный сервер'
+    - '&#AAAAAA&l┇ &#A855F7&l+ 999 &#FFFFFFслотов на аукционе'
+    - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+    - '&#AAAAAA&l┇ &#FFFFFFКоличество приватов: &#A855F7&l999+'
+    - '&#AAAAAA&l┇ &#FFFFFFДомов для /sethome: &#A855F7&l999+'
+    - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+    - '&#AAAAAA&l┇ &#FFFFFFАметистовый префикс &#A855F7&l[FAME] &#FFFFFFв чате и табе'
+    - ''
+    - '&#F8BEFB➥ &#FFFFFFПокупка на сайте &#F8BEFB&lhttps://elytrix.pw'
+    click_commands:
+    - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#F8BEFB&lhttps://elytrix.pw'
+  donate_dmoder:
+    material: structure_void
+    slots:
+    - 41
+    - 42
+    - 43
+    - 44
+    display_name: '&#D946EF&lD.MODER &#FFFFFF%player_name% &#555555| &#AAAAAAНавсегда: &#D946EF&l899 &#AAAAAAрублей'
+    lore:
+    - '&#AAAAAA&l┇ &#D946EF&l★ ПРАВА МОДЕРАТОРА + ВСЕ ПРАВА D.HELPER ★'
+    - '&#AAAAAA&l┇ &#FFFFFFПолные права обычного &#55FF55&lmoder &#FFFFFFприваты, баны, кики, /vanish'
+    - '&#AAAAAA&l┇ &#FFFFFFПлюс все возможности доната &#D946EF&lD.HELPER'
+    - '&#AAAAAA&l┇ &#FFFFFFНаборы &#F8BEFB&lPLUS &#FFFFFFи &#F8BEFB&lPLUSPRO - &#D946EF&l/kits'
+    - '&#AAAAAA&l┇ &#FFFFFFРежим полёта - &#D946EF&l/fly'
+    - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+    - '&#AAAAAA&l┇ &#D946EF&l+ x5.0 &#FFFFFFвалюты за мобов и убийства'
+    - '&#AAAAAA&l┇ &#D946EF&l+ &#FFFFFFзаход даже на заполненный сервер'
+    - '&#AAAAAA&l┇ &#D946EF&l+ 999 &#FFFFFFслотов на аукционе'
+    - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+    - '&#AAAAAA&l┇ &#FFFFFFКоличество приватов: &#D946EF&l999+'
+    - '&#AAAAAA&l┇ &#FFFFFFДомов для /sethome: &#D946EF&l999+'
+    - '&#AAAAAA&l┇&#AAAAAA▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪'
+    - '&#AAAAAA&l┇ &#FFFFFFПрефикс &#D946EF&l[D.MODER] &#FFFFFFв чате и табе'
+    - '&#AAAAAA&l┇ &#AAAAAAСвоего кита нет: наборы берутся правами moder'
+    - ''
+    - '&#F8BEFB➥ &#FFFFFFПокупка на сайте &#F8BEFB&lhttps://elytrix.pw'
+    click_commands:
+    - '[message] &#F8BEFB➥ &#FFFFFFПокупка на сайте &#F8BEFB&lhttps://elytrix.pw'
   cases_button:
     material: structure_void
     slots:
-    - 47
-    - 48
-    - 49
-    - 50
-    - 51
+    - 56
+    - 57
+    - 58
+    - 59
+    - 60
     display_name: '&#FAD8FC&lКЕЙСЫ'
     lore:
     - ''

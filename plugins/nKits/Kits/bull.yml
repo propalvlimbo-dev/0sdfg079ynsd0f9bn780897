@@ -1,5 +1,5 @@
 Name: bull
-Cooldown: 86400
+Cooldown: 7200
 Permission: nKits.kits.bull
 Order: 0
 FirstTimeJoinKit: false

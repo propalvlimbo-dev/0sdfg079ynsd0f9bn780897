@@ -1,5 +1,5 @@
 Name: pvp3
-Cooldown: 0
+Cooldown: 1800
 Permission: nKits.kits.pvp3
 Order: 0
 FirstTimeJoinKit: false

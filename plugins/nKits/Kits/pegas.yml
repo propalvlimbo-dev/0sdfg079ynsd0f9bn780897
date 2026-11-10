@@ -1,5 +1,5 @@
 Name: pegas
-Cooldown: 259200
+Cooldown: 86400
 Permission: nKits.kits.pegas
 Order: 0
 FirstTimeJoinKit: false

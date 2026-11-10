@@ -511,6 +511,26 @@ public final class GodPickup extends JavaPlugin implements Listener {
         }
     }
 
+    /** True when ElytrixEventGuard says this player must keep /fly on event zones
+     *  (LuckPerms group moder and above, or *). Fail-open: no guard => no bypass. */
+    private static boolean eventGuardKeepsFly(Player player) {
+        if (player == null) {
+            return false;
+        }
+        try {
+            org.bukkit.plugin.Plugin guard =
+                    Bukkit.getPluginManager().getPlugin("ElytrixEventGuard");
+            if (guard == null || !guard.isEnabled()) {
+                return false;
+            }
+            Object result = guard.getClass()
+                    .getMethod("isFlyExempt", Player.class).invoke(guard, player);
+            return Boolean.TRUE.equals(result);
+        } catch (Throwable ignored) {
+            return false;
+        }
+    }
+
     private void syncCanPickupFlag(Player player, boolean blockPickup) {
         UUID uuid = player.getUniqueId();
         if (blockPickup) {
@@ -532,6 +552,11 @@ public final class GodPickup extends JavaPlugin implements Listener {
             lastGodState.put(uuid, Boolean.FALSE);
             godCooldownUntil.merge(uuid, now + POST_GOD_COOLDOWN_MS, Math::max);
             player.sendMessage(PREFIX + "На ивенте " + ACCENT + "Талисман \u00a7fавтоматически выключен режим " + ACCENT + "/god\u00a7f!");
+        }
+        // moder and above (and *) keep their fly on the Talisman — ElytrixEventGuard
+        // owns that rule, so ask it before touching anything.
+        if (eventGuardKeepsFly(player)) {
+            return;
         }
         boolean hadFly = isFlyActive(player);
         if (hadFly) {

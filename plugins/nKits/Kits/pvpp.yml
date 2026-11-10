@@ -1,5 +1,5 @@
 Name: pvpp
-Cooldown: 0
+Cooldown: 1800
 Permission: nKits.kits.pvpp
 Order: 0
 FirstTimeJoinKit: false

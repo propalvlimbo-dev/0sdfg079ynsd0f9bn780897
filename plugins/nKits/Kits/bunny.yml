@@ -1,5 +1,5 @@
 Name: bunny
-Cooldown: 432000
+Cooldown: 86400
 Permission: nKits.kits.bunny
 Order: 0
 FirstTimeJoinKit: false

@@ -1,5 +1,5 @@
 Name: pvp1
-Cooldown: 0
+Cooldown: 1800
 Permission: nKits.kits.pvp1
 Order: 0
 FirstTimeJoinKit: false

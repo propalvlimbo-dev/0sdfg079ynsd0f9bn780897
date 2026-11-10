@@ -1,5 +1,5 @@
 Name: cobra
-Cooldown: 100000
+Cooldown: 86400
 Permission: nKits.kits.cobra
 Order: 0
 FirstTimeJoinKit: false

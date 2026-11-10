@@ -1,5 +1,5 @@
 Name: plus
-Cooldown: 864000
+Cooldown: 86400
 Permission: nKits.kits.plus
 Order: 0
 FirstTimeJoinKit: false

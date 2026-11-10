@@ -7,9 +7,19 @@
 Актуальное базовое состояние (синхронизировано с live VDS `dfghjdyjk56` 02.11.2026):
 - Ветка-источник актуальной сборки: `arena/4c55e5a6-0sdfg079ynsd0f9bn780897` (PR #1)
 - Ядро и запуск (`start.sh`): Leaf `1.21.11` (`DataVersion: 4671`, Java 21+, `-Dblib.server.version=1.21.10`, G1GC + `-Dio.netty.maxDirectMemory=0` + `MALLOC_ARENA_MAX=2` + `G1PeriodicGCInterval=30000`)
-- Версия `ElytrixFreakModel`: `v3.28.0` (открытый для ВСЕХ игроков магазин и гардероб `/accessories`, `/аксессуары`, `/acc`, `/акс` за риллики `PlayerPoints` `ꐃ` в стиле `/shop`: `Мини-Роузи` `2000 ꐃ`, `Милый котёнок` `2500 ꐃ`, `Божественный нимб` `3500 ꐃ`, `Сколопендра Гуля` `4500 ꐃ`, `Меллстрой` `5000 ꐃ`, `Ангельские крылья` `6000 ꐃ`, `Щупальца Канэки` `7500 ꐃ`, `Аура сердечек` `5500 ꐃ`, `Аура бабочек` `5500 ꐃ`, `Пепельная аура` `5500 ꐃ`, `VIEW_RANGE=48` + Лада Приора)
-- Версия `ElytrixRP`: `v2.5.0`
-- Актуальный `SHA-1` `rp/Elytrix-RP-1.21.zip`: `5d2dae5ca9a8e43114548581cad4c8495c9fec15`
+- Версия `ElytrixFreakModel`: `v3.29.0` (открытый для ВСЕХ игроков магазин и гардероб `/accessories`, `/аксессуары`, `/acc`, `/акс` за риллики `PlayerPoints` `ꐃ` в стиле `/shop`: `Мини-Роузи` `2000 ꐃ`, `Милый котёнок` `2500 ꐃ`, `Божественный нимб` `3500 ꐃ`, `Сколопендра Гуля` `4500 ꐃ`, `Меллстрой` `5000 ꐃ`, `Ангельские крылья` `6000 ꐃ`, `Щупальца Канэки` `7500 ꐃ`, `Аура сердечек` `5500 ꐃ`, `Аура бабочек` `5500 ꐃ`, `Пепельная аура` `5500 ꐃ`, `VIEW_RANGE=48` + Лада Приора)
+- Версия `ElytrixRP`: `v2.6.0` (добавлен меч доната `FAME`: `custom_model_data 5015` ->
+  `reallyworld:item/sword/fame_sword`, текстура `reallyworld/textures/item/sword/fame_sword.png`)
+- Актуальный `SHA-1` `rp/Elytrix-RP-1.21.zip`: `81e61aeb2ba81b0b0b3184b2d33d09b5668d7475`
+  (`SHA-256: b043a76f6153ea21f2d37bb5a9dfcc3965a686dde78994f4813cb061a5454d4d`, `3775` файлов,
+  `8 518 812` байт; `plugins/ElytrixRP/config.yml` уже пропатчен)
+- Донаты `v3.29.0` (`plugins/DeluxeMenus/gui_menus/priv/donate.yml`, меню выросло до `size: 63`):
+  `TIGER` ПОЛНОСТЬЮ ЗАМЕНЁН на `FAME` (`499 Р`, приоритетом НИЖЕ `ANGEL`), добавлен `D.MODER`
+  (`899 Р`, права обычного модератора + все права `d.helper`, **КИТА У `D.MODER` НЕТ**),
+  новые цены: `ANGEL 599`, `D.HELPER 299`, `PEGAS 249`, `GOD 199`, `COBRA 159`, `HYDRA 99`
+- Новый плагин `ElytrixEventGuard v1.0.0` (`tools/event-guard/`) - `/fly` НЕ снимается на ивентах
+  `Талисман` и `Аирдроп` у групп LuckPerms `moder` и выше по приоритету и у `*`; аукцион закрыт
+  в `/god`/`/fly`; эндер-кристаллы больше НЕ ломают блоки
 
 --------------------------------------------------------------------------------
 1. КРИТИЧЕСКИЕ ПРАВИЛА GIT И СТАРТА НОВОГО ЧАТА
@@ -485,7 +495,7 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
      в Minecraft модель игрока масштабируется в `PlayerRenderer` на `0.9375` (`15/16`), поэтому при `scale = 1.0` в `.bbmodel`:
      * точный верх головы игрока = `Y = 30.00` (`32 × 0.9375`), шея/плечи = `Y = 22.50` (`24 × 0.9375`),
      * точная полуширина голой головы = `X/Z = ±3.75` (`4 × 0.9375`), второй слой скина (шляпа) = `±4.22`.
-   - Актуальные блюпринты в `plugins/ModelEngine/blueprints/` и RP (`SHA-1: 5d2dae5ca9a8e43114548581cad4c8495c9fec15`):
+   - Актуальные блюпринты в `plugins/ModelEngine/blueprints/` и RP (`SHA-1: 81e61aeb2ba81b0b0b3184b2d33d09b5668d7475`):
      * `elytrix_angel_halo.bbmodel` (нимб, 161 куб, `halo_ring` + `halo_aura`)
      * `elytrix_satan_circle.bbmodel` (шапка `Круг Сатаны` v1, `tools/accessories-model/build_satan_circle.py`:
        16-сегментное гладкое двойное кольцо `circle_ring` (`R = 5.92..6.26`, разрешённые углы Minecraft
@@ -511,7 +521,8 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
        микро-всплеск и держится `scale = [0,0,0]` минимум `5` тиков, пока `dy` сбрасывается в `0` — поэтому
        20-TPS интерполяция ModelEngine НИКОГДА не тянет капли вверх; 33 куба, 13 рисуемых костей строго `< 1.85m` от глаз,
        одна бесшовная 20-TPS анимация `'idle'` `3.2s` (дривт облака + дыхание + 2 цикла падения на каплю); иконка `lightning_hat_icon`)
-     * `elytrix_zeus_wings.bbmodel` (спина `Крылья Зевса` **v6 — ПЕРЕДЕЛАНО ПОЛНОСТЬЮ С НУЛЯ в v3.28.0**,
+     * `elytrix_zeus_wings.bbmodel` (спина `Крылья Зевса` **v7 — ОБЪЁМ И ЖИВАЯ АНИМАЦИЯ в v3.29.0**,
+      v6 (полностью с нуля) было в v3.28.0,
        `tools/accessories-model/build_zeus_wings.py`). Прошлая форма (v3.26/v3.27: лонжерон-молния +
        14 перьев, собранных осевыми L-ступеньками) игроку не нравилась: «переделай полностью,
        сделай с 0, можешь сделать модель похожую на крылья ангела, только текстурку полностью
@@ -793,3 +804,76 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
    - ВАЖНО: `-XX:MaxGCPauseMillis=100` в `start.sh` — фриз «ровно 100 мс» ожидаем; аксессуары
      `ElytrixFreakModel` дают до 60 `ItemDisplay` на игрока, поэтому `ignore_models: true`
      в `plugins/LagFixer/modules/EntityLimiter.yml` НЕ выключать.
+
+================================================================================
+
+10. ЧТО ИЗМЕНИЛОСЬ В `v3.29.0` (НЕ ЛОМАТЬ ПРИ СЛЕДУЮЩИХ ПРАВКАХ!)
+================================================================================
+1. `Крылья Зевса` v7 - объём и живая анимация (`tools/accessories-model/build_zeus_wings.py`):
+   - Игрок жаловался: «слишком плоские», «будто модель не соединена друг с другом»,
+     «движения какие-то заторможенные».
+   - Объём: толщина пера `FEATHER_THICK 0.30` (была плоскость), «черепица» перьев
+     `FEATHER_SHINGLE 0.18`, посегментный сдвиг по глубине `FEATHER_SEG_DZ 0.030`
+     (БЕЗ него сегменты-перекрытия ложатся в одну плоскость и дают z-fight:
+     было `312` соосных пар с разным UV, стало `0`).
+   - Связность: рука-лонжерон `ARM_Z 3.80` с сечением `ARM_HALF_Y (0.62, 0.30)` /
+     `ARM_HALF_Z (0.42, 0.24)`, запястный узел `WRIST_BLOB`, `7` кроющих перьев
+     `COVERT_*` и гребень `RIDGE_THICK 0.22` x `RIDGE_W 0.46` x `RIDGE_DZ 0.26`
+     закрывают стык пера с рукой; корневая заглушка `FEATHER_SEGS[0] = -0.090`
+     (из-за неё `_slice_u()` обязан класть `u` в `0..16`, иначе отрицательный UV).
+   - Движение: `IDLE_LEN 3.2` (`65` кф, `20.3/с`) - взмах `7.5+3.2`, размах `4.6`,
+     дрожь `1.3x13`, отставание руки `4.0`, треск `1.8x11`, рябь `2.2->6.0`+`1.6`,
+     озноб `1.4x6`, кипение `0.075x3+0.040x7`. Пики `59.1/62.5/33.9` град/с.
+   - Итог: `300` кубов / `36` костей (`33` рисуемых), `0` повёрнутых кубов,
+     габарит `x -25.28..26.38`, `y 7.02..26.72`, `z 1.37..8.43`, пивот->родитель `<= 20.037`.
+
+2. `/fly` на ивентах НЕ отключается у `moder` и выше:
+   - `plugins/ElytrixEventGuard.jar` + `tools/event-guard/` - единственный источник
+     правила: `isFlyExempt(Player)` = право `elytrix.eventguard.bypass`, ИЛИ основная
+     группа LuckPerms в списке `fly-guard.groups`, ИЛИ вес группы `>=` веса
+     `fly-guard.reference-group` (`moder`), ИЛИ группа `*`.
+   - Внутри зоны ивента плагин каждый тик возвращает `setAllowFlight(true)`, если
+     состояние убрали извне, и НЕ трогает тех, кто и так не летал.
+   - `ElytrixGodPickup.jar` (`enforceTalismanAt`) и `NMascot-1.0.jar`
+     (`ElytrixMascotGuard.stripFlyAndGod`) СПРАШИВАЮТ плагин рефлексией
+     (`eventGuardKeepsFly`) и пропускают таких игроков; если плагина нет -
+     старое поведение (ничего не ломается).
+   - Аирдроп: центр и мир читаются из `plugins/ElytrixAir/config.yml`
+     (`xCords`, `zCords`, `worldName`), радиус - `fly-guard.airdrop.radius` (`60`).
+   - ВАЖНО: снимается ТОЛЬКО запрет на снятие `/fly`; `/god` по-прежнему снимается.
+
+3. Аукцион в `/god` и `/fly` (`auction.*` в `tools/event-guard/config.yml`):
+   - Команды `auction`, `ah`, `auc`, `cloudauction` (в т.ч. `/cloudauction:ah`)
+     отменяются на `LOWEST` с сообщением-подсказкой «выключи /god и /fly».
+
+4. Кристаллы и блоки:
+   - `EntityExplodeEvent` от `EnderCrystal` очищает `blockList()` - кристалл бьёт
+     только по существам, блоки целы (`crystals.break-blocks: false`).
+   - Баг «поставил и взорвал кристалл -> следующий блок встаёт криво / блоки
+     ломаются некорректно» лечится также конфигами:
+     `config/paper-world-defaults.yml` -> `optimize-explosions: false`
+     и `config/leaf-global.yml` -> `create-snapshot-on-retrieving-blockstate: true`.
+
+5. Донат `TIGER` -> `FAME` (`plugins/nKits/Kits/fame.yml`, `tiger.yml` УДАЛЁН):
+   - Кит `fame`: свой меч `custom_model_data 5015` (модель
+     `reallyworld/models/item/sword/fame_sword.json`), `Шар Славы` - ОБЫЧНАЯ ГОЛОВА
+     БЕЗ МОДЕЛИ (без `custom_model_data`, только `minecraft:profile`),
+     `Голова Славы` (бывшая «Тигринная голова») осталась в ките.
+   - `FAME` НИЖЕ `ANGEL`: `ElytrixGranter` веса `dhelper 13, fame 14, angel 15,
+     dmoder 16, dadmin 17, owner 18`.
+   - Переименование проведено по ВСЕМ точкам: `DeluxeMenus` (`config.yml`,
+     `kits.yml`, `kits_preview/preview_fame.yml`, `shop/sphere.yml`,
+     `priv/donate.yml`), `BCases/prizes.yml`, `ElytrixGranter`, `TAB/config.yml`
+     (сортировка групп), `WGExtender`, `WorldGuard`, `ItemKeep/data.yml`,
+     `ElytrixDealer/items.yml`, `ElytrixCooldowns/config.yml`.
+
+6. КД китов уменьшены (`plugins/nKits/Kits/*.yml`, секунды):
+   `pvp/pvp1/pvp2/pvp3/pvpp 1800`, `dragon 3600`, `start 3600`, `bull 7200`,
+   `bunny, cobra, dhelper, dracula, god, helper, hydra, imperator, media, pegas,
+   plus, pluspro, rabbit, fame, vampire 86400`, `angel 259200`, `dadmin 259200`.
+
+7. Сборка нового плагина (единственная команда, выполнять из корня репозитория):
+   `JAVA=/tmp/pytools/jdk4py/java-runtime/bin/java ECJ=/tmp/pytools/ecj.jar python3 tools/event-guard/build.py`
+   Пересборка `ElytrixGodPickup.jar` и `NMascot-1.0.jar` без полного `build_all.py`:
+   `python3 /tmp/rebuild_guards.py` (импортирует `tools/bugfix-suite/build_all.py`,
+   чтобы взять тот же набор стабов, те же флаги ECJ и тот же сборщик zip).

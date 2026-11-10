@@ -82,7 +82,7 @@ commands:
       /pvp:
         limit: 5 seconds
       
-      # Социальные и Админские (из рангов Rabbit/Cobra/Tiger)
+      # Социальные и Админские (из рангов Rabbit/Cobra/FAME)
       /nick:
         limit: 60 seconds   # Смена ника раз в минуту
       /lightning:
@@ -184,7 +184,7 @@ commands:
       /pvp:
         limit: 0 seconds
       
-      # Социальные и Админские (из рангов Rabbit/Cobra/Tiger)
+      # Социальные и Админские (из рангов Rabbit/Cobra/FAME)
       /nick:
         limit: 60 seconds   # Смена ника раз в минуту
       /lightning:

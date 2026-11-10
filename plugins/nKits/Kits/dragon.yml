@@ -1,5 +1,5 @@
 Name: dragon
-Cooldown: 86400
+Cooldown: 3600
 Permission: nKits.kits.dragon
 Order: 0
 FirstTimeJoinKit: false

@@ -1,21 +1,24 @@
-Name: tiger
-Cooldown: 432000
-Permission: nKits.kits.tiger
+Name: fame
+Cooldown: 86400
+Permission: nKits.kits.fame
 Order: 0
 FirstTimeJoinKit: false
 OneTimeUse: false
 Inventory:
   Main:
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: NETHERITE_SWORD
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      enchants:
-        FIRE_ASPECT: 2
-        DAMAGE_ALL: 5
-        DURABILITY: 3
+    DataVersion: 4556
+    id: minecraft:netherite_sword
+    count: 1
+    components:
+      minecraft:repair_cost: '1'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"light_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"МЕЧ
+        СЛАВЫ",underlined:0b}],text:""}'
+      minecraft:lore: '[{extra:[{color:"#AAAAAA",italic:0b,text:"Оружие привилегии "}],italic:0b,text:""},{extra:[{bold:1b,color:"#A855F7",italic:0b,text:"FAME"}],italic:0b,text:""}]'
+      minecraft:enchantments: '{"minecraft:fire_aspect":2,"minecraft:sharpness":5,"minecraft:unbreaking":3}'
+      minecraft:custom_model_data: '{floats:[5015.0f]}'
+      minecraft:custom_data: '{PublicBukkitValues:{"executableitems:ei-id":"fame_sword","score:usage":0}}'
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
     v: 2586
     type: BOW
@@ -180,8 +183,8 @@ Inventory:
     meta:
       ==: ItemMeta
       meta-type: SKULL
-      display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gold","text":"Тигринная
-        голова"}],"text":""}'
+      display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"light_purple","text":"Голова
+        Славы"}],"text":""}'
       lore:
       - '{"text":"§cКогда надето на голове:"}'
       - '{"text":"§x§F§8§B§E§F§B+2.5 к урону"}'
@@ -222,6 +225,19 @@ Inventory:
           value: ewogICJ0aW1lc3RhbXAiIDogMTcyMjc5ODc3NzA2MSwKICAicHJvZmlsZUlkIiA6ICI2MmJiNjAyZjE0Nzk0NzZiYjlkMmQ0MWZiNDc0NDA1YSIsCiAgInByb2ZpbGVOYW1lIiA6ICJTb2NpYWxpc21vIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzJjMTYyYzE2ZTAxNDMzYjNkYTY2NzRkNjQyYzNlYWI0YmU5ZTZkNzFlMjBhMzMyNTU2NGM0ZDAzYTgxMjYwNmEiCiAgICB9LAogICAgIkNBUEUiIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzIzNDBjMGUwM2RkMjRhMTFiMTVhOGIzM2MyYTdlOWUzMmFiYjIwNTFiMjQ4MWQwYmE3ZGVmZDYzNWNhN2E5MzMiCiAgICB9CiAgfQp9
           signature: kwPqkOdupauR880Ntst7lDAgY8i6Hea0AQZ1VpoBEg4Bre+rgZ6c1L6o3W2ovvl3fCBVqa8BQEpSZvD3Wzpw1hlJyVtm6by5e0yut0Yn1Bo65Vbfz9xGjDE68a3vVFKIkDKb/egIYgeRdtWp+Cj2hF/UqL/1Jgu1zH4a3B5EdeY17R5pzCj7nW5fVO/263WuViJcBq3D4PE5BOOp75l/wEYYAjJLaST+UQ4pW5Ee0k7Jw7yXEJJ8/1WME5jJr4O3ZPEvvwfsXksWBqx0PaaNJo5KFtVeoG6l9eh8oLxMV2qZrThese9nMIrpFcWczxHzk49RyPmmDb1cTV2gI4cs5knbPpQWy611PW51QuYXR7YgZEclHtYpT8AGjJsXGSjXbirn6IzRFcWcQmvCxVFyiX+n6PhXDT7vT9wWo32dVQTgyuIUb8ebuX9zTSdB/C3dLNfEwCW2a3DaBWIi2OBN2CMslmsE48hxCa7Af/0jQsYIUVMnyJ+pgqVW56HMhFhc2vSygfLz1A6Bbnf57NlXeyD080P3afih5b6xGDGTN8MDDnk3OUiirvWZpRgp2j49bt6oyNbmqs6lI1MNZ9ZQeR7M6rQkw7YWKEau9rip8H4eSfcrz+M0Oh+K4bcdcCwOP+7uPvxljnOH1GFRMO71Bmj5Er6DCUmhag05Jmf62PQ=
       skull-owner: Socialismo
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:player_head
+    count: 1
+    components:
+      minecraft:profile: '{id:[I;1656447023,343492459,-1177365473,-1267449766],name:"fame_head",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmMxNjJjMTZlMDE0MzNiM2RhNjY3NGQ2NDJjM2VhYjRiZTllNmQ3MWUyMGEzMzI1NTY0YzRkMDNhODEyNjA2YSJ9fX0="}]}'
+      minecraft:attribute_modifiers: '[{amount:2.0d,id:"elytrix:damage_fame_ball",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"},{amount:0.3d,id:"elytrix:attack_speed_fame_ball",operation:"add_multiplied_base",slot:"offhand",type:"minecraft:attack_speed"},{amount:2.0d,id:"elytrix:armor_fame_ball",operation:"add_value",slot:"offhand",type:"minecraft:armor"}]'
+      minecraft:lore: '[{extra:[{color:"#FF5555",italic:0b,text:"Проклятие утраты"}],italic:0b,text:""},"",{extra:[{color:"#AAAAAA",italic:0b,text:"Когда во второй руке:"}],italic:0b,text:""},{extra:[{bold:1b,color:"#55FF55",italic:0b,text:" +2.0 к Урону"}],italic:0b,text:""},{extra:[{bold:1b,color:"#55FF55",italic:0b,text:" +30% к Скорости атаки"}],italic:0b,text:""},{extra:[{bold:1b,color:"#55FF55",italic:0b,text:" +2.0 к Броне"}],italic:0b,text:""}]'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers"]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"#A855F7",italic:0b,text:"Шар Славы"}],italic:0b,text:""}'
+      minecraft:custom_data: '{PublicBukkitValues:{"minecraft:fame_ball":"FAME_BALL"}}'
+    schema_version: 1
   Armor:
   - ==: org.bukkit.inventory.ItemStack
     v: 2586

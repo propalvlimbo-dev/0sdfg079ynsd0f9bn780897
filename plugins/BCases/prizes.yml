@@ -332,7 +332,7 @@ prizes:
     enchanted: false
     material: ORANGE_SHULKER_BOX
     give_commands:
-    - '[CONSOLE] kit tiger %player_name%'
+    - '[CONSOLE] kit fame %player_name%'
     - '[BROADCAST] &#F8BEFB ꐁ'
     - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл &7Набор &fꔶ'
     - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс с китами'
@@ -432,7 +432,7 @@ prizes:
     enchanted: false
     material: ORANGE_SHULKER_BOX
     give_commands:
-    - '[CONSOLE] lp user %player_name% parent addtemp tiger 30d'
+    - '[CONSOLE] lp user %player_name% parent addtemp fame 30d'
     - '[BROADCAST] &#F8BEFB ꐁ'
     - '[BROADCAST] &#F8BEFB ꐁ &fИгрок &#FAD8FC%player_name% &fвыиграл ꔶ &#FAD8FC(30д)'
     - '[BROADCAST] &#F8BEFB ꐁ &fОткрыв &aКейс Джамшута'

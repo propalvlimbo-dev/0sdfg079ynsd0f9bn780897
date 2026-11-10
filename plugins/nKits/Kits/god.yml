@@ -1,5 +1,5 @@
 Name: god
-Cooldown: 172800
+Cooldown: 86400
 Permission: nKits.kits.god
 Order: 0
 FirstTimeJoinKit: false

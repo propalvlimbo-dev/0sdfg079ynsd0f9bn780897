@@ -19,7 +19,7 @@ claim:
       dragon: 25000000      # ~80x80
       bull: 3800000        # ~100x100
       rabbit: 5600000      # ~120x120
-      tiger: 6500000       # ~130x130
+      fame: 6500000        # ~130x130
       dracula: 7000000     # ~135x135
       hydra: 7500000       # ~140x140
       bunny: 8800000       # ~151x151
@@ -43,6 +43,7 @@ claim:
       moderplus: 2147483647
       stmoder: 2147483647
       glmoder: 2147483647
+      dmoder: 2147483647
       mladmin: 2147483647
       fulladmin: 2147483647
       admin: 2147483647

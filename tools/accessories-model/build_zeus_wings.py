@@ -4,17 +4,30 @@ icon (`reallyworld:zeus_wings_icon`) and a multi-angle verification preview.
 
 100% pure procedural Python + Pillow + NumPy — zero AI generation.
 
-  1. Visual design v4 — "A REAL FEATHERED WING" (v3.26/v3.27 were a lightning tree and
-     then a staircase feather plane; the player asked for a complete remake "from zero",
-     shaped like the angel wings, with a completely redrawn, pleasant texture).
+  1. Visual design v5 — "A REAL FEATHERED WING WITH VOLUME" (v3.26/v3.27 were a lightning
+     tree and then a staircase feather plane; v3.28.0 was the remake "from zero" shaped
+     like the angel wings with a completely redrawn texture, but the player then said it
+     was TOO FLAT and looked like parts that were not attached to each other, and that the
+     motion was sluggish).  v5 keeps the v3.28.0 silhouette and the texture and fixes the
+     three complaints:
        - The wing is built the way a bird's wing is built: ONE ARM (humerus + radius)
          traces the leading edge from the shoulder blade out over the wrist and down to
          the wingtip, and THIRTEEN FEATHERS hang off that arm — six secondaries on the
          inner half, seven primaries on the hand.  Their tips trace a smooth concave
          trailing edge, exactly like an angel-wing silhouette.
-       - Every feather is a FLAT LANCE PLATE (a real vane, not a comb of bolts) built
-         from 5 overlapping axis-aligned segments that taper root -> tip, so the
-         silhouette is a proper feather and not a rectangle.
+       - **VOLUME (the "too flat" fix).**  The v3.28.0 spar was a `1.04 -> 0.34` BB square
+         sliver and every vane was a `0.06` BB sheet — a paper cut-out.  Now the arm is a
+         real TAPERED LIMB (`1.24 -> 0.60` BB tall, `0.84 -> 0.48` BB deep, so it has a
+         front, a back and two lit rims), every vane is `0.30` BB thick AND carries a
+         raised QUILL RIDGE (`0.22` BB, `46%` of the vane width) sitting on top of it, so
+         a feather has a spine you can see from the side.  The shingle step grew with the
+         vane (`0.10 -> 0.18` BB), so the thicker vanes still never z-fight.
+       - **CONNECTEDNESS (the "not attached to each other" fix).**  Three new joints tie
+         the plumage into one mass: every feather now starts `0.09` of its own length
+         INSIDE the arm (a root plug — there is no seam to see), a WRIST KNOT caps the
+         joint where the primaries leave the hand, and a row of SEVEN COVERTS rides the
+         arm and hangs `1.7` BB down over the feather roots, exactly like the covert
+         feathers that roof a real wing.
        - THE FEATHERS ARE FANNED BY BONE ROTATION, not by cube rotation.  Each feather
          sits on its own bone whose `idle` keyframes carry the fan angle
          (`rotateZYX = Rz.Ry.Rx`).  Keyframes are used (and not the static
@@ -33,12 +46,17 @@ icon (`reallyworld:zeus_wings_icon`) and a multi-angle verification preview.
      tiles carry a bright quill, fine barb streaks and a glowing tip; the cloud tiles are
      soft volumetric puffs.  Palette stays COLD (per the player's pick): white-hot core,
      ice cyan, electric blue, storm indigo.  Zero warm/gold pixels.
-  3. Motion (seamless 4.8 s loop, 65 keyframes @ ~13.5 fps):
-       - Whole-wing beat on the empty group bones: `+-5.5 deg` flap, `+2.4 deg`
-         double-time shudder, `+-3 deg` sweep, `+-0.8 deg` crackle jitter.
+  3. Motion (seamless 3.2 s loop, 65 keyframes @ exactly 20 fps — the "sluggish" fix):
+       The v3.28.0 loop was 4.8 s of `+-5.5 deg`: barely `4.6 deg/s`, which reads as a
+       frozen slab.  v5 runs the loop 1.5x faster AND roughly doubles every amplitude,
+       so the wing travels about `3x` more angle per second.
+       - Whole-wing beat on the empty group bones: `+-8.5 deg` flap, `+4.0 deg`
+         DOUBLE-time shudder, `+-5.0 deg` sweep, `+-1.4 deg` 13x crackle jitter.
        - Every feather ripples on its own phase, amplitude growing toward the wingtip
-         (`1.1 -> 3.0 deg`), so the wing breathes like plumage instead of flapping a slab.
-       - The arm lags the beat, the clouds boil, the sparks tumble a full turn per loop.
+         (`2.2 -> 6.0 deg`) plus a fast `+-1.4 deg` 6x shiver, so the plumage crackles
+         instead of flapping a slab.
+       - The arm lags the beat harder (`+-4.0 deg`), the clouds boil 1.7x faster, the
+         sparks tumble a full turn per loop.
   4. Engine safety:
        - **Not a single cube is rotated** — every fan angle lives on a bone keyframe.
        - Every cube corner stays inside 23 BB of its own bone pivot (ModelEngine's
@@ -68,8 +86,8 @@ ROOT = HERE.parents[1]
 MODEL = 'elytrix_zeus_wings'
 ICON = 'zeus_wings_icon'
 
-IDLE_LEN = 4.8       # 96 ticks @ 20 TPS — seamless beat + feather ripple loop
-IDLE_STEPS = 64      # 65 keyframes
+IDLE_LEN = 3.2       # 64 ticks @ 20 TPS — seamless beat + feather ripple loop
+IDLE_STEPS = 64      # 65 keyframes at EXACTLY 20/s, so ME's snapping never resamples
 
 TEX = 256            # texture is 256x256 on a 16x16 UV grid -> 16 px per UV unit
 
@@ -82,11 +100,13 @@ ROOT_ORIG = [0.0, 22.0, 1.9]
 # Arm / leading edge of the RIGHT wing (the left one is the X mirror).  It leaves the
 # shoulder blade, crests over the wrist (the highest point of the wing) and sweeps down
 # and out to the wingtip.  `z` stays just behind the back the whole way.
-# `z` is CONSTANT: the whole wing plane sits 3.68 BB behind the player's centre line,
-# i.e. just clear of the back surface (torso `|z| <= 3.48`, arms `3.35`).  The depth
-# layering of the plumage comes from FEATHER_SHINGLE, not from tilting the spar — a
-# tilted vane would smear across several shingle steps and start z-fighting.
-ARM_Z = 3.68
+# `z` is CONSTANT: the whole wing plane sits 3.80 BB behind the player's centre line,
+# i.e. clear of the back surface (torso `|z| <= 3.48`, arms `3.35`) even after the spar
+# was given real depth (ARM_HALF_Z[0] = 0.42 -> the back face of the shoulder end of the
+# spar sits at z = 3.38, the FRONT rim at 4.22).  The depth layering of the plumage comes
+# from FEATHER_SHINGLE, not from tilting the spar — a tilted vane would smear across
+# several shingle steps and start z-fighting.
+ARM_Z = 3.80
 ARM = [
     (1.15, 21.60, ARM_Z),     # 0  shoulder
     (3.00, 22.40, ARM_Z),
@@ -101,7 +121,28 @@ ARM = [
     (21.30, 16.90, ARM_Z),    # 10 wingtip
 ]
 ARM_PIVOT_I = 4              # the arm bone pivots on the wrist
-ARM_HALF = (0.52, 0.17)      # half thickness at the shoulder -> at the tip
+# v5 — the spar is a TAPERED LIMB, not a sliver: half HEIGHT shoulder -> tip and half
+# DEPTH shoulder -> tip are separate, so the cross section is a tall rectangle that keeps
+# a visible front face, back face and two lit rims all the way out to the wingtip.
+ARM_HALF_Y = (0.62, 0.30)
+ARM_HALF_Z = (0.42, 0.24)
+# The wrist knot: the joint blob that caps the spar where the primaries leave the hand.
+# Offsets are (x0, y0, z0, x1, y1, z1) around ARM[ARM_PIVOT_I]; x is mirrored per side.
+WRIST_BLOB = (
+    (-0.78, -0.60, -0.56, 0.78, 0.60, 0.64),
+    (-0.46, -0.86, -0.40, 0.46, 0.34, 0.46),
+    (-0.30, 0.28, -0.44, 0.30, 0.82, 0.44),
+)
+# Coverts: the short feathers that ROOF the flight-feather roots and make the wing read
+# as one connected mass.  They ride the arm between COVERT_S0 and COVERT_S1 of its arc
+# length, hang COVERT_DROP below the spar axis and follow the very same shingle ramp as
+# the feathers themselves (so they never sit coplanar with a vane).
+COVERT_COUNT = 7
+COVERT_S0, COVERT_S1 = 0.015, 0.600
+COVERT_DROP = 1.70
+COVERT_HW = (0.95, 0.55)     # half width at the shoulder -> at the hand
+COVERT_THICK = 0.36
+COVERT_DZ = 0.22             # start of the shingle ramp (in front of the spar axis)
 
 # Feather rows: (s along the arm, tip x, tip y, tip dz, half width).
 # `s` is the normalised arc length along ARM; the tip is given in absolute model
@@ -131,15 +172,36 @@ FEATHER_COUNT = len(FEATHERS)
 
 # One feather = 5 overlapping segments (start, end, width factor) along its own axis.
 FEATHER_SEGS = (
-    (0.000, 0.24, 1.00),
+    # v5: the first segment now STARTS 0.09 of the feather length INSIDE the arm, so the
+    # root of every feather is buried in the spar and there is no seam to see.
+    (-0.090, 0.24, 1.00),
     (0.200, 0.52, 0.98),
     (0.480, 0.78, 0.88),
     (0.740, 0.95, 0.66),
     (0.910, 1.00, 0.30),
 )
-FEATHER_THICK = 0.06        # the vane is a thin plate (half 0.03)
-FEATHER_SHINGLE = 0.10      # each feather sits 0.10 BB behind the one in front of
-                            # it, so overlapping vanes can never z-fight
+# v5 — SEGMENT SHINGLE.  Neighbouring vane segments deliberately OVERLAP (0.20 vs 0.24)
+# so the taper looks smooth, but two coplanar overlapping faces with different UVs
+# z-fight.  Every segment therefore sits 0.03 BB in front of the one before it: the vane
+# keeps a gentle curve in depth and not one pixel of it flickers.  (v3.28.0 put all five
+# segments on ONE plane, which is a large part of why the wing read as a paper cut-out.)
+FEATHER_SEG_DZ = 0.030
+# The raised quill ridge: 3 plates along the SAME axis, narrower and sitting in front.
+FEATHER_RIDGE_SEGS = (
+    (0.010, 0.32, 0.44),
+    (0.280, 0.64, 0.42),
+    (0.600, 0.92, 0.30),
+)
+FEATHER_THICK = 0.30        # v5: a vane with real thickness (half 0.15); v3.28.0 was a
+                            # 0.06 BB sheet, which is why the wing read as paper
+FEATHER_SHINGLE = 0.18      # each feather sits 0.18 BB in front of the one before it,
+                            # i.e. MORE than the vane thickness: overlapping vanes can
+                            # never z-fight, and the stack reads as layered plumage
+# v5 — the raised quill ridge: a narrower second plate lying ON TOP of every vane, so a
+# feather has a spine with two lit shoulders instead of being one flat sheet.
+RIDGE_THICK = 0.22
+RIDGE_W = 0.46              # ridge half-width as a fraction of the vane half-width
+RIDGE_DZ = 0.26             # ridge sits 0.26 BB in front of the vane's mid-plane
 
 # Shoulder thunderhead puffs (offset from the arm's shoulder point, +Z is back).
 SHOULDER_PUFF = (1.50, 22.30, 3.85)
@@ -171,7 +233,7 @@ SPARKS = ((6.20, 24.90, 3.85), (-6.20, 24.90, 3.85))
 
 
 def uid(tag: str) -> str:
-    return str(uuid.uuid5(uuid.uuid5(uuid.NAMESPACE_OID, 'elytrix.zeus_wings.v4'), tag))
+    return str(uuid.uuid5(uuid.uuid5(uuid.NAMESPACE_OID, 'elytrix.zeus_wings.v5'), tag))
 
 
 # ---------------------------------------------------------------------------
@@ -443,9 +505,18 @@ def _cube(name: str, p_from: list, p_to: list, origin: list, faces: dict) -> dic
 
 
 def _slice_u(tile: tuple, f0: float, f1: float) -> tuple:
-    """The sub-rect of `tile` covering the feather-length fraction [f0, f1]."""
-    return (round(tile[0] + (tile[2] - tile[0]) * f0, 4), tile[1],
-            round(tile[0] + (tile[2] - tile[0]) * f1, 4), tile[3])
+    """The sub-rect of `tile` covering the feather-length fraction [f0, f1].
+
+    v5 feathers start a little INSIDE the arm, so `f0` can be negative; the result is
+    clamped into the 0..16 UV square so ModelEngine never samples outside the texture.
+    """
+    lo = tile[0] + (tile[2] - tile[0]) * f0
+    hi = tile[0] + (tile[2] - tile[0]) * f1
+    if lo > hi:
+        lo, hi = hi, lo
+    lo = max(0.0, min(16.0, lo))
+    hi = max(0.0, min(16.0, hi))
+    return (round(lo, 4), tile[1], round(hi, 4), tile[3])
 
 
 # ---------------------------------------------------------------------------
@@ -512,9 +583,10 @@ def _mirror_x(p) -> list:
 
 
 def feather_cubes(side: str, i: int) -> list:
-    """The 5 tapered segments of one feather, laid out UNROTATED along local X.
+    """One feather: 5 tapered vane segments + 3 raised quill-ridge segments.
 
-    The bone's `idle` keyframes carry the fan angle, so nothing here is rotated.
+    Everything is laid out UNROTATED along local X; the bone's `idle` keyframes carry
+    the fan angle, so nothing here is rotated.
     """
     spec = FEATHER_SPECS[i]
     rx, ry, rz = spec['root']
@@ -526,13 +598,15 @@ def feather_cubes(side: str, i: int) -> list:
     ht = FEATHER_THICK / 2.0
     face_tile = UV_PRI_FACE if spec['row'] == 'pri' else UV_SEC_FACE
     cubes = []
+    nseg = len(FEATHER_SEGS)
     for k, (f0, f1, wf) in enumerate(FEATHER_SEGS):
         a = spec['length'] * f0
         b = spec['length'] * f1
         w = hw * wf
+        zk = rz + (k - (nseg - 1) / 2.0) * FEATHER_SEG_DZ
         xa, xb = rx + dirx * a, rx + dirx * b
-        lo = [min(xa, xb), ry - w, rz - ht]
-        hi = [max(xa, xb), ry + w, rz + ht]
+        lo = [min(xa, xb), ry - w, zk - ht]
+        hi = [max(xa, xb), ry + w, zk + ht]
         root_side_u = (dirx > 0.0)                 # is the low-x end the root?
         north = _slice_u(face_tile, f0, f1)
         if not root_side_u:
@@ -554,6 +628,36 @@ def feather_cubes(side: str, i: int) -> list:
             faces['east'], faces['west'] = faces['west'], faces['east']
         cubes.append(_cube(f'{_feather_bone_name(side, i)}_{k}',
                            lo, hi, [rx, ry, rz], faces))
+
+    # --- v5: the raised quill ridge that gives the vane a spine -------------
+    hrt = RIDGE_THICK / 2.0
+    nrs = len(FEATHER_RIDGE_SEGS)
+    for k, (f0, f1, rwf) in enumerate(FEATHER_RIDGE_SEGS):
+        a = spec['length'] * f0
+        b = spec['length'] * f1
+        w = hw * RIDGE_W * rwf
+        rzc = rz + RIDGE_DZ + (k - (nrs - 1) / 2.0) * FEATHER_SEG_DZ
+        xa, xb = rx + dirx * a, rx + dirx * b
+        lo = [min(xa, xb), ry - w, rzc - hrt]
+        hi = [max(xa, xb), ry + w, rzc + hrt]
+        north = _slice_u(UV_QUILL, f0, f1)
+        if dirx < 0.0:
+            north = (north[2], north[1], north[0], north[3])
+        south = (north[2], north[1], north[0], north[3])
+        up = _slice_u(UV_CORE, f0, f1)
+        edge = _slice_u(UV_RIM, f0, f1)
+        rfaces = {
+            'north': {'uv': list(north), 'texture': 0},
+            'south': {'uv': list(south), 'texture': 0},
+            'up': {'uv': list(up), 'texture': 0},
+            'down': {'uv': list(edge), 'texture': 0},
+            'east': {'uv': list(UV_TIP_GLOW if f1 >= 0.90 else edge), 'texture': 0},
+            'west': {'uv': list(edge), 'texture': 0},
+        }
+        if side == 'l':
+            rfaces['east'], rfaces['west'] = rfaces['west'], rfaces['east']
+        cubes.append(_cube(f'{_feather_bone_name(side, i)}_r{k}',
+                           lo, hi, [rx, ry, rz], rfaces))
     return cubes
 
 
@@ -563,23 +667,61 @@ def _feather_bone_name(side: str, i: int) -> str:
 
 
 def arm_cubes(side: str) -> list:
-    """The wing bone: an L-stepped tapered bar along the leading edge."""
+    """The wing bone: an L-stepped TAPERED LIMB along the leading edge.
+
+    v5 — the v3.28.0 spar was a square `1.04 -> 0.34` BB sliver, i.e. a paper strip.
+    The cross section is now a tall rectangle: half height `0.62 -> 0.30` and half depth
+    `0.42 -> 0.24`, so the limb keeps a front face, a back face and two lit rims.
+    The wrist knot and the covert row are welded onto the same bone, which is what makes
+    the plumage read as one connected mass instead of loose plates.
+    """
     pts = [p if side == 'r' else (-p[0], p[1], p[2]) for p in ARM]
+    sx = 1.0 if side == 'r' else -1.0
     cubes = []
     n = len(pts)
     for i in range(n - 1):
         f = i / (n - 2)
-        t = ARM_HALF[0] + (ARM_HALF[1] - ARM_HALF[0]) * f
+        ty = ARM_HALF_Y[0] + (ARM_HALF_Y[1] - ARM_HALF_Y[0]) * f
+        tz = ARM_HALF_Z[0] + (ARM_HALF_Z[1] - ARM_HALF_Z[0]) * f
         (x0, y0, z0), (x1, y1, z1) = pts[i], pts[i + 1]
-        faces = _faces(UV_ARM, up=UV_ARM_CORE, down=UV_CLOUD_DEEP)
+        faces = _faces(UV_ARM, up=UV_ARM_CORE, down=UV_CLOUD_DEEP,
+                       east=UV_QUILL, west=UV_QUILL)
         cubes.append(_cube(f'arm_{side}_h{i:02d}',
-                           [min(x0, x1) - 0.0, y0 - t, z0 - t],
-                           [max(x0, x1) + 0.0, y0 + t, z0 + t],
+                           [min(x0, x1) - 0.0, y0 - ty, z0 - tz],
+                           [max(x0, x1) + 0.0, y0 + ty, z0 + tz],
                            pts[ARM_PIVOT_I], faces))
         cubes.append(_cube(f'arm_{side}_v{i:02d}',
-                           [x1 - t, min(y0, y1), z1 - t],
-                           [x1 + t, max(y0, y1), z1 + t],
+                           [x1 - ty, min(y0, y1), z1 - tz],
+                           [x1 + ty, max(y0, y1), z1 + tz],
                            pts[ARM_PIVOT_I], faces))
+
+    # --- the wrist knot: caps the joint the primaries leave from ------------
+    wx, wy, wz = pts[ARM_PIVOT_I]
+    for k, (dx0, dy0, dz0, dx1, dy1, dz1) in enumerate(WRIST_BLOB):
+        cubes.append(_cube(
+            f'wrist_{side}_{k}',
+            [wx + sx * min(dx0, dx1), wy + min(dy0, dy1), wz + min(dz0, dz1)],
+            [wx + sx * max(dx0, dx1), wy + max(dy0, dy1), wz + max(dz0, dz1)],
+            pts[ARM_PIVOT_I],
+            _faces(UV_CLOUD_MID, up=UV_CLOUD_TOP, down=UV_CLOUD_DEEP)))
+
+    # --- coverts: short feathers roofing the flight-feather roots -----------
+    for k in range(COVERT_COUNT):
+        g = k / (COVERT_COUNT - 1)
+        s = COVERT_S0 + (COVERT_S1 - COVERT_S0) * g
+        ax, ay, az = arm_at(s)
+        ax = sx * ax
+        hw = COVERT_HW[0] + (COVERT_HW[1] - COVERT_HW[0]) * g
+        # the covert follows the very same shingle ramp as the feathers under it
+        zc = az + COVERT_DZ + FEATHER_SHINGLE * g * (FEATHER_COUNT - 1)
+        top = ay + 0.30
+        bot = top - COVERT_DROP * (1.0 - 0.42 * g)
+        cubes.append(_cube(
+            f'cov_{side}_{k:02d}',
+            [ax - 0.62, bot, zc - COVERT_THICK / 2.0],
+            [ax + 0.62, top, zc + COVERT_THICK / 2.0],
+            pts[ARM_PIVOT_I],
+            _faces(UV_DOWN, up=UV_CLOUD_TOP, down=UV_MEMBRANE)))
     return cubes
 
 
@@ -667,9 +809,9 @@ def eval_zeus_pose(u: float) -> dict:
     up = 0.0 if u >= 1.0 else u
 
     pose = {
-        'root_pos': [0.0, round(0.13 * math.sin(TAU * up), 4), 0.0],
-        'root_rot': [round(0.7 * math.sin(TAU * up + 0.9), 4), 0.0,
-                     round(1.0 * math.sin(TAU * up), 4)],
+        'root_pos': [0.0, round(0.20 * math.sin(TAU * up), 4), 0.0],
+        'root_rot': [round(1.1 * math.sin(TAU * up + 0.9), 4), 0.0,
+                     round(1.6 * math.sin(TAU * up), 4)],
         'wing_rot': {},
         'arm_rot': {},
         'shoulder_scale': {},
@@ -679,9 +821,12 @@ def eval_zeus_pose(u: float) -> dict:
         'spark_scale': {},
     }
 
-    flap = 5.5 * math.sin(TAU * up) + 2.4 * math.sin(TAU * 2.0 * up + 1.1)
-    jitter = 0.8 * math.sin(TAU * 8.0 * up + 0.6)
-    sweep = 3.0 * math.sin(TAU * up + 0.35)
+    # v5 — the v3.28.0 beat was 5.5 deg over 4.8 s (~22 deg/s peak) and read as frozen.
+    # The loop is 1.5x shorter and every amplitude is up, so the wing now travels about
+    # 3x more angle per second (~66 deg/s peak) while the tip stays above the knees.
+    flap = 7.5 * math.sin(TAU * up) + 3.2 * math.sin(TAU * 2.0 * up + 1.1)
+    jitter = 1.3 * math.sin(TAU * 13.0 * up + 0.6)
+    sweep = 4.6 * math.sin(TAU * up + 0.35)
     pose['wing_rot']['wing_r'] = [0.0, round(sweep, 4), round(flap + jitter, 4)]
     pose['wing_rot']['wing_l'] = [0.0, round(-sweep, 4), round(-(flap + jitter), 4)]
 
@@ -689,15 +834,15 @@ def eval_zeus_pose(u: float) -> dict:
         phase = 0.0 if side == 'r' else math.pi
 
         # the arm is the wing's spar: it lags the beat and crackles
-        lag = 2.4 * math.sin(TAU * up + 0.30 + phase)
-        crackle = 1.1 * math.sin(TAU * 7.0 * up + 0.4)
-        pose['arm_rot'][f'arm_{side}'] = [round(0.6 * crackle, 4),
-                                          round(0.4 * crackle, 4),
+        lag = 4.0 * math.sin(TAU * up + 0.30 + phase)
+        crackle = 1.8 * math.sin(TAU * 11.0 * up + 0.4)
+        pose['arm_rot'][f'arm_{side}'] = [round(0.9 * crackle, 4),
+                                          round(0.6 * crackle, 4),
                                           round(sign * (lag + crackle), 4)]
 
         # the shoulder thunderhead slowly boils
-        boil = (0.055 * math.sin(TAU * 2.0 * up + 1.15 + phase)
-                + 0.030 * math.sin(TAU * 5.0 * up + 2.3 + phase))
+        boil = (0.075 * math.sin(TAU * 3.0 * up + 1.15 + phase)
+                + 0.040 * math.sin(TAU * 7.0 * up + 2.3 + phase))
         s = round(1.0 + boil, 4)
         pose['shoulder_scale'][f'shoulder_{side}'] = [s, round(1.0 - 0.45 * boil, 4), s]
 
@@ -705,9 +850,10 @@ def eval_zeus_pose(u: float) -> dict:
             spec = FEATHER_SPECS[i]
             name = _feather_bone_name(side, i)
             # the ripple grows towards the wingtip so the plumage "breathes"
-            amp = 1.1 + 1.9 * (i / max(1, FEATHER_COUNT - 1))
-            ripple = amp * math.sin(TAU * up + 0.55 * i + phase)
-            shiver = 0.7 * math.sin(TAU * 5.0 * up + i * 1.7)
+            amp = 2.2 + 3.8 * (i / max(1, FEATHER_COUNT - 1))
+            ripple = (amp * math.sin(TAU * up + 0.55 * i + phase)
+                      + 1.6 * math.sin(TAU * 2.0 * up + 0.90 * i + phase))
+            shiver = 1.4 * math.sin(TAU * 6.0 * up + i * 1.7)
             th = spec['theta'] + sign * 0.0 + ripple + shiver
             ph = spec['phi'] * (1.0 if side == 'r' else -1.0)
             pose['feather_rot'][name] = [

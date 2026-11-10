@@ -173,20 +173,20 @@ items:
     - '[player] kit dadmin'
     right_click_commands:
     - '[openguimenu] preview_dadmin'
-  kit_tiger:
-    material: orange_shulker_box
+  kit_fame:
+    material: purple_shulker_box
     slot: 24
-    display_name: '&#AAAAAAНабор &#F8BEFB&lTIGER'
+    display_name: '&#AAAAAAНабор &#A855F7&lFAME'
     lore:
     - ''
-    - '&#AAAAAA Доступен: &#F8BEFB&lTIGER'
+    - '&#AAAAAA Доступен: &#A855F7&lFAME'
     - ''
     - '&#F8BEFBПравая &#AAAAAAкнопка для предпросмотра'
     - '&#F8BEFBЛевая &#AAAAAAкнопка для получения'
     left_click_commands:
-    - '[player] kit tiger'
+    - '[player] kit fame'
     right_click_commands:
-    - '[openguimenu] preview_tiger'
+    - '[openguimenu] preview_fame'
   kit_bunny:
     material: black_shulker_box
     slot: 25

@@ -1,5 +1,5 @@
 Name: rabbit
-Cooldown: 432000
+Cooldown: 86400
 Permission: nKits.kits.rabbit
 Order: 0
 FirstTimeJoinKit: false

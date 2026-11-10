@@ -1,5 +1,5 @@
 Name: dracula
-Cooldown: 432000
+Cooldown: 86400
 Permission: nKits.kits.dracula
 Order: 0
 FirstTimeJoinKit: false

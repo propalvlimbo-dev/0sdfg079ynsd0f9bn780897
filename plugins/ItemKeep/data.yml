@@ -190,7 +190,7 @@
       minecraft:custom_model_data: '{floats:[10001.0f]}'
       minecraft:custom_data: '{PublicBukkitValues:{"minecraft:chaos_ball":"CHAOS_BALL"}}'
     schema_version: 1
-шар_tiger:
+шар_fame:
   items:
   - ==: org.bukkit.inventory.ItemStack
     DataVersion: 4556

@@ -1,5 +1,5 @@
 Name: vampire
-Cooldown: 2592000
+Cooldown: 86400
 Permission: nKits.kits.vampire
 Order: 11
 FirstTimeJoinKit: false

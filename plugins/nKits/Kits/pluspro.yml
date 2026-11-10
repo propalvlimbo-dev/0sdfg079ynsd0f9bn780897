@@ -1,5 +1,5 @@
 Name: pluspro
-Cooldown: 864000
+Cooldown: 86400
 Permission: nKits.kits.pluspro
 Order: 0
 FirstTimeJoinKit: false

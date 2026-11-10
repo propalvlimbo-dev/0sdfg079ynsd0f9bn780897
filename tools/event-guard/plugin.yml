@@ -1,0 +1,14 @@
+name: ElytrixEventGuard
+version: '1.0.0'
+main: pw.elytrix.eventguard.EventGuard
+api-version: '1.21'
+authors: [Elytrix]
+description: 'Elytrix event guard: /fly is never stripped from moder+ on the Talisman and the Airdrop, the auction refuses god/fly, and end crystals stop eating blocks.'
+softdepend: [LuckPerms, NMascot, ElytrixAir, Essentials, CloudAuction]
+permissions:
+  elytrix.eventguard.bypass:
+    description: 'Never let an event zone strip /fly or /god from this player (LuckPerms groups moder and above get it by group, this is the explicit override).'
+    default: false
+  elytrix.eventguard.admin:
+    description: 'See ElytrixEventGuard diagnostics and reload its config.'
+    default: op

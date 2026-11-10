@@ -1,5 +1,5 @@
 Name: media
-Cooldown: 172800
+Cooldown: 86400
 Permission: nKits.kits.media
 Order: 0
 FirstTimeJoinKit: false

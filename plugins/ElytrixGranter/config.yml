@@ -15,7 +15,8 @@ groups:
     bull: 999
     dracula: 999
     bunny: 999
-    tiger: 999
+    fame: 999
+    dmoder: 999
     rabbit: 999
     hydra: 999
     cobra: 999
@@ -45,10 +46,12 @@ weight:
   cobra: 10
   god: 11
   pegas: 12
-  angel: 14
   dhelper: 13
-  dadmin: 15
-  owner: 16
+  fame: 14
+  angel: 15
+  dmoder: 16
+  dadmin: 17
+  owner: 18
 grant commands:
 - lp user %player% parent add %group%
 - bc &x&F&8&B&E&F&B%granter% &fвыдал игроку &x&F&8&B&E&F&B%player% &fпривилегию &x&F&8&B&E&F&B%group%

@@ -1,1 +1,1 @@
-{"model":{"model":"modelengine:elytrix_zeus_wings/arm_r","tints":[{"type":"minecraft:constant","value":-197122}],"type":"minecraft:model"}}
+{"model":{"model":"modelengine:elytrix_zeus_wings/arm_r","tints":[{"index":0,"default":16777215,"type":"minecraft:custom_model_data"}],"type":"minecraft:model"}}

@@ -508,7 +508,7 @@ default_items:
     attributes: false
     enchants: true
     potions: true
-  shartiger:
+  sharfame:
     material: PLAYER_HEAD
     name: "&x&F&8&B&E&F&B&lТигринная голова"
     price: 599
@@ -519,7 +519,7 @@ default_items:
     modelData: 0
     headId: "ewogICJ0aW1lc3RhbXAiIDogMTY0MDM0NTUwMTk5MSwKICAicHJvZmlsZUlkIiA6ICI2MmJiNjAyZjE0Nzk0NzZiYjlkMmQ0MWZiNDc0NDA1YSIsCiAgInByb2ZpbGVOYW1lIiA6ICJTb2NpYWxpc21vIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzJjMTYyYzE2ZTAxNDMzYjNkYTY2NzRkNjQyYzNlYWI0YmU5ZTZkNzFlMjBhMzMyNTU2NGM0ZDAzYTgxMjYwNmEiCiAgICB9LAogICAgIkNBUEUiIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzIzNDBjMGUwM2RkMjRhMTFiMTVhOGIzM2MyYTdlOWUzMmFiYjIwNTFiMjQ4MWQwYmE3ZGVmZDYzNWNhN2E5MzMiCiAgICB9CiAgfQp9"
     commands:
-      - "console;ik give шар_tiger %player%"
+      - "console;ik give шар_fame %player%"
     lore:
       - "&cПроклятье утраты"
       - "&7Когда во второй руке:"

@@ -1,5 +1,5 @@
 menu_title: §fꈁꀀꈂꍗꈂꀁ§fꈃꄑ
-open_command: kitpreview_tiger
+open_command: kitpreview_fame
 register_command: true
 size: 54
 items:
@@ -42,7 +42,7 @@ items:
   kit_badge:
     material: orange_shulker_box
     slot: 45
-    display_name: '&#AAAAAAНабор &#F8BEFB&lTIGER'
+    display_name: '&#AAAAAAНабор &#A855F7&lFAME'
     lore:
     - '&8Предпросмотр набора'
     - ''
@@ -210,4 +210,4 @@ items:
     - '&7Нажмите, чтобы взять набор'
     click_commands:
     - '[close]'
-    - '[player] kit tiger'
+    - '[player] kit fame'

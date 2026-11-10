@@ -105,7 +105,9 @@ performance:
     water_ambient:
       min-failed: 8
       spawn-chance: 25.0
-  create-snapshot-on-retrieving-blockstate: false
+  # Elytrix: включён — без снимка плагины (WorldGuard, FAWE, приваты, ивенты
+  # кристаллов) правят живой блок напрямую и рассинхронизируют его с клиентом.
+  create-snapshot-on-retrieving-blockstate: true
   use-virtual-thread:
     bukkit-async-scheduler: false
     folia-async-scheduler: false

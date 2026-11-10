@@ -50,7 +50,7 @@ regions:
         dragon: 8
         bull: 16
         rabbit: 24
-        tiger: 32
+        fame: 32
         dracula: 40
         hydra: 48
         bunny: 56
@@ -66,6 +66,7 @@ regions:
         media: 96
         helper: 64
         mlmoder: 128
+        dmoder: 256
         moder: 256
         moderplus: 256
         stmoder: 512

@@ -73,8 +73,8 @@ gui_menus:
     file: kits_preview/preview_dragon.yml
   preview_bull:
     file: kits_preview/preview_bull.yml
-  preview_tiger:
-    file: kits_preview/preview_tiger.yml
+  preview_fame:
+    file: kits_preview/preview_fame.yml
   preview_bunny:
     file: kits_preview/preview_bunny.yml
   preview_rabbit:
