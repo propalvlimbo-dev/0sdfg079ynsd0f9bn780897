@@ -37,6 +37,7 @@ EXTRA = [
     'plugins/DeluxeMenus/gui_menus/kits_preview/preview_fame.yml',
     'plugins/DeluxeMenus/gui_menus/priv/donate.yml',
     'plugins/DeluxeMenus/gui_menus/shop/sphere.yml',
+    'plugins/Duels/extensions/Leaderboards/config.yml',
     'plugins/DecentHolograms/holograms/don1.yml',
     'plugins/DecentHolograms/holograms/don2.yml',
     'plugins/nKits/Kits/angel.yml',

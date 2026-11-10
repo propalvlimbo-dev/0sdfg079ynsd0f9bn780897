@@ -32,6 +32,22 @@ STUBS = {
 package org.bukkit.permissions;
 public interface Permissible { boolean hasPermission(String name); }
 """,
+"org/bukkit/command/CommandSender.java": """
+package org.bukkit.command;
+import org.bukkit.permissions.Permissible;
+public interface CommandSender extends Permissible {
+    String getName();
+    void sendMessage(String message);
+}
+""",
+"org/bukkit/command/Command.java": """
+package org.bukkit.command;
+public abstract class Command {
+    private final String name;
+    public Command(String name) { this.name = name; }
+    public String getName() { return name; }
+}
+""",
 "org/bukkit/entity/Entity.java": """
 package org.bukkit.entity;
 public interface Entity {}
@@ -45,7 +61,7 @@ package org.bukkit.entity;
 import java.util.UUID;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-public interface Player extends Entity, org.bukkit.permissions.Permissible {
+public interface Player extends Entity, org.bukkit.command.CommandSender {
     String getName();
     UUID getUniqueId();
     boolean getAllowFlight();
@@ -74,12 +90,15 @@ public abstract class BaseComponent {}
 package net.md_5.bungee.api.chat;
 public class TextComponent extends BaseComponent {
     public final String text;
+    private String font;
     public TextComponent(String text) { this.text = text; }
+    public void setFont(String font) { this.font = font; }
+    public String getFontRaw() { return font; }
 }
 """,
 "org/bukkit/command/ConsoleCommandSender.java": """
 package org.bukkit.command;
-public interface ConsoleCommandSender { String getName(); }
+public interface ConsoleCommandSender extends CommandSender {}
 """,
 "org/bukkit/event/entity/EntityPickupItemEvent.java": """
 package org.bukkit.event.entity;
@@ -236,6 +255,9 @@ import java.util.logging.Logger;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 public abstract class JavaPlugin implements Plugin {
+    public boolean onCommand(org.bukkit.command.CommandSender sender,
+                             org.bukkit.command.Command command,
+                             String label, String[] args) { return false; }
     private static final Logger LOG = Logger.getLogger("ElytrixEventGuard");
     public FileConfiguration config = new FileConfiguration();
     public File dataFolder = new File(".");

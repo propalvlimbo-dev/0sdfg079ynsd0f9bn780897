@@ -7,6 +7,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.command.Command;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -62,12 +64,22 @@ public class EventGuardTest {
         public String getName() { return name; }
     }
 
+    static class Sender implements ConsoleCommandSender {
+        final String name;
+        final StringBuilder sent = new StringBuilder();
+        Sender(String name) { this.name = name; }
+        public String getName() { return name; }
+        public void sendMessage(String m) { sent.append(m).append('\n'); }
+        public boolean hasPermission(String perm) { return true; }
+    }
+
     static class FakePlayer implements Player {
         final String name = "Travka";
         final UUID id = UUID.randomUUID();
         boolean bypass, allowFlight, flying;
         GameMode mode = GameMode.SURVIVAL;
         double x, z;
+        String barFont;
         final StringBuilder sent = new StringBuilder();
         final StringBuilder bar = new StringBuilder();
         public String getName() { return name; }
@@ -84,7 +96,12 @@ public class EventGuardTest {
             public void sendMessage(org.bukkit.ChatMessageType type,
                                     net.md_5.bungee.api.chat.BaseComponent... parts) {
                 if (type != org.bukkit.ChatMessageType.ACTION_BAR) throw new AssertionError("wrong bar type");
-                bar.append(((net.md_5.bungee.api.chat.TextComponent) parts[0]).text).append('\n');
+                net.md_5.bungee.api.chat.TextComponent tc = (net.md_5.bungee.api.chat.TextComponent) parts[0];
+                String font = null;
+                try { font = (String) tc.getClass().getMethod("getFontRaw").invoke(tc); }
+                catch (Throwable ignored) { }
+                barFont = font;
+                bar.append(tc.text).append('\n');
             }
         }; }
     }
@@ -103,6 +120,7 @@ public class EventGuardTest {
         Bukkit.manager = new Mgr();
         Bukkit.scheduler = new Sched();
         Bukkit.online = Collections.emptyList();
+        Bukkit.console = new Sender("CONSOLE");
         Bukkit.dispatched.clear();
         pending = null;
         pendingLater = null;
@@ -121,6 +139,8 @@ public class EventGuardTest {
         guard.getConfig().set("auction.message", "&cАукцион закрыт в /god или /fly!");
         guard.getConfig().set("pickup.enabled", Boolean.TRUE);
         guard.getConfig().set("pickup.message", "&cНе поднимай предметы в /god или /fly!");
+        guard.getConfig().set("notice.chat", Boolean.FALSE);
+        guard.getConfig().set("notice.font", "reallyworld:small");
         guard.getConfig().set("crystals.break-blocks", Boolean.FALSE);
         guard.getConfig().set("luckperms.enabled", Boolean.TRUE);
         guard.getConfig().set("luckperms.delay-ticks", Integer.valueOf(60));
@@ -193,22 +213,33 @@ public class EventGuardTest {
         guard.runTickForTest();
         check(!walker.allowFlight, "an exempt player who was not flying stays on the ground");
 
-        // --- rule 2: the auction refuses god/fly ------------------------------
+        // --- rule 2: the auction refuses god/fly, in the action bar only -------
         FakePlayer buyer = new FakePlayer();
         buyer.allowFlight = true;
         PlayerCommandPreprocessEvent cmd = new PlayerCommandPreprocessEvent(buyer, "/ah");
         guard.onCommand(cmd);
         check(cmd.isCancelled(), "/ah is cancelled for a player in /fly");
-        check(buyer.sent.toString().contains("Аукцион"), "and he is told why in the chat");
         check(buyer.bar.toString().contains("Аукцион"),
-                "and the reason goes into the action bar (auction bar): " + buyer.bar.toString().trim());
+                "the reason goes into the action bar (auction bar): " + buyer.bar.toString().trim());
+        check("reallyworld:small".equals(buyer.barFont),
+                "and the action bar uses the small resource-pack font: " + buyer.barFont);
+        check(buyer.sent.length() == 0, "nothing is written into the chat");
 
+        // a donor-less player on the ground is left alone
         FakePlayer grounded = new FakePlayer();
-        grounded.allowFlight = false;
         PlayerCommandPreprocessEvent ok = new PlayerCommandPreprocessEvent(grounded, "/ah");
         guard.onCommand(ok);
         check(!ok.isCancelled(), "/ah still works for a player on the ground");
         check(grounded.bar.length() == 0 && grounded.sent.length() == 0, "and he is told nothing");
+
+        // st.moder and above are above the rule
+        FakePlayer stmoder = new FakePlayer();
+        stmoder.bypass = true;
+        stmoder.allowFlight = true;
+        PlayerCommandPreprocessEvent staffCmd = new PlayerCommandPreprocessEvent(stmoder, "/ah");
+        guard.onCommand(staffCmd);
+        check(!staffCmd.isCancelled(), "/ah is NOT cancelled for moder and above");
+        check(stmoder.bar.length() == 0 && stmoder.sent.length() == 0, "and they see no notice at all");
 
         PlayerCommandPreprocessEvent other = new PlayerCommandPreprocessEvent(buyer, "/warp pvp");
         guard.onCommand(other);
@@ -224,15 +255,23 @@ public class EventGuardTest {
         EntityPickupItemEvent pickup = new EntityPickupItemEvent(picker);
         guard.onPickup(pickup);
         check(pickup.isCancelled(), "picking an item up in /fly is cancelled");
-        check(picker.bar.toString().contains("поднимать") || picker.bar.toString().contains("Не поднимай"),
-                "and the action bar says why: " + picker.bar.toString().trim());
-        check(picker.sent.toString().contains("Не поднимай"), "and the chat says why too");
+        check(picker.bar.toString().contains("Не поднимай"),
+                "and the small action bar says why: " + picker.bar.toString().trim());
+        check("reallyworld:small".equals(picker.barFont), "again with the resource-pack font");
+        check(picker.sent.length() == 0, "and nothing goes into the chat");
 
-        FakePlayer walkerPickup = new FakePlayer();
-        EntityPickupItemEvent pickup2 = new EntityPickupItemEvent(walkerPickup);
-        guard.onPickup(pickup2);
-        check(!pickup2.isCancelled(), "a player on the ground picks items up normally");
-        check(walkerPickup.bar.length() == 0, "and sees no bar message");
+        FakePlayer staffPicker = new FakePlayer();
+        staffPicker.bypass = true;
+        staffPicker.allowFlight = true;
+        EntityPickupItemEvent staffPickup = new EntityPickupItemEvent(staffPicker);
+        guard.onPickup(staffPickup);
+        check(!staffPickup.isCancelled(), "moder and above pick items up even in /fly");
+        check(staffPicker.bar.length() == 0, "and see no notice");
+
+        EntityPickupItemEvent walkerPickup = new EntityPickupItemEvent(walker);
+        guard.onPickup(walkerPickup);
+        check(!walkerPickup.isCancelled(), "a player on the ground picks items up normally");
+        check(walker.bar.length() == 0, "and sees no bar message");
 
         // the bar is not spammed: a second notice inside the cooldown is silent
         String before = picker.bar.toString();
@@ -240,12 +279,20 @@ public class EventGuardTest {
         guard.onPickup(pickup3);
         check(pickup3.isCancelled(), "the pickup is still cancelled");
         check(picker.bar.toString().equals(before), "the action bar is not spammed");
-        check(picker.sent.toString().indexOf('\n') == picker.sent.toString().lastIndexOf('\n'),
-                "and neither is the chat");
 
         EntityPickupItemEvent notPlayer = new EntityPickupItemEvent(new FakeCreeper());
         guard.onPickup(notPlayer);
         check(!notPlayer.isCancelled(), "mobs are unaffected");
+
+        // the chat channel exists but is off by default
+        guard.getConfig().set("notice.chat", Boolean.TRUE);
+        guard.reload();
+        FakePlayer chatty = new FakePlayer();
+        chatty.allowFlight = true;
+        guard.onPickup(new EntityPickupItemEvent(chatty));
+        check(chatty.sent.toString().contains("Не поднимай"), "notice.chat=true adds a chat line");
+        guard.getConfig().set("notice.chat", Boolean.FALSE);
+        guard.reload();
 
         // --- rule 4: end crystals stop eating blocks --------------------------
         EntityExplodeEvent crystal = new EntityExplodeEvent(new FakeCrystal(), 37);
@@ -269,13 +316,31 @@ public class EventGuardTest {
         check(all.contains("lp group tiger parent add fame"), "old TIGER owners are migrated to FAME");
         check(guard.luckPermsSetupForTest().size() == 8, "all setup commands are loaded");
 
+        // --- the /eventguard command -------------------------------------------
+        Sender admin = new Sender("admin");
+        Command command = new Command("elytrixeventguard") {};
+        Bukkit.dispatched.clear();
+        guard.onCommand(admin, command, "eg", new String[]{"setup"});
+        check(String.join("\n", Bukkit.dispatched).contains("lp creategroup fame"),
+                "/eg setup re-runs the LuckPerms setup without a restart");
+        check(admin.sent.toString().contains("8"), "/eg setup reports how many commands ran");
+
+        Sender admin2 = new Sender("admin");
+        guard.onCommand(admin2, command, "eg", new String[]{"status"});
+        check(admin2.sent.toString().contains("v" + EventGuard.VERSION), "/eg status prints the version");
+        check(admin2.sent.toString().contains("reallyworld:small"), "/eg status prints the bar font");
+
+        Sender admin3 = new Sender("admin");
+        guard.onCommand(admin3, command, "eg", new String[]{});
+        check(admin3.sent.toString().contains("setup"), "/eg without arguments prints the help");
+
         // --- config surface ---------------------------------------------------
         check(guard.auctionCommandsForTest().containsAll(Arrays.asList("auction", "ah", "auc", "cloudauction")),
                 "all four auction aliases are guarded");
         check(guard.exemptGroupsForTest().contains("moder") && guard.exemptGroupsForTest().contains("*"),
                 "moder and * are on the exempt list");
-        check(guard.pickupMessageForTest().contains("нельзя") == false
-                && guard.pickupMessageForTest().length() > 10, "the pickup message is loaded");
+        check("reallyworld:small".equals(guard.barFontForTest()), "the small RP font is configured");
+        check(!guard.chatNoticeForTest(), "the chat notice is off by default");
 
         // --- a reload keeps everything working --------------------------------
         guard.reload();

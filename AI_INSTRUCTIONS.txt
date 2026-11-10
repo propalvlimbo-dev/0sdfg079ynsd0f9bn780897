@@ -10,7 +10,7 @@
 - Версия `ElytrixFreakModel`: `v3.29.0` (открытый для ВСЕХ игроков магазин и гардероб `/accessories`, `/аксессуары`, `/acc`, `/акс` за риллики `PlayerPoints` `ꐃ` в стиле `/shop`: `Мини-Роузи` `2000 ꐃ`, `Милый котёнок` `2500 ꐃ`, `Божественный нимб` `3500 ꐃ`, `Сколопендра Гуля` `4500 ꐃ`, `Меллстрой` `5000 ꐃ`, `Ангельские крылья` `6000 ꐃ`, `Щупальца Канэки` `7500 ꐃ`, `Аура сердечек` `5500 ꐃ`, `Аура бабочек` `5500 ꐃ`, `Пепельная аура` `5500 ꐃ`, `VIEW_RANGE=48` + Лада Приора)
 - Версия `ElytrixRP`: `v2.6.0` (добавлен меч доната `FAME`: `custom_model_data 5015` ->
   `reallyworld:item/sword/fame_sword`, текстура `reallyworld/textures/item/sword/fame_sword.png`)
-- Актуальный `SHA-1` `rp/Elytrix-RP-1.21.zip`: `81e61aeb2ba81b0b0b3184b2d33d09b5668d7475`
+- Актуальный `SHA-1` `rp/Elytrix-RP-1.21.zip`: `f1c99a1bc8aae0c11549f952744e1234530a34bd`
   (`SHA-256: b043a76f6153ea21f2d37bb5a9dfcc3965a686dde78994f4813cb061a5454d4d`, `3775` файлов,
   `8 518 812` байт; `plugins/ElytrixRP/config.yml` уже пропатчен)
 - Донаты `v3.29.0` (`plugins/DeluxeMenus/gui_menus/priv/donate.yml`, меню выросло до `size: 63`):
@@ -21,7 +21,7 @@
   `Талисман` и `Аирдроп` у групп LuckPerms `moder` и выше по приоритету и у `*`; аукцион закрыт
   в `/god`/`/fly`; предметы НЕ поднимаются в `/god`/`/fly` и об этом ПИШЕТСЯ в экшен-бар;
   эндер-кристаллы больше НЕ ломают блоки; при старте САМ создаёт группы LuckPerms `fame` и
-  `dmoder` (список `lp` команд - в `luckperms.setup` конфига плагина)
+  `dmoder` (список `lp` команд - в `luckperms.setup` конфига плагина, префиксы тоже там)
 
 --------------------------------------------------------------------------------
 1. КРИТИЧЕСКИЕ ПРАВИЛА GIT И СТАРТА НОВОГО ЧАТА
@@ -926,3 +926,46 @@ curl -fsSL "https://raw.githubusercontent.com/propalvlimbo-dev/0sdfg079ynsd0f9bn
 4. ВАЖНО ПРИ ДЕПЛОЕ: `DeluxeMenus` (`/donate`, `/kits`, превью) и `DecentHolograms`
    читают свои файлы ТОЛЬКО при старте - новые донаты и цены появятся только после
    `restart` (либо `/dm reload` + `/dh reload`).
+
+================================================================================
+
+12. ЧТО ИЗМЕНИЛОСЬ В `v3.29.2` (НЕ ЛОМАТЬ ПРИ СЛЕДУЮЩИХ ПРАВКАХ!)
+================================================================================
+1. Маленький красивый шрифт из ресурспака (`reallyworld:small`):
+   - `tools/donate-models/patch_rp_notice_font.py` ДОБАВЛЯЕТ в `rp/Elytrix-RP-1.21.zip`
+     два файла: `assets/reallyworld/font/small.json` + `assets/reallyworld/textures/font/small.png`
+     (`163` глифа, сетка `16 x 11`, клетка `8x8`, `ascent 7`, `height 8`, нарисовано
+     DejaVu Sans Bold с автоподбором кегля и сглаживанием, белым - чтобы цвет брался
+     из текста сообщения). Скрипт ничего НЕ перезаписывает и падает, если шрифт уже в паке.
+   - После него ОБЯЗАТЕЛЬНО пересчитать `sha1` и прописать его в
+     `plugins/ElytrixRP/config.yml` (ровно 2 вхождения) - сейчас это `f1c99a1bc8aae0c11549f952744e1234530a34bd`.
+   - Порядок сборки пака: `merge_pack.py` -> `patch_rp_fame.py` -> `patch_rp_notice_font.py`.
+
+2. `ElytrixEventGuard v1.2.0`:
+   - Запрет пишется ТОЛЬКО в экшен-бар («auction bar»), шрифтом `reallyworld:small`.
+     В чат - НИЧЕГО по умолчанию (`notice.chat: false`, включить можно в конфиге).
+   - Модерация ВЫШЕ запрета: все, у кого `/fly` не снимается на ивентах
+     (LuckPerms `moder` и выше по приоритету и `*`), НЕ попадают ни под запрет
+     аукциона, ни под запрет подбора предметов (`isExempt(player)` в обоих хендлерах).
+   - Новая команда администратора `/eventguard` (`/eg`, `/elytrixeventguard`):
+     `status` - что включено; `setup` - выполнить `luckperms.setup` ЕЩЁ РАЗ, без
+     рестарта (именно так создаются группы `fame` и `dmoder` на живом сервере);
+     `reload` - перечитать конфиг.
+   - В `luckperms.setup` добавлены нарисованные префиксы:
+     `lp group fame meta setprefix 100 "&#A855F7[FAME] &f"` и
+     `lp group dmoder meta setprefix 110 "&#D946EF[D.MODER] &f"` (префикс в чате и
+     табе берётся из LuckPerms - `%luckperms_prefix%` в `plugins/TAB/groups.yml`).
+   - Те же префиксы прописаны в `plugins/Duels/extensions/Leaderboards/config.yml`.
+   - Сборка: `JAVA=... ECJ=... python3 tools/event-guard/build.py` (38 мок-тестов).
+
+3. Превью кита `FAME` больше не копия тигра:
+   `tools/donate-models/build_fame_preview.py` собирает
+   `plugins/DeluxeMenus/gui_menus/kits_preview/preview_fame.yml` НАПРЯМУЮ из
+   `plugins/nKits/Kits/fame.yml` (броня, шар во второй руке, весь лут; у меча
+   `model_data: 5015`, то есть в превью видна настоящая 3D-модель меча).
+
+4. ВАЖНО ПРИ ДЕПЛОЕ: `DeluxeMenus` (`/donate`, `/kits`, превью) и `DecentHolograms`
+   читают свои файлы ТОЛЬКО при старте - новые донаты, цены и превью появятся
+   только после `restart` (либо `/dm reload` + `/dh reload`). Группы LuckPerms
+   `fame` и `dmoder` создаются сами при старте, но если сервер не рестартовали -
+   введите `/eg setup` один раз вручную.

@@ -14,6 +14,8 @@ import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatMessageType;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -49,11 +51,15 @@ import net.md_5.bungee.api.chat.TextComponent;
  *       win. A player who was not flying is never touched.</li>
  *   <li><b>The auction refuses god/fly.</b> Every auction command is cancelled for
  *       a player who is currently in {@code /god} or {@code /fly}; the reason is
- *       written into the action bar (the "auction bar") and once every few seconds
- *       into the chat.</li>
+ *       written ONLY into the action bar (the "auction bar"), drawn in the tiny
+ *       resource-pack font {@code reallyworld:small}, never into the chat.</li>
  *   <li><b>Picking things up in god/fly is refused loudly.</b> ElytrixGodPickup
  *       silently cancelled {@code EntityPickupItemEvent}; now the player is told,
- *       in the same action bar, that /god or /fly must be switched off first.</li>
+ *       in the same small action bar, that /god or /fly must be switched off first.</li>
+ *   <li><b>Staff are above the rules.</b> Whoever keeps /fly on events (LuckPerms
+ *       moder and above, and {@code *}) is also exempt from the auction and the
+ *       pickup prohibition - the point of the rule is to stop donors from abusing
+ *       god/fly, not to get in the way of the staff.</li>
  *   <li><b>End crystals stop eating blocks.</b> {@code EntityExplodeEvent} from an
  *       {@code EnderCrystal} keeps its entity damage but loses its block list.</li>
  * </ol>
@@ -68,7 +74,7 @@ import net.md_5.bungee.api.chat.TextComponent;
  */
 public final class EventGuard extends JavaPlugin implements Listener {
 
-    public static final String VERSION = "1.1.0";
+    public static final String VERSION = "1.2.0";
     public static final String BYPASS_PERMISSION = "elytrix.eventguard.bypass";
 
     private static final String PREFIX = "\u00a7x\u00a7F\u00a78\u00a7B\u00a7E\u00a7F\u00a7BElytrix \u00a78\u00bb \u00a7f";
@@ -102,6 +108,9 @@ public final class EventGuard extends JavaPlugin implements Listener {
 
     private volatile boolean pickupGuard = true;
     private volatile String pickupMessage = "";
+
+    private volatile boolean chatNotice = false;
+    private volatile String barFont = "";
 
     private volatile boolean crystalsBreakBlocks = false;
     private volatile boolean crystalsLog = false;
@@ -177,6 +186,11 @@ public final class EventGuard extends JavaPlugin implements Listener {
         pickupGuard = cfg.getBoolean("pickup.enabled", true);
         pickupMessage = colour(cfg.getString("pickup.message",
                 PREFIX + "Нельзя поднимать предметы в /god или /fly!"));
+        chatNotice = cfg.getBoolean("notice.chat", false);
+        barFont = cfg.getString("notice.font", "");
+        if (barFont != null) {
+            barFont = barFont.trim();
+        }
 
         crystalsBreakBlocks = cfg.getBoolean("crystals.break-blocks", false);
         crystalsLog = cfg.getBoolean("crystals.log", false);
@@ -374,19 +388,74 @@ public final class EventGuard extends JavaPlugin implements Listener {
         if (!lpSetup || luckPermsSetup.isEmpty()) {
             return;
         }
-        final List<String> commands = new ArrayList<String>(luckPermsSetup);
+        final int delay = lpSetupDelay;
         Bukkit.getScheduler().runTaskLater(this, new Runnable() {
             public void run() {
-                for (String line : commands) {
-                    try {
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), line);
-                    } catch (Throwable ignored) {
-                        // a refused command must never break the startup
-                    }
-                }
-                getLogger().info("LuckPerms setup: " + commands.size() + " command(s) applied");
+                runLuckPermsSetup();
             }
-        }, lpSetupDelay);
+        }, delay);
+    }
+
+    /** Dispatches every command from {@code luckperms.setup}. Safe to re-run at any
+     *  time (and bound to {@code /eventguard setup}), which is how the groups get
+     *  created on a server that never restarts. */
+    public int runLuckPermsSetup() {
+        int applied = 0;
+        for (String line : luckPermsSetup) {
+            try {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), line);
+                applied++;
+            } catch (Throwable ignored) {
+                // a refused command must never break the startup
+            }
+        }
+        getLogger().info("LuckPerms setup: " + applied + " command(s) applied");
+        return applied;
+    }
+
+    // ----------------------------------------------------------------- commands
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (args == null || args.length == 0) {
+            sender.sendMessage(PREFIX + "ElytrixEventGuard v" + VERSION);
+            sender.sendMessage("  /" + label + " status  - что включено и что видит плагин");
+            sender.sendMessage("  /" + label + " setup   - создать группы LuckPerms fame и dmoder");
+            sender.sendMessage("  /" + label + " reload  - перечитать config.yml");
+            return true;
+        }
+        String sub = args[0].toLowerCase(Locale.ROOT);
+        if (sub.equals("reload")) {
+            reload();
+            setupLuckPerms();
+            sender.sendMessage(PREFIX + "config.yml перечитан, настройка LuckPerms запланирована.");
+            return true;
+        }
+        if (sub.equals("setup")) {
+            int applied = runLuckPermsSetup();
+            sender.sendMessage(PREFIX + "Выполнено " + applied + " lp-команд из luckperms.setup.");
+            return true;
+        }
+        if (sub.equals("status")) {
+            sender.sendMessage(PREFIX + "v" + VERSION);
+            sender.sendMessage("  /fly на ивентах: " + onOff(flyGuard)
+                    + " (талисман " + onOff(talisman) + ", аирдроп " + onOff(airdrop) + ")");
+            sender.sendMessage("  аукцион в /god и /fly: " + onOff(auctionGuard));
+            sender.sendMessage("  подбор предметов в /god и /fly: " + onOff(pickupGuard));
+            sender.sendMessage("  сообщение в чате: " + onOff(chatNotice)
+                    + " (основной канал - экшен-бар, шрифт "
+                    + (barFont.isEmpty() ? "обычный" : barFont) + ")");
+            sender.sendMessage("  кристаллы ломают блоки: " + onOff(crystalsBreakBlocks));
+            sender.sendMessage("  настройка LuckPerms: " + onOff(lpSetup)
+                    + " (" + luckPermsSetup.size() + " команд)");
+            return true;
+        }
+        sender.sendMessage(PREFIX + "Неизвестная команда. Доступно: status, setup, reload.");
+        return true;
+    }
+
+    private static String onOff(boolean value) {
+        return value ? "§aвкл§f" : "§cвыкл§f";
     }
 
     // --------------------------------------------------------------- zone detection
@@ -460,6 +529,9 @@ public final class EventGuard extends JavaPlugin implements Listener {
         if (!inGod(player) && !inFly(player)) {
             return;
         }
+        if (isExempt(player)) {
+            return;                 // moder and above, and *, are above the rule
+        }
         event.setCancelled(true);
         notify(player, auctionMessage);
     }
@@ -479,6 +551,9 @@ public final class EventGuard extends JavaPlugin implements Listener {
         Player player = (Player) entity;
         if (!inGod(player) && !inFly(player)) {
             return;
+        }
+        if (isExempt(player)) {
+            return;                 // moder and above, and *, are above the rule
         }
         event.setCancelled(true);
         notify(player, pickupMessage);
@@ -548,16 +623,41 @@ public final class EventGuard extends JavaPlugin implements Listener {
         Long barUntil = lastBar.get(id);
         if (barUntil == null || now >= barUntil.longValue()) {
             lastBar.put(id, Long.valueOf(now + BAR_COOLDOWN_MS));
+            TextComponent bar = new TextComponent(message);
+            applyFont(bar, barFont);
             try {
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, bar);
             } catch (Throwable ignored) {
-                // no action bar on this server -> the chat notice below still lands
+                // no action bar on this server -> nothing we can do
             }
+        }
+        if (!chatNotice) {
+            return;
         }
         Long chatUntil = lastChat.get(id);
         if (chatUntil == null || now >= chatUntil.longValue()) {
             lastChat.put(id, Long.valueOf(now + CHAT_COOLDOWN_MS));
             player.sendMessage(message);
+        }
+    }
+
+    /** Puts the tiny resource-pack font on a component. Both the current and the
+     *  legacy bungee-chat setter are tried, so a missing font never breaks the
+     *  notice - it simply falls back to the normal font. */
+    private static void applyFont(TextComponent component, String font) {
+        if (component == null || font == null || font.isEmpty()) {
+            return;
+        }
+        try {
+            component.getClass().getMethod("setFont", String.class).invoke(component, font);
+            return;
+        } catch (Throwable ignored) {
+            // older bungee-chat only has setFontRaw
+        }
+        try {
+            component.getClass().getMethod("setFontRaw", String.class).invoke(component, font);
+        } catch (Throwable ignored) {
+            // no font support at all -> plain text
         }
     }
 
@@ -610,5 +710,13 @@ public final class EventGuard extends JavaPlugin implements Listener {
 
     public String pickupMessageForTest() {
         return pickupMessage;
+    }
+
+    public String barFontForTest() {
+        return barFont;
+    }
+
+    public boolean chatNoticeForTest() {
+        return chatNotice;
     }
 }
