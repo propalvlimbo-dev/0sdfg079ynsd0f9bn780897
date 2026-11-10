@@ -13,27 +13,31 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatMessageType;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EnderCrystal;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
+import net.md_5.bungee.api.chat.TextComponent;
 
 /**
- * ElytrixEventGuard v1.0.0.
+ * ElytrixEventGuard v1.1.0.
  *
- * <p>Three small, very targeted rules the owner asked for, each one independently
+ * <p>Four small, very targeted rules the owner asked for, each one independently
  * switchable in {@code plugins/ElytrixEventGuard/config.yml}:</p>
  *
  * <ol>
@@ -42,16 +46,21 @@ import org.bukkit.scheduler.BukkitTask;
  *       player stands inside an active event zone the plugin re-asserts
  *       {@code setAllowFlight(true)} every tick, so a guard that strips fly
  *       (ElytrixGodPickup, the NMascot talisman guard, ElytrixAir) simply cannot
- *       win. The state the player asked for is remembered, so the plugin never
- *       grants fly to somebody who was not flying.</li>
+ *       win. A player who was not flying is never touched.</li>
  *   <li><b>The auction refuses god/fly.</b> Every auction command is cancelled for
- *       a player who is currently in {@code /god} or {@code /fly}, with a single
- *       clear message telling them to switch it off.</li>
+ *       a player who is currently in {@code /god} or {@code /fly}; the reason is
+ *       written into the action bar (the "auction bar") and once every few seconds
+ *       into the chat.</li>
+ *   <li><b>Picking things up in god/fly is refused loudly.</b> ElytrixGodPickup
+ *       silently cancelled {@code EntityPickupItemEvent}; now the player is told,
+ *       in the same action bar, that /god or /fly must be switched off first.</li>
  *   <li><b>End crystals stop eating blocks.</b> {@code EntityExplodeEvent} from an
- *       {@code EnderCrystal} keeps its entity damage but loses its block list, so
- *       crystal PvP no longer carves holes in the map (and no longer leaves the
- *       half-broken block state that made placing and breaking blocks glitchy).</li>
+ *       {@code EnderCrystal} keeps its entity damage but loses its block list.</li>
  * </ol>
+ *
+ * <p>On top of that the plugin makes sure the two donation groups the site sells
+ * actually exist in LuckPerms: on startup it runs a short list of {@code lp}
+ * console commands (see {@code luckperms.setup}), all of them idempotent.</p>
  *
  * <p>Every cross-plugin call (LuckPerms, NMascot, Essentials) is reflective and
  * cached, so the plugin loads and keeps working when one of them is missing or is
@@ -59,21 +68,27 @@ import org.bukkit.scheduler.BukkitTask;
  */
 public final class EventGuard extends JavaPlugin implements Listener {
 
-    public static final String VERSION = "1.0.0";
+    public static final String VERSION = "1.1.0";
     public static final String BYPASS_PERMISSION = "elytrix.eventguard.bypass";
 
     private static final String PREFIX = "\u00a7x\u00a7F\u00a78\u00a7B\u00a7E\u00a7F\u00a7BElytrix \u00a78\u00bb \u00a7f";
 
+    /** How often the action bar may be refreshed, in milliseconds. */
+    private static final long BAR_COOLDOWN_MS = 1200L;
+    /** How often the same notice may reach the chat, in milliseconds. */
+    private static final long CHAT_COOLDOWN_MS = 5000L;
+
     private final Set<String> exemptGroups = new LinkedHashSet<String>();
     private final Set<String> auctionCommands = new LinkedHashSet<String>();
-    /** Fly state last observed for a player who is inside an event zone. */
     private final Map<UUID, boolean[]> seen = new ConcurrentHashMap<UUID, boolean[]>();
-    /** While a /fly command is still being processed we only observe, never restore. */
     private final Map<UUID, Long> reseedAt = new ConcurrentHashMap<UUID, Long>();
+    private final Map<UUID, Long> lastBar = new ConcurrentHashMap<UUID, Long>();
+    private final Map<UUID, Long> lastChat = new ConcurrentHashMap<UUID, Long>();
+    private final List<String> luckPermsSetup = new ArrayList<String>();
 
     private volatile boolean flyGuard = true;
     private volatile String referenceGroup = "moder";
-    private volatile int referenceWeight = 0;
+    private volatile int referenceWeight = -1;
     private volatile boolean talisman = true;
     private volatile boolean airdrop = true;
     private volatile int airdropRadius = 60;
@@ -85,8 +100,14 @@ public final class EventGuard extends JavaPlugin implements Listener {
     private volatile boolean auctionGuard = true;
     private volatile String auctionMessage = "";
 
+    private volatile boolean pickupGuard = true;
+    private volatile String pickupMessage = "";
+
     private volatile boolean crystalsBreakBlocks = false;
     private volatile boolean crystalsLog = false;
+
+    private volatile boolean lpSetup = true;
+    private volatile int lpSetupDelay = 60;
 
     private volatile BukkitTask task;
 
@@ -98,8 +119,10 @@ public final class EventGuard extends JavaPlugin implements Listener {
         reload();
         Bukkit.getPluginManager().registerEvents(this, this);
         startTask();
+        setupLuckPerms();
         getLogger().info("ElytrixEventGuard v" + VERSION + " enabled (fly guard on Talisman/Airdrop"
-                + ", auction refuses god/fly, end crystals keep the blocks).");
+                + ", auction + pickup refuse god/fly in the action bar"
+                + ", end crystals keep the blocks).");
     }
 
     @Override
@@ -111,10 +134,11 @@ public final class EventGuard extends JavaPlugin implements Listener {
         }
         seen.clear();
         reseedAt.clear();
+        lastBar.clear();
+        lastChat.clear();
     }
 
-    /** Re-reads the config and re-arms the watcher. Also bound to
-     *  {@code /elytrixeventguard reload} through the command below. */
+    /** Re-reads the config and re-arms the watcher. */
     public void reload() {
         FileConfiguration cfg = getConfig();
         flyGuard = cfg.getBoolean("fly-guard.enabled", true);
@@ -148,12 +172,27 @@ public final class EventGuard extends JavaPlugin implements Listener {
             auctionCommands.add("ah");
         }
         auctionMessage = colour(cfg.getString("auction.message",
-                PREFIX + "Аукцион закрыт в /god или /fly!"));
+                PREFIX + "Нельзя пользоваться аукционом в /god или /fly!"));
+
+        pickupGuard = cfg.getBoolean("pickup.enabled", true);
+        pickupMessage = colour(cfg.getString("pickup.message",
+                PREFIX + "Нельзя поднимать предметы в /god или /fly!"));
 
         crystalsBreakBlocks = cfg.getBoolean("crystals.break-blocks", false);
         crystalsLog = cfg.getBoolean("crystals.log", false);
 
-        // the airdrop pad lives in ElytrixAir's own config
+        lpSetup = cfg.getBoolean("luckperms.enabled", true);
+        lpSetupDelay = Math.max(1, cfg.getInt("luckperms.delay-ticks", 60));
+        luckPermsSetup.clear();
+        List<String> setup = cfg.getStringList("luckperms.setup");
+        if (setup != null) {
+            for (String line : setup) {
+                if (line != null && line.trim().length() > 0) {
+                    luckPermsSetup.add(line.trim());
+                }
+            }
+        }
+
         try {
             File air = new File(getDataFolder().getParentFile(), "ElytrixAir/config.yml");
             if (air.isFile()) {
@@ -329,6 +368,27 @@ public final class EventGuard extends JavaPlugin implements Listener {
         return resolved;
     }
 
+    /** Makes sure the donation groups the site sells really exist. Every command in
+     *  the list is idempotent, so running it on every start is safe. */
+    private void setupLuckPerms() {
+        if (!lpSetup || luckPermsSetup.isEmpty()) {
+            return;
+        }
+        final List<String> commands = new ArrayList<String>(luckPermsSetup);
+        Bukkit.getScheduler().runTaskLater(this, new Runnable() {
+            public void run() {
+                for (String line : commands) {
+                    try {
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), line);
+                    } catch (Throwable ignored) {
+                        // a refused command must never break the startup
+                    }
+                }
+                getLogger().info("LuckPerms setup: " + commands.size() + " command(s) applied");
+            }
+        }, lpSetupDelay);
+    }
+
     // --------------------------------------------------------------- zone detection
 
     public boolean insideTalisman(Player player) {
@@ -401,7 +461,27 @@ public final class EventGuard extends JavaPlugin implements Listener {
             return;
         }
         event.setCancelled(true);
-        player.sendMessage(auctionMessage);
+        notify(player, auctionMessage);
+    }
+
+    // --------------------------------------------------------------- item pickup
+
+    /** ElytrixGodPickup cancels pickups in /god and /fly without a word; this is the word. */
+    @EventHandler(priority = EventPriority.LOW)
+    public void onPickup(EntityPickupItemEvent event) {
+        if (!pickupGuard || event == null) {
+            return;
+        }
+        Entity entity = event.getEntity();
+        if (!(entity instanceof Player)) {
+            return;
+        }
+        Player player = (Player) entity;
+        if (!inGod(player) && !inFly(player)) {
+            return;
+        }
+        event.setCancelled(true);
+        notify(player, pickupMessage);
     }
 
     /** Remembers the fly state the player asked for right after a /fly command. */
@@ -425,7 +505,59 @@ public final class EventGuard extends JavaPlugin implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         if (event.getPlayer() != null) {
-            reseedAt.put(event.getPlayer().getUniqueId(), Long.valueOf(System.currentTimeMillis() + 250L));
+            UUID id = event.getPlayer().getUniqueId();
+            seen.remove(id);
+            reseedAt.remove(id);
+            lastBar.remove(id);
+            lastChat.remove(id);
+        }
+    }
+
+    // ----------------------------------------------------------------- crystals
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onExplode(EntityExplodeEvent event) {
+        if (crystalsBreakBlocks || event == null) {
+            return;
+        }
+        if (!(event.getEntity() instanceof EnderCrystal)) {
+            return;
+        }
+        List<?> blocks = event.blockList();
+        if (blocks == null || blocks.isEmpty()) {
+            return;
+        }
+        int size = blocks.size();
+        blocks.clear();
+        if (crystalsLog) {
+            getLogger().info("crystal explosion: kept " + size + " blocks");
+        }
+    }
+
+    // -------------------------------------------------------------------- helpers
+
+    /** Writes the refusal into the action bar (the "auction bar") and, much more
+     *  rarely, into the chat, so the bar can never be spammed. */
+    public void notify(Player player, String message) {
+        if (player == null || message == null || message.isEmpty()) {
+            return;
+        }
+        long now = System.currentTimeMillis();
+        UUID id = player.getUniqueId();
+
+        Long barUntil = lastBar.get(id);
+        if (barUntil == null || now >= barUntil.longValue()) {
+            lastBar.put(id, Long.valueOf(now + BAR_COOLDOWN_MS));
+            try {
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
+            } catch (Throwable ignored) {
+                // no action bar on this server -> the chat notice below still lands
+            }
+        }
+        Long chatUntil = lastChat.get(id);
+        if (chatUntil == null || now >= chatUntil.longValue()) {
+            lastChat.put(id, Long.valueOf(now + CHAT_COOLDOWN_MS));
+            player.sendMessage(message);
         }
     }
 
@@ -454,34 +586,12 @@ public final class EventGuard extends JavaPlugin implements Listener {
         }
     }
 
-    // ----------------------------------------------------------------- crystals
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onExplode(EntityExplodeEvent event) {
-        if (crystalsBreakBlocks || event == null) {
-            return;
-        }
-        if (!(event.getEntity() instanceof EnderCrystal)) {
-            return;
-        }
-        List<?> blocks = event.blockList();
-        if (blocks == null || blocks.isEmpty()) {
-            return;
-        }
-        int size = blocks.size();
-        blocks.clear();
-        if (crystalsLog) {
-            getLogger().info("crystal explosion: kept " + size + " blocks");
-        }
-    }
-
-    // -------------------------------------------------------------------- helpers
-
     private static String colour(String text) {
         return text == null ? "" : text.replace('&', '\u00a7');
     }
 
-    /** Test hook: the watcher is a pure function of the player list, so tests call it directly. */
+    // --------------------------------------------------------------- test hooks
+
     public void runTickForTest() {
         tick();
     }
@@ -492,5 +602,13 @@ public final class EventGuard extends JavaPlugin implements Listener {
 
     public Set<String> exemptGroupsForTest() {
         return new LinkedHashSet<String>(exemptGroups);
+    }
+
+    public List<String> luckPermsSetupForTest() {
+        return new ArrayList<String>(luckPermsSetup);
+    }
+
+    public String pickupMessageForTest() {
+        return pickupMessage;
     }
 }

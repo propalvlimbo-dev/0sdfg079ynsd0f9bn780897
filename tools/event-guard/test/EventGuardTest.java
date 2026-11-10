@@ -11,6 +11,7 @@ import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -32,6 +33,7 @@ public class EventGuardTest {
     }
 
     static Runnable pending;
+    static Runnable pendingLater;
 
     static class Sched implements org.bukkit.scheduler.BukkitScheduler {
         public BukkitTask runTaskTimer(Plugin p, Runnable task, long delay, long period) {
@@ -39,6 +41,12 @@ public class EventGuardTest {
             if (period <= 0) throw new AssertionError("non-positive period");
             pending = task;
             return new BukkitTask() { public void cancel() { pending = null; } };
+        }
+        public BukkitTask runTaskLater(Plugin p, Runnable task, long delay) {
+            if (task == null) throw new AssertionError("null task");
+            if (delay <= 0) throw new AssertionError("non-positive delay");
+            pendingLater = task;
+            return new BukkitTask() { public void cancel() { pendingLater = null; } };
         }
     }
 
@@ -61,6 +69,7 @@ public class EventGuardTest {
         GameMode mode = GameMode.SURVIVAL;
         double x, z;
         final StringBuilder sent = new StringBuilder();
+        final StringBuilder bar = new StringBuilder();
         public String getName() { return name; }
         public UUID getUniqueId() { return id; }
         public boolean hasPermission(String perm) { return bypass && perm.equals(EventGuard.BYPASS_PERMISSION); }
@@ -71,6 +80,13 @@ public class EventGuardTest {
         public void sendMessage(String m) { sent.append(m).append('\n'); }
         public GameMode getGameMode() { return mode; }
         public Location getLocation() { return new Location(new FakeWorld("world"), x, 64.0, z); }
+        public Spigot spigot() { return new Spigot() {
+            public void sendMessage(org.bukkit.ChatMessageType type,
+                                    net.md_5.bungee.api.chat.BaseComponent... parts) {
+                if (type != org.bukkit.ChatMessageType.ACTION_BAR) throw new AssertionError("wrong bar type");
+                bar.append(((net.md_5.bungee.api.chat.TextComponent) parts[0]).text).append('\n');
+            }
+        }; }
     }
 
     static class FakeCrystal implements EnderCrystal {}
@@ -87,7 +103,9 @@ public class EventGuardTest {
         Bukkit.manager = new Mgr();
         Bukkit.scheduler = new Sched();
         Bukkit.online = Collections.emptyList();
+        Bukkit.dispatched.clear();
         pending = null;
+        pendingLater = null;
         EventGuard guard = new EventGuard();
         // the shipped defaults, exactly as they sit in config.yml
         guard.getConfig().set("fly-guard.enabled", Boolean.TRUE);
@@ -101,7 +119,19 @@ public class EventGuardTest {
         guard.getConfig().set("auction.enabled", Boolean.TRUE);
         guard.getConfig().set("auction.commands", Arrays.asList("auction", "ah", "auc", "cloudauction"));
         guard.getConfig().set("auction.message", "&cАукцион закрыт в /god или /fly!");
+        guard.getConfig().set("pickup.enabled", Boolean.TRUE);
+        guard.getConfig().set("pickup.message", "&cНе поднимай предметы в /god или /fly!");
         guard.getConfig().set("crystals.break-blocks", Boolean.FALSE);
+        guard.getConfig().set("luckperms.enabled", Boolean.TRUE);
+        guard.getConfig().set("luckperms.delay-ticks", Integer.valueOf(60));
+        guard.getConfig().set("luckperms.setup", Arrays.asList(
+                "lp creategroup fame", "lp creategroup dmoder",
+                "lp group fame parent add pegas",
+                "lp group fame permission set nKits.kits.fame true",
+                "lp group dmoder parent add moder",
+                "lp group dmoder parent add dhelper",
+                "lp group moder permission set elytrix.eventguard.bypass true",
+                "lp group tiger parent add fame"));
         guard.onEnable();
         return guard;
     }
@@ -166,17 +196,19 @@ public class EventGuardTest {
         // --- rule 2: the auction refuses god/fly ------------------------------
         FakePlayer buyer = new FakePlayer();
         buyer.allowFlight = true;
-        PlayerCommandPreprocessEvent cmd =
-                new PlayerCommandPreprocessEvent(buyer, "/ah");
+        PlayerCommandPreprocessEvent cmd = new PlayerCommandPreprocessEvent(buyer, "/ah");
         guard.onCommand(cmd);
         check(cmd.isCancelled(), "/ah is cancelled for a player in /fly");
-        check(buyer.sent.toString().contains("Аукцион"), "and he is told why: " + buyer.sent.toString().trim());
+        check(buyer.sent.toString().contains("Аукцион"), "and he is told why in the chat");
+        check(buyer.bar.toString().contains("Аукцион"),
+                "and the reason goes into the action bar (auction bar): " + buyer.bar.toString().trim());
 
         FakePlayer grounded = new FakePlayer();
         grounded.allowFlight = false;
         PlayerCommandPreprocessEvent ok = new PlayerCommandPreprocessEvent(grounded, "/ah");
         guard.onCommand(ok);
         check(!ok.isCancelled(), "/ah still works for a player on the ground");
+        check(grounded.bar.length() == 0 && grounded.sent.length() == 0, "and he is told nothing");
 
         PlayerCommandPreprocessEvent other = new PlayerCommandPreprocessEvent(buyer, "/warp pvp");
         guard.onCommand(other);
@@ -186,7 +218,36 @@ public class EventGuardTest {
         guard.onCommand(pluginNs);
         check(pluginNs.isCancelled(), "namespaced /cloudauction:ah is cancelled too");
 
-        // --- rule 3: end crystals stop eating blocks --------------------------
+        // --- rule 3: picking items up in god/fly is refused loudly -------------
+        FakePlayer picker = new FakePlayer();
+        picker.allowFlight = true;
+        EntityPickupItemEvent pickup = new EntityPickupItemEvent(picker);
+        guard.onPickup(pickup);
+        check(pickup.isCancelled(), "picking an item up in /fly is cancelled");
+        check(picker.bar.toString().contains("поднимать") || picker.bar.toString().contains("Не поднимай"),
+                "and the action bar says why: " + picker.bar.toString().trim());
+        check(picker.sent.toString().contains("Не поднимай"), "and the chat says why too");
+
+        FakePlayer walkerPickup = new FakePlayer();
+        EntityPickupItemEvent pickup2 = new EntityPickupItemEvent(walkerPickup);
+        guard.onPickup(pickup2);
+        check(!pickup2.isCancelled(), "a player on the ground picks items up normally");
+        check(walkerPickup.bar.length() == 0, "and sees no bar message");
+
+        // the bar is not spammed: a second notice inside the cooldown is silent
+        String before = picker.bar.toString();
+        EntityPickupItemEvent pickup3 = new EntityPickupItemEvent(picker);
+        guard.onPickup(pickup3);
+        check(pickup3.isCancelled(), "the pickup is still cancelled");
+        check(picker.bar.toString().equals(before), "the action bar is not spammed");
+        check(picker.sent.toString().indexOf('\n') == picker.sent.toString().lastIndexOf('\n'),
+                "and neither is the chat");
+
+        EntityPickupItemEvent notPlayer = new EntityPickupItemEvent(new FakeCreeper());
+        guard.onPickup(notPlayer);
+        check(!notPlayer.isCancelled(), "mobs are unaffected");
+
+        // --- rule 4: end crystals stop eating blocks --------------------------
         EntityExplodeEvent crystal = new EntityExplodeEvent(new FakeCrystal(), 37);
         guard.onExplode(crystal);
         check(crystal.blockList().isEmpty(), "a crystal explosion loses every block");
@@ -195,11 +256,26 @@ public class EventGuardTest {
         guard.onExplode(creeper);
         check(creeper.blockList().size() == 12, "any other explosion still breaks blocks");
 
+        // --- rule 5: the LuckPerms groups are created on startup ---------------
+        check(pendingLater != null, "the LuckPerms setup is scheduled");
+        pendingLater.run();
+        String all = String.join("\n", Bukkit.dispatched);
+        check(all.contains("lp creategroup fame"), "fame is created");
+        check(all.contains("lp creategroup dmoder"), "dmoder is created");
+        check(all.contains("lp group fame parent add pegas"), "fame inherits pegas");
+        check(all.contains("lp group dmoder parent add moder"), "dmoder inherits moder");
+        check(all.contains("lp group dmoder parent add dhelper"), "dmoder inherits dhelper");
+        check(all.contains("lp group fame permission set nKits.kits.fame true"), "fame gets its kit");
+        check(all.contains("lp group tiger parent add fame"), "old TIGER owners are migrated to FAME");
+        check(guard.luckPermsSetupForTest().size() == 8, "all setup commands are loaded");
+
         // --- config surface ---------------------------------------------------
         check(guard.auctionCommandsForTest().containsAll(Arrays.asList("auction", "ah", "auc", "cloudauction")),
                 "all four auction aliases are guarded");
         check(guard.exemptGroupsForTest().contains("moder") && guard.exemptGroupsForTest().contains("*"),
                 "moder and * are on the exempt list");
+        check(guard.pickupMessageForTest().contains("нельзя") == false
+                && guard.pickupMessageForTest().length() > 10, "the pickup message is loaded");
 
         // --- a reload keeps everything working --------------------------------
         guard.reload();

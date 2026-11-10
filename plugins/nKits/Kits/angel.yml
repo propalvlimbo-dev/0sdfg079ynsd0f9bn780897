@@ -1,5 +1,5 @@
 Name: angel
-Cooldown: 259200
+Cooldown: 86400
 Permission: nKits.kits.angel
 Order: 0
 FirstTimeJoinKit: false

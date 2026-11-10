@@ -1,11 +1,13 @@
 # ============================================================================
-#  ElytrixEventGuard v1.0.0
+#  ElytrixEventGuard v1.1.0
 # ----------------------------------------------------------------------------
 #  1) На Талисмане (NMascot) и на Аирдропе (ElytrixAir) у привилегированных
-#     игроков НИКОГДА не отбирается /fly: плагин удерживает разрешение на
-#     полёт каждый тик, пока игрок внутри активной зоны ивента.
+#     игроков НИКОГДА не отбирается /fly.
 #  2) Аукцион (CloudAuction) закрыт для игроков в /god или /fly.
-#  3) Эндер-кристаллы больше НЕ уничтожают блоки: взрыв бьёт только по существам.
+#  3) Поднимать предметы в /god или /fly нельзя - и об этом ПИШЕТСЯ в
+#     экшен-бар («auction bar»), а не молча отменяется.
+#  4) Эндер-кристаллы больше НЕ уничтожают блоки: взрыв бьёт только по существам.
+#  5) При старте плагин сам создаёт группы LuckPerms для новых донатов.
 # ============================================================================
 
 # --- 1. Кому НЕ отбирать /fly на ивентах ------------------------------------
@@ -45,7 +47,6 @@ fly-guard:
 # --- 2. Аукцион в /god и /fly ------------------------------------------------
 auction:
   enabled: true
-  # Команды аукциона, которые закрываются в /god или /fly.
   commands:
     - auction
     - ah
@@ -53,9 +54,43 @@ auction:
     - cloudauction
   message: '&x&F&8&B&E&F&BAукцион &8» &fНельзя пользоваться аукционом в режиме &x&F&8&B&E&F&B/god&f или &x&F&8&B&E&F&B/fly&f! Выключи их и попробуй снова.'
 
-# --- 3. Кристаллы и блоки ----------------------------------------------------
+# --- 3. Поднятие предметов в /god и /fly ------------------------------------
+pickup:
+  enabled: true
+  message: '&x&F&8&B&E&F&BПоднятие &8» &fНельзя поднимать предметы в режиме &x&F&8&B&E&F&B/god&f или &x&F&8&B&E&F&B/fly&f! Выключи их, чтобы подобрать предмет.'
+
+# --- 4. Кристаллы и блоки ----------------------------------------------------
 crystals:
   # false — эндер-кристалл НЕ ломает блоки (бьёт только по игрокам и мобам).
   break-blocks: false
   # true  — писать в лог каждый отменённый подрыв блоков.
   log: false
+
+# --- 5. LuckPerms: создать группы новых донатов ------------------------------
+# Выполняется один раз при старте сервера (delay-ticks тиков после загрузки,
+# чтобы LuckPerms успел подняться). Все команды идемпотентны: если группа уже
+# есть — плагин просто получает ошибку от LuckPerms и идёт дальше.
+luckperms:
+  enabled: true
+  delay-ticks: 60
+  setup:
+    - 'lp creategroup fame'
+    - 'lp creategroup dmoder'
+    - 'lp group fame parent add pegas'
+    - 'lp group fame permission set nKits.kits.fame true'
+    # d.moder = права обычного модератора + все права d.helper (КИТА НЕТ)
+    - 'lp group dmoder parent add moder'
+    - 'lp group dmoder parent add dhelper'
+    - 'lp group dmoder permission set elytrix.eventguard.bypass true'
+    # moder и выше по приоритету всегда сохраняют /fly на ивентах
+    - 'lp group moder permission set elytrix.eventguard.bypass true'
+    - 'lp group moderplus permission set elytrix.eventguard.bypass true'
+    - 'lp group stmoder permission set elytrix.eventguard.bypass true'
+    - 'lp group glmoder permission set elytrix.eventguard.bypass true'
+    - 'lp group mladmin permission set elytrix.eventguard.bypass true'
+    - 'lp group fulladmin permission set elytrix.eventguard.bypass true'
+    - 'lp group admin permission set elytrix.eventguard.bypass true'
+    - 'lp group dadmin permission set elytrix.eventguard.bypass true'
+    - 'lp group owner permission set elytrix.eventguard.bypass true'
+    # старые владельцы TIGER автоматически получают FAME
+    - 'lp group tiger parent add fame'

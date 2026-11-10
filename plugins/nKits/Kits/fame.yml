@@ -9,164 +9,168 @@ Inventory:
   - ==: org.bukkit.inventory.ItemStack
     DataVersion: 4556
     id: minecraft:netherite_sword
-    count: 1
     components:
-      minecraft:repair_cost: '1'
-      minecraft:custom_name: '{extra:[{bold:1b,color:"light_purple",italic:0b,obfuscated:0b,strikethrough:0b,text:"МЕЧ
-        СЛАВЫ",underlined:0b}],text:""}'
-      minecraft:lore: '[{extra:[{color:"#AAAAAA",italic:0b,text:"Оружие привилегии "}],italic:0b,text:""},{extra:[{bold:1b,color:"#A855F7",italic:0b,text:"FAME"}],italic:0b,text:""}]'
-      minecraft:enchantments: '{"minecraft:fire_aspect":2,"minecraft:sharpness":5,"minecraft:unbreaking":3}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"#A855F7",italic:0b,obfuscated:0b,strikethrough:0b,text:"Клинок Славы FAME",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:fire_aspect":2,"minecraft:looting":2,"minecraft:mending":1,"minecraft:sharpness":5,"minecraft:sweeping_edge":2,"minecraft:unbreaking":3}'
       minecraft:custom_model_data: '{floats:[5015.0f]}'
-      minecraft:custom_data: '{PublicBukkitValues:{"executableitems:ei-id":"fame_sword","score:usage":0}}'
     schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: BOW
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      enchants:
-        ARROW_FIRE: 1
-        ARROW_INFINITE: 1
-        MENDING: 1
-        ARROW_DAMAGE: 5
-        DURABILITY: 2
-      repair-cost: 7
+    DataVersion: 4556
+    id: minecraft:netherite_pickaxe
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"#A855F7",italic:0b,obfuscated:0b,strikethrough:0b,text:"Кирка Славы FAME",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:efficiency":7,"minecraft:fortune":3,"minecraft:mending":1,"minecraft:unbreaking":3}'
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: NETHERITE_PICKAXE
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      enchants:
-        DIG_SPEED: 5
-        DURABILITY: 3
+    DataVersion: 4556
+    id: minecraft:netherite_axe
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"#A855F7",italic:0b,obfuscated:0b,strikethrough:0b,text:"Секира Славы FAME",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:efficiency":7,"minecraft:mending":1,"minecraft:sharpness":5,"minecraft:unbreaking":3}'
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: NETHERITE_AXE
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      enchants:
-        DIG_SPEED: 5
-        DAMAGE_ALL: 5
-        DURABILITY: 3
+    DataVersion: 4556
+    id: minecraft:netherite_shovel
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"#A855F7",italic:0b,obfuscated:0b,strikethrough:0b,text:"Лопата Славы FAME",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:efficiency":7,"minecraft:mending":1,"minecraft:unbreaking":3}'
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: NETHERITE_SHOVEL
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      enchants:
-        DIG_SPEED: 4
-        DURABILITY: 3
+    DataVersion: 4556
+    id: minecraft:bow
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"#A855F7",italic:0b,obfuscated:0b,strikethrough:0b,text:"Лук Славы FAME",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:flame":1,"minecraft:infinity":1,"minecraft:mending":1,"minecraft:power":6,"minecraft:punch":2,"minecraft:unbreaking":3}'
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: ENDER_PEARL
-    amount: 16
+    DataVersion: 4556
+    id: minecraft:crossbow
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"#A855F7",italic:0b,obfuscated:0b,strikethrough:0b,text:"Арбалет Славы FAME",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:mending":1,"minecraft:multishot":1,"minecraft:quick_charge":3,"minecraft:unbreaking":3}'
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: TOTEM_OF_UNDYING
+    DataVersion: 4556
+    id: minecraft:elytra
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"#A855F7",italic:0b,obfuscated:0b,strikethrough:0b,text:"Крылья Славы FAME",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:mending":1,"minecraft:unbreaking":4}'
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: POTION
-    meta:
-      ==: ItemMeta
-      meta-type: POTION
-      potion-type: minecraft:strong_turtle_master
+    DataVersion: 4556
+    id: minecraft:firework_rocket
+    count: 64
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: GOLDEN_APPLE
-    amount: 24
+    DataVersion: 4556
+    id: minecraft:enchanted_golden_apple
+    count: 2
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: BIRCH_LOG
-    amount: 64
+    DataVersion: 4556
+    id: minecraft:golden_apple
+    count: 64
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: OAK_LOG
-    amount: 64
+    DataVersion: 4556
+    id: minecraft:golden_carrot
+    count: 64
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: CHORUS_FRUIT
-    amount: 64
+    DataVersion: 4556
+    id: minecraft:ender_pearl
+    count: 16
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: TOTEM_OF_UNDYING
+    DataVersion: 4556
+    id: minecraft:ender_pearl
+    count: 16
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: ENDER_PEARL
-    amount: 16
+    DataVersion: 4556
+    id: minecraft:totem_of_undying
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: ENDER_PEARL
-    amount: 16
+    DataVersion: 4556
+    id: minecraft:totem_of_undying
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: ENDER_PEARL
-    amount: 16
+    DataVersion: 4556
+    id: minecraft:experience_bottle
+    count: 64
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: GOLDEN_CARROT
-    amount: 64
+    DataVersion: 4556
+    id: minecraft:chorus_fruit
+    count: 64
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: NETHERITE_INGOT
-    amount: 3
+    DataVersion: 4556
+    id: minecraft:tipped_arrow
+    count: 32
+    components:
+      minecraft:potion_contents: '{potion:"minecraft:strong_strength"}'
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: TIPPED_ARROW
-    amount: 32
-    meta:
-      ==: ItemMeta
-      meta-type: POTION
-      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"gold","text":"Обработанная
-        стрела"}],"text":""}'
-      potion-type: minecraft:strong_harming
+    DataVersion: 4556
+    id: minecraft:tipped_arrow
+    count: 32
+    components:
+      minecraft:potion_contents: '{potion:"minecraft:strong_healing"}'
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: POTION
-    meta:
-      ==: ItemMeta
-      meta-type: POTION
-      potion-type: minecraft:strong_turtle_master
+    DataVersion: 4556
+    id: minecraft:splash_potion
+    components:
+      minecraft:potion_contents: '{potion:"minecraft:strong_strength"}'
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: ARROW
-    amount: 64
+    DataVersion: 4556
+    id: minecraft:splash_potion
+    components:
+      minecraft:potion_contents: '{potion:"minecraft:strong_swiftness"}'
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: GOLD_BLOCK
-    amount: 25
+    DataVersion: 4556
+    id: minecraft:splash_potion
+    components:
+      minecraft:potion_contents: '{potion:"minecraft:long_fire_resistance"}'
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: IRON_BLOCK
-    amount: 14
+    DataVersion: 4556
+    id: minecraft:arrow
+    count: 64
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: END_CRYSTAL
-    amount: 3
+    DataVersion: 4556
+    id: minecraft:obsidian
+    count: 64
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: ORANGE_STAINED_GLASS
-    amount: 64
+    DataVersion: 4556
+    id: minecraft:amethyst_block
+    count: 64
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: ORANGE_CONCRETE
-    amount: 64
+    DataVersion: 4556
+    id: minecraft:purple_concrete
+    count: 64
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: DIAMOND_BLOCK
-    amount: 12
+    DataVersion: 4556
+    id: minecraft:end_crystal
+    count: 12
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: ORANGE_SHULKER_BOX
+    DataVersion: 4556
+    id: minecraft:respawn_anchor
+    count: 12
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: TOTEM_OF_UNDYING
-  - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: TOTEM_OF_UNDYING
+    DataVersion: 4556
+    id: minecraft:glowstone
+    count: 64
+    schema_version: 1
   - null
   - null
   - null
@@ -177,107 +181,57 @@ Inventory:
   - null
   - null
   - null
-  - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: PLAYER_HEAD
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: '{"extra":[{"bold":true,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"light_purple","text":"Голова
-        Славы"}],"text":""}'
-      lore:
-      - '{"text":"§cКогда надето на голове:"}'
-      - '{"text":"§x§F§8§B§E§F§B+2.5 к урону"}'
-      - '{"text":"§x§F§8§B§E§F§B+25% к скорости§x§F§8§B§E§F§B"}'
-      - '{"text":"§x§F§8§B§E§F§B+1 здоровье"}'
-      enchants:
-        VANISHING_CURSE: 1
-      attribute-modifiers:
-        GENERIC_ATTACK_DAMAGE:
-        - ==: org.bukkit.attribute.AttributeModifier
-          amount: 2.5
-          name: ResourceKey[minecraft:attribute / minecraft:generic.attack_damage]
-          slot: HEAD
-          uuid: 5ea4a659-fc9f-4963-b294-ad37f330c9ab
-          operation: 0
-        GENERIC_MOVEMENT_SPEED:
-        - ==: org.bukkit.attribute.AttributeModifier
-          amount: 0.25
-          name: ResourceKey[minecraft:attribute / minecraft:generic.movement_speed]
-          slot: HEAD
-          uuid: d40a9ded-d652-4437-90d1-6d9192a73e6d
-          operation: 1
-        GENERIC_MAX_HEALTH:
-        - ==: org.bukkit.attribute.AttributeModifier
-          amount: 1.0
-          name: ResourceKey[minecraft:attribute / minecraft:generic.max_health]
-          slot: HEAD
-          uuid: dea2cbd5-fb6f-4bb2-a084-9a5932634281
-          operation: 0
-      ItemFlags:
-      - HIDE_ATTRIBUTES
-      skull-owner:
-        ==: PlayerProfile
-        uniqueId: 62bb602f-1479-476b-b9d2-d41fb474405a
-        name: Socialismo
-        properties:
-        - name: textures
-          value: ewogICJ0aW1lc3RhbXAiIDogMTcyMjc5ODc3NzA2MSwKICAicHJvZmlsZUlkIiA6ICI2MmJiNjAyZjE0Nzk0NzZiYjlkMmQ0MWZiNDc0NDA1YSIsCiAgInByb2ZpbGVOYW1lIiA6ICJTb2NpYWxpc21vIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzJjMTYyYzE2ZTAxNDMzYjNkYTY2NzRkNjQyYzNlYWI0YmU5ZTZkNzFlMjBhMzMyNTU2NGM0ZDAzYTgxMjYwNmEiCiAgICB9LAogICAgIkNBUEUiIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzIzNDBjMGUwM2RkMjRhMTFiMTVhOGIzM2MyYTdlOWUzMmFiYjIwNTFiMjQ4MWQwYmE3ZGVmZDYzNWNhN2E5MzMiCiAgICB9CiAgfQp9
-          signature: kwPqkOdupauR880Ntst7lDAgY8i6Hea0AQZ1VpoBEg4Bre+rgZ6c1L6o3W2ovvl3fCBVqa8BQEpSZvD3Wzpw1hlJyVtm6by5e0yut0Yn1Bo65Vbfz9xGjDE68a3vVFKIkDKb/egIYgeRdtWp+Cj2hF/UqL/1Jgu1zH4a3B5EdeY17R5pzCj7nW5fVO/263WuViJcBq3D4PE5BOOp75l/wEYYAjJLaST+UQ4pW5Ee0k7Jw7yXEJJ8/1WME5jJr4O3ZPEvvwfsXksWBqx0PaaNJo5KFtVeoG6l9eh8oLxMV2qZrThese9nMIrpFcWczxHzk49RyPmmDb1cTV2gI4cs5knbPpQWy611PW51QuYXR7YgZEclHtYpT8AGjJsXGSjXbirn6IzRFcWcQmvCxVFyiX+n6PhXDT7vT9wWo32dVQTgyuIUb8ebuX9zTSdB/C3dLNfEwCW2a3DaBWIi2OBN2CMslmsE48hxCa7Af/0jQsYIUVMnyJ+pgqVW56HMhFhc2vSygfLz1A6Bbnf57NlXeyD080P3afih5b6xGDGTN8MDDnk3OUiirvWZpRgp2j49bt6oyNbmqs6lI1MNZ9ZQeR7M6rQkw7YWKEau9rip8H4eSfcrz+M0Oh+K4bcdcCwOP+7uPvxljnOH1GFRMO71Bmj5Er6DCUmhag05Jmf62PQ=
-      skull-owner: Socialismo
+  - null
   - ==: org.bukkit.inventory.ItemStack
     DataVersion: 4556
     id: minecraft:player_head
-    count: 1
     components:
+      minecraft:attribute_modifiers: '[{amount:2.0d,id:"elytrix:armor_fame_ball",operation:"add_value",slot:"offhand",type:"minecraft:armor"},{amount:4.0d,id:"elytrix:health_fame_ball",operation:"add_value",slot:"offhand",type:"minecraft:max_health"},{amount:2.0d,id:"elytrix:damage_fame_ball",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"},{amount:0.10d,id:"elytrix:speed_fame_ball",operation:"add_multiplied_total",slot:"offhand",type:"minecraft:movement_speed"}]'
       minecraft:profile: '{id:[I;1656447023,343492459,-1177365473,-1267449766],name:"fame_head",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmMxNjJjMTZlMDE0MzNiM2RhNjY3NGQ2NDJjM2VhYjRiZTllNmQ3MWUyMGEzMzI1NTY0YzRkMDNhODEyNjA2YSJ9fX0="}]}'
-      minecraft:attribute_modifiers: '[{amount:2.0d,id:"elytrix:damage_fame_ball",operation:"add_value",slot:"offhand",type:"minecraft:attack_damage"},{amount:0.3d,id:"elytrix:attack_speed_fame_ball",operation:"add_multiplied_base",slot:"offhand",type:"minecraft:attack_speed"},{amount:2.0d,id:"elytrix:armor_fame_ball",operation:"add_value",slot:"offhand",type:"minecraft:armor"}]'
-      minecraft:lore: '[{extra:[{color:"#FF5555",italic:0b,text:"Проклятие утраты"}],italic:0b,text:""},"",{extra:[{color:"#AAAAAA",italic:0b,text:"Когда во второй руке:"}],italic:0b,text:""},{extra:[{bold:1b,color:"#55FF55",italic:0b,text:" +2.0 к Урону"}],italic:0b,text:""},{extra:[{bold:1b,color:"#55FF55",italic:0b,text:" +30% к Скорости атаки"}],italic:0b,text:""},{extra:[{bold:1b,color:"#55FF55",italic:0b,text:" +2.0 к Броне"}],italic:0b,text:""}]'
+      minecraft:lore: '[{extra:[{color:"#FF5555",italic:0b,text:"Проклятие утраты"}],italic:0b,text:""},"",{extra:[{color:"#AAAAAA",italic:0b,text:"Когда во второй руке:"}],italic:0b,text:""},{extra:[{bold:1b,color:"#55FF55",italic:0b,text:" +2 к Броне"}],italic:0b,text:""},{extra:[{bold:1b,color:"#55FF55",italic:0b,text:" +4 к Здоровью"}],italic:0b,text:""},{extra:[{bold:1b,color:"#55FF55",italic:0b,text:" +2 к Урону"}],italic:0b,text:""},{extra:[{bold:1b,color:"#55FF55",italic:0b,text:" +10% к Скорости"}],italic:0b,text:""}]'
       minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
       minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers"]}'
-      minecraft:custom_name: '{extra:[{bold:1b,color:"#A855F7",italic:0b,text:"Шар Славы"}],italic:0b,text:""}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"#A855F7",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шар Славы",underlined:0b}],text:""}'
       minecraft:custom_data: '{PublicBukkitValues:{"minecraft:fame_ball":"FAME_BALL"}}'
     schema_version: 1
+  - ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4556
+    id: minecraft:player_head
+    components:
+      minecraft:attribute_modifiers: '[{amount:2.0d,id:"elytrix:damage_fame_head",operation:"add_value",slot:"head",type:"minecraft:attack_damage"},{amount:0.20d,id:"elytrix:speed_fame_head",operation:"add_multiplied_base",slot:"head",type:"minecraft:movement_speed"},{amount:1.0d,id:"elytrix:health_fame_head",operation:"add_value",slot:"head",type:"minecraft:max_health"}]'
+      minecraft:profile: '{id:[I;1656447023,343492459,-1177365473,-1267449766],name:"fame_head",properties:[{name:"textures",value:"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmMxNjJjMTZlMDE0MzNiM2RhNjY3NGQ2NDJjM2VhYjRiZTllNmQ3MWUyMGEzMzI1NTY0YzRkMDNhODEyNjA2YSJ9fX0="}]}'
+      minecraft:lore: '[{extra:[{color:"#AAAAAA",italic:0b,text:"Надето на голову:"}],italic:0b,text:""},{extra:[{bold:1b,color:"#55FF55",italic:0b,text:" +2 к Урону"}],italic:0b,text:""},{extra:[{bold:1b,color:"#55FF55",italic:0b,text:" +20% к Скорости"}],italic:0b,text:""},{extra:[{bold:1b,color:"#55FF55",italic:0b,text:" +1 к Здоровью"}],italic:0b,text:""},"",{extra:[{color:"#FF5555",italic:0b,text:"Проклятие утраты"}],italic:0b,text:""}]'
+      minecraft:enchantments: '{"minecraft:vanishing_curse":1}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:enchantments","minecraft:attribute_modifiers"]}'
+      minecraft:custom_name: '{extra:[{bold:1b,color:"#A855F7",italic:0b,obfuscated:0b,strikethrough:0b,text:"Голова Славы",underlined:0b}],text:""}'
+    schema_version: 1
+  - null
   Armor:
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: DIAMOND_BOOTS
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      enchants:
-        DEPTH_STRIDER: 3
-        PROTECTION_FALL: 2
-        PROTECTION_ENVIRONMENTAL: 4
-        DURABILITY: 3
-      repair-cost: 3
+    DataVersion: 4556
+    id: minecraft:netherite_boots
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"#A855F7",italic:0b,obfuscated:0b,strikethrough:0b,text:"Ботинки Славы FAME",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:depth_strider":3,"minecraft:feather_falling":4,"minecraft:mending":1,"minecraft:protection":4,"minecraft:unbreaking":3}'
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: NETHERITE_LEGGINGS
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      enchants:
-        PROTECTION_ENVIRONMENTAL: 4
-        DURABILITY: 3
+    DataVersion: 4556
+    id: minecraft:netherite_leggings
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"#A855F7",italic:0b,obfuscated:0b,strikethrough:0b,text:"Поножи Славы FAME",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:mending":1,"minecraft:protection":4,"minecraft:swift_sneak":3,"minecraft:unbreaking":3}'
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: NETHERITE_CHESTPLATE
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      enchants:
-        PROTECTION_ENVIRONMENTAL: 4
-        DURABILITY: 3
+    DataVersion: 4556
+    id: minecraft:netherite_chestplate
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"#A855F7",italic:0b,obfuscated:0b,strikethrough:0b,text:"Нагрудник Славы FAME",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:mending":1,"minecraft:protection":4,"minecraft:unbreaking":3}'
+    schema_version: 1
   - ==: org.bukkit.inventory.ItemStack
-    v: 2586
-    type: DIAMOND_HELMET
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      enchants:
-        WATER_WORKER: 1
-        PROTECTION_ENVIRONMENTAL: 4
-        OXYGEN: 3
-        DURABILITY: 3
-      repair-cost: 1
+    DataVersion: 4556
+    id: minecraft:netherite_helmet
+    components:
+      minecraft:custom_name: '{extra:[{bold:1b,color:"#A855F7",italic:0b,obfuscated:0b,strikethrough:0b,text:"Шлем Славы FAME",underlined:0b}],text:""}'
+      minecraft:enchantments: '{"minecraft:aqua_affinity":1,"minecraft:mending":1,"minecraft:protection":4,"minecraft:respiration":3,"minecraft:unbreaking":3}'
+    schema_version: 1

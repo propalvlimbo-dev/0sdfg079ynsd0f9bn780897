@@ -55,6 +55,41 @@ public interface Player extends Entity, org.bukkit.permissions.Permissible {
     void sendMessage(String message);
     GameMode getGameMode();
     Location getLocation();
+    Spigot spigot();
+    public static class Spigot {
+        public void sendMessage(org.bukkit.ChatMessageType type,
+                                net.md_5.bungee.api.chat.BaseComponent... parts) {}
+    }
+}
+""",
+"org/bukkit/ChatMessageType.java": """
+package org.bukkit;
+public enum ChatMessageType { CHAT, SYSTEM, ACTION_BAR }
+""",
+"net/md_5/bungee/api/chat/BaseComponent.java": """
+package net.md_5.bungee.api.chat;
+public abstract class BaseComponent {}
+""",
+"net/md_5/bungee/api/chat/TextComponent.java": """
+package net.md_5.bungee.api.chat;
+public class TextComponent extends BaseComponent {
+    public final String text;
+    public TextComponent(String text) { this.text = text; }
+}
+""",
+"org/bukkit/command/ConsoleCommandSender.java": """
+package org.bukkit.command;
+public interface ConsoleCommandSender { String getName(); }
+""",
+"org/bukkit/event/entity/EntityPickupItemEvent.java": """
+package org.bukkit.event.entity;
+import org.bukkit.entity.Entity;
+public class EntityPickupItemEvent {
+    private final Entity entity; private boolean cancelled;
+    public EntityPickupItemEvent(Entity entity) { this.entity = entity; }
+    public Entity getEntity() { return entity; }
+    public void setCancelled(boolean value) { cancelled = value; }
+    public boolean isCancelled() { return cancelled; }
 }
 """,
 "org/bukkit/GameMode.java": """
@@ -189,7 +224,10 @@ public interface BukkitTask { void cancel(); }
 "org/bukkit/scheduler/BukkitScheduler.java": """
 package org.bukkit.scheduler;
 import org.bukkit.plugin.Plugin;
-public interface BukkitScheduler { BukkitTask runTaskTimer(Plugin plugin, Runnable task, long delay, long period); }
+public interface BukkitScheduler {
+    BukkitTask runTaskTimer(Plugin plugin, Runnable task, long delay, long period);
+    BukkitTask runTaskLater(Plugin plugin, Runnable task, long delay);
+}
 """,
 "org/bukkit/plugin/java/JavaPlugin.java": """
 package org.bukkit.plugin.java;
@@ -235,9 +273,16 @@ public final class Bukkit {
     public static PluginManager manager;
     public static BukkitScheduler scheduler;
     public static Collection<? extends Player> online = Collections.emptyList();
+    public static org.bukkit.command.ConsoleCommandSender console;
+    public static java.util.List<String> dispatched = new java.util.ArrayList<String>();
     public static PluginManager getPluginManager() { return manager; }
     public static BukkitScheduler getScheduler() { return scheduler; }
     public static Collection<? extends Player> getOnlinePlayers() { return online; }
+    public static org.bukkit.command.ConsoleCommandSender getConsoleSender() { return console; }
+    public static boolean dispatchCommand(org.bukkit.command.ConsoleCommandSender sender, String cmd) {
+        dispatched.add(cmd);
+        return true;
+    }
 }
 """,
 }
